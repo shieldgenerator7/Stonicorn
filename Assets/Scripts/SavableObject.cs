@@ -96,8 +96,8 @@ public class SavableObject
     ///Adds this SavableObject's SavableMonobehaviour to the given GameObject
     ///</summary>
     ///<param name="go">The GameObject to add the script to</param>
-    public virtual void addScript(GameObject go)
+    public virtual Component addScript(GameObject go)
     {
-        go.AddComponent(getSavableMonobehaviourType());
+        return go.AddComponent(getSavableMonobehaviourType());
     }
 }

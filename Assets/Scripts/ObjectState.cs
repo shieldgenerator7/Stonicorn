@@ -73,7 +73,7 @@ public class ObjectState
             {
                 if (so.isSpawnedScript)
                 {
-                    so.addScript(go);
+                    smb = (SavableMonoBehaviour)so.addScript(go);
                 }
                 else
                 {
@@ -100,6 +100,7 @@ public class ObjectState
                     if (sceneGo.name.Equals(objectName))
                     {
                         this.go = sceneGo;
+                        break;
                     }
                     else {
                         foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
@@ -108,6 +109,7 @@ public class ObjectState
                             if (childGo.name.Equals(objectName))
                             {
                                 this.go = childGo;
+                                break;
                             }
                         }
                     }
