@@ -545,6 +545,7 @@ public class PlayerController : MonoBehaviour
     private void shattered()
     {
         gm.switchGestureProfile("Rewind");
+        GameManager.playerShattered();
     }
     public bool isIntact()
     {

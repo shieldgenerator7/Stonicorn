@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public AudioSource timeRewindMusic;//the music to play while time rewinds
     private static GameObject lastTalkingNPC;//the last NPC to talk
     private int rewindId = 0;//the id to eventually load back to
+    private float respawnTime = 0;//the earliest time Merky can rewind after shattering
+    public float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
     private List<GameState> gameStates = new List<GameState>();
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
@@ -371,6 +373,14 @@ public class GameManager : MonoBehaviour
         return (other.transform.position - playerObject.transform.position).sqrMagnitude <= range * range;
     }
 
+    /// <summary>
+    /// Called when Merky gets shattered
+    /// </summary>
+    public static void playerShattered()
+    {
+        instance.respawnTime = Time.time + instance.respawnDelay;
+    }
+
     public static void showPlayerGhosts()
     {
         foreach (GameState gs in instance.gameStates)
@@ -394,6 +404,11 @@ public class GameManager : MonoBehaviour
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
+        if (respawnTime > Time.time)
+        {
+            //If respawn timer is not over, don't do anything
+            return;
+        }
         GameState final = null;
         GameState prevFinal = null;
         foreach (GameState gs in gameStates)

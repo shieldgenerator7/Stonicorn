@@ -145,6 +145,7 @@ MonoBehaviour:
     type: 2}
   npcTalkEffect: {fileID: 534039100}
   timeRewindMusic: {fileID: 94021249}
+  respawnDelay: 1
 --- !u!4 &94021248
 Transform:
   m_ObjectHideFlags: 0
@@ -23484,7 +23485,7 @@ MonoBehaviour:
   maxAirPorts: 0
   exhaustCoolDownTime: 0.5
   teleportTime: 0
-  gravityImmuneTime: 0
+  gravityImmuneTimeAmount: 0.2
   teleportStreak: {fileID: 133468, guid: a76ac723dbf060e4fae65f29bcb058d9, type: 2}
   useStreak: 0
   teleportStar: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
