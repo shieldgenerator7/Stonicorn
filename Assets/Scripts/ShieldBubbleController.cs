@@ -17,9 +17,6 @@ public class ShieldBubbleController : SavableMonoBehaviour
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        Vector3 bsize = sr.bounds.size;
-        baseWidth = bsize.x;
-        baseHeight = bsize.y;
         lockRB2Ds();
     }
 
@@ -71,13 +68,18 @@ public class ShieldBubbleController : SavableMonoBehaviour
 
     public void init(float newRange, float startEnergy)
     {
+        //Range
         this.range = newRange;
         float size = newRange * 2;
-        if (baseWidth > 0 && baseHeight > 0)
+        if (baseWidth <= 0 && baseHeight <= 0)
         {
-            Vector3 newV = new Vector3(size / baseWidth, size / baseHeight, 0);
-            transform.localScale = newV;
+            Vector3 bsize = sr.bounds.size;
+            baseWidth = bsize.x;
+            baseHeight = bsize.y;
         }
+        Vector3 newV = new Vector3(size / baseWidth, size / baseHeight, 0);
+        transform.localScale = newV;
+        //Energy
         energy = startEnergy;
         adjustEnergy(0);
     }
