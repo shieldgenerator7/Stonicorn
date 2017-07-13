@@ -20,6 +20,10 @@ public class GameState
     public GameState(List<GameObject> list): this()
     {
         foreach (GameObject go in list){
+            if (go == null)
+            {
+                continue;
+            }
             ObjectState os = new ObjectState(go);
             os.saveState();
             states.Add(os);
