@@ -23,12 +23,11 @@ public class Rigidbody2DLock : SavableMonoBehaviour {
 
     public void removeLock(GameObject lockHolder)
     {
-        for (int i = 0; i < lockHolders.Count; i++)
+        for (int i = lockHolders.Count-1; i >= 0; i--)
         {
             if (lockHolders[i].matches(lockHolder))
             {
                 lockHolders.RemoveAt(i);
-                break;
             }
         }
         if (lockHolders.Count == 0)
