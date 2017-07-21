@@ -8,11 +8,21 @@ public class GravityAccepter : MonoBehaviour {
     private Vector2 gravityVector;
     public Vector2 Gravity
     {
-        get { return gravityVector; }
-        set
+        get {
+            if (gravityVector == Vector2.zero)
+            {
+                return prevGravityVector;
+            }
+            return gravityVector; }
+        private set
         {
+            if (value == prevGravityVector)
+            {
+                gravityVector = prevGravityVector;
+                sideVector = prevSideVector;
+            }
             // 2017-06-02: moved here from PlayerController.setGravityVector(.)
-            if (value.x != gravityVector.x || value.y != gravityVector.y)
+            else if (value.x != gravityVector.x || value.y != gravityVector.y)
             {
                 gravityVector = value;
                 //v = P2 - P1    //2016-01-10: copied from an answer by cjdev: http://answers.unity3d.com/questions/564166/how-to-find-perpendicular-line-in-2d.html
@@ -24,7 +34,14 @@ public class GravityAccepter : MonoBehaviour {
     private Vector2 sideVector;
     public Vector2 SideVector
     {
-        get { return sideVector; }
+        get
+        {
+            if (sideVector == Vector2.zero)
+            {
+                return prevSideVector;
+            }
+            return sideVector;
+        }
         private set { sideVector = value; }
     }
     private bool acceptsGravity = true;
@@ -32,5 +49,19 @@ public class GravityAccepter : MonoBehaviour {
     {
         get { return acceptsGravity; }
         set { acceptsGravity = value; }
+    }
+
+    public void addGravity(Vector2 newGravity)
+    {
+        Gravity = gravityVector + newGravity;
+    }
+    Vector2 prevGravityVector;
+    Vector2 prevSideVector;
+    private void LateUpdate()
+    {
+        prevGravityVector = gravityVector;
+        prevSideVector = sideVector;
+        gravityVector = Vector2.zero;
+        sideVector = Vector2.zero;
     }
 }
