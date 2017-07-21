@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4862288093774552}
   - component: {fileID: 212928391624881736}
   - component: {fileID: 68904284413188406}
+  - component: {fileID: 58238105252588492}
   - component: {fileID: 114378336162997848}
   m_Layer: 0
   m_Name: ShieldBubble
@@ -36,12 +37,27 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1181304595248282}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 140.40543, y: 86.3428, z: 0}
+  m_LocalPosition: {x: -164.4652, y: 112.779755, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &58238105252588492
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1181304595248282}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2.54
 --- !u!68 &68904284413188406
 EdgeCollider2D:
   m_ObjectHideFlags: 1
@@ -53,7 +69,9 @@ EdgeCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
   m_Points:
   - {x: -2.5141144, y: 0}
   - {x: -2.4570618, y: 0.517395}
@@ -125,8 +143,13 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1492054691
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2feb9689ca68bec40b53e23636e76fd0, type: 3}
   m_Color: {r: 0.4392157, g: 0.6431373, b: 0.9764706, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
