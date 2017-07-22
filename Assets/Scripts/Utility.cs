@@ -69,7 +69,8 @@ public static class Utility  {
     /// <param name="expForce"></param>
     /// <param name="expPosition"></param>
     /// <param name="expRadius"></param>
-    public static void AddWeightedExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius)
+    /// <param name="maxForce">The maximum amount of force that can be applied</param>
+    public static void AddWeightedExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius, float maxForce)
     {
         Vector2 dir = (body.transform.position - expPosition).normalized;        
         float distanceToEdge = expRadius - distanceToObject(expPosition,body.gameObject);
@@ -83,6 +84,7 @@ public static class Utility  {
             calc = 0;
         }
         float force = body.mass * distanceToEdge * calc * expForce / Time.fixedDeltaTime;
+        force = Mathf.Min(force, maxForce);
         body.AddForce(dir * force);
     }
     public static float distanceToObject(Vector2 position, GameObject obj)
