@@ -10,8 +10,6 @@ public class NPCController : MonoBehaviour
     
     bool greetingPlayed = false;
 
-    public List<NPCVoiceLine> voiceLines;
-
     private GameObject playerObject;
 
     // Use this for initialization
@@ -24,22 +22,17 @@ public class NPCController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        source.transform.position = transform.position;
+        source.transform.position = transform.position;        
         //Debug.Log("Number things found: " + thingsFound);
         if (canGreet())
         {
-            if (!source.isPlaying)
+            if (!greetingPlayed || (greetingPlayed && !greetOnlyOnce()))
             {
-                NPCVoiceLine npcvl = getMostRelevantVoiceLine();
-                if (npcvl != null)
+                if (!source.isPlaying)
                 {
-                    source.clip = npcvl.voiceLine;
                     source.Play();
-                    npcvl.played = true;
-                    if (npcvl.triggerEvent != null)
-                    {
-                        GameEventManager.addEvent(npcvl.triggerEvent);
-                    }
+                    //AudioSource.PlayClipAtPoint(greeting, transform.position);
+                    greetingPlayed = true;
                 }
             }
         }
@@ -83,18 +76,5 @@ public class NPCController : MonoBehaviour
     protected virtual bool shouldStop()
     {
         return false;
-    }
-
-    public NPCVoiceLine getMostRelevantVoiceLine()
-    {
-        for(int i = voiceLines.Count-1; i >=0; i--)
-        {
-            NPCVoiceLine npcvl = voiceLines[i];
-            if (!npcvl.played && GameEventManager.eventHappened(npcvl.eventReq))
-            {
-                return npcvl;
-            }
-        }
-        return null;
     }
 }
