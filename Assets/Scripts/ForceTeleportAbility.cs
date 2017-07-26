@@ -9,6 +9,7 @@ public class ForceTeleportAbility : PlayerAbility
     public GameObject explosionEffect;
     
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
+    public float maxForce = 1000;//the maximum amount of force applied to one object
     public float maxRange = 3;
     public float maxHoldTime = 1;//how long until the max range is reached
 
@@ -39,7 +40,7 @@ public class ForceTeleportAbility : PlayerAbility
                 Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
                 if (orb2d != null)
                 {
-                    Utility.AddWeightedExplosionForce(orb2d, forceAmount, pos, range);
+                    Utility.AddWeightedExplosionForce(orb2d, forceAmount, pos, range, maxForce);
                 }
                 else
                 {
