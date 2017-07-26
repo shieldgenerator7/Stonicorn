@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 60428431802213692}
   - component: {fileID: 114557904908406206}
   - component: {fileID: 82398419077081308}
+  - component: {fileID: 114696989949497388}
+  - component: {fileID: 114131796538701386}
   m_Layer: 0
   m_Name: merky size marker
   m_TagString: Untagged
@@ -27,7 +29,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 115800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 162.89, y: 83.644, z: 0}
+  m_LocalPosition: {x: 165.07, y: 83.655, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -63,11 +65,18 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6a5da0f2f51e46c4ea9bf652fa4f9d38, type: 3}
   m_Color: {r: 0.32115054, g: 0.9705882, b: 0.32562938, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -110,7 +119,17 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   m_Points:
     m_Paths:
     - - {x: 0.32628766, y: -0.4933825}
@@ -164,7 +183,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e0b0d9faf5139a94b98383a7cb8075cc, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 296dd25fb74817e4ba33ee8c228d9b69, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -172,7 +191,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -235,6 +254,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114131796538701386
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceLine: {fileID: 8300000, guid: e0b0d9faf5139a94b98383a7cb8075cc, type: 3}
+  eventReq: MoonLanding
+  played: 0
+  triggerEvent: 
 --- !u!114 &114557904908406206
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -246,4 +280,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baec8ceac9609dc448cadd3efa4966cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  greeting: {fileID: 8300000, guid: e0b0d9faf5139a94b98383a7cb8075cc, type: 3}
+  voiceLines:
+  - {fileID: 114696989949497388}
+  - {fileID: 114131796538701386}
+--- !u!114 &114696989949497388
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceLine: {fileID: 8300000, guid: 296dd25fb74817e4ba33ee8c228d9b69, type: 3}
+  eventReq: 
+  played: 0
+  triggerEvent: 
