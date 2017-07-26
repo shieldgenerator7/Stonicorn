@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 94021248}
   - component: {fileID: 94021247}
   - component: {fileID: 94021249}
+  - component: {fileID: 94021250}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -239,6 +240,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &94021250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 94021246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d2a4ac25e10c74297cf34a0a03f4bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events: []
 --- !u!1 &198174136
 GameObject:
   m_ObjectHideFlags: 0
@@ -24505,7 +24518,7 @@ MonoBehaviour:
   forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 2}
   explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 2}
   forceAmount: 5
-  maxForce: 3700
+  maxForce: 1000
   maxRange: 2.5
   maxHoldTime: 1
   forceTeleportSound: {fileID: 8300000, guid: 64801fca428cf394fa91e011dab21557, type: 3}
