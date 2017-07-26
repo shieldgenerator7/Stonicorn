@@ -98,6 +98,17 @@ public class ShieldBubbleController : SavableMonoBehaviour
             }
         }
     }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Rigidbody2DLock rb2dl = collision.gameObject.GetComponent<Rigidbody2DLock>();
+        if (rb2dl)
+        {
+            if (rb2dl.holdsLock(gameObject))
+            {
+                rb2dl.removeLock(gameObject);
+            }
+        }
+    }
 
     public void checkForce(float force)
     {

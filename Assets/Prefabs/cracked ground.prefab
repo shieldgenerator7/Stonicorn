@@ -98,6 +98,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -181,6 +183,7 @@ MonoBehaviour:
   hardness: 1
   forceThreshold: 50
   maxIntegrity: 100
+  disappearsIfNoBrokenPrefab: 1
   integrity: 0
   crackedPrefab: {fileID: 1943429488560524, guid: 796582492798f234bb1d953535aa505f,
     type: 2}
@@ -232,6 +235,8 @@ SpriteRenderer:
   m_Size: {x: 9.234375, y: 1.015625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212697131931466148
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -272,3 +277,5 @@ SpriteRenderer:
   m_Size: {x: 9.234375, y: 1.015625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0

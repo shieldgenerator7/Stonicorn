@@ -9,10 +9,13 @@ public class EnemySimple : MonoBehaviour
     public float healsPerSecond = 5.0f;
     public bool activeMove = false;//controls whether it can move or not
 
+    public ParticleSystem fearParticles;//the particle system that activates when the enemy is frightened
+
     private Vector2 direction = Vector2.left;
     private bool goingRight = true;//whether the bug is going right relative to its orientation
     private float maxSpeedReached = 0;//highest speed reached since starting in this direction
     private bool healing = false;
+    private bool losToPlayer = false;//"Line Of Sight to Player": whether this bug can see the player
     private static RaycastHit2D[] rch2ds = new RaycastHit2D[10];//for processing collider casts
 
     private Rigidbody2D rb2d;
@@ -35,6 +38,21 @@ public class EnemySimple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        losToPlayer = Utility.lineOfSight(gameObject, player);
+        if (losToPlayer)
+        {
+            if (!fearParticles.isPlaying)
+            {
+                fearParticles.Play();
+            }
+        }
+        else
+        {
+            if (fearParticles.isPlaying)
+            {
+                fearParticles.Stop();
+            }
+        }
         if (activeMove && isGrounded())
         {
             float tempSpeed = speed;
@@ -58,7 +76,7 @@ public class EnemySimple : MonoBehaviour
             //Cliff detection
             if (senseInFront() == null) //there's a cliff up ahead
             {
-                if (!Utility.lineOfSight(gameObject, player)) //nothing between it and the player
+                if (!losToPlayer) //nothing between it and the player
                 {
                     switchDirection();
                     rb2d.AddForce(rb2d.mass * direction * rb2d.velocity.magnitude * 4);

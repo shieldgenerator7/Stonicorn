@@ -10,6 +10,7 @@ public class HardMaterial : SavableMonoBehaviour {
     public float hardness = 1.0f;
 	public float forceThreshold = 50.0f;//how much force it can withstand without cracking
     public float maxIntegrity = 100f;
+    public bool disappearsIfNoBrokenPrefab = true;//true = if no broken prefab is supplied, this hard material should just disappear
     [Range(0,100)]
     [SerializeField]
     private float integrity;//how intact it is. Material breaks apart when it reaches 0
@@ -135,7 +136,7 @@ public class HardMaterial : SavableMonoBehaviour {
                     }
                     GameManager.refresh();
                 }
-                else
+                else if (!disappearsIfNoBrokenPrefab)
                 {
                     Debug.Log("/!\\ HardMaterial " + gameObject.name + " has no broken prefab! (Scene: "+gameObject.scene.name+")");
                 }
@@ -149,7 +150,10 @@ public class HardMaterial : SavableMonoBehaviour {
                     ha.nowDiscovered();
                 }
             }
-            gameObject.SetActive(false);
+            if (crackedPrefab != null || disappearsIfNoBrokenPrefab)
+            {
+                gameObject.SetActive(false);
+            }
             if (shattered != null)
             {
                 shattered();//call delegate method
