@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour
 {
-
-    public AudioClip greeting;
     AudioSource source;
     
-    bool greetingPlayed = false;
-
     public List<NPCVoiceLine> voiceLines;
 
     private GameObject playerObject;
