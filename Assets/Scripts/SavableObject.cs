@@ -91,6 +91,8 @@ public class SavableObject
                 return typeof(NPCController);
             case "NPCVoiceLine":
                 return typeof(NPCVoiceLine);
+            case "GameEventManager":
+                return typeof(GameEventManager);
             default:
                 throw new KeyNotFoundException("The type name \"" + typeName + "\" was not found. It might not be a SavableMonoBehaviour or might not exist.");
         }
