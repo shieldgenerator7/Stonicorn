@@ -96,7 +96,7 @@ public class NPCController : SavableMonoBehaviour
 
     protected virtual bool shouldStop()
     {
-        return false;
+        return Vector3.Distance(playerObject.transform.position, transform.position) > 10;
     }
 
     public NPCVoiceLine getMostRelevantVoiceLine()
