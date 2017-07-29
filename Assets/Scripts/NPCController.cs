@@ -68,6 +68,7 @@ public class NPCController : SavableMonoBehaviour
         }
         else
         {
+            currentVoiceLineIndex = -1;
             GameManager.speakNPC(gameObject, false);
         }
     }
