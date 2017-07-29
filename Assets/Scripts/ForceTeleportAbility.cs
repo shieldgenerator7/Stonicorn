@@ -7,6 +7,7 @@ public class ForceTeleportAbility : PlayerAbility
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
     private GameObject frii;//"force range indicator instance"
     public GameObject explosionEffect;
+    public ProgressBarCircular circularProgressBar;
     
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxForce = 1000;//the maximum amount of force applied to one object
@@ -63,6 +64,10 @@ public class ForceTeleportAbility : PlayerAbility
             Destroy(frii);
             frii = null;
             particleController.activateTeleportParticleSystem(false);
+            if(circularProgressBar != null)
+            {
+                circularProgressBar.setPercentage(0);
+            }
         }
         else {
             if (frii == null)
@@ -74,7 +79,12 @@ public class ForceTeleportAbility : PlayerAbility
             frii.transform.position = (Vector2)pos;
             friu.setRange(range);
             //Particle effects
-            particleController.activateTeleportParticleSystem(true, effectColor, pos, range);            
+            particleController.activateTeleportParticleSystem(true, effectColor, pos, range);
+            if (circularProgressBar != null)
+            {
+                circularProgressBar.setPercentage(range / maxRange);
+                circularProgressBar.transform.position = pos;
+            }
         }
     }
 
@@ -86,6 +96,10 @@ public class ForceTeleportAbility : PlayerAbility
             frii = null;
         }
         particleController.activateTeleportParticleSystem(false);
+        if (circularProgressBar != null)
+        {
+            circularProgressBar.setPercentage(0);
+        }
     }
 
     
