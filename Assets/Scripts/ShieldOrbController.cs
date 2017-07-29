@@ -28,11 +28,18 @@ public class ShieldOrbController : MonoBehaviour
     {
         if (generatesAtAll)
         {
-            if ((currentSB==null || ReferenceEquals(currentSB,null)) && sba.canSpawnShieldBubble(transform.position, sba.maxRange))
+            if ((currentSB == null || ReferenceEquals(currentSB, null)) && sba.canSpawnShieldBubble(transform.position, sba.maxRange))
             {
                 if (chargesAutomatically)
                 {
                     charge(Time.deltaTime);
+                }
+                if (generatesUponContact)
+                {
+                    if (chargeTime >= sba.maxHoldTime && isBeingTriggered())
+                    {
+                        trigger();
+                    }
                 }
             }
         }
