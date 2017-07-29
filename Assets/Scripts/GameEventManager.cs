@@ -20,8 +20,14 @@ public class GameEventManager : MonoBehaviour {
         }
     }
 
-    public static void addEvent(string newEvent){
-        instance.events.Add(newEvent);
+    public static void addEvent(string newEvent)
+    {
+        if (newEvent != null
+            && newEvent != ""
+            && !instance.events.Contains(newEvent))
+        {
+            instance.events.Add(newEvent);
+        }
     }
     public static bool eventHappened(string eventName)
     {
