@@ -89,6 +89,8 @@ public class SavableObject
                 return typeof(CrackedPiece);
             case "NPCController":
                 return typeof(NPCController);
+            case "NPCMetalController":
+                return typeof(NPCMetalController);
             case "NPCVoiceLine":
                 return typeof(NPCVoiceLine);
             case "GameEventManager":
