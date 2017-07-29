@@ -116,6 +116,10 @@ public class NPCController : SavableMonoBehaviour
             {
                 return i;
             }
+            else if (npcvl.played && npcvl.checkPointLine)
+            {
+                return -1;
+            }
         }
         return -1;
     }

@@ -8,6 +8,7 @@ public class NPCVoiceLine: SavableMonoBehaviour {
     public AudioClip voiceLine;
     public string eventReq = null;//the NPC will only say the voice line if the given event has happened
     public string triggerEvent = null;//the event this voiceline will trigger, if any
+    public bool checkPointLine = true;//true: if this line has played, prev lines can not be played
     //State
     public bool played = false;
 
