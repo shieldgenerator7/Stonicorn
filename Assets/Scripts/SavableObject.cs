@@ -87,6 +87,10 @@ public class SavableObject
                 return typeof(HardMaterial);
             case "CrackedPiece":
                 return typeof(CrackedPiece);
+            case "NPCController":
+                return typeof(NPCController);
+            case "NPCVoiceLine":
+                return typeof(NPCVoiceLine);
             default:
                 throw new KeyNotFoundException("The type name \"" + typeName + "\" was not found. It might not be a SavableMonoBehaviour or might not exist.");
         }
