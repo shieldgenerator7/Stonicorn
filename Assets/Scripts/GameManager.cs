@@ -443,7 +443,7 @@ public class GameManager : MonoBehaviour
         }
         else if (!playerObject.GetComponent<PlayerController>().isIntact())
         {
-            Rewind(chosenId - 2);//go back to the latest safe past merky
+            Rewind(chosenId - 1);//go back to the latest safe past merky
         }
         if (GameStatistics.counter("deathCount") == 1)
         {
@@ -464,7 +464,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public static Vector2 getLatestSafeRewindGhostPosition()
     {
-        return instance.gameStates[instance.chosenId - 2].merky.position;
+        return instance.gameStates[instance.chosenId - 1].merky.position;
     }
 
     /// <summary>
