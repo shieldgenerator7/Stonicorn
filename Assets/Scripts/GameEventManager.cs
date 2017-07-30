@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEventManager : MonoBehaviour {
+public class GameEventManager : SavableMonoBehaviour {
 
     public List<string> events = new List<string>();//the list of events that have happened
 
@@ -20,8 +20,35 @@ public class GameEventManager : MonoBehaviour {
         }
     }
 
-    public static void addEvent(string newEvent){
-        instance.events.Add(newEvent);
+    public override SavableObject getSavableObject()
+    {//2017-07-28: copied from Rigidbody2DLock.getSavableObject()
+        SavableObject so = new SavableObject(this);
+        int counter = 0;
+        foreach (string str in events)
+        {
+            so.data.Add("event" + counter, str);
+            counter++;
+        }
+        so.data.Add("eventCount", counter);
+        return so;
+    }
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        events = new List<string>();
+        for (int i = 0; i < (int)savObj.data["eventCount"]; i++)
+        {
+            events.Add((string)savObj.data["event" + i]);
+        }
+    }
+
+    public static void addEvent(string newEvent)
+    {
+        if (newEvent != null
+            && newEvent != ""
+            && !instance.events.Contains(newEvent))
+        {
+            instance.events.Add(newEvent);
+        }
     }
     public static bool eventHappened(string eventName)
     {

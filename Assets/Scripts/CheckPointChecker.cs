@@ -58,6 +58,9 @@ public class CheckPointChecker : MemoryMonoBehaviour
         activated = true;
         GameManager.saveMemory(this);
         GameManager.saveCheckPoint(this);
+        //Start the particles
+        GetComponent<ParticleSystem>().Play();
+        //Initialize ghsot sprite (if necessary)
         if (ghostSprite != null)
         {
             if (gsr == null)

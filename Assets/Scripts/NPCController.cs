@@ -2,23 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCController : MonoBehaviour
+public class NPCController : SavableMonoBehaviour
 {
-
-    public AudioClip greeting;
     AudioSource source;
-    
-    bool greetingPlayed = false;
 
     public List<NPCVoiceLine> voiceLines;
 
     private GameObject playerObject;
+
+    //State
+    public int currentVoiceLineIndex = -1;//the index of the voiceline that is currently playing, -1 if none
 
     // Use this for initialization
     protected virtual void Start()
     {
         source = GetComponent<AudioSource>();
         playerObject = GameManager.getPlayerObject();
+    }
+
+    public override SavableObject getSavableObject()
+    {
+        return new SavableObject(this,
+            "currentVoiceLineIndex", currentVoiceLineIndex,
+            "playBackTime", source.time);
+    }
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        currentVoiceLineIndex = (int)savObj.data["currentVoiceLineIndex"];
+        float playBackTime = (float)savObj.data["playBackTime"];
+        setVoiceLine(currentVoiceLineIndex, playBackTime);
     }
 
     // Update is called once per frame
@@ -30,11 +42,11 @@ public class NPCController : MonoBehaviour
         {
             if (!source.isPlaying)
             {
-                NPCVoiceLine npcvl = getMostRelevantVoiceLine();
-                if (npcvl != null)
+                int mrvli = getMostRelevantVoiceLineIndex();
+                if (mrvli >= 0)
                 {
-                    source.clip = npcvl.voiceLine;
-                    source.Play();
+                    setVoiceLine(mrvli);
+                    NPCVoiceLine npcvl = voiceLines[mrvli];
                     npcvl.played = true;
                     if (npcvl.triggerEvent != null)
                     {
@@ -54,7 +66,9 @@ public class NPCController : MonoBehaviour
         {
             GameManager.speakNPC(gameObject, true);
         }
-        else {
+        else
+        {
+            currentVoiceLineIndex = -1;
             GameManager.speakNPC(gameObject, false);
         }
     }
@@ -82,19 +96,58 @@ public class NPCController : MonoBehaviour
 
     protected virtual bool shouldStop()
     {
-        return false;
+        return Vector3.Distance(playerObject.transform.position, transform.position) > 10;
     }
 
     public NPCVoiceLine getMostRelevantVoiceLine()
     {
-        for(int i = voiceLines.Count-1; i >=0; i--)
+        int mrvli = getMostRelevantVoiceLineIndex();
+        if (mrvli < 0)
+        {
+            return null;
+        }
+        return voiceLines[mrvli];
+    }
+    public int getMostRelevantVoiceLineIndex()
+    {
+        for (int i = voiceLines.Count - 1; i >= 0; i--)
         {
             NPCVoiceLine npcvl = voiceLines[i];
             if (!npcvl.played && GameEventManager.eventHappened(npcvl.eventReq))
             {
-                return npcvl;
+                return i;
+            }
+            else if (npcvl.played && npcvl.checkPointLine)
+            {
+                return -1;
             }
         }
-        return null;
+        return -1;
+    }
+
+    /// <summary>
+    /// Sets the current voiceline and the playback time
+    /// </summary>
+    /// <param name="index">The index in the voiceLines array of the voiceline to play</param>
+    /// <param name="timePos">The playback time</param>
+    public void setVoiceLine(int index, float timePos = 0)
+    {
+        if (index >= 0)
+        {
+            currentVoiceLineIndex = index;
+            source.clip = voiceLines[index].voiceLine;
+            source.time = timePos;
+            if (!source.isPlaying)
+            {
+                source.Play();
+            }
+        }
+        else
+        {
+            if (source.isPlaying)
+            {
+                source.Stop();
+            }
+        }
     }
 }
