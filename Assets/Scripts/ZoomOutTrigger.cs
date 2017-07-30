@@ -5,13 +5,18 @@ using UnityEngine;
 public class ZoomOutTrigger : MemoryMonoBehaviour {
 
     public bool triggered = false;//whether or this has zoomed out the camera
-    	
-	void OnTriggerEnter2D(Collider2D coll)
+    public int scalePoint = CameraController.SCALEPOINT_DEFAULT;
+
+    void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "Player")
         {
             var camCtr = Camera.main.GetComponent<CameraController>();
-            camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);//zoom out
+            camCtr.setScalePoint(scalePoint);//zoom out
+            if (scalePoint == CameraController.SCALEPOINT_TIMEREWIND)
+            {
+                FindObjectOfType<GestureManager>().switchGestureProfile("Rewind");
+            }
             GameManager.saveMemory(this);
             Destroy(gameObject);
         }
