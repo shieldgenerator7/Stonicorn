@@ -1003,6 +1003,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   voiceLines:
   - {fileID: 178457413}
+  currentVoiceLineIndex: -1
   powerCube: {fileID: 817229138}
   powerConsumptionRate: 3
 --- !u!60 &178457407
@@ -1203,8 +1204,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: f14d3b32fe196b041b670395a0686236, type: 3}
   eventReq: 
-  played: 0
   triggerEvent: 
+  checkPointLine: 1
+  played: 0
 --- !u!1001 &206726515
 Prefab:
   m_ObjectHideFlags: 0
@@ -3117,7 +3119,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1607837207}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &478282536
 ParticleSystem:
@@ -3178,7 +3180,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -90642516
+  randomSeed: 391499963
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -7286,6 +7288,7 @@ MonoBehaviour:
   teleportParticleEffects: {fileID: 1422702033}
   effectColor: {r: 0.31735292, g: 0.567529, b: 0.9764706, a: 1}
   abilityIndicatorParticleEffects: {fileID: 0}
+  circularProgressBar: {fileID: 0}
   shieldRangeIndicator: {fileID: 138864, guid: 8bc5cba583405f74fa7a24fb1a3e8fd2, type: 2}
   shieldBubblePrefab: {fileID: 1181304595248282, guid: 67728388103716d44b748f94c401862f,
     type: 2}
@@ -16808,11 +16811,12 @@ MonoBehaviour:
   teleportParticleEffects: {fileID: 478282534}
   effectColor: {r: 0.31735292, g: 0.567529, b: 0.9764706, a: 1}
   abilityIndicatorParticleEffects: {fileID: 0}
+  circularProgressBar: {fileID: 1915736562}
   shieldRangeIndicator: {fileID: 138864, guid: 8bc5cba583405f74fa7a24fb1a3e8fd2, type: 2}
   shieldBubblePrefab: {fileID: 1181304595248282, guid: 67728388103716d44b748f94c401862f,
     type: 2}
   maxRange: 1.5
-  maxHoldTime: 1
+  maxHoldTime: 2
   spawnDemos: 1
   shieldBubbleSound: {fileID: 8300000, guid: 7cc20f2c19ae91c4586dbb566fa52622, type: 3}
   shieldBubbleFailSound: {fileID: 8300000, guid: ba9e8c88cd7c3cb4f9ec13caf152d128,
@@ -16829,7 +16833,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.296658, y: -0.0836252}
+  m_Offset: {x: 1.3708661, y: 3.023665}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -16840,7 +16844,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 11.166222, y: 8.015855}
+  m_Size: {x: 11.314638, y: 7.3647604}
   m_EdgeRadius: 0
 --- !u!212 &1607837206
 SpriteRenderer:
@@ -16891,9 +16895,10 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1607837202}
   m_LocalRotation: {x: -0, y: -0, z: 0.8677352, w: -0.4970269}
-  m_LocalPosition: {x: 440.2, y: -145.2, z: 0}
+  m_LocalPosition: {x: 436.69, y: -143.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1915736563}
   - {fileID: 478282535}
   m_Father: {fileID: 0}
   m_RootOrder: 10
@@ -18171,6 +18176,76 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 434596, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
   m_PrefabInternal: {fileID: 1878055037}
+--- !u!1001 &1915736561
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1607837207}
+    m_Modifications:
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 96.86117
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -449.45087
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0.8677352
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: -0.4970269
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198421865540548466, guid: 75c62e8b48da9694d9259028d76cb1ea,
+        type: 2}
+      propertyPath: randomSeed
+      value: -263435881
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241219790100532, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_Name
+      value: Circular Progress Bar (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+  m_IsPrefabParent: 0
+--- !u!114 &1915736562 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114698453568513706, guid: 75c62e8b48da9694d9259028d76cb1ea,
+    type: 2}
+  m_PrefabInternal: {fileID: 1915736561}
+  m_Script: {fileID: 11500000, guid: 036a66ce7eea4c54cad1ad4588ce7342, type: 3}
+--- !u!4 &1915736563 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea,
+    type: 2}
+  m_PrefabInternal: {fileID: 1915736561}
 --- !u!43 &1929325040
 Mesh:
   m_ObjectHideFlags: 0
