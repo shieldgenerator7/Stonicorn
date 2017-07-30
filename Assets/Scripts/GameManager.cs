@@ -256,6 +256,10 @@ public class GameManager : MonoBehaviour
             musicManager.endEventSong(timeRewindMusic);
         }
         gameStates[gamestateId].load();
+        if (chosenId == rewindId)
+        {
+            refreshGameObjects();//a second time, just to be sure
+        }
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
         {
             Destroy(gameStates[i].representation);
