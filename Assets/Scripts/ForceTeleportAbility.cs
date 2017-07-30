@@ -7,7 +7,6 @@ public class ForceTeleportAbility : PlayerAbility
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
     private GameObject frii;//"force range indicator instance"
     public GameObject explosionEffect;
-    public ProgressBarCircular circularProgressBar;
     
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxForce = 1000;//the maximum amount of force applied to one object

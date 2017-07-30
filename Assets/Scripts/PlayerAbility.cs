@@ -10,6 +10,7 @@ public class PlayerAbility : MonoBehaviour {
     public Color effectColor;//the color used for the particle system upon activation
 
     public GameObject abilityIndicatorParticleEffects;
+    public ProgressBarCircular circularProgressBar;
 
     // Use this for initialization
     protected void Start () {

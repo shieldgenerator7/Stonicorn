@@ -60,6 +60,10 @@ public class ShieldBubbleAbility : PlayerAbility
             Destroy(srii);
             srii = null;
             particleController.activateTeleportParticleSystem(false);
+            if (circularProgressBar != null)
+            {
+                circularProgressBar.setPercentage(0);
+            }
         }
         else {
             if (srii == null)
@@ -72,6 +76,11 @@ public class ShieldBubbleAbility : PlayerAbility
             sriu.setRange(range);
             //Particle effects
             particleController.activateTeleportParticleSystem(true, effectColor, pos, range);
+            if (circularProgressBar != null)
+            {
+                circularProgressBar.setPercentage(range / maxRange);
+                circularProgressBar.transform.position = pos;
+            }
         }
     }
 
@@ -83,6 +92,10 @@ public class ShieldBubbleAbility : PlayerAbility
             srii = null;
         }
         particleController.activateTeleportParticleSystem(false);
+        if (circularProgressBar != null)
+        {
+            circularProgressBar.setPercentage(0);
+        }
     }
 
     public bool canSpawnShieldBubble(Vector2 pos, float range)
