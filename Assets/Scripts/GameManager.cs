@@ -454,6 +454,16 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Used specifically to highlight last saved Merky after the first death
+    /// for tutorial purposes
+    /// </summary>
+    /// <returns></returns>
+    public static Vector2 getLatestSafeRewindGhostPosition()
+    {
+        return instance.gameStates[instance.chosenId - 2].merky.position;
+    }
+
+    /// <summary>
     /// Activates the visual effects for the given npc talking
     /// </summary>
     /// <param name="npc"></param>

@@ -546,6 +546,11 @@ public class PlayerController : MonoBehaviour
     {
         gm.switchGestureProfile("Rewind");
         GameManager.playerShattered();
+        GameStatistics.incrementCounter("deathCount");
+        if (GameStatistics.counter("deathCount") == 1)
+        {
+            transform.position = ((Vector2)transform.position + GameManager.getLatestSafeRewindGhostPosition())/2;
+        }
     }
     public bool isIntact()
     {
