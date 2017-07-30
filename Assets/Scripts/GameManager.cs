@@ -256,6 +256,10 @@ public class GameManager : MonoBehaviour
             musicManager.endEventSong(timeRewindMusic);
         }
         gameStates[gamestateId].load();
+        if (chosenId == rewindId)
+        {
+            refreshGameObjects();//a second time, just to be sure
+        }
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
         {
             Destroy(gameStates[i].representation);
@@ -443,7 +447,11 @@ public class GameManager : MonoBehaviour
         }
         else if (!playerObject.GetComponent<PlayerController>().isIntact())
         {
-            Rewind(chosenId - 2);//go back to the latest safe past merky
+            Rewind(chosenId - 1);//go back to the latest safe past merky
+        }
+        if (GameStatistics.counter("deathCount") == 1)
+        {
+            gestureManager.highlightTapArea(Vector2.zero, false);
         }
         gestureManager.switchGestureProfile("Main");
         if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
@@ -451,6 +459,16 @@ public class GameManager : MonoBehaviour
             //leave this zoom level even if no past merky was chosen
             camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);
         }
+    }
+
+    /// <summary>
+    /// Used specifically to highlight last saved Merky after the first death
+    /// for tutorial purposes
+    /// </summary>
+    /// <returns></returns>
+    public static Vector2 getLatestSafeRewindGhostPosition()
+    {
+        return instance.gameStates[instance.chosenId - 1].merky.position;
     }
 
     /// <summary>
