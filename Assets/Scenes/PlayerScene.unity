@@ -13836,6 +13836,59 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &548232294
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 675152029}
+    m_Modifications:
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &548232295 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4069257804393422, guid: 75c62e8b48da9694d9259028d76cb1ea,
+    type: 2}
+  m_PrefabInternal: {fileID: 548232294}
+--- !u!114 &548232296 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114698453568513706, guid: 75c62e8b48da9694d9259028d76cb1ea,
+    type: 2}
+  m_PrefabInternal: {fileID: 548232294}
+  m_Script: {fileID: 11500000, guid: 036a66ce7eea4c54cad1ad4588ce7342, type: 3}
 --- !u!1 &675152028
 GameObject:
   m_ObjectHideFlags: 0
@@ -13864,6 +13917,7 @@ Transform:
   - {fileID: 217562835}
   - {fileID: 1675184544}
   - {fileID: 506271488}
+  - {fileID: 548232295}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24491,6 +24545,7 @@ MonoBehaviour:
   teleportParticleEffects: {fileID: 506271484}
   effectColor: {r: 0.31735292, g: 0.567529, b: 0.9764706, a: 1}
   abilityIndicatorParticleEffects: {fileID: 856596822}
+  circularProgressBar: {fileID: 548232296}
   shieldRangeIndicator: {fileID: 138864, guid: 8bc5cba583405f74fa7a24fb1a3e8fd2, type: 2}
   shieldBubblePrefab: {fileID: 1181304595248282, guid: 67728388103716d44b748f94c401862f,
     type: 2}
@@ -24517,6 +24572,7 @@ MonoBehaviour:
   abilityIndicatorParticleEffects: {fileID: 1950273296}
   forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 2}
   explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 2}
+  circularProgressBar: {fileID: 548232296}
   forceAmount: 5
   maxForce: 3700
   maxRange: 2.5
@@ -24715,6 +24771,7 @@ MonoBehaviour:
   teleportParticleEffects: {fileID: 1675184543}
   effectColor: {r: 0.32941177, g: 0.70980394, b: 0.28627452, a: 0.05882353}
   abilityIndicatorParticleEffects: {fileID: 1121559818}
+  circularProgressBar: {fileID: 0}
   wallClimbSound: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
 --- !u!114 &1792176474
 MonoBehaviour:
