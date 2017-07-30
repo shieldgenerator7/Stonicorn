@@ -10,6 +10,8 @@ public class GestureManager : SavableMonoBehaviour
     private Rigidbody2D rb2dPlayer;
     public Camera cam;
     private CameraController cmaController;
+    [SerializeField]
+    private ParticleSystem tapTargetHighlight;
 
     //Settings
     public float dragThreshold = 50;//how far from the original mouse position the current position has to be to count as a drag
@@ -426,5 +428,17 @@ public class GestureManager : SavableMonoBehaviour
         currentGP = gestureProfiles[gpName];
         //Activate new
         currentGP.activate();
+    }
+    public void highlightTapArea(Vector2 pos, bool play = true)
+    {
+        if (play)
+        {
+            tapTargetHighlight.transform.position = pos;
+            tapTargetHighlight.Play();
+        }
+        else
+        {
+            tapTargetHighlight.Stop();
+        }
     }
 }

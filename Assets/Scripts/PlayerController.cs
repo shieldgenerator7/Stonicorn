@@ -549,7 +549,9 @@ public class PlayerController : MonoBehaviour
         GameStatistics.incrementCounter("deathCount");
         if (GameStatistics.counter("deathCount") == 1)
         {
-            transform.position = ((Vector2)transform.position + GameManager.getLatestSafeRewindGhostPosition())/2;
+            Vector2 lsrgp = GameManager.getLatestSafeRewindGhostPosition();
+            transform.position = ((Vector2)transform.position + lsrgp)/2;
+            gm.highlightTapArea(lsrgp);
         }
     }
     public bool isIntact()

@@ -445,6 +445,10 @@ public class GameManager : MonoBehaviour
         {
             Rewind(chosenId - 2);//go back to the latest safe past merky
         }
+        if (GameStatistics.counter("deathCount") == 1)
+        {
+            gestureManager.highlightTapArea(Vector2.zero, false);
+        }
         gestureManager.switchGestureProfile("Main");
         if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
         {
