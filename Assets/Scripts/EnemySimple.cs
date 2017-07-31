@@ -35,8 +35,7 @@ public class EnemySimple : MonoBehaviour
         player = GameManager.getPlayerObject();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         losToPlayer = Utility.lineOfSight(gameObject, player);
         if (losToPlayer)
@@ -53,6 +52,18 @@ public class EnemySimple : MonoBehaviour
                 fearParticles.Stop();
             }
         }
+        if (rb2d.velocity.magnitude < 0.1f)
+        {
+            hm.addIntegrity(healsPerSecond * Time.deltaTime);
+            if (hm.getIntegrity() == hm.maxIntegrity)
+            {
+                healing = false;
+            }
+        }
+    }
+    // Update is called once per frame
+    void FixedUpdate()
+    {
         if (activeMove && isGrounded())
         {
             float tempSpeed = speed;
@@ -93,15 +104,6 @@ public class EnemySimple : MonoBehaviour
             if (rb2d.velocity.magnitude < 0.01f)
             {
                 switchDirection();
-            }
-
-        }
-        if (rb2d.velocity.magnitude < 0.1f)
-        {
-            hm.addIntegrity(healsPerSecond * Time.deltaTime);
-            if (hm.getIntegrity() == hm.maxIntegrity)
-            {
-                healing = false;
             }
         }
     }
