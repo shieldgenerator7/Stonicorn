@@ -81,7 +81,10 @@ public class PlayerController : MonoBehaviour
         {
         }
         else {
-            gravity.AcceptsGravity = true;
+            if (!inCheckPoint)
+            {
+                gravity.AcceptsGravity = true;
+            }
             if (velocityNeedsReloaded)
             {
                 rb2d.velocity = savedVelocity;
@@ -563,6 +566,7 @@ public class PlayerController : MonoBehaviour
     {
         inCheckPoint = iicp;
         rb2d.isKinematic = iicp;
+        gravity.AcceptsGravity = !iicp;
     }
     public bool getIsInCheckPoint()
     {
