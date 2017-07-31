@@ -52,6 +52,7 @@ public class HardMaterial : SavableMonoBehaviour {
             float hitHardness = hm.hardness / hardness * coll.relativeVelocity.magnitude;
             addIntegrity(-1 * hitHardness);
             float hitPercentage = hitHardness * 100 / maxIntegrity;
+            EffectManager.collisionEffect(coll.contacts[0].point);
             for (int i = crackSounds.Count - 1; i >= 0; i--)
             {
                 float crackThreshold = 100 / (crackSprites.Count + 1 - i) - 20;
@@ -71,6 +72,7 @@ public class HardMaterial : SavableMonoBehaviour {
             Rigidbody2D rb2d = other.GetComponent<Rigidbody2D>();
             if (rb2d != null)
             {
+                EffectManager.collisionEffect(coll.contacts[0].point);
                 float force = rb2d.velocity.magnitude * rb2d.mass;
                 checkForce(force);
             }
