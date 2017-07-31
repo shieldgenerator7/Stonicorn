@@ -52,6 +52,7 @@ public class HardMaterial : SavableMonoBehaviour {
             float hitHardness = hm.hardness / hardness * coll.relativeVelocity.magnitude;
             addIntegrity(-1 * hitHardness);
             float hitPercentage = hitHardness * 100 / maxIntegrity;
+            EffectManager.collisionEffect(coll.contacts[0].point, hitPercentage);
             for (int i = crackSounds.Count - 1; i >= 0; i--)
             {
                 float crackThreshold = 100 / (crackSprites.Count + 1 - i) - 20;
@@ -72,7 +73,9 @@ public class HardMaterial : SavableMonoBehaviour {
             if (rb2d != null)
             {
                 float force = rb2d.velocity.magnitude * rb2d.mass;
-                checkForce(force);
+                float damage = checkForce(force);
+                float hitPercentage = damage * 100 / maxIntegrity;
+                EffectManager.collisionEffect(coll.contacts[0].point, hitPercentage);
             }
 		}
     }
@@ -80,12 +83,17 @@ public class HardMaterial : SavableMonoBehaviour {
     /// <summary>
     /// Checks to see if a given force cracks it
     /// </summary>
-	public void checkForce(float force)
+    /// <returns>The amount of damage done
+    /// (positive value means damage dealt, negative means HP healed)</returns>
+	public float checkForce(float force)
     {
         if (force > forceThreshold)
         {
-            addIntegrity(-100*(force-forceThreshold)/forceThreshold);
+            float damage = 100 * (force - forceThreshold) / forceThreshold;
+            addIntegrity(-1 * damage);
+            return damage;
         }
+        return 0;
     }
 
     public bool isIntact()

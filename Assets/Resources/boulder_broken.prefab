@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212589576844105208}
   - component: {fileID: 50277222824608712}
   - component: {fileID: 60891270078048196}
+  - component: {fileID: 114122574151972214}
   m_Layer: 0
   m_Name: boulder_broken_piece1
   m_TagString: Untagged
@@ -56,6 +57,7 @@ GameObject:
   - component: {fileID: 212333636970043816}
   - component: {fileID: 50075049224761610}
   - component: {fileID: 60223578344562864}
+  - component: {fileID: 114076693424569032}
   m_Layer: 0
   m_Name: boulder_broken_piece3
   m_TagString: Untagged
@@ -74,6 +76,7 @@ GameObject:
   - component: {fileID: 212331654898508690}
   - component: {fileID: 50938259488656840}
   - component: {fileID: 60778716724373102}
+  - component: {fileID: 114098903076806566}
   m_Layer: 0
   m_Name: boulder_broken_piece2
   m_TagString: Untagged
@@ -92,6 +95,7 @@ GameObject:
   - component: {fileID: 212828666669555654}
   - component: {fileID: 50290098418834486}
   - component: {fileID: 60909317913185992}
+  - component: {fileID: 114212772861358408}
   m_Layer: 0
   m_Name: boulder_broken_piece4
   m_TagString: Untagged
@@ -158,7 +162,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1636803068010556}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 148.83394, y: 67.55589, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4114532462292968}
@@ -378,6 +382,98 @@ PolygonCollider2D:
       - {x: 0.108032785, y: -0.060294837}
       - {x: 0.04650935, y: -0.118903846}
       - {x: 0.04451045, y: -0.5338513}
+--- !u!114 &114076693424569032
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1701665121971418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardness: 1
+  forceThreshold: 50
+  maxIntegrity: 25
+  disappearsIfNoBrokenPrefab: 1
+  integrity: 25
+  crackedPrefab: {fileID: 0}
+  crackStages: []
+  crackSounds:
+  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  secretHiders: []
+--- !u!114 &114098903076806566
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1793249499516750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardness: 1
+  forceThreshold: 50
+  maxIntegrity: 25
+  disappearsIfNoBrokenPrefab: 1
+  integrity: 25
+  crackedPrefab: {fileID: 0}
+  crackStages: []
+  crackSounds:
+  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  secretHiders: []
+--- !u!114 &114122574151972214
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1378120763068876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardness: 1
+  forceThreshold: 50
+  maxIntegrity: 25
+  disappearsIfNoBrokenPrefab: 1
+  integrity: 25
+  crackedPrefab: {fileID: 0}
+  crackStages: []
+  crackSounds:
+  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  secretHiders: []
+--- !u!114 &114212772861358408
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1826332867965560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardness: 1
+  forceThreshold: 50
+  maxIntegrity: 25
+  disappearsIfNoBrokenPrefab: 1
+  integrity: 25
+  crackedPrefab: {fileID: 0}
+  crackStages: []
+  crackSounds:
+  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  secretHiders: []
 --- !u!114 &114879701604821082
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -430,6 +526,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212333636970043816
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -470,6 +568,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212589576844105208
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -510,6 +610,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212828666669555654
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -550,3 +652,5 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0

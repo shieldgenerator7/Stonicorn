@@ -13901,6 +13901,11 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 548232294}
   m_Script: {fileID: 11500000, guid: 036a66ce7eea4c54cad1ad4588ce7342, type: 3}
+--- !u!4 &654788842 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4831632161497524, guid: 20c8cb124d483e041817aec3b7893bed,
+    type: 2}
+  m_PrefabInternal: {fileID: 2073885679}
 --- !u!1 &675152028
 GameObject:
   m_ObjectHideFlags: 0
@@ -13909,6 +13914,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 675152029}
+  - component: {fileID: 675152030}
   m_Layer: 8
   m_Name: Player Effects
   m_TagString: Untagged
@@ -13930,9 +13936,26 @@ Transform:
   - {fileID: 1675184544}
   - {fileID: 506271488}
   - {fileID: 548232295}
+  - {fileID: 654788842}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &675152030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 675152028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05caff092e33874408c6a40e749f6c44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionEffectPrefab: {fileID: 1127651316082574, guid: c391e2dc92d66a7439d9d46fae261627,
+    type: 2}
+  particleStartSpeed: 7
+  particleAmount: 50
+  tapTargetHighlight: {fileID: 2073885680}
 --- !u!1 &856596822
 GameObject:
   m_ObjectHideFlags: 0
@@ -24582,9 +24605,9 @@ MonoBehaviour:
   teleportParticleEffects: {fileID: 217562832}
   effectColor: {r: 1, g: 0.4821931, b: 0.40344828, a: 1}
   abilityIndicatorParticleEffects: {fileID: 1950273296}
+  circularProgressBar: {fileID: 548232296}
   forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 2}
   explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 2}
-  circularProgressBar: {fileID: 548232296}
   forceAmount: 5
   maxForce: 3700
   maxRange: 2.5
@@ -28227,7 +28250,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 675152029}
     m_Modifications:
     - target: {fileID: 4831632161497524, guid: 20c8cb124d483e041817aec3b7893bed, type: 2}
       propertyPath: m_LocalPosition.x
@@ -28243,15 +28266,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4831632161497524, guid: 20c8cb124d483e041817aec3b7893bed, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4831632161497524, guid: 20c8cb124d483e041817aec3b7893bed, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4831632161497524, guid: 20c8cb124d483e041817aec3b7893bed, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4831632161497524, guid: 20c8cb124d483e041817aec3b7893bed, type: 2}
       propertyPath: m_LocalRotation.w
@@ -28259,7 +28282,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4831632161497524, guid: 20c8cb124d483e041817aec3b7893bed, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 198780346836551620, guid: 20c8cb124d483e041817aec3b7893bed,
         type: 2}

@@ -551,7 +551,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 lsrgp = GameManager.getLatestSafeRewindGhostPosition();
             transform.position = ((Vector2)transform.position + lsrgp)/2;
-            gm.highlightTapArea(lsrgp);
+            EffectManager.highlightTapArea(lsrgp);
         }
     }
     public bool isIntact()

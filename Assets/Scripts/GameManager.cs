@@ -451,7 +451,7 @@ public class GameManager : MonoBehaviour
         }
         if (GameStatistics.counter("deathCount") == 1)
         {
-            gestureManager.highlightTapArea(Vector2.zero, false);
+            EffectManager.highlightTapArea(Vector2.zero, false);
         }
         gestureManager.switchGestureProfile("Main");
         if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
