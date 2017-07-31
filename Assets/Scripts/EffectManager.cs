@@ -6,6 +6,8 @@ public class EffectManager : MonoBehaviour {
 
     //Effects
     public GameObject collisionEffectPrefab;//the object that holds the special effect for collision
+    [SerializeField]
+    private ParticleSystem tapTargetHighlight;
     //Supporting Lists
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
 
@@ -44,5 +46,18 @@ public class EffectManager : MonoBehaviour {
         }
         chosenPS.gameObject.transform.position = position;
         chosenPS.Play();
+    }
+
+    public static void highlightTapArea(Vector2 pos, bool play = true)
+    {
+        if (play)
+        {
+            instance.tapTargetHighlight.transform.position = pos;
+            instance.tapTargetHighlight.Play();
+        }
+        else
+        {
+            instance.tapTargetHighlight.Stop();
+        }
     }
 }
