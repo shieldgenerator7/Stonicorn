@@ -74,18 +74,27 @@ public class EnemySimple : MonoBehaviour
                 maxSpeedReached = rb2d.velocity.magnitude;
             }
             //Cliff detection
-            if (senseInFront() == null) //there's a cliff up ahead
+            if (!losToPlayer) //nothing between it and the player
             {
-                if (!losToPlayer) //nothing between it and the player
+                if (senseFloorInFront() == null) //there's a cliff up ahead
                 {
                     switchDirection();
                     rb2d.AddForce(rb2d.mass * direction * rb2d.velocity.magnitude * 4);
+                }
+                GameObject wall = senseWallInFront();
+                if (wall != null)
+                {
+                    if (!wall.GetComponent<Rigidbody>() && !wall.GetComponent<HardMaterial>())
+                    {
+                        switchDirection();
+                    }
                 }
             }
             if (rb2d.velocity.magnitude < 0.01f)
             {
                 switchDirection();
             }
+
         }
         if (rb2d.velocity.magnitude < 0.1f)
         {
@@ -126,12 +135,25 @@ public class EnemySimple : MonoBehaviour
         }
     }
 
-    GameObject senseInFront()
+    GameObject senseFloorInFront()
     {
         Vector2 ahead = direction * 2;
         Vector2 senseDir = ahead - (Vector2)transform.up.normalized;
         Debug.DrawLine((Vector2)transform.position + ahead, senseDir + (Vector2)transform.position, Color.blue);
         RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position + ahead, -transform.up, 1);
+        if (rch2d)
+        {
+            return rch2d.collider.gameObject;
+        }
+        return null;
+    }
+    GameObject senseWallInFront()
+    {
+        Vector2 ahead = direction;
+        Vector2 length = direction * 0.1f;
+        Vector2 senseDir = ahead + length;
+        Debug.DrawLine((Vector2)transform.position + ahead, senseDir + (Vector2)transform.position, Color.green);
+        RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position + ahead, length, 1);
         if (rch2d)
         {
             return rch2d.collider.gameObject;
