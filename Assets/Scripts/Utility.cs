@@ -89,7 +89,8 @@ public static class Utility  {
     }
     public static float distanceToObject(Vector2 position, GameObject obj)
     {
-        Vector2 dir = ((Vector2)obj.transform.position - position).normalized;
+        Vector2 center = getCollectiveColliderCenter(obj);
+        Vector2 dir = (center - position).normalized;
         RaycastHit2D[] rch2ds = Physics2D.RaycastAll(position, dir);
         foreach (RaycastHit2D rch2d in rch2ds)
         {
@@ -98,7 +99,26 @@ public static class Utility  {
                 return rch2d.distance;
             }
         }
-        throw new UnityException("Object's raycast not found! This should not be possible!");
+        throw new UnityException("Object "+obj+"'s raycast not found! This should not be possible!");
+    }
+    /// <summary>
+    /// Sums the centers of all non-trigger colliders
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static Vector2 getCollectiveColliderCenter(GameObject obj)
+    {
+        int count = 0;
+        Vector2 sum = Vector2.zero;
+        foreach (Collider2D c2d in obj.GetComponents<Collider2D>())
+        {
+            if (!c2d.isTrigger)
+            {
+                sum += (Vector2)c2d.bounds.center;
+                count++;
+            }
+        }
+        return sum / count;
     }
     /// <summary>
     /// Determines whether the center of the first object has a direct line of sight to the center of the second object
