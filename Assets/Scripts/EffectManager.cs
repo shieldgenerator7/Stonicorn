@@ -16,9 +16,9 @@ public class EffectManager : MonoBehaviour {
 
     private static EffectManager instance;
 
-	// Use this for initialization
-	void Start () {
-		if (instance == null)
+    // Use this for initialization
+    void Start() {
+        if (instance == null)
         {
             instance = this;
         }
@@ -26,7 +26,7 @@ public class EffectManager : MonoBehaviour {
         {
             Destroy(this);
         }
-	}
+    }
 
     /// <summary>
     /// Shows sparks coming from the point of collision
@@ -42,12 +42,14 @@ public class EffectManager : MonoBehaviour {
             if (!ps.isPlaying)
             {
                 chosenPS = ps;
+                break;
             }
         }
         //Else make a new one
         if (chosenPS == null)
         {
             GameObject ce = GameObject.Instantiate(instance.collisionEffectPrefab);
+            ce.transform.parent = instance.transform;
             ParticleSystem ceps = ce.GetComponent<ParticleSystem>();
             instance.collisionEffectList.Add(ceps);
             chosenPS = ceps;
