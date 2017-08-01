@@ -95,6 +95,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4239643803415490}
+  - component: {fileID: 114546420576955040}
   m_Layer: 0
   m_Name: cracked_ground_broken
   m_TagString: Untagged
@@ -443,6 +444,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
+--- !u!114 &114546420576955040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1943429488560524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb113523b733e742b0c810b8cab995b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabName: cracked_ground_broken
 --- !u!212 &212423098514804278
 SpriteRenderer:
   m_ObjectHideFlags: 1
