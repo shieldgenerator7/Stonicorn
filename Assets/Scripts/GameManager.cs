@@ -117,14 +117,7 @@ public class GameManager : MonoBehaviour
             load = false;
             Load(chosenId);
         }
-        if (isRewinding())
-        {
-            if (Time.time > actionTime)
-            {
-                actionTime = Time.time + rewindDelay;
-                Load(chosenId - 1);
-            }
-        }
+        
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
@@ -147,6 +140,18 @@ public class GameManager : MonoBehaviour
         if (gameStates.Count == 0 && loadedSceneCount > 0)
         {
             Save();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isRewinding())
+        {
+            if (Time.time > actionTime)
+            {
+                actionTime = Time.time + rewindDelay;
+                Load(chosenId - 1);
+            }
         }
     }
 
