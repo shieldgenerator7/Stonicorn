@@ -135,18 +135,18 @@ public class HardMaterial : SavableMonoBehaviour {
                     GameObject pieces = Instantiate(crackedPrefab);
                     pieces.transform.position = transform.position;
                     pieces.transform.rotation = transform.rotation;
-                    pieces.transform.localScale = transform.localScale;
                     string tag = "" + System.DateTime.Now.Ticks;
                     pieces.name += tag;
                     foreach (Transform t in pieces.transform)
                     {
                         t.gameObject.name += tag;
+                        t.localScale = transform.localScale;
                     }
                     GameManager.refresh();
                 }
                 else if (!disappearsIfNoBrokenPrefab)
                 {
-                    Debug.Log("/!\\ HardMaterial " + gameObject.name + " has no broken prefab! (Scene: "+gameObject.scene.name+")");
+                    Debug.Log("/!\\ HardMaterial " + gameObject.name + " has no broken prefab! (Scene: " + gameObject.scene.name + ")");
                 }
                 alreadyBroken = true;
             }
