@@ -92,6 +92,11 @@ public class PlayerController : MonoBehaviour
                 velocityNeedsReloaded = false;
             }
         }
+        if (inCheckPoint)
+        {
+            rb2d.velocity = new Vector2(0, 0);
+            rb2d.angularVelocity = 0;
+        }
         if (grounded && !rb2d.isKinematic && !isMoving())
         {
             mainCamCtr.discardMovementDelay();
@@ -421,6 +426,10 @@ public class PlayerController : MonoBehaviour
 
     bool isGrounded()
     {
+        if (inCheckPoint)
+        {
+            return true;
+        }
         groundedWall = false;
         bool isgrounded = isGrounded(gravity.Gravity);
         if (!isgrounded && wca.enabled)//if nothing found yet and wall jump is enabled
@@ -566,6 +575,8 @@ public class PlayerController : MonoBehaviour
     {
         inCheckPoint = iicp;
         rb2d.isKinematic = iicp;
+        rb2d.velocity = new Vector2(0, 0);
+        rb2d.angularVelocity = 0;
         gravity.AcceptsGravity = !iicp;
     }
     public bool getIsInCheckPoint()
