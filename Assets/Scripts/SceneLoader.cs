@@ -6,33 +6,27 @@ public class SceneLoader : MonoBehaviour
 {
 
     public string sceneName;//the index of the scene to load
-    private PolygonCollider2D playerColl;
+    private GameObject playerObj;
     private bool isLoaded = false;
-    private BoxCollider2D bc;
+    private Collider2D c2d;
 
     // Use this for initialization
     void Start()
     {
-        bc = gameObject.GetComponent<BoxCollider2D>();
-        foreach (GameObject go in SceneManager.GetSceneAt(0).GetRootGameObjects())
-        {
-            if (go.tag.Equals("Player"))
-            {
-                playerColl = go.GetComponent<PolygonCollider2D>();
-                break;
-            }
-        }
+        c2d = gameObject.GetComponent<Collider2D>();
+        playerObj = GameObject.FindGameObjectWithTag("Player");
         check();
     }
 
     public void check()
     {
-        if (!isLoaded && playerColl.bounds.Intersects(bc.bounds))
+        bool overlaps = c2d.OverlapPoint(playerObj.transform.position);
+        if (!isLoaded && overlaps)
         {
             isLoaded = true;
             loadLevel();
         }
-        if (isLoaded && !playerColl.bounds.Intersects(bc.bounds))
+        if (isLoaded && !overlaps)
         {
             isLoaded = false;
             unloadLevel();
