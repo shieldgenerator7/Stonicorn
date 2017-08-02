@@ -89,9 +89,27 @@ public class NPCController : SavableMonoBehaviour
     protected virtual bool canGreet()
     {
         float distance = Vector3.Distance(playerObject.transform.position, transform.position);
+        if (distance > 5)
+        {
+            return false;
+        }
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, playerObject.transform.position - transform.position, distance);
         int thingsFound = hits.Length;
-        return distance < 5 && thingsFound == 2;
+        //If only 2 things, there's nothing in between
+        if (thingsFound > 2)
+        {
+            foreach(RaycastHit2D rch2d in hits)
+            {
+                //If the thing in between is just a trigger, don't worry about it
+                if (!rch2d.collider.isTrigger
+                    && rch2d.collider.gameObject != playerObject
+                    && rch2d.collider.gameObject != gameObject)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     protected virtual bool shouldStop()
