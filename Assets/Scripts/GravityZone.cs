@@ -10,6 +10,7 @@ public class GravityZone : MonoBehaviour
     public bool mainGravityZone = true;//true to change camera angle, false to not
     private Vector2 gravityVector;
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
+    private bool playerIsTenant = false;//whether the player is inside this GravityZone
 
     // Use this for initialization
     void Start()
@@ -26,6 +27,10 @@ public class GravityZone : MonoBehaviour
             if (rb2d != null)
             {
                 tenants.Add(rb2d);
+                if (coll.gameObject == GameManager.getPlayerObject())
+                {
+                    playerIsTenant = true;
+                }
             }
         }
     }
@@ -37,7 +42,21 @@ public class GravityZone : MonoBehaviour
             if (rb2d != null)
             {
                 tenants.Remove(coll.gameObject.GetComponent<Rigidbody2D>());
+                if (coll.gameObject == GameManager.getPlayerObject())
+                {
+                    playerIsTenant = false;
+                }
             }
+        }
+    }
+    private void Update()
+    {
+        //Check to see if the camera rotation needs updated
+        if (mainGravityZone
+            && playerIsTenant
+            && Camera.main.transform.rotation != transform.rotation)
+        {
+            Camera.main.GetComponent<CameraController>().setRotation(transform.rotation);
         }
     }
     void FixedUpdate()
@@ -64,15 +83,6 @@ public class GravityZone : MonoBehaviour
             else
             {
                 rb2d.AddForce(vector);
-            }
-        }
-        //Check to see if the camera rotation needs updated
-        if (mainGravityZone && Camera.main.transform.rotation != transform.rotation)
-        {
-            //Check to see if Merky is in this GravityZone
-            if (GameManager.getPlayerObject().GetComponent<GravityAccepter>().Gravity == gravityVector)
-            {
-                Camera.main.GetComponent<CameraController>().setRotation(transform.rotation);
             }
         }
         if (cleanNeeded)
