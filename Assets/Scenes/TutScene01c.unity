@@ -1831,6 +1831,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 2}
+      propertyPath: voiceLines.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 483700, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 2}
       propertyPath: m_LocalPosition.x
       value: 165.07
@@ -1863,9 +1868,87 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 2}
+      propertyPath: eventReq
+      value: RedMeeting
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 2}
+      propertyPath: voiceLines.Array.data[0]
+      value: 
+      objectReference: {fileID: 113657607}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 2}
+      propertyPath: voiceLines.Array.data[1]
+      value: 
+      objectReference: {fileID: 113657606}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 2}
+      propertyPath: voiceLines.Array.data[2]
+      value: 
+      objectReference: {fileID: 113657609}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 2}
+      propertyPath: voiceLines.Array.data[3]
+      value: 
+      objectReference: {fileID: 113657608}
+    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 2}
+      propertyPath: voiceLine
+      value: 
+      objectReference: {fileID: 8300000, guid: 22ccf24fe233ae241a13ab3a71914450, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &113657605 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 115800, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 2}
+  m_PrefabInternal: {fileID: 113657604}
+--- !u!114 &113657606 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+    type: 2}
+  m_PrefabInternal: {fileID: 113657604}
+  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
+--- !u!114 &113657607 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114696989949497388, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+    type: 2}
+  m_PrefabInternal: {fileID: 113657604}
+  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
+--- !u!114 &113657608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 113657605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceLine: {fileID: 8300000, guid: ccf0d7602dfea9f439f4f292d52bb88c, type: 3}
+  eventReq: MoonLanding
+  triggerEvent: 
+  checkPointLine: 1
+  played: 0
+--- !u!114 &113657609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 113657605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceLine: {fileID: 8300000, guid: d789b48b508c49747985b5abc9b390ba, type: 3}
+  eventReq: YellowMeeting
+  triggerEvent: 
+  checkPointLine: 1
+  played: 0
 --- !u!1001 &118344852
 Prefab:
   m_ObjectHideFlags: 0
@@ -5548,7 +5631,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4607632076951618, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4885079848881796, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
       propertyPath: m_RootOrder
@@ -5564,7 +5647,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4454013589856216, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1601795323856448, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
       propertyPath: m_IsActive

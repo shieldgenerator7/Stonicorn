@@ -903,6 +903,7 @@ GameObject:
   - component: {fileID: 178457411}
   - component: {fileID: 178457405}
   - component: {fileID: 178457413}
+  - component: {fileID: 178457414}
   m_Layer: 0
   m_Name: metalcorn
   m_TagString: Untagged
@@ -1003,6 +1004,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   voiceLines:
   - {fileID: 178457413}
+  - {fileID: 178457414}
   currentVoiceLineIndex: -1
   powerCube: {fileID: 817229138}
   powerConsumptionRate: 3
@@ -1146,7 +1148,7 @@ Transform:
   m_Children:
   - {fileID: 1821018828}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393}
 --- !u!114 &178457411
 MonoBehaviour:
@@ -1204,6 +1206,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: f14d3b32fe196b041b670395a0686236, type: 3}
   eventReq: 
+  triggerEvent: MetalMeeting
+  checkPointLine: 1
+  played: 0
+--- !u!114 &178457414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 178457404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceLine: {fileID: 8300000, guid: a36446f73c0033740b5462a9ceb839dd, type: 3}
+  eventReq: MoonLanding
   triggerEvent: 
   checkPointLine: 1
   played: 0
@@ -2716,7 +2734,7 @@ Transform:
   - {fileID: 90082236}
   - {fileID: 1429170016}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1001 &426337253
 Prefab:
@@ -6475,7 +6493,7 @@ Transform:
   - {fileID: 1878055038}
   - {fileID: 310902644}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!4 &525046969 stripped
 Transform:
@@ -8777,7 +8795,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!43 &942442576
 Mesh:
@@ -10027,7 +10045,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1001 &1035276783
 Prefab:
@@ -10955,7 +10973,7 @@ Transform:
   - {fileID: 275663933}
   - {fileID: 814171530}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1 &1189299124
 GameObject:
@@ -10985,7 +11003,7 @@ Transform:
   - {fileID: 213800580}
   - {fileID: 1809930261}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1001 &1195680760
 Prefab:
@@ -15841,7 +15859,7 @@ Transform:
   - {fileID: 163763629}
   - {fileID: 1564543629}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1001 &1510353380
 Prefab:
@@ -18471,7 +18489,7 @@ Transform:
   - {fileID: 786775582}
   - {fileID: 263149960}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1001 &1968208316
 Prefab:
