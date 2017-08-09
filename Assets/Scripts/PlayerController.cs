@@ -664,7 +664,10 @@ public class PlayerController : MonoBehaviour
             if (finished)
             {
                 processTapGesture(gpos);
-                gm.adjustHoldThreshold(holdTime);
+                if (holdTime < tpa.maxHoldTime)
+                {
+                    gm.adjustHoldThreshold(holdTime);
+                }
             }
             if (fta.enabled) { fta.dropHoldGesture(); }
             if (sba.enabled) { sba.dropHoldGesture(); }
