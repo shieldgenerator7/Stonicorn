@@ -15,7 +15,7 @@ public class PlayerAbility : MonoBehaviour {
     public float maxGestureRange = 1;//how far from the center of the player character this ability can activate
 
     // Use this for initialization
-    protected void Start () {
+    protected virtual void Start () {
         player = gameObject;
         particleController = teleportParticleEffects.GetComponent<ParticleSystemController>();
         particleSystem = teleportParticleEffects.GetComponent<ParticleSystem>();

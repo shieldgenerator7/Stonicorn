@@ -252,7 +252,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="targetPos"></param>
     /// <returns>targetPos if it is teleportable, else the closest teleportable position to it</returns>
-    Vector3 findTeleportablePosition(Vector3 targetPos)
+    public Vector3 findTeleportablePosition(Vector3 targetPos)
     {
         //TSFS: Teleport Spot Finding System
         Vector3 newPos = targetPos;
