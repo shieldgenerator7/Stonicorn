@@ -90,4 +90,24 @@ public class EffectManager : MonoBehaviour {
             instance.tapTargetHighlight.Stop();
         }
     }
+
+    private static GameObject forceWaveShadow;
+    public static void showForceWaveShadows(Vector2 center, float range, GameObject projectile)
+    {
+        if (forceWaveShadow == null)
+        {
+            forceWaveShadow = new GameObject();
+            forceWaveShadow.AddComponent<SpriteRenderer>();
+        }
+        SpriteRenderer sr = forceWaveShadow.GetComponent<SpriteRenderer>();
+        SpriteRenderer psr = projectile.GetComponent<SpriteRenderer>();
+        sr.sprite = psr.sprite;
+        sr.color = new Color(psr.color.r, psr.color.g, psr.color.b, 0.7f);
+        Vector2 ppos = (Vector2)projectile.transform.position;
+        Vector2 dir = ppos - center;
+        float magnitude = Mathf.Max(0, range + 1 - dir.magnitude);
+        forceWaveShadow.transform.position = ppos + magnitude*dir.normalized;
+        forceWaveShadow.transform.rotation = projectile.transform.rotation;
+        forceWaveShadow.transform.localScale = projectile.transform.localScale;
+    }
 }

@@ -7,7 +7,7 @@ public class ForceTeleportAbility : PlayerAbility
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
     private GameObject frii;//"force range indicator instance"
     public GameObject explosionEffect;
-    
+
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxForce = 1000;//the maximum amount of force applied to one object
     public float maxRange = 3;
@@ -27,7 +27,7 @@ public class ForceTeleportAbility : PlayerAbility
 
     public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
-        float range = maxRange * holdTime*GestureManager.holdTimeScaleRecip / maxHoldTime;
+        float range = maxRange * holdTime * GestureManager.holdTimeScaleRecip / maxHoldTime;
         if (range > maxRange)
         {
             range = maxRange;
@@ -58,17 +58,18 @@ public class ForceTeleportAbility : PlayerAbility
                     }
                 }
             }
-            showExplosionEffect(pos, range*2);
+            showExplosionEffect(pos, range * 2);
             AudioSource.PlayClipAtPoint(forceTeleportSound, pos);
             Destroy(frii);
             frii = null;
             particleController.activateTeleportParticleSystem(false);
-            if(circularProgressBar != null)
+            if (circularProgressBar != null)
             {
                 circularProgressBar.setPercentage(0);
             }
         }
-        else {
+        else
+        {
             if (frii == null)
             {
                 frii = Instantiate(forceRangeIndicator);
@@ -83,6 +84,16 @@ public class ForceTeleportAbility : PlayerAbility
             {
                 circularProgressBar.setPercentage(range / maxRange);
                 circularProgressBar.transform.position = pos;
+            }
+            //Force Wave Shadows
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
+            for (int i = 0; i < hitColliders.Length; i++)
+            {
+                Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
+                if (orb2d != null)
+                {
+                    EffectManager.showForceWaveShadows(pos, range, hitColliders[i].gameObject);
+                }
             }
         }
     }
@@ -101,8 +112,8 @@ public class ForceTeleportAbility : PlayerAbility
         }
     }
 
-    
-    
+
+
     void showExplosionEffect(Vector2 pos, float finalSize)
     {
         GameObject newTS = (GameObject)Instantiate(explosionEffect);
