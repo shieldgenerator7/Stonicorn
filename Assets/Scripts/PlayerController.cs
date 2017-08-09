@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour
     //Processing
     public float teleportTime = 0f;//the earliest time that Merky can teleport
     private float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
-    
-    
+
+
     public GameObject teleportStreak;
     public bool useStreak = false;
     public GameObject teleportStar;
@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private GestureManager gm;
     private HardMaterial hm;
 
+    private TeleportAbility tpa;
     private ForceTeleportAbility fta;
     private WallClimbAbility wca;
     private ShieldBubbleAbility sba;
@@ -58,12 +59,15 @@ public class PlayerController : MonoBehaviour
         gravity = GetComponent<GravityAccepter>();
         mainCamCtr = Camera.main.GetComponent<CameraController>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
-        halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
         hm = GetComponent<HardMaterial>();
         hm.shattered += shattered;
+        tpa = GetComponent<TeleportAbility>();
         fta = GetComponent<ForceTeleportAbility>();
         wca = GetComponent<WallClimbAbility>();
         sba = GetComponent<ShieldBubbleAbility>();
+        halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude; ;
+        sba.maxGestureRange = halfWidth;
+        fta.maxGestureRange = halfWidth * 5;
         teleportRangeParticalController = teleportRangeParticalObject.GetComponent<ParticleSystemController>();
     }
 
@@ -80,7 +84,8 @@ public class PlayerController : MonoBehaviour
         if (gravityImmuneTime > Time.time)
         {
         }
-        else {
+        else
+        {
             if (!inCheckPoint)
             {
                 gravity.AcceptsGravity = true;
@@ -205,7 +210,7 @@ public class PlayerController : MonoBehaviour
             }
             teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
             //Health Regen
-            hm.addIntegrity(Vector2.Distance(oldPos,newPos));
+            hm.addIntegrity(Vector2.Distance(oldPos, newPos));
             //Momentum Dampening
             if (rb2d.velocity.magnitude > 0.001f)//if Merky is moving
             {
@@ -328,7 +333,8 @@ public class PlayerController : MonoBehaviour
                     {
                         viableOptions.Add(option);
                     }
-                    else {
+                    else
+                    {
                         Vector3 adjustedOption = adjustForOccupant(option);
                         if (!isOccupied(adjustedOption))
                         {
@@ -415,7 +421,8 @@ public class PlayerController : MonoBehaviour
             airPorts = 0;
             setRange(baseRange);
         }
-        else {
+        else
+        {
             if (exhaust && airPorts >= maxAirPorts)
             {
                 setRange(exhaustRange);
@@ -562,7 +569,7 @@ public class PlayerController : MonoBehaviour
         if (GameStatistics.counter("deathCount") == 1)
         {
             Vector2 lsrgp = GameManager.getLatestSafeRewindGhostPosition();
-            transform.position = ((Vector2)transform.position + lsrgp)/2;
+            transform.position = ((Vector2)transform.position + lsrgp) / 2;
             EffectManager.highlightTapArea(lsrgp);
         }
     }
@@ -623,39 +630,53 @@ public class PlayerController : MonoBehaviour
     {
         Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
         float reducedHoldTime = holdTime - gm.getHoldThreshold();
+        float gestureDistance = Vector3.Distance(gpos, transform.position);
         //Check Shield Bubble
-        if (sba.enabled && gestureOnPlayer(gpos))
+        if (sba.maxGestureRange >= gestureDistance)
         {
             if (fta.enabled) { fta.dropHoldGesture(); }
-            sba.processHoldGesture(gpos, reducedHoldTime, finished);
+            if (sba.enabled)
+            {
+                tpa.dropHoldGesture();
+                sba.processHoldGesture(gpos, reducedHoldTime, finished);
+            }
+            else
+            {
+                tpa.processHoldGesture(gpos, reducedHoldTime, finished);
+            }
         }
         //Check Force Wave
-        else if (fta.enabled)
+        else if (fta.maxGestureRange >= gestureDistance)
         {
             if (sba.enabled) { sba.dropHoldGesture(); }
-            Vector3 newPos = gpos;
-            if (finished)
+            if (fta.enabled)
             {
-                fta.processHoldGesture(newPos, reducedHoldTime, finished);
+                tpa.dropHoldGesture();
+                fta.processHoldGesture(gpos, reducedHoldTime, finished);
             }
-            else {
-                fta.processHoldGesture(newPos, reducedHoldTime, finished);
+            else
+            {
+                tpa.processHoldGesture(gpos, reducedHoldTime, finished);
             }
         }
         else
         {//neither force wave nor shield bubble are active, probably meant to tap
             if (finished)
             {
-                gm.adjustHoldThreshold(holdTime);
                 processTapGesture(gpos);
+                gm.adjustHoldThreshold(holdTime);
             }
+            if (fta.enabled) { fta.dropHoldGesture(); }
+            if (sba.enabled) { sba.dropHoldGesture(); }
+            tpa.processHoldGesture(gpos, reducedHoldTime, finished);
         }
     }
     public void dropHoldGesture()
     {
+        tpa.dropHoldGesture();
         if (fta.enabled) { fta.dropHoldGesture(); }
         if (sba.enabled) { sba.dropHoldGesture(); }
     }
 }
 
-   
+
