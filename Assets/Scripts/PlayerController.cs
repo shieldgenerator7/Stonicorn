@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
         sba = GetComponent<ShieldBubbleAbility>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude; ;
         sba.maxGestureRange = halfWidth;
-        fta.maxGestureRange = halfWidth * 5;
+        fta.maxGestureRange = halfWidth * 8;
         teleportRangeParticalController = teleportRangeParticalObject.GetComponent<ParticleSystemController>();
     }
 
@@ -631,12 +631,14 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
         float reducedHoldTime = holdTime - gm.getHoldThreshold();
         float gestureDistance = Vector3.Distance(gpos, transform.position);
+        bool processed = false;//if it's not processed by an ability, it will be turned into a tap gesture
         //Check Shield Bubble
         if (sba.maxGestureRange >= gestureDistance)
         {
             if (fta.enabled) { fta.dropHoldGesture(); }
             if (sba.enabled)
             {
+                processed = true;
                 tpa.dropHoldGesture();
                 sba.processHoldGesture(gpos, reducedHoldTime, finished);
             }
@@ -651,6 +653,7 @@ public class PlayerController : MonoBehaviour
             if (sba.enabled) { sba.dropHoldGesture(); }
             if (fta.enabled)
             {
+                processed = true;
                 tpa.dropHoldGesture();
                 fta.processHoldGesture(gpos, reducedHoldTime, finished);
             }
@@ -660,6 +663,12 @@ public class PlayerController : MonoBehaviour
             }
         }
         else
+        {
+            if (fta.enabled) { fta.dropHoldGesture(); }
+            if (sba.enabled) { sba.dropHoldGesture(); }
+            tpa.processHoldGesture(gpos, reducedHoldTime, finished);
+        }
+        if (!processed)
         {//neither force wave nor shield bubble are active, probably meant to tap
             if (finished)
             {
@@ -669,9 +678,6 @@ public class PlayerController : MonoBehaviour
                     gm.adjustHoldThreshold(holdTime);
                 }
             }
-            if (fta.enabled) { fta.dropHoldGesture(); }
-            if (sba.enabled) { sba.dropHoldGesture(); }
-            tpa.processHoldGesture(gpos, reducedHoldTime, finished);
         }
     }
     public void dropHoldGesture()

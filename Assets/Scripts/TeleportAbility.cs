@@ -77,6 +77,7 @@ public class TeleportAbility : PlayerAbility
 
     public override void dropHoldGesture()
     {
+        futureProjection.SetActive(false);
         if (frii != null)
         {
             Destroy(frii);
