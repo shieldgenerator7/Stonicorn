@@ -67,6 +67,7 @@ public class ForceTeleportAbility : PlayerAbility
             {
                 circularProgressBar.setPercentage(0);
             }
+            EffectManager.clearForceWaveShadows();
         }
         else
         {
@@ -110,6 +111,7 @@ public class ForceTeleportAbility : PlayerAbility
         {
             circularProgressBar.setPercentage(0);
         }
+        EffectManager.clearForceWaveShadows();
     }
 
 
