@@ -22,6 +22,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
             }
             if (triggersOnce)
             {
+                triggered = true;
                 GameManager.saveMemory(this);
                 Destroy(gameObject);
             }
