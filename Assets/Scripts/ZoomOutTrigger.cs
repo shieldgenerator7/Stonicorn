@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class ZoomOutTrigger : MemoryMonoBehaviour {
 
-    public bool triggered = false;//whether or this has zoomed out the camera
+    //Settings
     public int scalePoint = CameraController.SCALEPOINT_DEFAULT;
+    public bool triggersOnce = true;//true if it only triggers once
+    //State
+    public bool triggered = false;//whether or this has zoomed out the camera
 
     void OnTriggerEnter2D(Collider2D coll)
     {
@@ -17,8 +20,11 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
             {
                 FindObjectOfType<GestureManager>().switchGestureProfile("Rewind");
             }
-            GameManager.saveMemory(this);
-            Destroy(gameObject);
+            if (triggersOnce)
+            {
+                GameManager.saveMemory(this);
+                Destroy(gameObject);
+            }
         }
     }
     
@@ -31,9 +37,12 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
     {
         if (memObj.found)
         {
-            triggered = true;
-            GameManager.saveMemory(this);
-            Destroy(gameObject);
+            if (triggersOnce)
+            {
+                triggered = true;
+                GameManager.saveMemory(this);
+                Destroy(gameObject);
+            }
         }
     }
 }
