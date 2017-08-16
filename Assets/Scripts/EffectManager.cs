@@ -11,8 +11,10 @@ public class EffectManager : MonoBehaviour {
     public float particleAmount = 50.0f;
     [Header("Tap Target Highlighting")]
     public ParticleSystem tapTargetHighlight;
+    [Header("Force Wave Shadows")]
     //Supporting Lists
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
+    private Dictionary<GameObject, GameObject> forceWaveShadows = new Dictionary<GameObject, GameObject>();
 
     private static EffectManager instance;
 
@@ -89,5 +91,47 @@ public class EffectManager : MonoBehaviour {
         {
             instance.tapTargetHighlight.Stop();
         }
+    }
+    
+    /// <summary>
+    /// Shows a force wave shadow for the given projectile from the given center
+    /// </summary>
+    /// <param name="center">The center of the force wave</param>
+    /// <param name="range">The range of the force wave</param>
+    /// <param name="projectile">The projectile about to be forced away</param>
+    public static void showForceWaveShadows(Vector2 center, float range, GameObject projectile)
+    {
+        GameObject forceWaveShadow;
+        if (instance.forceWaveShadows.ContainsKey(projectile))
+        {
+            forceWaveShadow = instance.forceWaveShadows[projectile];
+        }
+        else
+        {
+            forceWaveShadow = new GameObject();
+            forceWaveShadow.AddComponent<SpriteRenderer>();
+            instance.forceWaveShadows.Add(projectile, forceWaveShadow);
+            SpriteRenderer sr = forceWaveShadow.GetComponent<SpriteRenderer>();
+            SpriteRenderer psr = projectile.GetComponent<SpriteRenderer>();
+            sr.sprite = psr.sprite;
+            sr.color = new Color(psr.color.r, psr.color.g, psr.color.b, 0.7f);
+        }
+        Vector2 ppos = (Vector2)projectile.transform.position;
+        Vector2 dir = ppos - center;
+        float magnitude = Mathf.Max(0, range - dir.magnitude);
+        forceWaveShadow.transform.position = ppos + magnitude*dir.normalized;
+        forceWaveShadow.transform.rotation = projectile.transform.rotation;
+        forceWaveShadow.transform.localScale = projectile.transform.localScale;
+    }
+    /// <summary>
+    /// Deletes all currently existing force wave shadows
+    /// </summary>
+    public static void clearForceWaveShadows()
+    {
+        foreach (GameObject shadow in instance.forceWaveShadows.Values)
+        {
+            Destroy(shadow);
+        }
+        instance.forceWaveShadows.Clear();
     }
 }
