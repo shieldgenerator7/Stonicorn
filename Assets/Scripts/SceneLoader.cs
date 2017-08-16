@@ -15,6 +15,10 @@ public class SceneLoader : MonoBehaviour
     {
         c2d = gameObject.GetComponent<Collider2D>();
         playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (SceneManager.GetSceneByName(sceneName).isLoaded)
+        {
+            isLoaded = true;
+        }
         check();
     }
 
