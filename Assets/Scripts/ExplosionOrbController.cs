@@ -1,24 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ExplosionOrbController : SavableMonoBehaviour {
-    
+public class ExplosionOrbController : SavableMonoBehaviour
+{
+
     public int forceAmount = 300;
+    public bool destroyedOnLastCharge = true;//when this orb runs out of charges, it gets destroyed
     private CircleCollider2D cc2D;
     private ForceTeleportAbility fta;
-        
+
     private float chargeTime = 0.0f;//amount of time spent charging
     private int chargesLeft = 1;//how many charges it has left
 
-    //Tutorial toggles
+    [Header("Tutorial toggles")]
     public bool explodesUponContact = true;//false = requires mouseup (tap up) to explode
     public bool chargesAutomatically = true;//false = requires hold to charge
     public bool explodesAtAll = true;//false = doesn't do anything
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         cc2D = GetComponent<CircleCollider2D>();
         fta = GetComponent<ForceTeleportAbility>();
+        HardMaterial hm = GetComponent<HardMaterial>();
+        hm.shattered += destroyed;
     }
 
     // Update is called once per frame
@@ -26,7 +31,7 @@ public class ExplosionOrbController : SavableMonoBehaviour {
     {
         if (explodesAtAll && chargesLeft > 0)
         {
-            
+
             if (explodesUponContact)
             {
                 bool validTrigger = false;
@@ -55,6 +60,13 @@ public class ExplosionOrbController : SavableMonoBehaviour {
                 charge(Time.deltaTime);
             }
         }
+        else
+        {
+            if (fta.isHoldingGesture())
+            {
+                fta.dropHoldGesture();
+            }
+        }
     }
 
     public void charge(float deltaChargeTime)
@@ -71,6 +83,14 @@ public class ExplosionOrbController : SavableMonoBehaviour {
             chargeTime = 0;
             setChargesLeft(chargesLeft - 1);
         }
+        else
+        {
+            if (destroyedOnLastCharge)
+            {
+                HardMaterial hm = GetComponent<HardMaterial>();
+                hm.addIntegrity(-hm.maxIntegrity);
+            }
+        }
     }
     private void setChargesLeft(int charges)
     {
@@ -83,6 +103,14 @@ public class ExplosionOrbController : SavableMonoBehaviour {
         {
             GetComponent<SpriteRenderer>().color = new Color(0.25f, 0.25f, 0.25f);
         }
+    }
+
+    //When this object's HardMaterial breaks, it will explode
+    private void destroyed()
+    {
+        chargeTime = fta.maxHoldTime;
+        trigger();
+        fta.dropHoldGesture();
     }
 
     public override SavableObject getSavableObject()

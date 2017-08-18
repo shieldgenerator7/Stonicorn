@@ -50,6 +50,15 @@ public class PlayerAbility : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Returns whether or not this ability has its hold gesture activated
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool isHoldingGesture()
+    {
+        return particleSystem.isPlaying;
+    }
+
     public virtual void dropHoldGesture() { }
 
 }

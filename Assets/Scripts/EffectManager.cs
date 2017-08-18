@@ -109,6 +109,7 @@ public class EffectManager : MonoBehaviour {
         else
         {
             forceWaveShadow = new GameObject();
+            forceWaveShadow.name = "ForceWaveShadow of " + projectile.name;
             forceWaveShadow.AddComponent<SpriteRenderer>();
             instance.forceWaveShadows.Add(projectile, forceWaveShadow);
             SpriteRenderer sr = forceWaveShadow.GetComponent<SpriteRenderer>();
