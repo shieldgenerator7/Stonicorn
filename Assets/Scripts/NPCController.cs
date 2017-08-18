@@ -162,7 +162,7 @@ public class NPCController : SavableMonoBehaviour
         }
         else
         {
-            if (source.isPlaying)
+            if (source != null && source.isPlaying)
             {
                 source.Stop();
             }
