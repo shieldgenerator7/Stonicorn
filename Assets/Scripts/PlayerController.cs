@@ -437,6 +437,10 @@ public class PlayerController : MonoBehaviour
         {
             return true;
         }
+        if (gravity.Gravity == Vector2.zero)
+        {
+            return true;
+        }
         groundedWall = false;
         bool isgrounded = isGrounded(gravity.Gravity);
         if (!isgrounded && wca.enabled)//if nothing found yet and wall jump is enabled
