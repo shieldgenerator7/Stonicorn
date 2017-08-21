@@ -5,6 +5,10 @@ using UnityEngine;
 public class GravityAccepter : MonoBehaviour {
     //used for objects that need to know their gravity direction
 
+    //Settings
+    public bool usesSideVector = false;//whether or not this use case needs to use the side vector
+
+    //State
     private Vector2 gravityVector;
     public Vector2 Gravity
     {
@@ -19,15 +23,21 @@ public class GravityAccepter : MonoBehaviour {
             if (value == prevGravityVector)
             {
                 gravityVector = prevGravityVector;
-                sideVector = prevSideVector;
+                if (usesSideVector)
+                {
+                    sideVector = prevSideVector;
+                }
             }
             // 2017-06-02: moved here from PlayerController.setGravityVector(.)
             else if (value.x != gravityVector.x || value.y != gravityVector.y)
             {
                 gravityVector = value;
-                //v = P2 - P1    //2016-01-10: copied from an answer by cjdev: http://answers.unity3d.com/questions/564166/how-to-find-perpendicular-line-in-2d.html
-                //P3 = (-v.y, v.x) / Sqrt(v.x ^ 2 + v.y ^ 2) * h
-                sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
+                if (usesSideVector)
+                {
+                    //v = P2 - P1    //2016-01-10: copied from an answer by cjdev: http://answers.unity3d.com/questions/564166/how-to-find-perpendicular-line-in-2d.html
+                    //P3 = (-v.y, v.x) / Sqrt(v.x ^ 2 + v.y ^ 2) * h
+                    sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
+                }
             }
         }
     }
@@ -60,8 +70,11 @@ public class GravityAccepter : MonoBehaviour {
     private void LateUpdate()
     {
         prevGravityVector = gravityVector;
-        prevSideVector = sideVector;
         gravityVector = Vector2.zero;
-        sideVector = Vector2.zero;
+        if (usesSideVector)
+        {
+            prevSideVector = sideVector;
+            sideVector = Vector2.zero;
+        }
     }
 }
