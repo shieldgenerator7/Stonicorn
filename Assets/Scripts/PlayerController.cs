@@ -615,6 +615,7 @@ public class PlayerController : MonoBehaviour
         Vector3 prevPos = transform.position;
         Vector3 newPos = findTeleportablePosition(gpos);
         teleport(newPos);
+        GameManager.Save();
         mainCamCtr.checkForAutoMovement(gpos, prevPos);
     }
     public void processTapGesture(GameObject checkPoint)
@@ -626,6 +627,7 @@ public class PlayerController : MonoBehaviour
             teleport(newPos);
             mainCamCtr.refocus();
             cpc.trigger();
+            GameManager.Save();
         }
     }
 

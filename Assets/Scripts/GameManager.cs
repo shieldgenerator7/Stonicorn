@@ -201,12 +201,12 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public void Save()
+    public static void Save()
     {
-        gameStates.Add(new GameState(gameObjects));
-        amount++;
-        chosenId++;
-        rewindId++;
+        instance.gameStates.Add(new GameState(instance.gameObjects));
+        instance.amount++;
+        instance.chosenId++;
+        instance.rewindId++;
     }
     public static void saveMemory(MemoryMonoBehaviour mmb)
     {//2016-11-23: CODE HAZARD: mixture of static and non-static methods, will cause error if there are ever more than 1 instance of GameManager

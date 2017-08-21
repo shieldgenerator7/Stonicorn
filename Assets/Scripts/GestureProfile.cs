@@ -33,7 +33,6 @@ public class GestureProfile {
     public virtual void processTapGesture(GameObject go)
     {
         plrController.processTapGesture(go);
-        gm.Save();
     }
     public virtual void processTapGesture(Vector3 curMPWorld)
     {
@@ -49,7 +48,6 @@ public class GestureProfile {
             }
             else {
                 plrController.processTapGesture(curMPWorld);
-                gm.Save();
             }
         }
     }
