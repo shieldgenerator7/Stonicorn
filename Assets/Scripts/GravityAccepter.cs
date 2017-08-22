@@ -7,8 +7,15 @@ public class GravityAccepter : MonoBehaviour {
 
     //Settings
     public bool usesSideVector = false;//whether or not this use case needs to use the side vector
+    /// <summary>
+    /// How many frames to wait for a GravityZone to add gravity
+    /// before declaring it's outside a GravityZone
+    /// </summary>
+    public int framesToWait = 10;
 
     //State
+    private int framesWaited = 0;
+
     private Vector2 gravityVector;
     public Vector2 Gravity
     {
@@ -69,7 +76,22 @@ public class GravityAccepter : MonoBehaviour {
     Vector2 prevSideVector;
     private void LateUpdate()
     {
-        prevGravityVector = gravityVector;
+        if (gravityVector != Vector2.zero)
+        {
+            prevGravityVector = gravityVector;
+            if (framesWaited != 0) {
+                framesWaited = 0;
+            }
+        }
+        else
+        {
+            framesWaited++;
+            if (framesWaited == framesToWait)
+            {
+                framesWaited = 0;
+                prevGravityVector = gravityVector;
+            }
+        }
         gravityVector = Vector2.zero;
         if (usesSideVector)
         {
