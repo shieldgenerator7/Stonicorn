@@ -142,7 +142,7 @@ public class NPCController : SavableMonoBehaviour
             NPCVoiceLine npcvl = voiceLines[i];
             if (!npcvl.triggerLine && !npcvl.played
                 && GameEventManager.eventHappened(npcvl.eventReq)
-                && (npcvl.eventReqExclude != null || !GameEventManager.eventHappened(npcvl.eventReqExclude)))
+                && (npcvl.eventReqExclude == "" || !GameEventManager.eventHappened(npcvl.eventReqExclude)))
             {
                 return i;
             }

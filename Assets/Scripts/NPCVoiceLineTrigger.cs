@@ -17,7 +17,7 @@ public class NPCVoiceLineTrigger : MonoBehaviour {
     {
         if (!lineToTrigger.played
             && GameEventManager.eventHappened(lineToTrigger.eventReq)
-            && (lineToTrigger.eventReqExclude != null || !GameEventManager.eventHappened(lineToTrigger.eventReqExclude)))
+            && (lineToTrigger.eventReqExclude == "" || !GameEventManager.eventHappened(lineToTrigger.eventReqExclude)))
         {
             controller.setTriggerVoiceLine(lineToTrigger);
         }
