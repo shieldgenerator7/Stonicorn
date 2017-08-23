@@ -11,7 +11,11 @@ public class NPCController : SavableMonoBehaviour
     private GameObject playerObject;
 
     //State
-    public int currentVoiceLineIndex = -1;//the index of the voiceline that is currently playing, -1 if none
+    /// <summary>
+    /// The index of the voiceline that is currently playing
+    /// -1 if none
+    /// </summary>
+    public int currentVoiceLineIndex = -1;
 
     // Use this for initialization
     protected virtual void Start()
@@ -114,6 +118,11 @@ public class NPCController : SavableMonoBehaviour
 
     protected virtual bool shouldStop()
     {
+        if (currentVoiceLineIndex >= 0
+            && voiceLines[currentVoiceLineIndex].triggerLine)
+        {
+            return false;
+        }
         return Vector3.Distance(playerObject.transform.position, transform.position) > 10;
     }
 
@@ -131,7 +140,9 @@ public class NPCController : SavableMonoBehaviour
         for (int i = voiceLines.Count - 1; i >= 0; i--)
         {
             NPCVoiceLine npcvl = voiceLines[i];
-            if (!npcvl.played && GameEventManager.eventHappened(npcvl.eventReq))
+            if (!npcvl.triggerLine && !npcvl.played
+                && GameEventManager.eventHappened(npcvl.eventReq)
+                && (npcvl.eventReqExclude != null || !GameEventManager.eventHappened(npcvl.eventReqExclude)))
             {
                 return i;
             }
@@ -167,5 +178,15 @@ public class NPCController : SavableMonoBehaviour
                 source.Stop();
             }
         }
+    }
+
+    /// <summary>
+    /// Used by outside scripts to set voicelines of NPC's reaction to an event
+    /// Particularly events such as the player entering a certain area
+    /// </summary>
+    /// <param name="npcvl"></param>
+    public void setTriggerVoiceLine(NPCVoiceLine npcvl)
+    {
+        setVoiceLine(voiceLines.IndexOf(npcvl));
     }
 }
