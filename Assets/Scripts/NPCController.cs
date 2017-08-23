@@ -187,6 +187,10 @@ public class NPCController : SavableMonoBehaviour
     /// <param name="npcvl"></param>
     public void setTriggerVoiceLine(NPCVoiceLine npcvl)
     {
-        setVoiceLine(voiceLines.IndexOf(npcvl));
+        int index = voiceLines.IndexOf(npcvl);
+        if (currentVoiceLineIndex != index || !source.isPlaying)
+        {
+            setVoiceLine(index);
+        }
     }
 }
