@@ -22,6 +22,14 @@ public class NPCController : SavableMonoBehaviour
     {
         source = GetComponent<AudioSource>();
         playerObject = GameManager.getPlayerObject();
+        if (source == null)
+        {
+            source = GetComponent<AudioSource>();
+            if (source == null)
+            {
+                source = gameObject.AddComponent<AudioSource>();
+            }
+        }
     }
 
     public override SavableObject getSavableObject()
