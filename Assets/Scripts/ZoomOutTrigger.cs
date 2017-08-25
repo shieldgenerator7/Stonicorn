@@ -14,21 +14,25 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
     {
         if (coll.gameObject.tag == "Player")
         {
-            var camCtr = Camera.main.GetComponent<CameraController>();
-            camCtr.setScalePoint(scalePoint);//zoom out
-            if (scalePoint == CameraController.SCALEPOINT_TIMEREWIND)
-            {
-                FindObjectOfType<GestureManager>().switchGestureProfile("Rewind");
-            }
-            if (triggersOnce)
-            {
-                triggered = true;
-                GameManager.saveMemory(this);
-                Destroy(gameObject);
-            }
+            trigger();
         }
     }
-    
+
+    public virtual void trigger()
+    {
+        var camCtr = Camera.main.GetComponent<CameraController>();
+        camCtr.setScalePoint(scalePoint);//zoom out
+        if (scalePoint == CameraController.SCALEPOINT_TIMEREWIND)
+        {
+            FindObjectOfType<GestureManager>().switchGestureProfile("Rewind");
+        }
+        if (triggersOnce)
+        {
+            triggered = true;
+            GameManager.saveMemory(this);
+            Destroy(gameObject);
+        }
+    }
 
     public override MemoryObject getMemoryObject()
     {

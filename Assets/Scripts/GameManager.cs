@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
         instance.gameObjects.Remove(go);
         if (go && go.transform.childCount > 0)
         {
-            foreach(Transform t in go.transform)
+            foreach (Transform t in go.transform)
             {
                 instance.gameObjects.Remove(t.gameObject);
             }
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
             load = false;
             Load(chosenId);
         }
-        
+
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour
         gameObjects = new List<GameObject>();
         foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
         {
-            gameObjects.Add(rb.gameObject);      
+            gameObjects.Add(rb.gameObject);
         }
         //Debug.Log("GM Collider List: " + gravityColliderList.Count);
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
@@ -410,6 +410,28 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Returns the player ghost that is closest to the given position
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    public static GameObject getClosestPlayerGhost(Vector2 pos)
+    {
+        float closestDistance = float.MaxValue;
+        GameObject closestObject = null;
+        foreach (GameState gs in instance.gameStates)
+        {
+            Vector2 gsPos = gs.representation.transform.position;
+            float gsDistance = Vector2.Distance(gsPos, pos);
+            if (gsDistance < closestDistance)
+            {
+                closestDistance = gsDistance;
+                closestObject = gs.representation;
+            }
+        }
+        return closestObject;
+    }
+
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
@@ -442,11 +464,13 @@ public class GameManager : MonoBehaviour
                 {//if the current one overlaps a previous one, choose the previous one
                     Rewind(prevFinal.id);
                 }
-                else {
+                else
+                {
                     Load(final.id);
                 }
             }
-            else {
+            else
+            {
                 Rewind(final.id);
             }
         }
@@ -464,7 +488,10 @@ public class GameManager : MonoBehaviour
             //leave this zoom level even if no past merky was chosen
             camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);
         }
+        gameManagerTapProcessed(curMPWorld);
     }
+    public static GameManagerTapProcessed gameManagerTapProcessed;
+    public delegate void GameManagerTapProcessed(Vector2 curMPWorld);
 
     /// <summary>
     /// Used specifically to highlight last saved Merky after the first death
