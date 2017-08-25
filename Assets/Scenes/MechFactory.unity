@@ -1139,6 +1139,8 @@ MonoBehaviour:
   eventReq: 
   triggerEvent: MetalMeeting
   checkPointLine: 1
+  triggerLine: 0
+  eventReqExclude: 
   played: 0
 --- !u!114 &178457414
 MonoBehaviour:
@@ -1155,6 +1157,8 @@ MonoBehaviour:
   eventReq: MoonLanding
   triggerEvent: 
   checkPointLine: 1
+  triggerLine: 0
+  eventReqExclude: 
   played: 0
 --- !u!1001 &206726515
 Prefab:
@@ -3504,7 +3508,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -692316986
+  randomSeed: -624016836
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -17609,6 +17613,8 @@ GameObject:
   - component: {fileID: 1607837205}
   - component: {fileID: 1607837204}
   - component: {fileID: 1607837203}
+  - component: {fileID: 1607837209}
+  - component: {fileID: 1607837208}
   m_Layer: 0
   m_Name: tut ghost shield
   m_TagString: Untagged
@@ -17736,6 +17742,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
+--- !u!114 &1607837208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1607837202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceLine: {fileID: 8300000, guid: 66f4e8c917287cd4dae5d1e6bf73dfcc, type: 3}
+  eventReq: 
+  triggerEvent: 
+  checkPointLine: 1
+  triggerLine: 0
+  eventReqExclude: 
+  played: 0
+--- !u!114 &1607837209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1607837202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baec8ceac9609dc448cadd3efa4966cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceLines:
+  - {fileID: 1607837208}
+  currentVoiceLineIndex: -1
 --- !u!1 &1609370425
 GameObject:
   m_ObjectHideFlags: 0
