@@ -136,28 +136,38 @@ public class CheckPointChecker : MemoryMonoBehaviour
         if (activated)
         {
             ghost.SetActive(true);
-            ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * CP_GHOST_BUFFER;
             ghost.transform.localRotation = currentCheckpoint.transform.localRotation;
-            ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
-
-            //check to make sure its ghost does not intersect other CP ghosts
-            foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
+            float bufferScalar = 1.0f;
+            float bufferScalarIncrement = 0.1f;
+            bool movedFurther = true;//whether or not it had to be moved further and thus needs to be checked again
+            while (movedFurther)
             {
-                if (cpc != this)
+                movedFurther = false;
+                ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * (CP_GHOST_BUFFER*bufferScalar);
+                ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
+
+                //check to make sure its ghost does not intersect other CP ghosts
+                foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
                 {
-                    GameObject go = cpc.gameObject;
-                    if (cpc.activated && cpc.ghost.activeSelf)
+                    if (cpc != this)
                     {
-                        if (ghostBounds.Intersects(cpc.ghostBounds))
+                        GameObject go = cpc.gameObject;
+                        if (cpc.activated && cpc.ghost.activeSelf)
                         {
-                            if (Vector3.Distance(go.transform.position, current.transform.position) < Vector3.Distance(gameObject.transform.position, current.transform.position))
+                            if (ghostBounds.Intersects(cpc.ghostBounds)
+                                //because they're circles, using the extents gives us how far apart (at minimum) they're supposed to be 
+                                && Vector2.Distance(ghostBounds.center, cpc.ghostBounds.center) <= ghostBounds.extents.x + cpc.ghostBounds.extents.x)
                             {
-                                clearPostTeleport(false);
-                                return;
-                            }
-                            else
-                            {
-                                cpc.clearPostTeleport(false);
+                                if (Vector3.Distance(go.transform.position, current.transform.position) < Vector3.Distance(gameObject.transform.position, current.transform.position))
+                                {
+                                    movedFurther = true;
+                                    bufferScalar += bufferScalarIncrement;
+                                    break;
+                                }
+                                else
+                                {
+                                    cpc.showRelativeTo(currentCheckpoint);
+                                }
                             }
                         }
                     }
