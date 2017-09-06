@@ -1923,6 +1923,15 @@ Prefab:
       propertyPath: voiceLines.Array.data[6]
       value: 
       objectReference: {fileID: 113657613}
+    - target: {fileID: 114696989949497388, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 2}
+      propertyPath: voiceLineText
+      value: Another one! Do you happen to remember being turned to stone? Probably
+        not. But I hear there's cure. If you can get to the moon, the moonicorn can
+        cure you. I myself have tried but have gotte nstuck here. There's a lady unicorn
+        to the east. Maybe she can help you. Would you, perhaps, say hi to her for
+        me?
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 2}
   m_IsPrefabParent: 0
@@ -2032,6 +2041,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: 8da1e71bcaeb86846a5a285f5fd1f311, type: 3}
+  voiceLineText: 
   eventReq: YellowMeeting-Green
   triggerEvent: 
   checkPointLine: 0

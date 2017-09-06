@@ -9,6 +9,7 @@ public class NPCController : SavableMonoBehaviour
     public List<NPCVoiceLine> voiceLines;
 
     private GameObject playerObject;
+    private static GUIStyle npcTextStyle;
 
     //State
     /// <summary>
@@ -29,6 +30,12 @@ public class NPCController : SavableMonoBehaviour
             {
                 source = gameObject.AddComponent<AudioSource>();
             }
+        }
+        if (npcTextStyle == null)
+        {
+            npcTextStyle = new GUIStyle();
+            npcTextStyle.fontSize = 25;
+            npcTextStyle.wordWrap = true;
         }
     }
 
@@ -82,6 +89,15 @@ public class NPCController : SavableMonoBehaviour
         {
             currentVoiceLineIndex = -1;
             GameManager.speakNPC(gameObject, false);
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (source.isPlaying)
+        {
+            GUI.backgroundColor = Color.clear;
+            GUI.Label(Camera.main.pixelRect, voiceLines[currentVoiceLineIndex].voiceLineText, npcTextStyle);
         }
     }
 
