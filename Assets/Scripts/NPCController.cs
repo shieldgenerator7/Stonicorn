@@ -97,7 +97,11 @@ public class NPCController : SavableMonoBehaviour
         if (source.isPlaying)
         {
             GUI.backgroundColor = Color.clear;
-            GUI.Label(Camera.main.pixelRect, voiceLines[currentVoiceLineIndex].voiceLineText, npcTextStyle);
+            float bufferWidth = Camera.main.pixelWidth * 0.05f;
+            float bufferHeight = Camera.main.pixelHeight * 0.05f;
+            bufferWidth = bufferHeight = Mathf.Min(bufferWidth, bufferHeight);
+            Rect bufferRect = new Rect(bufferWidth, bufferHeight, Camera.main.pixelWidth - bufferWidth * 2, Camera.main.pixelHeight - bufferHeight * 2);
+            GUI.Label(bufferRect, voiceLines[currentVoiceLineIndex].voiceLineText, npcTextStyle);
         }
     }
 
