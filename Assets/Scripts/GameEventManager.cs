@@ -52,7 +52,7 @@ public class GameEventManager : SavableMonoBehaviour {
     }
     public static bool eventHappened(string eventName)
     {
-        if (eventName == null || eventName == "")
+        if (eventName == null || eventName.Trim() == "")
         {
             return true;
         }

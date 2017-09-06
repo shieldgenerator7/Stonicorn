@@ -488,7 +488,10 @@ public class GameManager : MonoBehaviour
             //leave this zoom level even if no past merky was chosen
             camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);
         }
-        gameManagerTapProcessed(curMPWorld);
+        if (gameManagerTapProcessed != null)
+        {
+            gameManagerTapProcessed(curMPWorld);
+        }
     }
     public static GameManagerTapProcessed gameManagerTapProcessed;
     public delegate void GameManagerTapProcessed(Vector2 curMPWorld);
