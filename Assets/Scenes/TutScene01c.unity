@@ -1932,6 +1932,11 @@ Prefab:
         to the east. Maybe she can help you. Would you, perhaps, say hi to her for
         me?
       objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 2}
+      propertyPath: lineFileName
+      value: Green.txt
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 2}
   m_IsPrefabParent: 0
@@ -1963,6 +1968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: ccf0d7602dfea9f439f4f292d52bb88c, type: 3}
+  voiceLineText: 
   eventReq: MoonLanding
   triggerEvent: 
   checkPointLine: 1
@@ -1981,6 +1987,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: d789b48b508c49747985b5abc9b390ba, type: 3}
+  voiceLineText: 
   eventReq: YellowMeeting
   triggerEvent: YellowMeeting-Green
   checkPointLine: 1
@@ -2005,6 +2012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: 85a2322db360e074e9b12191fe09b7dc, type: 3}
+  voiceLineText: 
   eventReq: GreenMeeting
   triggerEvent: 
   checkPointLine: 0
@@ -2023,6 +2031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: 7c3037a485508cf49849f2934ad02c63, type: 3}
+  voiceLineText: 
   eventReq: RedMeeting-Green
   triggerEvent: 
   checkPointLine: 0

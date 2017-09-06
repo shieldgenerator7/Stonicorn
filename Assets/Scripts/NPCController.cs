@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using System.IO;
 using UnityEngine;
 
 public class NPCController : SavableMonoBehaviour
 {
     AudioSource source;
 
+    public string lineFileName;//the file that has the list of voice lines in it
     public List<NPCVoiceLine> voiceLines;
 
     private GameObject playerObject;
@@ -36,6 +39,52 @@ public class NPCController : SavableMonoBehaviour
             npcTextStyle = new GUIStyle();
             npcTextStyle.fontSize = 25;
             npcTextStyle.wordWrap = true;
+        }
+        if (lineFileName != null)
+        {
+            //voiceLines = new List<NPCVoiceLine>();//2017-09-05 ommitted until text files are filled out
+            int writeIndex = -1;
+            //2017-09-05: copied from an answer by Drakestar: http://answers.unity3d.com/questions/279750/loading-data-from-a-txt-file-c.html
+            try
+            {
+                string line;
+                StreamReader theReader = new StreamReader("Assets/Resources/Dialogue/"+lineFileName, Encoding.Default);
+                using (theReader)
+                {
+                    do
+                    {
+                        line = theReader.ReadLine();
+
+                        if (line != null)
+                        {
+                            if (line.StartsWith(":"))
+                            {
+                                writeIndex++;
+                                //NPCVoiceLine npcvl = gameObject.AddComponent<NPCVoiceLine>();
+                                //voiceLines.Add(new NPCVoiceLine());
+                            }
+                            else if (line.StartsWith("audio:"))
+                            {
+                                string audioPath = line.Substring("audio:".Length).Trim();
+                                voiceLines[writeIndex].voiceLine = Resources.Load<AudioClip>("Dialogue/"+audioPath);
+                            }
+                            else if (line.StartsWith("text:"))
+                            {
+                                string text = line.Substring("text:".Length).Trim();
+                                voiceLines[writeIndex].voiceLineText = text;
+                            }
+                        }
+                    }
+                    while (line != null);
+                    theReader.Close();
+                }
+            }
+            // If anything broke in the try block, we throw an exception with information
+            // on what didn't work
+            catch (System.Exception e)
+            {
+                Debug.Log("{0} "+ e.Message);
+            }
         }
     }
 
@@ -130,7 +179,7 @@ public class NPCController : SavableMonoBehaviour
         //If only 2 things, there's nothing in between
         if (thingsFound > 2)
         {
-            foreach(RaycastHit2D rch2d in hits)
+            foreach (RaycastHit2D rch2d in hits)
             {
                 //If the thing in between is just a trigger, don't worry about it
                 if (!rch2d.collider.isTrigger
