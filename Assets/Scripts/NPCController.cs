@@ -39,6 +39,7 @@ public class NPCController : SavableMonoBehaviour
             npcTextStyle = new GUIStyle();
             npcTextStyle.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
             npcTextStyle.wordWrap = true;
+            npcTextStyle.alignment = TextAnchor.UpperCenter;
         }
         if (lineFileName != null)
         {
@@ -167,9 +168,13 @@ public class NPCController : SavableMonoBehaviour
             GUI.backgroundColor = Color.clear;
             float bufferWidth = Camera.main.pixelWidth * 0.05f;
             float bufferHeight = Camera.main.pixelHeight * 0.05f;
+            Vector2 posOnCam = Camera.main.WorldToScreenPoint(transform.position+transform.up.normalized);
             bufferWidth = bufferHeight = Mathf.Min(bufferWidth, bufferHeight);
-            Rect bufferRect = new Rect(bufferWidth, bufferHeight, Camera.main.pixelWidth - bufferWidth * 2, Camera.main.pixelHeight - bufferHeight * 2);
-            GUI.Label(bufferRect, voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time), npcTextStyle);
+            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time);
+            float rectWidth = Camera.main.pixelWidth - bufferWidth * 2;
+            Rect bufferRect = new Rect(bufferWidth+posOnCam.x-(rectWidth/2), Camera.main.pixelHeight - bufferHeight * 2-posOnCam.y, rectWidth, Camera.main.pixelHeight - bufferHeight * 2);
+            GUI.Label(bufferRect, voicelinetext, npcTextStyle);
+            
         }
     }
 
