@@ -89,6 +89,8 @@ public class NPCController : SavableMonoBehaviour
                                     voiceLines[writeIndex].lineSegments.Add(lineSegment);
                                     voiceLineText = lineSegment.bite(voiceLineText);
                                 }
+                                //Add a dummy line segment for text animation purposes
+                                voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(null, voiceLines[writeIndex].voiceLine.length));
                             }
                         }
                     }

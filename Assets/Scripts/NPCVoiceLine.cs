@@ -76,6 +76,13 @@ public class NPCVoiceLine: SavableMonoBehaviour {
                 }
             }
         }
+        if (prevCurrentLine < lineSegments.Count-1)
+        {
+            float percentage = (playtime - lineSegments[prevCurrentLine].audioBeginTime) / (lineSegments[prevCurrentLine + 1].audioBeginTime - lineSegments[prevCurrentLine].audioBeginTime);
+            percentage = Mathf.Min(percentage + 0.2f, 1.0f);
+            string text = lineSegments[prevCurrentLine].lineText;
+            return text.Substring(0, (int)(percentage * text.Length));
+        }
         return lineSegments[prevCurrentLine].lineText;
     }
 
