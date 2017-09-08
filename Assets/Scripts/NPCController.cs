@@ -37,7 +37,7 @@ public class NPCController : SavableMonoBehaviour
         if (npcTextStyle == null)
         {
             npcTextStyle = new GUIStyle();
-            npcTextStyle.fontSize = 25;
+            npcTextStyle.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
             npcTextStyle.wordWrap = true;
         }
         if (lineFileName != null)
