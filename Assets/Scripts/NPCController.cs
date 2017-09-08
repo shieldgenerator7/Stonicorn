@@ -86,6 +86,7 @@ public class NPCController : SavableMonoBehaviour
                                 {
                                     string[] strs = s.Trim().Split(' ');
                                     NPCVoiceLine.Line lineSegment = new NPCVoiceLine.Line(strs[0], float.Parse(strs[1]));
+                                    voiceLines[writeIndex].lineSegments.Add(lineSegment);
                                     voiceLineText = lineSegment.bite(voiceLineText);
                                 }
                             }
@@ -166,7 +167,7 @@ public class NPCController : SavableMonoBehaviour
             float bufferHeight = Camera.main.pixelHeight * 0.05f;
             bufferWidth = bufferHeight = Mathf.Min(bufferWidth, bufferHeight);
             Rect bufferRect = new Rect(bufferWidth, bufferHeight, Camera.main.pixelWidth - bufferWidth * 2, Camera.main.pixelHeight - bufferHeight * 2);
-            GUI.Label(bufferRect, voiceLines[currentVoiceLineIndex].voiceLineText, npcTextStyle);
+            GUI.Label(bufferRect, voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time), npcTextStyle);
         }
     }
 

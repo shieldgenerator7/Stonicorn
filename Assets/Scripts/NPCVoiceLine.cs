@@ -19,8 +19,8 @@ public class NPCVoiceLine: SavableMonoBehaviour {
     public class Line
     {
         string endCharacter;//the last character in this line segment
-        string lineText;//the contents of this line segment
-        float audioBeginTime = 0.0f;//when this line segment begins
+        public string lineText;//the contents of this line segment
+        public float audioBeginTime = 0.0f;//when this line segment begins
 
         public Line(string text)
         {
@@ -46,6 +46,38 @@ public class NPCVoiceLine: SavableMonoBehaviour {
     public List<Line> lineSegments = new List<Line>();
     //State
     public bool played = false;
+    private int prevCurrentLine = 0;//for efficiency: the last appropriate line segment for getVoiceLineText()
+
+    /// <summary>
+    /// Returns the appropriate line segment based on the current audio playback time
+    /// </summary>
+    /// <param name="playtime"></param>
+    /// <returns></returns>
+    public string getVoiceLineText(float playtime)
+    {
+        if (lineSegments.Count == 0)
+        {
+            return voiceLineText;
+        }
+        if (lineSegments[prevCurrentLine].audioBeginTime <= playtime)
+        {
+            while (prevCurrentLine <= lineSegments.Count-2 && lineSegments[prevCurrentLine + 1].audioBeginTime <= playtime)
+            {
+                prevCurrentLine++;
+            }
+        }
+        else
+        {
+            for (int i = prevCurrentLine; i >= 0; i--)
+            {
+                if (lineSegments[i].audioBeginTime <= playtime)
+                {
+                    prevCurrentLine = i;
+                }
+            }
+        }
+        return lineSegments[prevCurrentLine].lineText;
+    }
 
     public override SavableObject getSavableObject()
     {
