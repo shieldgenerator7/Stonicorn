@@ -1,14 +1,15 @@
 :0
 audio: green greeting
-text: Oh, another one! Do you happen to remember anything about being turned to stone? Probably not. But I hear there's a cure. If you can get to the moon, the moonicorn may be able to help you. I myself have tried but have gotten stuck here. There's a lady unicorn to the east who has gotten further than me. Maybe she can help you. Would you, perhaps, say hi to her for me?
+text: Oh, another one! Do you happen to remember anything about being turned to stone? Probably not. But I hear there's a cure. If you can get to the moon, the moonicorn may be able to help you. I myself have tried but have gotten stuck here. The lady unicorn to the east has gotten further than me. Maybe she can help you. Would you, perhaps, say hi to her for me?
 req:
+segments: ! 0.00 > ? 2.36 > . 5.977 > . 7.522 > . 9.108 > . 13.214 > . 16.060 > . 18.967 > ? 20.858
 event: GreenMeeting
 cpl: true
 trigger: false
 exclude: 
 :1
 audio: green_redmeeting
-text: Oh I guess she didn't anything. There's a yellow unicorn to the west. Maybe he can help you.
+text: Oh I guess she didn't know anything. There's a yellow unicorn to the west. Maybe he can help you.
 req: RedMeeting
 event: RedMeeting-Green
 cpl: true

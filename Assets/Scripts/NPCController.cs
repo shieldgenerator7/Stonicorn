@@ -60,8 +60,8 @@ public class NPCController : SavableMonoBehaviour
                             if (line.StartsWith(":"))
                             {
                                 writeIndex++;
-                                //NPCVoiceLine npcvl = gameObject.AddComponent<NPCVoiceLine>();
-                                //voiceLines.Add(new NPCVoiceLine());
+                                NPCVoiceLine npcvl = gameObject.AddComponent<NPCVoiceLine>();
+                                voiceLines.Add(npcvl);
                             }
                             else if (line.StartsWith("audio:"))
                             {
@@ -72,6 +72,22 @@ public class NPCController : SavableMonoBehaviour
                             {
                                 string text = line.Substring("text:".Length).Trim();
                                 voiceLines[writeIndex].voiceLineText = text;
+                                if (voiceLines[writeIndex].lineSegments.Count == 0)
+                                {
+                                    voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(text));
+                                }
+                            }
+                            else if (line.StartsWith("segments:"))
+                            {
+                                string segmentText = line.Substring("segments:".Length).Trim();
+                                voiceLines[writeIndex].lineSegments.Clear();
+                                string voiceLineText = voiceLines[writeIndex].voiceLineText;
+                                foreach (string s in segmentText.Split('>'))
+                                {
+                                    string[] strs = s.Trim().Split(' ');
+                                    NPCVoiceLine.Line lineSegment = new NPCVoiceLine.Line(strs[0], float.Parse(strs[1]));
+                                    voiceLineText = lineSegment.bite(voiceLineText);
+                                }
                             }
                         }
                     }
@@ -83,7 +99,7 @@ public class NPCController : SavableMonoBehaviour
             // on what didn't work
             catch (System.Exception e)
             {
-                Debug.Log("{0} "+ e.Message);
+                Debug.LogError("{0} " + e.Message+ "\n"+e.StackTrace);
             }
         }
     }

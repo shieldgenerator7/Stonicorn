@@ -12,6 +12,38 @@ public class NPCVoiceLine: SavableMonoBehaviour {
     public bool checkPointLine = true;//true: if this line has played, prev lines can not be played
     public bool triggerLine = false;//true: this line only plays when the player enters a trigger
     public string eventReqExclude = null;//this line will not be said after this event has happened
+    /// <summary>
+    /// Each segment of text is separated by a comma or period,
+    /// and is associated with a time in the audio when it begins
+    /// </summary>
+    public class Line
+    {
+        string endCharacter;//the last character in this line segment
+        string lineText;//the contents of this line segment
+        float audioBeginTime = 0.0f;//when this line segment begins
+
+        public Line(string text)
+        {
+            this.lineText = text;
+        }
+        public Line(string endChar, float beginTime)
+        {
+            this.endCharacter = endChar;
+            this.audioBeginTime = beginTime;
+        }
+        /// <summary>
+        /// "Bites off" a piece of the given string, and returns the left over chunk
+        /// </summary>
+        /// <param name="voiceLineText"></param>
+        /// <returns></returns>
+        public string bite(string voiceLineText)
+        {
+            int lastCharIndex = voiceLineText.IndexOf(endCharacter);
+            lineText = voiceLineText.Substring(0, lastCharIndex + 1).Trim();
+            return voiceLineText.Substring(lastCharIndex + 1);
+        }
+    }
+    public List<Line> lineSegments = new List<Line>();
     //State
     public bool played = false;
 
