@@ -93,6 +93,31 @@ public class NPCController : SavableMonoBehaviour
                                 //Add a dummy line segment for text animation purposes
                                 voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(null, voiceLines[writeIndex].voiceLine.length));
                             }
+                            else if (line.StartsWith("req:"))
+                            {
+                                string eventName = line.Substring("req:".Length).Trim();
+                                voiceLines[writeIndex].eventReq = eventName;
+                            }
+                            else if (line.StartsWith("exclude:"))
+                            {
+                                string eventName = line.Substring("exclude:".Length).Trim();
+                                voiceLines[writeIndex].eventReqExclude = eventName;
+                            }
+                            else if (line.StartsWith("event:"))
+                            {
+                                string eventName = line.Substring("event:".Length).Trim();
+                                voiceLines[writeIndex].triggerEvent = eventName;
+                            }
+                            else if (line.StartsWith("cpl:"))
+                            {
+                                bool cpSetting = bool.Parse(line.Substring("cpl:".Length).Trim());
+                                voiceLines[writeIndex].checkPointLine = cpSetting;
+                            }
+                            else if (line.StartsWith("trigger:"))
+                            {
+                                bool triggerSetting = bool.Parse(line.Substring("trigger:".Length).Trim());
+                                voiceLines[writeIndex].triggerLine = triggerSetting;
+                            }
                         }
                     }
                     while (line != null);
@@ -174,7 +199,6 @@ public class NPCController : SavableMonoBehaviour
             float rectWidth = Camera.main.pixelWidth - bufferWidth * 2;
             Rect bufferRect = new Rect(bufferWidth+posOnCam.x-(rectWidth/2), Camera.main.pixelHeight - bufferHeight * 2-posOnCam.y, rectWidth, Camera.main.pixelHeight - bufferHeight * 2);
             GUI.Label(bufferRect, voicelinetext, npcTextStyle);
-            
         }
     }
 
