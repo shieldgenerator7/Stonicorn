@@ -43,7 +43,14 @@ public class NPCController : SavableMonoBehaviour
         }
         if (lineFileName != null && lineFileName != "")
         {
-            //voiceLines = new List<NPCVoiceLine>();//2017-09-05 ommitted until text files are filled out
+            if (voiceLines.Count > 0)
+            {
+                for (int i = 0; i < voiceLines.Count; i++)
+                {
+                    Destroy(voiceLines[i]);
+                }
+            }
+            voiceLines = new List<NPCVoiceLine>();//2017-09-05 ommitted until text files are filled out
             int writeIndex = -1;
             //2017-09-05: copied from an answer by Drakestar: http://answers.unity3d.com/questions/279750/loading-data-from-a-txt-file-c.html
             try
