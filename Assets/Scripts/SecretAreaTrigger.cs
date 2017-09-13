@@ -21,9 +21,12 @@ public class SecretAreaTrigger : MonoBehaviour
     {
         if (coll.gameObject.Equals(playerObject))
         {
-            HiddenArea ha;
-            ha = secretHider.GetComponent<HiddenArea>();
-            ha.nowDiscovered();
+            if (secretHider != null && !ReferenceEquals(secretHider, null))
+            {
+                HiddenArea ha;
+                ha = secretHider.GetComponent<HiddenArea>();
+                ha.nowDiscovered();
+            }
         }
     }
 }
