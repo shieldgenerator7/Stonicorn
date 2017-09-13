@@ -87,6 +87,15 @@ public class NPCVoiceLine: SavableMonoBehaviour {
         return lineSegments[prevCurrentLine].lineText;
     }
 
+    /// <summary>
+    /// Returns whether this voiceline has a valid exclude requirement
+    /// </summary>
+    /// <returns></returns>
+    public bool hasExcludeRequirement()
+    {
+        return eventReqExclude != null && eventReqExclude.Trim() != "";
+    }
+
     public override SavableObject getSavableObject()
     {
         return new SavableObject(this,
