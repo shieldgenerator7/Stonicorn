@@ -1,17 +1,58 @@
 :0
 audio: green greeting
 text: Oh, another one! Do you happen to remember anything about being turned to stone? Probably not. But I hear there's a cure. If you can find a way to the moon, the moonicorn might be able to help you. I myself have tried but have gotten stuck here. The lady unicorn to the east has gotten farther than me. Maybe she can help you. Would you, perhaps, say hi to her for me?
-req:
 segments: ! 0.00 > ? 2.36 > . 5.977 > . 7.522 > . 9.108 > . 13.214 > . 16.060 > . 18.967 > ? 20.858
+req:
+exclude:
 event: GreenMeeting
 cpl: true
 trigger: false
-exclude: 
+
 :1
 audio: green_redmeeting
 text: Oh I guess she didn't know anything. There's a yellow unicorn to the west. Maybe he can help you.
 req: RedMeeting
+exclude: 
 event: RedMeeting-Green
 cpl: true
 trigger: false
-exclude: 
+
+:2
+audio: green_yellowmeeting
+text: Oh he didn't know anything either? Oh! There's a metal unicorn further to the east. He will know for sure. It's just a bit difficult to get him to talk.
+segments: ? 0.00
+req: YellowMeeting
+event: YellowMeeting-Green
+
+:3
+audio: green_moonlanding
+text: What? No way! The moonicorn said the cure doesn't exist? It can't be! She'd never lie to us! The cure must be out there, it must!
+segments: ! 0.00
+req: MoonLanding
+
+:4
+audio: green wrongway-red
+text: No not that way! You have to go into the desert!
+segments: ! 0.00
+req: GreenMeeting
+exclude: RedMeeting
+cpl: false
+trigger: true
+
+:5
+audio: green wrongway-yellow
+text: No not that way! You have to go into the jungle beyond the silos!
+segments: ! 0.00
+req: RedMeeting-Green
+exclude: YellowMeeting
+cpl: false
+trigger: true
+
+:6
+audio: green wrongway-metal
+text: No not that way! You have to go beyond the desert!
+segments: ! 0.00
+req: YellowMeeting-Green
+exclude: MetalMeeting
+cpl: false
+trigger: true
