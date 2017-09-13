@@ -4756,9 +4756,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: 8a4bbb4c391817c4f8caaae0288bbf83, type: 3}
+  voiceLineText: 
   eventReq: MoonLanding
+  eventReqExclude: 
   triggerEvent: 
   checkPointLine: 1
+  triggerLine: 0
   played: 0
 --- !u!114 &1378172598
 MonoBehaviour:
@@ -4772,9 +4775,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: 9200cea30f2bc9349abfeca2666df3f7, type: 3}
+  voiceLineText: 
   eventReq: 
+  eventReqExclude: 
   triggerEvent: BlueMeeting
   checkPointLine: 1
+  triggerLine: 0
   played: 0
 --- !u!82 &1378172599
 AudioSource:
@@ -4869,6 +4875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baec8ceac9609dc448cadd3efa4966cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineFileName: Blue.txt
   voiceLines:
   - {fileID: 1378172598}
   - {fileID: 1378172597}

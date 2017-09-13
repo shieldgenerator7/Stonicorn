@@ -554,6 +554,11 @@ Prefab:
       propertyPath: voiceLines.Array.data[0]
       value: 
       objectReference: {fileID: 335941918}
+    - target: {fileID: 114265895427675804, guid: 2ad61e15f4bda9547ad320b12063fb6f,
+        type: 2}
+      propertyPath: lineFileName
+      value: Moonicorn.txt
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ad61e15f4bda9547ad320b12063fb6f, type: 2}
   m_IsPrefabParent: 0
@@ -574,9 +579,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceLine: {fileID: 8300000, guid: 7223d2552aca54c4891910f36d684cd5, type: 3}
+  voiceLineText: 
   eventReq: 
+  eventReqExclude: 
   triggerEvent: MoonLanding
   checkPointLine: 1
+  triggerLine: 0
   played: 0
 --- !u!1001 &342684327
 Prefab:
