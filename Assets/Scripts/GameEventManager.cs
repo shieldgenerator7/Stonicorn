@@ -47,7 +47,7 @@ public class GameEventManager : SavableMonoBehaviour {
             && newEvent != ""
             && !instance.events.Contains(newEvent))
         {
-            instance.events.Add(newEvent);
+            instance.events.Add(newEvent.Trim());
         }
     }
     public static bool eventHappened(string eventName)
@@ -56,6 +56,6 @@ public class GameEventManager : SavableMonoBehaviour {
         {
             return true;
         }
-        return instance.events.Contains(eventName);
+        return instance.events.Contains(eventName.Trim());
     }
 }

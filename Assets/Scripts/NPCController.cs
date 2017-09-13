@@ -41,7 +41,7 @@ public class NPCController : SavableMonoBehaviour
             npcTextStyle.wordWrap = true;
             npcTextStyle.alignment = TextAnchor.UpperCenter;
         }
-        if (lineFileName != null)
+        if (lineFileName != null && lineFileName != "")
         {
             //voiceLines = new List<NPCVoiceLine>();//2017-09-05 ommitted until text files are filled out
             int writeIndex = -1;
@@ -286,7 +286,7 @@ public class NPCController : SavableMonoBehaviour
     /// <param name="timePos">The playback time</param>
     public void setVoiceLine(int index, float timePos = 0)
     {
-        if (index >= 0)
+        if (index >= 0 && index < voiceLines.Count)
         {
             currentVoiceLineIndex = index;
             source.clip = voiceLines[index].voiceLine;
@@ -298,6 +298,10 @@ public class NPCController : SavableMonoBehaviour
         }
         else
         {
+            if (index != -1)
+            {
+                Debug.LogError(gameObject.name + ".setVoiceLine: invalid index: " + index);
+            }
             if (source != null && source.isPlaying)
             {
                 source.Stop();
