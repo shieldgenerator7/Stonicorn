@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCVoiceLine: SavableMonoBehaviour {
+public class NPCVoiceLine {
 
     //Settings
     public AudioClip voiceLine;
     public string voiceLineText;//the text that will show up as subtitles
     public string eventReq = null;//the NPC will only say the voice line if the given event has happened
+    public string eventReqExclude = null;//this line will not be said after this event has happened
     public string triggerEvent = null;//the event this voiceline will trigger, if any
     public bool checkPointLine = true;//true: if this line has played, prev lines can not be played
     public bool triggerLine = false;//true: this line only plays when the player enters a trigger
-    public string eventReqExclude = null;//this line will not be said after this event has happened
     /// <summary>
     /// Each segment of text is separated by a comma or period,
     /// and is associated with a time in the audio when it begins
@@ -94,15 +94,5 @@ public class NPCVoiceLine: SavableMonoBehaviour {
     public bool hasExcludeRequirement()
     {
         return eventReqExclude != null && eventReqExclude.Trim() != "";
-    }
-
-    public override SavableObject getSavableObject()
-    {
-        return new SavableObject(this,
-            "played", played);
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        played = (bool)savObj.data["played"];
     }
 }
