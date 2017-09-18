@@ -20,6 +20,10 @@ public class NPCController : SavableMonoBehaviour
     /// -1 if none
     /// </summary>
     public int currentVoiceLineIndex = -1;
+    /// <summary>
+    /// The index of the checkpoint voiceline that last played
+    /// </summary>
+    public int lastPlayedCheckPointLineIndex = -1;
 
     // Use this for initialization
     protected virtual void Start()
@@ -137,13 +141,15 @@ public class NPCController : SavableMonoBehaviour
     {
         return new SavableObject(this,
             "currentVoiceLineIndex", currentVoiceLineIndex,
-            "playBackTime", source.time);
+            "playBackTime", source.time,
+            "lastPlayedCheckPointLineIndex", lastPlayedCheckPointLineIndex);
     }
     public override void acceptSavableObject(SavableObject savObj)
     {
         currentVoiceLineIndex = (int)savObj.data["currentVoiceLineIndex"];
         float playBackTime = (float)savObj.data["playBackTime"];
         setVoiceLine(currentVoiceLineIndex, playBackTime);
+        lastPlayedCheckPointLineIndex = (int)savObj.data["lastPlayedCheckPointLineIndex"];
     }
 
     // Update is called once per frame
@@ -161,6 +167,7 @@ public class NPCController : SavableMonoBehaviour
                     setVoiceLine(mrvli);
                     NPCVoiceLine npcvl = voiceLines[mrvli];
                     npcvl.played = true;
+                    lastPlayedCheckPointLineIndex = mrvli;
                     if (npcvl.triggerEvent != null)
                     {
                         GameEventManager.addEvent(npcvl.triggerEvent);
@@ -262,7 +269,7 @@ public class NPCController : SavableMonoBehaviour
     }
     public int getMostRelevantVoiceLineIndex()
     {
-        for (int i = voiceLines.Count - 1; i >= 0; i--)
+        for (int i = voiceLines.Count - 1; i > lastPlayedCheckPointLineIndex; i--)
         {
             NPCVoiceLine npcvl = voiceLines[i];
             if (!npcvl.triggerLine && !npcvl.played
