@@ -833,8 +833,6 @@ GameObject:
   - component: {fileID: 178457406}
   - component: {fileID: 178457411}
   - component: {fileID: 178457405}
-  - component: {fileID: 178457413}
-  - component: {fileID: 178457414}
   m_Layer: 0
   m_Name: metalcorn
   m_TagString: Untagged
@@ -933,10 +931,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ece9d7cb888e245871d0b81a91f523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceLines:
-  - {fileID: 178457413}
-  - {fileID: 178457414}
+  lineFileName: Metal.txt
   currentVoiceLineIndex: -1
+  lastPlayedCheckPointLineIndex: -1
   powerCube: {fileID: 817229138}
   powerConsumptionRate: 3
 --- !u!60 &178457407
@@ -1124,42 +1121,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &178457413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 178457404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  voiceLine: {fileID: 8300000, guid: f14d3b32fe196b041b670395a0686236, type: 3}
-  eventReq: 
-  triggerEvent: MetalMeeting
-  checkPointLine: 1
-  triggerLine: 0
-  eventReqExclude: 
-  played: 0
---- !u!114 &178457414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 178457404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  voiceLine: {fileID: 8300000, guid: a36446f73c0033740b5462a9ceb839dd, type: 3}
-  eventReq: MoonLanding
-  triggerEvent: 
-  checkPointLine: 1
-  triggerLine: 0
-  eventReqExclude: 
-  played: 0
 --- !u!1001 &206726515
 Prefab:
   m_ObjectHideFlags: 0
@@ -17614,7 +17575,6 @@ GameObject:
   - component: {fileID: 1607837204}
   - component: {fileID: 1607837203}
   - component: {fileID: 1607837209}
-  - component: {fileID: 1607837208}
   m_Layer: 0
   m_Name: tut ghost shield
   m_TagString: Untagged
@@ -17742,24 +17702,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
---- !u!114 &1607837208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1607837202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92e62d4d109228d4780209247afac2a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  voiceLine: {fileID: 8300000, guid: 66f4e8c917287cd4dae5d1e6bf73dfcc, type: 3}
-  eventReq: 
-  triggerEvent: 
-  checkPointLine: 1
-  triggerLine: 0
-  eventReqExclude: 
-  played: 0
 --- !u!114 &1607837209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17771,9 +17713,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baec8ceac9609dc448cadd3efa4966cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceLines:
-  - {fileID: 1607837208}
+  lineFileName: TutGhost.txt
   currentVoiceLineIndex: -1
+  lastPlayedCheckPointLineIndex: -1
 --- !u!1 &1609370425
 GameObject:
   m_ObjectHideFlags: 0

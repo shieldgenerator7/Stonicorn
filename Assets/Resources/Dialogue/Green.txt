@@ -1,0 +1,60 @@
+:0
+audio: green greeting
+text: Oh, another one! Do you happen to remember anything about being turned to stone? Probably not. But I hear there's a cure. If you can find a way to the moon, the moonicorn might be able to help you. I myself have tried but have gotten stuck here. The lady unicorn to the east has gotten farther than me. Maybe she can help you. Would you, perhaps, say hi to her for me?
+segments: ! 0.00 > ? 2.36 > . 5.977 > . 7.522 > , 9.108 > . 10.497 > . 13.214 > . 16.060 > . 18.967 > ? 20.858
+req:
+exclude:
+event: GreenMeeting
+cpl: true
+trigger: false
+
+:1
+audio: green_redmeeting
+text: Well I guess she didn't know anything then. Oh well. Did you at least say hi to her for me? Well there's a yellow unicorn to the west. He might know something. You should go ask him.
+segments: . 0.00 > . 1.931 > ? 3.1 > . 6.883 > . 9.181 > . 10.35
+req: RedMeeting
+exclude: 
+event: RedMeeting-Green
+cpl: true
+trigger: false
+
+:2
+audio: green_yellowmeeting
+text: Ok. I guess he didn't know anything. Wait! There's a metalcorn to the east of the red unicorn. He's the keeper of all info. He will know for sure. It's just a tad bit difficult to get him to talk.
+segments: . 0.00 > . 1.124 > ! 2.52 > . 3.451 > . 6.243 > . 8.24 > . 9.830
+req: YellowMeeting
+event: YellowMeeting-Green
+
+:3
+audio: green_moonlanding
+text: I-I don't believe it! The moonicorn wouldn't lie to us! She wouldn't! The cure is out there, I just know it!
+segments: ! 0.00 > ! 1.572 > ! 3.094 > ! 4.049
+req: MoonLanding
+event: MoonLanding-Green
+
+:4
+audio: green wrongway-red
+text: No not that way! She's in the desert!
+segments: ! 0.00 > ! 1.296
+req: GreenMeeting
+exclude: RedMeeting
+cpl: false
+trigger: true
+
+:5
+audio: green wrongway-yellow
+text: No he's the other way! In the jungle past the silos.
+segments: ! 0.00 > . 1.741
+req: RedMeeting-Green
+exclude: YellowMeeting
+cpl: false
+trigger: true
+
+:6
+audio: green wrongway-metal
+text: No he's the other way! In the factory on the other side of the desert.
+segments: ! 0.00 > . 1.298
+req: YellowMeeting-Green
+exclude: MetalMeeting
+cpl: false
+trigger: true
