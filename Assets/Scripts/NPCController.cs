@@ -44,6 +44,7 @@ public class NPCController : SavableMonoBehaviour
             npcTextStyle.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
             npcTextStyle.wordWrap = true;
             npcTextStyle.alignment = TextAnchor.UpperCenter;
+            Debug.Log(npcTextStyle.alignment);
         }
         if (lineFileName != null && lineFileName != "")
         {
@@ -132,7 +133,7 @@ public class NPCController : SavableMonoBehaviour
             // on what didn't work
             catch (System.Exception e)
             {
-                Debug.LogError("{0} " + e.Message+ "\n"+e.StackTrace);
+                Debug.LogError("{0} lineFileName: "+lineFileName +"\n>>>" + e.Message+ "\n"+e.StackTrace);
             }
         }
     }
