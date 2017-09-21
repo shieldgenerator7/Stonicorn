@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CameraController : MonoBehaviour
 {
 
     public GameObject player;
+    public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
 
     private Vector3 offset;
     private Quaternion rotation;//the rotation the camera should be rotated towards
@@ -15,6 +17,8 @@ public class CameraController : MonoBehaviour
     private bool wasDelayed = false;
     private GestureManager gm;
     private PlayerController plyrController;
+    private float zoomStartTime = 0.0f;//when the zoom last started
+    private float startZoomScale;//the orthographicsize at the start and end of a zoom
 
     private int prevScreenWidth;
     private int prevScreenHeight;
@@ -39,7 +43,7 @@ public class CameraController : MonoBehaviour
             return scalePoint;
         }
     }
-    ArrayList scalePoints = new ArrayList();
+    List<ScalePoint> scalePoints = new List<ScalePoint>();
     int scalePointIndex = 1;//the index of the current scalePoint in scalePoints
     public static int SCALEPOINT_DEFAULT = 2;//the index of the default scalepoint
     public static int SCALEPOINT_TIMEREWIND = 3;//the index of the time rewind mechanic
@@ -59,8 +63,9 @@ public class CameraController : MonoBehaviour
         scalePoints.Add(new ScalePoint(1, true, plyrController));
         scalePoints.Add(new ScalePoint(2, true, plyrController));
         scalePoints.Add(new ScalePoint(4, true, plyrController));
-        //
+        //Set the initialize scale point
         setScalePoint(1);
+        scale = scalePoints[scalePointIndex].absoluteScalePoint();
 
     }
 
@@ -71,6 +76,10 @@ public class CameraController : MonoBehaviour
             prevScreenWidth = Screen.width;
             prevScreenHeight = Screen.height;
             updateOrthographicSize();
+        }
+        if (zoomStartTime != 0)
+        {
+            zoomToScalePoint();
         }
     }
 
@@ -184,20 +193,18 @@ public class CameraController : MonoBehaviour
         this.rotation = rotation;
     }
 
-    public void setScalePoint(int scalePointIndex)
+    public void zoomToScalePoint()
     {
-        if (scalePointIndex < 0)
-        {
-            scalePointIndex = 0;
-        }
-        else if (scalePointIndex > scalePoints.Count - 1)
-        {
-            scalePointIndex = scalePoints.Count - 1;
-        }
-        this.scalePointIndex = scalePointIndex;
-        //Set the size
-        scale = ((ScalePoint)scalePoints[scalePointIndex]).absoluteScalePoint();
+        float absSP = scalePoints[scalePointIndex].absoluteScalePoint();
+        scale = Mathf.Lerp(
+            startZoomScale,
+            absSP,
+            (Time.time - zoomStartTime)/zoomSpeed);
         updateOrthographicSize();
+        if (scale == absSP)
+        {
+            zoomStartTime = startZoomScale = 0.0f;
+        }
 
         //Make sure player is still in view
         float width = Vector3.Distance(cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0)), cam.ScreenToWorldPoint(new Vector3(0, 0)));
@@ -211,6 +218,30 @@ public class CameraController : MonoBehaviour
             offset.z = prevZ;
             refocus();
         }
+    }
+
+    public void setScalePoint(int scalePointIndex)
+    {
+        //Start the zoom-over-time process
+        if (startZoomScale == 0)
+        {
+            startZoomScale = scalePoints[this.scalePointIndex].absoluteScalePoint();
+        }
+        else
+        {
+            startZoomScale = scale;
+        }
+        zoomStartTime = Time.time;
+        //Set the new scale point index
+        if (scalePointIndex < 0)
+        {
+            scalePointIndex = 0;
+        }
+        else if (scalePointIndex > scalePoints.Count - 1)
+        {
+            scalePointIndex = scalePoints.Count - 1;
+        }
+        this.scalePointIndex = scalePointIndex;
     }
     public void adjustScalePoint(int addend)
     {
