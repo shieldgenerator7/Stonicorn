@@ -90,6 +90,7 @@ public class EnemySimple : MonoBehaviour
             {
                 if (senseFloorInFront() == null) //there's a cliff up ahead
                 {
+                    Logger.log(this.gameObject, "Switchdir cliff ahead");
                     switchDirection();
                     rb2d.AddForce(rb2d.mass * direction * rb2d.velocity.magnitude * 4);
                 }
@@ -98,12 +99,14 @@ public class EnemySimple : MonoBehaviour
                 {
                     if (!wall.GetComponent<Rigidbody>() && !wall.GetComponent<HardMaterial>())
                     {
+                        Logger.log(this.gameObject, "Switchdir hitting wall: " + wall.name);
                         switchDirection();
                     }
                 }
             }
             if (!healing && rb2d.velocity.magnitude < 0.01f)
             {
+                Logger.log(this.gameObject, "Switchdir velocity less than threshold: " + rb2d.velocity.magnitude);
                 switchDirection();
             }
         }
@@ -117,6 +120,7 @@ public class EnemySimple : MonoBehaviour
         {
             if (coll.gameObject.GetComponent<HardMaterial>() == null && coll.gameObject.GetComponent<Rigidbody2D>() == null)
             {
+                Logger.log(this.gameObject, "Switchdir after collision: " + coll.gameObject.name);
                 switchDirection();
             }
         }
@@ -125,6 +129,7 @@ public class EnemySimple : MonoBehaviour
     {
         if (!coll.isTrigger && coll.gameObject.GetComponent<HardMaterial>() == null && coll.gameObject.GetComponent<Rigidbody2D>() == null)
         {
+            Logger.log(this.gameObject, "Switchdir after tigger entered: " + coll.gameObject.name);
             switchDirection();
         }
     }
@@ -160,7 +165,7 @@ public class EnemySimple : MonoBehaviour
         Vector2 ahead = direction;
         Vector2 length = direction * 0.1f;
         Vector2 senseDir = ahead + length;
-        Debug.DrawLine((Vector2)transform.position + ahead, senseDir + (Vector2)transform.position, Color.green);
+        Debug.DrawLine((Vector2)transform.position + ahead, (Vector2)transform.position + senseDir, Color.green);
         RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position + ahead, length, 1);
         if (rch2d)
         {
@@ -175,7 +180,7 @@ public class EnemySimple : MonoBehaviour
     /// <returns></returns>
     bool isGrounded()
     {
-        int amount = groundCollider.Cast(-transform.up, rch2ds,0,true);
+        int amount = groundCollider.Cast(-transform.up, rch2ds, 0, true);
         for (int i = 0; i < amount; i++)
         {
             RaycastHit2D rch2d = rch2ds[i];
