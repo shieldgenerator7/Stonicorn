@@ -102,7 +102,7 @@ public class EnemySimple : MonoBehaviour
                     }
                 }
             }
-            if (rb2d.velocity.magnitude < 0.01f)
+            if (!healing && rb2d.velocity.magnitude < 0.01f)
             {
                 switchDirection();
             }
