@@ -175,8 +175,9 @@ public class EnemySimple : MonoBehaviour
         float distance = 0.1f;
         Vector2 length = direction * distance;
         Vector2 senseDir = ahead + length;
-        Debug.DrawLine((Vector2)transform.position + ahead, (Vector2)transform.position + senseDir, Color.green);
-        RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position + ahead, length, distance);
+        Vector2 offset = transform.up.normalized * 0.25f;
+        Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);
+        RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position +offset + ahead, length, distance);
         if (rch2d)
         {
             return rch2d.collider.gameObject;
