@@ -436,6 +436,8 @@ MonoBehaviour:
   speed: 7.5
   healsPerSecond: 5
   activeMove: 0
+  allowedLeftAndRightVariance: 15
+  directionSwitchCooldown: 0.1
   fearParticles: {fileID: 198426820644929714}
 --- !u!198 &198426820644929714
 ParticleSystem:

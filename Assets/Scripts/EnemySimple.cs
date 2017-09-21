@@ -9,12 +9,15 @@ public class EnemySimple : MonoBehaviour
     public float healsPerSecond = 5.0f;
     public bool activeMove = false;//controls whether it can move or not
     public float allowedLeftAndRightVariance = 25.0f;//used to determine if a colliding object is left or right of this enemy
+    public float directionSwitchCooldown = 0.5f;//how many seconds after switching direction this enemy can switch it again
 
     public ParticleSystem fearParticles;//the particle system that activates when the enemy is frightened
 
     private Vector2 direction = Vector2.left;
+    private bool mustSwitchDirection = false;//whether or not switch direction should be called
+    private float lastDirectionSwitchTime = 0.0f;//the last time that the direction was switched
+    private bool quickTurn = false;//switch direction but quickly turn again
     private bool goingRight = true;//whether the bug is going right relative to its orientation
-    private float maxSpeedReached = 0;//highest speed reached since starting in this direction
     private bool healing = false;
     private bool losToPlayer = false;//"Line Of Sight to Player": whether this bug can see the player
     private static RaycastHit2D[] rch2ds = new RaycastHit2D[10];//for processing collider casts
@@ -34,6 +37,7 @@ public class EnemySimple : MonoBehaviour
         gravity = GetComponent<GravityAccepter>();
         direction = Utility.PerpendicularLeft(transform.up).normalized;
         player = GameManager.getPlayerObject();
+        direction = transform.right;
     }
 
     private void Update()
@@ -81,35 +85,48 @@ public class EnemySimple : MonoBehaviour
             {
                 rb2d.AddForce(rb2d.mass * direction * tempSpeed);
             }
-            if (rb2d.velocity.magnitude > maxSpeedReached)
-            {
-                maxSpeedReached = rb2d.velocity.magnitude;
-            }
+            rb2d.AddForce(rb2d.mass * - transform.up * 0.1f);
             //Cliff detection
             if (!losToPlayer) //nothing between it and the player
             {
                 if (senseFloorInFront() == null) //there's a cliff up ahead
                 {
                     Logger.log(this.gameObject, "Switchdir cliff ahead");
-                    switchDirection();
-                    rb2d.AddForce(rb2d.mass * direction * rb2d.velocity.magnitude * 4);
-                }
-                GameObject wall = senseWallInFront();
-                if (wall != null)
-                {
-                    if (!wall.GetComponent<Rigidbody>() && !wall.GetComponent<HardMaterial>())
-                    {
-                        Logger.log(this.gameObject, "Switchdir hitting wall: " + wall.name);
-                        switchDirection();
-                    }
+                    mustSwitchDirection = true;
                 }
             }
-            if (!healing && rb2d.velocity.magnitude < 0.01f)
+            GameObject wall = senseWallInFront();
+            if (wall != null)
             {
-                Logger.log(this.gameObject, "Switchdir velocity less than threshold: " + rb2d.velocity.magnitude);
-                switchDirection();
+                if (!wall.GetComponent<Rigidbody>() && !wall.GetComponent<HardMaterial>())
+                {
+                    Logger.log(this.gameObject, "Switchdir hitting wall: " + wall.name);
+                    mustSwitchDirection = true;
+                }
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (mustSwitchDirection || quickTurn)
+        {
+            if (Time.time - lastDirectionSwitchTime >= directionSwitchCooldown)
+            {
+                lastDirectionSwitchTime = Time.time;
+                switchDirection();
+                if (isGrounded())
+                {
+                    rb2d.AddForce(rb2d.mass * rb2d.velocity.magnitude * direction);
+                }
+                //if it switched because of quickTurn, turn quickTurn off
+                if (!mustSwitchDirection)
+                {
+                    quickTurn = false;
+                }
+            }
+        }
+        mustSwitchDirection = false;
     }
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -118,33 +135,25 @@ public class EnemySimple : MonoBehaviour
         float angle = Vector2.Angle(transform.up, coll.contacts[0].point - (Vector2)transform.position);
         if (angle > 90 - allowedLeftAndRightVariance && angle < 90 + allowedLeftAndRightVariance)
         {
-            if (coll.gameObject.GetComponent<HardMaterial>() == null && coll.gameObject.GetComponent<Rigidbody2D>() == null)
+            Logger.log(this.gameObject, "Switchdir after collision: " + coll.gameObject.name);
+            mustSwitchDirection = true;
+            if (coll.gameObject.GetComponent<HardMaterial>() != null || coll.gameObject.GetComponent<Rigidbody2D>() != null)
             {
-                Logger.log(this.gameObject, "Switchdir after collision: " + coll.gameObject.name);
-                switchDirection();
+                quickTurn = true;
             }
-        }
-    }
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (!coll.isTrigger && coll.gameObject.GetComponent<HardMaterial>() == null && coll.gameObject.GetComponent<Rigidbody2D>() == null)
-        {
-            Logger.log(this.gameObject, "Switchdir after tigger entered: " + coll.gameObject.name);
-            switchDirection();
         }
     }
 
     void switchDirection()
     {
-        maxSpeedReached = 0;
         goingRight = !goingRight;
         if (goingRight)
         {
-            direction = Utility.PerpendicularRight(transform.up).normalized;
+            direction = transform.right;
         }
         else
         {
-            direction = Utility.PerpendicularLeft(transform.up).normalized;
+            direction = -transform.right;
         }
     }
 
@@ -163,10 +172,11 @@ public class EnemySimple : MonoBehaviour
     GameObject senseWallInFront()
     {
         Vector2 ahead = direction;
-        Vector2 length = direction * 0.1f;
+        float distance = 0.1f;
+        Vector2 length = direction * distance;
         Vector2 senseDir = ahead + length;
         Debug.DrawLine((Vector2)transform.position + ahead, (Vector2)transform.position + senseDir, Color.green);
-        RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position + ahead, length, 1);
+        RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position + ahead, length, distance);
         if (rch2d)
         {
             return rch2d.collider.gameObject;
