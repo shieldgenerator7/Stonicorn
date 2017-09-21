@@ -8,6 +8,7 @@ public class EnemySimple : MonoBehaviour
     public float speed = 1.0f;//units per second
     public float healsPerSecond = 5.0f;
     public bool activeMove = false;//controls whether it can move or not
+    public float allowedLeftAndRightVariance = 25.0f;//used to determine if a colliding object is left or right of this enemy
 
     public ParticleSystem fearParticles;//the particle system that activates when the enemy is frightened
 
@@ -110,14 +111,19 @@ public class EnemySimple : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (rb2d.velocity.magnitude < maxSpeedReached / 2)
+        //If the object is left or ride of this enemy
+        float angle = Vector2.Angle(transform.up, coll.contacts[0].point - (Vector2)transform.position);
+        if (angle > 90 - allowedLeftAndRightVariance && angle < 90 + allowedLeftAndRightVariance)
         {
-            switchDirection();
+            if (coll.gameObject.GetComponent<HardMaterial>() == null && coll.gameObject.GetComponent<Rigidbody2D>() == null)
+            {
+                switchDirection();
+            }
         }
     }
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!coll.isTrigger && coll.gameObject.GetComponent<Rigidbody2D>() == null)
+        if (!coll.isTrigger && coll.gameObject.GetComponent<HardMaterial>() == null && coll.gameObject.GetComponent<Rigidbody2D>() == null)
         {
             switchDirection();
         }
