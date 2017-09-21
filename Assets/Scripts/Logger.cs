@@ -23,7 +23,7 @@ public class Logger: MonoBehaviour {
     {
         if (instance.logObjects.Contains(go.name))
         {
-            Debug.Log(message + "   (" + go.name + ")");
+            Debug.Log(go.name + " >>> "+ message);
         }
     }
 }
