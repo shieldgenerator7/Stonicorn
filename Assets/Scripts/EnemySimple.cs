@@ -91,7 +91,7 @@ public class EnemySimple : MonoBehaviour
             {
                 if (senseFloorInFront() == null) //there's a cliff up ahead
                 {
-                    Logger.log(this.gameObject, "Switchdir cliff ahead");
+                    //Logger.log(this.gameObject, "Switchdir cliff ahead");
                     mustSwitchDirection = true;
                 }
             }
@@ -100,7 +100,7 @@ public class EnemySimple : MonoBehaviour
             {
                 if (!wall.GetComponent<Rigidbody>() && !wall.GetComponent<HardMaterial>())
                 {
-                    Logger.log(this.gameObject, "Switchdir hitting wall: " + wall.name);
+                    //Logger.log(this.gameObject, "Switchdir hitting wall: " + wall.name);
                     mustSwitchDirection = true;
                 }
             }
@@ -135,7 +135,7 @@ public class EnemySimple : MonoBehaviour
         float angle = Vector2.Angle(transform.up, coll.contacts[0].point - (Vector2)transform.position);
         if (angle > 90 - allowedLeftAndRightVariance && angle < 90 + allowedLeftAndRightVariance)
         {
-            Logger.log(this.gameObject, "Switchdir after collision: " + coll.gameObject.name);
+            //Logger.log(this.gameObject, "Switchdir after collision: " + coll.gameObject.name);
             mustSwitchDirection = true;
             if (coll.gameObject.GetComponent<HardMaterial>() != null || coll.gameObject.GetComponent<Rigidbody2D>() != null)
             {
