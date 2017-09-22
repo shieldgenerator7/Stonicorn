@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public bool load = false;
     public bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
     public int chosenId = 0;
-    public int amount = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
     public GameObject npcTalkEffect;//the particle system for the visual part of NPC talking
     public AudioSource timeRewindMusic;//the music to play while time rewinds
@@ -48,10 +47,9 @@ public class GameManager : MonoBehaviour
             sceneLoaders.Add(go.GetComponent<SceneLoader>());
         }
         camCtr = FindObjectOfType<CameraController>();
-        CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-        cam.pinPoint();
-        cam.recenter();
-        cam.refocus();
+        camCtr.pinPoint();
+        camCtr.recenter();
+        camCtr.refocus();
         gestureManager = FindObjectOfType<GestureManager>();
         musicManager = FindObjectOfType<MusicManager>();
         chosenId = -1;
@@ -204,7 +202,6 @@ public class GameManager : MonoBehaviour
     public static void Save()
     {
         instance.gameStates.Add(new GameState(instance.gameObjects));
-        instance.amount++;
         instance.chosenId++;
         instance.rewindId++;
     }
