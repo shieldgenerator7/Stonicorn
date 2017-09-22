@@ -44,4 +44,11 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.UnloadSceneAsync(sceneName);
     }
+    public void unloadLevelIfLoaded()
+    {
+        if (isLoaded)
+        {
+            unloadLevel();
+        }
+    }
 }
