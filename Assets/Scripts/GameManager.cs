@@ -66,25 +66,25 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneUnloaded += sceneUnloaded;
         FindObjectOfType<Canvas>().gameObject.AddComponent<Fader>();
     }
+
     /// <summary>
     /// Resets the game back to the very beginning
     /// </summary>
-    public void newGame()
+    public static void newGame()
     {
-        playerObject.transform.position = Vector2.zero;
-        chosenId = -1;
-        rewindId = 0;
-        respawnTime = 0;
+        //Save previous game
+        Save();
+        instance.saveToFile();
+        //Unload all scenes and reload PlayerScene
+        SceneManager.UnloadSceneAsync("SceneLoaderTriggers");
+        SceneManager.UnloadSceneAsync("CheckPointScene");
+        SceneManager.UnloadSceneAsync("PlayerScene");
+        instance = null;
         lastTalkingNPC = null;
-        gameStates.Clear();
-        gameObjects.Clear();
-        activeCheckPoints.Clear();
-        memories.Clear();
-        foreach (SceneLoader sl in sceneLoaders)
-        {
-            sl.unloadLevelIfLoaded();
-        }
-        loadedSceneCount = 0;
+        playerObject = null;
+        GameManager.gameManagerTapProcessed = null;
+        SceneManager.LoadSceneAsync("PlayerScene");
+
     }
     public static void addObject(GameObject go)
     {
