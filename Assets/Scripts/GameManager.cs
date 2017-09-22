@@ -76,14 +76,9 @@ public class GameManager : MonoBehaviour
         Save();
         instance.saveToFile();
         //Unload all scenes and reload PlayerScene
-        SceneManager.UnloadSceneAsync("SceneLoaderTriggers");
-        SceneManager.UnloadSceneAsync("CheckPointScene");
-        SceneManager.UnloadSceneAsync("PlayerScene");
         instance = null;
-        lastTalkingNPC = null;
-        playerObject = null;
-        GameManager.gameManagerTapProcessed = null;
-        SceneManager.LoadSceneAsync("PlayerScene");
+        GameState.nextid = 0;
+        SceneManager.LoadScene("PlayerScene");
 
     }
     public static void addObject(GameObject go)
