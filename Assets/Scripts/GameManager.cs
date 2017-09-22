@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
     private List<string> newlyLoadedScenes = new List<string>();
     private int loadedSceneCount = 0;
     private string unloadedScene = null;
+    private static float resetGameTimer = 0.0f;//the time that the game will reset at
+    private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
 
     // Use this for initialization
     void Start()
@@ -70,7 +72,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Resets the game back to the very beginning
     /// </summary>
-    public static void newGame()
+    public static void resetGame()
     {
         //Save previous game
         Save();
@@ -79,8 +81,36 @@ public class GameManager : MonoBehaviour
         instance = null;
         GameState.nextid = 0;
         SceneManager.LoadScene("PlayerScene");
-
     }
+    /// <summary>
+    /// Schedules the game reset in the future
+    /// </summary>
+    /// <param name="timeUntilReset">How many seconds until the reset should occur</param>
+    public static void setResetTimer(float timeUntilReset)
+    {
+        if (timeUntilReset < 0)
+        {
+            timeUntilReset = 0;
+        }
+        gamePlayTime = timeUntilReset;
+        if (gamePlayTime != 0)
+        {
+            resetGameTimer = gamePlayTime + Time.time;
+        }
+        else
+        {
+            resetGameTimer = 0;
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (Time.time < resetGameTimer)
+        {
+            GUI.Label(Camera.main.pixelRect, "Time left: " + (resetGameTimer - Time.time));
+        }
+    }
+
     public static void addObject(GameObject go)
     {
         instance.gameObjects.Add(go);
@@ -153,6 +183,14 @@ public class GameManager : MonoBehaviour
         if (gameStates.Count == 0 && loadedSceneCount > 0)
         {
             Save();
+        }
+        if (gamePlayTime > 0)
+        {
+            if (Time.time >= resetGameTimer)
+            {
+                setResetTimer(gamePlayTime);
+                resetGame();
+            }
         }
     }
 
