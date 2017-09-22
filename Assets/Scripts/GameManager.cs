@@ -66,6 +66,26 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneUnloaded += sceneUnloaded;
         FindObjectOfType<Canvas>().gameObject.AddComponent<Fader>();
     }
+    /// <summary>
+    /// Resets the game back to the very beginning
+    /// </summary>
+    public void newGame()
+    {
+        playerObject.transform.position = Vector2.zero;
+        chosenId = -1;
+        rewindId = 0;
+        respawnTime = 0;
+        lastTalkingNPC = null;
+        gameStates.Clear();
+        gameObjects.Clear();
+        activeCheckPoints.Clear();
+        memories.Clear();
+        foreach (SceneLoader sl in sceneLoaders)
+        {
+            sl.unloadLevelIfLoaded();
+        }
+        loadedSceneCount = 0;
+    }
     public static void addObject(GameObject go)
     {
         instance.gameObjects.Add(go);
