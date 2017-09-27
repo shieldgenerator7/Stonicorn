@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     private string unloadedScene = null;
     private static float resetGameTimer = 0.0f;//the time that the game will reset at
     private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
+    public GameObject endDemoScreen;//the picture to show the player after the game resets
 
     // Use this for initialization
     void Start()
@@ -100,6 +101,17 @@ public class GameManager : MonoBehaviour
         else
         {
             resetGameTimer = 0;
+        }
+        instance.showEndDemoScreen(false);
+    }
+
+    private void showEndDemoScreen(bool show)
+    {
+        endDemoScreen.SetActive(show);
+        if (show)
+        {
+            endDemoScreen.transform.position = (Vector2)Camera.main.transform.position;
+            endDemoScreen.transform.localRotation = Camera.main.transform.localRotation;
         }
     }
 
@@ -188,8 +200,12 @@ public class GameManager : MonoBehaviour
         {
             if (Time.time >= resetGameTimer)
             {
-                setResetTimer(gamePlayTime);
-                resetGame();
+                showEndDemoScreen(true);
+                if ((Input.GetMouseButton(0) || Input.touchCount > 0) && Time.time >= resetGameTimer + 10)//+10 for buffer period where input doesn't interrupt it
+                {
+                    setResetTimer(gamePlayTime);
+                    resetGame();
+                }
             }
         }
     }
