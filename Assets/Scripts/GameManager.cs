@@ -201,7 +201,8 @@ public class GameManager : MonoBehaviour
             if (Time.time >= resetGameTimer)
             {
                 showEndDemoScreen(true);
-                if ((Input.GetMouseButton(0) || Input.touchCount > 0) && Time.time >= resetGameTimer + 10)//+10 for buffer period where input doesn't interrupt it
+                if ((Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
+                    && Time.time >= resetGameTimer + 10)//+10 for buffer period where input doesn't interrupt it
                 {
                     setResetTimer(gamePlayTime);
                     resetGame();
