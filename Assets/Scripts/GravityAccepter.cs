@@ -11,7 +11,7 @@ public class GravityAccepter : MonoBehaviour {
     /// How many frames to wait for a GravityZone to add gravity
     /// before declaring it's outside a GravityZone
     /// </summary>
-    public int framesToWait = 10;
+    public int framesToWait = 100;
 
     //State
     private int framesWaited = 0;
