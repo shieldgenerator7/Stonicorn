@@ -36,7 +36,7 @@ public class NPCPrincessController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         if (hasTriggered)
         {
