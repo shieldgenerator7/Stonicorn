@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public bool load = false;
     public bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
     public int chosenId = 0;
-    public int amount = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
     public GameObject npcTalkEffect;//the particle system for the visual part of NPC talking
     public AudioSource timeRewindMusic;//the music to play while time rewinds
@@ -38,6 +37,9 @@ public class GameManager : MonoBehaviour
     private List<string> newlyLoadedScenes = new List<string>();
     private int loadedSceneCount = 0;
     private string unloadedScene = null;
+    private static float resetGameTimer = 0.0f;//the time that the game will reset at
+    private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
+    public GameObject endDemoScreen;//the picture to show the player after the game resets
 
     // Use this for initialization
     void Start()
@@ -48,10 +50,9 @@ public class GameManager : MonoBehaviour
             sceneLoaders.Add(go.GetComponent<SceneLoader>());
         }
         camCtr = FindObjectOfType<CameraController>();
-        CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-        cam.pinPoint();
-        cam.recenter();
-        cam.refocus();
+        camCtr.pinPoint();
+        camCtr.recenter();
+        camCtr.refocus();
         gestureManager = FindObjectOfType<GestureManager>();
         musicManager = FindObjectOfType<MusicManager>();
         chosenId = -1;
@@ -68,6 +69,60 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneUnloaded += sceneUnloaded;
         FindObjectOfType<Canvas>().gameObject.AddComponent<Fader>();
     }
+
+    /// <summary>
+    /// Resets the game back to the very beginning
+    /// </summary>
+    public static void resetGame()
+    {
+        //Save previous game
+        Save();
+        instance.saveToFile();
+        //Unload all scenes and reload PlayerScene
+        instance = null;
+        GameState.nextid = 0;
+        SceneManager.LoadScene("PlayerScene");
+    }
+    /// <summary>
+    /// Schedules the game reset in the future
+    /// </summary>
+    /// <param name="timeUntilReset">How many seconds until the reset should occur</param>
+    public static void setResetTimer(float timeUntilReset)
+    {
+        if (timeUntilReset < 0)
+        {
+            timeUntilReset = 0;
+        }
+        gamePlayTime = timeUntilReset;
+        if (gamePlayTime != 0)
+        {
+            resetGameTimer = gamePlayTime + Time.time;
+        }
+        else
+        {
+            resetGameTimer = 0;
+        }
+        instance.showEndDemoScreen(false);
+    }
+
+    private void showEndDemoScreen(bool show)
+    {
+        endDemoScreen.SetActive(show);
+        if (show)
+        {
+            endDemoScreen.transform.position = (Vector2)Camera.main.transform.position;
+            endDemoScreen.transform.localRotation = Camera.main.transform.localRotation;
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (Time.time < resetGameTimer)
+        {
+            GUI.Label(Camera.main.pixelRect, "Time left: " + (resetGameTimer - Time.time));
+        }
+    }
+
     public static void addObject(GameObject go)
     {
         instance.gameObjects.Add(go);
@@ -141,6 +196,19 @@ public class GameManager : MonoBehaviour
         {
             Save();
         }
+        if (gamePlayTime > 0)
+        {
+            if (Time.time >= resetGameTimer)
+            {
+                showEndDemoScreen(true);
+                if ((Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
+                    && Time.time >= resetGameTimer + 10)//+10 for buffer period where input doesn't interrupt it
+                {
+                    setResetTimer(gamePlayTime);
+                    resetGame();
+                }
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -204,7 +272,6 @@ public class GameManager : MonoBehaviour
     public static void Save()
     {
         instance.gameStates.Add(new GameState(instance.gameObjects));
-        instance.amount++;
         instance.chosenId++;
         instance.rewindId++;
     }
