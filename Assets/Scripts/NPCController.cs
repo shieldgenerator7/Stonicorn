@@ -11,6 +11,8 @@ public class NPCController : SavableMonoBehaviour
     public string lineFileName;//the file that has the list of voice lines in it
     public List<NPCVoiceLine> voiceLines;
 
+    public float interruptDistance = 10.0f;//if Merky goes further than this distance, the NPC stops talking
+
     private GameObject playerObject;
     private static GUIStyle npcTextStyle;
 
@@ -256,7 +258,7 @@ public class NPCController : SavableMonoBehaviour
         {
             return false;
         }
-        return Vector3.Distance(playerObject.transform.position, transform.position) > 10;
+        return Vector3.Distance(playerObject.transform.position, transform.position) > interruptDistance;
     }
 
     public NPCVoiceLine getMostRelevantVoiceLine()
