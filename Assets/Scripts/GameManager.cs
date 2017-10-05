@@ -362,9 +362,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public bool isRewinding()
+    public static bool isRewinding()
     {
-        return chosenId > rewindId;
+        return instance.chosenId > instance.rewindId;
     }
     public void cancelRewind()
     {

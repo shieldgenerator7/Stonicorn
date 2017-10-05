@@ -36,7 +36,7 @@ public class GestureProfile {
     }
     public virtual void processTapGesture(Vector3 curMPWorld)
     {
-        if (gm.isRewinding())
+        if (GameManager.isRewinding())
         {
             gm.cancelRewind();
         }
