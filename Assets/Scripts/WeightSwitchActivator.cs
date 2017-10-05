@@ -6,6 +6,7 @@ public class WeightSwitchActivator : MonoBehaviour {
     public bool pressed = false;
     public GameObject psgoSparks;
     private ParticleSystem psSparks;
+    public ParticleSystem psExhaust;
 
     // Use this for initialization
     void Start () {
@@ -45,11 +46,14 @@ public class WeightSwitchActivator : MonoBehaviour {
         {
             if(pressed){
                 psSparks.Play();
+                psExhaust.Play();
             }
             else
             {
                 psSparks.Pause();
                 psSparks.Clear();
+                psExhaust.Pause();
+                psExhaust.Clear();
             }
         }
     }

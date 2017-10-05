@@ -73,7 +73,7 @@ public class FloatCubeController : MonoBehaviour
         {
             if (psTrail != null)
             {
-                psTrail.transform.localRotation = transform.localRotation;
+                psTrail.transform.rotation = transform.rotation;
                 psTrail.Play();
             }
             if (psSparks != null)
