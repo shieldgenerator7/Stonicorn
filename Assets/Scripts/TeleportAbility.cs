@@ -56,17 +56,18 @@ public class TeleportAbility : PlayerAbility
             futureProjection.SetActive(true);
             futureProjection.transform.rotation = transform.rotation;
             futureProjection.transform.localScale = transform.localScale;
-            futureProjection.transform.position = pc.findTeleportablePosition(pos);
+            Vector2 futurePos = pc.findTeleportablePosition(pos);
+            futureProjection.transform.position = futurePos;
             if (frii == null)
             {
                 frii = Instantiate(teleportRangeIndicator);
                 friu = frii.GetComponent<TeleportRangeIndicatorUpdater>();
                 frii.GetComponent<SpriteRenderer>().enabled = false;
             }
-            frii.transform.position = (Vector2)pos;
+            frii.transform.position = futurePos;
             friu.setRange(range);
             //Particle effects
-            particleController.activateTeleportParticleSystem(true, effectColor, pos, range);
+            particleController.activateTeleportParticleSystem(true, effectColor, futurePos, range);
             if (circularProgressBar != null)
             {
                 circularProgressBar.setPercentage(range / maxRange);
