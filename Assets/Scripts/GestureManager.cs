@@ -20,6 +20,9 @@ public class GestureManager : SavableMonoBehaviour
     private GestureProfile currentGP;//the current gesture profile
     private Dictionary<string, GestureProfile> gestureProfiles = new Dictionary<string, GestureProfile>();//dict of valid gesture profiles
 
+    //Gesture Event Methods
+    public TapGesture tapGesture;
+
     //Original Positions
     private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
     private Vector3 origMP2;//second orginal "mouse position" for second touch
@@ -287,6 +290,10 @@ public class GestureManager : SavableMonoBehaviour
                             {
                                 checkPointPort = true;
                                 currentGP.processTapGesture(go);
+                                if (tapGesture != null)
+                                {
+                                    tapGesture();
+                                }
                                 break;
                             }
                         }
@@ -294,6 +301,10 @@ public class GestureManager : SavableMonoBehaviour
                     if (!checkPointPort)
                     {
                         currentGP.processTapGesture(curMPWorld);
+                        if (tapGesture != null)
+                        {
+                            tapGesture();
+                        }
                     }
                 }
 
@@ -427,4 +438,9 @@ public class GestureManager : SavableMonoBehaviour
         //Activate new
         currentGP.activate();
     }
+
+    /// <summary>
+    /// Gets called when a tap gesture is processed
+    /// </summary>
+    public delegate void TapGesture();
 }

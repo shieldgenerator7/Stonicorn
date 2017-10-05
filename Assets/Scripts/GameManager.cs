@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
     public GameObject npcTalkEffect;//the particle system for the visual part of NPC talking
     public AudioSource timeRewindMusic;//the music to play while time rewinds
+    public Vector2 firstTeleportGuide;//where the first teleport guide highlight will be shown
     private static GameObject lastTalkingNPC;//the last NPC to talk
     private int rewindId = 0;//the id to eventually load back to
     private float respawnTime = 0;//the earliest time Merky can rewind after shattering
@@ -68,6 +69,11 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
         FindObjectOfType<Canvas>().gameObject.AddComponent<Fader>();
+        EffectManager.highlightTapArea(firstTeleportGuide);
+        gestureManager.tapGesture += delegate () {
+            EffectManager.highlightTapArea(Vector2.zero, false);
+            gestureManager.tapGesture = null;
+        };
     }
 
     /// <summary>
