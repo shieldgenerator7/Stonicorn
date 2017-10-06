@@ -44,15 +44,15 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
                 sparkle();
             }
             //Ability Range Tutorial
-            ParticleSystem rangeTutorialPS = null;
             if (abilityRangeTutorialIndicatorName != null)
             {
                 foreach (GameObject abilityRangeIndicator in GameObject.FindGameObjectsWithTag("AbilityIndicator"))
                 {
                     if (abilityRangeIndicator.name.Contains(abilityRangeTutorialIndicatorName))
                     {
-                        rangeTutorialPS = abilityRangeIndicator.GetComponent<ParticleSystem>();
-                        rangeTutorialPS.Play();
+                        AbilityRangeTutorialDisengager artd = abilityRangeIndicator.AddComponent<AbilityRangeTutorialDisengager>();
+                        artd.disengagePoint = this.disengagePoint;
+                        abilityRangeIndicator.GetComponent<ParticleSystem>().Play();
                         break;
                     }
                 }
@@ -64,9 +64,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
                 {
                     if (abilityIndicator.name.Contains(abilityIndicatorName))
                     {
-                        AbilityGainEffect age = abilityIndicator.AddComponent<AbilityGainEffect>();
-                        age.disengagePoint = this.disengagePoint;
-                        age.abilityRangeIndicator = rangeTutorialPS;
+                        abilityIndicator.GetComponent<ParticleSystem>().Play();
                         break;
                     }
                 }
