@@ -44,7 +44,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
                 sparkle();
             }
             //Ability Range Tutorial
-            if (abilityRangeTutorialIndicatorName != null)
+            if (abilityRangeTutorialIndicatorName != null && abilityRangeTutorialIndicatorName != "")
             {
                 foreach (GameObject abilityRangeIndicator in GameObject.FindGameObjectsWithTag("AbilityIndicator"))
                 {
