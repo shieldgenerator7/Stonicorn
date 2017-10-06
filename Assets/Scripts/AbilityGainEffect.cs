@@ -7,7 +7,8 @@ public class AbilityGainEffect : MonoBehaviour {
     public float animSpeed = 0;//arc degrees per second
     public float animTime = 1.0f;//how many seconds to complete one section of anim
     public Vector2 disengagePoint;//when Merky gets close enough to this point, the anim will stop
-    public float disengageRange = 3.0f;
+    public float disengageRange = 5.0f;
+    public ParticleSystem abilityRangeIndicator;//the particles that show the range of the ability, if applicable
 
     private new ParticleSystem particleSystem;
     private float originalEmission;
@@ -78,6 +79,11 @@ public class AbilityGainEffect : MonoBehaviour {
         ParticleSystem.MainModule psmm = particleSystem.main;
         psmm.startLifetime = originalStartLifetime;
         particleSystem.GetComponent<Renderer>().sortingOrder = originalSpriteOrder;
+        if (abilityRangeIndicator)
+        {
+            abilityRangeIndicator.Stop();
+            abilityRangeIndicator.Clear();
+        }
         Destroy(this);
     }
 }

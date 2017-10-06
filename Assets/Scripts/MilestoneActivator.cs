@@ -7,6 +7,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     public int starAmount = 25;
     public int starSpawnDuration = 25;
     public string abilityIndicatorName;//used for AbilityGainEffect
+    public string abilityRangeTutorialIndicatorName;//the name of the particle system that shows the range of the ability, if applicable
     public Vector2 disengagePoint;//used for AbilityGainEffect
     
     public bool used = false;
@@ -42,6 +43,21 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
             {
                 sparkle();
             }
+            //Ability Range Tutorial
+            ParticleSystem rangeTutorialPS = null;
+            if (abilityRangeTutorialIndicatorName != null)
+            {
+                foreach (GameObject abilityRangeIndicator in GameObject.FindGameObjectsWithTag("AbilityIndicator"))
+                {
+                    if (abilityRangeIndicator.name.Contains(abilityRangeTutorialIndicatorName))
+                    {
+                        rangeTutorialPS = abilityRangeIndicator.GetComponent<ParticleSystem>();
+                        rangeTutorialPS.Play();
+                        break;
+                    }
+                }
+            }
+            //Ability Indicator Animation Setup
             if (abilityIndicatorName != null)
             {
                 foreach (GameObject abilityIndicator in GameObject.FindGameObjectsWithTag("AbilityIndicator"))
@@ -50,6 +66,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
                     {
                         AbilityGainEffect age = abilityIndicator.AddComponent<AbilityGainEffect>();
                         age.disengagePoint = this.disengagePoint;
+                        age.abilityRangeIndicator = rangeTutorialPS;
                         break;
                     }
                 }
