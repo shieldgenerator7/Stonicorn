@@ -54,7 +54,7 @@ public class SavableObject
     /// <returns></returns>
     public GameObject spawnObject()
     {
-        GameObject prefab = (GameObject)GameObject.Instantiate(Resources.Load(prefabName));
+        GameObject prefab = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/"+prefabName));
         return (GameObject)prefab;
     }
 
