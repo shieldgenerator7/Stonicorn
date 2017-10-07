@@ -425,8 +425,14 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        SceneManager.LoadScene("SceneLoaderTriggers", LoadSceneMode.Additive);//load the SceneLoaderTriggers scene
-        SceneManager.LoadScene("CheckPointScene", LoadSceneMode.Additive);//load the CheckPointScene scene
+        if (!SceneManager.GetSceneByName("SceneLoaderTriggers").isLoaded)
+        {
+            SceneManager.LoadScene("SceneLoaderTriggers", LoadSceneMode.Additive);//load the SceneLoaderTriggers scene
+        }
+        if (!SceneManager.GetSceneByName("CheckPointScene").isLoaded)
+        {
+            SceneManager.LoadScene("CheckPointScene", LoadSceneMode.Additive);//load the CheckPointScene scene
+        }        
     }
     void OnApplicationQuit()
     {
