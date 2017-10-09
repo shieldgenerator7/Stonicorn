@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HardMaterial : SavableMonoBehaviour {
+public class HardMaterial : SavableMonoBehaviour
+{
 
     public static float MINIMUM_CRACKSOUND_THRESHOLD = 1.0f;//the minimum percent of damage done to make a sound
 
     public float hardness = 1.0f;
-	public float forceThreshold = 50.0f;//how much force it can withstand without cracking
+    public float forceThreshold = 50.0f;//how much force it can withstand without cracking
     public float maxIntegrity = 100f;
     public bool disappearsIfNoBrokenPrefab = true;//true = if no broken prefab is supplied, this hard material should just disappear
-    [Range(0,100)]
+    [Range(0, 100)]
     [SerializeField]
     private float integrity;//how intact it is. Material breaks apart when it reaches 0
     private bool alreadyBroken = false;//used to determine if pieces should spawn or not
@@ -19,7 +20,7 @@ public class HardMaterial : SavableMonoBehaviour {
     public List<GameObject> crackStages;
     private List<SpriteRenderer> crackSprites = new List<SpriteRenderer>();
     public List<AudioClip> crackSounds;
-	public List<HiddenArea> secretHiders;//the hidden areas to show when cracked
+    public List<HiddenArea> secretHiders;//the hidden areas to show when cracked
 
     public Shattered shattered;
 
@@ -62,13 +63,14 @@ public class HardMaterial : SavableMonoBehaviour {
                 }
                 if (hitPercentage > crackThreshold)
                 {
-                    AudioSource.PlayClipAtPoint(crackSounds[i], coll.contacts[0].point,hitPercentage/400+0.75f);
+                    AudioSource.PlayClipAtPoint(crackSounds[i], coll.contacts[0].point, hitPercentage / 400 + 0.75f);
                     break;
                 }
             }
         }
-		else{
-			GameObject other = coll.gameObject;
+        else
+        {
+            GameObject other = coll.gameObject;
             Rigidbody2D rb2d = other.GetComponent<Rigidbody2D>();
             if (rb2d != null)
             {
@@ -77,15 +79,15 @@ public class HardMaterial : SavableMonoBehaviour {
                 float hitPercentage = damage * 100 / maxIntegrity;
                 EffectManager.collisionEffect(coll.contacts[0].point, hitPercentage);
             }
-		}
+        }
     }
-	
+
     /// <summary>
     /// Checks to see if a given force cracks it
     /// </summary>
     /// <returns>The amount of damage done
     /// (positive value means damage dealt, negative means HP healed)</returns>
-	public float checkForce(float force)
+    public float checkForce(float force)
     {
         if (force > forceThreshold)
         {
@@ -110,7 +112,8 @@ public class HardMaterial : SavableMonoBehaviour {
     {
         float oldIntegrity = integrity;
         integrity = Mathf.Clamp(newIntegrity, 0, maxIntegrity);
-        if (integrity > 0) {
+        if (integrity > 0)
+        {
             float baseAlpha = 1.0f - (integrity / maxIntegrity);
             for (int i = 0; i < crackSprites.Count; i++)
             {
