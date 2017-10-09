@@ -141,6 +141,7 @@ public class HardMaterial : SavableMonoBehaviour {
                     {
                         t.gameObject.name += tag;
                         t.localScale = transform.localScale;
+                        t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
                     }
                     GameManager.refresh();
                 }
