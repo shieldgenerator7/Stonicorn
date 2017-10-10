@@ -8,7 +8,12 @@ public class CrackedPiece : SavableMonoBehaviour {
     //Apply to parent object of broken object prefab
 
     public string prefabName;
-    
+    public string spawnTag;//the tag to make it unique among the other pieces
+
+    public override bool isSpawnedScript()
+    {
+        return true;
+    }
     public override bool isSpawnedObject()
     {
         return true;
@@ -17,13 +22,19 @@ public class CrackedPiece : SavableMonoBehaviour {
     {
         return prefabName;
     }
+    public override string getSpawnTag()
+    {
+        return spawnTag;
+    }
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject(this);
+        return new SavableObject(this, "prefabName", prefabName, "spawnTag", spawnTag);
     }
 
     public override void acceptSavableObject(SavableObject savObj)
     {
+        prefabName = (string)savObj.data["prefabName"];
+        spawnTag = (string)savObj.data["spawnTag"];
     }
 }

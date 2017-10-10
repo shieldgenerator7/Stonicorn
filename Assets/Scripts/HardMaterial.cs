@@ -140,8 +140,16 @@ public class HardMaterial : SavableMonoBehaviour
                     pieces.transform.rotation = transform.rotation;
                     string tag = "" + System.DateTime.Now.Ticks;
                     pieces.name += tag;
+                    CrackedPiece cp = pieces.GetComponent<CrackedPiece>();
+                    cp.spawnTag = tag;
                     foreach (Transform t in pieces.transform)
                     {
+                        if (t.gameObject.GetComponent<CrackedPiece>() == null)
+                        {
+                            CrackedPiece tcp = t.gameObject.AddComponent<CrackedPiece>();
+                            tcp.prefabName = cp.prefabName;
+                            tcp.spawnTag = cp.spawnTag;
+                        }
                         t.gameObject.name += tag;
                         t.localScale = transform.localScale;
                         t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);

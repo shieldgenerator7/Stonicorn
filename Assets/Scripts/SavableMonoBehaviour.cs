@@ -36,6 +36,15 @@ public abstract class SavableMonoBehaviour: MonoBehaviour {
         return false;
     }
     /// <summary>
+    /// The unique identifier added to the game object's name,
+    /// if this game object was spawned during runtime 
+    /// </summary>
+    /// <returns></returns>
+    public virtual string getSpawnTag()
+    {
+        return "";
+    }
+    /// <summary>
     /// Returns the name of the prefab for this script
     /// </summary>
     /// <returns></returns>

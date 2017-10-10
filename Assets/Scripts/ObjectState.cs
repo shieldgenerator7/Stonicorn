@@ -122,9 +122,21 @@ public class ObjectState
                     {
                         if (so.isSpawnedObject)
                         {
-                            go = so.spawnObject();
-                            go.name = this.objectName;
-                            GameManager.addObject(go);
+                            GameObject spawned = so.spawnObject();
+                            foreach (Transform t in spawned.transform)
+                            {
+                                if (t.gameObject.name == this.objectName)
+                                {
+                                    go = t.gameObject;
+                                    break;
+                                }
+                            }
+                            if (go == null)
+                            {
+                                go = spawned;
+                                go.name = this.objectName;
+                            }
+                            GameManager.addObject(spawned);
                             break;
                         }
                     }
