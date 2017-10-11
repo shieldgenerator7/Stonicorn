@@ -7,9 +7,9 @@ public class ObjectState
 {
 
     //Transform
-    public Vector3 position;
+    public Vector3 position;//2017-10-10: actually stores the localPosition
     public Vector3 localScale;
-    public Quaternion rotation;
+    public Quaternion rotation;//2017-10-10: actually stores the localRotation
     //RigidBody2D
     public Vector2 velocity;
     public float angularVelocity;
@@ -36,9 +36,9 @@ public class ObjectState
 
     public void saveState()
     {
-        position = go.transform.position;
+        position = go.transform.localPosition;
         localScale = go.transform.localScale;
-        rotation = go.transform.rotation;
+        rotation = go.transform.localRotation;
         if (rb2d != null)
         {
             velocity = rb2d.velocity;
@@ -57,9 +57,9 @@ public class ObjectState
         {
             return;//don't load the state if go is null
         }
-        go.transform.position = position;
+        go.transform.localPosition = position;
         go.transform.localScale = localScale;
-        go.transform.rotation = rotation;
+        go.transform.localRotation = rotation;
         rb2d = go.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
@@ -102,7 +102,8 @@ public class ObjectState
                         this.go = sceneGo;
                         break;
                     }
-                    else {
+                    else
+                    {
                         foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
                         {
                             GameObject childGo = childTransform.gameObject;
@@ -111,6 +112,17 @@ public class ObjectState
                                 this.go = childGo;
                                 break;
                             }
+                        }
+                    }
+                }
+                if (go == null)
+                {
+                    foreach (GameObject dgo in GameManager.getForgottenObjects())
+                    {
+                        if (dgo.name == objectName && dgo.scene.name == sceneName)
+                        {
+                            go = dgo;
+                            break;
                         }
                     }
                 }

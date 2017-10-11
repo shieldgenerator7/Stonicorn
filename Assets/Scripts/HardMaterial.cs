@@ -127,10 +127,14 @@ public class HardMaterial : SavableMonoBehaviour
                 Color c = sr.color;
                 sr.color = new Color(c.r, c.g, c.b, alpha);
             }
-            gameObject.SetActive(true);
+            if (alreadyBroken || !gameObject.activeInHierarchy || oldIntegrity < 0)
+            {
+                GameManager.saveForgottenObject(gameObject, false);
+            }
         }
-        else if (oldIntegrity > 0 || gameObject.activeSelf)
+        else if (oldIntegrity > 0 || gameObject.activeInHierarchy)
         {
+            bool shouldRefresh = false;
             if (!alreadyBroken)
             {
                 if (crackedPrefab != null)
@@ -154,7 +158,7 @@ public class HardMaterial : SavableMonoBehaviour
                         t.localScale = transform.localScale;
                         t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
                     }
-                    GameManager.refresh();
+                    shouldRefresh = true;
                 }
                 else if (!disappearsIfNoBrokenPrefab)
                 {
@@ -172,7 +176,12 @@ public class HardMaterial : SavableMonoBehaviour
             }
             if (crackedPrefab != null || disappearsIfNoBrokenPrefab)
             {
-                gameObject.SetActive(false);
+                GameManager.saveForgottenObject(gameObject);
+                shouldRefresh = true;
+            }
+            if (shouldRefresh)
+            {
+                GameManager.refresh();
             }
             if (shattered != null)
             {

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private List<GameState> gameStates = new List<GameState>();
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
+    private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
     //Memories
     private List<MemoryObject> memories = new List<MemoryObject>();
     //Checkpoints
@@ -256,6 +257,18 @@ public class GameManager : MonoBehaviour
                 gameObjects.Add(smb.gameObject);
             }
         }
+        //Destroyed Objects
+        foreach(DestroyedGameObject dgo in FindObjectsOfType<DestroyedGameObject>())
+        {
+            gameObjects.Add(dgo.gameObject);
+        }
+        foreach(GameObject dgo in forgottenObjects)
+        {
+            if (dgo != null)
+            {
+                gameObjects.Add(dgo);
+            }
+        }
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
             //load state if found, save state if not foud
@@ -301,6 +314,27 @@ public class GameManager : MonoBehaviour
     public static void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
     {
         instance.activeCheckPoints.Add(cpc);
+    }
+    /// <summary>
+    /// Stores the given object before it gets set inactive
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void saveForgottenObject(GameObject obj, bool forget=true)
+    {
+        if (forget)
+        {
+            instance.forgottenObjects.Add(obj);
+            obj.SetActive(false);
+        }
+        else
+        {
+            instance.forgottenObjects.Remove(obj);
+            obj.SetActive(true);
+        }
+    }
+    public static List<GameObject> getForgottenObjects()
+    {
+        return instance.forgottenObjects;
     }
     public void Load(int gamestateId)
     {

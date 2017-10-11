@@ -100,6 +100,8 @@ public class SavableObject
                 return typeof(HardMaterial);
             case "CrackedPiece":
                 return typeof(CrackedPiece);
+            case "DestroyedGameObject":
+                return typeof(DestroyedGameObject);
             case "NPCController":
                 return typeof(NPCController);
             case "NPCMetalController":
