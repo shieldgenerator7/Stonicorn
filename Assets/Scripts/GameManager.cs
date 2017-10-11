@@ -257,11 +257,7 @@ public class GameManager : MonoBehaviour
                 gameObjects.Add(smb.gameObject);
             }
         }
-        //Destroyed Objects
-        foreach(DestroyedGameObject dgo in FindObjectsOfType<DestroyedGameObject>())
-        {
-            gameObjects.Add(dgo.gameObject);
-        }
+        //Forgotten Objects
         foreach(GameObject dgo in forgottenObjects)
         {
             if (dgo != null)
