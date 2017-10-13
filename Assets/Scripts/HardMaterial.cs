@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HardMaterial : SavableMonoBehaviour
 {
@@ -142,6 +143,7 @@ public class HardMaterial : SavableMonoBehaviour
                     GameObject pieces = Instantiate(crackedPrefab);
                     pieces.transform.position = transform.position;
                     pieces.transform.rotation = transform.rotation;
+                    SceneManager.MoveGameObjectToScene(pieces, gameObject.scene);
                     string tag = "" + System.DateTime.Now.Ticks;
                     pieces.name += tag;
                     CrackedPiece cp = pieces.GetComponent<CrackedPiece>();

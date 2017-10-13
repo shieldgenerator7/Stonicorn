@@ -135,6 +135,10 @@ public class ObjectState
                         if (so.isSpawnedObject)
                         {
                             GameObject spawned = so.spawnObject();
+                            if (spawned.scene.name != sceneName)
+                            {
+                                SceneManager.MoveGameObjectToScene(spawned, scene);
+                            }
                             foreach (Transform t in spawned.transform)
                             {
                                 if (t.gameObject.name == this.objectName)

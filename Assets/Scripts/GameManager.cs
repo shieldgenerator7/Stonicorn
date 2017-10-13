@@ -237,6 +237,13 @@ public class GameManager : MonoBehaviour
     }
     void sceneUnloaded(Scene s)
     {
+        foreach (GameObject fgo in forgottenObjects)
+        {
+            if (fgo != null && fgo.scene == s)
+            {
+                forgottenObjects.Remove(fgo);
+            }
+        }
         refreshGameObjects();
         unloadedScene = s.name;
         loadedSceneCount--;
