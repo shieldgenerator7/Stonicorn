@@ -72,7 +72,8 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneUnloaded += sceneUnloaded;
         FindObjectOfType<Canvas>().gameObject.AddComponent<Fader>();
         EffectManager.highlightTapArea(firstTeleportGuide);
-        gestureManager.tapGesture += delegate () {
+        gestureManager.tapGesture += delegate ()
+        {
             EffectManager.highlightTapArea(Vector2.zero, false);
             gestureManager.tapGesture = null;
         };
@@ -268,7 +269,7 @@ public class GameManager : MonoBehaviour
             }
         }
         //Forgotten Objects
-        foreach(GameObject dgo in forgottenObjects)
+        foreach (GameObject dgo in forgottenObjects)
         {
             if (dgo != null)
             {
@@ -325,7 +326,7 @@ public class GameManager : MonoBehaviour
     /// Stores the given object before it gets set inactive
     /// </summary>
     /// <param name="obj"></param>
-    public static void saveForgottenObject(GameObject obj, bool forget=true)
+    public static void saveForgottenObject(GameObject obj, bool forget = true)
     {
         if (forget)
         {
@@ -487,7 +488,7 @@ public class GameManager : MonoBehaviour
         if (!SceneManager.GetSceneByName("CheckPointScene").isLoaded)
         {
             SceneManager.LoadScene("CheckPointScene", LoadSceneMode.Additive);//load the CheckPointScene scene
-        }        
+        }
     }
     void OnApplicationQuit()
     {
