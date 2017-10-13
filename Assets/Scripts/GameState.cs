@@ -8,6 +8,7 @@ public class GameState
     public int id;
     public List<ObjectState> states = new List<ObjectState>();
     public ObjectState merky;//the object state in the list specifically for Merky
+    public List<string> openScenes = new List<string>();//the list of the scene names that are open in this game state
 
     public static int nextid = 0;
     public GameObject representation;//the player ghost that represents this game state
@@ -17,8 +18,9 @@ public class GameState
         id = nextid;
         nextid++;
     }
-    public GameState(List<GameObject> list): this()
+    public GameState(List<GameObject> list, List<string> openScenelist): this()
     {
+        //Object States
         foreach (GameObject go in list){
             if (go == null)
             {
@@ -30,6 +32,14 @@ public class GameState
             if (go.name.Equals("merky"))
             {
                 merky = os;
+            }
+        }
+        //Open Scenes
+        foreach (string sceneName in openScenelist)
+        {
+            if (sceneName != null && sceneName != "")
+            {
+                this.openScenes.Add(sceneName);
             }
         }
     }

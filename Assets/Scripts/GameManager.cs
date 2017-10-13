@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
+    private List<string> openScenes = new List<string>();//the list of names of the scenes that are open
     //Memories
     private List<MemoryObject> memories = new List<MemoryObject>();
     //Checkpoints
@@ -234,6 +235,7 @@ public class GameManager : MonoBehaviour
     {
         refreshGameObjects();
         newlyLoadedScenes.Add(s.name);
+        openScenes.Add(s.name);
     }
     void sceneUnloaded(Scene s)
     {
@@ -246,6 +248,7 @@ public class GameManager : MonoBehaviour
         }
         refreshGameObjects();
         unloadedScene = s.name;
+        openScenes.Remove(s.name);
         loadedSceneCount--;
     }
     public static void refresh() { instance.refreshGameObjects(); }
@@ -293,7 +296,7 @@ public class GameManager : MonoBehaviour
     }
     public static void Save()
     {
-        instance.gameStates.Add(new GameState(instance.gameObjects));
+        instance.gameStates.Add(new GameState(instance.gameObjects, instance.openScenes));
         instance.chosenId++;
         instance.rewindId++;
     }
@@ -387,11 +390,26 @@ public class GameManager : MonoBehaviour
     }
     public void LoadObjectsFromScene(Scene s)
     {
+        //Find the last state that this scene was saved in
+        int lastStateSeen = -1;
+        for (int stateid = chosenId; stateid >= 0; stateid--)
+        {
+            if (gameStates[stateid].openScenes.Contains(s.name))
+            {
+                lastStateSeen = stateid;
+                break;
+            }
+        }
+        if (lastStateSeen < 0)
+        {
+            return;
+        }
+        //Load Each Object
         foreach (GameObject go in gameObjects)
         {
             if (go.scene.Equals(s))
             {
-                for (int stateid = chosenId; stateid >= 0; stateid--)
+                for (int stateid = lastStateSeen; stateid >= 0; stateid--)
                 {
                     if (gameStates[stateid].loadObject(go))
                     {

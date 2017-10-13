@@ -12,6 +12,7 @@ public class ES2UserType_GameState : ES2Type
 		writer.Write(data.id);
 		writer.Write(data.states);
 		writer.Write(data.merky);
+		writer.Write(data.openScenes);
 
 	}
 	
@@ -29,6 +30,7 @@ public class ES2UserType_GameState : ES2Type
 		data.id = reader.Read<System.Int32>();
 		data.states = reader.ReadList<ObjectState>();
 		data.merky = reader.Read<ObjectState>();
+		data.openScenes = reader.ReadList<System.String>();
 
 	}
 	
