@@ -187,23 +187,5 @@ public static class Utility  {
         }
         //Conversion
         return (((number - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow);
-    }
-    /// <summary>
-    /// Returns the GestureAccepter of the GameObject at the given pos, if it exists
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <returns></returns>
-    public static GestureAccepter findGestureAccepter(Vector3 pos)
-    {
-        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(pos,Vector3.zero);
-        foreach (RaycastHit2D rch2d in rch2ds)
-        {
-            GestureAccepter ga = rch2d.collider.gameObject.GetComponent<GestureAccepter>();
-            if (ga != null)
-            {
-                return ga;
-            }
-        }
-        return null;
-    }
+    }    
 }
