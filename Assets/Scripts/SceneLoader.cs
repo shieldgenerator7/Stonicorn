@@ -38,25 +38,28 @@ public class SceneLoader : MonoBehaviour
                 loadLevel();
             }
         }
-        if (isLoaded && !overlaps)
+        if (!GameManager.isRewinding())
         {
-            isLoaded = false;
-            unloadLevel();
+            if (isLoaded && !overlaps)
+            {
+                isLoaded = false;
+                unloadLevel();
+            }
         }
     }
-    void loadLevel()
-    {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-    }
-    void unloadLevel()
-    {
-        SceneManager.UnloadSceneAsync(sceneName);
-    }
-    public void unloadLevelIfLoaded()
-    {
-        if (isLoaded)
+        void loadLevel()
         {
-            unloadLevel();
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        }
+        void unloadLevel()
+        {
+            SceneManager.UnloadSceneAsync(sceneName);
+        }
+        public void unloadLevelIfLoaded()
+        {
+            if (isLoaded)
+            {
+                unloadLevel();
+            }
         }
     }
-}

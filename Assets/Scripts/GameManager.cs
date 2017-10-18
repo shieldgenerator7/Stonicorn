@@ -356,21 +356,24 @@ public class GameManager : MonoBehaviour
     {
         //Destroy objects not spawned yet in the new selected state
         //chosenId is the previous current gamestate, which is in the future compared to gamestateId
-        for (int i = gameObjects.Count - 1; i > 0; i--)
+        if (chosenId == rewindId)//so it only happens on the last load of a rewind
         {
-            GameObject go = gameObjects[i];
-            if (!gameStates[gamestateId].hasGameObject(go))
+            for (int i = gameObjects.Count - 1; i > 0; i--)
             {
-                if (go == null)
+                GameObject go = gameObjects[i];
+                if (!gameStates[gamestateId].hasGameObject(go))
                 {
-                    destroyObject(go);
-                    continue;
-                }
-                foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
-                {
-                    if (smb.isSpawnedObject())
+                    if (go == null)
                     {
-                        destroyObject(go);//remove it from game objects list
+                        destroyObject(go);
+                        continue;
+                    }
+                    foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
+                    {
+                        if (smb.isSpawnedObject())
+                        {
+                            destroyObject(go);//remove it from game objects list
+                        }
                     }
                 }
             }
@@ -395,11 +398,11 @@ public class GameManager : MonoBehaviour
         if (chosenId == rewindId)
         {
             refreshGameObjects();//a second time, just to be sure
-        }
-        for (int i = gameStates.Count - 1; i > gamestateId; i--)
-        {
-            Destroy(gameStates[i].representation);
-            gameStates.RemoveAt(i);
+            for (int i = gameStates.Count - 1; i > gamestateId; i--)
+            {
+                Destroy(gameStates[i].representation);
+                gameStates.RemoveAt(i);
+            }
         }
         GameState.nextid = gamestateId + 1;
         //Recenter the camera
