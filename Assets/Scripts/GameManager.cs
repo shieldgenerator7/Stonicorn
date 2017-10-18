@@ -382,6 +382,14 @@ public class GameManager : MonoBehaviour
             //After rewind is finished, refresh the game object list
             refreshGameObjects();
             musicManager.endEventSong(timeRewindMusic);
+            //Open Scenes
+            foreach (SceneLoader sl in sceneLoaders)
+            {
+                if (sl.lastOpenGameStateId > chosenId)
+                {
+                    sl.lastOpenGameStateId = chosenId;
+                }
+            }
         }
         gameStates[gamestateId].load();
         if (chosenId == rewindId)
@@ -444,6 +452,7 @@ public class GameManager : MonoBehaviour
     public void cancelRewind()
     {
         rewindId = chosenId;
+        Load(chosenId);
         musicManager.endEventSong(timeRewindMusic);
     }
     void Rewind(int gamestateId)//rewinds one state at a time
