@@ -297,9 +297,16 @@ public class GameManager : MonoBehaviour
     }
     public static void Save()
     {
-        instance.gameStates.Add(new GameState(instance.gameObjects, instance.openScenes));
+        instance.gameStates.Add(new GameState(instance.gameObjects));
         instance.chosenId++;
         instance.rewindId++;
+        //Open Scenes
+        foreach (SceneLoader sl in instance.sceneLoaders)
+        {
+            if (instance.openScenes.Contains(sl.sceneName)) { 
+                sl.lastOpenGameStateId = instance.chosenId;
+            }
+        }
     }
     public static void saveMemory(MemoryMonoBehaviour mmb)
     {//2016-11-23: CODE HAZARD: mixture of static and non-static methods, will cause error if there are ever more than 1 instance of GameManager
@@ -393,17 +400,21 @@ public class GameManager : MonoBehaviour
     {
         //Find the last state that this scene was saved in
         int lastStateSeen = -1;
-        for (int stateid = chosenId; stateid >= 0; stateid--)
+        foreach (SceneLoader sl in sceneLoaders)
         {
-            if (gameStates[stateid].openScenes.Contains(s.name))
+            if (s.name == sl.sceneName)
             {
-                lastStateSeen = stateid;
+                lastStateSeen = sl.lastOpenGameStateId;
                 break;
             }
         }
         if (lastStateSeen < 0)
         {
             return;
+        }
+        if (lastStateSeen >= gameStates.Count)
+        {
+            lastStateSeen = gameStates.Count - 1;
         }
         //Load Each Object
         foreach (GameObject go in gameObjects)
@@ -464,11 +475,26 @@ public class GameManager : MonoBehaviour
         fileName += ".txt";
         ES2.Save(memories, fileName + "?tag=memories");
         ES2.Save(gameStates, fileName + "?tag=states");
+        ES2.Save(sceneLoaders, fileName + "?tag=scenes");
     }
     public void loadFromFile()
     {
         memories = ES2.LoadList<MemoryObject>("merky.txt?tag=memories");
         gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
+        //Scenes
+        List<SceneLoader> rsls = ES2.LoadList<SceneLoader>("merky.txt?tag=scenes");
+        foreach (SceneLoader sl in sceneLoaders)//actually loaded scene loaders
+        {
+            foreach (SceneLoader rsl in rsls)//read in scene loaders
+            {
+                if (rsl != null && sl.sceneName == rsl.sceneName)
+                {
+                    sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
+                    Destroy(rsl);
+                    break;
+                }
+            }
+        }
     }
     void Awake()
     {

@@ -8,20 +8,21 @@ public class GameState
     public int id;
     public List<ObjectState> states = new List<ObjectState>();
     public ObjectState merky;//the object state in the list specifically for Merky
-    public List<string> openScenes = new List<string>();//the list of the scene names that are open in this game state
 
     public static int nextid = 0;
     public GameObject representation;//the player ghost that represents this game state
 
     //Instantiation
-    public GameState() {
+    public GameState()
+    {
         id = nextid;
         nextid++;
     }
-    public GameState(List<GameObject> list, List<string> openScenelist): this()
+    public GameState(List<GameObject> list) : this()
     {
         //Object States
-        foreach (GameObject go in list){
+        foreach (GameObject go in list)
+        {
             if (go == null)
             {
                 continue;
@@ -32,14 +33,6 @@ public class GameState
             if (go.name.Equals("merky"))
             {
                 merky = os;
-            }
-        }
-        //Open Scenes
-        foreach (string sceneName in openScenelist)
-        {
-            if (sceneName != null && sceneName != "")
-            {
-                this.openScenes.Add(sceneName);
             }
         }
     }
@@ -113,7 +106,7 @@ public class GameState
         SpriteRenderer sr = representation.GetComponent<SpriteRenderer>();
         Color c = sr.color;
         ParticleSystem ps = representation.GetComponentInChildren<ParticleSystem>();
-                
+
         if (mostRecentId - id < 10)
         {
             sr.color = new Color(c.r, c.g, c.b, 1.0f);

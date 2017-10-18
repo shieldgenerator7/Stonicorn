@@ -6,6 +6,7 @@ public class SceneLoader : MonoBehaviour
 {
 
     public string sceneName;//the index of the scene to load
+    public int lastOpenGameStateId = -1;//the gamestate id in which this scene was last open in. -1 means it is not open in any of them
     private GameObject playerObj;
     private bool isLoaded = false;
     private Collider2D c2d;
@@ -13,6 +14,10 @@ public class SceneLoader : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        if (gameObject.name == "Easy Save 2 Loaded Component")
+        {
+            return;
+        }
         c2d = gameObject.GetComponent<Collider2D>();
         playerObj = GameObject.FindGameObjectWithTag("Player");
         if (SceneManager.GetSceneByName(sceneName).isLoaded)
