@@ -152,7 +152,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
                     if (cpc != this)
                     {
                         GameObject go = cpc.gameObject;
-                        if (cpc.activated && cpc.ghost.activeSelf)
+                        if (cpc.activated && cpc.ghost.activeInHierarchy)
                         {
                             if (ghostBounds.Intersects(cpc.ghostBounds)
                                 //because they're circles, using the extents gives us how far apart (at minimum) they're supposed to be 
@@ -160,8 +160,14 @@ public class CheckPointChecker : MemoryMonoBehaviour
                             {
                                 if (Vector3.Distance(go.transform.position, current.transform.position) < Vector3.Distance(gameObject.transform.position, current.transform.position))
                                 {
+                                    //While they intersect, move this one
+                                    while (Vector2.Distance(ghostBounds.center, cpc.ghostBounds.center) <= ghostBounds.extents.x + cpc.ghostBounds.extents.x)
+                                    {
+                                        bufferScalar += bufferScalarIncrement;
+                                        ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * (CP_GHOST_BUFFER * bufferScalar);
+                                        ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
+                                    }
                                     movedFurther = true;
-                                    bufferScalar += bufferScalarIncrement;
                                     break;
                                 }
                                 else
@@ -174,7 +180,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 }
             }
         }
-
     }
     /**
     * Checks to see if the player is colliding with this checkpoint's ghost
