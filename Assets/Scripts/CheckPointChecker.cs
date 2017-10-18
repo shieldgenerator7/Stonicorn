@@ -156,12 +156,12 @@ public class CheckPointChecker : MemoryMonoBehaviour
                         {
                             if (ghostBounds.Intersects(cpc.ghostBounds)
                                 //because they're circles, using the extents gives us how far apart (at minimum) they're supposed to be 
-                                && Vector2.Distance(ghostBounds.center, cpc.ghostBounds.center) <= ghostBounds.extents.x + cpc.ghostBounds.extents.x)
+                                && (ghostBounds.center - cpc.ghostBounds.center).sqrMagnitude <= Mathf.Pow(ghostBounds.extents.x + cpc.ghostBounds.extents.x, 2))
                             {
-                                if (Vector3.Distance(go.transform.position, current.transform.position) < Vector3.Distance(gameObject.transform.position, current.transform.position))
+                                if ((go.transform.position - current.transform.position).sqrMagnitude < (gameObject.transform.position - current.transform.position).sqrMagnitude)
                                 {
                                     //While they intersect, move this one
-                                    while (Vector2.Distance(ghostBounds.center, cpc.ghostBounds.center) <= ghostBounds.extents.x + cpc.ghostBounds.extents.x)
+                                    while ((ghostBounds.center - cpc.ghostBounds.center).sqrMagnitude <= Mathf.Pow(ghostBounds.extents.x + cpc.ghostBounds.extents.x, 2))
                                     {
                                         bufferScalar += bufferScalarIncrement;
                                         ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * (CP_GHOST_BUFFER * bufferScalar);
