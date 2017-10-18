@@ -156,14 +156,16 @@ public class GameManager : MonoBehaviour
     /// Removes the given GameObject from the gameObjects list
     /// </summary>
     /// <param name="go"></param>
-    public static void removeObject(GameObject go)
+    private static void removeObject(GameObject go)
     {
         instance.gameObjects.Remove(go);
+        instance.forgottenObjects.Remove(go);
         if (go && go.transform.childCount > 0)
         {
             foreach (Transform t in go.transform)
             {
                 instance.gameObjects.Remove(t.gameObject);
+                instance.forgottenObjects.Remove(t.gameObject);
             }
         }
     }
