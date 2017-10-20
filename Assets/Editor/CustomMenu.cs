@@ -50,12 +50,16 @@ public class CustomMenu {
 
         // Build player.
         BuildPipeline.BuildPlayer(levels, buildName, BuildTarget.StandaloneWindows, BuildOptions.None);
-        
+
         // Copy a file from the project folder to the build folder, alongside the built game.
-        System.IO.Directory.CreateDirectory(path + "/Assets/Resources");
-        FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/",
-            path + "/Assets/Resources/Dialogue/"
-            );
+        //NOTE: Changes to the Dialogue folder won't reflected unless you delete the Dialogue folder in the build directory
+        if (!System.IO.Directory.Exists(path + "/Assets/Resources/Dialogue"))
+        {
+            System.IO.Directory.CreateDirectory(path + "/Assets/Resources");
+            FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/",
+                path + "/Assets/Resources/Dialogue/"
+                );
+        }
 
         // Run the game (Process class from System.Diagnostics).
         Process proc = new Process();
