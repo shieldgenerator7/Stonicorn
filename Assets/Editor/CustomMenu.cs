@@ -29,9 +29,17 @@ public class CustomMenu {
     [MenuItem("SG7/Build/Build Windows %w")]
     public static void buildWindows()
     {
+        build(BuildTarget.StandaloneWindows, "exe");
+    }
+    [MenuItem("SG7/Build/Build Linux %l")]
+    public static void buildLinux()
+    {
+        build(BuildTarget.StandaloneLinux, "x86");
+    }
+    public static void build(BuildTarget buildTarget, string extension) {
         //2017-10-19 copied from https://docs.unity3d.com/Manual/BuildPlayerPipeline.html
         // Get filename.
-        string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", "C:/Users/shieldgenerator7/Documents/Unity/Stoned Builds/Builds", "Stonicorn 0_100", "exe");
+        string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", "C:/Users/shieldgenerator7/Documents/Unity/Stoned Builds/Builds", "Stonicorn 0_100", extension);
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
         UnityEngine.Debug.Log("BUILDNAME: " + buildName);
         UnityEngine.Debug.Log("PATH: " + path);
