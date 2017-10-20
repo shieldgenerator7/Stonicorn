@@ -36,6 +36,11 @@ public class CustomMenu {
     {
         build(BuildTarget.StandaloneLinux, "x86");
     }
+    [MenuItem("SG7/Build/Build Mac OS X %#l")]
+    public static void buildMacOSX()
+    {
+        build(BuildTarget.StandaloneOSXUniversal, "");
+    }
     public static void build(BuildTarget buildTarget, string extension) {
         //2017-10-19 copied from https://docs.unity3d.com/Manual/BuildPlayerPipeline.html
         // Get filename.
