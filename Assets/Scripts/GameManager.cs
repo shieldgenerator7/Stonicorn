@@ -352,7 +352,11 @@ public class GameManager : MonoBehaviour
     {
         return instance.forgottenObjects;
     }
-    public void Load(int gamestateId)
+    public static void LoadState()
+    {
+        instance.Load(instance.chosenId);
+    }
+    private void Load(int gamestateId)
     {
         //Destroy objects not spawned yet in the new selected state
         //chosenId is the previous current gamestate, which is in the future compared to gamestateId
