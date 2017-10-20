@@ -4,8 +4,9 @@ using UnityEngine;
 using System.Diagnostics;
 using UnityEditor;
 
-public class CustomMenu {
-    
+public class CustomMenu
+{
+
     [MenuItem("SG7/Runtime/Save Game State %e")]
     public static void saveGameState()
     {
@@ -26,6 +27,12 @@ public class CustomMenu {
         GameManager.resetGame();
     }
 
+    [MenuItem("SG7/Runtime/Call Merky %`")]
+    public static void callMerky()
+    {
+        GameManager.getPlayerObject().transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+    }
+
     [MenuItem("SG7/Build/Build Windows %w")]
     public static void buildWindows()
     {
@@ -41,7 +48,8 @@ public class CustomMenu {
     {
         build(BuildTarget.StandaloneOSXUniversal, "");
     }
-    public static void build(BuildTarget buildTarget, string extension) {
+    public static void build(BuildTarget buildTarget, string extension)
+    {
         //2017-10-19 copied from https://docs.unity3d.com/Manual/BuildPlayerPipeline.html
         // Get filename.
         string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", "C:/Users/shieldgenerator7/Documents/Unity/Stoned Builds/Builds", "Stonicorn 0_100", extension);
