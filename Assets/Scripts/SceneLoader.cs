@@ -19,7 +19,7 @@ public class SceneLoader : MonoBehaviour
             return;
         }
         c2d = gameObject.GetComponent<Collider2D>();
-        playerObj = GameObject.FindGameObjectWithTag("Player");
+        playerObj = GameManager.getPlayerObject();
         if (SceneManager.GetSceneByName(sceneName).isLoaded)
         {
             isLoaded = true;
