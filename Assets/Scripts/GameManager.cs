@@ -305,7 +305,8 @@ public class GameManager : MonoBehaviour
         //Open Scenes
         foreach (SceneLoader sl in instance.sceneLoaders)
         {
-            if (instance.openScenes.Contains(sl.sceneName)) { 
+            if (instance.openScenes.Contains(sl.sceneName))
+            {
                 sl.lastOpenGameStateId = instance.chosenId;
             }
         }
@@ -360,24 +361,21 @@ public class GameManager : MonoBehaviour
     {
         //Destroy objects not spawned yet in the new selected state
         //chosenId is the previous current gamestate, which is in the future compared to gamestateId
-        if (chosenId == rewindId)//so it only happens on the last load of a rewind
+        for (int i = gameObjects.Count - 1; i > 0; i--)
         {
-            for (int i = gameObjects.Count - 1; i > 0; i--)
+            GameObject go = gameObjects[i];
+            if (!gameStates[gamestateId].hasGameObject(go))
             {
-                GameObject go = gameObjects[i];
-                if (!gameStates[gamestateId].hasGameObject(go))
+                if (go == null)
                 {
-                    if (go == null)
+                    destroyObject(go);
+                    continue;
+                }
+                foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
+                {
+                    if (smb.isSpawnedObject())
                     {
-                        destroyObject(go);
-                        continue;
-                    }
-                    foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
-                    {
-                        if (smb.isSpawnedObject())
-                        {
-                            destroyObject(go);//remove it from game objects list
-                        }
+                        destroyObject(go);//remove it from game objects list
                     }
                 }
             }
@@ -399,7 +397,7 @@ public class GameManager : MonoBehaviour
             }
         }
         gameStates[gamestateId].load();
-        if (chosenId == rewindId)
+        if (chosenId <= rewindId)
         {
             refreshGameObjects();//a second time, just to be sure
             for (int i = gameStates.Count - 1; i > gamestateId; i--)
