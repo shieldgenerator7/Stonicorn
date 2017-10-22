@@ -33,6 +33,15 @@ public class CustomMenu
         GameManager.getPlayerObject().transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
     }
 
+    [MenuItem("SG7/Runtime/Activate All Checkpoints &a")]
+    public static void activateAllCheckpoints()
+    {
+        foreach (CheckPointChecker cpc in GameObject.FindObjectsOfType<CheckPointChecker>())
+        {
+            cpc.activate();
+        }
+    }
+
     [MenuItem("SG7/Build/Build Windows %w")]
     public static void buildWindows()
     {
