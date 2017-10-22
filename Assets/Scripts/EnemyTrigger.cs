@@ -33,7 +33,7 @@ public class EnemyTrigger : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Player")
+        if (coll.gameObject.tag == GameManager.playerTag)
         {
             foreach (EnemySimple es in enemies)
             {

@@ -5,12 +5,10 @@ public class SecretAreaTrigger : MonoBehaviour
 {
 
     public GameObject secretHider;
-    private GameObject playerObject;
 
     // Use this for initialization
     void Start()
     {
-        playerObject = GameObject.FindGameObjectWithTag("Player");
         if (secretHider == null)//if the secret hider isn't set, then it's probably its parent
         {
             secretHider = transform.parent.gameObject;
@@ -19,7 +17,7 @@ public class SecretAreaTrigger : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.Equals(playerObject))
+        if (coll.gameObject.tag == GameManager.playerTag)
         {
             if (secretHider != null && !ReferenceEquals(secretHider, null))
             {

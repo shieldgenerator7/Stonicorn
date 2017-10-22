@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     private static GameManager instance;
     private static GameObject playerObject;//the player object
+    public static string playerTag = "Player";
     private CameraController camCtr;
     private GestureManager gestureManager;
     private MusicManager musicManager;
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        playerObject = GameObject.FindGameObjectWithTag("Player");
+        playerObject = GameObject.FindGameObjectWithTag(playerTag);
         foreach (GameObject go in SceneManager.GetSceneByName("SceneLoaderTriggers").GetRootGameObjects())
         {
             sceneLoaders.Add(go.GetComponent<SceneLoader>());

@@ -14,7 +14,7 @@ public class GestureProfile
 
     public GestureProfile()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameManager.getPlayerObject();
         plrController = player.GetComponent<PlayerController>();
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
         cam = Camera.main;
