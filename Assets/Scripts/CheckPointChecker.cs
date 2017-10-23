@@ -180,7 +180,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
                             {
                                 if ((go.transform.position - current.transform.position).sqrMagnitude <= (gameObject.transform.position - current.transform.position).sqrMagnitude)
                                 {
-                                    Debug.Log("Moving this one: " + gameObject.name + " moving from " + go.name);
                                     //While they intersect, move this one
                                     while ((ghostBounds.center - cpc.ghostBounds.center).sqrMagnitude <= Mathf.Pow(ghostBounds.extents.x + cpc.ghostBounds.extents.x, 2))
                                     {
@@ -193,7 +192,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
                                 }
                                 else
                                 {
-                                    Debug.Log("Moving the other one: " + gameObject.name + " moves " + go.name);
                                     cpc.showRelativeTo(currentCheckpoint);
                                 }
                             }

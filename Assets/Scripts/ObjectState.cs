@@ -119,7 +119,7 @@ public class ObjectState
                 {
                     foreach (GameObject dgo in GameManager.getForgottenObjects())
                     {
-                        if (dgo.name == objectName && dgo.scene.name == sceneName)
+                        if (dgo != null && dgo.name == objectName && dgo.scene.name == sceneName)
                         {
                             go = dgo;
                             break;
