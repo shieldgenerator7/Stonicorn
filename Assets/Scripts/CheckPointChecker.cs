@@ -84,16 +84,17 @@ public class CheckPointChecker : MemoryMonoBehaviour
         plyrController.setIsInCheckPoint(true);
         player.transform.position = this.gameObject.transform.position;
         List<CheckPointChecker> cpcs = GameManager.getActiveCheckPoints();
-        cpcs.Remove(this);
+        List<CheckPointChecker> processedCPCs = new List<CheckPointChecker>();
+        processedCPCs.Add(this);
         for (int i = 0; i < cpcs.Count; i++)
         {
-            float lowSqrMag = (cpcs[0].gameObject.transform.position - transform.position).sqrMagnitude;
-            CheckPointChecker closestCPC = cpcs[0];
+            float lowSqrMag = float.MaxValue;
+            CheckPointChecker closestCPC = null;
             foreach (CheckPointChecker cpc in cpcs)
             {
-                if (cpc != null)
+                if (!processedCPCs.Contains(cpc))
                 {
-                    float sqrMag = (cpcs[0].gameObject.transform.position - transform.position).sqrMagnitude;
+                    float sqrMag = (cpc.gameObject.transform.position - transform.position).sqrMagnitude;
                     if (sqrMag < lowSqrMag)
                     {
                         lowSqrMag = sqrMag;
@@ -101,10 +102,10 @@ public class CheckPointChecker : MemoryMonoBehaviour
                     }
                 }
             }
-            if (closestCPC != this)
+            if (closestCPC != null)
             {
                 closestCPC.showRelativeTo(this.gameObject);
-                cpcs.Remove(closestCPC);
+                processedCPCs.Add(closestCPC);
             }
         }
     }
