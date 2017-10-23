@@ -308,6 +308,10 @@ public class GameManager : MonoBehaviour
         {
             if (instance.openScenes.Contains(sl.sceneName))
             {
+                if (sl.firstOpenGameStateId > instance.chosenId)
+                {
+                    sl.firstOpenGameStateId = instance.chosenId;
+                }
                 sl.lastOpenGameStateId = instance.chosenId;
             }
         }
@@ -395,6 +399,11 @@ public class GameManager : MonoBehaviour
                 {
                     sl.lastOpenGameStateId = chosenId;
                 }
+                if (sl.firstOpenGameStateId > chosenId)
+                {
+                    sl.firstOpenGameStateId = int.MaxValue;
+                    sl.lastOpenGameStateId = -1;
+                }
             }
         }
         gameStates[gamestateId].load();
@@ -428,9 +437,9 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        if (lastStateSeen >= gameStates.Count)
+        if (lastStateSeen > chosenId)
         {
-            lastStateSeen = gameStates.Count - 1;
+            lastStateSeen = chosenId;
         }
         //Load Each Object
         foreach (GameObject go in gameObjects)
@@ -547,6 +556,10 @@ public class GameManager : MonoBehaviour
     public static GameObject getPlayerObject()
     {
         return playerObject;
+    }
+    public static int getCurrentStateId()
+    {
+        return instance.chosenId;
     }
 
     /// <summary>

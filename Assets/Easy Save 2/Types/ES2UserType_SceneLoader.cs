@@ -11,6 +11,7 @@ public class ES2UserType_SceneLoader : ES2Type
 		// Add your writer.Write calls here.
 		writer.Write(data.sceneName);
 		writer.Write(data.lastOpenGameStateId);
+		writer.Write(data.firstOpenGameStateId);
 
 	}
 	
@@ -27,6 +28,7 @@ public class ES2UserType_SceneLoader : ES2Type
 		// Add your reader.Read calls here to read the data into the object.
 		data.sceneName = reader.Read<System.String>();
 		data.lastOpenGameStateId = reader.Read<System.Int32>();
+		data.firstOpenGameStateId = reader.Read<System.Int32>();
 
 	}
 	
