@@ -401,11 +401,11 @@ public class GameManager : MonoBehaviour
         if (chosenId <= rewindId)
         {
             refreshGameObjects();//a second time, just to be sure
-            for (int i = gameStates.Count - 1; i > gamestateId; i--)
-            {
-                Destroy(gameStates[i].representation);
-                gameStates.RemoveAt(i);
-            }
+        }
+        for (int i = gameStates.Count - 1; i > gamestateId; i--)
+        {
+            Destroy(gameStates[i].representation);
+            gameStates.RemoveAt(i);
         }
         GameState.nextid = gamestateId + 1;
         //Recenter the camera
