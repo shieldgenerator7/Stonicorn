@@ -382,7 +382,9 @@ public class GestureManager : SavableMonoBehaviour
         {
             Application.Quit();
         }
-
+        //
+        //Cheats
+        //
         if (cheatTapsTime <= Time.time)
         {
             //Reset cheat taps
