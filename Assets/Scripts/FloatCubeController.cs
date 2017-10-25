@@ -108,23 +108,30 @@ public class FloatCubeController : MonoBehaviour
 
                 Vector2 start = getGroundVector(propulsionHeight);
                 Debug.DrawLine(start, transform.position, Color.black);
-                RaycastHit2D rch2d = Physics2D.Raycast(start, upDirection, propulsionHeight);
-                if (rch2d && rch2d.collider != null)
+                RaycastHit2D[] rch2ds = new RaycastHit2D[10];
+                bc2d.Cast(-transform.up, rch2ds, propulsionHeight, true);
+                foreach (RaycastHit2D rch2d in rch2ds)
                 {
-                    GameObject ground = rch2d.collider.gameObject;
-                    if (ground != null && !ground.Equals(transform.gameObject))
+                    if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
                     {
-                        propping1 = true;
+                        GameObject ground = rch2d.collider.gameObject;
+                        if (ground != null && !ground.Equals(transform.gameObject))
+                        {
+                            propping1 = true;
+                        }
                     }
                 }
                 start = getGroundVector((propulsionHeight + variance));
-                rch2d = Physics2D.Raycast(start, upDirection, propulsionHeight + variance);
-                if (rch2d && rch2d.collider != null)
+                bc2d.Cast(-transform.up, rch2ds, propulsionHeight + variance, true);
+                foreach (RaycastHit2D rch2d in rch2ds)
                 {
-                    GameObject ground = rch2d.collider.gameObject;
-                    if (ground != null && !ground.Equals(transform.gameObject))
+                    if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
                     {
-                        propping2 = true;
+                        GameObject ground = rch2d.collider.gameObject;
+                        if (ground != null && !ground.Equals(transform.gameObject))
+                        {
+                            propping2 = true;
+                        }
                     }
                 }
                 if (propping1 && propping2)
