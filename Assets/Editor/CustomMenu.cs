@@ -30,7 +30,9 @@ public class CustomMenu
     [MenuItem("SG7/Runtime/Call Merky %`")]
     public static void callMerky()
     {
-        GameManager.getPlayerObject().transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+        GameObject playerObject = GameObject.FindGameObjectWithTag(GameManager.playerTag);
+        playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+        Selection.activeGameObject = playerObject;
     }
 
     [MenuItem("SG7/Runtime/Activate All Checkpoints &c")]
