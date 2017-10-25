@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     private List<GameState> gameStates = new List<GameState>();
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
+    private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
+    private List<string> openScenes = new List<string>();//the list of names of the scenes that are open
     //Memories
     private List<MemoryObject> memories = new List<MemoryObject>();
     //Checkpoints
@@ -30,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     private static GameManager instance;
     private static GameObject playerObject;//the player object
+    public static string playerTag = "Player";
     private CameraController camCtr;
     private GestureManager gestureManager;
     private MusicManager musicManager;
@@ -45,7 +48,7 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        playerObject = GameObject.FindGameObjectWithTag("Player");
+        playerObject = GameObject.FindGameObjectWithTag(playerTag);
         foreach (GameObject go in SceneManager.GetSceneByName("SceneLoaderTriggers").GetRootGameObjects())
         {
             sceneLoaders.Add(go.GetComponent<SceneLoader>());
@@ -70,7 +73,8 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneUnloaded += sceneUnloaded;
         FindObjectOfType<Canvas>().gameObject.AddComponent<Fader>();
         EffectManager.highlightTapArea(firstTeleportGuide);
-        gestureManager.tapGesture += delegate () {
+        gestureManager.tapGesture += delegate ()
+        {
             EffectManager.highlightTapArea(Vector2.zero, false);
             gestureManager.tapGesture = null;
         };
@@ -153,14 +157,16 @@ public class GameManager : MonoBehaviour
     /// Removes the given GameObject from the gameObjects list
     /// </summary>
     /// <param name="go"></param>
-    public static void removeObject(GameObject go)
+    private static void removeObject(GameObject go)
     {
         instance.gameObjects.Remove(go);
+        instance.forgottenObjects.Remove(go);
         if (go && go.transform.childCount > 0)
         {
             foreach (Transform t in go.transform)
             {
                 instance.gameObjects.Remove(t.gameObject);
+                instance.forgottenObjects.Remove(t.gameObject);
             }
         }
     }
@@ -233,11 +239,20 @@ public class GameManager : MonoBehaviour
     {
         refreshGameObjects();
         newlyLoadedScenes.Add(s.name);
+        openScenes.Add(s.name);
     }
     void sceneUnloaded(Scene s)
     {
+        foreach (GameObject fgo in forgottenObjects)
+        {
+            if (fgo != null && fgo.scene == s)
+            {
+                forgottenObjects.Remove(fgo);
+            }
+        }
         refreshGameObjects();
         unloadedScene = s.name;
+        openScenes.Remove(s.name);
         loadedSceneCount--;
     }
     public static void refresh() { instance.refreshGameObjects(); }
@@ -254,6 +269,14 @@ public class GameManager : MonoBehaviour
             if (!gameObjects.Contains(smb.gameObject))
             {
                 gameObjects.Add(smb.gameObject);
+            }
+        }
+        //Forgotten Objects
+        foreach (GameObject dgo in forgottenObjects)
+        {
+            if (dgo != null)
+            {
+                gameObjects.Add(dgo);
             }
         }
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
@@ -280,6 +303,18 @@ public class GameManager : MonoBehaviour
         instance.gameStates.Add(new GameState(instance.gameObjects));
         instance.chosenId++;
         instance.rewindId++;
+        //Open Scenes
+        foreach (SceneLoader sl in instance.sceneLoaders)
+        {
+            if (instance.openScenes.Contains(sl.sceneName))
+            {
+                if (sl.firstOpenGameStateId > instance.chosenId)
+                {
+                    sl.firstOpenGameStateId = instance.chosenId;
+                }
+                sl.lastOpenGameStateId = instance.chosenId;
+            }
+        }
     }
     public static void saveMemory(MemoryMonoBehaviour mmb)
     {//2016-11-23: CODE HAZARD: mixture of static and non-static methods, will cause error if there are ever more than 1 instance of GameManager
@@ -302,7 +337,32 @@ public class GameManager : MonoBehaviour
     {
         instance.activeCheckPoints.Add(cpc);
     }
-    public void Load(int gamestateId)
+    /// <summary>
+    /// Stores the given object before it gets set inactive
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void saveForgottenObject(GameObject obj, bool forget = true)
+    {
+        if (forget)
+        {
+            instance.forgottenObjects.Add(obj);
+            obj.SetActive(false);
+        }
+        else
+        {
+            instance.forgottenObjects.Remove(obj);
+            obj.SetActive(true);
+        }
+    }
+    public static List<GameObject> getForgottenObjects()
+    {
+        return instance.forgottenObjects;
+    }
+    public static void LoadState()
+    {
+        instance.Load(instance.chosenId);
+    }
+    private void Load(int gamestateId)
     {
         //Destroy objects not spawned yet in the new selected state
         //chosenId is the previous current gamestate, which is in the future compared to gamestateId
@@ -332,9 +392,22 @@ public class GameManager : MonoBehaviour
             //After rewind is finished, refresh the game object list
             refreshGameObjects();
             musicManager.endEventSong(timeRewindMusic);
+            //Open Scenes
+            foreach (SceneLoader sl in sceneLoaders)
+            {
+                if (sl.lastOpenGameStateId > chosenId)
+                {
+                    sl.lastOpenGameStateId = chosenId;
+                }
+                if (sl.firstOpenGameStateId > chosenId)
+                {
+                    sl.firstOpenGameStateId = int.MaxValue;
+                    sl.lastOpenGameStateId = -1;
+                }
+            }
         }
         gameStates[gamestateId].load();
-        if (chosenId == rewindId)
+        if (chosenId <= rewindId)
         {
             refreshGameObjects();//a second time, just to be sure
         }
@@ -350,11 +423,30 @@ public class GameManager : MonoBehaviour
     }
     public void LoadObjectsFromScene(Scene s)
     {
+        //Find the last state that this scene was saved in
+        int lastStateSeen = -1;
+        foreach (SceneLoader sl in sceneLoaders)
+        {
+            if (s.name == sl.sceneName)
+            {
+                lastStateSeen = sl.lastOpenGameStateId;
+                break;
+            }
+        }
+        if (lastStateSeen < 0)
+        {
+            return;
+        }
+        if (lastStateSeen > chosenId)
+        {
+            lastStateSeen = chosenId;
+        }
+        //Load Each Object
         foreach (GameObject go in gameObjects)
         {
             if (go.scene.Equals(s))
             {
-                for (int stateid = chosenId; stateid >= 0; stateid--)
+                for (int stateid = lastStateSeen; stateid >= 0; stateid--)
                 {
                     if (gameStates[stateid].loadObject(go))
                     {
@@ -375,6 +467,7 @@ public class GameManager : MonoBehaviour
     public void cancelRewind()
     {
         rewindId = chosenId;
+        Load(chosenId);
         musicManager.endEventSong(timeRewindMusic);
     }
     void Rewind(int gamestateId)//rewinds one state at a time
@@ -408,11 +501,26 @@ public class GameManager : MonoBehaviour
         fileName += ".txt";
         ES2.Save(memories, fileName + "?tag=memories");
         ES2.Save(gameStates, fileName + "?tag=states");
+        ES2.Save(sceneLoaders, fileName + "?tag=scenes");
     }
     public void loadFromFile()
     {
         memories = ES2.LoadList<MemoryObject>("merky.txt?tag=memories");
         gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
+        //Scenes
+        List<SceneLoader> rsls = ES2.LoadList<SceneLoader>("merky.txt?tag=scenes");
+        foreach (SceneLoader sl in sceneLoaders)//actually loaded scene loaders
+        {
+            foreach (SceneLoader rsl in rsls)//read in scene loaders
+            {
+                if (rsl != null && sl.sceneName == rsl.sceneName)
+                {
+                    sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
+                    Destroy(rsl);
+                    break;
+                }
+            }
+        }
     }
     void Awake()
     {
@@ -432,7 +540,7 @@ public class GameManager : MonoBehaviour
         if (!SceneManager.GetSceneByName("CheckPointScene").isLoaded)
         {
             SceneManager.LoadScene("CheckPointScene", LoadSceneMode.Additive);//load the CheckPointScene scene
-        }        
+        }
     }
     void OnApplicationQuit()
     {
@@ -448,6 +556,10 @@ public class GameManager : MonoBehaviour
     public static GameObject getPlayerObject()
     {
         return playerObject;
+    }
+    public static int getCurrentStateId()
+    {
+        return instance.chosenId;
     }
 
     /// <summary>

@@ -6,7 +6,7 @@ public class ExitChecker : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Player")
+        if (coll.gameObject.tag == GameManager.playerTag)
         {
             GameManager.resetGame();
         }

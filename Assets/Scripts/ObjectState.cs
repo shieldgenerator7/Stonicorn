@@ -7,9 +7,9 @@ public class ObjectState
 {
 
     //Transform
-    public Vector3 position;
+    public Vector3 position;//2017-10-10: actually stores the localPosition
     public Vector3 localScale;
-    public Quaternion rotation;
+    public Quaternion rotation;//2017-10-10: actually stores the localRotation
     //RigidBody2D
     public Vector2 velocity;
     public float angularVelocity;
@@ -36,9 +36,9 @@ public class ObjectState
 
     public void saveState()
     {
-        position = go.transform.position;
+        position = go.transform.localPosition;
         localScale = go.transform.localScale;
-        rotation = go.transform.rotation;
+        rotation = go.transform.localRotation;
         if (rb2d != null)
         {
             velocity = rb2d.velocity;
@@ -57,9 +57,9 @@ public class ObjectState
         {
             return;//don't load the state if go is null
         }
-        go.transform.position = position;
+        go.transform.localPosition = position;
         go.transform.localScale = localScale;
-        go.transform.rotation = rotation;
+        go.transform.localRotation = rotation;
         rb2d = go.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
@@ -102,7 +102,8 @@ public class ObjectState
                         this.go = sceneGo;
                         break;
                     }
-                    else {
+                    else
+                    {
                         foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
                         {
                             GameObject childGo = childTransform.gameObject;
@@ -114,6 +115,17 @@ public class ObjectState
                         }
                     }
                 }
+                if (go == null)
+                {
+                    foreach (GameObject dgo in GameManager.getForgottenObjects())
+                    {
+                        if (dgo != null && dgo.name == objectName && dgo.scene.name == sceneName)
+                        {
+                            go = dgo;
+                            break;
+                        }
+                    }
+                }
                 //if not found, do stuff
                 if (go == null || ReferenceEquals(go, null))
                 {
@@ -122,9 +134,25 @@ public class ObjectState
                     {
                         if (so.isSpawnedObject)
                         {
-                            go = so.spawnObject();
-                            go.name = this.objectName;
-                            GameManager.addObject(go);
+                            GameObject spawned = so.spawnObject();
+                            if (spawned.scene.name != sceneName)
+                            {
+                                SceneManager.MoveGameObjectToScene(spawned, scene);
+                            }
+                            foreach (Transform t in spawned.transform)
+                            {
+                                if (t.gameObject.name == this.objectName)
+                                {
+                                    go = t.gameObject;
+                                    break;
+                                }
+                            }
+                            if (go == null)
+                            {
+                                go = spawned;
+                                go.name = this.objectName;
+                            }
+                            GameManager.addObject(spawned);
                             break;
                         }
                     }

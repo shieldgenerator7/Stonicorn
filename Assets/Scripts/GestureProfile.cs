@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GestureProfile {
+public class GestureProfile
+{
 
     protected GameObject player;
     protected PlayerController plrController;
@@ -13,7 +14,7 @@ public class GestureProfile {
 
     public GestureProfile()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag(GameManager.playerTag);
         plrController = player.GetComponent<PlayerController>();
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
         cam = Camera.main;
@@ -40,28 +41,14 @@ public class GestureProfile {
         {
             gm.cancelRewind();
         }
-        else {
-            GestureAccepter ga = Utility.findGestureAccepter(curMPWorld);
-            if (ga != null && ga.acceptsTapGesture())
-            {
-                ga.processTapGesture();
-            }
-            else {
-                plrController.processTapGesture(curMPWorld);
-            }
+        else
+        {
+            plrController.processTapGesture(curMPWorld);
         }
     }
     public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {
-        GestureAccepter ga = Utility.findGestureAccepter(curMPWorld);
-        if (ga != null && ga.acceptsHoldGesture())
-        {
-            ga.processHoldGesture(finished);
-            plrController.dropHoldGesture();
-        }
-        else {
-            plrController.processHoldGesture(curMPWorld, holdTime, finished);
-        }
+        plrController.processHoldGesture(curMPWorld, holdTime, finished);
     }
     public void processDragGesture()
     {

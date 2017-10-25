@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HardMaterial : SavableMonoBehaviour
 {
@@ -47,6 +48,10 @@ public class HardMaterial : SavableMonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
+        if (GameManager.isRewinding())
+        {
+            return;//don't process collisions while rewinding
+        }
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
         if (hm != null)
         {
@@ -127,26 +132,39 @@ public class HardMaterial : SavableMonoBehaviour
                 Color c = sr.color;
                 sr.color = new Color(c.r, c.g, c.b, alpha);
             }
-            gameObject.SetActive(true);
+            if (alreadyBroken || !gameObject.activeInHierarchy || oldIntegrity < 0)
+            {
+                GameManager.saveForgottenObject(gameObject, false);
+            }
         }
-        else if (oldIntegrity > 0 || gameObject.activeSelf)
+        else if (oldIntegrity > 0 || gameObject.activeInHierarchy)
         {
-            if (!alreadyBroken)
+            bool shouldRefresh = false;
+            if (!alreadyBroken && !GameManager.isRewinding())
             {
                 if (crackedPrefab != null)
                 {
                     GameObject pieces = Instantiate(crackedPrefab);
                     pieces.transform.position = transform.position;
                     pieces.transform.rotation = transform.rotation;
+                    SceneManager.MoveGameObjectToScene(pieces, gameObject.scene);
                     string tag = "" + System.DateTime.Now.Ticks;
                     pieces.name += tag;
+                    CrackedPiece cp = pieces.GetComponent<CrackedPiece>();
+                    cp.spawnTag = tag;
                     foreach (Transform t in pieces.transform)
                     {
+                        if (t.gameObject.GetComponent<CrackedPiece>() == null)
+                        {
+                            CrackedPiece tcp = t.gameObject.AddComponent<CrackedPiece>();
+                            tcp.prefabName = cp.prefabName;
+                            tcp.spawnTag = cp.spawnTag;
+                        }
                         t.gameObject.name += tag;
                         t.localScale = transform.localScale;
                         t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
                     }
-                    GameManager.refresh();
+                    shouldRefresh = true;
                 }
                 else if (!disappearsIfNoBrokenPrefab)
                 {
@@ -164,11 +182,19 @@ public class HardMaterial : SavableMonoBehaviour
             }
             if (crackedPrefab != null || disappearsIfNoBrokenPrefab)
             {
-                gameObject.SetActive(false);
+                GameManager.saveForgottenObject(gameObject);
+                shouldRefresh = true;
             }
-            if (shattered != null)
+            if (!GameManager.isRewinding())
             {
-                shattered();//call delegate method
+                if (shouldRefresh)
+                {
+                    GameManager.refresh();
+                }
+                if (shattered != null)
+                {
+                    shattered();//call delegate method
+                }
             }
         }
     }

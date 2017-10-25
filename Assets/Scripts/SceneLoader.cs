@@ -6,6 +6,8 @@ public class SceneLoader : MonoBehaviour
 {
 
     public string sceneName;//the index of the scene to load
+    public int lastOpenGameStateId = -1;//the gamestate id in which this scene was last open in. -1 means it is not open in any of them
+    public int firstOpenGameStateId = int.MaxValue;//the gamestate in which this scene was first opened (for rewind purposes)
     private GameObject playerObj;
     private bool isLoaded = false;
     private Collider2D c2d;
@@ -13,8 +15,12 @@ public class SceneLoader : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        if (gameObject.name == "Easy Save 2 Loaded Component")
+        {
+            return;
+        }
         c2d = gameObject.GetComponent<Collider2D>();
-        playerObj = GameObject.FindGameObjectWithTag("Player");
+        playerObj = GameManager.getPlayerObject();
         if (SceneManager.GetSceneByName(sceneName).isLoaded)
         {
             isLoaded = true;
@@ -33,25 +39,28 @@ public class SceneLoader : MonoBehaviour
                 loadLevel();
             }
         }
-        if (isLoaded && !overlaps)
+        if (!GameManager.isRewinding() || firstOpenGameStateId > GameManager.getCurrentStateId())
         {
-            isLoaded = false;
-            unloadLevel();
+            if (isLoaded && !overlaps)
+            {
+                isLoaded = false;
+                unloadLevel();
+            }
         }
     }
-    void loadLevel()
-    {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-    }
-    void unloadLevel()
-    {
-        SceneManager.UnloadSceneAsync(sceneName);
-    }
-    public void unloadLevelIfLoaded()
-    {
-        if (isLoaded)
+        void loadLevel()
         {
-            unloadLevel();
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        }
+        void unloadLevel()
+        {
+            SceneManager.UnloadSceneAsync(sceneName);
+        }
+        public void unloadLevelIfLoaded()
+        {
+            if (isLoaded)
+            {
+                unloadLevel();
+            }
         }
     }
-}

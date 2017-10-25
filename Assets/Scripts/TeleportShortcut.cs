@@ -20,7 +20,7 @@ public class TeleportShortcut : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Player")
+        if (coll.gameObject.tag == GameManager.playerTag)
         {
             coll.gameObject.transform.position = teleportLocation;
             foreach (MilestoneActivator ma in abilitiesToGrant)

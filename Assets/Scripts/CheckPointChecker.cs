@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class CheckPointChecker : MemoryMonoBehaviour
 {
@@ -27,7 +28,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         player = GameManager.getPlayerObject();
         plyrController = player.GetComponent<PlayerController>();
-        if (checkpointCamera == null) {
+        if (checkpointCamera == null)
+        {
             checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();
             checkpointCamera.gameObject.SetActive(false);
         }
@@ -81,11 +83,29 @@ public class CheckPointChecker : MemoryMonoBehaviour
         ghost.SetActive(false);
         plyrController.setIsInCheckPoint(true);
         player.transform.position = this.gameObject.transform.position;
-        foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
+        List<CheckPointChecker> cpcs = GameManager.getActiveCheckPoints();
+        List<CheckPointChecker> processedCPCs = new List<CheckPointChecker>();
+        processedCPCs.Add(this);
+        for (int i = 0; i < cpcs.Count; i++)
         {
-            if (!cpc.Equals(this))
+            float lowSqrMag = float.MaxValue;
+            CheckPointChecker closestCPC = null;
+            foreach (CheckPointChecker cpc in cpcs)
             {
-                cpc.showRelativeTo(this.gameObject);
+                if (!processedCPCs.Contains(cpc))
+                {
+                    float sqrMag = (cpc.gameObject.transform.position - transform.position).sqrMagnitude;
+                    if (sqrMag < lowSqrMag)
+                    {
+                        lowSqrMag = sqrMag;
+                        closestCPC = cpc;
+                    }
+                }
+            }
+            if (closestCPC != null)
+            {
+                closestCPC.showRelativeTo(this.gameObject);
+                processedCPCs.Add(closestCPC);
             }
         }
     }
@@ -108,16 +128,16 @@ public class CheckPointChecker : MemoryMonoBehaviour
             checkpointCamera.gameObject.SetActive(false);
         }
         checkpointCamera.gameObject.SetActive(true);
-        checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0,0,-10);
+        checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0, 0, -10);
         //2016-12-06: The following code copied from an answer by jashan: http://answers.unity3d.com/questions/22954/how-to-save-a-picture-take-screenshot-from-a-camer.html
         int resWidth = 300;
         int resHeight = 300;
         RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
         checkpointCamera.targetTexture = rt;
         Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
-        checkpointCamera.Render();        
+        checkpointCamera.Render();
         RenderTexture.active = rt;
-        screenShot.ReadPixels(new Rect(0,0,rt.width,rt.height), 0, 0);
+        screenShot.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         screenShot.Apply();
         checkpointCamera.targetTexture = null;
         RenderTexture.active = null; // JC: added to avoid errors
@@ -143,7 +163,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
             while (movedFurther)
             {
                 movedFurther = false;
-                ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * (CP_GHOST_BUFFER*bufferScalar);
+                ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * (CP_GHOST_BUFFER * bufferScalar);
                 ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
 
                 //check to make sure its ghost does not intersect other CP ghosts
@@ -152,16 +172,22 @@ public class CheckPointChecker : MemoryMonoBehaviour
                     if (cpc != this)
                     {
                         GameObject go = cpc.gameObject;
-                        if (cpc.activated && cpc.ghost.activeSelf)
+                        if (cpc.activated && cpc.ghost.activeInHierarchy)
                         {
                             if (ghostBounds.Intersects(cpc.ghostBounds)
                                 //because they're circles, using the extents gives us how far apart (at minimum) they're supposed to be 
-                                && Vector2.Distance(ghostBounds.center, cpc.ghostBounds.center) <= ghostBounds.extents.x + cpc.ghostBounds.extents.x)
+                                && (ghostBounds.center - cpc.ghostBounds.center).sqrMagnitude <= Mathf.Pow(ghostBounds.extents.x + cpc.ghostBounds.extents.x, 2))
                             {
-                                if (Vector3.Distance(go.transform.position, current.transform.position) < Vector3.Distance(gameObject.transform.position, current.transform.position))
+                                if ((go.transform.position - current.transform.position).sqrMagnitude <= (gameObject.transform.position - current.transform.position).sqrMagnitude)
                                 {
+                                    //While they intersect, move this one
+                                    while ((ghostBounds.center - cpc.ghostBounds.center).sqrMagnitude <= Mathf.Pow(ghostBounds.extents.x + cpc.ghostBounds.extents.x, 2))
+                                    {
+                                        bufferScalar += bufferScalarIncrement;
+                                        ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * (CP_GHOST_BUFFER * bufferScalar);
+                                        ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
+                                    }
                                     movedFurther = true;
-                                    bufferScalar += bufferScalarIncrement;
                                     break;
                                 }
                                 else
@@ -174,7 +200,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 }
             }
         }
-
     }
     /**
     * Checks to see if the player is colliding with this checkpoint's ghost

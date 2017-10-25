@@ -13,13 +13,16 @@ public class GameState
     public GameObject representation;//the player ghost that represents this game state
 
     //Instantiation
-    public GameState() {
+    public GameState()
+    {
         id = nextid;
         nextid++;
     }
-    public GameState(List<GameObject> list): this()
+    public GameState(List<GameObject> list) : this()
     {
-        foreach (GameObject go in list){
+        //Object States
+        foreach (GameObject go in list)
+        {
             if (go == null)
             {
                 continue;
@@ -103,7 +106,7 @@ public class GameState
         SpriteRenderer sr = representation.GetComponent<SpriteRenderer>();
         Color c = sr.color;
         ParticleSystem ps = representation.GetComponentInChildren<ParticleSystem>();
-                
+
         if (mostRecentId - id < 10)
         {
             sr.color = new Color(c.r, c.g, c.b, 1.0f);

@@ -157,7 +157,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 94021246}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 71.54104, y: 63.634007, z: -3.75}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -6995,8 +6995,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c6979dbbd9d7bd418516ab320684126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotZ: 0
-  autoRotate: 0
+  rotZ: 322.493
+  autoRotate: 1
 --- !u!4 &253958363
 Transform:
   m_ObjectHideFlags: 0
@@ -7096,6 +7096,21 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1 &342116746 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 113282, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+  m_PrefabInternal: {fileID: 2073786045}
+--- !u!114 &342116747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 342116746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f936c66db35ae5a46bd0bdf66548fea4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &408598912
 GameObject:
   m_ObjectHideFlags: 0
@@ -14061,7 +14076,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 2042818057
+  randomSeed: 151467767
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -17277,7 +17292,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 534039100}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 287.13, y: 27.53, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -38406,11 +38421,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 179.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 84.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
       propertyPath: m_LocalPosition.z
