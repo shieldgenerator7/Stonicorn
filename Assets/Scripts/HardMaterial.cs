@@ -48,6 +48,10 @@ public class HardMaterial : SavableMonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
+        if (GameManager.isRewinding())
+        {
+            return;//don't process collisions while rewinding
+        }
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
         if (hm != null)
         {
@@ -136,7 +140,7 @@ public class HardMaterial : SavableMonoBehaviour
         else if (oldIntegrity > 0 || gameObject.activeInHierarchy)
         {
             bool shouldRefresh = false;
-            if (!alreadyBroken)
+            if (!alreadyBroken && !GameManager.isRewinding())
             {
                 if (crackedPrefab != null)
                 {
@@ -181,13 +185,16 @@ public class HardMaterial : SavableMonoBehaviour
                 GameManager.saveForgottenObject(gameObject);
                 shouldRefresh = true;
             }
-            if (shouldRefresh)
+            if (!GameManager.isRewinding())
             {
-                GameManager.refresh();
-            }
-            if (shattered != null)
-            {
-                shattered();//call delegate method
+                if (shouldRefresh)
+                {
+                    GameManager.refresh();
+                }
+                if (shattered != null)
+                {
+                    shattered();//call delegate method
+                }
             }
         }
     }

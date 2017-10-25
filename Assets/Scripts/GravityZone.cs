@@ -61,6 +61,10 @@ public class GravityZone : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (GameManager.isRewinding())
+        {
+            return;//don't do anything if tie is rewinding
+        }
         bool cleanNeeded = false;
         foreach (Rigidbody2D rb2d in tenants)
         {
