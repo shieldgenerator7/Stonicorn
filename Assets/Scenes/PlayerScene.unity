@@ -368,7 +368,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1724023592
+  randomSeed: -877730951
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3752,7 +3752,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -577474284
+  randomSeed: 1890340967
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -7272,7 +7272,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 931046046
+  randomSeed: -1350537902
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -10604,7 +10604,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1353336729
+  randomSeed: 1263175902
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -13935,6 +13935,16 @@ Prefab:
       propertyPath: m_SortingOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 198421040603977868, guid: 2cd2e83879898834a97f3b302ee30fdc,
+        type: 2}
+      propertyPath: ShapeModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198421040603977868, guid: 2cd2e83879898834a97f3b302ee30fdc,
+        type: 2}
+      propertyPath: ShapeModule.type
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 2}
   m_IsPrefabParent: 0
@@ -14076,7 +14086,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 151467767
+  randomSeed: -1559198959
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -14507,7 +14517,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 5
     enabled: 0
-    type: 4
+    type: 10
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -17337,6 +17347,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 198421865540548466, guid: 75c62e8b48da9694d9259028d76cb1ea,
+        type: 2}
+      propertyPath: ShapeModule.type
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 198421865540548466, guid: 75c62e8b48da9694d9259028d76cb1ea,
+        type: 2}
+      propertyPath: randomSeed
+      value: 451703478
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 75c62e8b48da9694d9259028d76cb1ea, type: 2}
   m_IsPrefabParent: 0
@@ -17619,7 +17639,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1699181065
+  randomSeed: -1056867245
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -20900,7 +20920,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1783351360
+  randomSeed: 829033806
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -24522,7 +24542,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1618314249
+  randomSeed: -587909171
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -28174,7 +28194,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -955858593
+  randomSeed: -2124177595
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -31541,7 +31561,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 546194519
+  randomSeed: -1270907322
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -35157,7 +35177,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1077102319
+  randomSeed: -351314513
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -38514,6 +38534,11 @@ Prefab:
         type: 2}
       propertyPath: randomSeed
       value: 1610534407
+      objectReference: {fileID: 0}
+    - target: {fileID: 198780346836551620, guid: 20c8cb124d483e041817aec3b7893bed,
+        type: 2}
+      propertyPath: ShapeModule.type
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 20c8cb124d483e041817aec3b7893bed, type: 2}
