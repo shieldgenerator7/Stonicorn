@@ -17,17 +17,13 @@ public class TeleportStarUpdater : MonoBehaviour
         set
         {
             turnedOn = value;
+            gameObject.SetActive(value);
             if (value)
             {
                 startTime = Time.time;
                 transform.localScale = baseScale;
                 baseColor.a = 1;
             }
-            else
-            {
-                baseColor.a = 0;
-            }
-            sr.color = baseColor;
         }
     }
 
