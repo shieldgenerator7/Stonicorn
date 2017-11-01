@@ -307,7 +307,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1792176472}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &198174138
 ParticleSystem:
@@ -368,7 +368,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -877730951
+  randomSeed: -1973061302
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -7010,92 +7010,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &299909354
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 139140, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 299909355}
-  - component: {fileID: 299909357}
-  - component: {fileID: 299909356}
-  m_Layer: 5
-  m_Name: teleportrangeindicator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &299909355
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 484650, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 299909354}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1792176472}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &299909356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11435270, guid: 5913bd1e88aefff4988c7dfee6595611,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 299909354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb2a4b3c4e975c4fb4126386974d0d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentObj: {fileID: 1792176465}
---- !u!212 &299909357
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 21209056, guid: 5913bd1e88aefff4988c7dfee6595611,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 299909354}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1013862959
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: eb7c2ab9920adf146a653a8f712162bd, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &342116746 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 113282, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
@@ -7180,7 +7094,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1792176472}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &489995996
 GameObject:
@@ -13909,7 +13823,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 212000014011088326, guid: 2cd2e83879898834a97f3b302ee30fdc,
         type: 2}
@@ -17422,6 +17336,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05caff092e33874408c6a40e749f6c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportStarPrefab: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
+  teleportStarDuration: 1
+  teleportStarColor: {r: 1, g: 1, b: 1, a: 1}
   collisionEffectPrefab: {fileID: 1127651316082574, guid: c391e2dc92d66a7439d9d46fae261627,
     type: 2}
   particleStartSpeed: 7
@@ -17526,7 +17443,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1792176472}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &836175532
 ParticleSystemRenderer:
@@ -20859,7 +20776,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1792176472}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 150}
 --- !u!198 &856596824
 ParticleSystem:
@@ -24244,7 +24161,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1792176472}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &918283675
 GameObject:
@@ -24481,7 +24398,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1792176472}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 210}
 --- !u!198 &1121559820
 ParticleSystem:
@@ -27866,7 +27783,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1792176472}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1414825757
 GameObject:
@@ -31448,7 +31365,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1792176472}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &1726130354
 ParticleSystemRenderer:
@@ -34846,10 +34763,6 @@ MonoBehaviour:
   exhaustCoolDownTime: 0.5
   gravityImmuneTimeAmount: 0.2
   teleportTime: 0
-  teleportStreak: {fileID: 133468, guid: a76ac723dbf060e4fae65f29bcb058d9, type: 2}
-  useStreak: 0
-  teleportStar: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
-  useStar: 1
   teleportRangeParticalObject: {fileID: 198174136}
   wallJumpAbilityIndicator: {fileID: 1121559818}
   airPorts: 0
@@ -34995,7 +34908,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 299909355}
   - {fileID: 198174137}
   - {fileID: 1950273297}
   - {fileID: 1121559819}
@@ -35116,7 +35028,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1792176472}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
 --- !u!198 &1950273298
 ParticleSystem:
