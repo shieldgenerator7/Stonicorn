@@ -17,12 +17,14 @@ public class EffectManager : MonoBehaviour {
     private Dictionary<GameObject, GameObject> forceWaveShadows = new Dictionary<GameObject, GameObject>();
 
     private static EffectManager instance;
+    private static CameraController cmactr;
 
     // Use this for initialization
     void Start() {
         if (instance == null)
         {
             instance = this;
+            cmactr = Camera.main.GetComponent<CameraController>();
         }
         else
         {
@@ -37,6 +39,11 @@ public class EffectManager : MonoBehaviour {
     /// <param name="damagePercent">How much percent of total HP of damage was inflicted, between 0 and 100</param>
     public static void collisionEffect(Vector2 position, float damagePercent = 100.0f)
     {
+        if (!cmactr.inView(position))
+        {
+            Debug.Log("Didn't show collision effect");
+            return;//don't display effect if it's not going to show
+        }
         ParticleSystem chosenPS = null;
         //Find existing particle system
         foreach (ParticleSystem ps in instance.collisionEffectList)
