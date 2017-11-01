@@ -17,10 +17,6 @@ public class PlayerController : MonoBehaviour
     private float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
 
 
-    public GameObject teleportStreak;
-    public bool useStreak = false;
-    public GameObject teleportStar;
-    public bool useStar = true;
     public GameObject teleportRangeParticalObject;
     private ParticleSystemController teleportRangeParticalController;
     public GameObject wallJumpAbilityIndicator;
@@ -343,36 +339,13 @@ public class PlayerController : MonoBehaviour
 
     void showTeleportEffect(Vector3 oldp, Vector3 newp)
     {
-        if (useStreak)
-        {
-            showStreak(oldp, newp);
-        }
-        if (useStar)
-        {
-            showTeleportStar(oldp, newp);
-        }
+        EffectManager.showTeleportStar(oldp);
         //Check for wall jump
         if (wca.enabled && groundedWall)
         {
             //Play jump effect in addition to teleport star
             wca.playWallClimbEffects(oldp);
         }
-    }
-    void showStreak(Vector3 oldp, Vector3 newp)
-    {
-        GameObject newTS = (GameObject)Instantiate(teleportStreak);
-        newTS.GetComponent<TeleportStreakUpdater>().start = oldp;
-        newTS.GetComponent<TeleportStreakUpdater>().end = newp;
-        newTS.GetComponent<TeleportStreakUpdater>().position();
-        newTS.GetComponent<TeleportStreakUpdater>().turnOn(true);
-    }
-    void showTeleportStar(Vector3 oldp, Vector3 newp)
-    {
-        GameObject newTS = (GameObject)Instantiate(teleportStar);
-        newTS.GetComponent<TeleportStarUpdater>().start = oldp;
-        newTS.GetComponent<TeleportStarUpdater>().end = newp;
-        newTS.GetComponent<TeleportStarUpdater>().position();
-        newTS.GetComponent<TeleportStarUpdater>().turnOn(true);
     }
 
 
