@@ -24,6 +24,7 @@ public class PowerConduit : SavableMonoBehaviour
     void Start()
     {
         lightEffectRenderer = lightEffect.GetComponent<SpriteRenderer>();
+        lightEffectRenderer.size = GetComponent<SpriteRenderer>().size;
         lightEffectColor = lightEffectRenderer.color;
         bc2d = GetComponent<BoxCollider2D>();
     }
@@ -46,8 +47,10 @@ public class PowerConduit : SavableMonoBehaviour
         float curHigh = maxEnergyPerSecond;
         float curLow = 0;
         float newAlpha = ((currentEnergyLevel - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
-        //float newAlpha = ((currentEnergyLevel) * (newHigh) / (curHigh));
-        lightEffectRenderer.color = new Color(lightEffectColor.r, lightEffectColor.g, lightEffectColor.b, newAlpha);
+        if (Mathf.Abs(lightEffectRenderer.color.a - newAlpha) > 0.01f)
+        {
+            lightEffectRenderer.color = new Color(lightEffectColor.r, lightEffectColor.g, lightEffectColor.b, newAlpha);
+        }
     }
     void FixedUpdate()
     {
