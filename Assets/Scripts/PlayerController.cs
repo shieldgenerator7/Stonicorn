@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
     private float[] rotations = new float[] { 285, 155, 90, 0 };
 
     public AudioClip teleportSound;
+    public BoxCollider2D scoutCollider;//collider used to scout the level for teleportable spots
 
     private CameraController mainCamCtr;//the camera controller for the main camera
     private GestureManager gm;
@@ -275,10 +276,10 @@ public class PlayerController : MonoBehaviour
                 }
                 //Search for a good landing spot
                 List<Vector3> possibleOptions = new List<Vector3>();
-                const int pointsToTry = 5;//default to trying 10 points along the line at first
+                const int pointsToTry = 5;//try 5 points along the line
                 const float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
                 const float variance = 0.4f;//max amount to adjust angle by
-                const int anglesToTry = 7;//default to trying 10 points along the line at first
+                const int anglesToTry = 7;//try 7 angles off the line
                 const float anglesDiff = variance * 2 / (anglesToTry - 1);
                 //Vary the angle
                 for (float a = -variance; a <= variance; a += anglesDiff)
@@ -436,17 +437,35 @@ public class PlayerController : MonoBehaviour
     */
     bool isOccupied(Vector3 pos)
     {
-        //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);
-        Vector3 savedOffset = pc2d.offset;
+        bool occupied = false;
+        //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);        
+        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
         Vector3 offset = pos - transform.position;
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-        pc2d.offset = rOffset;
-        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
-        pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        //Test with scout collider
+        {
+            Vector3 savedOffset = scoutCollider.offset;
+            scoutCollider.offset = rOffset;
+            scoutCollider.Cast(Vector2.zero, rh2ds, 0, true);
+            occupied = isOccupied(rh2ds);
+            scoutCollider.offset = savedOffset;
+        }
+        //Test with actual collider
+        if (!occupied)
+        {
+            Vector3 savedOffset = pc2d.offset;
+            pc2d.offset = rOffset;
+            pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+            occupied = isOccupied(rh2ds);
+            pc2d.offset = savedOffset;
+        }
         //Debug.DrawLine(pc2d.offset+(Vector2)transform.position, pc2d.bounds.center, Color.grey, 10);
-        pc2d.offset = savedOffset;
-        foreach (RaycastHit2D rh2d in rh2ds)
+        return occupied;
+    }
+    bool isOccupied(RaycastHit2D[] rch2ds)
+    {
+        foreach (RaycastHit2D rh2d in rch2ds)
         {
             if (rh2d.collider == null)
             {
@@ -455,14 +474,14 @@ public class PlayerController : MonoBehaviour
             GameObject go = rh2d.collider.gameObject;
             if (!rh2d.collider.isTrigger)
             {
-                if (!go.Equals(transform.gameObject))
+                if (go != gameObject)
                 {
                     //Debug.Log("Occupying object: " + go.name);
                     return true;
                 }
 
             }
-            if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
+            if (go.tag == "HidableArea" || (go.transform.parent != null && go.transform.parent.gameObject.tag == "HideableArea"))
             {
                 if (go.GetComponent<SecretAreaTrigger>() == null)
                 {
@@ -470,7 +489,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        return false;//nope, it's not occupied
+        return false;
     }
 
     /// <summary>
