@@ -10,6 +10,7 @@ public class EnemySimple : MonoBehaviour
     public bool activeMove = false;//controls whether it can move or not
     public float allowedLeftAndRightVariance = 25.0f;//used to determine if a colliding object is left or right of this enemy
     public float directionSwitchCooldown = 0.5f;//how many seconds after switching direction this enemy can switch it again
+    public float sightRange = 10.0f;//how far away from itself it can see
 
     public ParticleSystem fearParticles;//the particle system that activates when the enemy is frightened
 
@@ -42,7 +43,10 @@ public class EnemySimple : MonoBehaviour
 
     private void Update()
     {
-        losToPlayer = Utility.lineOfSight(gameObject, player);
+        losToPlayer = false;
+        if ((player.transform.position - transform.position).sqrMagnitude <= sightRange * sightRange) {
+            losToPlayer = Utility.lineOfSight(gameObject, player);
+        }
         if (losToPlayer)
         {
             if (!fearParticles.isPlaying)
