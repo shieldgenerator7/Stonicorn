@@ -14,7 +14,6 @@ public class NPCController : SavableMonoBehaviour
     public float interruptDistance = 10.0f;//if Merky goes further than this distance, the NPC stops talking
 
     private GameObject playerObject;
-    private static GUIStyle npcTextStyle;
 
     //State
     /// <summary>
@@ -40,14 +39,7 @@ public class NPCController : SavableMonoBehaviour
                 source = gameObject.AddComponent<AudioSource>();
             }
         }
-        if (npcTextStyle == null)
-        {
-            npcTextStyle = new GUIStyle();
-            npcTextStyle.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
-            npcTextStyle.wordWrap = true;
-            npcTextStyle.alignment = TextAnchor.UpperCenter;
-            Debug.Log(npcTextStyle.alignment);
-        }
+        //Read in the NPC's lines
         if (lineFileName != null && lineFileName != "")
         {
             voiceLines = new List<NPCVoiceLine>();//2017-09-05 ommitted until text files are filled out
@@ -187,28 +179,13 @@ public class NPCController : SavableMonoBehaviour
         }
         if (source.isPlaying)
         {
-            GameManager.speakNPC(gameObject, true);
+            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time);
+            NPCManager.speakNPC(gameObject, true, voicelinetext);
         }
-        else
+        else if (currentVoiceLineIndex >= 0)
         {
             currentVoiceLineIndex = -1;
-            GameManager.speakNPC(gameObject, false);
-        }
-    }
-
-    private void OnGUI()
-    {
-        if (source.isPlaying)
-        {
-            GUI.backgroundColor = Color.clear;
-            float bufferWidth = Camera.main.pixelWidth * 0.25f;
-            float bufferHeight = Camera.main.pixelHeight * 0.25f;
-            Vector2 posOnCam = Camera.main.WorldToScreenPoint(transform.position+Camera.main.transform.up.normalized*2);
-            bufferWidth = bufferHeight = Mathf.Min(bufferWidth, bufferHeight);
-            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time);
-            float rectWidth = Camera.main.pixelWidth - bufferWidth * 2;
-            Rect bufferRect = new Rect(posOnCam.x-(rectWidth/2), Camera.main.pixelHeight-posOnCam.y, rectWidth, Camera.main.pixelHeight - bufferHeight * 2);
-            GUI.Label(bufferRect, voicelinetext, npcTextStyle);
+            NPCManager.speakNPC(gameObject, false, "");
         }
     }
 
