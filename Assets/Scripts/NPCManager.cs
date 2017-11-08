@@ -79,6 +79,6 @@ public class NPCManager : MonoBehaviour
         }
         instance.canvas.gameObject.SetActive(talking);
         instance.npcDialogueText.text = message;
-        instance.gameObject.SetActive(talking);
+        instance.enabled = talking;
     }
 }
