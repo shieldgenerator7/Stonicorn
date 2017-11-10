@@ -24,6 +24,11 @@ public class NPCManager : MonoBehaviour
 
             npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
             musicManager = FindObjectOfType<MusicManager>();
+            if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
+            {
+                instance.canvas.gameObject.SetActive(false);
+                instance.enabled = false;
+            }
         }
         else
         {
