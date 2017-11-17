@@ -8,8 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public bool save = false;
-    public bool load = false;
     public bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
     public int chosenId = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
@@ -174,17 +172,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (save == true)
-        {
-            save = false;
-            Save();
-        }
-        if (load == true)
-        {
-            load = false;
-            Load(chosenId);
-        }
-
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
