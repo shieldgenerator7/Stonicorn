@@ -14,17 +14,18 @@ public class TesterShortcuts : MonoBehaviour
         {
             activateAllCheckpoints();
         }
+        bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            enableAbility(1);
+            enableAbility(1, shift);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            enableAbility(2);
+            enableAbility(2, shift);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            enableAbility(3);
+            enableAbility(3, shift);
         }
     }
     public static void activateAllCheckpoints()
@@ -34,7 +35,7 @@ public class TesterShortcuts : MonoBehaviour
             cpc.activate();
         }
     }
-    public static void enableAbility(int abilityIndex)
+    public static void enableAbility(int abilityIndex, bool shift)
     {
         GameObject playerObject = GameManager.getPlayerObject();
         switch (abilityIndex)
@@ -48,8 +49,16 @@ public class TesterShortcuts : MonoBehaviour
                 wca.enabled = !wca.enabled;
                 break;
             case 3:
-                ShieldBubbleAbility sba = playerObject.GetComponent<ShieldBubbleAbility>();
-                sba.enabled = !sba.enabled;
+                if (shift)
+                {
+                    ShieldBubbleAbility sba = playerObject.GetComponent<ShieldBubbleAbility>();
+                    sba.enabled = !sba.enabled;
+                }
+                else
+                {
+                    ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
+                    efa.enabled = !efa.enabled;
+                }
                 break;
         }
     }
