@@ -8,6 +8,7 @@ public class PowerConduit : SavableMonoBehaviour
     //These wires transfer energy from a source (such as a Shield Bubble) and convert it to energy to power other objects (such as doors)
 
     public GameObject lightEffect;//the object attached to it that it uses to show it is lit up
+    public float maxEnergyLevel = 3;//how much energy this conduit can store
     public float maxEnergyPerSecond = 2;//(energy units per second) the max amount of energy that it can produce/move per second
     public float currentEnergyLevel = 0;//the current amount of energy it has to spend
     public bool givesEnergy = true;//whether this can give power to other PowerConduits
@@ -44,7 +45,7 @@ public class PowerConduit : SavableMonoBehaviour
         //2017-01-24: copied from my project: https://github.com/shieldgenerator7/GGJ-2017-Wave/blob/master/Assets/Script/CatTongueController.cs
         float newHigh = 2.0f;//opaque
         float newLow = 0.0f;//transparent
-        float curHigh = maxEnergyPerSecond;
+        float curHigh = maxEnergyLevel;
         float curLow = 0;
         float newAlpha = ((currentEnergyLevel - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
         if (Mathf.Abs(lightEffectRenderer.color.a - newAlpha) > 0.01f)
@@ -66,7 +67,7 @@ public class PowerConduit : SavableMonoBehaviour
                 {
                     if (pc.givesEnergy && (!pc.takesEnergy || pc.currentEnergyLevel > currentEnergyLevel || usesEnergy))
                     {
-                        float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond - currentEnergyLevel, 1);
+                        float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond, Time.fixedDeltaTime);
                         currentEnergyLevel += amountGiven;
                     }
                 }
@@ -75,9 +76,9 @@ public class PowerConduit : SavableMonoBehaviour
     }
     void LateUpdate()
     {
-        if (currentEnergyLevel > maxEnergyPerSecond)
+        if (currentEnergyLevel > maxEnergyLevel)
         {
-            currentEnergyLevel = maxEnergyPerSecond;//to keep it from overloading, put in LastUpdate() to give objects a chance to use energy
+            currentEnergyLevel = maxEnergyLevel;//to keep it from overloading, put in LastUpdate() to give objects a chance to use energy
         }
         if (currentEnergyLevel < 0)
         {
@@ -98,7 +99,7 @@ public class PowerConduit : SavableMonoBehaviour
         {
             throw new System.MethodAccessException("PowerConduit.takeEnergyFromSource(..) should not be called on this object because its takesEnergy var is: " + takesEnergy);
         }
-        float amountTaken = Mathf.Min(maxEnergyPerSecond - currentEnergyLevel, maxAvailable);
+        float amountTaken = Mathf.Min(maxEnergyPerSecond, maxAvailable) * deltaTime;
         currentEnergyLevel += amountTaken;
         return amountTaken;
     }
@@ -133,7 +134,8 @@ public class PowerConduit : SavableMonoBehaviour
         {
             throw new System.MethodAccessException("PowerConduit.convertSourceToEnergy(..) should not be called on this object because its convertsToEnergy var is: " + convertsToEnergy);
         }
-        float amountTaken = Mathf.Min(maxEnergyPerSecond - currentEnergyLevel, maxAvailable);
+        float amountTaken = Mathf.Min(maxEnergyPerSecond, maxAvailable)*deltaTime;
+        Debug.Log("amounttakne: " + amountTaken + ", deltatime: " + deltaTime);
         currentEnergyLevel += amountTaken;
         return amountTaken;
     }
@@ -150,7 +152,7 @@ public class PowerConduit : SavableMonoBehaviour
         if (!usesEnergy) {
             throw new System.MethodAccessException("PowerConduit.useEnergy(..) should not be called on this object because its usesEnergy var is: " + usesEnergy);
         }
-        float amountGiven = Mathf.Min(amountRequested * deltaTime, currentEnergyLevel);
+        float amountGiven = Mathf.Min(amountRequested, currentEnergyLevel)*deltaTime;
         currentEnergyLevel -= amountGiven;
         return amountGiven;
     }

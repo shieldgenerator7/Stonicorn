@@ -46,7 +46,7 @@ public class ElectricFieldAbility : PlayerAbility
                 if (pc != null && pc.convertsToEnergy)
                 {
                     //2017-11-17 FUTURE CODE: take out the 100 and put a variable in there, perhaps something to do with HP
-                    float amountTaken = pc.convertSourceToEnergy(100, Time.fixedTime);
+                    float amountTaken = pc.convertSourceToEnergy(100, Time.fixedDeltaTime);
                 }
 
                 Rigidbody2D rb2d = hc.GetComponent<Rigidbody2D>();
