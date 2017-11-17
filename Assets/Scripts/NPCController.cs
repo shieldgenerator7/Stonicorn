@@ -40,6 +40,13 @@ public class NPCController : SavableMonoBehaviour
             }
         }
         //Read in the NPC's lines
+        if (voiceLines == null)
+        {
+            refreshVoiceLines();
+        }
+    }
+    void refreshVoiceLines()
+    {
         if (lineFileName != null && lineFileName != "")
         {
             voiceLines = new List<NPCVoiceLine>();//2017-09-05 ommitted until text files are filled out
@@ -48,7 +55,7 @@ public class NPCController : SavableMonoBehaviour
             try
             {
                 string line;
-                StreamReader theReader = new StreamReader("Assets/Resources/Dialogue/"+lineFileName, Encoding.Default);
+                StreamReader theReader = new StreamReader("Assets/Resources/Dialogue/" + lineFileName, Encoding.Default);
                 using (theReader)
                 {
                     do
@@ -66,7 +73,7 @@ public class NPCController : SavableMonoBehaviour
                             else if (line.StartsWith("audio:"))
                             {
                                 string audioPath = line.Substring("audio:".Length).Trim();
-                                voiceLines[writeIndex].voiceLine = Resources.Load<AudioClip>("Dialogue/"+audioPath);
+                                voiceLines[writeIndex].voiceLine = Resources.Load<AudioClip>("Dialogue/" + audioPath);
                             }
                             else if (line.StartsWith("text:"))
                             {
@@ -127,7 +134,7 @@ public class NPCController : SavableMonoBehaviour
             // on what didn't work
             catch (System.Exception e)
             {
-                Debug.LogError("{0} lineFileName: "+lineFileName +"\n>>>" + e.Message+ "\n"+e.StackTrace);
+                Debug.LogError("{0} lineFileName: " + lineFileName + "\n>>>" + e.Message + "\n" + e.StackTrace);
             }
         }
     }
@@ -273,6 +280,10 @@ public class NPCController : SavableMonoBehaviour
     /// <param name="timePos">The playback time</param>
     public void setVoiceLine(int index, float timePos = 0)
     {
+        if (voiceLines == null)
+        {
+            refreshVoiceLines();
+        }
         if (index >= 0 && index < voiceLines.Count)
         {
             currentVoiceLineIndex = index;
