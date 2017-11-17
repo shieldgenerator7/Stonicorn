@@ -14,7 +14,6 @@ public class NPCController : SavableMonoBehaviour
     public float interruptDistance = 10.0f;//if Merky goes further than this distance, the NPC stops talking
 
     private GameObject playerObject;
-    private static GUIStyle npcTextStyle;
 
     //State
     /// <summary>
@@ -40,14 +39,14 @@ public class NPCController : SavableMonoBehaviour
                 source = gameObject.AddComponent<AudioSource>();
             }
         }
-        if (npcTextStyle == null)
+        //Read in the NPC's lines
+        if (voiceLines == null)
         {
-            npcTextStyle = new GUIStyle();
-            npcTextStyle.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
-            npcTextStyle.wordWrap = true;
-            npcTextStyle.alignment = TextAnchor.UpperCenter;
-            Debug.Log(npcTextStyle.alignment);
+            refreshVoiceLines();
         }
+    }
+    void refreshVoiceLines()
+    {
         if (lineFileName != null && lineFileName != "")
         {
             voiceLines = new List<NPCVoiceLine>();//2017-09-05 ommitted until text files are filled out
@@ -56,7 +55,7 @@ public class NPCController : SavableMonoBehaviour
             try
             {
                 string line;
-                StreamReader theReader = new StreamReader("Assets/Resources/Dialogue/"+lineFileName, Encoding.Default);
+                StreamReader theReader = new StreamReader("Assets/Resources/Dialogue/" + lineFileName, Encoding.Default);
                 using (theReader)
                 {
                     do
@@ -74,7 +73,7 @@ public class NPCController : SavableMonoBehaviour
                             else if (line.StartsWith("audio:"))
                             {
                                 string audioPath = line.Substring("audio:".Length).Trim();
-                                voiceLines[writeIndex].voiceLine = Resources.Load<AudioClip>("Dialogue/"+audioPath);
+                                voiceLines[writeIndex].voiceLine = Resources.Load<AudioClip>("Dialogue/" + audioPath);
                             }
                             else if (line.StartsWith("text:"))
                             {
@@ -135,7 +134,7 @@ public class NPCController : SavableMonoBehaviour
             // on what didn't work
             catch (System.Exception e)
             {
-                Debug.LogError("{0} lineFileName: "+lineFileName +"\n>>>" + e.Message+ "\n"+e.StackTrace);
+                Debug.LogError("{0} lineFileName: " + lineFileName + "\n>>>" + e.Message + "\n" + e.StackTrace);
             }
         }
     }
@@ -187,28 +186,13 @@ public class NPCController : SavableMonoBehaviour
         }
         if (source.isPlaying)
         {
-            GameManager.speakNPC(gameObject, true);
+            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time);
+            NPCManager.speakNPC(gameObject, true, voicelinetext);
         }
-        else
+        else if (currentVoiceLineIndex >= 0)
         {
             currentVoiceLineIndex = -1;
-            GameManager.speakNPC(gameObject, false);
-        }
-    }
-
-    private void OnGUI()
-    {
-        if (source.isPlaying)
-        {
-            GUI.backgroundColor = Color.clear;
-            float bufferWidth = Camera.main.pixelWidth * 0.25f;
-            float bufferHeight = Camera.main.pixelHeight * 0.25f;
-            Vector2 posOnCam = Camera.main.WorldToScreenPoint(transform.position+Camera.main.transform.up.normalized*2);
-            bufferWidth = bufferHeight = Mathf.Min(bufferWidth, bufferHeight);
-            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time);
-            float rectWidth = Camera.main.pixelWidth - bufferWidth * 2;
-            Rect bufferRect = new Rect(posOnCam.x-(rectWidth/2), Camera.main.pixelHeight-posOnCam.y, rectWidth, Camera.main.pixelHeight - bufferHeight * 2);
-            GUI.Label(bufferRect, voicelinetext, npcTextStyle);
+            NPCManager.speakNPC(gameObject, false, "");
         }
     }
 
@@ -296,6 +280,10 @@ public class NPCController : SavableMonoBehaviour
     /// <param name="timePos">The playback time</param>
     public void setVoiceLine(int index, float timePos = 0)
     {
+        if (voiceLines == null)
+        {
+            refreshVoiceLines();
+        }
         if (index >= 0 && index < voiceLines.Count)
         {
             currentVoiceLineIndex = index;

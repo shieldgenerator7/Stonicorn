@@ -39,10 +39,6 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     {
         if (showFX)
         {
-            if (transform.parent != null)
-            {
-                sparkle();
-            }
             //Ability Range Tutorial
             if (abilityRangeTutorialIndicatorName != null && abilityRangeTutorialIndicatorName != "")
             {
@@ -77,20 +73,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     }
 
     public abstract void activateEffect();
-
-    protected void sparkle()
-    {//2016-03-17: copied from PlayerController.showTeleportStar(..)
-        for (int i = 0; i < starAmount; i++)
-        {
-            GameObject newTS = (GameObject)Instantiate(particle);
-            TeleportStarUpdater tsu = newTS.GetComponent<TeleportStarUpdater>();
-            tsu.start = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY));
-            tsu.waitTime = i*(starAmount/starSpawnDuration);
-            tsu.position();
-            tsu.turnOn(true);
-        }
-    }
-
+    
     public override MemoryObject getMemoryObject()
     {
         return new MemoryObject(this, used);

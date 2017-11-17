@@ -3,9 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class CustomMenu
 {
+
+    [MenuItem("SG7/Editor/Call Merky %`")]
+    public static void callMerky()
+    {
+        GameObject playerObject = GameObject.FindGameObjectWithTag(GameManager.playerTag);
+        playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+        Selection.activeGameObject = playerObject;
+    }
+
+    [MenuItem("SG7/Editor/Hide or Unhide Hidden Areas %h")]
+    public static void hideUnhideHiddenAreas()
+    {
+        bool changeDetermined = false;
+        bool show = false;
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene s = SceneManager.GetSceneAt(i);
+            if (s.isLoaded)
+            {
+                foreach (GameObject go in s.GetRootGameObjects())
+                {
+                    if (go.tag == "HideableArea" || go.name == "HiddenAreas" || go.name == "Hidden Areas")
+                    {
+                        if (!changeDetermined)
+                        {
+                            show = !go.activeInHierarchy;
+                            changeDetermined = true;
+                        }
+                        go.SetActive(show);
+                    }
+                }
+            }
+        }
+    }
 
     [MenuItem("SG7/Runtime/Save Game State %e")]
     public static void saveGameState()
@@ -25,12 +60,6 @@ public class CustomMenu
     public static void reloadGame()
     {
         GameManager.resetGame();
-    }
-
-    [MenuItem("SG7/Runtime/Call Merky %`")]
-    public static void callMerky()
-    {
-        GameManager.getPlayerObject().transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
     }
 
     [MenuItem("SG7/Runtime/Activate All Checkpoints &c")]

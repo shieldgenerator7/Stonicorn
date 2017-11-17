@@ -5,6 +5,10 @@ using UnityEngine;
 public class EffectManager : MonoBehaviour {
 
     //Effects
+    [Header("Teleport Star Effect")]
+    public GameObject teleportStarPrefab;//the object that holds the special effect for collision
+    public float teleportStarDuration = 2.0f;//how long the teleport star will stay on screen (in sec)
+    public Color teleportStarColor = new Color(1, 1, 1);
     [Header("Collision Effect")]
     public GameObject collisionEffectPrefab;//the object that holds the special effect for collision
     public float particleStartSpeed = 7.0f;
@@ -13,21 +17,66 @@ public class EffectManager : MonoBehaviour {
     public ParticleSystem tapTargetHighlight;
     [Header("Force Wave Shadows")]
     //Supporting Lists
+    private List<TeleportStarUpdater> teleportStarList = new List<TeleportStarUpdater>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
     private Dictionary<GameObject, GameObject> forceWaveShadows = new Dictionary<GameObject, GameObject>();
 
     private static EffectManager instance;
+    private static CameraController cmactr;
 
     // Use this for initialization
     void Start() {
         if (instance == null)
         {
             instance = this;
+            cmactr = Camera.main.GetComponent<CameraController>();
         }
         else
         {
             Destroy(this);
         }
+    }
+    void Update()
+    {
+        for (int i = 0; i < teleportStarList.Count; i++){
+            if (teleportStarList[i].TurnedOn)
+            {
+            teleportStarList[i].updateStar();
+            }
+        }
+    }
+    /// <summary>
+    /// Shows the teleport star effect
+    /// 2017-10-31: copied from PlayerController.showTeleportStar()
+    /// </summary>
+    /// <param name="pos"></param>
+    public static void showTeleportStar(Vector3 pos)
+    {
+        TeleportStarUpdater chosenTSU = null;
+        //Find existing particle system
+        foreach (TeleportStarUpdater tsu in instance.teleportStarList)
+        {
+            if (tsu != null && !tsu.TurnedOn)
+            {
+                chosenTSU = tsu;
+                break;
+            }
+        }
+        //Else make a new one
+        if (chosenTSU == null)
+        {
+            GameObject newTS = GameObject.Instantiate(instance.teleportStarPrefab);
+            newTS.transform.parent = instance.transform;
+            TeleportStarUpdater newTSU = newTS.GetComponent<TeleportStarUpdater>();
+            newTSU.init();
+            newTSU.duration = instance.teleportStarDuration;
+            newTSU.baseColor = instance.teleportStarColor;
+            instance.teleportStarList.Add(newTSU);
+            chosenTSU = newTSU;
+        }
+        //Set values
+        chosenTSU.position(pos);
+        chosenTSU.TurnedOn = true;
     }
 
     /// <summary>
@@ -37,6 +86,10 @@ public class EffectManager : MonoBehaviour {
     /// <param name="damagePercent">How much percent of total HP of damage was inflicted, between 0 and 100</param>
     public static void collisionEffect(Vector2 position, float damagePercent = 100.0f)
     {
+        if (!cmactr.inView(position))
+        {
+            return;//don't display effect if it's not going to show
+        }
         ParticleSystem chosenPS = null;
         //Find existing particle system
         foreach (ParticleSystem ps in instance.collisionEffectList)

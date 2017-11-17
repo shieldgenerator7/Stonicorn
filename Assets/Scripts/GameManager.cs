@@ -8,15 +8,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public bool save = false;
-    public bool load = false;
     public bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
     public int chosenId = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
-    public GameObject npcTalkEffect;//the particle system for the visual part of NPC talking
     public AudioSource timeRewindMusic;//the music to play while time rewinds
     public Vector2 firstTeleportGuide;//where the first teleport guide highlight will be shown
-    private static GameObject lastTalkingNPC;//the last NPC to talk
     private int rewindId = 0;//the id to eventually load back to
     private float respawnTime = 0;//the earliest time Merky can rewind after shattering
     public float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
@@ -44,6 +40,8 @@ public class GameManager : MonoBehaviour
     private static float resetGameTimer = 0.0f;//the time that the game will reset at
     private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
     public GameObject endDemoScreen;//the picture to show the player after the game resets
+    public GameObject blackScreenCanvas;//the canvas that displays all black at the beginning of the session
+
 
     // Use this for initialization
     void Start()
@@ -71,7 +69,7 @@ public class GameManager : MonoBehaviour
         refreshGameObjects();
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
-        FindObjectOfType<Canvas>().gameObject.AddComponent<Fader>();
+        blackScreenCanvas.AddComponent<Fader>();
         EffectManager.highlightTapArea(firstTeleportGuide);
         gestureManager.tapGesture += delegate ()
         {
@@ -174,17 +172,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (save == true)
-        {
-            save = false;
-            Save();
-        }
-        if (load == true)
-        {
-            load = false;
-            Load(chosenId);
-        }
-
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
@@ -695,36 +682,6 @@ public class GameManager : MonoBehaviour
     public static Vector2 getLatestSafeRewindGhostPosition()
     {
         return instance.gameStates[instance.chosenId - 1].merky.position;
-    }
-
-    /// <summary>
-    /// Activates the visual effects for the given npc talking
-    /// </summary>
-    /// <param name="npc"></param>
-    /// <param name="talking">Whether to activate or deactivate the visual effects</param>
-    public static void speakNPC(GameObject npc, bool talking)
-    {
-        if (talking)
-        {
-            instance.npcTalkEffect.transform.position = npc.transform.position;
-            if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
-            {
-                instance.npcTalkEffect.GetComponent<ParticleSystem>().Play();
-            }
-            if (lastTalkingNPC != npc)
-            {
-                lastTalkingNPC = npc;
-                instance.musicManager.setQuiet(true);
-            }
-        }
-        else
-        {
-            if (npc == lastTalkingNPC)
-            {
-                instance.musicManager.setQuiet(false);
-                instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
-            }
-        }
     }
 }
 

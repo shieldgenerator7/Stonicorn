@@ -261,4 +261,16 @@ public class CameraController : MonoBehaviour
             cam.orthographicSize = scale;
         }
     }
+
+    /// <summary>
+    /// Returns whether or not the given position is in the camera's view
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    public bool inView(Vector2 position)
+    {
+        //2017-10-31: copied from an answer by Taylor-Libonati: http://answers.unity3d.com/questions/720447/if-game-object-is-in-cameras-field-of-view.html
+        Vector3 screenPoint = cam.WorldToViewportPoint(position);
+        return screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+    }
 }
