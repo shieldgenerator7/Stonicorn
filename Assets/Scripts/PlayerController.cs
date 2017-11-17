@@ -239,6 +239,10 @@ public class PlayerController : MonoBehaviour
             shouldGrantGIT = true;
             mainCamCtr.delayMovement(0.3f);
             checkGroundedState(true);//have to call it again because state has changed
+            if (onTeleport != null)
+            {
+                onTeleport(oldPos, newPos);
+            }
             return true;
         }
         return false;
@@ -349,6 +353,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+    public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
+    public OnTeleport onTeleport;
 
 
     void setRange(float newRange)

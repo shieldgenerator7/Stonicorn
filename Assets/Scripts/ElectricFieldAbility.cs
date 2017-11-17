@@ -1,0 +1,66 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ElectricFieldAbility : PlayerAbility
+{//2017-11-17: copied from ShieldBubbleAbility
+
+    public GameObject shieldRangeIndicator;//prefab
+    private TeleportRangeIndicatorUpdater sriu;//"shield range indicator updater"
+    private GameObject srii;//"shield range indicator instance"
+    public float maxRange = 2.5f;
+    public float maxHoldTime = 1;//how long until the max range is reached after it begins charging
+    public float lastDisruptTime = 0;//the last time that something happened that disrupted the shield
+    public float activationDelay = 2.0f;//how long after the last disruption the field can start regenerating
+
+    public AudioClip shieldBubbleSound;
+
+    protected override void Start()
+    {
+        base.Start();
+        GetComponent<PlayerController>().onTeleport += processTeleport;
+    }
+
+    void Update()
+    {
+        if (Time.time > lastDisruptTime + activationDelay)
+        {
+            processWaitGesture(Time.time - (lastDisruptTime + activationDelay));
+        }
+    }
+
+    public void processWaitGesture(float waitTime)
+    {
+        float range = maxRange * waitTime * GestureManager.holdTimeScaleRecip / maxHoldTime;
+        if (range > maxRange)
+        {
+            range = maxRange;
+        }
+        if (srii == null)
+        {
+            srii = Instantiate(shieldRangeIndicator);
+            sriu = srii.GetComponent<TeleportRangeIndicatorUpdater>();
+            srii.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        srii.transform.position = transform.position;
+        sriu.setRange(range);
+        //Particle effects
+        particleController.activateTeleportParticleSystem(true, effectColor, transform.position, range);
+    }
+
+    public void dropWaitGesture()
+    {
+        if (srii != null)
+        {
+            Destroy(srii);
+            srii = null;
+        }
+        particleController.activateTeleportParticleSystem(false);
+    }
+
+    public void processTeleport(Vector2 oldPos, Vector2 newPos)
+    {
+        dropWaitGesture();
+        lastDisruptTime = Time.time;
+    }
+}

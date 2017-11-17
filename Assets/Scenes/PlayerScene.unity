@@ -34861,6 +34861,7 @@ GameObject:
   - component: {fileID: 1792176476}
   - component: {fileID: 1792176467}
   - component: {fileID: 1792176473}
+  - component: {fileID: 1792176478}
   - component: {fileID: 1792176466}
   - component: {fileID: 1792176474}
   - component: {fileID: 1792176475}
@@ -35203,6 +35204,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5568291, y: 0.5021751}
   m_EdgeRadius: 0
+--- !u!114 &1792176478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1792176465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 670c03aa95d882441947eec5e28c0854, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportParticleEffects: {fileID: 506271484}
+  effectColor: {r: 0.31764707, g: 0.5686275, b: 0.9764706, a: 1}
+  abilityIndicatorParticleEffects: {fileID: 856596822}
+  circularProgressBar: {fileID: 0}
+  maxGestureRange: 1
+  shieldRangeIndicator: {fileID: 138864, guid: 8bc5cba583405f74fa7a24fb1a3e8fd2, type: 2}
+  maxRange: 2.5
+  maxHoldTime: 3
+  lastDisruptTime: 0
+  activationDelay: 3
+  shieldBubbleSound: {fileID: 8300000, guid: 7cc20f2c19ae91c4586dbb566fa52622, type: 3}
 --- !u!1 &1950273296
 GameObject:
   m_ObjectHideFlags: 0
