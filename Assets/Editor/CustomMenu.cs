@@ -88,9 +88,14 @@ public class CustomMenu
     }
     public static void build(BuildTarget buildTarget, string extension)
     {
+        string defaultPath = "C:/Users/shieldgenerator7/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        if (!System.IO.Directory.Exists(defaultPath))
+        {
+            System.IO.Directory.CreateDirectory(defaultPath);
+        }
         //2017-10-19 copied from https://docs.unity3d.com/Manual/BuildPlayerPipeline.html
         // Get filename.
-        string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", "C:/Users/shieldgenerator7/Documents/Unity/Stoned Builds/Builds", "Stonicorn 0_100", extension);
+        string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", defaultPath, PlayerSettings.productName, extension);
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
         UnityEngine.Debug.Log("BUILDNAME: " + buildName);
         UnityEngine.Debug.Log("PATH: " + path);
