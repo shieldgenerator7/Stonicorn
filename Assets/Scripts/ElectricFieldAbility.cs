@@ -72,7 +72,7 @@ public class ElectricFieldAbility : PlayerAbility
                         {
                             distance = Utility.distanceToObject(transform.position, hc);
                         }
-                        float dampening = maxSlowPercent * (range - distance) / range;
+                        float dampening = maxSlowPercent * (range - distance) / maxRange;
                         dampening = Mathf.Max(0, dampening);
                         rb2d.velocity = rb2d.velocity * (1 - dampening);
                     }
@@ -156,7 +156,7 @@ public class ElectricFieldAbility : PlayerAbility
                         {
                             distance = Utility.distanceToObject(efa.transform.position, go);
                         }
-                        float dampening = efa.maxGravityDampening * (efa.range - distance) / efa.range;
+                        float dampening = efa.maxGravityDampening * (efa.range - distance) / efa.maxRange;
                         dampening = Mathf.Max(0, dampening);
                         factor *= (1 - dampening);
                     }
