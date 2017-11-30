@@ -14,9 +14,10 @@ public class ElectricFieldAbility : PlayerAbility
     public float maxSlowPercent = 0.10f;//the max percent of slowness applied to objects near the center of the field when the field has maxRange
     public float maxGravityDampening = 0.90f;//the max percent of gravity dampening applied to objects in the area of effect
     public float lastDisruptTime = 0;//the last time that something happened that disrupted the shield
-    public float activationDelay = 2.0f;//how long after the last disruption the field can start regenerating
+    public float baseActivationDelay = 2.0f;//how long after the last disruption the field can start regenerating
 
     private float range = 0;//the current range of the field
+    private float activationDelay = 2.0f;//how long it will wait, usually set to the base delay
 
     public AudioClip shieldBubbleSound;
     private PlayerController playerController;//for if this script is on Merky
@@ -132,6 +133,8 @@ public class ElectricFieldAbility : PlayerAbility
     public void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         dropWaitGesture();
+        float distance = Vector3.Distance(oldPos, newPos);
+        activationDelay = baseActivationDelay * distance / playerController.baseRange;
     }
 
     /// <summary>
