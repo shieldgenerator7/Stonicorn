@@ -58,7 +58,23 @@ public class ElectricFieldAbility : PlayerAbility
                 Rigidbody2D rb2d = hc.GetComponent<Rigidbody2D>();
                 if (rb2d != null)
                 {
-                    rb2d.velocity = rb2d.velocity * (1 - maxSlowPercent);
+                    if (rb2d.velocity.sqrMagnitude > 0.1f)
+                    {
+                        //Less Expensive Attempt
+                        float distance = Vector3.Distance(transform.position, hc.transform.position);
+                        //More Expensive Attempt
+                        if (distance > range)
+                        {
+                            distance = Utility.distanceToObject(transform.position, hc);
+                        }
+                        float dampening = maxSlowPercent * (range - distance) / range;
+                        dampening = Mathf.Max(0, dampening);
+                        rb2d.velocity = rb2d.velocity * (1 - dampening);
+                    }
+                    else
+                    {
+                        rb2d.velocity *= 0;
+                    }
                 }
             }
         }
@@ -113,7 +129,7 @@ public class ElectricFieldAbility : PlayerAbility
     public static float getGravityDampeningFactor(GameObject go)
     {
         float factor = 1;
-        if (activeFields.Count > 0)
+        if (activeFieldAmount > 0)
         {
             foreach (ElectricFieldAbility efa in activeFields)
             {
@@ -121,7 +137,16 @@ public class ElectricFieldAbility : PlayerAbility
                 {
                     if (efa.aoeCollider.IsTouching(go.GetComponent<Collider2D>()))
                     {
-                        factor *= (1 - efa.maxGravityDampening);
+                        //Less Expensive Attempt
+                        float distance = Vector3.Distance(efa.transform.position, go.transform.position);
+                        //More Expensive Attempt
+                        if (distance > efa.range)
+                        {
+                            distance = Utility.distanceToObject(efa.transform.position, go);
+                        }
+                        float dampening = efa.maxGravityDampening * (efa.range - distance) / efa.range;
+                        dampening = Mathf.Max(0, dampening);
+                        factor *= (1 - dampening);
                     }
                 }
             }
