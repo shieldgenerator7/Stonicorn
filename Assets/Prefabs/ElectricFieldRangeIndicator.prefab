@@ -22,10 +22,9 @@ GameObject:
   - component: {fileID: 212658584665185990}
   - component: {fileID: 114266288893849346}
   - component: {fileID: 58347619668389448}
-  - component: {fileID: 114473113343496354}
   m_Layer: 0
   m_Name: ElectricFieldRangeIndicator
-  m_TagString: Untagged
+  m_TagString: NonTeleportableArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,17 +69,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentObj: {fileID: 0}
---- !u!114 &114473113343496354
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1617092226399926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4371d535928d2c46a15cdb363b14eac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &212658584665185990
 SpriteRenderer:
   m_ObjectHideFlags: 1

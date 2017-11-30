@@ -5,7 +5,7 @@ using UnityEngine;
 public class ElectricFieldAbility : PlayerAbility
 {//2017-11-17: copied from ShieldBubbleAbility
 
-    public GameObject shieldRangeIndicator;//prefab
+    public GameObject electricFieldRangeIndicator;//prefab
     private TeleportRangeIndicatorUpdater sriu;//"shield range indicator updater"
     private GameObject srii;//"shield range indicator instance"
     private CircleCollider2D aoeCollider;//the collider that is used to determine which objects are in the electric field's area of effect
@@ -19,6 +19,7 @@ public class ElectricFieldAbility : PlayerAbility
     private float range = 0;//the current range of the field
 
     public AudioClip shieldBubbleSound;
+    private PlayerController playerController;//for if this script is on Merky
 
     private static List<ElectricFieldAbility> activeFields = new List<ElectricFieldAbility>();//active fields get put in this
     private static int activeFieldAmount = 0;//how many fields are currently active (because List.count is unreliable)
@@ -26,7 +27,11 @@ public class ElectricFieldAbility : PlayerAbility
     protected override void Start()
     {
         base.Start();
-        GetComponent<PlayerController>().onTeleport += processTeleport;
+        playerController = GetComponent<PlayerController>();
+        if (playerController)
+        {
+            playerController.onTeleport += processTeleport;
+        }
     }
 
     void Update()
@@ -89,7 +94,7 @@ public class ElectricFieldAbility : PlayerAbility
         }
         if (srii == null)
         {
-            srii = Instantiate(shieldRangeIndicator);
+            srii = Instantiate(electricFieldRangeIndicator);
             sriu = srii.GetComponent<TeleportRangeIndicatorUpdater>();
             aoeCollider = srii.GetComponent<CircleCollider2D>();
             srii.GetComponent<SpriteRenderer>().enabled = false;

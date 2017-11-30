@@ -488,7 +488,7 @@ public class PlayerController : MonoBehaviour
                 }
 
             }
-            if (go.tag == "HidableArea" || (go.transform.parent != null && go.transform.parent.gameObject.tag == "HideableArea"))
+            if (go.tag == "NonTeleportableArea" || (go.transform.parent != null && go.transform.parent.gameObject.tag == "NonTeleportableArea"))
             {
                 if (go.GetComponent<SecretAreaTrigger>() == null)
                 {
