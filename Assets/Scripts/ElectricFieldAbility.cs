@@ -92,6 +92,13 @@ public class ElectricFieldAbility : PlayerAbility
         {
             range = maxRange;
         }
+        if (playerController)
+        {
+            if (playerController.range < range + 0.5f)
+            {
+                playerController.setRange(range + 0.5f);
+            }
+        }
         if (srii == null)
         {
             srii = Instantiate(electricFieldRangeIndicator);

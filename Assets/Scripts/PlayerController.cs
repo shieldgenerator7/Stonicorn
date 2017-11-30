@@ -358,7 +358,7 @@ public class PlayerController : MonoBehaviour
     public OnTeleport onTeleport;
 
 
-    void setRange(float newRange)
+    public void setRange(float newRange)
     {
         range = newRange;
         TeleportRangeIndicatorUpdater tri = GetComponentInChildren<TeleportRangeIndicatorUpdater>();
