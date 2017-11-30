@@ -7,6 +7,27 @@ using UnityEngine.SceneManagement;
 
 public class CustomMenu
 {
+    [MenuItem("SG7/Editor/Change HideableArea to NonTeleportableArea")]
+    public static void changeTag()
+    {
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene s = SceneManager.GetSceneAt(i);
+            if (s.isLoaded)
+            {
+                foreach (GameObject go in s.GetRootGameObjects())
+                {
+                    foreach (Transform tf in go.transform)
+                    {
+                        if (tf.gameObject.tag == "HideableArea")//NonTeleportableArea" || go.name == "HiddenAreas" || go.name == "Hidden Areas")
+                        {
+                            tf.gameObject.tag = "NonTeleportableArea";
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     [MenuItem("SG7/Editor/Call Merky %`")]
     public static void callMerky()
@@ -28,7 +49,7 @@ public class CustomMenu
             {
                 foreach (GameObject go in s.GetRootGameObjects())
                 {
-                    if (go.tag == "HideableArea" || go.name == "HiddenAreas" || go.name == "Hidden Areas")
+                    if (go.tag == "NonTeleportableArea" || go.name == "HiddenAreas" || go.name == "Hidden Areas")
                     {
                         if (!changeDetermined)
                         {
