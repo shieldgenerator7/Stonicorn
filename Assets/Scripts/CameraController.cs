@@ -9,6 +9,11 @@ public class CameraController : MonoBehaviour
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
 
     private Vector3 offset;
+    public Vector3 Offset
+    {
+        get { return offset; }
+        private set { offset = value; }
+    }
     private Quaternion rotation;//the rotation the camera should be rotated towards
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
     private Camera cam;

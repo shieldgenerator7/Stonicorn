@@ -619,7 +619,7 @@ public class PlayerController : MonoBehaviour
         float gestureDistance = Vector3.Distance(gpos, transform.position);
         bool processed = false;//if it's not processed by an ability, it will be turned into a tap gesture
         //Check Shield Bubble
-        if (sba.maxGestureRange >= gestureDistance)
+        if (sba.enabled && sba.maxGestureRange >= gestureDistance)
         {
             if (fta.enabled) { fta.dropHoldGesture(); }
             if (sba.enabled)
@@ -634,14 +634,19 @@ public class PlayerController : MonoBehaviour
             }
         }
         //Check Force Wave
-        else if (fta.maxGestureRange >= gestureDistance)
+        else if (fta.maxCameraOffset * fta.maxCameraOffset >= ((Vector2)mainCamCtr.Offset).sqrMagnitude)
         {
             if (sba.enabled) { sba.dropHoldGesture(); }
             if (fta.enabled)
             {
                 processed = true;
                 tpa.dropHoldGesture();
-                fta.processHoldGesture(gpos, reducedHoldTime, finished);
+                Vector2 holdPos = gpos;
+                if ((holdPos - (Vector2)transform.position).sqrMagnitude > fta.maxGestureRange * fta.maxGestureRange)
+                {
+                    holdPos = (holdPos - (Vector2)transform.position).normalized * fta.maxGestureRange + (Vector2)transform.position;
+                }
+                fta.processHoldGesture(holdPos, reducedHoldTime, finished);
             }
             else
             {
