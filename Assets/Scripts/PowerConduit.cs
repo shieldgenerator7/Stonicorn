@@ -8,6 +8,7 @@ public class PowerConduit : SavableMonoBehaviour
     //These wires transfer energy from a source (such as a Shield Bubble) and convert it to energy to power other objects (such as doors)
 
     public GameObject lightEffect;//the object attached to it that it uses to show it is lit up
+    public bool useAlpha = true;//whether to update the lightEffect with alpha value. If false, it uses height (used for power cubes)
     public float maxEnergyLevel = 3;//how much energy this conduit can store
     public float maxEnergyPerSecond = 2;//(energy units per second) the max amount of energy that it can produce/move per second
     public float currentEnergyLevel = 0;//the current amount of energy it has to spend
@@ -42,15 +43,32 @@ public class PowerConduit : SavableMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //2017-01-24: copied from my project: https://github.com/shieldgenerator7/GGJ-2017-Wave/blob/master/Assets/Script/CatTongueController.cs
-        float newHigh = 2.0f;//opaque
-        float newLow = 0.0f;//transparent
-        float curHigh = maxEnergyLevel;
-        float curLow = 0;
-        float newAlpha = ((currentEnergyLevel - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
-        if (Mathf.Abs(lightEffectRenderer.color.a - newAlpha) > 0.01f)
+        if (useAlpha)
         {
-            lightEffectRenderer.color = new Color(lightEffectColor.r, lightEffectColor.g, lightEffectColor.b, newAlpha);
+            //2017-01-24: copied from my project: https://github.com/shieldgenerator7/GGJ-2017-Wave/blob/master/Assets/Script/CatTongueController.cs
+            float newHigh = 2.0f;//opaque
+            float newLow = 0.0f;//transparent
+            float curHigh = maxEnergyLevel;
+            float curLow = 0;
+            float newAlpha = ((currentEnergyLevel - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
+            if (Mathf.Abs(lightEffectRenderer.color.a - newAlpha) > 0.01f)
+            {
+                lightEffectRenderer.color = new Color(lightEffectColor.r, lightEffectColor.g, lightEffectColor.b, newAlpha);
+            }
+        }
+        else
+        {//use mask height
+            //2017-12-23: copied from the section above for useAlpha == true
+            float newHigh = 1.0f;//full height
+            float newLow = 0.0f;//no height
+            float curHigh = maxEnergyLevel;
+            float curLow = 0;            
+            float newHeight = ((currentEnergyLevel - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
+            if (Mathf.Abs(lightEffect.transform.localScale.y - newHeight) > 0.0001f)
+            {
+                Vector3 curScale = lightEffect.transform.localScale;
+                lightEffect.transform.localScale = new Vector3(curScale.x, newHeight, curScale.z);
+            }
         }
     }
     void FixedUpdate()
