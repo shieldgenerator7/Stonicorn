@@ -25,9 +25,21 @@ public class PowerConduit : SavableMonoBehaviour
     // Use this for initialization
     void Start()
     {
-        lightEffectRenderer = lightEffect.GetComponent<SpriteRenderer>();
-        lightEffectRenderer.size = GetComponent<SpriteRenderer>().size;
-        lightEffectColor = lightEffectRenderer.color;
+        if (useAlpha)
+        {
+            lightEffectRenderer = lightEffect.GetComponent<SpriteRenderer>();
+            if (lightEffectRenderer)
+            {
+                lightEffectRenderer.size = GetComponent<SpriteRenderer>().size;
+                lightEffectColor = lightEffectRenderer.color;
+            }
+            else
+            {
+                Debug.Log("UseAlpha was set but there is no SpriteRenderer on the lightEffect ("
+                    + lightEffect.name + "), so switching to not use alpha. GameObject: "+gameObject.name);
+                useAlpha = false;
+            }
+        }
         bc2d = GetComponent<BoxCollider2D>();
     }
 
@@ -62,7 +74,7 @@ public class PowerConduit : SavableMonoBehaviour
             float newHigh = 1.0f;//full height
             float newLow = 0.0f;//no height
             float curHigh = maxEnergyLevel;
-            float curLow = 0;            
+            float curLow = 0;
             float newHeight = ((currentEnergyLevel - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
             if (Mathf.Abs(lightEffect.transform.localScale.y - newHeight) > 0.0001f)
             {
@@ -152,7 +164,7 @@ public class PowerConduit : SavableMonoBehaviour
         {
             throw new System.MethodAccessException("PowerConduit.convertSourceToEnergy(..) should not be called on this object because its convertsToEnergy var is: " + convertsToEnergy);
         }
-        float amountTaken = Mathf.Min(maxEnergyPerSecond, maxAvailable)*deltaTime;
+        float amountTaken = Mathf.Min(maxEnergyPerSecond, maxAvailable) * deltaTime;
         Debug.Log("amounttakne: " + amountTaken + ", deltatime: " + deltaTime);
         currentEnergyLevel += amountTaken;
         return amountTaken;
@@ -167,10 +179,11 @@ public class PowerConduit : SavableMonoBehaviour
     /// <returns></returns>
     public float useEnergy(float amountRequested, float deltaTime)
     {
-        if (!usesEnergy) {
+        if (!usesEnergy)
+        {
             throw new System.MethodAccessException("PowerConduit.useEnergy(..) should not be called on this object because its usesEnergy var is: " + usesEnergy);
         }
-        float amountGiven = Mathf.Min(amountRequested, currentEnergyLevel)*deltaTime;
+        float amountGiven = Mathf.Min(amountRequested, currentEnergyLevel) * deltaTime;
         currentEnergyLevel -= amountGiven;
         return amountGiven;
     }
