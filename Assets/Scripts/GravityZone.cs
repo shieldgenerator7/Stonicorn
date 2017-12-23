@@ -74,7 +74,6 @@ public class GravityZone : MonoBehaviour
                 continue;
             }
             Vector3 vector = gravityVector * rb2d.mass;
-            vector *= ElectricFieldAbility.getGravityDampeningFactor(rb2d.gameObject);
             GravityAccepter ga = rb2d.gameObject.GetComponent<GravityAccepter>();
             if (ga)
             {
