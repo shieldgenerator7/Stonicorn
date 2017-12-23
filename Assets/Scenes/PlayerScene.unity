@@ -7082,8 +7082,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c6979dbbd9d7bd418516ab320684126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotZ: 322.493
-  autoRotate: 1
+  rotZ: 0
+  autoRotate: 0
 --- !u!4 &253958363
 Transform:
   m_ObjectHideFlags: 0
@@ -38571,8 +38571,7 @@ MonoBehaviour:
     type: 2}
   maxRange: 2.5
   maxHoldTime: 4
-  maxSlowPercent: 0.1
-  maxGravityDampening: 0.1
+  maxSlowPercent: 0.2
   lastDisruptTime: 0
   baseActivationDelay: 2
   maxForceResistance: 500
