@@ -12,7 +12,6 @@ public class ElectricFieldAbility : PlayerAbility
     public float maxRange = 2.5f;
     public float maxHoldTime = 1;//how long until the max range is reached after it begins charging
     public float maxSlowPercent = 0.10f;//the max percent of slowness applied to objects near the center of the field when the field has maxRange
-    public float maxGravityDampening = 0.90f;//the max percent of gravity dampening applied to objects in the area of effect
     public float lastDisruptTime = 0;//the last time that something happened that disrupted the shield
     public float baseActivationDelay = 2.0f;//how long after the last disruption the field can start regenerating
     public float maxForceResistance = 500f;//if it gets this much force, it takes out the field, but it will come right back up
@@ -139,38 +138,6 @@ public class ElectricFieldAbility : PlayerAbility
         activationDelay = baseActivationDelay * distance / playerController.baseRange;
     }
 
-    /// <summary>
-    /// Returns the gravity dampening factor for the given object
-    /// </summary>
-    /// <param name="go"></param>
-    public static float getGravityDampeningFactor(GameObject go)
-    {
-        float factor = 1;
-        if (activeFieldAmount > 0)
-        {
-            foreach (ElectricFieldAbility efa in activeFields)
-            {
-                if (efa != null)
-                {
-                    if (efa.aoeCollider.IsTouching(go.GetComponent<Collider2D>()))
-                    {
-                        //Less Expensive Attempt
-                        float distance = Vector3.Distance(efa.transform.position, go.transform.position);
-                        //More Expensive Attempt
-                        if (distance > efa.range)
-                        {
-                            distance = Utility.distanceToObject(efa.transform.position, go);
-                        }
-                        float dampening = efa.maxGravityDampening * (efa.range - distance) / efa.maxRange;
-                        dampening = Mathf.Max(0, dampening);
-                        factor *= (1 - dampening);
-                    }
-                }
-            }
-        }
-        return factor;
-    }
-
     public void checkForce(float force)
     {
         float addedDelay = maxHoldTime * force / maxForceResistance;
@@ -179,5 +146,6 @@ public class ElectricFieldAbility : PlayerAbility
         {
             dropWaitGesture();
         }
+        Debug.Log("Force: " + force + ", addedDelay: " + addedDelay);
     }
 }
