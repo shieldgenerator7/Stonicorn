@@ -58,6 +58,12 @@ public class ForceTeleportAbility : PlayerAbility
                         sbc.checkForce(force);
                     }
                 }
+                ElectricFieldAbility efa = hitColliders[i].gameObject.GetComponent<ElectricFieldAbility>();
+                if (efa != null)
+                {
+                    float force = forceAmount * (range - Utility.distanceToObject(pos, hitColliders[i].gameObject)) / Time.fixedDeltaTime;
+                    efa.checkForce(force);
+                }
             }
             showExplosionEffect(pos, range * 2);
             AudioSource.PlayClipAtPoint(forceTeleportSound, pos);

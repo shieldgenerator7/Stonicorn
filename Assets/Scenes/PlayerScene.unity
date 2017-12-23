@@ -38263,6 +38263,7 @@ MonoBehaviour:
   maxGestureRange: 1
   forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 2}
   explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 2}
+  maxCameraOffset: 2
   forceAmount: 5
   maxForce: 3700
   maxRange: 2.5
@@ -38570,10 +38571,11 @@ MonoBehaviour:
     type: 2}
   maxRange: 2.5
   maxHoldTime: 4
-  maxSlowPercent: 0.11
-  maxGravityDampening: 0.95
+  maxSlowPercent: 0.1
+  maxGravityDampening: 0.1
   lastDisruptTime: 0
   baseActivationDelay: 2
+  maxForceResistance: 500
   shieldBubbleSound: {fileID: 8300000, guid: 7cc20f2c19ae91c4586dbb566fa52622, type: 3}
 --- !u!1 &1950273296
 GameObject:

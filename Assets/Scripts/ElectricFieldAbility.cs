@@ -15,6 +15,7 @@ public class ElectricFieldAbility : PlayerAbility
     public float maxGravityDampening = 0.90f;//the max percent of gravity dampening applied to objects in the area of effect
     public float lastDisruptTime = 0;//the last time that something happened that disrupted the shield
     public float baseActivationDelay = 2.0f;//how long after the last disruption the field can start regenerating
+    public float maxForceResistance = 500f;//if it gets this much force, it takes out the field, but it will come right back up
 
     private float range = 0;//the current range of the field
     private float activationDelay = 2.0f;//how long it will wait, usually set to the base delay
@@ -33,6 +34,7 @@ public class ElectricFieldAbility : PlayerAbility
         {
             playerController.onTeleport += processTeleport;
         }
+        lastDisruptTime = Time.time;
     }
 
     void Update()
@@ -167,5 +169,15 @@ public class ElectricFieldAbility : PlayerAbility
             }
         }
         return factor;
+    }
+
+    public void checkForce(float force)
+    {
+        float addedDelay = maxHoldTime * force / maxForceResistance;
+        lastDisruptTime = Time.time + addedDelay - maxHoldTime;
+        if (force >= maxForceResistance)
+        {
+            dropWaitGesture();
+        }
     }
 }
