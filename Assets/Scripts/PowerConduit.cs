@@ -129,7 +129,7 @@ public class PowerConduit : SavableMonoBehaviour
         {
             throw new System.MethodAccessException("PowerConduit.takeEnergyFromSource(..) should not be called on this object because its takesEnergy var is: " + takesEnergy);
         }
-        float amountTaken = Mathf.Min(maxEnergyPerSecond, maxAvailable) * deltaTime;
+        float amountTaken = Mathf.Min(maxEnergyPerSecond * deltaTime, maxAvailable);
         currentEnergyLevel += amountTaken;
         return amountTaken;
     }
@@ -164,7 +164,7 @@ public class PowerConduit : SavableMonoBehaviour
         {
             throw new System.MethodAccessException("PowerConduit.convertSourceToEnergy(..) should not be called on this object because its convertsToEnergy var is: " + convertsToEnergy);
         }
-        float amountTaken = Mathf.Min(maxEnergyPerSecond, maxAvailable) * deltaTime;
+        float amountTaken = Mathf.Min(maxEnergyPerSecond * deltaTime, maxAvailable);
         Debug.Log("amounttakne: " + amountTaken + ", deltatime: " + deltaTime);
         currentEnergyLevel += amountTaken;
         return amountTaken;
@@ -183,7 +183,7 @@ public class PowerConduit : SavableMonoBehaviour
         {
             throw new System.MethodAccessException("PowerConduit.useEnergy(..) should not be called on this object because its usesEnergy var is: " + usesEnergy);
         }
-        float amountGiven = Mathf.Min(amountRequested, currentEnergyLevel) * deltaTime;
+        float amountGiven = Mathf.Min(amountRequested * deltaTime, currentEnergyLevel);
         currentEnergyLevel -= amountGiven;
         return amountGiven;
     }

@@ -668,7 +668,7 @@ MonoBehaviour:
   currentVoiceLineIndex: -1
   lastPlayedCheckPointLineIndex: -1
   powerCube: {fileID: 817229138}
-  powerConsumptionRate: 3
+  powerConsumptionRate: 1
 --- !u!60 &178457407
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -824,8 +824,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightEffect: {fileID: 1821018826}
   useAlpha: 1
-  maxEnergyLevel: 3
-  maxEnergyPerSecond: 3
+  maxEnergyLevel: 1
+  maxEnergyPerSecond: 1
   currentEnergyLevel: 0
   givesEnergy: 0
   takesEnergy: 1
