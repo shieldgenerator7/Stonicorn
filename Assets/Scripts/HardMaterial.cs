@@ -24,6 +24,7 @@ public class HardMaterial : SavableMonoBehaviour
     public List<HiddenArea> secretHiders;//the hidden areas to show when cracked
 
     public Shattered shattered;
+    public HardCollision hardCollision;
 
     void Start()
     {
@@ -55,8 +56,14 @@ public class HardMaterial : SavableMonoBehaviour
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
         if (hm != null)
         {
+            //Take damage
             float hitHardness = hm.hardness / hardness * coll.relativeVelocity.magnitude;
             addIntegrity(-1 * hitHardness);
+            if (hardCollision != null)
+            {
+                hardCollision(hitHardness, hardness / hm.hardness * coll.relativeVelocity.magnitude);
+            }
+            //Play Crack Sound
             float hitPercentage = hitHardness * 100 / maxIntegrity;
             EffectManager.collisionEffect(coll.contacts[0].point, hitPercentage);
             for (int i = crackSounds.Count - 1; i >= 0; i--)
@@ -208,6 +215,10 @@ public class HardMaterial : SavableMonoBehaviour
     /// Gets called when integrity reaches 0
     /// </summary>
     public delegate void Shattered();
+    /// <summary>
+    /// Gets called when it collides with another HardMaterial
+    /// </summary>
+    public delegate void HardCollision(float damageToSelf, float damageToOther);
 
     public override SavableObject getSavableObject()
     {

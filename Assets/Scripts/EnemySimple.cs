@@ -7,6 +7,8 @@ public class EnemySimple : MonoBehaviour
 
     public float speed = 1.0f;//units per second
     public float healsPerSecond = 5.0f;
+    [Range(0,1)]
+    public float onDamageHealPercent = 0.2f;//what percent of damage it does to others it heals itself
     public bool activeMove = false;//controls whether it can move or not
     public float allowedLeftAndRightVariance = 25.0f;//used to determine if a colliding object is left or right of this enemy
     public float directionSwitchCooldown = 0.5f;//how many seconds after switching direction this enemy can switch it again
@@ -34,6 +36,7 @@ public class EnemySimple : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         hm = GetComponent<HardMaterial>();
+        hm.hardCollision += eatDamage;
         groundCollider = GetComponent<BoxCollider2D>();
         gravity = GetComponent<GravityAccepter>();
         direction = Utility.PerpendicularLeft(transform.up).normalized;
@@ -145,7 +148,18 @@ public class EnemySimple : MonoBehaviour
             {
                 quickTurn = true;
             }
-        }
+        }        
+    }
+
+    /// <summary>
+    /// Heals the diamond shell when it does damage
+    /// Called from HardMaterial.hardCollision
+    /// </summary>
+    /// <param name="damageToSelf"></param>
+    /// <param name="damageToOther"></param>
+    void eatDamage(float damageToSelf, float damageToOther)
+    {
+        hm.addIntegrity(damageToOther * onDamageHealPercent);
     }
 
     void switchDirection()
