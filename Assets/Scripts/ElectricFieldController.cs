@@ -101,13 +101,15 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
         }
     }
 
-    public void checkForce(float force)
+    public float checkForce(float force)
     {
-        addEnergy(-Mathf.Abs(energy * force / maxForceResistance));
+        float energyLost = Mathf.Abs(energy * force / maxForceResistance);
+        addEnergy(-energyLost);
         if (energy < 1)
         {
             dissipate();
         }
+        return energyLost;
     }
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {

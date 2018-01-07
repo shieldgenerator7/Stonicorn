@@ -110,9 +110,11 @@ public class ShieldBubbleController : SavableMonoBehaviour, Blastable
         }
     }
 
-    public void checkForce(float force)
+    public float checkForce(float force)
     {
-        adjustEnergy(-Mathf.Abs(force));
+        float energyLost = Mathf.Abs(force);
+        adjustEnergy(-energyLost);
+        return energyLost;
     }
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {

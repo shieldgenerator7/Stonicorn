@@ -94,7 +94,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         activationDelay = baseActivationDelay * distance / playerController.baseRange;
     }
 
-    public void checkForce(float force)
+    public float checkForce(float force)
     {
         float addedDelay = maxHoldTime * force / maxForceResistance;
         lastDisruptTime = Time.time + addedDelay - maxHoldTime;
@@ -102,7 +102,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         {
             dropWaitGesture();
         }
-        Debug.Log("Force: " + force + ", addedDelay: " + addedDelay);
+        return addedDelay;
     }
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {

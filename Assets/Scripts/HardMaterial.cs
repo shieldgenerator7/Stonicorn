@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HardMaterial : SavableMonoBehaviour
+public class HardMaterial : SavableMonoBehaviour, Blastable
 {
 
     public static float MINIMUM_CRACKSOUND_THRESHOLD = 1.0f;//the minimum percent of damage done to make a sound
@@ -108,6 +108,10 @@ public class HardMaterial : SavableMonoBehaviour
             return damage;
         }
         return 0;
+    }
+    public float getDistanceFromExplosion(Vector2 explosionPos)
+    {
+        return Utility.distanceToObject(explosionPos, gameObject);
     }
 
     public bool isIntact()
