@@ -9,7 +9,7 @@ public class ParticleSystemController : MonoBehaviour {
     public bool dependsOnTeleportRange = false;//true if it changes size when the teleport range changes
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         teleportParticles = GetComponent<ParticleSystem>();
         activateTeleportParticleSystem(false);
     }

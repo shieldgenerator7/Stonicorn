@@ -47,7 +47,7 @@ public class GestureManager : SavableMonoBehaviour
     private bool isDrag = false;
     private bool isTapGesture = true;
     private bool isHoldGesture = false;
-    public const float holdTimeScale = 0.5f;
+    public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
     //Cheats
