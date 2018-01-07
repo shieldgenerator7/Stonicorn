@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShieldBubbleController : SavableMonoBehaviour
+public class ShieldBubbleController : SavableMonoBehaviour, Blastable
 {
     public float range = 3;//how big the shield is
     private float baseWidth = 5;//2017-01-30: if the dimensions of the sprite asset should change, then this value also needs changed
@@ -113,6 +113,10 @@ public class ShieldBubbleController : SavableMonoBehaviour
     public void checkForce(float force)
     {
         adjustEnergy(-Mathf.Abs(force));
+    }
+    public float getDistanceFromExplosion(Vector2 explosionPos)
+    {
+        return Mathf.Max(0, Vector2.Distance(explosionPos, transform.position) - range);
     }
     void adjustEnergy(float amount)
     {

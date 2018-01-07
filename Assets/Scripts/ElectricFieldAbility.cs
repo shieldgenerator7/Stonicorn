@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElectricFieldAbility : PlayerAbility
+public class ElectricFieldAbility : PlayerAbility, Blastable
 {//2017-11-17: copied from ShieldBubbleAbility
 
     public GameObject electricFieldPrefab;//prefab
@@ -92,5 +92,9 @@ public class ElectricFieldAbility : PlayerAbility
             dropWaitGesture();
         }
         Debug.Log("Force: " + force + ", addedDelay: " + addedDelay);
+    }
+    public float getDistanceFromExplosion(Vector2 explosionPos)
+    {
+        return Utility.distanceToObject(explosionPos, gameObject);
     }
 }

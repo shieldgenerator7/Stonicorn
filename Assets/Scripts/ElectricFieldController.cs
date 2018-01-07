@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElectricFieldController : SavableMonoBehaviour
+public class ElectricFieldController : SavableMonoBehaviour, Blastable
 {//2018-01-07: copied from ShieldBubbleController
     public float range = 3;//how big the shield is
-    
+
     public float energy = 0;//how much energy this field has left
     public float energyToRangeRatio;//used to "convert" energy into range, this is equal to (maxRange / maxEnergy);, range = energy * energyToPowerRatio;
     public float energyToSlowRatio;//used to "convert" energy to momentum dampening on all objects in aoe, regardless of how close to the center
@@ -103,16 +103,20 @@ public class ElectricFieldController : SavableMonoBehaviour
 
     public void checkForce(float force)
     {
-        float resistanceLeft = maxForceResistance - Mathf.Abs(force);
-        if (resistanceLeft < 0)
+        addEnergy(-Mathf.Abs(energy * force / maxForceResistance));
+        if (energy < 1)
         {
-            addEnergy(resistanceLeft);
+            dissipate();
         }
+    }
+    public float getDistanceFromExplosion(Vector2 explosionPos)
+    {
+        return Mathf.Max(0, Vector2.Distance(explosionPos, transform.position) - range);
     }
     public void addEnergy(float amount)
     {
         energy += amount;
-        if (energy < 0)
+        if (energy <= 0)
         {
             dissipate();
         }

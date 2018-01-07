@@ -43,26 +43,10 @@ public class ForceTeleportAbility : PlayerAbility
                 {
                     Utility.AddWeightedExplosionForce(orb2d, forceAmount, pos, range, maxForce);
                 }
-                else
+                foreach (Blastable b in hitColliders[i].gameObject.GetComponents<Blastable>())
                 {
-                    HardMaterial hm = hitColliders[i].gameObject.GetComponent<HardMaterial>();
-                    if (hm != null)
-                    {
-                        float force = forceAmount * (range - Utility.distanceToObject(pos, hitColliders[i].gameObject)) / Time.fixedDeltaTime;
-                        hm.checkForce(force);
-                    }
-                    ShieldBubbleController sbc = hitColliders[i].gameObject.GetComponent<ShieldBubbleController>();
-                    if (sbc != null)
-                    {
-                        float force = forceAmount * (range - Utility.distanceToObject(pos, hitColliders[i].gameObject)) / Time.fixedDeltaTime;
-                        sbc.checkForce(force);
-                    }
-                }
-                ElectricFieldAbility efa = hitColliders[i].gameObject.GetComponent<ElectricFieldAbility>();
-                if (efa != null)
-                {
-                    float force = forceAmount * (range - Utility.distanceToObject(pos, hitColliders[i].gameObject)) / Time.fixedDeltaTime;
-                    efa.checkForce(force);
+                    float force = forceAmount * (range - b.getDistanceFromExplosion(pos))/Time.fixedDeltaTime;
+                    b.checkForce(force);
                 }
             }
             showExplosionEffect(pos, range * 2);
