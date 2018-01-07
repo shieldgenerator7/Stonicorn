@@ -18,6 +18,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
     private ElectricFieldController cEFController;//"current Electric Field Controller"
     
     private float activationDelay = 2.0f;//how long it will wait, usually set to the base delay
+    private float playerTeleportRangeDiff;//the difference between the player's max teleport range and this EFA's max field range (if on the player)
 
     public AudioClip shieldBubbleSound;
     private PlayerController playerController;//for if this script is on Merky
@@ -29,6 +30,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         if (playerController)
         {
             playerController.onTeleport += processTeleport;
+            playerTeleportRangeDiff = playerController.range - maxRange;
         }
         lastDisruptTime = Time.time;
     }
@@ -61,9 +63,9 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
         if (playerController)
         {
-            if (playerController.range < cEFController.range + 0.5f)
+            if (playerController.range < cEFController.range + playerTeleportRangeDiff && playerController.range < playerController.baseRange)
             {
-                playerController.setRange(cEFController.range + 0.5f);
+                playerController.setRange(cEFController.range + playerTeleportRangeDiff);
             }
         }
     }
