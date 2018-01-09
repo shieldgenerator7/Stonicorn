@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 21255444}
   - component: {fileID: 58398041745504694}
   - component: {fileID: 199738162082263644}
+  - component: {fileID: 114769017695723816}
   - component: {fileID: 198593965325460262}
   m_Layer: 5
   m_Name: checkpoint_root_ghost
@@ -100,6 +101,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.5
+--- !u!114 &114769017695723816
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4818328b10ff944d9dc610a17cbc8d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sqrDistanceFromCurrentCP: 0
+  parentCPC: {fileID: 0}
+  startPos: {x: 0, y: 0}
+  moveDir: {x: 0, y: 0}
+  distanceOut: 0
+  moveOutSpeed: 0.1
+  moveOutAccel: 0.05
 --- !u!198 &198593965325460262
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -322,7 +322,10 @@ public class GameManager : MonoBehaviour
     }
     public static void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
     {
-        instance.activeCheckPoints.Add(cpc);
+        if (!instance.activeCheckPoints.Contains(cpc))
+        {
+            instance.activeCheckPoints.Add(cpc);
+        }
     }
     /// <summary>
     /// Stores the given object before it gets set inactive
