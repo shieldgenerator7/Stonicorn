@@ -50,7 +50,7 @@ public class SceneLoader : MonoBehaviour
     }
         void loadLevel()
         {
-            SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         }
         void unloadLevel()
         {
