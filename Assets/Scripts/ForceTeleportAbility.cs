@@ -14,16 +14,50 @@ public class ForceTeleportAbility : PlayerAbility
     public float maxRange = 3;
     public float maxHoldTime = 1;//how long until the max range is reached
 
+    public float currentCharge = 0;//how much charge it has
+
     public AudioClip forceTeleportSound;
+
+    protected override void Start()
+    {
+        base.Start();
+        PlayerController pc = GetComponent<PlayerController>();
+        if (pc)
+        {
+            pc.onPreTeleport += charge;
+        }
+    }
+
+    private void Update()
+    {
+        if (currentCharge >= 0.1f)
+        {
+            processHoldGesture(transform.position, currentCharge, false);
+        }
+    }
+
+    public void charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
+    {
+        if (Vector2.Distance(newPos, triedPos) < 0.5f || !GetComponent<PlayerController>().isOccupied(triedPos))
+        {
+            currentCharge += 0.1f;
+        }
+        else
+        {
+            processHoldGesture(triedPos, currentCharge, true);
+            currentCharge = 0;
+            dropHoldGesture();
+        }
+    }
 
     public new bool takesGesture()
     {
-        return true;
+        return false;
     }
 
     public new bool takesHoldGesture()
     {
-        return true;
+        return false;
     }
 
     public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
@@ -45,7 +79,7 @@ public class ForceTeleportAbility : PlayerAbility
                 }
                 foreach (Blastable b in hitColliders[i].gameObject.GetComponents<Blastable>())
                 {
-                    float force = forceAmount * (range - b.getDistanceFromExplosion(pos))/Time.fixedDeltaTime;
+                    float force = forceAmount * (range - b.getDistanceFromExplosion(pos)) / Time.fixedDeltaTime;
                     b.checkForce(force);
                 }
             }
@@ -58,7 +92,7 @@ public class ForceTeleportAbility : PlayerAbility
             {
                 circularProgressBar.setPercentage(0);
             }
-            EffectManager.clearForceWaveShadows();
+            //EffectManager.clearForceWaveShadows();
         }
         else
         {
@@ -78,15 +112,15 @@ public class ForceTeleportAbility : PlayerAbility
                 circularProgressBar.transform.position = pos;
             }
             //Force Wave Shadows
-            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
-            for (int i = 0; i < hitColliders.Length; i++)
-            {
-                Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
-                if (orb2d != null)
-                {
-                    EffectManager.showForceWaveShadows(pos, range, hitColliders[i].gameObject);
-                }
-            }
+            //Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
+            //for (int i = 0; i < hitColliders.Length; i++)
+            //{
+            //    Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
+            //    if (orb2d != null)
+            //    {
+            //        EffectManager.showForceWaveShadows(pos, range, hitColliders[i].gameObject);
+            //    }
+            //}
         }
     }
 
@@ -102,7 +136,7 @@ public class ForceTeleportAbility : PlayerAbility
         {
             circularProgressBar.setPercentage(0);
         }
-        EffectManager.clearForceWaveShadows();
+        //EffectManager.clearForceWaveShadows();
     }
 
 

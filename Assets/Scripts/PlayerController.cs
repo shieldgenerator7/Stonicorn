@@ -357,6 +357,9 @@ public class PlayerController : MonoBehaviour
     public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
     public OnTeleport onTeleport;
 
+    //Used when you also need to know where the user clicked
+    public delegate void OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
+    public OnPreTeleport onPreTeleport;
 
     public void setRange(float newRange)
     {
@@ -439,10 +442,12 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    /**
-    * Determines whether the given position is occupied or not
-    */
-    bool isOccupied(Vector3 pos)
+    /// <summary>
+    /// Determines whether the given position is occupied or not
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    public bool isOccupied(Vector3 pos)
     {
         bool occupied = false;
         //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);        
@@ -594,6 +599,10 @@ public class PlayerController : MonoBehaviour
         }
         Vector3 prevPos = transform.position;
         Vector3 newPos = findTeleportablePosition(gpos);
+        if (onPreTeleport != null)
+        {
+            onPreTeleport(prevPos, newPos, gpos);
+        }
         teleport(newPos);
         GameManager.Save();
         mainCamCtr.checkForAutoMovement(gpos, prevPos);
@@ -603,8 +612,14 @@ public class PlayerController : MonoBehaviour
         CheckPointChecker cpc = checkPoint.GetComponent<CheckPointChecker>();
         if (cpc != null)
         {
+            Vector2 prevPos = transform.position;
             Vector3 newPos = checkPoint.transform.position;
-            teleport(newPos);
+            if (onPreTeleport != null)
+            {
+                //Pass in newPos for both here because player teleported exactly where they intended to
+                onPreTeleport(prevPos, newPos, newPos);
+            }
+            teleport(newPos);            
             mainCamCtr.refocus();
             cpc.trigger();
             GameManager.Save();
@@ -637,7 +652,7 @@ public class PlayerController : MonoBehaviour
         else if (fta.maxCameraOffset * fta.maxCameraOffset >= ((Vector2)mainCamCtr.Offset).sqrMagnitude)
         {
             if (sba.enabled) { sba.dropHoldGesture(); }
-            if (fta.enabled)
+            if (false && fta.enabled)
             {
                 processed = true;
                 tpa.dropHoldGesture();
