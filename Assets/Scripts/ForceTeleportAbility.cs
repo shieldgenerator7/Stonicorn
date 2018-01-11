@@ -13,10 +13,13 @@ public class ForceTeleportAbility : PlayerAbility
     public float maxForce = 1000;//the maximum amount of force applied to one object
     public float maxRange = 3;
     public float maxHoldTime = 1;//how long until the max range is reached
+    public float maxSpeedBoost = 2;//how much force to give Merky when teleporting in a direction
 
     public float currentCharge = 0;//how much charge it has
+    public float chargeIncrement = 0.1f;//how much to increment the charge by each teleport
 
     public AudioClip forceTeleportSound;
+    private Rigidbody2D rb2d;
 
     protected override void Start()
     {
@@ -25,22 +28,29 @@ public class ForceTeleportAbility : PlayerAbility
         if (pc)
         {
             pc.onPreTeleport += charge;
+            pc.onTeleport += giveSpeedBoost;
+            rb2d = GetComponent<Rigidbody2D>();
         }
     }
 
     private void Update()
     {
-        if (currentCharge >= 0.1f)
+        if (currentCharge >= chargeIncrement)
         {
             processHoldGesture(transform.position, currentCharge, false);
         }
+    }
+
+    public void giveSpeedBoost(Vector2 oldPos, Vector2 newPos)
+    {
+        rb2d.AddForce((newPos - oldPos) * rb2d.mass * maxSpeedBoost * (currentCharge- chargeIncrement));
     }
 
     public void charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
         if (Vector2.Distance(newPos, triedPos) < 0.5f || !GetComponent<PlayerController>().isOccupied(triedPos))
         {
-            currentCharge += 0.1f;
+            currentCharge += chargeIncrement;
         }
         else
         {
@@ -62,7 +72,7 @@ public class ForceTeleportAbility : PlayerAbility
 
     public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
-        float range = maxRange * holdTime * GestureManager.holdTimeScaleRecip / maxHoldTime;
+        float range = maxRange * holdTime / maxHoldTime;
         if (range > maxRange)
         {
             range = maxRange;
