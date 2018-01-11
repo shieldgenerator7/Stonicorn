@@ -123,7 +123,7 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
             dissipate();
         }
         //Electric Field VC: change its sprite's size based on its energy
-        if (friu)
+        if (!friu)
         {
             init();
         }

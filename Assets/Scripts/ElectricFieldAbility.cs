@@ -56,6 +56,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         {
             currentElectricField = Instantiate(electricFieldPrefab);
             currentElectricField.name += System.DateTime.Now.Ticks;
+            UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(currentElectricField, SceneLoader.getCurrentScene());
             cEFController = currentElectricField.GetComponent<ElectricFieldController>();
             cEFController.energyToRangeRatio = maxRange / maxEnergy;
             cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
