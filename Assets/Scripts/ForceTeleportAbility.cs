@@ -17,7 +17,10 @@ public class ForceTeleportAbility : PlayerAbility
 
     public float currentCharge = 0;//how much charge it has
     public float chargeIncrement = 0.1f;//how much to increment the charge by each teleport
+    public float chargeDecayDelay = 0.25f;//how much time (sec) of idleness before the charge starts decreasing
+    public float chargeDecayRate = 0.4f;//how much charge decays per sec of idleness (after chargeDecayDelay)
 
+    private float lastTeleportTime;
     public AudioClip forceTeleportSound;
     private Rigidbody2D rb2d;
 
@@ -35,9 +38,18 @@ public class ForceTeleportAbility : PlayerAbility
 
     private void Update()
     {
-        if (currentCharge >= chargeIncrement)
+        if (currentCharge > 0)
         {
             processHoldGesture(transform.position, currentCharge, false);
+            if (Time.time > lastTeleportTime + chargeDecayDelay)
+            {
+                currentCharge -= chargeDecayRate * Time.deltaTime;
+                if (currentCharge < 0)
+                {
+                    currentCharge = 0;
+                    dropHoldGesture();
+                }
+            }
         }
     }
 
@@ -51,6 +63,7 @@ public class ForceTeleportAbility : PlayerAbility
         if (Vector2.Distance(newPos, triedPos) < 0.5f || !GetComponent<PlayerController>().isOccupied(triedPos))
         {
             currentCharge += chargeIncrement;
+            lastTeleportTime = Time.time;
         }
         else
         {
