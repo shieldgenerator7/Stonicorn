@@ -17,7 +17,8 @@ public class ForceTeleportAbility : PlayerAbility
 
     public float currentCharge = 0;//how much charge it has
     public float chargeIncrement = 0.1f;//how much to increment the charge by each teleport
-    public float chargeDecayDelay = 0.25f;//how much time (sec) of idleness before the charge starts decreasing
+    public float minChargeDecayDelay = 0.25f;//how much time (sec) of idleness before the charge starts decreasing
+    public float maxChargeDecayDelay = 2.0f;
     public float chargeDecayRate = 0.4f;//how much charge decays per sec of idleness (after chargeDecayDelay)
 
     private float lastTeleportTime;
@@ -41,7 +42,7 @@ public class ForceTeleportAbility : PlayerAbility
         if (currentCharge > 0)
         {
             processHoldGesture(transform.position, currentCharge, false);
-            if (Time.time > lastTeleportTime + chargeDecayDelay)
+            if (Time.time > lastTeleportTime + Mathf.Max(minChargeDecayDelay, maxChargeDecayDelay * currentCharge)) 
             {
                 currentCharge -= chargeDecayRate * Time.deltaTime;
                 if (currentCharge < 0)
