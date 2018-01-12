@@ -68,7 +68,7 @@ public class ForceTeleportAbility : PlayerAbility
         }
         else
         {
-            processHoldGesture(triedPos, currentCharge, true);
+            processHoldGesture(triedPos, Mathf.Max(currentCharge,chargeIncrement), true);
             currentCharge = 0;
             dropHoldGesture();
         }
