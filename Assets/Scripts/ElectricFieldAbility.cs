@@ -29,7 +29,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         playerController = GetComponent<PlayerController>();
         if (playerController)
         {
-            playerController.onTeleport += processTeleport;
+            playerController.onPreTeleport += processTeleport;
             playerTeleportRangeDiff = playerController.range - maxRange;
         }
         lastDisruptTime = Time.time;
@@ -88,10 +88,10 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         cEFController = null;
     }
 
-    public void processTeleport(Vector2 oldPos, Vector2 newPos)
+    public void processTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
         dropWaitGesture();
-        float distance = Vector3.Distance(oldPos, newPos);
+        float distance = Vector3.Distance(oldPos, triedPos);
         activationDelay = baseActivationDelay * distance / playerController.baseRange;
     }
 
