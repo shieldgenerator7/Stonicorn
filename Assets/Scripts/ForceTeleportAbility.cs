@@ -41,7 +41,8 @@ public class ForceTeleportAbility : PlayerAbility
         if (currentCharge > 0)
         {
             processHoldGesture(transform.position, currentCharge, false);
-            if (Time.time > lastTeleportTime + Mathf.Max(minChargeDecayDelay, maxChargeDecayDelay * currentCharge))
+            if (Time.time > lastTeleportTime + minChargeDecayDelay
+                && Time.time > lastTeleportTime + minChargeDecayDelay + ((maxChargeDecayDelay - minChargeDecayDelay) * currentCharge/maxCharge))
             {
                 currentCharge -= chargeDecayRate * Time.deltaTime;
                 if (currentCharge < 0)
