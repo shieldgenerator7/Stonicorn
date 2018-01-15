@@ -112,10 +112,6 @@ public class ForceTeleportAbility : PlayerAbility
             Destroy(frii);
             frii = null;
             particleController.activateTeleportParticleSystem(false);
-            if (circularProgressBar != null)
-            {
-                circularProgressBar.setPercentage(0);
-            }
             //EffectManager.clearForceWaveShadows();
         }
         else
@@ -130,11 +126,6 @@ public class ForceTeleportAbility : PlayerAbility
             friu.setRange(range);
             //Particle effects
             particleController.activateTeleportParticleSystem(true, effectColor, pos, range);
-            if (circularProgressBar != null)
-            {
-                circularProgressBar.setPercentage(range / maxRange);
-                circularProgressBar.transform.position = pos;
-            }
             //Force Wave Shadows
             //Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
             //for (int i = 0; i < hitColliders.Length; i++)
@@ -156,10 +147,6 @@ public class ForceTeleportAbility : PlayerAbility
             frii = null;
         }
         particleController.activateTeleportParticleSystem(false);
-        if (circularProgressBar != null)
-        {
-            circularProgressBar.setPercentage(0);
-        }
         //EffectManager.clearForceWaveShadows();
     }
 
