@@ -62,9 +62,7 @@ public class PlayerController : MonoBehaviour
         fta = GetComponent<ForceTeleportAbility>();
         wca = GetComponent<WallClimbAbility>();
         sba = GetComponent<ShieldBubbleAbility>();
-        halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude; ;
-        sba.maxGestureRange = halfWidth;
-        fta.maxGestureRange = halfWidth * 8;
+        halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
         teleportRangeParticalController = teleportRangeParticalObject.GetComponent<ParticleSystemController>();
     }
 
@@ -634,7 +632,7 @@ public class PlayerController : MonoBehaviour
         float gestureDistance = Vector3.Distance(gpos, transform.position);
         bool processed = false;//if it's not processed by an ability, it will be turned into a tap gesture
         //Check Shield Bubble
-        if (sba.enabled && sba.maxGestureRange >= gestureDistance)
+        if (sba.enabled)
         {
             if (fta.enabled) { fta.dropHoldGesture(); }
             if (sba.enabled)
@@ -642,26 +640,6 @@ public class PlayerController : MonoBehaviour
                 processed = true;
                 tpa.dropHoldGesture();
                 sba.processHoldGesture(gpos, reducedHoldTime, finished);
-            }
-            else
-            {
-                tpa.processHoldGesture(gpos, reducedHoldTime, finished);
-            }
-        }
-        //Check Force Wave
-        else if (fta.maxCameraOffset * fta.maxCameraOffset >= ((Vector2)mainCamCtr.Offset).sqrMagnitude)
-        {
-            if (sba.enabled) { sba.dropHoldGesture(); }
-            if (false && fta.enabled)
-            {
-                processed = true;
-                tpa.dropHoldGesture();
-                Vector2 holdPos = gpos;
-                if ((holdPos - (Vector2)transform.position).sqrMagnitude > fta.maxGestureRange * fta.maxGestureRange)
-                {
-                    holdPos = (holdPos - (Vector2)transform.position).normalized * fta.maxGestureRange + (Vector2)transform.position;
-                }
-                fta.processHoldGesture(holdPos, reducedHoldTime, finished);
             }
             else
             {

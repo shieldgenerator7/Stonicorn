@@ -21,12 +21,10 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
     private float playerTeleportRangeDiff;//the difference between the player's max teleport range and this EFA's max field range (if on the player)
 
     public AudioClip shieldBubbleSound;
-    private PlayerController playerController;//for if this script is on Merky
-
+    
     protected override void Start()
     {
         base.Start();
-        playerController = GetComponent<PlayerController>();
         if (playerController)
         {
             playerController.onPreTeleport += processTeleport;

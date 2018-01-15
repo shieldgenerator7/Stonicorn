@@ -13,8 +13,6 @@ public class PlayerAbility : MonoBehaviour {
     public GameObject abilityIndicatorParticleEffects;
     public ProgressBarCircular circularProgressBar;
 
-    public float maxGestureRange = 1;//how far from the center of the player character this ability can activate
-
     // Use this for initialization
     protected virtual void Start () {
         player = gameObject;
