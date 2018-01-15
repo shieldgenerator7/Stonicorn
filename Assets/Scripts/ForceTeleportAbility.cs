@@ -42,7 +42,7 @@ public class ForceTeleportAbility : PlayerAbility
         if (currentCharge > 0)
         {
             processHoldGesture(transform.position, currentCharge, false);
-            if (Time.time > lastTeleportTime + Mathf.Max(minChargeDecayDelay, maxChargeDecayDelay * currentCharge)) 
+            if (Time.time > lastTeleportTime + Mathf.Max(minChargeDecayDelay, maxChargeDecayDelay * currentCharge))
             {
                 currentCharge -= chargeDecayRate * Time.deltaTime;
                 if (currentCharge < 0)
@@ -56,14 +56,26 @@ public class ForceTeleportAbility : PlayerAbility
 
     public void giveSpeedBoost(Vector2 oldPos, Vector2 newPos)
     {
-        rb2d.AddForce((newPos - oldPos) * rb2d.mass * maxSpeedBoost * (currentCharge- chargeIncrement));
+        if (currentCharge > 0)
+        {
+            Vector2 force = (newPos - oldPos) * maxSpeedBoost * (currentCharge - chargeIncrement);
+            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, newPos - oldPos, Vector2.Distance(oldPos, newPos));
+            foreach (RaycastHit2D rch2d in rch2ds)
+            {
+                Rigidbody2D orb2d = rch2d.collider.gameObject.GetComponent<Rigidbody2D>();
+                if (orb2d)
+                {
+                    orb2d.AddForce(force * orb2d.mass);
+                }
+            }
+        }
     }
 
     public void charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
         if (Vector2.Distance(newPos, triedPos) < 0.5f
             //If there's a blastable in range, explode instead of charge
-            || !isBlastableInArea(triedPos, getRangeFromCharge(currentCharge)/2))
+            || !isBlastableInArea(triedPos, getRangeFromCharge(currentCharge) / 2))
         {
             currentCharge += chargeIncrement;
             if (currentCharge > maxCharge)
@@ -74,7 +86,7 @@ public class ForceTeleportAbility : PlayerAbility
         }
         else
         {
-            processHoldGesture(triedPos, Mathf.Max(currentCharge,chargeIncrement), true);
+            processHoldGesture(triedPos, Mathf.Max(currentCharge, chargeIncrement), true);
             currentCharge = 0;
             dropHoldGesture();
         }
@@ -170,7 +182,7 @@ public class ForceTeleportAbility : PlayerAbility
                 return true;
             }
             Blastable b = hitColliders[i].gameObject.GetComponent<Blastable>();
-            if(b != null)
+            if (b != null)
             {
                 return true;
             }
