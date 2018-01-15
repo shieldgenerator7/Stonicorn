@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerAbility : MonoBehaviour {
 
     GameObject player;
+    protected PlayerController playerController;
     public GameObject teleportParticleEffects;
     protected ParticleSystemController particleController;
     protected new ParticleSystem particleSystem;
@@ -17,6 +18,7 @@ public class PlayerAbility : MonoBehaviour {
     // Use this for initialization
     protected virtual void Start () {
         player = gameObject;
+        playerController = player.GetComponent<PlayerController>();
         particleController = teleportParticleEffects.GetComponent<ParticleSystemController>();
         particleSystem = teleportParticleEffects.GetComponent<ParticleSystem>();
         if (abilityIndicatorParticleEffects != null)
