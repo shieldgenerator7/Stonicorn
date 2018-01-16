@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
     [Range(0, 1)]
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
+    public float cameraOffsetThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
 
     //Processing
     public float teleportTime = 0f;//the earliest time that Merky can teleport
@@ -617,7 +618,7 @@ public class PlayerController : MonoBehaviour
                 //Pass in newPos for both here because player teleported exactly where they intended to
                 onPreTeleport(prevPos, newPos, newPos);
             }
-            teleport(newPos);            
+            teleport(newPos);
             mainCamCtr.refocus();
             cpc.trigger();
             GameManager.Save();
@@ -629,38 +630,18 @@ public class PlayerController : MonoBehaviour
     {
         Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
         float reducedHoldTime = holdTime - gm.getHoldThreshold();
-        float gestureDistance = Vector3.Distance(gpos, transform.position);
-        bool processed = false;//if it's not processed by an ability, it will be turned into a tap gesture
-        //Check Shield Bubble
-        if (sba.enabled)
+        if (cameraOffsetThreshold * cameraOffsetThreshold >= ((Vector2)mainCamCtr.Offset).sqrMagnitude)
         {
-            if (fta.enabled) { fta.dropHoldGesture(); }
-            if (sba.enabled)
-            {
-                processed = true;
-                tpa.dropHoldGesture();
-                sba.processHoldGesture(gpos, reducedHoldTime, finished);
-            }
-            else
-            {
-                tpa.processHoldGesture(gpos, reducedHoldTime, finished);
-            }
+            processTapGesture(gpos);
         }
         else
         {
             if (fta.enabled) { fta.dropHoldGesture(); }
             if (sba.enabled) { sba.dropHoldGesture(); }
             tpa.processHoldGesture(gpos, reducedHoldTime, finished);
-        }
-        if (!processed)
-        {//neither force wave nor shield bubble are active, probably meant to tap
             if (finished)
             {
                 processTapGesture(gpos);
-                if (holdTime < tpa.maxHoldTime)
-                {
-                    gm.adjustHoldThreshold(holdTime);
-                }
             }
         }
     }
