@@ -38239,7 +38239,6 @@ MonoBehaviour:
   effectColor: {r: 0.31735292, g: 0.567529, b: 0.9764706, a: 1}
   abilityIndicatorParticleEffects: {fileID: 856596822}
   circularProgressBar: {fileID: 548232296}
-  maxGestureRange: 1
   shieldRangeIndicator: {fileID: 138864, guid: 8bc5cba583405f74fa7a24fb1a3e8fd2, type: 2}
   shieldBubblePrefab: {fileID: 1181304595248282, guid: 67728388103716d44b748f94c401862f,
     type: 2}
@@ -38265,10 +38264,8 @@ MonoBehaviour:
   effectColor: {r: 1, g: 0.4821931, b: 0.40344828, a: 1}
   abilityIndicatorParticleEffects: {fileID: 1950273296}
   circularProgressBar: {fileID: 548232296}
-  maxGestureRange: 1
   forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 2}
   explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 2}
-  maxCameraOffset: 2
   forceAmount: 5
   maxForce: 3700
   maxRange: 2.5
@@ -38298,6 +38295,8 @@ MonoBehaviour:
   maxAirPorts: 0
   exhaustCoolDownTime: 0.5
   gravityImmuneTimeAmount: 0.2
+  cameraOffsetThreshold: 2
+  autoTeleportDelay: 0.1
   teleportTime: 0
   teleportRangeParticalObject: {fileID: 198174136}
   wallJumpAbilityIndicator: {fileID: 1121559818}
@@ -38474,7 +38473,6 @@ MonoBehaviour:
   effectColor: {r: 0.32941177, g: 0.70980394, b: 0.28627452, a: 0.05882353}
   abilityIndicatorParticleEffects: {fileID: 1121559818}
   circularProgressBar: {fileID: 0}
-  maxGestureRange: 0
   wallClimbSound: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
 --- !u!114 &1792176474
 MonoBehaviour:
@@ -38531,7 +38529,6 @@ MonoBehaviour:
   effectColor: {r: 1, g: 1, b: 1, a: 1}
   abilityIndicatorParticleEffects: {fileID: 0}
   circularProgressBar: {fileID: 548232296}
-  maxGestureRange: 1
   teleportRangeIndicator: {fileID: 138864, guid: 0d21f1bb5384da84bbffcddfafee829c,
     type: 2}
   futureProjection: {fileID: 531202031}
@@ -38577,7 +38574,6 @@ MonoBehaviour:
   effectColor: {r: 0.31764707, g: 0.5686275, b: 0.9764706, a: 1}
   abilityIndicatorParticleEffects: {fileID: 856596822}
   circularProgressBar: {fileID: 0}
-  maxGestureRange: 1
   electricFieldPrefab: {fileID: 1181304595248282, guid: 25877458e6750fe4588a4006a6457d5d,
     type: 2}
   maxRange: 2.5
