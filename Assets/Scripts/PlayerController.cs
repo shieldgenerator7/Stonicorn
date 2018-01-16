@@ -12,10 +12,12 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1)]
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
     public float cameraOffsetThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
+    public float autoTeleportDelay = 0.25f;//how long (sec) between each auto teleport using the hold gesture
 
     //Processing
     public float teleportTime = 0f;//the earliest time that Merky can teleport
     private float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
+    private float lastAutoTeleportTime = 0f;//the last time that Merky auto teleported using the hold gesture
 
 
     public GameObject teleportRangeParticalObject;
@@ -632,7 +634,11 @@ public class PlayerController : MonoBehaviour
         float reducedHoldTime = holdTime - gm.getHoldThreshold();
         if (cameraOffsetThreshold * cameraOffsetThreshold >= ((Vector2)mainCamCtr.Offset).sqrMagnitude)
         {
-            processTapGesture(gpos);
+            if (Time.time > lastAutoTeleportTime + autoTeleportDelay)
+            {
+                lastAutoTeleportTime = Time.time;
+                processTapGesture(gpos);
+            }
         }
         else
         {
