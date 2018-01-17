@@ -86,11 +86,12 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         cEFController = null;
     }
 
-    public void processTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
+    public bool processTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
         dropWaitGesture();
         float distance = Vector3.Distance(oldPos, triedPos);
         activationDelay = baseActivationDelay * distance / playerController.baseRange;
+        return true;
     }
 
     public float checkForce(float force)

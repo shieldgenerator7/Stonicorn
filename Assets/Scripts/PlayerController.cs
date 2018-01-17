@@ -360,7 +360,7 @@ public class PlayerController : MonoBehaviour
     public OnTeleport onTeleport;
 
     //Used when you also need to know where the user clicked
-    public delegate void OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
+    public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
     public OnPreTeleport onPreTeleport;
 
     public void setRange(float newRange)
@@ -429,7 +429,8 @@ public class PlayerController : MonoBehaviour
     {
         float length = 0.25f;
         int count = pc2d.Cast(direction, rch2dsGrounded, length, true);
-        for (int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++)
+        {
             RaycastHit2D rch2d = rch2dsGrounded[i];
             if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
             {
@@ -600,13 +601,27 @@ public class PlayerController : MonoBehaviour
         }
         Vector3 prevPos = transform.position;
         Vector3 newPos = findTeleportablePosition(gpos);
+        bool continueTeleport = true;
         if (onPreTeleport != null)
         {
-            onPreTeleport(prevPos, newPos, gpos);
+            //Check each onPreTeleport delegate
+            foreach (OnPreTeleport opt in onPreTeleport.GetInvocationList())
+            {
+                //Make it do what it needs to do, then return the result
+                bool result = opt.Invoke(prevPos, newPos, gpos);
+                //If at least 1 returns false, don't teleport
+                if (result == false){
+                    continueTeleport = false;
+                    break;
+                }
+            }
         }
-        teleport(newPos);
-        GameManager.Save();
-        mainCamCtr.checkForAutoMovement(gpos, prevPos);
+        if (continueTeleport)
+        {
+            teleport(newPos);
+            GameManager.Save();
+            mainCamCtr.checkForAutoMovement(gpos, prevPos);
+        }
     }
     public void processTapGesture(GameObject checkPoint)
     {

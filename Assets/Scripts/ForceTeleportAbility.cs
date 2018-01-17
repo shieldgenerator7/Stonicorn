@@ -70,7 +70,7 @@ public class ForceTeleportAbility : PlayerAbility
         }
     }
 
-    public void charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
+    public bool charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
         if ((newPos-triedPos).sqrMagnitude < 0.25f //0.5f * 0.5f
             //If there's a blastable in range, explode instead of charge
@@ -82,12 +82,14 @@ public class ForceTeleportAbility : PlayerAbility
                 currentCharge = maxCharge;
             }
             lastTeleportTime = Time.time;
+            return true;
         }
         else
         {
             processHoldGesture(triedPos, Mathf.Max(currentCharge, chargeIncrement), true);
             currentCharge = 0;
             dropHoldGesture();
+            return false;
         }
     }
 
