@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
     private float[] rotations = new float[] { 285, 155, 90, 0 };
+    private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[100];//used for determining if Merky is grounded
 
     public AudioClip teleportSound;
     public BoxCollider2D scoutCollider;//collider used to scout the level for teleportable spots
@@ -427,10 +428,9 @@ public class PlayerController : MonoBehaviour
     bool isGrounded(Vector3 direction)
     {
         float length = 0.25f;
-        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
-        pc2d.Cast(direction, rh2ds, length, true);
-        foreach (RaycastHit2D rch2d in rh2ds)
-        {
+        int count = pc2d.Cast(direction, rch2dsGrounded, length, true);
+        for (int i = 0; i < count; i++){
+            RaycastHit2D rch2d = rch2dsGrounded[i];
             if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
             {
                 GameObject ground = rch2d.collider.gameObject;
