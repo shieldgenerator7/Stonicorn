@@ -74,7 +74,9 @@ public class ForceTeleportAbility : PlayerAbility
     {
         if ((newPos-triedPos).sqrMagnitude < 0.25f //0.5f * 0.5f
             //If there's a blastable in range, explode instead of charge
-            || !isBlastableInArea(triedPos, getRangeFromCharge(currentCharge) / 2))
+            || !isBlastableInArea(triedPos, getRangeFromCharge(currentCharge) / 2)
+            //If the tap is on a wall, explode
+            || !isTapOnWall(triedPos))
         {
             currentCharge += chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange;
             if (currentCharge > maxCharge)
@@ -188,6 +190,29 @@ public class ForceTeleportAbility : PlayerAbility
                 return true;
             }
         }
+        return false;
+    }
+    /// <summary>
+    /// Returns true if the object at the location is a non-movable object
+    /// or non-teleportable zone
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    bool isTapOnWall(Vector2 pos)
+    {
+        Collider2D[] colls = Physics2D.OverlapPointAll(pos);
+        foreach (Collider2D coll in colls)
+        {
+            if (coll.gameObject.tag == "NonTeleportableArea")
+            {
+                return true;
+            }
+            if (!coll.isTrigger && coll.gameObject.GetComponent<Rigidbody2D>() == null)
+            {
+                return true;
+            }
+        }
+        //else it was on a movable object, a teleportable trigger, or empty space
         return false;
     }
 
