@@ -216,6 +216,13 @@ public class ForceTeleportAbility : PlayerAbility
     }
     private Vector2 findExplodePosition(Vector2 oldPos, Vector2 triedPos)
     {
+        //Keep the explosion within double the player's teleport range
+        float maxRangeFromPlayer = playerController.range * 2;
+        if ((triedPos - oldPos).sqrMagnitude > maxRangeFromPlayer * maxRangeFromPlayer)
+        {
+            triedPos = oldPos + (triedPos - oldPos).normalized * maxRangeFromPlayer;
+        }
+        //Find objects blocking line of sight to explode onto
         Vector2 explodePos = triedPos;
         RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, triedPos - oldPos, Vector2.Distance(oldPos, triedPos));
         foreach (RaycastHit2D rch2d in rch2ds)
