@@ -7,7 +7,7 @@ public class ForceTeleportAbility : PlayerAbility
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
     private GameObject frii;//"force range indicator instance"
     public GameObject explosionEffect;
-    
+
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxForce = 1000;//the maximum amount of force applied to one object
     public float maxRange = 3;
@@ -41,7 +41,7 @@ public class ForceTeleportAbility : PlayerAbility
         {
             processHoldGesture(transform.position, currentCharge, false);
             if (Time.time > lastTeleportTime + minChargeDecayDelay
-                && Time.time > lastTeleportTime + minChargeDecayDelay + ((maxChargeDecayDelay - minChargeDecayDelay) * currentCharge/maxCharge))
+                && Time.time > lastTeleportTime + minChargeDecayDelay + ((maxChargeDecayDelay - minChargeDecayDelay) * currentCharge / maxCharge))
             {
                 currentCharge -= chargeDecayRate * Time.deltaTime;
                 if (currentCharge < 0)
@@ -72,9 +72,10 @@ public class ForceTeleportAbility : PlayerAbility
 
     public bool charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
-        if ((newPos-triedPos).sqrMagnitude < 0.25f //0.5f * 0.5f
-            //If there's a blastable in range, explode instead of charge
-            || !isBlastableInArea(triedPos, getRangeFromCharge(currentCharge) / 2)
+        Vector2 explodePos = findExplodePosition(oldPos, triedPos);
+        if ((newPos - triedPos).sqrMagnitude < 0.25f //0.5f * 0.5f
+                                                     //If there's a blastable in range, explode instead of charge
+            || !isBlastableInArea(explodePos, getRangeFromCharge(currentCharge) / 2)
             //If the tap is on a wall, explode
             || !isTapOnWall(triedPos))
         {
@@ -88,12 +89,14 @@ public class ForceTeleportAbility : PlayerAbility
         }
         else
         {
-            processHoldGesture(triedPos, Mathf.Max(currentCharge, chargeIncrement), true);
+            processHoldGesture(explodePos, Mathf.Max(currentCharge, chargeIncrement), true);
             currentCharge = 0;
             dropHoldGesture();
             return false;
         }
     }
+
+
 
     public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
@@ -203,17 +206,49 @@ public class ForceTeleportAbility : PlayerAbility
         Collider2D[] colls = Physics2D.OverlapPointAll(pos);
         foreach (Collider2D coll in colls)
         {
-            if (coll.gameObject.tag == "NonTeleportableArea")
-            {
-                return true;
-            }
-            if (!coll.isTrigger && coll.gameObject.GetComponent<Rigidbody2D>() == null)
+            if (isEffectiveWall(coll))
             {
                 return true;
             }
         }
         //else it was on a movable object, a teleportable trigger, or empty space
         return false;
+    }
+    private Vector2 findExplodePosition(Vector2 oldPos, Vector2 triedPos)
+    {
+        Vector2 explodePos = triedPos;
+        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, triedPos - oldPos, Vector2.Distance(oldPos, triedPos));
+        foreach (RaycastHit2D rch2d in rch2ds)
+        {
+            if (rch2d.collider.gameObject == gameObject)
+            {
+                continue;//don't count Merky
+            }
+            if (isEffectiveWall(rch2d.collider))
+            {
+                explodePos = rch2d.point;
+                break;
+            }
+        }
+        if ((explodePos - triedPos).sqrMagnitude < playerController.baseRange * playerController.baseRange)
+        {
+            explodePos = triedPos;
+        }
+        return explodePos;
+    }
+    /// <summary>
+    /// Returns true if the collider is a non-movable object
+    /// or non-teleportable zone
+    /// </summary>
+    /// <param name="coll"></param>
+    /// <returns></returns>
+    bool isEffectiveWall(Collider2D coll)
+    {
+        return coll.gameObject.CompareTag("NonTeleportableArea")
+            || (coll.transform.parent != null
+                && coll.transform.parent.gameObject.CompareTag("NonTeleportableArea"))
+            || (!coll.isTrigger
+                && !coll.gameObject.GetComponentInParent<Rigidbody2D>());
     }
 
     void showExplosionEffect(Vector2 pos, float finalSize)
