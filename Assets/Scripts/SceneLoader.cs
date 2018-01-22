@@ -53,24 +53,24 @@ public class SceneLoader : MonoBehaviour
             }
         }
     }
-        void loadLevel()
+    void loadLevel()
+    {
+        SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+    }
+    void unloadLevel()
+    {
+        SceneManager.UnloadSceneAsync(sceneName);
+    }
+    public void unloadLevelIfLoaded()
+    {
+        if (isLoaded)
         {
-            SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            unloadLevel();
         }
-        void unloadLevel()
-        {
-            SceneManager.UnloadSceneAsync(sceneName);
-        }
-        public void unloadLevelIfLoaded()
-        {
-            if (isLoaded)
-            {
-                unloadLevel();
-            }
-        }
+    }
 
     public static Scene getCurrentScene()
     {
         return SceneManager.GetSceneByName(currentScene.sceneName);
     }
-    }
+}
