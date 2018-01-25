@@ -7,6 +7,7 @@ public class ForceTeleportAbility : PlayerAbility
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
     private GameObject frii;//"force range indicator instance"
     public GameObject explosionEffect;
+    public GameObject afterWindPrefab;//the prefab for the temporary windzone this ability creates
 
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxForce = 1000;//the maximum amount of force applied to one object
@@ -58,15 +59,14 @@ public class ForceTeleportAbility : PlayerAbility
         if (currentCharge > 0)
         {
             Vector2 force = (newPos - oldPos) * maxSpeedBoost * (currentCharge - chargeIncrement);
-            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, newPos - oldPos, Vector2.Distance(oldPos, newPos));
-            foreach (RaycastHit2D rch2d in rch2ds)
-            {
-                Rigidbody2D orb2d = rch2d.collider.gameObject.GetComponent<Rigidbody2D>();
-                if (orb2d)
-                {
-                    orb2d.AddForce(force * orb2d.mass);
-                }
-            }
+            GameObject afterWind = GameObject.Instantiate(afterWindPrefab);
+            SceneLoader.moveToCurrentScene(afterWind);
+            afterWind.GetComponent<AfterWind>().windVector = force;
+            afterWind.transform.up = force.normalized;
+            afterWind.transform.position = oldPos;
+            afterWind.transform.localScale = new Vector3(1, (newPos - oldPos).magnitude, 1);
+            Fader fader = afterWind.GetComponent<Fader>();
+            fader.delayTime = minChargeDecayDelay + ((maxChargeDecayDelay - minChargeDecayDelay) * currentCharge / maxCharge);
         }
     }
 

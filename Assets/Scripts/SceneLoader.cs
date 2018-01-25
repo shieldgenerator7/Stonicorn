@@ -4,7 +4,7 @@ using System.Collections;
 
 public class SceneLoader : MonoBehaviour
 {
-    public static SceneLoader currentScene;//the scene that Merky is currently in
+    private static SceneLoader currentScene;//the scene that Merky is currently in
 
     public string sceneName;//the index of the scene to load
     public int lastOpenGameStateId = -1;//the gamestate id in which this scene was last open in. -1 means it is not open in any of them
@@ -72,5 +72,13 @@ public class SceneLoader : MonoBehaviour
     public static Scene getCurrentScene()
     {
         return SceneManager.GetSceneByName(currentScene.sceneName);
+    }
+    /// <summary>
+    /// Moves the given object to the current scene
+    /// </summary>
+    /// <param name="go"></param>
+    public static void moveToCurrentScene(GameObject go)
+    {
+        SceneManager.MoveGameObjectToScene(go, getCurrentScene());
     }
 }
