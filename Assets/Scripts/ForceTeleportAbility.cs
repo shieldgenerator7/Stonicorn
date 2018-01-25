@@ -58,12 +58,13 @@ public class ForceTeleportAbility : PlayerAbility
     {
         if (currentCharge > 0)
         {
-            Vector2 force = (newPos - oldPos) * maxSpeedBoost * (currentCharge - chargeIncrement);
+            float magnitude = (newPos - oldPos).magnitude;
+            Vector2 force = (newPos - oldPos) * maxSpeedBoost * (currentCharge - chargeIncrement) * magnitude / playerController.baseRange;
             GameObject afterWind = GameObject.Instantiate(afterWindPrefab);
             SceneLoader.moveToCurrentScene(afterWind);
             afterWind.transform.up = force.normalized;
             afterWind.transform.position = oldPos;
-            afterWind.transform.localScale = new Vector3(1, (newPos - oldPos).magnitude, 1);
+            afterWind.transform.localScale = new Vector3(1, magnitude, 1);
             AfterWind aw = afterWind.GetComponent<AfterWind>();
             aw.windVector = force;
             aw.fadeOutDuration = minChargeDecayDelay + ((maxChargeDecayDelay - minChargeDecayDelay) * currentCharge / maxCharge);
