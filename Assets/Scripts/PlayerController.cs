@@ -68,6 +68,8 @@ public class PlayerController : MonoBehaviour
         sba = GetComponent<ShieldBubbleAbility>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
         teleportRangeParticalController = teleportRangeParticalObject.GetComponent<ParticleSystemController>();
+        teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
+        onPreTeleport += canTeleport;
     }
 
     void FixedUpdate()
@@ -98,7 +100,7 @@ public class PlayerController : MonoBehaviour
         }
         if (inCheckPoint)
         {
-            rb2d.velocity = new Vector2(0, 0);
+            rb2d.velocity = Vector2.zero;
             rb2d.angularVelocity = 0;
         }
         if (grounded && !rb2d.isKinematic && !isMoving())
@@ -106,15 +108,6 @@ public class PlayerController : MonoBehaviour
             mainCamCtr.discardMovementDelay();
         }
     }
-
-    //void OnCollisionEnter2D(Collision2D coll)
-    //{
-    //    //airPorts = 0;
-    //    //setRange(baseRange);
-    //}
-    //void OnCollisionExit2D(Collision2D coll)
-    //{
-    //}
 
     void grantGravityImmunity()
     {
@@ -170,84 +163,105 @@ public class PlayerController : MonoBehaviour
         angle = Utility.loopValue(angle, 0, 360);
         transform.localEulerAngles = new Vector3(0, 0, angle);
     }
-
-    private bool teleport(Vector3 targetPos)//targetPos is in world coordinations (NOT UI coordinates)
+    /// <summary>
+    /// Checks to make sure teleport is not on cooldown
+    /// </summary>
+    /// <param name="oldPos"></param>
+    /// <param name="newPOs"></param>
+    /// <param name="triedPos"></param>
+    /// <returns></returns>
+    private bool canTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
-        return teleport(targetPos, true);
-    }
-    private bool teleport(Vector3 targetPos, bool playSound)//targetPos is in world coordinations (NOT UI coordinates)
-    {
-        if (teleportTime <= Time.time)
+        if (!isGrounded())
         {
-            if (!isGrounded())
+            if (Time.time >= teleportTime)
             {
-                airPorts++;
             }
-            if (airPorts > maxAirPorts)
+            else
             {
-                //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
-                float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -gravity.Gravity.normalized);
-                teleportTime = Time.time + exhaustCoolDownTime * upAmount;
+                return false;
             }
-            //Get new position
-            Vector3 newPos = targetPos;
-
-            //Actually Teleport
-            Vector3 oldPos = transform.position;
-            transform.position = newPos;
-            showTeleportEffect(oldPos, newPos);
-            if (playSound)
-            {
-                if (groundedWall && wca.enabled)
-                {
-                    AudioSource.PlayClipAtPoint(wca.wallClimbSound, oldPos);
-                }
-                else
-                {
-                    AudioSource.PlayClipAtPoint(teleportSound, oldPos);
-                }
-            }
-            teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
-            //Health Regen
-            hm.addIntegrity(Vector2.Distance(oldPos, newPos));
-            //Momentum Dampening
-            if (rb2d.velocity.sqrMagnitude > 0.001f)//if Merky is moving
-            {
-                Vector3 direction = newPos - oldPos;
-                float newX = rb2d.velocity.x;//the new x velocity
-                float newY = rb2d.velocity.y;
-                if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(direction.x))
-                {
-                    newX = rb2d.velocity.x + direction.x;
-                    if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(newX))
-                    {//keep from exploiting boost in opposite direction
-                        newX = 0;
-                    }
-                }
-                if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(direction.y))
-                {
-                    newY = rb2d.velocity.y + direction.y;
-                    if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(newY))
-                    {//keep from exploiting boost in opposite direction
-                        newY = 0;
-                    }
-                }
-                rb2d.velocity = new Vector2(newX, newY);
-            }
-            //Gravity Immunity
-            grounded = false;
-            velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
-            gravityImmuneTime = 0f;
-            shouldGrantGIT = true;
-            mainCamCtr.delayMovement(0.3f);
-            checkGroundedState(true);//have to call it again because state has changed
-            if (onTeleport != null)
-            {
-                onTeleport(oldPos, newPos);
-            }
-            return true;
         }
-        return false;
+        return true;
+    }
+
+    /// <summary>
+    /// Teleports, without any checking
+    /// </summary>
+    /// <param name="targetPos">Place to teleport to in world coordinations</param>
+    /// <param name="playSound">Whether or not to play a sound</param>
+    private void teleport(Vector3 targetPos, bool playSound = true)//
+    {
+        //Update mid-air cooldowns
+        if (!isGrounded())
+        {
+            airPorts++;
+        }
+        if (airPorts > maxAirPorts)
+        {
+            //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
+            float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -gravity.Gravity.normalized);
+            teleportTime = Time.time + exhaustCoolDownTime * upAmount;
+        }
+
+        //Get new position
+        Vector3 newPos = targetPos;
+        //Actually Teleport
+        Vector3 oldPos = transform.position;
+        transform.position = newPos;
+
+        //Show effect
+        showTeleportEffect(oldPos, newPos);
+        //Play Sound
+        if (playSound)
+        {
+            if (groundedWall && wca.enabled)
+            {
+                AudioSource.PlayClipAtPoint(wca.wallClimbSound, oldPos);
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(teleportSound, oldPos);
+            }
+        }
+
+        //Health Regen
+        hm.addIntegrity(Vector2.Distance(oldPos, newPos));
+        //Momentum Dampening
+        if (!Mathf.Approximately(rb2d.velocity.sqrMagnitude,0))//if Merky is moving
+        {
+            Vector3 direction = newPos - oldPos;
+            float newX = rb2d.velocity.x;//the new x velocity
+            float newY = rb2d.velocity.y;
+            if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(direction.x))
+            {
+                newX = rb2d.velocity.x + direction.x;
+                if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(newX))
+                {//keep from exploiting boost in opposite direction
+                    newX = 0;
+                }
+            }
+            if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(direction.y))
+            {
+                newY = rb2d.velocity.y + direction.y;
+                if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(newY))
+                {//keep from exploiting boost in opposite direction
+                    newY = 0;
+                }
+            }
+            rb2d.velocity = new Vector2(newX, newY);
+        }
+        //Gravity Immunity
+        grounded = false;
+        velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
+        gravityImmuneTime = 0f;
+        shouldGrantGIT = true;
+        mainCamCtr.delayMovement(0.3f);
+        checkGroundedState(true);//have to call it again because state has changed
+        if (onTeleport != null)
+        {
+            onTeleport(oldPos, newPos);
+        }
     }
 
     /// <summary>
@@ -423,6 +437,10 @@ public class PlayerController : MonoBehaviour
             }
         }
         grounded = isgrounded;
+        if (!grounded)
+        {
+            //Debug.Log("isGrounded: NOT grounded");
+        }
         return isgrounded;
     }
     bool isGrounded(Vector3 direction)
@@ -437,6 +455,7 @@ public class PlayerController : MonoBehaviour
                 GameObject ground = rch2d.collider.gameObject;
                 if (ground != null && !ground.Equals(transform.gameObject))
                 {
+                    //Debug.Log("isGround: grounded on: " + ground.name);
                     return true;
                 }
             }
@@ -610,7 +629,8 @@ public class PlayerController : MonoBehaviour
                 //Make it do what it needs to do, then return the result
                 bool result = opt.Invoke(prevPos, newPos, gpos);
                 //If at least 1 returns false, don't teleport
-                if (result == false){
+                if (result == false)
+                {
                     continueTeleport = false;
                     break;
                 }

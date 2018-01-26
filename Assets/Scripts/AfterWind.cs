@@ -47,8 +47,6 @@ public class AfterWind : MonoBehaviour
                     if (ga.AcceptsGravity)
                     {
                         rb2d.AddForce(pushVector);
-                        //Inform the gravity accepter of the direction
-                        ga.addGravity(pushVector);
                     }
                 }
                 else
