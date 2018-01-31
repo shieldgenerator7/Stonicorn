@@ -5,7 +5,7 @@ using UnityEngine;
 public class BackgroundParallax : MonoBehaviour {
 
     [Range(0, 1)]
-    public float cameraFollowPercent = 0.75f;
+    public float cameraFollowPercent = 0.25f;
 
     private Vector2 startPos;
 

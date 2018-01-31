@@ -13704,6 +13704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1842448940}
   - component: {fileID: 1842448939}
+  - component: {fileID: 1842448941}
   m_Layer: 0
   m_Name: swamp wall
   m_TagString: Untagged
@@ -13766,6 +13767,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 29.477}
+--- !u!114 &1842448941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1842448938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aa6f57ec229dda4ba13608ff4685503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraFollowPercent: 0.25
 --- !u!1001 &1881516473
 Prefab:
   m_ObjectHideFlags: 0
