@@ -215,7 +215,7 @@ public class ForceTeleportAbility : PlayerAbility
         //else it was on a movable object, a teleportable trigger, or empty space
         return false;
     }
-    private Vector2 findExplodePosition(Vector2 oldPos, Vector2 triedPos)
+    private Vector2 findExplodePosition(Vector2 oldPos, Vector2 triedPos, bool explodeOnClosestWall = false)
     {
         //Keep the explosion within double the player's teleport range
         float maxRangeFromPlayer = playerController.range * 2;
@@ -223,19 +223,22 @@ public class ForceTeleportAbility : PlayerAbility
         {
             triedPos = oldPos + (triedPos - oldPos).normalized * maxRangeFromPlayer;
         }
-        //Find objects blocking line of sight to explode onto
         Vector2 explodePos = triedPos;
-        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, triedPos - oldPos, Vector2.Distance(oldPos, triedPos));
-        foreach (RaycastHit2D rch2d in rch2ds)
+        //Find objects blocking line of sight to explode onto
+        if (explodeOnClosestWall)
         {
-            if (rch2d.collider.gameObject == gameObject)
+            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, triedPos - oldPos, Vector2.Distance(oldPos, triedPos));
+            foreach (RaycastHit2D rch2d in rch2ds)
             {
-                continue;//don't count Merky
-            }
-            if (isEffectiveWall(rch2d.collider))
-            {
-                explodePos = rch2d.point;
-                break;
+                if (rch2d.collider.gameObject == gameObject)
+                {
+                    continue;//don't count Merky
+                }
+                if (isEffectiveWall(rch2d.collider))
+                {
+                    explodePos = rch2d.point;
+                    break;
+                }
             }
         }
         if ((explodePos - triedPos).sqrMagnitude < playerController.baseRange * playerController.baseRange)
