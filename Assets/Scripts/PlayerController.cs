@@ -228,7 +228,7 @@ public class PlayerController : MonoBehaviour
         //Health Regen
         hm.addIntegrity(Vector2.Distance(oldPos, newPos));
         //Momentum Dampening
-        if (!Mathf.Approximately(rb2d.velocity.sqrMagnitude,0))//if Merky is moving
+        if (!Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0))//if Merky is moving
         {
             Vector3 direction = newPos - oldPos;
             float newX = rb2d.velocity.x;//the new x velocity
@@ -481,7 +481,7 @@ public class PlayerController : MonoBehaviour
             Vector3 savedOffset = scoutCollider.offset;
             scoutCollider.offset = rOffset;
             scoutCollider.Cast(Vector2.zero, rh2ds, 0, true);
-            occupied = isOccupied(rh2ds);
+            occupied = isOccupied(rh2ds, pos);
             scoutCollider.offset = savedOffset;
         }
         //Test with actual collider
@@ -490,13 +490,13 @@ public class PlayerController : MonoBehaviour
             Vector3 savedOffset = pc2d.offset;
             pc2d.offset = rOffset;
             pc2d.Cast(Vector2.zero, rh2ds, 0, true);
-            occupied = isOccupied(rh2ds);
+            occupied = isOccupied(rh2ds, pos);
             pc2d.offset = savedOffset;
         }
         //Debug.DrawLine(pc2d.offset+(Vector2)transform.position, pc2d.bounds.center, Color.grey, 10);
         return occupied;
     }
-    bool isOccupied(RaycastHit2D[] rch2ds)
+    bool isOccupied(RaycastHit2D[] rch2ds, Vector3 triedPos)
     {
         foreach (RaycastHit2D rh2d in rch2ds)
         {
@@ -509,6 +509,21 @@ public class PlayerController : MonoBehaviour
             {
                 if (go != gameObject)
                 {
+                    if (isOccupiedException != null)
+                    {
+                        //Check each isOccupiedCatch delegate
+                        //2018-02-18: copied from processTapGesture(.)
+                        foreach (IsOccupiedException ioc in isOccupiedException.GetInvocationList())
+                        {
+                            //Make it do what it needs to do, then return the result
+                            bool result = ioc.Invoke(rh2d.collider, triedPos);
+                            //If at least 1 returns true, it's considered not occupied
+                            if (result == true)
+                            {
+                                return false;//return false for "not occupied"
+                            }
+                        }
+                    }
                     //Debug.Log("Occupying object: " + go.name);
                     return true;
                 }
@@ -524,6 +539,9 @@ public class PlayerController : MonoBehaviour
         }
         return false;
     }
+
+    public delegate bool IsOccupiedException(Collider2D coll, Vector3 testPos);
+    public IsOccupiedException isOccupiedException;
 
     /// <summary>
     /// Adjusts the given Vector3 to avoid collision with the objects that it collides with
