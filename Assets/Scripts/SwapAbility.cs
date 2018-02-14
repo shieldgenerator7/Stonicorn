@@ -22,13 +22,8 @@ public class SwapAbility : PlayerAbility
 
     bool isColliderSwappableImpl(Collider2D coll, Vector3 testPos, Vector3 origPos)
     {
-        if (!coll.OverlapPoint(testPos))
-        {
-            return false;//don't swap unless the testPos is inside the collider
-        }
         Vector3 swapPos = coll.gameObject.transform.position - testPos + origPos;
-        if (coll.gameObject.GetComponent<SavableMonoBehaviour>() != null
-            || coll.gameObject.GetComponent<Rigidbody2D>() != null)
+        if (coll.gameObject.GetComponent<Rigidbody2D>() != null)
         {
             return !isOccupiedForObject(coll, swapPos);
         }
