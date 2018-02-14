@@ -19,13 +19,8 @@ public class ParticleSystemController : MonoBehaviour {
 
     private void OnEnable()
     {
-        if (activated)
-        {
-            if (!teleportParticles.isPlaying)
-            {
-                teleportParticles.Play();
-            }
-        }
+        //Refresh
+        activate(activated);
     }
 
     /// <summary>
