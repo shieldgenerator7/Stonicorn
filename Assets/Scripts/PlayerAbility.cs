@@ -21,7 +21,7 @@ public class PlayerAbility : MonoBehaviour {
         particleSystem = teleportParticleEffects.GetComponent<ParticleSystem>();
         if (abilityIndicatorParticleEffects != null)
         {
-            abilityIndicatorParticleEffects.GetComponent<ParticleSystem>().Play();
+            abilityIndicatorParticleEffects.GetComponent<ParticleSystemController>().activate(true);
         }
     }
 

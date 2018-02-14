@@ -8,16 +8,43 @@ public class ParticleSystemController : MonoBehaviour {
     private ParticleSystem teleportParticles;
     public bool dependsOnTeleportRange = false;//true if it changes size when the teleport range changes
 
+    private bool activated = false;
+
     // Use this for initialization
-    void Awake () {
+    void Awake ()
+    {
         teleportParticles = GetComponent<ParticleSystem>();
         activateTeleportParticleSystem(false);
     }
-	
-	// Update is called once per frame
-	//void Update () {
-		
-	//}
+
+    private void OnEnable()
+    {
+        if (activated)
+        {
+            if (!teleportParticles.isPlaying)
+            {
+                teleportParticles.Play();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Sets the active variable and tells the particle system whether or not to play
+    /// </summary>
+    /// <param name="active"></param>
+    public void activate(bool active)
+    {
+        activated = active;
+        if (active)
+        {
+            teleportParticles.Play();
+        }
+        else
+        {
+            teleportParticles.Pause();
+            teleportParticles.Clear();
+        }
+    }
 
     public void activateTeleportParticleSystem(bool activate)
     {
@@ -32,9 +59,9 @@ public class ParticleSystemController : MonoBehaviour {
     /// <param name="radius"></param>
     public void activateTeleportParticleSystem(bool activate, Color effectColor, Vector3 pos, float radius)
     {
+        this.activate(activate);
         if (activate)
         {
-            teleportParticles.Play();
             //Position
             teleportParticles.transform.position = pos;
             //Range
@@ -47,11 +74,6 @@ public class ParticleSystemController : MonoBehaviour {
             psmmc.constant = radius / Mathf.Abs(teleportParticles.main.startSpeed.constant);
             psmm.startLifetime = psmmc;
         }
-        else
-        {
-            teleportParticles.Pause();
-            teleportParticles.Clear();
-        }
     }
     /// <summary>
     /// For activating a radial system that emits outward (for the teleport range indicator)
@@ -60,19 +82,14 @@ public class ParticleSystemController : MonoBehaviour {
     /// <param name="radius">The radius to set to, 0 to do no change</param>
     public void activateTeleportParticleSystem(bool activate, float radius)
     {
+        this.activate(activate);
         if (activate)
         {
-            teleportParticles.Play();
             //Range
             if (radius > 0)
             {
                 setRange(radius, true);
             }
-        }
-        else
-        {
-            teleportParticles.Pause();
-            teleportParticles.Clear();
         }
 
     }
