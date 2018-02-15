@@ -106,13 +106,13 @@ public class CameraController : MonoBehaviour
                     transform.position,
                     player.transform.position) * 1.5f + playerRB2D.velocity.magnitude)
                     * Time.deltaTime);
-        }
-        if (transform.rotation != rotation)
-        {
-            float deltaTime = 3 * Time.deltaTime;
-            float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, deltaTime);
-            offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
+            if (transform.rotation != rotation)
+            {
+                float deltaTime = 3 * Time.deltaTime;
+                float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
+                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, deltaTime);
+                offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
+            }
         }
     }
 
@@ -145,8 +145,8 @@ public class CameraController : MonoBehaviour
         float DISCARD_DELAY_DISTANCE_SENSITIVITY = 0.9f;
         float DISCARD_DELAY_ANGLE_SENSITIVITY = 140;//in degrees
         //Get the min of screen width and height in world distance
-        float distance = Mathf.Abs(cam.ScreenToWorldPoint(new Vector2(0, Mathf.Min(prevScreenWidth,prevScreenHeight))).y - cam.ScreenToWorldPoint(new Vector2(0, 0)).y);
-        float threshold = DISCARD_DELAY_DISTANCE_SENSITIVITY * distance/2;
+        float distance = Mathf.Abs(cam.ScreenToWorldPoint(new Vector2(0, Mathf.Min(prevScreenWidth, prevScreenHeight))).y - cam.ScreenToWorldPoint(new Vector2(0, 0)).y);
+        float threshold = DISCARD_DELAY_DISTANCE_SENSITIVITY * distance / 2;
         if (Vector2.Distance((Vector2)transform.position, playerPos) >= threshold)
         {
             Vector2 plyV = (playerPos - transform.position);
@@ -204,7 +204,7 @@ public class CameraController : MonoBehaviour
         scale = Mathf.Lerp(
             startZoomScale,
             absSP,
-            (Time.time - zoomStartTime)/zoomSpeed);
+            (Time.time - zoomStartTime) / zoomSpeed);
         updateOrthographicSize();
         if (scale == absSP)
         {
@@ -262,7 +262,8 @@ public class CameraController : MonoBehaviour
         {
             cam.orthographicSize = (scale * cam.pixelHeight) / cam.pixelWidth;
         }
-        else {//landscape orientation
+        else
+        {//landscape orientation
             cam.orthographicSize = scale;
         }
     }
