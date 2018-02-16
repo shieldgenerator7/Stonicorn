@@ -27,6 +27,10 @@ public class PlayerController : MonoBehaviour
     public int airPorts = 0;
     private bool grounded = true;//set in isGrounded()
     private bool groundedWall = false;//true if grounded exclusively to a wall; set in isGrounded()
+    public bool Grounded
+    {
+        get { return grounded || groundedWall; }
+    }
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
@@ -251,6 +255,11 @@ public class PlayerController : MonoBehaviour
             }
             rb2d.velocity = new Vector2(newX, newY);
         }
+        //On Teleport Effects
+        if (onTeleport != null)
+        {
+            onTeleport(oldPos, newPos);
+        }
         //Gravity Immunity
         grounded = false;
         velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
@@ -258,10 +267,6 @@ public class PlayerController : MonoBehaviour
         shouldGrantGIT = true;
         mainCamCtr.delayMovement(0.3f);
         checkGroundedState(true);//have to call it again because state has changed
-        if (onTeleport != null)
-        {
-            onTeleport(oldPos, newPos);
-        }
     }
 
     /// <summary>
