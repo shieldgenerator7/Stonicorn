@@ -5,6 +5,7 @@ using UnityEngine;
 public class AirSliceAbility : PlayerAbility {
 
     public float sliceDamage = 100f;//how much force damage to do to objects that get cut
+    public GameObject streak;
 
 	// Use this for initialization
 	protected override void Start () {
@@ -36,6 +37,16 @@ public class AirSliceAbility : PlayerAbility {
                 //if the player slices something, allow them to teleport once more in the air
                 playerController.airPorts--;
             }
+            showStreak(oldPos, newPos);
         }
+    }
+
+    void showStreak(Vector3 oldp, Vector3 newp)
+    {
+        GameObject newTS = (GameObject)Instantiate(streak);
+        newTS.GetComponent<TeleportStreakUpdater>().start = oldp;
+        newTS.GetComponent<TeleportStreakUpdater>().end = newp;
+        newTS.GetComponent<TeleportStreakUpdater>().position();
+        newTS.GetComponent<TeleportStreakUpdater>().turnOn(true);
     }
 }
