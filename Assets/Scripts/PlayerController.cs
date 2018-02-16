@@ -36,6 +36,12 @@ public class PlayerController : MonoBehaviour
     {
         get { return grounded || groundedWall; }
     }
+    private bool groundedPreTeleport = true;//true if Merky was grounded before teleporting
+    private bool groundedWallPreTeleport = false;//true if grounded exclusively to a wall; set in isGrounded()
+    public bool GroundedPreTeleport
+    {
+        get { return groundedPreTeleport || groundedWallPreTeleport; }
+    }
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
@@ -265,18 +271,17 @@ public class PlayerController : MonoBehaviour
             }
             rb2d.velocity = new Vector2(newX, newY);
         }
-        //On Teleport Effects
-        if (onTeleport != null)
-        {
-            onTeleport(oldPos, newPos);
-        }
         //Gravity Immunity
-        grounded = false;
         velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
         gravityImmuneTime = 0f;
         shouldGrantGIT = true;
         mainCamCtr.delayMovement(0.3f);
         checkGroundedState(true);//have to call it again because state has changed
+        //On Teleport Effects
+        if (onTeleport != null)
+        {
+            onTeleport(oldPos, newPos);
+        }
     }
 
     /// <summary>
@@ -435,6 +440,8 @@ public class PlayerController : MonoBehaviour
 
     bool isGrounded()
     {
+        groundedPreTeleport = grounded;
+        groundedWallPreTeleport = groundedWall;
         if (inCheckPoint)
         {
             return true;

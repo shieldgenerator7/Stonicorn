@@ -15,8 +15,8 @@ public class AirSliceAbility : PlayerAbility {
 	}
 	
 	void sliceThings(Vector2 oldPos, Vector2 newPos)
-    {//2018-02-15: WARNING: This method assumes that onTeleport is called BEFORE the grounded state changes
-        if (!playerController.Grounded)
+    {
+        if (!playerController.GroundedPreTeleport)
         {
             bool slicedSomething = false;
             RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, (newPos - oldPos), Vector2.Distance(oldPos,newPos));

@@ -71,10 +71,20 @@ public class SwapAbility : PlayerAbility
 
     void swapObjects(Vector2 oldPos, Vector2 newPos)
     {
+        bool swappedSomething = false;
         foreach (GameObject go in getSwappableObjects(newPos, oldPos))
         {
             Vector2 swapPos = (Vector2)gameObject.transform.position - newPos + oldPos;
             go.transform.position = swapPos;
+            swappedSomething = true;
+        }
+        if (swappedSomething)
+        {
+            if (playerController.Range < playerController.baseRange)
+            {
+                playerController.Range = playerController.baseRange;
+            }
+            playerController.airPorts = 0;
         }
     }
 
