@@ -559,7 +559,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public static bool isInTeleportRange(GameObject other)
     {
-        float range = playerObject.GetComponent<PlayerController>().range;
+        float range = playerObject.GetComponent<PlayerController>().Range;
         return (other.transform.position - playerObject.transform.position).sqrMagnitude <= range * range;
     }
 

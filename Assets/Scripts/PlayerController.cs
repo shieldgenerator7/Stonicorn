@@ -4,7 +4,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Settings
-    public float range = 3;
+    [SerializeField] private float range = 3;
+    public float Range
+    {
+        get { return range; }
+        set { setRange(value); }
+    }
     public float baseRange = 3;
     public float exhaustRange = 1;
     public int maxAirPorts = 0;
@@ -48,6 +53,11 @@ public class PlayerController : MonoBehaviour
     public BoxCollider2D scoutCollider;//collider used to scout the level for teleportable spots
 
     private CameraController mainCamCtr;//the camera controller for the main camera
+    public CameraController Cam
+    {
+        get { return mainCamCtr; }
+        private set { mainCamCtr = value; }
+    }
     private GestureManager gm;
     private HardMaterial hm;
 
@@ -382,7 +392,7 @@ public class PlayerController : MonoBehaviour
     public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
     public OnPreTeleport onPreTeleport;
 
-    public void setRange(float newRange)
+    private void setRange(float newRange)
     {
         range = newRange;
         TeleportRangeIndicatorUpdater tri = GetComponentInChildren<TeleportRangeIndicatorUpdater>();
@@ -405,13 +415,19 @@ public class PlayerController : MonoBehaviour
         if (isGrounded())
         {
             airPorts = 0;
-            setRange(baseRange);
+            if (range < baseRange)
+            {
+                setRange(baseRange);
+            }
         }
         else
         {
             if (exhaust && airPorts >= maxAirPorts)
             {
-                setRange(exhaustRange);
+                if (range > exhaustRange)
+                {
+                    setRange(exhaustRange);
+                }
             }
         }
 

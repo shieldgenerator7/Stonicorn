@@ -12,7 +12,13 @@ public class CameraController : MonoBehaviour
     public Vector3 Offset
     {
         get { return offset; }
-        private set { offset = value; }
+        private set {
+            offset = value;
+            if (onOffsetChange != null)
+            {
+                onOffsetChange();
+            }
+        }
     }
     private Quaternion rotation;//the rotation the camera should be rotated towards
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
@@ -111,7 +117,7 @@ public class CameraController : MonoBehaviour
                 float deltaTime = 3 * Time.deltaTime;
                 float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
                 transform.rotation = Quaternion.Lerp(transform.rotation, rotation, deltaTime);
-                offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
+                Offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
             }
         }
     }
@@ -175,7 +181,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void pinPoint()
     {
-        offset = transform.position - player.transform.position;
+        Offset = transform.position - player.transform.position;
     }
 
     /// <summary>
@@ -183,7 +189,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void recenter()
     {
-        offset = new Vector3(0, 0, offset.z);
+        Offset = new Vector3(0, 0, offset.z);
     }
     /// <summary>
     /// Moves the camera directly to Merky's position + offset
@@ -192,6 +198,9 @@ public class CameraController : MonoBehaviour
     {
         transform.position = player.transform.position + offset;
     }
+
+    public delegate void OnOffsetChange();
+    public OnOffsetChange onOffsetChange;
 
     public void setRotation(Quaternion rotation)
     {
@@ -219,7 +228,7 @@ public class CameraController : MonoBehaviour
         if (curDistance > radius)
         {
             float prevZ = offset.z;
-            offset = new Vector2(offset.x, offset.y).normalized * radius;
+            Offset = new Vector2(offset.x, offset.y).normalized * radius;
             offset.z = prevZ;
             refocus();
         }

@@ -28,7 +28,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         if (playerController)
         {
             playerController.onPreTeleport += processTeleport;
-            playerTeleportRangeDiff = playerController.range - maxRange;
+            playerTeleportRangeDiff = playerController.Range - maxRange;
         }
         lastDisruptTime = Time.time;
     }
@@ -71,9 +71,9 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
         if (playerController)
         {
-            if (playerController.range < cEFController.range + playerTeleportRangeDiff && playerController.range < playerController.baseRange)
+            if (playerController.Range < cEFController.range + playerTeleportRangeDiff && playerController.Range < playerController.baseRange)
             {
-                playerController.setRange(cEFController.range + playerTeleportRangeDiff);
+                playerController.Range = cEFController.range + playerTeleportRangeDiff;
             }
         }
     }

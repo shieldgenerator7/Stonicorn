@@ -260,6 +260,7 @@ public class GestureManager : SavableMonoBehaviour
                     {
                         //Move the camera
                         cam.transform.position = newPos;
+                        cmaController.pinPoint();
                     }
                 }
                 else if (isHoldGesture)

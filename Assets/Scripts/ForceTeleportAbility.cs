@@ -218,7 +218,7 @@ public class ForceTeleportAbility : PlayerAbility
     private Vector2 findExplodePosition(Vector2 oldPos, Vector2 triedPos, bool explodeOnClosestWall = false)
     {
         //Keep the explosion within double the player's teleport range
-        float maxRangeFromPlayer = playerController.range * 2;
+        float maxRangeFromPlayer = playerController.Range * 2;
         if ((triedPos - oldPos).sqrMagnitude > maxRangeFromPlayer * maxRangeFromPlayer)
         {
             triedPos = oldPos + (triedPos - oldPos).normalized * maxRangeFromPlayer;
