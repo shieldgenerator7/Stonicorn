@@ -9,6 +9,7 @@ public class SceneLoader : MonoBehaviour
     public string sceneName;//the index of the scene to load
     public int lastOpenGameStateId = -1;//the gamestate id in which this scene was last open in. -1 means it is not open in any of them
     public int firstOpenGameStateId = int.MaxValue;//the gamestate in which this scene was first opened (for rewind purposes)
+    public GameObject fogObject;//the object that stores the fog
     private GameObject playerObj;
     private bool isLoaded = false;
     private Collider2D c2d;
@@ -43,6 +44,10 @@ public class SceneLoader : MonoBehaviour
             {
                 loadLevel();
             }
+            if (fogObject)
+            {
+                fogObject.SetActive(true);
+            }
         }
         if (!GameManager.isRewinding() || firstOpenGameStateId > GameManager.getCurrentStateId())
         {
@@ -51,6 +56,10 @@ public class SceneLoader : MonoBehaviour
                 isLoaded = false;
                 unloadLevel();
             }
+        }
+        if (isLoaded && fogObject && fogObject.activeSelf)
+        {
+            fogObject.SetActive(false);
         }
     }
     void loadLevel()

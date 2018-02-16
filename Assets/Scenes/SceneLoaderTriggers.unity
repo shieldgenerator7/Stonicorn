@@ -139,6 +139,7 @@ MonoBehaviour:
   sceneName: ShieldBubbleIntro
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  fogObject: {fileID: 0}
 --- !u!60 &133642599
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -221,6 +222,7 @@ MonoBehaviour:
   sceneName: TutScene01c
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  fogObject: {fileID: 0}
 --- !u!60 &397583610
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -297,6 +299,7 @@ MonoBehaviour:
   sceneName: MechFactory
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  fogObject: {fileID: 0}
 --- !u!60 &670661347
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -373,6 +376,7 @@ MonoBehaviour:
   sceneName: GravityZoneTest
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  fogObject: {fileID: 0}
 --- !u!4 &838574611
 Transform:
   m_ObjectHideFlags: 0
@@ -416,6 +420,68 @@ PolygonCollider2D:
       - {x: -40.90397, y: -71.89579}
       - {x: 72.48319, y: -70.784355}
       - {x: 69.95862, y: 68.65634}
+--- !u!1001 &1108964968
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2099265652}
+    m_Modifications:
+    - target: {fileID: 4117244904301102, guid: ec81d1c536e231643a7dd4f217e480c4, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -136.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117244904301102, guid: ec81d1c536e231643a7dd4f217e480c4, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 24.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117244904301102, guid: ec81d1c536e231643a7dd4f217e480c4, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117244904301102, guid: ec81d1c536e231643a7dd4f217e480c4, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117244904301102, guid: ec81d1c536e231643a7dd4f217e480c4, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117244904301102, guid: ec81d1c536e231643a7dd4f217e480c4, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0.3233114
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117244904301102, guid: ec81d1c536e231643a7dd4f217e480c4, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.9462927
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117244904301102, guid: ec81d1c536e231643a7dd4f217e480c4, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198047466120678590, guid: ec81d1c536e231643a7dd4f217e480c4,
+        type: 2}
+      propertyPath: randomSeed
+      value: -891072620
+      objectReference: {fileID: 0}
+    - target: {fileID: 198047466120678590, guid: ec81d1c536e231643a7dd4f217e480c4,
+        type: 2}
+      propertyPath: CustomDataModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: ec81d1c536e231643a7dd4f217e480c4, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &1634215785 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1180504919474316, guid: ec81d1c536e231643a7dd4f217e480c4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1108964968}
+--- !u!4 &1634215787 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4117244904301102, guid: ec81d1c536e231643a7dd4f217e480c4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1108964968}
 --- !u!1 &1644062408
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,6 +513,7 @@ MonoBehaviour:
   sceneName: Jungle
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  fogObject: {fileID: 0}
 --- !u!60 &1644062410
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -522,6 +589,7 @@ MonoBehaviour:
   sceneName: ForceChargeScene
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  fogObject: {fileID: 1634215785}
 --- !u!60 &2099265651
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -574,7 +642,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0.3233114, w: 0.9462927}
   m_LocalPosition: {x: 295.9, y: -31.7, z: 0}
   m_LocalScale: {x: 1.1663994, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1634215787}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -37.727}
