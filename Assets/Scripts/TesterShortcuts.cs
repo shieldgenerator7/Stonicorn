@@ -36,6 +36,18 @@ public class TesterShortcuts : MonoBehaviour
             {
                 enableAbility(3, shift);
             }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                enableAbility(4, shift);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                enableAbility(5, shift);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                enableAbility(6, shift);
+            }
         }
     }
     public static void activateAllCheckpoints()
@@ -69,6 +81,18 @@ public class TesterShortcuts : MonoBehaviour
                     ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
                     efa.enabled = !efa.enabled;
                 }
+                break;
+            case 4:
+                SwapAbility sa = playerObject.GetComponent<SwapAbility>();
+                sa.enabled = !sa.enabled;
+                break;
+            case 5:
+                AirSliceAbility asa = playerObject.GetComponent<AirSliceAbility>();
+                asa.enabled = !asa.enabled;
+                break;
+            case 6:
+                LongTeleportAbility lta = playerObject.GetComponent<LongTeleportAbility>();
+                lta.enabled = !lta.enabled;
                 break;
         }
     }
