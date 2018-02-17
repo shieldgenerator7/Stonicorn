@@ -6,21 +6,30 @@ public class WallClimbAbility : PlayerAbility
 
     public AudioClip wallClimbSound;
 
-    public new bool takesGesture()
+    private GravityAccepter gravity;
+
+    protected override void Start()
     {
-        return false;
+        base.Start();
+        gravity = GetComponent<GravityAccepter>();
+        playerController.isGroundedCheck += isGroundedWall;
+    }
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        playerController.isGroundedCheck -= isGroundedWall;
     }
 
-    public new bool takesHoldGesture()
+    bool isGroundedWall()
     {
-        return false;
+        bool isgrounded = false;
+        isgrounded = playerController.isGrounded(Utility.PerpendicularRight(-gravity.Gravity));//right side
+        if (!isgrounded)
+        {
+            isgrounded = playerController.isGrounded(Utility.PerpendicularLeft(-gravity.Gravity));//left side
+        }
+        return isgrounded;
     }
-
-    /// <summary>
-    /// Not used. See PlayerController.isGrounded()
-    /// </summary>
-    /// <returns></returns>
-    //public bool isGrounded(){}
 
     public void playWallClimbEffects(Vector2 pos)
     {

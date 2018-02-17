@@ -31,16 +31,16 @@ public class PlayerController : MonoBehaviour
 
     public int airPorts = 0;
     private bool grounded = true;//set in isGrounded()
-    private bool groundedWall = false;//true if grounded exclusively to a wall; set in isGrounded()
+    private bool groundedAbility = false;//true if grounded exclusively to a wall; set in isGrounded()
     public bool Grounded
     {
-        get { return grounded || groundedWall; }
+        get { return grounded || groundedAbility; }
     }
     private bool groundedPreTeleport = true;//true if Merky was grounded before teleporting
-    private bool groundedWallPreTeleport = false;//true if grounded exclusively to a wall; set in isGrounded()
+    private bool groundedAbilityPreTeleport = false;//true if grounded exclusively to a wall; set in isGrounded()
     public bool GroundedPreTeleport
     {
-        get { return groundedPreTeleport || groundedWallPreTeleport; }
+        get { return groundedPreTeleport || groundedAbilityPreTeleport; }
     }
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
     private Rigidbody2D rb2d;
@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour
         //Play Sound
         if (playSound)
         {
-            if (groundedWall && wca.enabled)
+            if (groundedAbility && wca.enabled)
             {
                 AudioSource.PlayClipAtPoint(wca.wallClimbSound, oldPos);
             }
@@ -382,7 +382,7 @@ public class PlayerController : MonoBehaviour
     {
         EffectManager.showTeleportStar(oldp);
         //Check for wall jump
-        if (wca.enabled && groundedWall)
+        if (wca.enabled && groundedAbility)
         {
             //Play jump effect in addition to teleport star
             wca.playWallClimbEffects(oldp);
@@ -441,7 +441,7 @@ public class PlayerController : MonoBehaviour
     bool isGrounded()
     {
         groundedPreTeleport = grounded;
-        groundedWallPreTeleport = groundedWall;
+        groundedAbilityPreTeleport = groundedAbility;
         if (inCheckPoint)
         {
             return true;
@@ -450,28 +450,27 @@ public class PlayerController : MonoBehaviour
         {
             return true;
         }
-        groundedWall = false;
+        groundedAbility = false;
         bool isgrounded = isGrounded(gravity.Gravity);
-        if (!isgrounded && wca.enabled)//if nothing found yet and wall jump is enabled
+        if (!isgrounded && isGroundedCheck != null)//if nothing found yet and there is an extra ground check to do
         {
-            isgrounded = isGrounded(Utility.PerpendicularRight(-gravity.Gravity));//right side
-            if (!isgrounded)
+            //Check each onPreTeleport delegate
+            foreach (IsGroundedCheck igc in isGroundedCheck.GetInvocationList())
             {
-                isgrounded = isGrounded(Utility.PerpendicularLeft(-gravity.Gravity));//left side
-            }
-            if (isgrounded)
-            {
-                groundedWall = true;//grounded exclusively to a wal
+                bool result = igc.Invoke();
+                //If at least 1 returns true, Merky is grounded
+                if (result == true)
+                {
+                    isgrounded = true;
+                    groundedAbility = true;
+                    break;
+                }
             }
         }
         grounded = isgrounded;
-        if (!grounded)
-        {
-            //Debug.Log("isGrounded: NOT grounded");
-        }
         return isgrounded;
     }
-    bool isGrounded(Vector3 direction)
+    public bool isGrounded(Vector3 direction)
     {
         float length = 0.25f;
         int count = pc2d.Cast(direction, rch2dsGrounded, length, true);
@@ -490,6 +489,9 @@ public class PlayerController : MonoBehaviour
         }
         return false;
     }
+
+    public delegate bool IsGroundedCheck();
+    public IsGroundedCheck isGroundedCheck;
 
     /// <summary>
     /// Determines whether the given position is occupied or not
