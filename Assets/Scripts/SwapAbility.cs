@@ -13,6 +13,12 @@ public class SwapAbility : PlayerAbility
         playerController.onTeleport += swapObjects;
         pc2d = GetComponent<PolygonCollider2D>();
     }
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        playerController.isOccupiedException -= isColliderSwappable;
+        playerController.onTeleport -= swapObjects;
+    }
 
     bool isColliderSwappable(Collider2D coll, Vector3 testPos)
     {

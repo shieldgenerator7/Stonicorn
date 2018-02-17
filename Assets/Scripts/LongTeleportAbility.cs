@@ -9,6 +9,11 @@ public class LongTeleportAbility : PlayerAbility {
         base.Start();
         playerController.Cam.onOffsetChange += adjustRange;
     }
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        playerController.Cam.onOffsetChange -= adjustRange;
+    }
 
     /// <summary>
     /// Adjusts (increases) Merky's range the further out the camera is dragged.

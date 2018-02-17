@@ -32,6 +32,14 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         }
         lastDisruptTime = Time.time;
     }
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        if (playerController)
+        {
+            playerController.onPreTeleport -= processTeleport;
+        }
+    }
 
     void Update()
     {

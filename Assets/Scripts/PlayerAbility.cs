@@ -24,6 +24,17 @@ public class PlayerAbility : MonoBehaviour {
             abilityIndicatorParticleEffects.GetComponent<ParticleSystemController>().activate(true);
         }
     }
+    public virtual void OnDisable()
+    {
+        if (abilityIndicatorParticleEffects != null)
+        {
+            abilityIndicatorParticleEffects.GetComponent<ParticleSystemController>().activate(false);
+        }
+    }
+    public void OnEnable()
+    {
+        Start();
+    }
 
     public bool effectsGroundCheck()
     {

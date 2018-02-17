@@ -13,8 +13,14 @@ public class AirSliceAbility : PlayerAbility {
         playerController.maxAirPorts++;
         playerController.onTeleport += sliceThings;
 	}
-	
-	void sliceThings(Vector2 oldPos, Vector2 newPos)
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        playerController.maxAirPorts--;
+        playerController.onTeleport -= sliceThings;
+    }
+
+    void sliceThings(Vector2 oldPos, Vector2 newPos)
     {
         if (!playerController.GroundedPreTeleport)
         {

@@ -35,6 +35,15 @@ public class ForceTeleportAbility : PlayerAbility
             rb2d = GetComponent<Rigidbody2D>();
         }
     }
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        if (playerController)
+        {
+            playerController.onPreTeleport -= charge;
+            playerController.onTeleport -= giveSpeedBoost;
+        }
+    }
 
     private void Update()
     {
