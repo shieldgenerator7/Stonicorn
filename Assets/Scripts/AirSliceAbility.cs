@@ -7,11 +7,14 @@ public class AirSliceAbility : PlayerAbility {
     public float sliceDamage = 100f;//how much force damage to do to objects that get cut
     public GameObject streak;
 
+    private SwapAbility swapAbility;
+
 	// Use this for initialization
 	protected override void Start () {
         base.Start();
         playerController.maxAirPorts++;
         playerController.onTeleport += sliceThings;
+        swapAbility = GetComponent<SwapAbility>();
 	}
     public override void OnDisable()
     {
@@ -28,7 +31,8 @@ public class AirSliceAbility : PlayerAbility {
             RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, (newPos - oldPos), Vector2.Distance(oldPos,newPos));
             foreach (RaycastHit2D rch2d in rch2ds)
             {
-                if (rch2d.collider.gameObject != gameObject)
+                if (rch2d.collider.gameObject != gameObject
+                    && !swapAbility.SwappableObjects.Contains(rch2d.collider.gameObject))
                 {
                     HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
                     if (hm)

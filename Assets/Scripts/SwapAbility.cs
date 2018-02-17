@@ -6,10 +6,17 @@ public class SwapAbility : PlayerAbility
 {
     private PolygonCollider2D pc2d;
 
+    private List<GameObject> swappableObjects = new List<GameObject>();
+    public List<GameObject> SwappableObjects
+    {
+        get { return swappableObjects; }
+    }
+
     protected override void Start()
     {
         base.Start();
         playerController.isOccupiedException += isColliderSwappable;
+        playerController.onPreTeleport += refreshSwappableObjectList;
         playerController.onTeleport += swapObjects;
         pc2d = GetComponent<PolygonCollider2D>();
     }
@@ -17,13 +24,13 @@ public class SwapAbility : PlayerAbility
     {
         base.OnDisable();
         playerController.isOccupiedException -= isColliderSwappable;
+        playerController.onPreTeleport -= refreshSwappableObjectList;
         playerController.onTeleport -= swapObjects;
     }
 
     bool isColliderSwappable(Collider2D coll, Vector3 testPos)
     {
         return isColliderSwappableImpl(coll, testPos, transform.position);
-
     }
 
     bool isColliderSwappableImpl(Collider2D coll, Vector3 testPos, Vector3 origPos)
@@ -78,7 +85,7 @@ public class SwapAbility : PlayerAbility
     void swapObjects(Vector2 oldPos, Vector2 newPos)
     {
         bool swappedSomething = false;
-        foreach (GameObject go in getSwappableObjects(newPos, oldPos))
+        foreach (GameObject go in swappableObjects)
         {
             Vector2 swapPos = (Vector2)gameObject.transform.position - newPos + oldPos;
             go.transform.position = swapPos;
@@ -92,6 +99,12 @@ public class SwapAbility : PlayerAbility
             }
             playerController.airPorts = 0;
         }
+    }
+
+    private bool refreshSwappableObjectList(Vector2 oldPos, Vector2 newPos, Vector2 triesPos)
+    {
+        swappableObjects = getSwappableObjects(newPos, oldPos);
+        return true;
     }
 
     List<GameObject> getSwappableObjects(Vector3 pos, Vector3 origPos)
