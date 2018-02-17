@@ -4,28 +4,38 @@ using UnityEngine;
 
 public class TesterShortcuts : MonoBehaviour
 {
+    public bool active = false;
+
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        //SHIFT+` to activate key shortcuts
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.BackQuote))
         {
-            GameManager.resetGame();
+            active = !active;
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (active)
         {
-            activateAllCheckpoints();
-        }
-        bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            enableAbility(1, shift);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            enableAbility(2, shift);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            enableAbility(3, shift);
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                GameManager.resetGame();
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                activateAllCheckpoints();
+            }
+            bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                enableAbility(1, shift);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                enableAbility(2, shift);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                enableAbility(3, shift);
+            }
         }
     }
     public static void activateAllCheckpoints()
