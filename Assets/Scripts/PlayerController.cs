@@ -286,6 +286,14 @@ public class PlayerController : MonoBehaviour
         {
             onTeleport(oldPos, newPos);
         }
+        //Disable sticky pads stuck to Merky
+        foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
+        {
+            if (fj2d.connectedBody == rb2d)
+            {
+                Destroy(fj2d);
+            }
+        }
     }
 
     /// <summary>
