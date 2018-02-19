@@ -4,6 +4,9 @@ using System.Collections;
 public class WallClimbAbility : PlayerAbility
 {//2017-03-17: copied from ForceTeleportAbility
 
+    [Header("Settings")]
+    public float wallDetectRange = 1.0f;//how far from the center of the old position it should look for a wall
+    [Header("Necessary Input")]
     public AudioClip wallClimbSound;
     public GameObject stickyPadPrefab;
 
@@ -49,9 +52,35 @@ public class WallClimbAbility : PlayerAbility
     {
         if (playerController.GroundedPreTeleportAbility)
         {
-            GameObject stickyPad = GameObject.Instantiate(stickyPadPrefab);
-            stickyPad.GetComponent<StickyPadChecker>().init(gravity.Gravity);
-            stickyPad.transform.position = oldPos;
+            //Look right
+            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, Utility.PerpendicularRight(-gravity.Gravity), wallDetectRange);
+            //Debug.DrawLine(oldPos, oldPos + (Vector2)Utility.PerpendicularRight(-gravity.Gravity).normalized * wallDetectRange, Color.magenta, 2);
+            foreach (RaycastHit2D rch2d in rch2ds)
+            {
+                if (!rch2d.collider.isTrigger && rch2d.collider.gameObject != gameObject)
+                {
+                    spawnSticky(rch2d.point);
+                    break;
+                }
+            }
+            //Look left
+            rch2ds = Physics2D.RaycastAll(oldPos, Utility.PerpendicularLeft(-gravity.Gravity), wallDetectRange);
+            //Debug.DrawLine(oldPos, oldPos + (Vector2)Utility.PerpendicularLeft(-gravity.Gravity).normalized * wallDetectRange, Color.yellow, 2);
+            foreach (RaycastHit2D rch2d in rch2ds)
+            {
+                if (!rch2d.collider.isTrigger && rch2d.collider.gameObject != gameObject)
+                {
+                    spawnSticky(rch2d.point);
+                    break;
+                }
+            }
+
         }
+    }
+    void spawnSticky(Vector2 stickyPos)
+    {
+        GameObject stickyPad = GameObject.Instantiate(stickyPadPrefab);
+        stickyPad.GetComponent<StickyPadChecker>().init(gravity.Gravity);
+        stickyPad.transform.position = stickyPos;
     }
 }
