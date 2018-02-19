@@ -42,6 +42,10 @@ public class PlayerController : MonoBehaviour
     {
         get { return groundedPreTeleport || groundedAbilityPreTeleport; }
     }
+    public bool GroundedPreTeleportAbility
+    {
+        get { return groundedAbilityPreTeleport; }
+    }
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
