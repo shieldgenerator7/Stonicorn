@@ -6,9 +6,12 @@ public class StickyPadChecker : MonoBehaviour
 {
     private HashSet<GameObject> connectedObjs = new HashSet<GameObject>();
 
+    private Rigidbody2D rb2d;
+
     // Use this for initialization
     void Start()
     {
+        rb2d = GetComponent<Rigidbody2D>();
     }
 
     public void init(Vector2 gravityDir)
@@ -31,6 +34,7 @@ public class StickyPadChecker : MonoBehaviour
             {
                 TargetJoint2D tj2d = gameObject.AddComponent<TargetJoint2D>();
                 tj2d.autoConfigureTarget = false;
+                rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
             }
             connectedObjs.Add(collision.gameObject);
         }
