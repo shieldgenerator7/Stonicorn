@@ -110,12 +110,26 @@ public static class Utility  {
     {
         int count = 0;
         Vector2 sum = Vector2.zero;
+        //Try only the non-trigger colliders first
         foreach (Collider2D c2d in obj.GetComponents<Collider2D>())
         {
             if (!c2d.isTrigger)
             {
                 sum += (Vector2)c2d.bounds.center;
                 count++;
+            }
+        }
+        //If that doesn't work,
+        if (count == 0)
+        {
+            //Try the trigger colliders
+            foreach (Collider2D c2d in obj.GetComponents<Collider2D>())
+            {
+                if (c2d.isTrigger)
+                {
+                    sum += (Vector2)c2d.bounds.center;
+                    count++;
+                }
             }
         }
         return sum / count;

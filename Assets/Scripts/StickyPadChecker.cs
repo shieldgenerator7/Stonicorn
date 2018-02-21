@@ -21,22 +21,42 @@ public class StickyPadChecker : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!connectedObjs.Contains(collision.gameObject))
+        stickToObject(collision.gameObject);
+    }
+    private void OnTriggerEnter2D(Collider2D coll)
+    {
+        stickToObject(coll.gameObject);
+    }
+    void stickToObject(GameObject go)
+    {
+        Rigidbody2D goRB2D = go.GetComponent<Rigidbody2D>();
+        if (goRB2D)
         {
-            Rigidbody2D rb2d = collision.gameObject.GetComponent<Rigidbody2D>();
-            if (rb2d)
+            bool foundObj = false;
+            foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
+            {
+                if (fj2d.connectedBody == goRB2D)
+                {
+                    foundObj = true;
+                    break;
+                }
+            }
+            if (!foundObj)
             {
                 FixedJoint2D fj2d = gameObject.AddComponent<FixedJoint2D>();
-                fj2d.connectedBody = rb2d;
+                fj2d.connectedBody = goRB2D;
                 fj2d.autoConfigureConnectedAnchor = false;
             }
-            else
+        }
+        else
+        {
+            if (!connectedObjs.Contains(go))
             {
                 TargetJoint2D tj2d = gameObject.AddComponent<TargetJoint2D>();
                 tj2d.autoConfigureTarget = false;
                 rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
+                connectedObjs.Add(go);
             }
-            connectedObjs.Add(collision.gameObject);
         }
     }
 }
