@@ -79,8 +79,20 @@ public class WallClimbAbility : PlayerAbility
     }
     void spawnSticky(Vector2 stickyPos)
     {
-        GameObject stickyPad = GameObject.Instantiate(stickyPadPrefab);
-        stickyPad.GetComponent<StickyPadChecker>().init(gravity.Gravity);
-        stickyPad.transform.position = stickyPos;
+        bool tooClose = false;
+        foreach(StickyPadChecker spc in GameObject.FindObjectsOfType<StickyPadChecker>()){
+            SpriteRenderer spcSR = spc.GetComponent<SpriteRenderer>();
+            float minDim = Mathf.Min(spcSR.size.x, spcSR.size.y)/2;
+            if (((Vector2)spc.transform.position - stickyPos).sqrMagnitude < minDim * minDim)
+            {
+                tooClose = true;
+                break;
+            }
+        }
+        if (!tooClose) {
+            GameObject stickyPad = GameObject.Instantiate(stickyPadPrefab);
+            stickyPad.GetComponent<StickyPadChecker>().init(gravity.Gravity);
+            stickyPad.transform.position = stickyPos;
+        }
     }
 }
