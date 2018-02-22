@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StickyPadChecker : MonoBehaviour
+public class StickyPadChecker : SavableMonoBehaviour
 {
     private HashSet<GameObject> connectedObjs = new HashSet<GameObject>();
 
@@ -17,6 +17,23 @@ public class StickyPadChecker : MonoBehaviour
     public void init(Vector2 gravityDir)
     {
         transform.up = -gravityDir;
+    }
+
+    public override SavableObject getSavableObject()
+    {//2018-02-21: copied from GameEventManager.getSavableObject()
+        SavableObject so = new SavableObject(this);
+        return so;
+    }
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+    }
+    public override bool isSpawnedObject()
+    {
+        return true;
+    }
+    public override string getPrefabName()
+    {
+        return "StickyPad";
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
