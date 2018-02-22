@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
         teleportRangeParticalController = teleportRangeParticalObject.GetComponent<ParticleSystemController>();
         teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
         onPreTeleport += canTeleport;
+        setRange(baseRange);
     }
 
     void FixedUpdate()
