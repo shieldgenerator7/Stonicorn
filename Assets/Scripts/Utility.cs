@@ -202,4 +202,33 @@ public static class Utility  {
         //Conversion
         return (((number - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow);
     }    
+
+    /// <summary>
+    /// Instantiates a GameObject so that it can be rewound.
+    /// Only works on game objects that are "registered" to be rewound
+    /// </summary>
+    /// <param name="prefab"></param>
+    /// <returns></returns>
+    public static GameObject Instantiate(GameObject prefab)
+    {
+        //Checks to make sure it's rewindable
+        bool foundValidSavable = false;
+        foreach(SavableMonoBehaviour smb in prefab.GetComponents<SavableMonoBehaviour>())
+        {
+            if (smb.isSpawnedObject())
+            {
+                foundValidSavable = true;
+                break;
+            }
+        }
+        if (!foundValidSavable)
+        {
+            throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have a SavableMonoBehaviour attached that is says it is a spawned object.");
+        }
+        GameObject newObj = GameObject.Instantiate(prefab);
+        newObj.name += System.DateTime.Now.Ticks;
+        SceneLoader.moveToCurrentScene(newObj);
+        GameManager.addObject(newObj);
+        return newObj;
+    }
 }

@@ -60,14 +60,11 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
     {
         if (currentElectricField == null)
         {
-            currentElectricField = Instantiate(electricFieldPrefab);
-            currentElectricField.name += System.DateTime.Now.Ticks;
-            SceneLoader.moveToCurrentScene(currentElectricField);
+            currentElectricField = Utility.Instantiate(electricFieldPrefab);
             cEFController = currentElectricField.GetComponent<ElectricFieldController>();
             cEFController.energyToRangeRatio = maxRange / maxEnergy;
             cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
             cEFController.maxForceResistance = maxForceResistance;
-            GameManager.addObject(currentElectricField);
         }
         currentElectricField.transform.position = transform.position;
         float energyToAdd = Time.deltaTime * maxEnergy / maxHoldTime;

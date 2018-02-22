@@ -90,12 +90,9 @@ public class WallClimbAbility : PlayerAbility
             }
         }
         if (!tooClose) {
-            GameObject stickyPad = GameObject.Instantiate(stickyPadPrefab);
-            stickyPad.name += System.DateTime.Now.Ticks;
+            GameObject stickyPad = Utility.Instantiate(stickyPadPrefab);
             stickyPad.GetComponent<StickyPadChecker>().init(gravity.Gravity);
             stickyPad.transform.position = stickyPos;
-            SceneLoader.moveToCurrentScene(stickyPad);
-            GameManager.addObject(stickyPad);
         }
     }
 }

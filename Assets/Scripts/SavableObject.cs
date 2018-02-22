@@ -84,8 +84,6 @@ public class SavableObject
     {
         switch (typeName)
         {
-            case "CrackedGroundChecker":
-                return typeof(CrackedGroundChecker);
             case "GestureManager":
                 return typeof(GestureManager);
             case "Rigidbody2DLock":
