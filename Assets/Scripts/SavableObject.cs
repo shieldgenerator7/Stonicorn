@@ -88,6 +88,8 @@ public class SavableObject
                 return typeof(GestureManager);
             case "Rigidbody2DLock":
                 return typeof(Rigidbody2DLock);
+            case "AfterWind":
+                return typeof(AfterWind);
             case "StickyPadChecker":
                 return typeof(StickyPadChecker);
             case "ShieldBubbleController":

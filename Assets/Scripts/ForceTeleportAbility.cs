@@ -69,8 +69,7 @@ public class ForceTeleportAbility : PlayerAbility
         {
             float magnitude = (newPos - oldPos).magnitude;
             Vector2 force = (newPos - oldPos) * maxSpeedBoost * (currentCharge - chargeIncrement) * magnitude / playerController.baseRange;
-            GameObject afterWind = GameObject.Instantiate(afterWindPrefab);
-            SceneLoader.moveToCurrentScene(afterWind);
+            GameObject afterWind = Utility.Instantiate(afterWindPrefab);
             afterWind.transform.up = force.normalized;
             afterWind.transform.position = oldPos;
             afterWind.transform.localScale = new Vector3(1, magnitude, 1);

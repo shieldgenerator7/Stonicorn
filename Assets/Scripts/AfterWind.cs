@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AfterWind : MonoBehaviour
+public class AfterWind : SavableMonoBehaviour
 {//2018-01-25: copied from GravityZone
 
     public Vector2 windVector;//direction and magnitude
@@ -19,8 +19,38 @@ public class AfterWind : MonoBehaviour
     {
         coll = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
-        fadeStartTime = Time.time;
+        init();
+    }
+    private void init()
+    {
+        if (Mathf.Approximately(fadeStartTime, 0))
+        {
+            fadeStartTime = Time.time;
+        }
         fadeEndTime = fadeStartTime + fadeOutDuration;
+    }
+    public override SavableObject getSavableObject()
+    {//2018-02-22: copied from ElectricFieldController.getSavableObject()
+        return new SavableObject(this,
+            "windVector", windVector,
+            "fadeOutDuration", fadeOutDuration,
+            "fadeTime", (Time.time - fadeStartTime)
+            );
+    }
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        windVector = (Vector2)savObj.data["windVector"];
+        fadeOutDuration = (float)savObj.data["fadeOutDuration"];
+        fadeStartTime = Time.time - (float)savObj.data["fadeTime"];
+        init();
+    }
+    public override bool isSpawnedObject()
+    {
+        return true;
+    }
+    public override string getPrefabName()
+    {
+        return "ForceChargeAfterWind";
     }
 
     void FixedUpdate()
