@@ -7,11 +7,14 @@ public class StickyPadChecker : SavableMonoBehaviour
     private HashSet<string> connectedObjs = new HashSet<string>();
 
     private Rigidbody2D rb2d;
+    private Collider2D coll2d;
+    private static RaycastHit2D[] rch2ds = new RaycastHit2D[100];
 
     // Use this for initialization
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        coll2d = GetComponent<Collider2D>();
     }
 
     public void init(Vector2 gravityDir)
@@ -38,11 +41,50 @@ public class StickyPadChecker : SavableMonoBehaviour
         {
             connectedObjs.Add((string)savObj.data["conObj" + i]);
         }
-        foreach(FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
+        foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
         {
             if (!connectedObjs.Contains(fj2d.connectedBody.gameObject.name))
             {
                 Destroy(fj2d);
+            }
+        }
+        //Get list of objects in area
+        int colliderCount = coll2d.Cast(Vector2.zero, rch2ds, 0);
+        //Find names that don't have a FixedJoint2D
+        foreach (string objname in connectedObjs)
+        {
+            bool foundone = false;
+            foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
+            {
+                if (fj2d.connectedBody.gameObject.name == objname)
+                {
+                    //found one, break the inner loop
+                    foundone = true;
+                    break;
+                }
+            }
+            if (!foundone)
+            {
+                //Find the name's object
+                GameObject conObj = null;
+                for (int i = 0; i < colliderCount; i++)
+                {
+                    RaycastHit2D rch2d = rch2ds[i];
+                    if (rch2d.collider.gameObject.name == objname)
+                    {
+                        conObj = rch2d.collider.gameObject;
+                        break;
+                    }
+                }
+                //create new FixedJoint2D
+                if (conObj != null)
+                {
+                    stickToObject(conObj);
+                }
+                else
+                {
+                    throw new UnityException("Connected object \"" + objname + "\" not found! StickyPadChecker: " + gameObject.name);
+                }
             }
         }
     }
@@ -57,11 +99,17 @@ public class StickyPadChecker : SavableMonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        stickToObject(collision.gameObject);
+        if (!collision.collider.isTrigger)
+        {
+            stickToObject(collision.gameObject);
+        }
     }
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        stickToObject(coll.gameObject);
+        if (!coll.isTrigger)
+        {
+            stickToObject(coll.gameObject);
+        }
     }
     void stickToObject(GameObject go)
     {
