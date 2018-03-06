@@ -87,6 +87,19 @@ public class SwapAbility : PlayerAbility
         bool swappedSomething = false;
         foreach (GameObject go in swappableObjects)
         {
+            //Clear connections
+            Rigidbody2D goRB2D = go.GetComponent<Rigidbody2D>();
+            if (goRB2D)
+            {
+                foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
+                {
+                    if (fj2d.connectedBody == goRB2D)
+                    {
+                        Destroy(fj2d);
+                    }
+                }
+            }
+            //Swap object
             Vector2 swapPos = (Vector2)gameObject.transform.position - newPos + oldPos;
             go.transform.position = swapPos;
             swappedSomething = true;
