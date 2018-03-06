@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StickyPadChecker : SavableMonoBehaviour
 {
-    private HashSet<GameObject> connectedObjs = new HashSet<GameObject>();
+    private HashSet<string> connectedObjs = new HashSet<string>();
 
     private Rigidbody2D rb2d;
 
@@ -22,10 +22,29 @@ public class StickyPadChecker : SavableMonoBehaviour
     public override SavableObject getSavableObject()
     {//2018-02-21: copied from GameEventManager.getSavableObject()
         SavableObject so = new SavableObject(this);
+        int counter = 0;
+        foreach (string str in connectedObjs)
+        {
+            so.data.Add("conObj" + counter, str);
+            counter++;
+        }
+        so.data.Add("conObjCount", counter);
         return so;
     }
     public override void acceptSavableObject(SavableObject savObj)
     {
+        connectedObjs = new HashSet<string>();
+        for (int i = 0; i < (int)savObj.data["conObjCount"]; i++)
+        {
+            connectedObjs.Add((string)savObj.data["conObj" + i]);
+        }
+        foreach(FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
+        {
+            if (!connectedObjs.Contains(fj2d.connectedBody.gameObject.name))
+            {
+                Destroy(fj2d);
+            }
+        }
     }
     public override bool isSpawnedObject()
     {
@@ -67,12 +86,12 @@ public class StickyPadChecker : SavableMonoBehaviour
         }
         else
         {
-            if (!connectedObjs.Contains(go))
+            if (!connectedObjs.Contains(go.name))
             {
                 TargetJoint2D tj2d = gameObject.AddComponent<TargetJoint2D>();
                 tj2d.autoConfigureTarget = false;
                 rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
-                connectedObjs.Add(go);
+                connectedObjs.Add(go.name);
             }
         }
     }
