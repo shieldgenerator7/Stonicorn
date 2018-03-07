@@ -20,6 +20,8 @@ public class ForceTeleportAbility : PlayerAbility
     public float minChargeDecayDelay = 0.25f;//how much time (sec) of idleness before the charge starts decreasing
     public float maxChargeDecayDelay = 2.0f;
     public float chargeDecayRate = 0.4f;//how much charge decays per sec of idleness (after chargeDecayDelay)
+    public float minWindDuration = 0.3f;
+    public float maxWindDuration = 0.5f;
 
     private float lastTeleportTime;
     public AudioClip forceTeleportSound;
@@ -75,7 +77,7 @@ public class ForceTeleportAbility : PlayerAbility
             afterWind.transform.localScale = new Vector3(1, magnitude, 1);
             AfterWind aw = afterWind.GetComponent<AfterWind>();
             aw.windVector = force;
-            aw.fadeOutDuration = minChargeDecayDelay + ((maxChargeDecayDelay - minChargeDecayDelay) * currentCharge / maxCharge);
+            aw.fadeOutDuration = minWindDuration + ((maxWindDuration - minWindDuration) * currentCharge / maxCharge);
         }
     }
 
