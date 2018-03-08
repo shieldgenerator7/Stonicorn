@@ -32,9 +32,13 @@ public class ForceTeleportAbility : PlayerAbility
         base.Start();
         if (playerController)
         {
-            playerController.onPreTeleport += charge;
-            playerController.onTeleport += giveSpeedBoost;
-            rb2d = GetComponent<Rigidbody2D>();
+            //if (r2bd == null) is a workaround for a bug that calls the Start() method twice
+            if (rb2d == null)
+            {
+                playerController.onPreTeleport += charge;
+                playerController.onTeleport += giveSpeedBoost;
+                rb2d = GetComponent<Rigidbody2D>();
+            }
         }
     }
     public override void OnDisable()
@@ -67,7 +71,7 @@ public class ForceTeleportAbility : PlayerAbility
 
     public void giveSpeedBoost(Vector2 oldPos, Vector2 newPos)
     {
-        if (currentCharge > 0)
+        if (currentCharge > chargeIncrement)
         {
             float magnitude = (newPos - oldPos).magnitude;
             Vector2 force = (newPos - oldPos) * maxSpeedBoost * (currentCharge - chargeIncrement) * magnitude / playerController.baseRange;
@@ -90,7 +94,15 @@ public class ForceTeleportAbility : PlayerAbility
             //If the tap is on a wall, explode
             || !isTapOnWall(triedPos))
         {
-            currentCharge += chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange;
+            if (Mathf.Approximately(currentCharge, 0))
+            {
+                //The first teleport will only make the charge increase a small amount, no matter how far it was
+                currentCharge += chargeIncrement;
+            }
+            else
+            {
+                currentCharge += chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange;
+            }
             if (currentCharge > maxCharge)
             {
                 currentCharge = maxCharge;
