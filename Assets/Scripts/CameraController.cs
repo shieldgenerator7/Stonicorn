@@ -109,7 +109,7 @@ public class CameraController : MonoBehaviour
                 transform.position,
                 player.transform.position + offset,
                 (Vector3.Distance(
-                    transform.position,
+                    transform.position + offset,
                     player.transform.position) * 1.5f + playerRB2D.velocity.magnitude)
                     * Time.deltaTime);
             if (transform.rotation != rotation)
