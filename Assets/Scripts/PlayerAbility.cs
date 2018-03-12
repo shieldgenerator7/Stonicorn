@@ -14,7 +14,7 @@ public class PlayerAbility : MonoBehaviour {
     public ProgressBarCircular circularProgressBar;
 
     // Use this for initialization
-    protected virtual void Start () {
+    protected virtual void init () {
         player = gameObject;
         playerController = player.GetComponent<PlayerController>();
         particleController = teleportParticleEffects.GetComponent<ParticleSystemController>();
@@ -33,7 +33,7 @@ public class PlayerAbility : MonoBehaviour {
     }
     public void OnEnable()
     {
-        Start();
+        init();
     }
 
     public bool effectsGroundCheck()

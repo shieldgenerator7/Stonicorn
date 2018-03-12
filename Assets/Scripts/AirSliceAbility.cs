@@ -10,8 +10,8 @@ public class AirSliceAbility : PlayerAbility {
     private SwapAbility swapAbility;
 
 	// Use this for initialization
-	protected override void Start () {
-        base.Start();
+	protected override void init () {
+        base.init();
         playerController.maxAirPorts++;
         playerController.onTeleport += sliceThings;
         swapAbility = GetComponent<SwapAbility>();

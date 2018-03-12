@@ -12,9 +12,9 @@ public class SwapAbility : PlayerAbility
         get { return swappableObjects; }
     }
 
-    protected override void Start()
+    protected override void init()
     {
-        base.Start();
+        base.init();
         playerController.isOccupiedException += isColliderSwappable;
         playerController.onPreTeleport += refreshSwappableObjectList;
         playerController.onTeleport += swapObjects;

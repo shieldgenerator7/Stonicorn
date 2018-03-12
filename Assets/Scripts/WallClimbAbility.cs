@@ -12,9 +12,9 @@ public class WallClimbAbility : PlayerAbility
 
     private GravityAccepter gravity;
 
-    protected override void Start()
+    protected override void init()
     {
-        base.Start();
+        base.init();
         gravity = GetComponent<GravityAccepter>();
         playerController.isGroundedCheck += isGroundedWall;
         playerController.onTeleport += plantSticky;

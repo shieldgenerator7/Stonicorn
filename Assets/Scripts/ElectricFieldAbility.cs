@@ -22,9 +22,9 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
     public AudioClip shieldBubbleSound;
     
-    protected override void Start()
+    protected override void init()
     {
-        base.Start();
+        base.init();
         if (playerController)
         {
             playerController.onPreTeleport += processTeleport;

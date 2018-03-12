@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class LongTeleportAbility : PlayerAbility {
 
-    protected override void Start()
+    protected override void init()
     {
-        base.Start();
+        base.init();
         playerController.Cam.onOffsetChange += adjustRange;
     }
     public override void OnDisable()

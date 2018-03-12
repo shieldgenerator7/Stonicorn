@@ -17,9 +17,9 @@ public class TeleportAbility : PlayerAbility
 
     private PlayerController pc;//reference to the player controller for teleport stuff
 
-    protected override void Start()
+    protected override void init()
     {
-        base.Start();
+        base.init();
         pc = GetComponent<PlayerController>();
     }
 

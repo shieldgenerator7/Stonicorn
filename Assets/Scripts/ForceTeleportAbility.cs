@@ -27,9 +27,9 @@ public class ForceTeleportAbility : PlayerAbility
     public AudioClip forceTeleportSound;
     private Rigidbody2D rb2d;
 
-    protected override void Start()
+    protected override void init()
     {
-        base.Start();
+        base.init();
         if (playerController)
         {
             //if (r2bd == null) is a workaround for a bug that calls the Start() method twice
