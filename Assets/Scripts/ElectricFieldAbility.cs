@@ -7,7 +7,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
     public GameObject electricFieldPrefab;//prefab
     public float maxRange = 2.5f;
-    public float maxEnergy = 100;
+    public float maxEnergy = 100;//not the maximum for the player's electric fields
     public float maxHoldTime = 1;//how long until the max range is reached after it begins charging
     public float maxSlowPercent = 0.10f;//the max percent of slowness applied to objects near the center of the field when the field has maxRange
     public float lastDisruptTime = 0;//the last time that something happened that disrupted the shield
@@ -16,12 +16,12 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
     private GameObject currentElectricField;
     private ElectricFieldController cEFController;//"current Electric Field Controller"
-    
+
     private float activationDelay = 2.0f;//how long it will wait, usually set to the base delay
     private float playerTeleportRangeDiff;//the difference between the player's max teleport range and this EFA's max field range (if on the player)
 
     public AudioClip shieldBubbleSound;
-    
+
     protected override void init()
     {
         base.init();
@@ -54,32 +54,61 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         {
             dropWaitGesture();
         }
-    }    
+    }
 
     public void processWaitGesture(float waitTime)
     {
         if (currentElectricField == null)
         {
-            currentElectricField = Utility.Instantiate(electricFieldPrefab);
-            cEFController = currentElectricField.GetComponent<ElectricFieldController>();
-            cEFController.energyToRangeRatio = maxRange / maxEnergy;
-            cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
-            cEFController.maxForceResistance = maxForceResistance;
+            //Find one that he's currently in
+            Collider2D coll2d = GetComponent<Collider2D>();
+            RaycastHit2D[] rch2ds = new RaycastHit2D[100];
+            int collCount = coll2d.Cast(Vector2.zero, rch2ds);
+            for (int i = 0; i < collCount; i++)
+            {
+                ElectricFieldController efc = rch2ds[i].collider.gameObject.GetComponent<ElectricFieldController>();
+                if (efc)
+                {
+                    currentElectricField = efc.gameObject;
+                    cEFController = efc;
+                    break;
+                }
+            }
+            if (currentElectricField == null)
+            {
+                //Create a new one
+                currentElectricField = Utility.Instantiate(electricFieldPrefab);
+                currentElectricField.transform.position = transform.position;
+                cEFController = currentElectricField.GetComponent<ElectricFieldController>();
+                cEFController.energyToRangeRatio = maxRange / maxEnergy;
+                cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
+                cEFController.maxForceResistance = maxForceResistance;
+            }
         }
-        currentElectricField.transform.position = transform.position;
         float energyToAdd = Time.deltaTime * maxEnergy / maxHoldTime;
         cEFController.addEnergy(energyToAdd);
-        if (cEFController.energy > maxEnergy)
-        {
-            cEFController.energy = maxEnergy;
-        }
-
         if (playerController)
         {
-            if (playerController.Range < cEFController.range + playerTeleportRangeDiff && playerController.Range < playerController.baseRange)
+            float distance = Vector2.Distance(
+                currentElectricField.transform.position,
+                transform.position
+                );
+            float maxAllowedRange = distance
+                + Mathf.Max(playerController.Range, playerController.baseRange)
+                - playerTeleportRangeDiff;
+            if (cEFController.range > maxAllowedRange)
             {
-                playerController.Range = cEFController.range + playerTeleportRangeDiff;
+                cEFController.addEnergy(-energyToAdd);
             }
+            float minAllowedTeleportRange = cEFController.range + playerTeleportRangeDiff - distance;
+            if (playerController.Range < minAllowedTeleportRange)
+            {
+                playerController.Range = minAllowedTeleportRange;
+            }
+        }
+        else if (cEFController.energy > maxEnergy)
+        {
+            cEFController.energy = maxEnergy;
         }
     }
 
