@@ -19,6 +19,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
     private float activationDelay = 2.0f;//how long it will wait, usually set to the base delay
     private float playerTeleportRangeDiff;//the difference between the player's max teleport range and this EFA's max field range (if on the player)
+    private bool newlyCreatedEF = false;//true if the current electric field is one that was just created by Merky
 
     public AudioClip shieldBubbleSound;
 
@@ -78,12 +79,16 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
             {
                 //Create a new one
                 currentElectricField = Utility.Instantiate(electricFieldPrefab);
-                currentElectricField.transform.position = transform.position;
                 cEFController = currentElectricField.GetComponent<ElectricFieldController>();
                 cEFController.energyToRangeRatio = maxRange / maxEnergy;
                 cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
                 cEFController.maxForceResistance = maxForceResistance;
+                newlyCreatedEF = true;
             }
+        }
+        if (newlyCreatedEF)
+        {
+            currentElectricField.transform.position = transform.position;
         }
         float energyToAdd = Time.deltaTime * maxEnergy / maxHoldTime;
         cEFController.addEnergy(energyToAdd);
@@ -118,6 +123,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
         currentElectricField = null;
         cEFController = null;
+        newlyCreatedEF = false;
     }
 
     public bool processTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
