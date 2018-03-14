@@ -99,6 +99,8 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
                 }
             }
         }
+        //Auto-drain energy
+        addEnergy(-Mathf.Max(1, range) * Time.fixedDeltaTime);
     }
 
     public float checkForce(float force)
