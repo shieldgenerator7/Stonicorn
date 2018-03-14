@@ -29,7 +29,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         if (playerController)
         {
             playerController.onPreTeleport += processTeleport;
-            playerTeleportRangeDiff = playerController.Range - maxRange;
+            playerTeleportRangeDiff = playerController.baseRange - maxRange;
         }
         lastDisruptTime = Time.time;
     }
