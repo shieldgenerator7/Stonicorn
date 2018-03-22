@@ -13,6 +13,7 @@ public class ForceTeleportAbility : PlayerAbility
     public float maxForce = 1000;//the maximum amount of force applied to one object
     public float maxRange = 3;
     public float maxSpeedBoost = 2;//how much force to give Merky when teleporting in a direction
+    public float wakelessSpeedBoostMultiplier = 3;//how much to multiply the speed boost by when there's no wake
 
     public float currentCharge = 0;//how much charge it has
     public float chargeIncrement = 0.1f;//how much to increment the charge by each teleport
@@ -75,13 +76,30 @@ public class ForceTeleportAbility : PlayerAbility
         {
             float magnitude = (newPos - oldPos).magnitude;
             Vector2 force = (newPos - oldPos) * maxSpeedBoost * (currentCharge - chargeIncrement) * magnitude / playerController.baseRange;
-            GameObject afterWind = Utility.Instantiate(afterWindPrefab);
-            afterWind.transform.up = force.normalized;
-            afterWind.transform.position = oldPos;
-            afterWind.transform.localScale = new Vector3(1, magnitude, 1);
-            AfterWind aw = afterWind.GetComponent<AfterWind>();
-            aw.windVector = force;
-            aw.fadeOutDuration = minWindDuration + ((maxWindDuration - minWindDuration) * currentCharge / maxCharge);
+            //If the player uses Long Teleport, make a wake
+            if (magnitude > playerController.baseRange + 0.5f)
+            {
+                GameObject afterWind = Utility.Instantiate(afterWindPrefab);
+                afterWind.transform.up = force.normalized;
+                afterWind.transform.position = oldPos;
+                afterWind.transform.localScale = new Vector3(1, magnitude, 1);
+                AfterWind aw = afterWind.GetComponent<AfterWind>();
+                aw.windVector = force;
+                aw.fadeOutDuration = minWindDuration + ((maxWindDuration - minWindDuration) * currentCharge / maxCharge);
+            }
+            else
+            {
+                //Push the player and all objects in the teleport path
+                RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, newPos - oldPos, Vector2.Distance(oldPos, newPos));
+                foreach (RaycastHit2D rch2d in rch2ds)
+                {
+                    Rigidbody2D orb2d = rch2d.collider.gameObject.GetComponent<Rigidbody2D>();
+                    if (orb2d)
+                    {
+                        orb2d.AddForce(force * wakelessSpeedBoostMultiplier);
+                    }
+                }
+            }
         }
     }
 
