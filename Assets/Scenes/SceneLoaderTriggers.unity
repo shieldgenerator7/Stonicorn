@@ -77,15 +77,18 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
-    m_PVRFiltering: 0
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
     m_PVRFilteringMode: 1
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
     m_PVRFilteringGaussRadiusAO: 2
-    m_PVRFilteringAtrousColorSigma: 1
-    m_PVRFilteringAtrousNormalSigma: 1
-    m_PVRFilteringAtrousPositionSigma: 1
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -107,6 +110,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &133642597
 GameObject:
@@ -163,20 +168,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -54.37784, y: 31.041466}
-      - {x: -74.54779, y: -21.218964}
-      - {x: -74.3105, y: -26.393808}
-      - {x: -65.009415, y: -55.876293}
-      - {x: -36.197247, y: -55.615143}
-      - {x: -32.550137, y: -65.72602}
-      - {x: -7.887327, y: -64.84489}
-      - {x: -7.3297195, y: -75.39565}
-      - {x: -0.17721558, y: -74.92925}
-      - {x: 0.6099701, y: -64.369354}
-      - {x: 30.225279, y: -62.16842}
-      - {x: 28.321283, y: -21.148514}
+    - - {x: 0.77667236, y: 58.50158}
+      - {x: 4.6652164, y: -40.37473}
+      - {x: 23.321785, y: -40.10727}
+      - {x: 29.289831, y: -48.501793}
+      - {x: 38.055702, y: -45.083977}
       - {x: 112.39488, y: -16.230507}
-      - {x: 114.19922, y: 35.56883}
+      - {x: 138.1277, y: 51.045967}
 --- !u!4 &133642600
 Transform:
   m_ObjectHideFlags: 0
@@ -413,8 +411,9 @@ PolygonCollider2D:
     - - {x: -56.507576, y: 66.94}
       - {x: -96.69808, y: -67.23671}
       - {x: -40.840706, y: -66.351395}
-      - {x: -40.90397, y: -71.89579}
-      - {x: 72.48319, y: -70.784355}
+      - {x: -18.340261, y: -67.503845}
+      - {x: -7.9380646, y: -79.05687}
+      - {x: 66.29541, y: -82.621994}
       - {x: 69.95862, y: 68.65634}
 --- !u!1 &1644062408
 GameObject:
