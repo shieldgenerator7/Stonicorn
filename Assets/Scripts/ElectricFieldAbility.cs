@@ -99,16 +99,11 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
                 transform.position
                 );
             float maxAllowedRange = distance
-                + Mathf.Max(playerController.Range, playerController.baseRange)
+                + playerController.Range
                 - playerTeleportRangeDiff;
             if (cEFController.range > maxAllowedRange)
             {
                 cEFController.addEnergy(-energyToAdd);
-            }
-            float minAllowedTeleportRange = cEFController.range + playerTeleportRangeDiff - distance;
-            if (playerController.Range < minAllowedTeleportRange)
-            {
-                playerController.Range = minAllowedTeleportRange;
             }
         }
         else if (cEFController.energy > maxEnergy)
