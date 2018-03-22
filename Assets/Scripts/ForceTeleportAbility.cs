@@ -105,12 +105,10 @@ public class ForceTeleportAbility : PlayerAbility
 
     public bool charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
-        Vector2 explodePos = findExplodePosition(oldPos, triedPos);
-        if ((newPos - triedPos).sqrMagnitude < 0.25f //0.5f * 0.5f
-                                                     //If there's a blastable in range, explode instead of charge
-            || !isBlastableInArea(explodePos, getRangeFromCharge(currentCharge) / 2)
-            //If the tap is on a wall, explode
-            || !isTapOnWall(triedPos))
+        Vector2 explodePos = triedPos;
+        float range = getRangeFromCharge(currentCharge);
+        //If touch position is outside visible blast range, charge;
+        if ((triedPos - oldPos).sqrMagnitude > range * range)
         {
             if (Mathf.Approximately(currentCharge, 0))
             {
@@ -128,6 +126,7 @@ public class ForceTeleportAbility : PlayerAbility
             lastTeleportTime = Time.time;
             return true;
         }
+        //...else blast
         else
         {
             processHoldGesture(explodePos, Mathf.Max(currentCharge, chargeIncrement), true);
