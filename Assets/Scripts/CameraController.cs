@@ -20,6 +20,14 @@ public class CameraController : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// How far away the camera is from where it wants to be
+    /// </summary>
+    public Vector2 Displacement
+    {
+        get { return transform.position - player.transform.position + offset; }
+        private set { }
+    }
     private Quaternion rotation;//the rotation the camera should be rotated towards
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
     private Camera cam;
