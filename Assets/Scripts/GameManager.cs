@@ -403,7 +403,7 @@ public class GameManager : MonoBehaviour
         }
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
         {
-            Destroy(gameStates[i].representation);
+            Destroy(gameStates[i].Representation);
             gameStates.RemoveAt(i);
         }
         GameState.nextid = gamestateId + 1;
@@ -577,7 +577,7 @@ public class GameManager : MonoBehaviour
         {
             if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
             {//don't include last game state if merky is shattered
-                gs.showRepresentation(instance.playerGhost, instance.chosenId);
+                gs.showRepresentation(instance.chosenId);
             }
         }
     }
@@ -602,15 +602,19 @@ public class GameManager : MonoBehaviour
         GameObject closestObject = null;
         foreach (GameState gs in instance.gameStates)
         {
-            Vector2 gsPos = gs.representation.transform.position;
+            Vector2 gsPos = gs.Representation.transform.position;
             float gsDistance = Vector2.Distance(gsPos, pos);
             if (gsDistance < closestDistance)
             {
                 closestDistance = gsDistance;
-                closestObject = gs.representation;
+                closestObject = gs.Representation;
             }
         }
         return closestObject;
+    }
+    public static GameObject getPlayerGhostPrefab()
+    {
+        return instance.playerGhost;
     }
 
     public void processTapGesture(Vector3 curMPWorld)
