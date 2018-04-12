@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class ActivationTrigger : MonoBehaviour
 {
     public enum ActivationOptions
@@ -26,27 +27,65 @@ public class ActivationTrigger : MonoBehaviour
     /// </summary>
     public bool forPlayerOnly = true;
     [Header("Camera Zoom Activation Settings")]
-    public ActivationOptions cameraZoomInAction = ActivationOptions.DO_NOTHING;
-    public ActivationOptions cameraZoomOutAction = ActivationOptions.DO_NOTHING;
+    public ActivationOptions zoomLevelEnterAction = ActivationOptions.DO_NOTHING;
+    public ActivationOptions zoomLevelExitAction = ActivationOptions.DO_NOTHING;
+    public ActivationOptions zoomLevelEnterStayAction = ActivationOptions.DO_NOTHING;
+    public ActivationOptions zoomLevelExitStayAction = ActivationOptions.DO_NOTHING;
     /// <summary>
     /// Camera actions only active while something is in the trigger area
     /// </summary>
-    public bool cameraActionsRequireTrigger = true;
+    public bool zoomRequireTrigger = true;
+    /// <summary>
+    /// Trigger actions only active while the camera is at the right zoom level
+    /// </summary>
+    public bool triggerRequireZoom = false;
+    /// <summary>
+    /// The minimum zoom scale point that defines the zoom level activation trigger
+    /// Set it negative to have no maximum
+    /// </summary>
+    public int minZoomScalePoint = 0;
+    /// <summary>
+    /// The maximum zoom scale point that defines the zoom level activation trigger
+    /// Set it negative to have no maximum
+    /// </summary>
+    public int maxZoomScalePoint = 3;
 
     //
     // Runtime Vars
     //
     private bool triggerActive = false;
+    private bool zoomLevelActive = false;
 
     private void Start()
     {
-        CameraController cc = FindObjectOfType<CameraController>();
-        cc.onZoomLevelChanged += OnCameraZoomLevelChanged;
+        //Camera zoom trigger set up
+        if (zoomLevelEnterAction != ActivationOptions.DO_NOTHING
+            || zoomLevelExitAction != ActivationOptions.DO_NOTHING
+            || triggerRequireZoom)
+        {
+            CameraController cc = FindObjectOfType<CameraController>();
+            cc.onZoomLevelChanged += OnCameraZoomLevelChanged;
+            zoomLevelActive = scalePointInRange(cc.getScalePointIndex());
+        }
+        //Error checking
+        if (Application.isEditor)
+        {
+            if (objectsToActivate == null || objectsToActivate.Count <= 0)
+            {
+                throw new UnityException("Activation Trigger (" + gameObject.name + ") does not have any objects to activate.");
+            }
+            Collider2D coll2d = GetComponent<Collider2D>();
+            if (!coll2d.isTrigger)
+            {
+                throw new UnityException("Activation Trigger (" + gameObject.name + ") needs its Collider2D to be a trigger! (set 'Is Trigger' to true)");
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
+        if ((!forPlayerOnly || coll.gameObject.CompareTag("Player"))
+            && (!triggerRequireZoom || zoomLevelActive))
         {
             processObjects(triggerEnterAction);
             triggerActive = true;
@@ -54,7 +93,8 @@ public class ActivationTrigger : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D coll)
     {
-        if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
+        if ((!forPlayerOnly || coll.gameObject.CompareTag("Player"))
+            && (!triggerRequireZoom || zoomLevelActive))
         {
             processObjects(triggerExitAction);
             triggerActive = false;
@@ -81,17 +121,39 @@ public class ActivationTrigger : MonoBehaviour
         }
     }
 
+    bool scalePointInRange(int scalePoint)
+    {
+        return (minZoomScalePoint < 0 || scalePoint >= minZoomScalePoint)
+            && (maxZoomScalePoint < 0 || scalePoint <= maxZoomScalePoint);
+    }
+
     void OnCameraZoomLevelChanged(int newScalePoint, int delta)
     {
-        if (!cameraActionsRequireTrigger || triggerActive)
+        if (!zoomRequireTrigger || triggerActive)
         {
-            if (delta < 0)
+            if (scalePointInRange(newScalePoint))
             {
-                processObjects(cameraZoomInAction);
+                if (!zoomLevelActive)
+                {
+                    processObjects(zoomLevelEnterAction);
+                }
+                else
+                {
+                    processObjects(zoomLevelEnterStayAction);
+                }
+                zoomLevelActive = true;
             }
-            else if (delta > 0)
+            else
             {
-                processObjects(cameraZoomOutAction);
+                if (zoomLevelActive)
+                {
+                    processObjects(zoomLevelExitAction);
+                }
+                else
+                {
+                    processObjects(zoomLevelExitStayAction);
+                }
+                zoomLevelActive = false;
             }
         }
     }
