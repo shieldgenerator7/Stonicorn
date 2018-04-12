@@ -84,19 +84,23 @@ public class ActivationTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if ((!forPlayerOnly || coll.gameObject.CompareTag("Player"))
-            && (!triggerRequireZoom || zoomLevelActive))
+        if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
         {
-            processObjects(triggerEnterAction);
+            if (!triggerRequireZoom || zoomLevelActive)
+            {
+                processObjects(triggerEnterAction);
+            }
             triggerActive = true;
         }
     }
     private void OnTriggerExit2D(Collider2D coll)
     {
-        if ((!forPlayerOnly || coll.gameObject.CompareTag("Player"))
-            && (!triggerRequireZoom || zoomLevelActive))
+        if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
         {
-            processObjects(triggerExitAction);
+            if (!triggerRequireZoom || zoomLevelActive)
+            {
+                processObjects(triggerExitAction);
+            }
             triggerActive = false;
         }
     }
@@ -129,9 +133,9 @@ public class ActivationTrigger : MonoBehaviour
 
     void OnCameraZoomLevelChanged(int newScalePoint, int delta)
     {
-        if (!zoomRequireTrigger || triggerActive)
+        if (scalePointInRange(newScalePoint))
         {
-            if (scalePointInRange(newScalePoint))
+            if (!zoomRequireTrigger || triggerActive)
             {
                 if (!zoomLevelActive)
                 {
@@ -141,9 +145,12 @@ public class ActivationTrigger : MonoBehaviour
                 {
                     processObjects(zoomLevelEnterStayAction);
                 }
-                zoomLevelActive = true;
             }
-            else
+            zoomLevelActive = true;
+        }
+        else
+        {
+            if (!zoomRequireTrigger || triggerActive)
             {
                 if (zoomLevelActive)
                 {
@@ -153,8 +160,8 @@ public class ActivationTrigger : MonoBehaviour
                 {
                     processObjects(zoomLevelExitStayAction);
                 }
-                zoomLevelActive = false;
             }
+            zoomLevelActive = false;
         }
     }
 }
