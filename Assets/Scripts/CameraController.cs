@@ -244,6 +244,7 @@ public class CameraController : MonoBehaviour
 
     public void setScalePoint(int scalePointIndex)
     {
+        int spDelta = scalePointIndex - this.scalePointIndex;//"scale point delta"
         //Start the zoom-over-time process
         if (startZoomScale == 0)
         {
@@ -264,6 +265,10 @@ public class CameraController : MonoBehaviour
             scalePointIndex = scalePoints.Count - 1;
         }
         this.scalePointIndex = scalePointIndex;
+        if (onZoomLevelChanged != null)
+        {
+            onZoomLevelChanged(this.scalePointIndex, spDelta);
+        }
     }
     public void adjustScalePoint(int addend)
     {
@@ -273,6 +278,14 @@ public class CameraController : MonoBehaviour
     {
         return scalePointIndex;
     }
+    /// <summary>
+    /// Called when the zoom level has changed
+    /// </summary>
+    /// <param name="newScalePoint">The now current scale point</param>
+    /// <param name="delta">The intended zoom in/out change: negative = in, positive = out</param>
+    public delegate void OnZoomLevelChanged(int newScalePoint, int delta);
+    public OnZoomLevelChanged onZoomLevelChanged;
+
     public void updateOrthographicSize()
     {
         if (Screen.height > Screen.width)//portrait orientation

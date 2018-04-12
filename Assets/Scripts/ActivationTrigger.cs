@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActivationTrigger : MonoBehaviour {
-
+public class ActivationTrigger : MonoBehaviour
+{
     public enum ActivationOptions
     {
         ACTIVATE,
@@ -11,18 +11,45 @@ public class ActivationTrigger : MonoBehaviour {
         SWITCH,
         DO_NOTHING
     }
+
+    //
+    //Settings
+    //
+    [Header("Trigger Activation Settings")]
     public ActivationOptions triggerEnterAction = ActivationOptions.ACTIVATE;
     public ActivationOptions triggerExitAction = ActivationOptions.DEACTIVATE;
 
     public List<GameObject> objectsToActivate;
 
+    /// <summary>
+    /// Trigger can only be activated by player
+    /// </summary>
     public bool forPlayerOnly = true;
+    [Header("Camera Zoom Activation Settings")]
+    public ActivationOptions cameraZoomInAction = ActivationOptions.DO_NOTHING;
+    public ActivationOptions cameraZoomOutAction = ActivationOptions.DO_NOTHING;
+    /// <summary>
+    /// Camera actions only active while something is in the trigger area
+    /// </summary>
+    public bool cameraActionsRequireTrigger = true;
+
+    //
+    // Runtime Vars
+    //
+    private bool triggerActive = false;
+
+    private void Start()
+    {
+        CameraController cc = FindObjectOfType<CameraController>();
+        cc.onZoomLevelChanged += OnCameraZoomLevelChanged;
+    }
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
         if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
         {
             processObjects(triggerEnterAction);
+            triggerActive = true;
         }
     }
     private void OnTriggerExit2D(Collider2D coll)
@@ -30,6 +57,7 @@ public class ActivationTrigger : MonoBehaviour {
         if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
         {
             processObjects(triggerExitAction);
+            triggerActive = false;
         }
     }
     private void processObjects(ActivationOptions action)
@@ -49,6 +77,21 @@ public class ActivationTrigger : MonoBehaviour {
                     break;
                 case ActivationOptions.DO_NOTHING:
                     break;
+            }
+        }
+    }
+
+    void OnCameraZoomLevelChanged(int newScalePoint, int delta)
+    {
+        if (!cameraActionsRequireTrigger || triggerActive)
+        {
+            if (delta < 0)
+            {
+                processObjects(cameraZoomInAction);
+            }
+            else if (delta > 0)
+            {
+                processObjects(cameraZoomOutAction);
             }
         }
     }
