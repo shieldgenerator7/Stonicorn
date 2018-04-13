@@ -160,10 +160,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void rotate()
     {
+        float newAngle = getNextRotation(transform.localEulerAngles.z);
+        transform.localEulerAngles = new Vector3(0, 0, newAngle);
+    }
+    public float getNextRotation(float angleZ)
+    {
         int closestRotationIndex = 0;
         //Figure out current rotation
         float gravityRot = Utility.RotationZ(gravity.Gravity, Vector3.down);
-        float currentRotation = transform.localEulerAngles.z - gravityRot;
+        float currentRotation = angleZ - gravityRot;
         currentRotation = Utility.loopValue(currentRotation, 0, 360);
         //Figure out which default rotation is closest
         float closest = 360;
@@ -186,7 +191,7 @@ public class PlayerController : MonoBehaviour
         //Set rotation
         float angle = rotations[newRotationIndex] + gravityRot;
         angle = Utility.loopValue(angle, 0, 360);
-        transform.localEulerAngles = new Vector3(0, 0, angle);
+        return angle;
     }
     /// <summary>
     /// Checks to make sure teleport is not on cooldown

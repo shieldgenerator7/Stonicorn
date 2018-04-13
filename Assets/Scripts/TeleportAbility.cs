@@ -47,6 +47,12 @@ public class TeleportAbility : PlayerAbility
             teleportPreviewPointer.SetActive(true);
             teleportPreviewPointer.transform.localScale = transform.localScale;
             teleportPreviewPointer.transform.position = futurePos;
+            //Account for teleport-on-player
+            if (playerController.gestureOnPlayer(futurePos))
+            {
+                float newAngle = playerController.getNextRotation(futureProjection.transform.localEulerAngles.z);
+                futureProjection.transform.localEulerAngles = new Vector3(0, 0, newAngle);
+            }
         }
     }
 
