@@ -138,8 +138,10 @@ public class EnemySimple : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
+        ContactPoint2D[] cp2ds = new ContactPoint2D[1];
+        coll.GetContacts(cp2ds);
         //If the object is left or ride of this enemy
-        float angle = Vector2.Angle(transform.up, coll.contacts[0].point - (Vector2)transform.position);
+        float angle = Vector2.Angle(transform.up, cp2ds[0].point - (Vector2)transform.position);
         if (angle > 90 - allowedLeftAndRightVariance && angle < 90 + allowedLeftAndRightVariance)
         {
             //Logger.log(this.gameObject, "Switchdir after collision: " + coll.gameObject.name);
