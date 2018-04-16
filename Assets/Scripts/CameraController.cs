@@ -166,10 +166,11 @@ public class CameraController : MonoBehaviour
         Vector2 screenPos = cam.WorldToScreenPoint(newPos);
         Vector2 oldScreenPos = cam.WorldToScreenPoint(oldPos);
         Vector2 centerScreen = new Vector2(Screen.width, Screen.height) / 2;
-        float threshold = SCREEN_EDGE_THRESHOLD * Mathf.Max(Screen.width, Screen.height) / 2;
+        float thresholdBorder = ((1 - SCREEN_EDGE_THRESHOLD) * Mathf.Max(Screen.width, Screen.height) / 2);
+        Vector2 threshold = new Vector2(Screen.width / 2 - thresholdBorder, Screen.height / 2 - thresholdBorder);
         //if merky is now on edge of screen
-        if (Mathf.Abs(screenPos.x - centerScreen.x) >= threshold
-            || Mathf.Abs(screenPos.y - centerScreen.y) >= threshold)
+        if (Mathf.Abs(screenPos.x - centerScreen.x) >= threshold.x
+            || Mathf.Abs(screenPos.y - centerScreen.y) >= threshold.y)
         {
             //and new pos is further from center than old pos,
             if (Mathf.Abs(screenPos.x - centerScreen.x) > Mathf.Abs(oldScreenPos.x - centerScreen.x))
