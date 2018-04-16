@@ -12,7 +12,10 @@ public class ResetTimerTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameManager.setResetTimer(timerAmount);
-        GameManager.resetGame();
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            GameManager.setResetTimer(timerAmount);
+            GameManager.resetGame();
+        }
     }
 }
