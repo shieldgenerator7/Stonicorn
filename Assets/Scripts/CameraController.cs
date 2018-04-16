@@ -325,11 +325,14 @@ public class CameraController : MonoBehaviour
 
     void cleanDelegates(Scene s)
     {
-        foreach (OnZoomLevelChanged ozlc in onZoomLevelChanged.GetInvocationList())
+        if (onZoomLevelChanged != null)
         {
-            if (ozlc.Target.Equals(null))
+            foreach (OnZoomLevelChanged ozlc in onZoomLevelChanged.GetInvocationList())
             {
-                onZoomLevelChanged -= ozlc;
+                if (ozlc.Target.Equals(null))
+                {
+                    onZoomLevelChanged -= ozlc;
+                }
             }
         }
     }
