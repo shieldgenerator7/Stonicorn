@@ -127,10 +127,6 @@ public class PlayerController : MonoBehaviour
             rb2d.velocity = Vector2.zero;
             rb2d.angularVelocity = 0;
         }
-        if (grounded && !rb2d.isKinematic && !isMoving() && !mainCamCtr.offsetOffPlayer())
-        {
-            mainCamCtr.discardMovementDelay();
-        }
     }
 
     void grantGravityImmunity()
@@ -284,7 +280,6 @@ public class PlayerController : MonoBehaviour
         velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
         gravityImmuneTime = 0f;
         shouldGrantGIT = true;
-        mainCamCtr.delayMovement(0.3f);
         checkGroundedState(true);//have to call it again because state has changed
         //On Teleport Effects
         if (onTeleport != null)

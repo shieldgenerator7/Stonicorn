@@ -36,8 +36,6 @@ public class CameraController : MonoBehaviour
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
     private Camera cam;
     private Rigidbody2D playerRB2D;
-    private float moveTime = 0f;//used to delay the camera refocusing on the player
-    private bool wasDelayed = false;
     private GestureManager gm;
     private PlayerController plyrController;
     private float zoomStartTime = 0.0f;//when the zoom last started
@@ -111,14 +109,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame, after all other objects have moved that frame
     void LateUpdate()
     {
-        //transform.position = player.transform.position + offset;
-        if (moveTime <= Time.time && !gm.cameraDragInProgress)
+        if (!gm.cameraDragInProgress)
         {
-            if (wasDelayed)
-            {
-                wasDelayed = false;
-                recenter();
-            }
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 player.transform.position + offset,
@@ -136,24 +128,6 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    /**
-    * Makes sure that the current camera movement delay is at least the given delay amount in seconds
-    * @param delayAmount How much to delay camera movement by in seconds
-    */
-    public void delayMovement(float delayAmount)
-    {
-        if (moveTime < Time.time + delayAmount)
-        {
-            moveTime = Time.time + delayAmount;
-        }
-        wasDelayed = true;
-    }
-
-    public void discardMovementDelay()
-    {
-        moveTime = Time.time;
-        wasDelayed = false;
-    }
     /// <summary>
     /// If Merky is on the edge of the screen, discard movement delay
     /// </summary>
@@ -178,13 +152,11 @@ public class CameraController : MonoBehaviour
                 //zero the offset
                 Vector2 projection = Vector3.Project((Vector2)Offset, transform.right);
                 Offset -= (Vector3)projection;
-                discardMovementDelay();
             }
             if (Mathf.Abs(screenPos.y - centerScreen.y) >= Mathf.Abs(oldScreenPos.y - centerScreen.y))
             {
                 Vector2 projection = Vector3.Project((Vector2)Offset, transform.up);
                 Offset -= (Vector3)projection;
-                discardMovementDelay();
             }
         }
     }
