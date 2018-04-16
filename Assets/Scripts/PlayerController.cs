@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
     [Range(0, 1)]
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
-    public float cameraOffsetThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
 
     //Processing
@@ -128,7 +127,7 @@ public class PlayerController : MonoBehaviour
             rb2d.velocity = Vector2.zero;
             rb2d.angularVelocity = 0;
         }
-        if (grounded && !rb2d.isKinematic && !isMoving())
+        if (grounded && !rb2d.isKinematic && !isMoving() && !mainCamCtr.offsetOffPlayer())
         {
             mainCamCtr.discardMovementDelay();
         }
@@ -702,7 +701,6 @@ public class PlayerController : MonoBehaviour
         {
             teleport(newPos);
             GameManager.Save();
-            mainCamCtr.checkForAutoMovement(gpos, prevPos);
         }
     }
     public void processTapGesture(GameObject checkPoint)
@@ -729,7 +727,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
         float reducedHoldTime = holdTime - gm.getHoldThreshold();
-        if (cameraOffsetThreshold * cameraOffsetThreshold >= ((Vector2)mainCamCtr.Offset).sqrMagnitude)
+        if (!mainCamCtr.offsetOffPlayer())
         {
             if (Time.time > lastAutoTeleportTime + autoTeleportDelay)
             {

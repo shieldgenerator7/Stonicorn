@@ -8,12 +8,15 @@ public class CameraController : MonoBehaviour
 
     public GameObject player;
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
+    public float cameraOffsetThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
+
 
     private Vector3 offset;
     public Vector3 Offset
     {
         get { return offset; }
-        private set {
+        private set
+        {
             offset = value;
             if (onOffsetChange != null)
             {
@@ -76,6 +79,7 @@ public class CameraController : MonoBehaviour
         playerRB2D = player.GetComponent<Rigidbody2D>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         plyrController = player.GetComponent<PlayerController>();
+        plyrController.onTeleport += checkForAutoMovement;
         scale = cam.orthographicSize;
         rotation = transform.rotation;
         //Initialize ScalePoints
@@ -151,38 +155,34 @@ public class CameraController : MonoBehaviour
         wasDelayed = false;
     }
     /// <summary>
-    /// If Merky is between the tap pos and the camera pos, discard movement delay
+    /// If Merky is on the edge of the screen, discard movement delay
     /// </summary>
-    /// <param name="tapPos">The world-sapce coordinate where the player tapped</param>
-    /// <param name="playerPos">The world-space coordiante where the player is after teleporting</param>
-    public void checkForAutoMovement(Vector3 tapPos, Vector3 playerPos)
+    /// <param name="oldPos">Where merky just was</param>
+    /// <param name="newPos">Where merky is now</param>
+    public void checkForAutoMovement(Vector2 oldPos, Vector2 newPos)
     {
         //If the player is near the edge of the screen upon teleporting, recenter the screen
-        float DISCARD_DELAY_DISTANCE_SENSITIVITY = 0.9f;
-        float DISCARD_DELAY_ANGLE_SENSITIVITY = 140;//in degrees
-        //Get the min of screen width and height in world distance
-        float distance = Mathf.Abs(cam.ScreenToWorldPoint(new Vector2(0, Mathf.Min(prevScreenWidth, prevScreenHeight))).y - cam.ScreenToWorldPoint(new Vector2(0, 0)).y);
-        float threshold = DISCARD_DELAY_DISTANCE_SENSITIVITY * distance / 2;
-        if (Vector2.Distance((Vector2)transform.position, playerPos) >= threshold)
+        float SCREEN_EDGE_THRESHOLD = 0.9f;
+        Vector2 screenPos = cam.WorldToScreenPoint(newPos);
+        Vector2 oldScreenPos = cam.WorldToScreenPoint(oldPos);
+        Vector2 centerScreen = new Vector2(Screen.width, Screen.height) / 2;
+        float threshold = SCREEN_EDGE_THRESHOLD * Mathf.Max(Screen.width, Screen.height) / 2;
+        //if merky is now on edge of screen
+        if (Mathf.Abs(screenPos.x - centerScreen.x) >= threshold
+            || Mathf.Abs(screenPos.y - centerScreen.y) >= threshold)
         {
-            Vector2 plyV = (playerPos - transform.position);
-            Vector2 tapVd = (tapPos - transform.position);
-            float angled = Vector2.Angle(tapVd.normalized, plyV.normalized);
-            if (angled < DISCARD_DELAY_ANGLE_SENSITIVITY)
-            {//unless the camera is mostly between Merky and the tap pos
-                recenter();
+            //and new pos is further from center than old pos,
+            if (Mathf.Abs(screenPos.x - centerScreen.x) > Mathf.Abs(oldScreenPos.x - centerScreen.x))
+            {
+                //zero the offset
+                Offset = new Vector3(0, Offset.y, Offset.z);
                 discardMovementDelay();
-                return;//dont need to test the other case
             }
-        }
-        //Test the angle tap-player-cam
-        Vector2 tapV = (tapPos - playerPos);
-        Vector2 camV = (transform.position - playerPos);
-        float angle = Vector2.Angle(tapV.normalized, camV.normalized);
-        if (angle >= DISCARD_DELAY_ANGLE_SENSITIVITY)
-        {
-            recenter();
-            discardMovementDelay();
+            if (Mathf.Abs(screenPos.y - centerScreen.y) >= Mathf.Abs(oldScreenPos.y - centerScreen.y))
+            {
+                Offset = new Vector3(Offset.x, 0, Offset.z);
+                discardMovementDelay();
+            }
         }
     }
 
@@ -207,6 +207,15 @@ public class CameraController : MonoBehaviour
     public void refocus()
     {
         transform.position = player.transform.position + offset;
+    }
+
+    /// <summary>
+    /// Returns true if the camera is significantly offset from the player
+    /// </summary>
+    /// <returns></returns>
+    public bool offsetOffPlayer()
+    {
+        return cameraOffsetThreshold * cameraOffsetThreshold <= ((Vector2)Offset).sqrMagnitude;
     }
 
     public delegate void OnOffsetChange();
