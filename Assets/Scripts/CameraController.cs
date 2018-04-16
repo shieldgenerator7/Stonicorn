@@ -175,12 +175,14 @@ public class CameraController : MonoBehaviour
             if (Mathf.Abs(screenPos.x - centerScreen.x) > Mathf.Abs(oldScreenPos.x - centerScreen.x))
             {
                 //zero the offset
-                Offset = new Vector3(0, Offset.y, Offset.z);
+                Vector2 projection = Vector3.Project((Vector2)Offset, transform.right);
+                Offset -= (Vector3)projection;
                 discardMovementDelay();
             }
             if (Mathf.Abs(screenPos.y - centerScreen.y) >= Mathf.Abs(oldScreenPos.y - centerScreen.y))
             {
-                Offset = new Vector3(Offset.x, 0, Offset.z);
+                Vector2 projection = Vector3.Project((Vector2)Offset, transform.up);
+                Offset -= (Vector3)projection;
                 discardMovementDelay();
             }
         }
