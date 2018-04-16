@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class CameraController : MonoBehaviour
 {
@@ -85,7 +86,8 @@ public class CameraController : MonoBehaviour
         //Set the initialize scale point
         setScalePoint(1);
         scale = scalePoints[scalePointIndex].absoluteScalePoint();
-
+        //Clean Delegates set up
+        SceneManager.sceneUnloaded += cleanDelegates;
     }
 
     void Update()
@@ -308,5 +310,16 @@ public class CameraController : MonoBehaviour
         //2017-10-31: copied from an answer by Taylor-Libonati: http://answers.unity3d.com/questions/720447/if-game-object-is-in-cameras-field-of-view.html
         Vector3 screenPoint = cam.WorldToViewportPoint(position);
         return screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+    }
+
+    void cleanDelegates(Scene s)
+    {
+        foreach (OnZoomLevelChanged ozlc in onZoomLevelChanged.GetInvocationList())
+        {
+            if (ozlc.Target.Equals(null))
+            {
+                onZoomLevelChanged -= ozlc;
+            }
+        }
     }
 }
