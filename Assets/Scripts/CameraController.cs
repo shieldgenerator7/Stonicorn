@@ -1,14 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CameraController : MonoBehaviour
 {
-
     public GameObject player;
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
     public float cameraOffsetThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
+    public float cameraMoveFactor = 1.5f;
 
 
     private Vector3 offset;
@@ -40,6 +39,9 @@ public class CameraController : MonoBehaviour
     private PlayerController plyrController;
     private float zoomStartTime = 0.0f;//when the zoom last started
     private float startZoomScale;//the orthographicsize at the start and end of a zoom
+
+    private bool lockX = false;//keep the camera from moving in its x direction
+    private bool lockY = false;//keep the camera from moving in its y direction
 
     private int prevScreenWidth;
     private int prevScreenHeight;
@@ -111,13 +113,22 @@ public class CameraController : MonoBehaviour
     {
         if (!gm.cameraDragInProgress)
         {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                player.transform.position + offset,
-                (Vector3.Distance(
-                    transform.position + offset,
-                    player.transform.position) * 1.5f + playerRB2D.velocity.magnitude)
-                    * Time.deltaTime);
+            if (!lockX || !lockY)
+            {
+                //Target
+                Vector3 target = player.transform.position + offset;
+                //Speed
+                float speed = (
+                        Vector3.Distance(transform.position, target)
+                        * cameraMoveFactor
+                        + playerRB2D.velocity.magnitude
+                    )
+                    * Time.deltaTime;
+                //Move Transform
+                transform.position = Vector3.MoveTowards(transform.position, target, speed);
+            }
+
+            //Rotate Transform
             if (transform.rotation != rotation)
             {
                 float deltaTime = 3 * Time.deltaTime;
@@ -152,11 +163,13 @@ public class CameraController : MonoBehaviour
                 //zero the offset
                 Vector2 projection = Vector3.Project((Vector2)Offset, transform.right);
                 Offset -= (Vector3)projection;
+                lockX = false;
             }
             if (Mathf.Abs(screenPos.y - centerScreen.y) >= Mathf.Abs(oldScreenPos.y - centerScreen.y))
             {
                 Vector2 projection = Vector3.Project((Vector2)Offset, transform.up);
                 Offset -= (Vector3)projection;
+                lockY = false;
             }
         }
     }
@@ -167,6 +180,14 @@ public class CameraController : MonoBehaviour
     public void pinPoint()
     {
         Offset = transform.position - player.transform.position;
+        if (offsetOffPlayerX())
+        {
+            lockX = true;
+        }
+        if (offsetOffPlayerY())
+        {
+            lockY = true;
+        }
     }
 
     /// <summary>
@@ -190,7 +211,17 @@ public class CameraController : MonoBehaviour
     /// <returns></returns>
     public bool offsetOffPlayer()
     {
-        return cameraOffsetThreshold * cameraOffsetThreshold <= ((Vector2)Offset).sqrMagnitude;
+        return offsetOffPlayerX() || offsetOffPlayerY();
+    }
+    public bool offsetOffPlayerX()
+    {
+        Vector2 projection = Vector3.Project(Offset, transform.right);
+        return projection.magnitude > cameraOffsetThreshold;
+    }
+    public bool offsetOffPlayerY()
+    {
+        Vector2 projection = Vector3.Project(Offset, transform.up);
+        return projection.magnitude > cameraOffsetThreshold;
     }
 
     public delegate void OnOffsetChange();
