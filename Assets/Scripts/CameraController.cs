@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// Offset the camera automatically adds itself to make sure the player can see where they're going
     /// </summary>
-    private Vector2 bufferOffset;
+    private Vector2 autoOffset;
     /// <summary>
     /// How far away the camera is from where it wants to be
     /// </summary>
@@ -120,7 +120,7 @@ public class CameraController : MonoBehaviour
             if (!lockX || !lockY)
             {
                 //Target
-                Vector3 target = player.transform.position + offset + (Vector3)bufferOffset;
+                Vector3 target = player.transform.position + offset + (Vector3)autoOffset;
                 //Speed
                 float speed = (
                         Vector3.Distance(transform.position, target)
@@ -178,9 +178,9 @@ public class CameraController : MonoBehaviour
         }
 
         //
-        // Buffer Offset
+        // Autp Offset
         //
-        float bufferOffsetBufferWidth = 0.75f;
+        float autoOffsetBufferWidth = 0.75f;
         //maxMag
         Vector2 maxMag =
             (
@@ -189,19 +189,19 @@ public class CameraController : MonoBehaviour
             );
         maxMag.x = Mathf.Abs(maxMag.x);
         maxMag.y = Mathf.Abs(maxMag.y);
-        maxMag -= Vector2.one * bufferOffsetBufferWidth;
-        //Update the buffer
-        bufferOffset += (newPos - oldPos);
+        maxMag -= Vector2.one * autoOffsetBufferWidth;
+        //Update the auto offset
+        autoOffset += (newPos - oldPos);
         //Cap the buffer
-        if (Mathf.Abs(bufferOffset.x) > maxMag.x)
+        if (Mathf.Abs(autoOffset.x) > maxMag.x)
         {
-            //Get the magnitude of maxMag but keep the sign of bufferOffset
-            bufferOffset.x = maxMag.x * Mathf.Sign(bufferOffset.x);
+            //Get the magnitude of maxMag but keep the sign of autoOffset
+            autoOffset.x = maxMag.x * Mathf.Sign(autoOffset.x);
         }
-        if (Mathf.Abs(bufferOffset.y) > maxMag.y)
+        if (Mathf.Abs(autoOffset.y) > maxMag.y)
         {
-            //Get the magnitude of maxMag but keep the sign of bufferOffset
-            bufferOffset.y = maxMag.y * Mathf.Sign(bufferOffset.y);
+            //Get the magnitude of maxMag but keep the sign of autoOffset
+            autoOffset.y = maxMag.y * Mathf.Sign(autoOffset.y);
         }
     }
 
