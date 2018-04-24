@@ -108,9 +108,7 @@ public class ForceTeleportAbility : PlayerAbility
         Vector2 explodePos = triedPos;
         float range = getRangeFromCharge(currentCharge);
         //If touch position is outside visible blast range, charge;
-        if ((triedPos - oldPos).sqrMagnitude > range * range
-            //or camera is still moving to get into position
-            || playerController.Cam.Displacement.sqrMagnitude > 0.1f)
+        if ((triedPos - oldPos).sqrMagnitude > range * range)
         {
             if (Mathf.Approximately(currentCharge, 0))
             {
