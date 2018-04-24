@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
     public float cameraOffsetThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
     public float cameraMoveFactor = 1.5f;
+    public float autoOffsetDecayRate = 1;//how much autoOffset decays (units/second)
 
 
     private Vector3 offset;
@@ -130,6 +131,15 @@ public class CameraController : MonoBehaviour
                     * Time.deltaTime;
                 //Move Transform
                 transform.position = Vector3.MoveTowards(transform.position, target, speed);
+
+                if (autoOffset.sqrMagnitude > 0)
+                {
+                    autoOffset = Vector2.MoveTowards(
+                        autoOffset, 
+                        Vector2.zero, 
+                        autoOffsetDecayRate * Time.deltaTime
+                        );
+                }
             }
 
             //Rotate Transform
@@ -178,30 +188,50 @@ public class CameraController : MonoBehaviour
         }
 
         //
-        // Autp Offset
+        // Auto Offset
         //
-        float autoOffsetBufferWidth = 0.75f;
-        //maxMag
-        Vector2 maxMag =
-            (
-                cam.ViewportToWorldPoint(Vector2.one / 2)
-                - cam.ViewportToWorldPoint(Vector2.zero)
-            );
-        maxMag.x = Mathf.Abs(maxMag.x);
-        maxMag.y = Mathf.Abs(maxMag.y);
-        maxMag -= Vector2.one * autoOffsetBufferWidth;
-        //Update the auto offset
-        autoOffset += (newPos - oldPos);
-        //Cap the buffer
-        if (Mathf.Abs(autoOffset.x) > maxMag.x)
+        if (!lockX || !lockY)
         {
-            //Get the magnitude of maxMag but keep the sign of autoOffset
-            autoOffset.x = maxMag.x * Mathf.Sign(autoOffset.x);
-        }
-        if (Mathf.Abs(autoOffset.y) > maxMag.y)
-        {
-            //Get the magnitude of maxMag but keep the sign of autoOffset
-            autoOffset.y = maxMag.y * Mathf.Sign(autoOffset.y);
+            float autoOffsetBufferWidth = 0.75f;
+            Vector2 newBuffer = (newPos - oldPos);
+            //maxMag
+            Vector2 maxMag =
+                (
+                    cam.ViewportToWorldPoint(Vector2.one / 2)
+                    - cam.ViewportToWorldPoint(Vector2.zero)
+                );
+            maxMag.x = Mathf.Abs(maxMag.x);
+            maxMag.y = Mathf.Abs(maxMag.y);
+            maxMag -= Vector2.one * autoOffsetBufferWidth;
+            //Update the auto offset
+            if (lockX || lockY)
+            {
+                if (!lockX)
+                {
+                    Vector2 projection = Vector3.Project(newBuffer, transform.right);
+                    autoOffset += projection;
+                }
+                if (!lockY)
+                {
+                    Vector2 projection = Vector3.Project(newBuffer, transform.up);
+                    autoOffset += projection;
+                }
+            }
+            else
+            {
+                autoOffset += (newPos - oldPos);
+            }
+            //Cap the buffer
+            if (Mathf.Abs(autoOffset.x) > maxMag.x)
+            {
+                //Get the magnitude of maxMag but keep the sign of autoOffset
+                autoOffset.x = maxMag.x * Mathf.Sign(autoOffset.x);
+            }
+            if (Mathf.Abs(autoOffset.y) > maxMag.y)
+            {
+                //Get the magnitude of maxMag but keep the sign of autoOffset
+                autoOffset.y = maxMag.y * Mathf.Sign(autoOffset.y);
+            }
         }
     }
 
@@ -219,6 +249,8 @@ public class CameraController : MonoBehaviour
         {
             lockY = true;
         }
+
+        autoOffset = Vector2.zero;
     }
 
     /// <summary>
