@@ -29591,6 +29591,14 @@ Prefab:
       propertyPath: zoomSpeed
       value: 0.25
       objectReference: {fileID: 0}
+    - target: {fileID: 11495942, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
+      propertyPath: cameraMoveFactor
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11495942, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
+      propertyPath: autoOffsetDecayRate
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8234070, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
@@ -47466,7 +47474,6 @@ MonoBehaviour:
   maxAirPorts: 0
   exhaustCoolDownTime: 0.5
   gravityImmuneTimeAmount: 0.2
-  cameraOffsetThreshold: 2
   autoTeleportDelay: 0.1
   teleportTime: 0
   teleportRangeParticalObject: {fileID: 198174136}
