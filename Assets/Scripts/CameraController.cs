@@ -135,8 +135,8 @@ public class CameraController : MonoBehaviour
                 if (autoOffset.sqrMagnitude > 0)
                 {
                     autoOffset = Vector2.MoveTowards(
-                        autoOffset, 
-                        Vector2.zero, 
+                        autoOffset,
+                        Vector2.zero,
                         autoOffsetDecayRate * Time.deltaTime
                         );
                 }
@@ -192,17 +192,7 @@ public class CameraController : MonoBehaviour
         //
         if (!lockX || !lockY)
         {
-            float autoOffsetBufferWidth = 0.75f;
             Vector2 newBuffer = (newPos - oldPos);
-            //maxMag
-            Vector2 maxMag =
-                (
-                    cam.ViewportToWorldPoint(Vector2.one / 2)
-                    - cam.ViewportToWorldPoint(Vector2.zero)
-                );
-            maxMag.x = Mathf.Abs(maxMag.x);
-            maxMag.y = Mathf.Abs(maxMag.y);
-            maxMag -= Vector2.one * autoOffsetBufferWidth;
             //Update the auto offset
             if (lockX || lockY)
             {
@@ -219,19 +209,28 @@ public class CameraController : MonoBehaviour
             }
             else
             {
-                autoOffset += (newPos - oldPos);
+                autoOffset += newBuffer;
             }
-            //Cap the buffer
-            if (Mathf.Abs(autoOffset.x) > maxMag.x)
+            //Cap the auto offset
+            Vector2 autoScreenPos = cam.WorldToScreenPoint(autoOffset + (Vector2)transform.position);
+            //If the auto offset is outside the threshold,
+            if (Mathf.Abs(autoScreenPos.x - centerScreen.x) > threshold.x)
             {
-                //Get the magnitude of maxMag but keep the sign of autoOffset
-                autoOffset.x = maxMag.x * Mathf.Sign(autoOffset.x);
+                //bring it inside the threshold
+                autoScreenPos.x = centerScreen.x
+                    + (
+                        threshold.x * Mathf.Sign(autoScreenPos.x - centerScreen.x)
+                    );
             }
-            if (Mathf.Abs(autoOffset.y) > maxMag.y)
+            if (Mathf.Abs(autoScreenPos.y - centerScreen.y) > threshold.y)
             {
-                //Get the magnitude of maxMag but keep the sign of autoOffset
-                autoOffset.y = maxMag.y * Mathf.Sign(autoOffset.y);
+                autoScreenPos.y = centerScreen.y
+                    + (
+                        threshold.y * Mathf.Sign(autoScreenPos.y - centerScreen.y)
+                    );
             }
+            //After fixing autoScreenPos, use it to update autoOffset
+            autoOffset = cam.ScreenToWorldPoint(autoScreenPos) - transform.position;
         }
     }
 
