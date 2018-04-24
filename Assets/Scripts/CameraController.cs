@@ -24,6 +24,10 @@ public class CameraController : MonoBehaviour
         }
     }
     /// <summary>
+    /// Offset the camera automatically adds itself to make sure the player can see where they're going
+    /// </summary>
+    private Vector2 bufferOffset;
+    /// <summary>
     /// How far away the camera is from where it wants to be
     /// </summary>
     public Vector2 Displacement
@@ -116,7 +120,7 @@ public class CameraController : MonoBehaviour
             if (!lockX || !lockY)
             {
                 //Target
-                Vector3 target = player.transform.position + offset;
+                Vector3 target = player.transform.position + offset + (Vector3)bufferOffset;
                 //Speed
                 float speed = (
                         Vector3.Distance(transform.position, target)
@@ -171,6 +175,33 @@ public class CameraController : MonoBehaviour
                 Offset -= (Vector3)projection;
                 lockY = false;
             }
+        }
+
+        //
+        // Buffer Offset
+        //
+        float bufferOffsetBufferWidth = 0.75f;
+        //maxMag
+        Vector2 maxMag =
+            (
+                cam.ViewportToWorldPoint(Vector2.one / 2)
+                - cam.ViewportToWorldPoint(Vector2.zero)
+            );
+        maxMag.x = Mathf.Abs(maxMag.x);
+        maxMag.y = Mathf.Abs(maxMag.y);
+        maxMag -= Vector2.one * bufferOffsetBufferWidth;
+        //Update the buffer
+        bufferOffset += (newPos - oldPos);
+        //Cap the buffer
+        if (Mathf.Abs(bufferOffset.x) > maxMag.x)
+        {
+            //Get the magnitude of maxMag but keep the sign of bufferOffset
+            bufferOffset.x = maxMag.x * Mathf.Sign(bufferOffset.x);
+        }
+        if (Mathf.Abs(bufferOffset.y) > maxMag.y)
+        {
+            //Get the magnitude of maxMag but keep the sign of bufferOffset
+            bufferOffset.y = maxMag.y * Mathf.Sign(bufferOffset.y);
         }
     }
 
