@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
     public float cameraOffsetThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
     public float cameraMoveFactor = 1.5f;
-    public float autoOffsetDecayRate = 1;//how much autoOffset decays (units/second)
+    public float autoOffsetDuration = 1;//how long autoOffset lasts after the latest teleport
     public float autoOffsetAngleThreshold = 15f;//how close two teleport directions have to be to activate auto offset
 
 
@@ -30,6 +30,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private Vector2 autoOffset;
     private Vector2 previousMoveDir;//the direction of the last teleport, used to determine if autoOffset should activate
+    private float autoOffsetCancelTime = 0;//the time at which autoOffset will be removed automatically (updated after each teleport)
     /// <summary>
     /// How far away the camera is from where it wants to be
     /// </summary>
@@ -134,13 +135,14 @@ public class CameraController : MonoBehaviour
                 //Move Transform
                 transform.position = Vector3.MoveTowards(transform.position, target, speed);
 
-                if (autoOffset.sqrMagnitude > 0)
+                if (autoOffsetCancelTime > 0)
                 {
-                    autoOffset = Vector2.MoveTowards(
-                        autoOffset,
-                        Vector2.zero,
-                        autoOffsetDecayRate * Time.deltaTime
-                        );
+                    if (Time.time > autoOffsetCancelTime)
+                    {
+                        autoOffset = Vector2.zero;
+                        previousMoveDir = Vector2.zero;
+                        autoOffsetCancelTime = 0;
+                    }
                 }
             }
 
@@ -236,6 +238,7 @@ public class CameraController : MonoBehaviour
                 }
                 //After fixing autoScreenPos, use it to update autoOffset
                 autoOffset = cam.ScreenToWorldPoint(autoScreenPos) - transform.position;
+                autoOffsetCancelTime = Time.time + autoOffsetDuration;
             }
             else
             {

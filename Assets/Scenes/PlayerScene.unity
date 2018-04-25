@@ -29567,40 +29567,7 @@ Prefab:
       propertyPath: player
       value: 
       objectReference: {fileID: 1792176465}
-    - target: {fileID: 8234070, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2052918, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
-      propertyPath: m_BackGroundColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2052918, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
-      propertyPath: m_BackGroundColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2052918, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
-      propertyPath: m_BackGroundColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2052918, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
-      propertyPath: m_BackGroundColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11495942, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
-      propertyPath: zoomSpeed
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 11495942, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
-      propertyPath: cameraMoveFactor
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 11495942, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
-      propertyPath: autoOffsetDecayRate
-      value: 5
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8234070, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
   m_IsPrefabParent: 0
 --- !u!20 &1113871236 stripped
@@ -29608,25 +29575,6 @@ Camera:
   m_PrefabParentObject: {fileID: 2052918, guid: 0b3255d4b4dc0a443a420e93fb27f62b,
     type: 2}
   m_PrefabInternal: {fileID: 1113871235}
---- !u!1 &1113871237 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 140804, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
-  m_PrefabInternal: {fileID: 1113871235}
---- !u!114 &1113871238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1113871237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5dd7e34d1c3e0d4f8141c177a2acceb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVolume: 0.3
-  fadeTime: 5
-  eventFadeTime: 0.1
-  quietVolumeScaling: 0.3
 --- !u!1 &1121559818
 GameObject:
   m_ObjectHideFlags: 0
@@ -47713,8 +47661,6 @@ MonoBehaviour:
   effectColor: {r: 1, g: 1, b: 1, a: 1}
   abilityIndicatorParticleEffects: {fileID: 0}
   circularProgressBar: {fileID: 548232296}
-  teleportRangeIndicator: {fileID: 138864, guid: 0d21f1bb5384da84bbffcddfafee829c,
-    type: 2}
   futureProjection: {fileID: 531202031}
   teleportPreviewPointer: {fileID: 1385001677}
   maxRange: 2.5
