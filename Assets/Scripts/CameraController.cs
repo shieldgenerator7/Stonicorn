@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     public float cameraOffsetThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
     public float cameraMoveFactor = 1.5f;
     public float autoOffsetDecayRate = 1;//how much autoOffset decays (units/second)
+    public float autoOffsetAngleThreshold = 15f;//how close two teleport directions have to be to activate auto offset
 
 
     private Vector3 offset;
@@ -28,6 +29,7 @@ public class CameraController : MonoBehaviour
     /// Offset the camera automatically adds itself to make sure the player can see where they're going
     /// </summary>
     private Vector2 autoOffset;
+    private Vector2 previousMoveDir;//the direction of the last teleport, used to determine if autoOffset should activate
     /// <summary>
     /// How far away the camera is from where it wants to be
     /// </summary>
@@ -193,45 +195,56 @@ public class CameraController : MonoBehaviour
         if (!lockX || !lockY)
         {
             Vector2 newBuffer = (newPos - oldPos);
-            //Update the auto offset
-            if (lockX || lockY)
+            //If the last teleport direction is similar enough to the most recent teleport direction
+            if (Vector2.Angle(previousMoveDir,newBuffer) < autoOffsetAngleThreshold)
             {
-                if (!lockX)
+                //Update the auto offset
+                if (lockX || lockY)
                 {
-                    Vector2 projection = Vector3.Project(newBuffer, transform.right);
-                    autoOffset += projection;
+                    if (!lockX)
+                    {
+                        Vector2 projection = Vector3.Project(newBuffer, transform.right);
+                        autoOffset += projection;
+                    }
+                    if (!lockY)
+                    {
+                        Vector2 projection = Vector3.Project(newBuffer, transform.up);
+                        autoOffset += projection;
+                    }
                 }
-                if (!lockY)
+                else
                 {
-                    Vector2 projection = Vector3.Project(newBuffer, transform.up);
-                    autoOffset += projection;
+                    autoOffset += newBuffer;
                 }
+                //Cap the auto offset
+                Vector2 autoScreenPos = cam.WorldToScreenPoint(autoOffset + (Vector2)transform.position);
+                //If the auto offset is outside the threshold,
+                if (Mathf.Abs(autoScreenPos.x - centerScreen.x) > threshold.x)
+                {
+                    //bring it inside the threshold
+                    autoScreenPos.x = centerScreen.x
+                        + (
+                            threshold.x * Mathf.Sign(autoScreenPos.x - centerScreen.x)
+                        );
+                }
+                if (Mathf.Abs(autoScreenPos.y - centerScreen.y) > threshold.y)
+                {
+                    autoScreenPos.y = centerScreen.y
+                        + (
+                            threshold.y * Mathf.Sign(autoScreenPos.y - centerScreen.y)
+                        );
+                }
+                //After fixing autoScreenPos, use it to update autoOffset
+                autoOffset = cam.ScreenToWorldPoint(autoScreenPos) - transform.position;
             }
             else
             {
-                autoOffset += newBuffer;
+                //if prev dir is not similar enough to new dir,
+                //remove autoOffset
+                autoOffset = Vector2.zero;
             }
-            //Cap the auto offset
-            Vector2 autoScreenPos = cam.WorldToScreenPoint(autoOffset + (Vector2)transform.position);
-            //If the auto offset is outside the threshold,
-            if (Mathf.Abs(autoScreenPos.x - centerScreen.x) > threshold.x)
-            {
-                //bring it inside the threshold
-                autoScreenPos.x = centerScreen.x
-                    + (
-                        threshold.x * Mathf.Sign(autoScreenPos.x - centerScreen.x)
-                    );
-            }
-            if (Mathf.Abs(autoScreenPos.y - centerScreen.y) > threshold.y)
-            {
-                autoScreenPos.y = centerScreen.y
-                    + (
-                        threshold.y * Mathf.Sign(autoScreenPos.y - centerScreen.y)
-                    );
-            }
-            //After fixing autoScreenPos, use it to update autoOffset
-            autoOffset = cam.ScreenToWorldPoint(autoScreenPos) - transform.position;
         }
+        previousMoveDir = (newPos - oldPos);
     }
 
     /// <summary>
