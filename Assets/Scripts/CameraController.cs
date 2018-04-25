@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
     public float cameraMoveFactor = 1.5f;
     public float autoOffsetDuration = 1;//how long autoOffset lasts after the latest teleport
     public float autoOffsetAngleThreshold = 15f;//how close two teleport directions have to be to activate auto offset
+    public float maxTapDelay = 1;//the maximum amount of time (sec) between two taps that can activate auto offset
 
 
     private Vector3 offset;
@@ -31,6 +32,7 @@ public class CameraController : MonoBehaviour
     private Vector2 autoOffset;
     private Vector2 previousMoveDir;//the direction of the last teleport, used to determine if autoOffset should activate
     private float autoOffsetCancelTime = 0;//the time at which autoOffset will be removed automatically (updated after each teleport)
+    private float lastTapTime = 0;//the last time a teleport was processed
     /// <summary>
     /// How far away the camera is from where it wants to be
     /// </summary>
@@ -200,6 +202,8 @@ public class CameraController : MonoBehaviour
             //If the last teleport direction is similar enough to the most recent teleport direction
             if (Vector2.Angle(previousMoveDir,newBuffer) < autoOffsetAngleThreshold)
             {
+                //Update newBuffer in respect to tap speed
+                newBuffer *= Mathf.Max(0, (maxTapDelay - (Time.time - lastTapTime)));
                 //Update the auto offset
                 if (lockX || lockY)
                 {
@@ -248,6 +252,7 @@ public class CameraController : MonoBehaviour
             }
         }
         previousMoveDir = (newPos - oldPos);
+        lastTapTime = Time.time;
     }
 
     /// <summary>
