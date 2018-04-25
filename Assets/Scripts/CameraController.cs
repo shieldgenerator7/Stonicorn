@@ -203,7 +203,7 @@ public class CameraController : MonoBehaviour
             if (Vector2.Angle(previousMoveDir,newBuffer) < autoOffsetAngleThreshold)
             {
                 //Update newBuffer in respect to tap speed
-                newBuffer *= Mathf.Max(0, (maxTapDelay - (Time.time - lastTapTime)));
+                newBuffer *= Mathf.SmoothStep(0, maxTapDelay, 1-(Time.time - lastTapTime))/maxTapDelay;
                 //Update the auto offset
                 if (lockX || lockY)
                 {
