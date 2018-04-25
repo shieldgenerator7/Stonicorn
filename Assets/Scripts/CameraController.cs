@@ -6,7 +6,9 @@ public class CameraController : MonoBehaviour
 {
     public GameObject player;
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
-    public float cameraOffsetThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
+    public float cameraOffsetGestureThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
+    public float screenEdgeThreshold = 0.9f;//the percentage of half the screen that is in the middle, the rest is the edge
+    public float autoOffsetScreenEdgeThreshold = 0.7f;//same as screenEdgeThreshold, but used for the purposes of autoOffset
     public float cameraMoveFactor = 1.5f;
     public float autoOffsetDuration = 1;//how long autoOffset lasts after the latest teleport
     public float autoOffsetAngleThreshold = 15f;//how close two teleport directions have to be to activate auto offset
@@ -167,12 +169,10 @@ public class CameraController : MonoBehaviour
     public void checkForAutoMovement(Vector2 oldPos, Vector2 newPos)
     {
         //If the player is near the edge of the screen upon teleporting, recenter the screen
-        float SCREEN_EDGE_THRESHOLD = 0.9f;
         Vector2 screenPos = cam.WorldToScreenPoint(newPos);
         Vector2 oldScreenPos = cam.WorldToScreenPoint(oldPos);
         Vector2 centerScreen = new Vector2(Screen.width, Screen.height) / 2;
-        float thresholdBorder = ((1 - SCREEN_EDGE_THRESHOLD) * Mathf.Max(Screen.width, Screen.height) / 2);
-        Vector2 threshold = new Vector2(Screen.width / 2 - thresholdBorder, Screen.height / 2 - thresholdBorder);
+        Vector2 threshold = getPlayableScreenSize(screenEdgeThreshold);
         //if merky is now on edge of screen
         if (Mathf.Abs(screenPos.x - centerScreen.x) >= threshold.x
             || Mathf.Abs(screenPos.y - centerScreen.y) >= threshold.y)
@@ -200,10 +200,10 @@ public class CameraController : MonoBehaviour
         {
             Vector2 newBuffer = (newPos - oldPos);
             //If the last teleport direction is similar enough to the most recent teleport direction
-            if (Vector2.Angle(previousMoveDir,newBuffer) < autoOffsetAngleThreshold)
+            if (Vector2.Angle(previousMoveDir, newBuffer) < autoOffsetAngleThreshold)
             {
                 //Update newBuffer in respect to tap speed
-                newBuffer *= Mathf.SmoothStep(0, maxTapDelay, 1-(Time.time - lastTapTime))/maxTapDelay;
+                newBuffer *= Mathf.SmoothStep(0, maxTapDelay, 1 - (Time.time - lastTapTime)) / maxTapDelay;
                 //Update the auto offset
                 if (lockX || lockY)
                 {
@@ -224,20 +224,21 @@ public class CameraController : MonoBehaviour
                 }
                 //Cap the auto offset
                 Vector2 autoScreenPos = cam.WorldToScreenPoint(autoOffset + (Vector2)transform.position);
+                Vector2 playableAutoOffsetSize = getPlayableScreenSize(autoOffsetScreenEdgeThreshold);
                 //If the auto offset is outside the threshold,
-                if (Mathf.Abs(autoScreenPos.x - centerScreen.x) > threshold.x)
+                if (Mathf.Abs(autoScreenPos.x - centerScreen.x) > playableAutoOffsetSize.x)
                 {
                     //bring it inside the threshold
                     autoScreenPos.x = centerScreen.x
                         + (
-                            threshold.x * Mathf.Sign(autoScreenPos.x - centerScreen.x)
+                            playableAutoOffsetSize.x * Mathf.Sign(autoScreenPos.x - centerScreen.x)
                         );
                 }
-                if (Mathf.Abs(autoScreenPos.y - centerScreen.y) > threshold.y)
+                if (Mathf.Abs(autoScreenPos.y - centerScreen.y) > playableAutoOffsetSize.y)
                 {
                     autoScreenPos.y = centerScreen.y
                         + (
-                            threshold.y * Mathf.Sign(autoScreenPos.y - centerScreen.y)
+                            playableAutoOffsetSize.y * Mathf.Sign(autoScreenPos.y - centerScreen.y)
                         );
                 }
                 //After fixing autoScreenPos, use it to update autoOffset
@@ -253,6 +254,12 @@ public class CameraController : MonoBehaviour
         }
         previousMoveDir = (newPos - oldPos);
         lastTapTime = Time.time;
+    }
+
+    Vector2 getPlayableScreenSize(float percentage)
+    {
+        float thresholdBorder = ((1 - percentage) * Mathf.Max(Screen.width, Screen.height) / 2);
+        return new Vector2(Screen.width / 2 - thresholdBorder, Screen.height / 2 - thresholdBorder);
     }
 
     /// <summary>
@@ -299,12 +306,12 @@ public class CameraController : MonoBehaviour
     public bool offsetOffPlayerX()
     {
         Vector2 projection = Vector3.Project(Offset, transform.right);
-        return projection.magnitude > cameraOffsetThreshold;
+        return projection.magnitude > cameraOffsetGestureThreshold;
     }
     public bool offsetOffPlayerY()
     {
         Vector2 projection = Vector3.Project(Offset, transform.up);
-        return projection.magnitude > cameraOffsetThreshold;
+        return projection.magnitude > cameraOffsetGestureThreshold;
     }
 
     public delegate void OnOffsetChange();

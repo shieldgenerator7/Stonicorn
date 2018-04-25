@@ -89,10 +89,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   zoomSpeed: 0.25
-  cameraOffsetThreshold: 2
+  cameraOffsetGestureThreshold: 2
+  screenEdgeThreshold: 0.9
+  autoOffsetScreenEdgeThreshold: 0.5
   cameraMoveFactor: 5
   autoOffsetDuration: 1
   autoOffsetAngleThreshold: 15
+  maxTapDelay: 0.5
 --- !u!124 &12431338
 Behaviour:
   m_ObjectHideFlags: 1
