@@ -52,8 +52,7 @@ public class CameraController : MonoBehaviour
     private float zoomStartTime = 0.0f;//when the zoom last started
     private float startZoomScale;//the orthographicsize at the start and end of a zoom
 
-    private bool lockX = false;//keep the camera from moving in its x direction
-    private bool lockY = false;//keep the camera from moving in its y direction
+    private bool lockCamera = false;//keep the camera from moving
 
     private int prevScreenWidth;
     private int prevScreenHeight;
@@ -125,7 +124,7 @@ public class CameraController : MonoBehaviour
     {
         if (!gm.cameraDragInProgress)
         {
-            if (!lockX || !lockY)
+            if (!lockCamera)
             {
                 //Target
                 Vector3 target = player.transform.position + offset + (Vector3)autoOffset;
@@ -178,25 +177,20 @@ public class CameraController : MonoBehaviour
             || Mathf.Abs(screenPos.y - centerScreen.y) >= threshold.y)
         {
             //and new pos is further from center than old pos,
-            if (Mathf.Abs(screenPos.x - centerScreen.x) > Mathf.Abs(oldScreenPos.x - centerScreen.x))
+            if (Mathf.Abs(screenPos.x - centerScreen.x) > Mathf.Abs(oldScreenPos.x - centerScreen.x)
+                || Mathf.Abs(screenPos.y - centerScreen.y) >= Mathf.Abs(oldScreenPos.y - centerScreen.y))
             {
-                //zero the offset
-                Vector2 projection = Vector3.Project((Vector2)Offset, transform.right);
-                Offset -= (Vector3)projection;
-                lockX = false;
-            }
-            if (Mathf.Abs(screenPos.y - centerScreen.y) >= Mathf.Abs(oldScreenPos.y - centerScreen.y))
-            {
-                Vector2 projection = Vector3.Project((Vector2)Offset, transform.up);
-                Offset -= (Vector3)projection;
-                lockY = false;
+                //zero the offset,
+                //but keep the z coordinate
+                Offset -= (Vector3)(Vector2)Offset;
+                lockCamera = false;
             }
         }
 
         //
         // Auto Offset
         //
-        if (!lockX || !lockY)
+        if (!lockCamera)
         {
             Vector2 newBuffer = (newPos - oldPos);
             //If the last teleport direction is similar enough to the most recent teleport direction
@@ -204,24 +198,8 @@ public class CameraController : MonoBehaviour
             {
                 //Update newBuffer in respect to tap speed
                 newBuffer *= Mathf.SmoothStep(0, maxTapDelay, 1 - (Time.time - lastTapTime)) / maxTapDelay;
-                //Update the auto offset
-                if (lockX || lockY)
-                {
-                    if (!lockX)
-                    {
-                        Vector2 projection = Vector3.Project(newBuffer, transform.right);
-                        autoOffset += projection;
-                    }
-                    if (!lockY)
-                    {
-                        Vector2 projection = Vector3.Project(newBuffer, transform.up);
-                        autoOffset += projection;
-                    }
-                }
-                else
-                {
-                    autoOffset += newBuffer;
-                }
+                //Update the auto offset                
+                autoOffset += newBuffer;
                 //Cap the auto offset
                 Vector2 autoScreenPos = cam.WorldToScreenPoint(autoOffset + (Vector2)transform.position);
                 Vector2 playableAutoOffsetSize = getPlayableScreenSize(autoOffsetScreenEdgeThreshold);
@@ -268,16 +246,12 @@ public class CameraController : MonoBehaviour
     public void pinPoint()
     {
         Offset = transform.position - player.transform.position;
-        if (offsetOffPlayerX())
+        if (offsetOffPlayer())
         {
-            lockX = true;
+            lockCamera = true;
         }
-        if (offsetOffPlayerY())
-        {
-            lockY = true;
-        }
-
         autoOffset = Vector2.zero;
+        previousMoveDir = Vector2.zero;
     }
 
     /// <summary>
