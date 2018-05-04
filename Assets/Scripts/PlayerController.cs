@@ -595,17 +595,21 @@ public class PlayerController : MonoBehaviour
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
         pc2d.offset = rOffset;
         RaycastHit2D[] rh2ds = new RaycastHit2D[10];
-        pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        int count = pc2d.Cast(Vector2.zero, rh2ds, 0, true);
         pc2d.offset = savedOffset;
-        foreach (RaycastHit2D rh2d in rh2ds)
+        for (int i = 0; i < count; i++)
         {
-            if (rh2d.collider == null)
-            {
-                break;//reached the end of the valid RaycastHit2Ds
-            }
+            RaycastHit2D rh2d = rh2ds[i];
             GameObject go = rh2d.collider.gameObject;
             if (!rh2d.collider.isTrigger)
             {
+                if (go.CompareTag("Checkpoint_Root"))
+                {
+                    if (rh2d.collider.OverlapPoint(pos))
+                    {
+                        return go.transform.position;
+                    }
+                }
                 if (!go.Equals(transform.gameObject))
                 {
                     Vector3 closPos = rh2d.point;
@@ -614,7 +618,6 @@ public class PlayerController : MonoBehaviour
                     float d2 = (size.magnitude) - Vector3.Distance(pos, closPos);
                     moveDir += dir.normalized * d2;
                 }
-
             }
             //if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
             //{
