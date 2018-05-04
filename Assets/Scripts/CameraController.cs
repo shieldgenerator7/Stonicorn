@@ -148,6 +148,14 @@ public class CameraController : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                if (!inView(player.transform.position))
+                {
+                    lockCamera = false;
+                    recenter();
+                }
+            }
 
             //Rotate Transform
             if (transform.rotation != rotation)
@@ -180,9 +188,8 @@ public class CameraController : MonoBehaviour
             if (Mathf.Abs(screenPos.x - centerScreen.x) > Mathf.Abs(oldScreenPos.x - centerScreen.x)
                 || Mathf.Abs(screenPos.y - centerScreen.y) >= Mathf.Abs(oldScreenPos.y - centerScreen.y))
             {
-                //zero the offset,
-                //but keep the z coordinate
-                Offset -= (Vector3)(Vector2)Offset;
+                //zero the offset
+                recenter();
                 lockCamera = false;
             }
         }
@@ -255,7 +262,7 @@ public class CameraController : MonoBehaviour
     }
 
     /// <summary>
-    /// Recenters on Merky
+    /// Recenters on Merky, zeroing the x and y coordinates of the offset
     /// </summary>
     public void recenter()
     {
