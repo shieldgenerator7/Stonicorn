@@ -197,10 +197,13 @@ public class EnemySimple : MonoBehaviour
         Vector2 senseDir = ahead + length;
         Vector2 offset = transform.up.normalized * 0.25f;
         Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);
-        RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position +offset + ahead, length, distance);
-        if (rch2d)
+        RaycastHit2D[] rch2ds = Physics2D.RaycastAll((Vector2)transform.position +offset + ahead, length, distance);
+        foreach (RaycastHit2D rch2d in rch2ds)
         {
-            return rch2d.collider.gameObject;
+            if (!rch2d.collider.isTrigger)
+            {
+                return rch2d.collider.gameObject;
+            }
         }
         return null;
     }
