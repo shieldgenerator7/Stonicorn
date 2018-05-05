@@ -195,9 +195,9 @@ public class EnemySimple : MonoBehaviour
     }
     GameObject senseWallInFront()
     {
-        Vector2 ahead = direction;
+        Vector2 ahead = direction * transform.localScale.x;
         float distance = 0.1f;
-        Vector2 length = direction * distance;
+        Vector2 length = direction * distance * transform.localScale.x;
         Vector2 senseDir = ahead + length;
         Vector2 offset = transform.up.normalized * 0.25f;
         Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);
