@@ -7,7 +7,7 @@ public class EnemySimple : MonoBehaviour
 
     public float speed = 1.0f;//units per second
     public float healsPerSecond = 5.0f;
-    [Range(0,1)]
+    [Range(0, 1)]
     public float onDamageHealPercent = 0.2f;//what percent of damage it does to others it heals itself
     public bool activeMove = false;//controls whether it can move or not
     public float allowedLeftAndRightVariance = 25.0f;//used to determine if a colliding object is left or right of this enemy
@@ -47,7 +47,8 @@ public class EnemySimple : MonoBehaviour
     private void Update()
     {
         losToPlayer = false;
-        if ((player.transform.position - transform.position).sqrMagnitude <= sightRange * sightRange) {
+        if ((player.transform.position - transform.position).sqrMagnitude <= sightRange * sightRange)
+        {
             losToPlayer = Utility.lineOfSight(gameObject, player);
         }
         if (losToPlayer)
@@ -92,7 +93,7 @@ public class EnemySimple : MonoBehaviour
             {
                 rb2d.AddForce(rb2d.mass * direction * tempSpeed);
             }
-            rb2d.AddForce(rb2d.mass * - transform.up * 0.1f);
+            rb2d.AddForce(rb2d.mass * -transform.up * 0.1f);
             //Cliff detection
             if (!losToPlayer) //nothing between it and the player
             {
@@ -150,7 +151,7 @@ public class EnemySimple : MonoBehaviour
             {
                 quickTurn = true;
             }
-        }        
+        }
     }
 
     /// <summary>
@@ -182,10 +183,13 @@ public class EnemySimple : MonoBehaviour
         Vector2 ahead = direction * 2;
         Vector2 senseDir = ahead - (Vector2)transform.up.normalized;
         Debug.DrawLine((Vector2)transform.position + ahead, senseDir + (Vector2)transform.position, Color.blue);
-        RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position + ahead, -transform.up, 1);
-        if (rch2d)
+        RaycastHit2D[] rch2ds = Physics2D.RaycastAll((Vector2)transform.position + ahead, -transform.up, 1);
+        foreach (RaycastHit2D rch2d in rch2ds)
         {
-            return rch2d.collider.gameObject;
+            if (!rch2d.collider.isTrigger)
+            {
+                return rch2d.collider.gameObject;
+            }
         }
         return null;
     }
@@ -197,7 +201,7 @@ public class EnemySimple : MonoBehaviour
         Vector2 senseDir = ahead + length;
         Vector2 offset = transform.up.normalized * 0.25f;
         Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);
-        RaycastHit2D[] rch2ds = Physics2D.RaycastAll((Vector2)transform.position +offset + ahead, length, distance);
+        RaycastHit2D[] rch2ds = Physics2D.RaycastAll((Vector2)transform.position + offset + ahead, length, distance);
         foreach (RaycastHit2D rch2d in rch2ds)
         {
             if (!rch2d.collider.isTrigger)
