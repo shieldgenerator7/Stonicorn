@@ -105,7 +105,7 @@ public class CustomMenu
     [MenuItem("SG7/Build/Build Mac OS X %#l")]
     public static void buildMacOSX()
     {
-        build(BuildTarget.StandaloneOSXUniversal, "");
+        build(BuildTarget.StandaloneOSX, "");
     }
     public static void build(BuildTarget buildTarget, string extension)
     {
