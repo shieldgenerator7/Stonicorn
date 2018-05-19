@@ -8,7 +8,7 @@ public class GestureProfile
     protected PlayerController plrController;
     protected Rigidbody2D rb2dPlayer;
     protected Camera cam;
-    protected CameraController cmaController;
+    protected CameraController camController;
     protected GameManager gm;
     protected GestureManager gestureManager;
 
@@ -18,7 +18,7 @@ public class GestureProfile
         plrController = player.GetComponent<PlayerController>();
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
         cam = Camera.main;
-        cmaController = cam.GetComponent<CameraController>();
+        camController = cam.GetComponent<CameraController>();
         gm = GameObject.FindObjectOfType<GameManager>();
         gestureManager = GameObject.FindObjectOfType<GestureManager>();
     }
@@ -54,11 +54,12 @@ public class GestureProfile
     {
 
     }
-    public virtual void processPinchGesture(int adjustment)
+    public virtual void processPinchGesture(float zoomLevel)
     {
-        cmaController.adjustScalePoint(adjustment);
+        camController.ZoomLevel = zoomLevel;
         //GestureProfile switcher
-        if (cmaController.getScalePointIndex() == CameraController.SCALEPOINT_TIMEREWIND)
+        if (zoomLevel > camController.scalePoints[CameraController.SCALEPOINT_TIMEREWIND-1].absoluteScalePoint())
+        //if (camController.getScalePointIndex() == CameraController.SCALEPOINT_TIMEREWIND)
         {
             gestureManager.switchGestureProfile("Rewind");
         }

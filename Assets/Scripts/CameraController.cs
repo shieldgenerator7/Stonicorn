@@ -57,7 +57,17 @@ public class CameraController : MonoBehaviour
     private int prevScreenWidth;
     private int prevScreenHeight;
 
-    struct ScalePoint
+    public float ZoomLevel
+    {
+        get { return scale; }
+        set
+        {
+            scale = value;
+            updateOrthographicSize();
+        }
+    }
+
+    public struct ScalePoint
     {
         private float scalePoint;
         private bool relative;//true if relative to player's range, false if absolute
@@ -77,7 +87,7 @@ public class CameraController : MonoBehaviour
             return scalePoint;
         }
     }
-    List<ScalePoint> scalePoints = new List<ScalePoint>();
+    public List<ScalePoint> scalePoints = new List<ScalePoint>();
     int scalePointIndex = 1;//the index of the current scalePoint in scalePoints
     public static int SCALEPOINT_DEFAULT = 2;//the index of the default scalepoint
     public static int SCALEPOINT_TIMEREWIND = 3;//the index of the time rewind mechanic
@@ -396,6 +406,10 @@ public class CameraController : MonoBehaviour
         //2017-10-31: copied from an answer by Taylor-Libonati: http://answers.unity3d.com/questions/720447/if-game-object-is-in-cameras-field-of-view.html
         Vector3 screenPoint = cam.WorldToViewportPoint(position);
         return screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+    }
+    public float distanceInWorldCoordinates(Vector2 screenPos1, Vector2 screenPos2)
+    {
+        return Vector2.Distance(cam.ScreenToWorldPoint(screenPos1), cam.ScreenToWorldPoint(screenPos2));
     }
 
     void cleanDelegates(Scene s)

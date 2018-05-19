@@ -9,7 +9,7 @@ public class GestureManager : SavableMonoBehaviour
     private PlayerController plrController;
     private Rigidbody2D rb2dPlayer;
     public Camera cam;
-    private CameraController cmaController;
+    private CameraController camController;
 
     //Settings
     public float dragThreshold = 50;//how far from the original mouse position the current position has to be to count as a drag
@@ -29,6 +29,7 @@ public class GestureManager : SavableMonoBehaviour
     private Vector3 origCP;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
     private float origTime = 0f;//"original time": the clock time at the last mouse down (or tap down) event
     private int origScalePoint;//the original scale point of the camera
+    private float origOrthoSize = 1f;//"original orthographic size"
     //Current Positions
     private Vector3 curMP;//"current mouse position"
     private Vector3 curMP2;//"current mouse position" for second touch
@@ -63,7 +64,7 @@ public class GestureManager : SavableMonoBehaviour
     {
         plrController = player.GetComponent<PlayerController>();
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
-        cmaController = cam.GetComponent<CameraController>();
+        camController = cam.GetComponent<CameraController>();
 
         gestureProfiles.Add("Main", new GestureProfile());
         gestureProfiles.Add("Rewind", new RewindGestureProfile());
@@ -109,7 +110,8 @@ public class GestureManager : SavableMonoBehaviour
             {
                 clickState = ClickState.Began;
                 origMP2 = Input.GetTouch(1).position;
-                origScalePoint = cmaController.getScalePointIndex();
+                origScalePoint = camController.getScalePointIndex();
+                origOrthoSize = camController.ZoomLevel;
             }
             else if (Input.GetTouch(1).phase == TouchPhase.Ended)
             {
@@ -260,7 +262,7 @@ public class GestureManager : SavableMonoBehaviour
                     {
                         //Move the camera
                         cam.transform.position = newPos;
-                        cmaController.pinPoint();
+                        camController.pinPoint();
                     }
                 }
                 else if (isHoldGesture)
@@ -272,7 +274,7 @@ public class GestureManager : SavableMonoBehaviour
             {
                 if (isDrag)
                 {
-                    cmaController.pinPoint();
+                    camController.pinPoint();
                 }
                 else if (isHoldGesture)
                 {
@@ -359,20 +361,18 @@ public class GestureManager : SavableMonoBehaviour
                     Vector2 touchOnePrevPos = origMP2;
 
                     // Find the magnitude of the vector (the distance) between the touches in each frame.
-                    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-                    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+                    float prevTouchDeltaMag = camController.distanceInWorldCoordinates(touchZeroPrevPos, touchOnePrevPos);
+                    float touchDeltaMag = camController.distanceInWorldCoordinates(touchZero.position,touchOne.position);
 
-                    // Find the difference in the distances between each frame.
-                    int deltaMagnitudeQuo = (int)System.Math.Truncate(Mathf.Max(prevTouchDeltaMag, touchDeltaMag) / Mathf.Min(prevTouchDeltaMag, touchDeltaMag));
-                    deltaMagnitudeQuo *= (int)Mathf.Sign(prevTouchDeltaMag - touchDeltaMag);
+                    float newZoomLevel = origOrthoSize * prevTouchDeltaMag / touchDeltaMag;
 
-                    //Update the camera's scale point index
-                    currentGP.processPinchGesture(origScalePoint + deltaMagnitudeQuo - cmaController.getScalePointIndex());
+                    currentGP.processPinchGesture(newZoomLevel);
                 }
             }
             else if (clickState == ClickState.Ended)
             {
-                origScalePoint = cmaController.getScalePointIndex();
+                origScalePoint = camController.getScalePointIndex();
+                origOrthoSize = camController.ZoomLevel;
             }
         }
 
