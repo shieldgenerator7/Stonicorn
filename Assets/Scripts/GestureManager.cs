@@ -344,11 +344,11 @@ public class GestureManager : SavableMonoBehaviour
                 //
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    currentGP.processPinchGesture(1);
+                    currentGP.processPinchGesture(camController.ZoomLevel + 1);
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    currentGP.processPinchGesture(-1);
+                    currentGP.processPinchGesture(camController.ZoomLevel - 1);
                 }
                 //
                 //Pinch Touch Zoom
