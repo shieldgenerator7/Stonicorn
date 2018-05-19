@@ -56,6 +56,11 @@ public class ActivationTrigger : MonoBehaviour
     private bool triggerActive = false;
     private bool zoomLevelActive = false;
 
+    //
+    // Components
+    //
+    private CameraController camController;
+
     private void Start()
     {
         //Camera zoom trigger set up
@@ -63,9 +68,9 @@ public class ActivationTrigger : MonoBehaviour
             || zoomLevelExitAction != ActivationOptions.DO_NOTHING
             || triggerRequireZoom)
         {
-            CameraController cc = FindObjectOfType<CameraController>();
-            cc.onZoomLevelChanged += OnCameraZoomLevelChanged;
-            zoomLevelActive = scalePointInRange(cc.getScalePointIndex());
+            camController = FindObjectOfType<CameraController>();
+            camController.onZoomLevelChanged += OnCameraZoomLevelChanged;
+            zoomLevelActive = scalePointInRange(camController.ZoomLevel);
         }
         //Error checking
         if (Application.isEditor)
@@ -125,15 +130,21 @@ public class ActivationTrigger : MonoBehaviour
         }
     }
 
-    bool scalePointInRange(int scalePoint)
+    bool scalePointInRange(float zoomLevel)
     {
-        return (minZoomScalePoint < 0 || scalePoint >= minZoomScalePoint)
-            && (maxZoomScalePoint < 0 || scalePoint <= maxZoomScalePoint);
+        return (
+                minZoomScalePoint < 0
+                || zoomLevel >= camController.scalePointToZoomLevel(minZoomScalePoint)
+            )
+            && (
+                maxZoomScalePoint < 0
+                || zoomLevel <= camController.scalePointToZoomLevel(maxZoomScalePoint)
+            );
     }
 
-    void OnCameraZoomLevelChanged(int newScalePoint, int delta)
+    void OnCameraZoomLevelChanged(float newZoomLevel, float delta)
     {
-        if (scalePointInRange(newScalePoint))
+        if (scalePointInRange(newZoomLevel))
         {
             if (!zoomRequireTrigger || triggerActive)
             {

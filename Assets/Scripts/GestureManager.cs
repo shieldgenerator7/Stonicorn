@@ -28,7 +28,6 @@ public class GestureManager : SavableMonoBehaviour
     private Vector3 origMP2;//second orginal "mouse position" for second touch
     private Vector3 origCP;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
     private float origTime = 0f;//"original time": the clock time at the last mouse down (or tap down) event
-    private int origScalePoint;//the original scale point of the camera
     private float origOrthoSize = 1f;//"original orthographic size"
     //Current Positions
     private Vector3 curMP;//"current mouse position"
@@ -103,41 +102,43 @@ public class GestureManager : SavableMonoBehaviour
         {
             touchCount = 0;
         }
-        else if (Input.touchCount == 2)
+        else if (Input.touchCount >= 1)
         {
-            touchCount = 2;
-            if (Input.GetTouch(1).phase == TouchPhase.Began)
+            if (Input.touchCount == 1 || clickState == ClickState.None)
             {
-                clickState = ClickState.Began;
-                origMP2 = Input.GetTouch(1).position;
-                origScalePoint = camController.getScalePointIndex();
-                origOrthoSize = camController.ZoomLevel;
+                touchCount = 1;
+                if (Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    clickState = ClickState.Began;
+                    origMP = Input.GetTouch(0).position;
+                }
+                else if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                {
+                    clickState = ClickState.Ended;
+                }
+                else
+                {
+                    clickState = ClickState.InProgress;
+                    curMP = Input.GetTouch(0).position;
+                }
             }
-            else if (Input.GetTouch(1).phase == TouchPhase.Ended)
+            if (Input.touchCount == 2)
             {
-            }
-            else
-            {
-                clickState = ClickState.InProgress;
-                curMP2 = Input.GetTouch(1).position;
-            }
-        }
-        else if (Input.touchCount == 1)
-        {
-            touchCount = 1;
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                clickState = ClickState.Began;
-                origMP = Input.GetTouch(0).position;
-            }
-            else if (Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                clickState = ClickState.Ended;
-            }
-            else
-            {
-                clickState = ClickState.InProgress;
-                curMP = Input.GetTouch(0).position;
+                touchCount = 2;
+                if (Input.GetTouch(1).phase == TouchPhase.Began)
+                {
+                    clickState = ClickState.Began;
+                    origMP2 = Input.GetTouch(1).position;
+                    origOrthoSize = camController.ZoomLevel;
+                }
+                else if (Input.GetTouch(1).phase == TouchPhase.Ended)
+                {
+                }
+                else
+                {
+                    clickState = ClickState.InProgress;
+                    curMP2 = Input.GetTouch(1).position;
+                }
             }
         }
         else if (Input.GetMouseButton(0))
@@ -243,7 +244,7 @@ public class GestureManager : SavableMonoBehaviour
                         cameraDragInProgress = true;
                     }
                 }
-                if (holdTime > holdThreshold*holdThresholdScale)
+                if (holdTime > holdThreshold * holdThresholdScale)
                 {
                     if (!isDrag)
                     {
@@ -324,7 +325,8 @@ public class GestureManager : SavableMonoBehaviour
             }
 
         }
-        else {//touchCount == 0 || touchCount >= 2
+        else
+        {//touchCount == 0 || touchCount >= 2
             if (clickState == ClickState.Began)
             {
             }
@@ -362,7 +364,7 @@ public class GestureManager : SavableMonoBehaviour
 
                     // Find the magnitude of the vector (the distance) between the touches in each frame.
                     float prevTouchDeltaMag = camController.distanceInWorldCoordinates(touchZeroPrevPos, touchOnePrevPos);
-                    float touchDeltaMag = camController.distanceInWorldCoordinates(touchZero.position,touchOne.position);
+                    float touchDeltaMag = camController.distanceInWorldCoordinates(touchZero.position, touchOne.position);
 
                     float newZoomLevel = origOrthoSize * prevTouchDeltaMag / touchDeltaMag;
 
@@ -371,7 +373,6 @@ public class GestureManager : SavableMonoBehaviour
             }
             else if (clickState == ClickState.Ended)
             {
-                origScalePoint = camController.getScalePointIndex();
                 origOrthoSize = camController.ZoomLevel;
             }
         }
@@ -414,7 +415,7 @@ public class GestureManager : SavableMonoBehaviour
         {
             tapCount++;
         }
-        holdThresholdScale = (holdThresholdScale*(tapCount-1) + (holdTime / holdThreshold)) / tapCount;
+        holdThresholdScale = (holdThresholdScale * (tapCount - 1) + (holdTime / holdThreshold)) / tapCount;
         if (holdThresholdScale < 1)
         {
             holdThresholdScale = 1.0f;//keep it from going lower than the default holdThreshold

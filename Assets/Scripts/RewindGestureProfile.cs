@@ -30,7 +30,7 @@ public class RewindGestureProfile: GestureProfile
     {
         camController.ZoomLevel = zoomLevel;
         //GestureProfile switcher
-        if (zoomLevel <= camController.scalePoints[CameraController.SCALEPOINT_TIMEREWIND - 1].absoluteScalePoint()
+        if (zoomLevel <= camController.scalePointToZoomLevel(CameraController.SCALEPOINT_TIMEREWIND - 1)
         //if (camController.getScalePointIndex() < CameraController.SCALEPOINT_TIMEREWIND
             && plrController.isIntact())
         {

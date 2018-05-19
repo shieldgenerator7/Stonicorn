@@ -668,10 +668,11 @@ public class GameManager : MonoBehaviour
             EffectManager.highlightTapArea(Vector2.zero, false);
         }
         gestureManager.switchGestureProfile("Main");
-        if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
+        float defaultZoomLevel = camCtr.scalePointToZoomLevel(CameraController.SCALEPOINT_DEFAULT);
+        if (camCtr.ZoomLevel > defaultZoomLevel)
         {
             //leave this zoom level even if no past merky was chosen
-            camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);
+            camCtr.ZoomLevel = defaultZoomLevel;
         }
         if (gameManagerTapProcessed != null)
         {

@@ -49,8 +49,6 @@ public class CameraController : MonoBehaviour
     private Rigidbody2D playerRB2D;
     private GestureManager gm;
     private PlayerController plyrController;
-    private float zoomStartTime = 0.0f;//when the zoom last started
-    private float startZoomScale;//the orthographicsize at the start and end of a zoom
 
     private bool lockCamera = false;//keep the camera from moving
 
@@ -62,12 +60,21 @@ public class CameraController : MonoBehaviour
         get { return scale; }
         set
         {
+            float prevScale = scale;
             scale = value;
+            scale = Mathf.Clamp(
+                scale,
+                scalePoints[0].absoluteScalePoint(),
+                scalePoints[scalePoints.Count - 1].absoluteScalePoint());
+            if (onZoomLevelChanged != null)
+            {
+                onZoomLevelChanged(scale, scale - prevScale);
+            }
             updateOrthographicSize();
         }
     }
 
-    public struct ScalePoint
+    struct ScalePoint
     {
         private float scalePoint;
         private bool relative;//true if relative to player's range, false if absolute
@@ -87,8 +94,7 @@ public class CameraController : MonoBehaviour
             return scalePoint;
         }
     }
-    public List<ScalePoint> scalePoints = new List<ScalePoint>();
-    int scalePointIndex = 1;//the index of the current scalePoint in scalePoints
+    List<ScalePoint> scalePoints = new List<ScalePoint>();
     public static int SCALEPOINT_DEFAULT = 2;//the index of the default scalepoint
     public static int SCALEPOINT_TIMEREWIND = 3;//the index of the time rewind mechanic
 
@@ -109,8 +115,7 @@ public class CameraController : MonoBehaviour
         scalePoints.Add(new ScalePoint(2, true, plyrController));
         scalePoints.Add(new ScalePoint(4, true, plyrController));
         //Set the initialize scale point
-        setScalePoint(1);
-        scale = scalePoints[scalePointIndex].absoluteScalePoint();
+        scale = scalePoints[1].absoluteScalePoint();
         //Clean Delegates set up
         SceneManager.sceneUnloaded += cleanDelegates;
     }
@@ -122,10 +127,6 @@ public class CameraController : MonoBehaviour
             prevScreenWidth = Screen.width;
             prevScreenHeight = Screen.height;
             updateOrthographicSize();
-        }
-        if (zoomStartTime != 0)
-        {
-            zoomToScalePoint();
         }
     }
 
@@ -313,75 +314,14 @@ public class CameraController : MonoBehaviour
         this.rotation = rotation;
     }
 
-    public void zoomToScalePoint()
-    {
-        float absSP = scalePoints[scalePointIndex].absoluteScalePoint();
-        scale = Mathf.Lerp(
-            startZoomScale,
-            absSP,
-            (Time.time - zoomStartTime) / zoomSpeed);
-        updateOrthographicSize();
-        if (scale == absSP)
-        {
-            zoomStartTime = startZoomScale = 0.0f;
-        }
 
-        //Make sure player is still in view
-        float width = Vector3.Distance(cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0)), cam.ScreenToWorldPoint(new Vector3(0, 0)));
-        float height = Vector3.Distance(cam.ScreenToWorldPoint(new Vector3(0, cam.pixelHeight)), cam.ScreenToWorldPoint(new Vector3(0, 0)));
-        float radius = Mathf.Min(width, height) / 2;
-        float curDistance = Vector3.Distance(player.transform.position, transform.position);
-        if (curDistance > radius)
-        {
-            float prevZ = offset.z;
-            Offset = new Vector2(offset.x, offset.y).normalized * radius;
-            offset.z = prevZ;
-            refocus();
-        }
-    }
 
-    public void setScalePoint(int scalePointIndex)
-    {
-        int spDelta = scalePointIndex - this.scalePointIndex;//"scale point delta"
-        //Start the zoom-over-time process
-        if (startZoomScale == 0)
-        {
-            startZoomScale = scalePoints[this.scalePointIndex].absoluteScalePoint();
-        }
-        else
-        {
-            startZoomScale = scale;
-        }
-        zoomStartTime = Time.time;
-        //Set the new scale point index
-        if (scalePointIndex < 0)
-        {
-            scalePointIndex = 0;
-        }
-        else if (scalePointIndex > scalePoints.Count - 1)
-        {
-            scalePointIndex = scalePoints.Count - 1;
-        }
-        this.scalePointIndex = scalePointIndex;
-        if (onZoomLevelChanged != null)
-        {
-            onZoomLevelChanged(this.scalePointIndex, spDelta);
-        }
-    }
-    public void adjustScalePoint(int addend)
-    {
-        setScalePoint(scalePointIndex + addend);
-    }
-    public int getScalePointIndex()
-    {
-        return scalePointIndex;
-    }
     /// <summary>
     /// Called when the zoom level has changed
     /// </summary>
-    /// <param name="newScalePoint">The now current scale point</param>
+    /// <param name="newZoomLevel">The now current zoom level</param>
     /// <param name="delta">The intended zoom in/out change: negative = in, positive = out</param>
-    public delegate void OnZoomLevelChanged(int newScalePoint, int delta);
+    public delegate void OnZoomLevelChanged(float newZoomLevel, float delta);
     public OnZoomLevelChanged onZoomLevelChanged;
 
     public void updateOrthographicSize()
@@ -411,7 +351,11 @@ public class CameraController : MonoBehaviour
     {
         return Vector2.Distance(cam.ScreenToWorldPoint(screenPos1), cam.ScreenToWorldPoint(screenPos2));
     }
-
+    public float scalePointToZoomLevel(int scalePoint)
+    {
+        return scalePoints[scalePoint].absoluteScalePoint();
+    }
+    
     void cleanDelegates(Scene s)
     {
         if (onZoomLevelChanged != null)
