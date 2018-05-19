@@ -249,7 +249,7 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 if (holdTime > holdThreshold * holdThresholdScale)
                 {
-                    if (!isDrag)
+                    if (!isDrag && !isPinchGesture)
                     {
                         isTapGesture = false;
                         isHoldGesture = true;
