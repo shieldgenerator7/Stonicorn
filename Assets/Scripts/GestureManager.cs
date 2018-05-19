@@ -47,6 +47,7 @@ public class GestureManager : SavableMonoBehaviour
     private bool isDrag = false;
     private bool isTapGesture = true;
     private bool isHoldGesture = false;
+    private bool isPinchGesture = false;
     public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
@@ -124,6 +125,7 @@ public class GestureManager : SavableMonoBehaviour
             }
             if (Input.touchCount == 2)
             {
+                isPinchGesture = true;
                 touchCount = 2;
                 if (Input.GetTouch(1).phase == TouchPhase.Began)
                 {
@@ -161,6 +163,7 @@ public class GestureManager : SavableMonoBehaviour
         }
         else if (Input.GetAxis("Mouse ScrollWheel") != 0)
         {
+            isPinchGesture = true;
             clickState = ClickState.InProgress;
         }
         else if (Input.touchCount == 0 && !Input.GetMouseButton(0))
@@ -213,7 +216,7 @@ public class GestureManager : SavableMonoBehaviour
         {
             if (clickState == ClickState.Began)
             {
-                if (touchCount < 2)
+                if (!isPinchGesture)
                 {
                     //Set all flags = true
                     cameraDragInProgress = false;
@@ -317,6 +320,7 @@ public class GestureManager : SavableMonoBehaviour
                 isDrag = false;
                 isTapGesture = false;
                 isHoldGesture = false;
+                isPinchGesture = false;
                 Time.timeScale = 1;
             }
             else
@@ -325,7 +329,7 @@ public class GestureManager : SavableMonoBehaviour
             }
 
         }
-        else
+        if (isPinchGesture)
         {//touchCount == 0 || touchCount >= 2
             if (clickState == ClickState.Began)
             {
