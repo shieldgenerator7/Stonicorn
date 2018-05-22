@@ -105,17 +105,21 @@ public class GestureManager : SavableMonoBehaviour
         }
         else if (Input.touchCount >= 1)
         {
-            if (Input.touchCount == 1 || clickState == ClickState.None)
             {
-                touchCount = 1;
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    clickState = ClickState.Began;
-                    origMP = Input.GetTouch(0).position;
+                    beginSingleTapGesture();
                 }
                 else if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
                     clickState = ClickState.Ended;
+                    if (touchCount == 2)
+                    {
+                        if (Input.GetTouch(1).phase != TouchPhase.Ended)
+                        {
+                            beginSingleTapGesture(1);
+                        }
+                    }
                 }
                 else
                 {
@@ -125,16 +129,22 @@ public class GestureManager : SavableMonoBehaviour
             }
             if (Input.touchCount == 2)
             {
-                isPinchGesture = true;
-                touchCount = 2;
                 if (Input.GetTouch(1).phase == TouchPhase.Began)
                 {
+                    isPinchGesture = true;
+                    touchCount = 2;
                     clickState = ClickState.Began;
                     origMP2 = Input.GetTouch(1).position;
                     origOrthoSize = camController.ZoomLevel;
+                    //Update origMP
+                    origMP = Input.GetTouch(0).position;
                 }
                 else if (Input.GetTouch(1).phase == TouchPhase.Ended)
                 {
+                    if (Input.GetTouch(0).phase != TouchPhase.Ended)
+                    {
+                        beginSingleTapGesture();
+                    }
                 }
                 else
                 {
@@ -240,7 +250,7 @@ public class GestureManager : SavableMonoBehaviour
             {
                 if (maxMouseMovement > dragThreshold)
                 {
-                    if (!isHoldGesture)
+                    if (!isHoldGesture && !isPinchGesture)
                     {
                         isTapGesture = false;
                         isDrag = true;
@@ -398,6 +408,19 @@ public class GestureManager : SavableMonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Used in Update() to convey that the Input
+    /// indicates the beginning of a new single-tap gesture,
+    /// used often to transition between gestures with continuous input
+    /// </summary>
+    /// <param name="tapIndex">The index of the tap in Input.GetTouch()</param>
+    void beginSingleTapGesture(int tapIndex = 0)
+    {
+        touchCount = 1;
+        clickState = ClickState.Began;
+        origMP = Input.GetTouch(tapIndex).position;
+    }
+    
     /// <summary>
     /// Accepts the given holdTime as not a hold but a tap and adjusts holdThresholdScale
     /// Used by outside classes to indicate that a tap gesture was incorrectly classified as a hold gesture
