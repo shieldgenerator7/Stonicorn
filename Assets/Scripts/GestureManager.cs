@@ -182,7 +182,6 @@ public class GestureManager : SavableMonoBehaviour
         {
             touchCount = 0;
             clickState = ClickState.None;
-            isCameraMovementOnly = false;
         }
 
         //
@@ -229,6 +228,10 @@ public class GestureManager : SavableMonoBehaviour
                 if (!isCameraMovementOnly)
                 {
                     isTapGesture = true;
+                }
+                else
+                {
+                    isTapGesture = false;
                 }
                 isHoldGesture = false;
                 isPinchGesture = touchCount == 2;
@@ -329,6 +332,7 @@ public class GestureManager : SavableMonoBehaviour
                 isTapGesture = false;
                 isHoldGesture = false;
                 isPinchGesture = false;
+                isCameraMovementOnly = false;
                 Time.timeScale = 1;
             }
             else
