@@ -48,6 +48,7 @@ public class GestureManager : SavableMonoBehaviour
     private bool isTapGesture = true;
     private bool isHoldGesture = false;
     private bool isPinchGesture = false;
+    private bool isCameraMovementOnly = false;//true to make only the camera move until the gesture is over
     public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
@@ -119,6 +120,14 @@ public class GestureManager : SavableMonoBehaviour
                         {
                             beginSingleTapGesture(1);
                         }
+                        else
+                        {
+                            isCameraMovementOnly = false;
+                        }
+                    }
+                    else
+                    {
+                        isCameraMovementOnly = false;
                     }
                 }
                 else
@@ -132,6 +141,7 @@ public class GestureManager : SavableMonoBehaviour
                 if (Input.GetTouch(1).phase == TouchPhase.Began)
                 {
                     isPinchGesture = true;
+                    isCameraMovementOnly = true;
                     touchCount = 2;
                     clickState = ClickState.Began;
                     origMP2 = Input.GetTouch(1).position;
@@ -144,6 +154,10 @@ public class GestureManager : SavableMonoBehaviour
                     if (Input.GetTouch(0).phase != TouchPhase.Ended)
                     {
                         beginSingleTapGesture();
+                    }
+                    else
+                    {
+                        isCameraMovementOnly = false;
                     }
                 }
                 else
@@ -189,18 +203,12 @@ public class GestureManager : SavableMonoBehaviour
         switch (clickState)
         {
             case ClickState.Began:
-                if (touchCount < 2)
-                {
-                    curMP = origMP;
-                    maxMouseMovement = 0;
-                    origCP = cam.transform.position - player.transform.position;
-                    origTime = Time.time;
-                    curTime = origTime;
-                }
-                else if (touchCount == 2)
-                {
-                    curMP2 = origMP2;
-                }
+                curMP = origMP;
+                maxMouseMovement = 0;
+                origCP = cam.transform.position - player.transform.position;
+                origTime = Time.time;
+                curTime = origTime;
+                curMP2 = origMP2;
                 break;
             case ClickState.Ended: //do the same thing you would for "in progress"
             case ClickState.InProgress:
@@ -226,23 +234,24 @@ public class GestureManager : SavableMonoBehaviour
         {
             if (clickState == ClickState.Began)
             {
-                if (!isPinchGesture)
+                //Set all flags = true
+                cameraDragInProgress = false;
+                isDrag = false;
+                if (!isCameraMovementOnly)
                 {
-                    //Set all flags = true
-                    cameraDragInProgress = false;
-                    isDrag = false;
                     isTapGesture = true;
-                    isHoldGesture = false;
-                    if (CHEATS_ALLOWED && curMP.x < 20 && curMP.y < 20)
+                }
+                isHoldGesture = false;
+                isPinchGesture = touchCount == 2;
+                if (CHEATS_ALLOWED && curMP.x < 20 && curMP.y < 20)
+                {
+                    cheatTaps++;
+                    cheatTapsTime = Time.time + 1;//give one more second to enter taps
+                    if (cheatTaps >= cheatTapsThreshold)
                     {
-                        cheatTaps++;
-                        cheatTapsTime = Time.time + 1;//give one more second to enter taps
-                        if (cheatTaps >= cheatTapsThreshold)
-                        {
-                            cheatsEnabled = !cheatsEnabled;
-                            cheatTaps = 0;
-                            cheatTapsTime = 0;
-                        }
+                        cheatsEnabled = !cheatsEnabled;
+                        cheatTaps = 0;
+                        cheatTapsTime = 0;
                     }
                 }
             }
@@ -259,7 +268,7 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 if (holdTime > holdThreshold * holdThresholdScale)
                 {
-                    if (!isDrag && !isPinchGesture)
+                    if (!isDrag && !isPinchGesture && !isCameraMovementOnly)
                     {
                         isTapGesture = false;
                         isHoldGesture = true;
@@ -420,7 +429,7 @@ public class GestureManager : SavableMonoBehaviour
         clickState = ClickState.Began;
         origMP = Input.GetTouch(tapIndex).position;
     }
-    
+
     /// <summary>
     /// Accepts the given holdTime as not a hold but a tap and adjusts holdThresholdScale
     /// Used by outside classes to indicate that a tap gesture was incorrectly classified as a hold gesture
