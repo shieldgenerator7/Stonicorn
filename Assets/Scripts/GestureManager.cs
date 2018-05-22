@@ -120,14 +120,6 @@ public class GestureManager : SavableMonoBehaviour
                         {
                             beginSingleTapGesture(1);
                         }
-                        else
-                        {
-                            isCameraMovementOnly = false;
-                        }
-                    }
-                    else
-                    {
-                        isCameraMovementOnly = false;
                     }
                 }
                 else
@@ -154,10 +146,6 @@ public class GestureManager : SavableMonoBehaviour
                     if (Input.GetTouch(0).phase != TouchPhase.Ended)
                     {
                         beginSingleTapGesture();
-                    }
-                    else
-                    {
-                        isCameraMovementOnly = false;
                     }
                 }
                 else
@@ -194,6 +182,7 @@ public class GestureManager : SavableMonoBehaviour
         {
             touchCount = 0;
             clickState = ClickState.None;
+            isCameraMovementOnly = false;
         }
 
         //
