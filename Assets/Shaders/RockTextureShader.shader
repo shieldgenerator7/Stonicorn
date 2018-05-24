@@ -11,7 +11,9 @@ Shader "SG7/RockTextureShader"
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
-		_PatternTex("Pattern Texture", 2D) = "white" {}
+		_PatternTex ("Pattern Texture", 2D) = "white" {}
+		_FilterColor ("Filter Color", Color) = (1,1,1,1)
+		_FilterThreshold ("Filter Threshold", float) = 0.1
 	}
 	SubShader
 	{
@@ -75,24 +77,35 @@ Shader "SG7/RockTextureShader"
 				return modFunction(number*100,divisor*100)/100;
 			}
 			
+			fixed4 _FilterColor;
+			float _FilterThreshold;
+
+			bool colorEqual(fixed4 a, fixed4 b){
+				return
+					abs(a.x - b.x) < _FilterThreshold
+					&& abs(a.y - b.y) < _FilterThreshold
+					&& abs(a.z - b.z) < _FilterThreshold;
+			}
+
 			sampler2D _MainTex;
 			sampler2D _PatternTex;
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv) * i.color
-					* tex2D(_PatternTex, 
-						float2(
-							modFunction(i.uv.x*_MainTex_TexelSize.z,_PatternTex_TexelSize.z) *_PatternTex_TexelSize.x,
-							modFunction(i.uv.y*_MainTex_TexelSize.w,_PatternTex_TexelSize.w) *_PatternTex_TexelSize.y
-						)
-					);
-				// just invert the colors
-				//col.rgb = 1 - col.rgb;
+				fixed4 curColor = tex2D(_MainTex, i.uv);
+				fixed4 col = curColor * i.color;
+				if (colorEqual(curColor, _FilterColor)){
+					col = curColor * i.color
+						* tex2D(_PatternTex, 
+							float2(
+								modFunction(i.uv.x*_MainTex_TexelSize.z,_PatternTex_TexelSize.z) *_PatternTex_TexelSize.x,
+								modFunction(i.uv.y*_MainTex_TexelSize.w,_PatternTex_TexelSize.w) *_PatternTex_TexelSize.y
+							)
+						);
+				}
 				col.rgb *= col.a;
 				return col;
 			}
-
 			
 			ENDCG
 		}
