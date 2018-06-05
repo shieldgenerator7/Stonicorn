@@ -23,6 +23,8 @@ public class EnemySimple : MonoBehaviour
     private bool goingRight = true;//whether the bug is going right relative to its orientation
     private bool healing = false;
     private bool losToPlayer = false;//"Line Of Sight to Player": whether this bug can see the player
+    [Range(0,1)]
+    public float senseVerticalOffset = 0.25f;//how higher up then center point wall detection ray should start
     private static RaycastHit2D[] rch2ds = new RaycastHit2D[10];//for processing collider casts
 
     private Rigidbody2D rb2d;
@@ -72,12 +74,6 @@ public class EnemySimple : MonoBehaviour
             {
                 healing = false;
             }
-        }
-        float facingDir = -1 * Mathf.Sign(direction.x);//times -1 bc the sprite was drawn facing left
-        if (facingDir != transform.localScale.x) {
-            Vector3 scale = transform.localScale;
-            scale.x = facingDir;
-            transform.localScale = scale;
         }
     }
     // Update is called once per frame
@@ -182,6 +178,14 @@ public class EnemySimple : MonoBehaviour
         {
             direction = -transform.right;
         }
+
+        float facingDir = -1 * Mathf.Sign(direction.x);//times -1 bc the sprite was drawn facing left
+        if (facingDir != transform.localScale.x)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Sign(facingDir) * Mathf.Abs(transform.localScale.x);
+            transform.localScale = scale;
+        }
     }
 
     GameObject senseFloorInFront()
@@ -205,7 +209,7 @@ public class EnemySimple : MonoBehaviour
         float distance = 0.1f;
         Vector2 length = direction * distance * Mathf.Abs(transform.localScale.x);
         Vector2 senseDir = ahead + length;
-        Vector2 offset = transform.up.normalized * 0.25f;
+        Vector2 offset = transform.up.normalized * senseVerticalOffset;
         Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);
         RaycastHit2D[] rch2ds = Physics2D.RaycastAll((Vector2)transform.position + offset + ahead, length, distance);
         foreach (RaycastHit2D rch2d in rch2ds)
