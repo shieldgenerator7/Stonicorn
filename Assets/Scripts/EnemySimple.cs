@@ -73,6 +73,12 @@ public class EnemySimple : MonoBehaviour
                 healing = false;
             }
         }
+        float facingDir = -1 * Mathf.Sign(direction.x);//times -1 bc the sprite was drawn facing left
+        if (facingDir != transform.localScale.x) {
+            Vector3 scale = transform.localScale;
+            scale.x = facingDir;
+            transform.localScale = scale;
+        }
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -195,9 +201,9 @@ public class EnemySimple : MonoBehaviour
     }
     GameObject senseWallInFront()
     {
-        Vector2 ahead = direction * transform.localScale.x;
+        Vector2 ahead = direction * Mathf.Abs(transform.localScale.x);
         float distance = 0.1f;
-        Vector2 length = direction * distance * transform.localScale.x;
+        Vector2 length = direction * distance * Mathf.Abs(transform.localScale.x);
         Vector2 senseDir = ahead + length;
         Vector2 offset = transform.up.normalized * 0.25f;
         Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);

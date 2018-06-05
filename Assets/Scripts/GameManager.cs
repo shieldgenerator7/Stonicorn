@@ -172,6 +172,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (instance == null)
+        {
+            //2018-06-04: band aid code
+            instance = this;
+        }
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
@@ -545,6 +550,10 @@ public class GameManager : MonoBehaviour
 
     public static GameObject getPlayerObject()
     {
+        if (playerObject == null)
+        {
+            GameObject.FindGameObjectWithTag(playerTag);
+        }
         return playerObject;
     }
     public static int getCurrentStateId()
