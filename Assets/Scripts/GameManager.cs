@@ -629,10 +629,13 @@ public class GameManager : MonoBehaviour
         }
         GameState final = null;
         GameState prevFinal = null;
+        //Sprite detection pass
         foreach (GameState gs in gameStates)
         {
+            //don't include last game state if merky is shattered
             if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
-            {//don't include last game state if merky is shattered
+            {
+                //Check sprite overlap
                 if (gs.checkRepresentation(curMPWorld))
                 {
                     if (final == null || gs.id > final.id)//assuming the later ones have higher id values
@@ -643,6 +646,27 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        //Collider detection pass
+        if (final == null)
+        {
+            foreach (GameState gs in gameStates)
+            {
+                //don't include last game state if merky is shattered
+                if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+                {
+                    //Check collider overlap
+                    if (gs.checkRepresentation(curMPWorld, false))
+                    {
+                        if (final == null || gs.id > final.id)//assuming the later ones have higher id values
+                        {
+                            prevFinal = final;//keep the second-to-latest one
+                            final = gs;//keep the latest one
+                        }
+                    }
+                }
+            }
+        }
+        //Process tapped game state
         if (final != null)
         {
             if (final.id == chosenId)

@@ -128,9 +128,16 @@ public class GameState
             ps.Stop();
         }
     }
-    public bool checkRepresentation(Vector3 touchPoint)
+    public bool checkRepresentation(Vector3 touchPoint, bool checkSprite = true)
     {
-        return representation.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
+        if (checkSprite)
+        {
+            return representation.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
+        }
+        else
+        {
+            return representation.GetComponent<Collider2D>().OverlapPoint(touchPoint);
+        }
     }
     public void hideRepresentation()
     {
