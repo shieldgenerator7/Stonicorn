@@ -7,7 +7,7 @@ public class GravityZone : MonoBehaviour
     public float gravityScale = 9.81f;
     public bool mainGravityZone = true;//true to change camera angle, false to not
     private Vector2 gravityVector;
-    private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
+    private HashSet<Rigidbody2D> tenants = new HashSet<Rigidbody2D>();//the list of colliders in this zone
     private bool playerIsTenant = false;//whether the player is inside this GravityZone
 
     private static RaycastHit2D[] rch2dStartup = new RaycastHit2D[100];
@@ -64,14 +64,8 @@ public class GravityZone : MonoBehaviour
         {
             return;//don't do anything if tie is rewinding
         }
-        bool cleanNeeded = false;
         foreach (Rigidbody2D rb2d in tenants)
         {
-            if (rb2d == null || ReferenceEquals(rb2d, null))
-            {
-                cleanNeeded = true;
-                continue;
-            }
             Vector3 vector = gravityVector * rb2d.mass;
             GravityAccepter ga = rb2d.gameObject.GetComponent<GravityAccepter>();
             if (ga)
@@ -86,16 +80,6 @@ public class GravityZone : MonoBehaviour
             else
             {
                 rb2d.AddForce(vector);
-            }
-        }
-        if (cleanNeeded)
-        {
-            for (int i = tenants.Count - 1; i >= 0; i--)
-            {
-                if (tenants[i] == null || ReferenceEquals(tenants[i], null))
-                {
-                    tenants.RemoveAt(i);
-                }
             }
         }
     }
