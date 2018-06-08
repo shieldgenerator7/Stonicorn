@@ -9,6 +9,7 @@ public class SimpleMovement : MonoBehaviour
     public Vector2 direction;
     public float duration;//in seconds
     public float endDelay;//delay after reaching the end before resetting to the beginning
+    public bool roundTrip = false;//true: move backwards instead of jumping to start pos
     
     private Vector2 startPosition;
 
@@ -16,6 +17,7 @@ public class SimpleMovement : MonoBehaviour
     private float speed;
     private Vector2 endPosition;
     private float endDelayStartTime = 0;
+    private bool forwards = true;//true to return back to start
 
     // Use this for initialization
     void Start()
@@ -32,20 +34,42 @@ public class SimpleMovement : MonoBehaviour
         {
             if (Time.time > endDelayStartTime + endDelay)
             {
-                transform.position = startPosition;
                 endDelayStartTime = 0;
+                if (roundTrip)
+                {
+                    forwards = !forwards;
+                }
+                else
+                {
+                    transform.position = startPosition;
+                }
             }
         }
         else
         {
-            transform.position = Vector2.MoveTowards(
-                transform.position,
-                endPosition,
-                speed * Time.deltaTime
-                );
-            if (((Vector2)transform.position - endPosition).sqrMagnitude == 0)
+            if (forwards)
             {
-                endDelayStartTime = Time.time;
+                transform.position = Vector2.MoveTowards(
+                    transform.position,
+                    endPosition,
+                    speed * Time.deltaTime
+                    );
+                if ((Vector2)transform.position == endPosition)
+                {
+                    endDelayStartTime = Time.time;
+                }
+            }
+            else
+            {
+                transform.position = Vector2.MoveTowards(
+                    transform.position,
+                    startPosition,
+                    speed * Time.deltaTime
+                    );
+                if ((Vector2)transform.position == startPosition)
+                {
+                    endDelayStartTime = Time.time;
+                }
             }
         }
     }

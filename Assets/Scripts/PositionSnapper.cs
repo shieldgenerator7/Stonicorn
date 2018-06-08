@@ -7,6 +7,7 @@ public class PositionSnapper : MonoBehaviour
 
     public bool snapToPlayerGhosts = true;
     public float range = -1;
+    public Vector2 offset = Vector2.zero;
 
     private Vector2 startPosition;
 
@@ -24,7 +25,7 @@ public class PositionSnapper : MonoBehaviour
                 .transform.position;
             if (range < 0 || Vector2.Distance(transform.position, position) < range)
             {
-                transform.position = position;
+                transform.position = position + offset;
             }
             else
             {

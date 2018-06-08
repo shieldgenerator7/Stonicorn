@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public int chosenId = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
     public AudioSource timeRewindMusic;//the music to play while time rewinds
-    public Vector2 firstTeleportGuide;//where the first teleport guide highlight will be shown
     private int rewindId = 0;//the id to eventually load back to
     private float respawnTime = 0;//the earliest time Merky can rewind after shattering
     public float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
@@ -70,12 +69,6 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
         blackScreenCanvas.AddComponent<Fader>();
-        EffectManager.highlightTapArea(firstTeleportGuide);
-        gestureManager.tapGesture += delegate ()
-        {
-            EffectManager.highlightTapArea(Vector2.zero, false);
-            gestureManager.tapGesture = null;
-        };
     }
 
     /// <summary>
