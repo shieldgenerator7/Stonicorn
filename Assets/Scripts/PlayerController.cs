@@ -458,6 +458,10 @@ public class PlayerController : MonoBehaviour
         {
             return true;
         }
+        //if (gravity.Gravity == Vector2.zero)
+        //{
+        //    return true;
+        //}
         groundedAbility = false;
         bool isgrounded = isGrounded(gravity.Gravity);
         if (!isgrounded && isGroundedCheck != null)//if nothing found yet and there is an extra ground check to do

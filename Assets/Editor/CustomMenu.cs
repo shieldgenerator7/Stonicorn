@@ -47,16 +47,21 @@ public class CustomMenu
             Scene s = SceneManager.GetSceneAt(i);
             if (s.isLoaded)
             {
-                foreach (GameObject go in s.GetRootGameObjects())
+                foreach (GameObject go1 in s.GetRootGameObjects())
                 {
-                    if (go.tag == "NonTeleportableArea" || go.name == "HiddenAreas" || go.name == "Hidden Areas")
+                    foreach (Transform tf in go1.transform)
                     {
-                        if (!changeDetermined)
+                        GameObject go = tf.gameObject;
+                        if (go.CompareTag("NonTeleportableArea")
+                            || go.name == "HiddenAreas" || go.name == "Hidden Areas")
                         {
-                            show = !go.activeInHierarchy;
-                            changeDetermined = true;
+                            if (!changeDetermined)
+                            {
+                                show = !go.activeInHierarchy;
+                                changeDetermined = true;
+                            }
+                            go.SetActive(show);
                         }
-                        go.SetActive(show);
                     }
                 }
             }
@@ -105,11 +110,11 @@ public class CustomMenu
     [MenuItem("SG7/Build/Build Mac OS X %#l")]
     public static void buildMacOSX()
     {
-        build(BuildTarget.StandaloneOSXUniversal, "");
+        build(BuildTarget.StandaloneOSX, "");
     }
     public static void build(BuildTarget buildTarget, string extension)
     {
-        string defaultPath = "C:/Users/shieldgenerator7/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
         if (!System.IO.Directory.Exists(defaultPath))
         {
             System.IO.Directory.CreateDirectory(defaultPath);

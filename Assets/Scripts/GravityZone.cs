@@ -25,10 +25,13 @@ public class GravityZone : MonoBehaviour
             Rigidbody2D rb2d = coll.gameObject.GetComponent<Rigidbody2D>();
             if (rb2d != null)
             {
-                tenants.Add(rb2d);
-                if (coll.gameObject == GameManager.getPlayerObject())
+                if (!tenants.Contains(rb2d))
                 {
-                    playerIsTenant = true;
+                    tenants.Add(rb2d);
+                    if (coll.gameObject == GameManager.getPlayerObject())
+                    {
+                        playerIsTenant = true;
+                    }
                 }
             }
         }

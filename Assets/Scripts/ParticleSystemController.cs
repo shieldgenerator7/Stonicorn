@@ -32,6 +32,10 @@ public class ParticleSystemController : MonoBehaviour {
         activated = active;
         if (active)
         {
+            if (!teleportParticles)
+            {
+                Debug.LogError("GameObject: " + gameObject.name);
+            }
             teleportParticles.Play();
         }
         else

@@ -31,6 +31,10 @@ public class SceneLoader : MonoBehaviour
 
     public void check()
     {
+        if (!gameObject.activeSelf)
+        {
+            return;
+        }
         bool overlaps = c2d.OverlapPoint(playerObj.transform.position);
         if (overlaps)
         {
