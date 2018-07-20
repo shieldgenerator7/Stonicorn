@@ -718,7 +718,7 @@ public class PlayerController : MonoBehaviour
                 onPreTeleport(prevPos, newPos, newPos);
             }
             teleport(newPos);
-            mainCamCtr.refocus();
+            mainCamCtr.recenter();
             cpc.trigger();
             GameManager.Save();
         }
