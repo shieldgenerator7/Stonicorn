@@ -7,6 +7,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
 {
 
     public static GameObject current = null;//the current checkpoint
+    public bool generateGhostImage = false;//set true to write the picture to a file
 
     public bool activated = false;
     public Sprite ghostSprite;
@@ -77,7 +78,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
             return;
         }
         current = this.gameObject;
-        if (ghostSprite == null)
+        if (ghostSprite == null || generateGhostImage)
         {
             grabCheckPointCameraData();
             ghost.GetComponent<SpriteRenderer>().sprite = ghostSprite;
