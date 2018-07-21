@@ -268,6 +268,10 @@ public class CameraController : MonoBehaviour
         {
             lockCamera = true;
         }
+        else
+        {
+            lockCamera = false;
+        }
         autoOffset = Vector2.zero;
         previousMoveDir = Vector2.zero;
     }
