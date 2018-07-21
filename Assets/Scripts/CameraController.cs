@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
 {
     public GameObject player;
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
+    public GameObject planModeCanvas;//the canvas that has the UI for plan mode
     public float cameraOffsetGestureThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
     public float screenEdgeThreshold = 0.9f;//the percentage of half the screen that is in the middle, the rest is the edge
     public float autoOffsetScreenEdgeThreshold = 0.7f;//same as screenEdgeThreshold, but used for the purposes of autoOffset
@@ -107,6 +108,10 @@ public class CameraController : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         plyrController = player.GetComponent<PlayerController>();
         plyrController.onTeleport += checkForAutoMovement;
+        if (planModeCanvas.GetComponent<Canvas>() == null)
+        {
+            Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object ("+planModeCanvas.name+") doesn't have a Canvas component!");
+        }
         scale = cam.orthographicSize;
         rotation = transform.rotation;
         //Initialize ScalePoints
@@ -164,6 +169,7 @@ public class CameraController : MonoBehaviour
                 if (!inView(player.transform.position))
                 {
                     lockCamera = false;
+                    planModeCanvas.SetActive(false);
                     recenter();
                 }
             }
@@ -202,6 +208,7 @@ public class CameraController : MonoBehaviour
                 //zero the offset
                 recenter();
                 lockCamera = false;
+                planModeCanvas.SetActive(false);
             }
         }
 
@@ -267,10 +274,12 @@ public class CameraController : MonoBehaviour
         if (offsetOffPlayer())
         {
             lockCamera = true;
+            planModeCanvas.SetActive(true);
         }
         else
         {
             lockCamera = false;
+            planModeCanvas.SetActive(false);
         }
         autoOffset = Vector2.zero;
         previousMoveDir = Vector2.zero;
