@@ -132,11 +132,11 @@ public class GameState
     {
         if (checkSprite)
         {
-            return representation.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
+            return Representation.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
         }
         else
         {
-            return representation.GetComponent<Collider2D>().OverlapPoint(touchPoint);
+            return Representation.GetComponent<Collider2D>().OverlapPoint(touchPoint);
         }
     }
     public void hideRepresentation()

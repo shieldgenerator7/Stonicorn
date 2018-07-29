@@ -11,9 +11,6 @@ public class RewindGestureProfile: GestureProfile
     {
         gm.hidePlayerGhosts();
     }
-    public override void processTapGesture(GameObject go)
-    {
-    }
     public override void processTapGesture(Vector3 curMPWorld)
     {
         gm.processTapGesture(curMPWorld);
