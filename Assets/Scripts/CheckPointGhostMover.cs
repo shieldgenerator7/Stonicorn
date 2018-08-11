@@ -18,7 +18,6 @@ public class CheckPointGhostMover : MonoBehaviour
     private Vector2 epicenter;//the center to revolve around
 
     //Readjust position
-    public float forcedMoveOutDuration = 1.0f;//how many seconds it has to move out before moving back in
     private Vector2 targetPos;
     private bool outOfLine = false;//true when they're not in their lane after Merky moves
     private Vector2 adjustDir;//the direction it moves to adjust position
