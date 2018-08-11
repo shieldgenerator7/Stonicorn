@@ -156,4 +156,21 @@ public class CustomMenu
         proc.StartInfo.FileName = buildName;
         proc.Start();
     }
+
+    [MenuItem("SG7/Run/Run Windows %#w")]
+    public static void runWindows()
+    {//2018-08-10: copied from build()
+        string extension = "exe";
+        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        if (!System.IO.Directory.Exists(defaultPath))
+        {
+            throw new UnityException("You need to build the windows version for "+ PlayerSettings.productName + " first!");
+        }
+        string buildName = defaultPath+"/"+PlayerSettings.productName+"."+extension;
+        UnityEngine.Debug.Log("Launching: " + buildName);
+        // Run the game (Process class from System.Diagnostics).
+        Process proc = new Process();
+        proc.StartInfo.FileName = buildName;
+        proc.Start();
+    }
 }
