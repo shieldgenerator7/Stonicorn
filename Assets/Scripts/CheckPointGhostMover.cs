@@ -13,6 +13,7 @@ public class CheckPointGhostMover : MonoBehaviour
     private float distanceOut = 0;//how far from the current CP this ghost is
     private float moveOutSpeed = 0.1f;
     public float moveOutAccel = 0.05f;
+    private float spriteRadius = 0;//the radius of the circular sprite
 
     private SpriteRenderer sr;
 
@@ -24,11 +25,18 @@ public class CheckPointGhostMover : MonoBehaviour
 
     public void showRelativeTo(GameObject currentCP)
     {
+        //Activate Object
         enabled = true;
         gameObject.SetActive(true);
+        //Get sprite radius
+        transform.localEulerAngles = Vector3.zero;
+        spriteRadius = sr.bounds.extents.x;
+        //Rotate sprite
         transform.localRotation = currentCP.transform.localRotation;
+        //Set sprite to start position
         startPos = currentCP.transform.position;
         transform.position = startPos;
+        //Setup movement variables
         moveDir = (parentCPC.gameObject.transform.position - currentCP.transform.position).normalized;
         sqrDistanceFromCurrentCP = (currentCP.transform.position - parentCPC.gameObject.transform.position).sqrMagnitude;
         distanceOut = 0;
@@ -89,7 +97,7 @@ public class CheckPointGhostMover : MonoBehaviour
                 GameObject go = cpc.gameObject;
                 if (cpc.activated && cpc.cpGhostMover.gameObject.activeInHierarchy)
                 {
-                    if (cpc.cpGhostMover.overlaps(sr.bounds))
+                    if (cpc.cpGhostMover.overlaps(sr.bounds, spriteRadius))
                     {
                         if (sqrDistanceFromCurrentCP > cpc.cpGhostMover.sqrDistanceFromCurrentCP)
                         {
@@ -106,10 +114,10 @@ public class CheckPointGhostMover : MonoBehaviour
     /// </summary>
     /// <param name="b"></param>
     /// <returns></returns>
-    public bool overlaps(Bounds otherBounds)
+    public bool overlaps(Bounds otherBounds, float otherRadius)
     {
         return sr.bounds.Intersects(otherBounds)
         //because they're circles, using the extents gives us how far apart (at minimum) they're supposed to be 
-        && (sr.bounds.center - otherBounds.center).sqrMagnitude <= Mathf.Pow(sr.bounds.extents.x + otherBounds.extents.x, 2);
+        && (sr.bounds.center - otherBounds.center).sqrMagnitude <= Mathf.Pow(spriteRadius + otherRadius, 2);
     }
 }
