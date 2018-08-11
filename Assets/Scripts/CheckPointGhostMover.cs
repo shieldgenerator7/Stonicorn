@@ -19,8 +19,13 @@ public class CheckPointGhostMover : MonoBehaviour
 
     //Readjust position
     public float forcedMoveOutDuration = 1.0f;//how many seconds it has to move out before moving back in
-    private float forcedMoveOutStartTime = 0;//the time at which it began
-
+    private Vector2 targetPos;
+    private bool outOfLine = false;//true when they're not in their lane after Merky moves
+    private Vector2 adjustDir;//the direction it moves to adjust position
+    private float adjustDistanceOut;
+    private float accelDir = 1;//which direction to accelerate in
+    private Vector2 relativeSigns;//used to determine when the ghost moved past its target
+    
     private SpriteRenderer sr;
 
     // Use this for initialization
@@ -48,6 +53,7 @@ public class CheckPointGhostMover : MonoBehaviour
         sqrDistanceFromCurrentCP = (epicenter - (Vector2)parentCPC.gameObject.transform.position).sqrMagnitude;
         distanceOut = 0;
         moveOutSpeed = 0.1f;
+        outOfLine = false;
     }
 
     internal void readjustPosition(Vector2 epicenter)
@@ -60,15 +66,33 @@ public class CheckPointGhostMover : MonoBehaviour
         startPos = epicenter;
         moveDir = ((Vector2)parentCPC.gameObject.transform.position - epicenter).normalized;
         sqrDistanceFromCurrentCP = (epicenter - (Vector2)parentCPC.gameObject.transform.position).sqrMagnitude;
-        moveOutSpeed = 0.1f;
-        forcedMoveOutStartTime = Time.time;
+        moveOutSpeed = 0.4f;
+        //Set target
+        targetPos = (moveDir * distanceOut) + epicenter;
+        adjustDir = ((Vector2)transform.position - targetPos).normalized;
+        adjustDistanceOut = Vector2.Distance(targetPos, transform.position);
+        relativeSigns = targetPos - (Vector2)transform.position;
+        accelDir = -1;
+        outOfLine = true;
     }
 
     //Update is called once per frame
     void Update()
     {
+        //If needs to adjust to Merky repositioning
+        if (outOfLine)
+        {
+            adjustDistanceOut += moveOutSpeed;
+            moveOutSpeed += moveOutAccel * accelDir;
+            transform.position = targetPos + (adjustDir * adjustDistanceOut);
+            if (Mathf.Sign(relativeSigns.x) != Mathf.Sign(targetPos.x - transform.position.x)
+                || Mathf.Sign(relativeSigns.y) != Mathf.Sign(targetPos.y - transform.position.y)){
+                outOfLine = false;
+            }
+            return;
+        }
         //Go out until there are no conflicts
-        if (moveOutSpeed > 0 || Time.time < forcedMoveOutStartTime + forcedMoveOutDuration)
+        if (moveOutSpeed > 0)
         {
             if (distanceOut < MIN_DISTANCE)
             {
@@ -78,7 +102,7 @@ public class CheckPointGhostMover : MonoBehaviour
                 return;
             }
             //check to make sure its ghost does not intersect other CP ghosts
-            if (overlapAny() || Time.time < forcedMoveOutStartTime + forcedMoveOutDuration)
+            if (overlapAny())
             {
                 distanceOut += moveOutSpeed;
                 moveOutSpeed += moveOutAccel;
