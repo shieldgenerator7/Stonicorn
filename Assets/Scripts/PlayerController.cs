@@ -695,7 +695,8 @@ public class PlayerController : MonoBehaviour
         if (cpc != null)
         {
             Vector2 prevPos = transform.position;
-            Vector3 newPos = checkPoint.transform.position;
+            Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
+            Vector3 newPos = checkPoint.transform.position + offset;
             if (onPreTeleport != null)
             {
                 //Pass in newPos for both here because player teleported exactly where they intended to
