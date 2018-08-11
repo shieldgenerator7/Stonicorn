@@ -111,21 +111,13 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (!inCheckPoint)
-            {
-                gravity.AcceptsGravity = true;
-            }
+            gravity.AcceptsGravity = true;
             if (velocityNeedsReloaded)
             {
                 rb2d.velocity = savedVelocity;
                 rb2d.angularVelocity = savedAngularVelocity;
                 velocityNeedsReloaded = false;
             }
-        }
-        if (inCheckPoint)
-        {
-            rb2d.velocity = Vector2.zero;
-            rb2d.angularVelocity = 0;
         }
     }
 
@@ -454,10 +446,6 @@ public class PlayerController : MonoBehaviour
     {
         groundedPreTeleport = grounded;
         groundedAbilityPreTeleport = groundedAbility;
-        if (inCheckPoint)
-        {
-            return true;
-        }
         //if (gravity.Gravity == Vector2.zero)
         //{
         //    return true;
@@ -654,10 +642,6 @@ public class PlayerController : MonoBehaviour
     public void setIsInCheckPoint(bool iicp)
     {
         inCheckPoint = iicp;
-        rb2d.isKinematic = iicp;
-        rb2d.velocity = new Vector2(0, 0);
-        rb2d.angularVelocity = 0;
-        gravity.AcceptsGravity = !iicp;
     }
     public bool getIsInCheckPoint()
     {
