@@ -56,7 +56,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     */
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == GameManager.playerTag)
+        if (coll.gameObject.CompareTag(GameManager.playerTag))
         {
             trigger();
         }
@@ -67,7 +67,11 @@ public class CheckPointChecker : MemoryMonoBehaviour
         GameManager.saveMemory(this);
         GameManager.saveCheckPoint(this);
         //Start the particles
-        GetComponent<ParticleSystem>().Play();
+        ParticleSystem ps = GetComponent<ParticleSystem>();
+        if (ps)
+        {
+            ps.Play();
+        }
         //Initialize ghost sprite (if necessary)
     }
     public void trigger()
@@ -86,7 +90,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
         activate();
         ghost.SetActive(false);
         plyrController.setIsInCheckPoint(true);
-        player.transform.position = this.gameObject.transform.position;
         foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
         {
             if (cpc != this)
@@ -145,23 +148,19 @@ public class CheckPointChecker : MemoryMonoBehaviour
             cpGhostMover.showRelativeTo(currentCheckpoint);
         }
     }
-    /**
-    * Checks to see if the player is colliding with this checkpoint's ghost
-    */
-    public bool checkGhostActivation()
-    {
-        return ghost.GetComponent<CircleCollider2D>().bounds.Intersects(player.GetComponent<PolygonCollider2D>().bounds);
-    }
-    /**
-    * Checks to see if this checkpoint's ghost contains the targetPos 
-    */
+    /// <summary>
+    /// Checks to see if this checkpoint's ghost contains the targetPos
+    /// </summary>
+    /// <param name="targetPos"></param>
+    /// <returns></returns>
     public bool checkGhostActivation(Vector3 targetPos)
     {
         return ghost.GetComponent<CircleCollider2D>().bounds.Contains(targetPos);
     }
-    /**
-    * So now the player has teleported and the checkpoint ghosts need to go away
-    */
+    /// <summary>
+    /// So now the player has teleported out and the checkpoint ghosts need to go away
+    /// </summary>
+    /// <param name="first"></param>
     public void clearPostTeleport(bool first)
     {
         ghost.SetActive(false);
