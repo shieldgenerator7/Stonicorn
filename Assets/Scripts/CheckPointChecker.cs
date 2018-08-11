@@ -119,7 +119,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
     }
 
-    void grabCheckPointCameraData()//2016-12-06: grabs image data from the camera designated for checkpoints
+    public string grabCheckPointCameraData()//2016-12-06: grabs image data from the camera designated for checkpoints
     {
         if (checkpointCamera == null)
         {
@@ -133,7 +133,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         int resHeight = 300;
         RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
         checkpointCamera.targetTexture = rt;
-        Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+        Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.ARGB32, false);
         checkpointCamera.Render();
         RenderTexture.active = rt;
         screenShot.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
@@ -141,11 +141,31 @@ public class CheckPointChecker : MemoryMonoBehaviour
         checkpointCamera.targetTexture = null;
         RenderTexture.active = null; // JC: added to avoid errors
         Destroy(rt);
-        Sprite createdSprite = Sprite.Create(screenShot, new Rect(0, 0, screenShot.width, screenShot.height), new Vector2(0.5f, 0.5f)); ;
-        ghost.GetComponent<SpriteRenderer>().sprite = ghostSprite = createdSprite;
+        Color transparentColor = new Color(1, 1, 1, 0);
+        for (int x = 0; x < screenShot.width; x++)
+        {
+            for (int y = 0; y < screenShot.height; y++)
+            {
+                float dx = Mathf.Abs(x - screenShot.width/2);
+                float dy = Mathf.Abs(y - screenShot.height/2);
+                //If the pixel is outside the circle inscribed in the rect,
+                if (dx * dx + dy * dy > screenShot.width * screenShot.width/ 4)
+                {
+                    //set the pixel to transparent
+                    screenShot.SetPixel(x, y, transparentColor);
+                }
+            }
+        }
+        Sprite createdSprite = Sprite.Create(screenShot, new Rect(0, 0, screenShot.width, screenShot.height), new Vector2(0.5f, 0.5f));
+        ghostSprite = createdSprite;
+        if (ghost != null)
+        {
+            ghost.GetComponent<SpriteRenderer>().sprite = createdSprite;
+        }
         checkpointCamera.gameObject.SetActive(false);
         string filename = gameObject.name + ".png";
         ES2.SaveImage(screenShot, filename);
+        return filename;
     }
 
     /**
