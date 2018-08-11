@@ -687,6 +687,11 @@ public class PlayerController : MonoBehaviour
         {
             teleport(newPos);
             GameManager.Save();
+            //Reposition checkpoint previews
+            if (inCheckPoint)
+            {
+                CheckPointChecker.readjustCheckPointGhosts(transform.position);
+            }
         }
     }
     public void processTapGesture(GameObject checkPoint)

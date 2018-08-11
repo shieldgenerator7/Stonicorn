@@ -98,6 +98,16 @@ public class CheckPointChecker : MemoryMonoBehaviour
             }
         }
     }
+    public static void readjustCheckPointGhosts(Vector2 epicenter)
+    {
+        foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
+        {
+            if (cpc.gameObject != current)
+            {
+                cpc.cpGhostMover.readjustPosition(epicenter);
+            }
+        }
+    }
     void OnTriggerExit2D(Collider2D coll)
     {
         if (current == this.gameObject)
