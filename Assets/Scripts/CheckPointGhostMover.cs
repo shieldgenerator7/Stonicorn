@@ -25,6 +25,9 @@ public class CheckPointGhostMover : MonoBehaviour
     private float adjustDistanceOut;
     private float accelDir = 1;//which direction to accelerate in
     private Vector2 relativeSigns;//used to determine when the ghost moved past its target
+
+    //Going home
+    private bool goingHome = false;//true when about to be hidden
     
     private SpriteRenderer sr;
 
@@ -54,6 +57,7 @@ public class CheckPointGhostMover : MonoBehaviour
         distanceOut = 0;
         moveOutSpeed = 0.1f;
         outOfLine = false;
+        goingHome = false;
     }
 
     internal void readjustPosition(Vector2 epicenter)
@@ -61,7 +65,6 @@ public class CheckPointGhostMover : MonoBehaviour
         this.epicenter = epicenter;
         //Activate Object
         enabled = true;
-        gameObject.SetActive(true);
         //Setup movement variables
         startPos = epicenter;
         moveDir = ((Vector2)parentCPC.gameObject.transform.position - epicenter).normalized;
@@ -74,6 +77,20 @@ public class CheckPointGhostMover : MonoBehaviour
         relativeSigns = targetPos - (Vector2)transform.position;
         accelDir = -1;
         outOfLine = true;
+        goingHome = false;
+    }
+
+    /// <summary>
+    /// Sets the checkpoint ghosts to go to the epicenter and disappear
+    /// </summary>
+    public void goHome()
+    {
+        this.epicenter = CheckPointChecker.current.transform.position;
+        enabled = true;
+        startPos = epicenter;
+        moveOutSpeed = 0.1f;
+        outOfLine = false;
+        goingHome = true;
     }
 
     //Update is called once per frame
@@ -88,6 +105,17 @@ public class CheckPointGhostMover : MonoBehaviour
             if (Mathf.Sign(relativeSigns.x) != Mathf.Sign(targetPos.x - transform.position.x)
                 || Mathf.Sign(relativeSigns.y) != Mathf.Sign(targetPos.y - transform.position.y)){
                 outOfLine = false;
+            }
+            return;
+        }
+        else if (goingHome)
+        {
+            moveOutSpeed += moveOutAccel;
+            transform.position = Vector3.MoveTowards(transform.position, epicenter, moveOutSpeed);
+            if ((Vector2)transform.position == epicenter)
+            {
+                goingHome = false;
+                gameObject.SetActive(false);
             }
             return;
         }

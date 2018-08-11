@@ -173,7 +173,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     /// <param name="first"></param>
     public void clearPostTeleport(bool first)
     {
-        ghost.SetActive(false);
+        cpGhostMover.goHome();
         if (first)
         {
             foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
