@@ -56,8 +56,17 @@ public class DiamondShell : MonoBehaviour
             }
             else
             {
-                //Switch directions
-                speed = initialSpeed;
+                if (speed <= initialSpeed)
+                {
+                    //Jump ahead to a speed
+                    speed = initialSpeed;
+                }
+                else
+                {
+                    //Decellerate before switching directions
+                    speed -= accelerationPerSecond * 2 * Time.deltaTime;
+                    direction = prevDirection;
+                }
             }
         }
         else
