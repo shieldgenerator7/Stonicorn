@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(HardMaterial))]
 public class DiamondShell : MonoBehaviour
 {
 
@@ -10,6 +12,8 @@ public class DiamondShell : MonoBehaviour
     public float initialSpeed = 2.0f;//start up speed independent of acceleration
     public float sightRange = 10.0f;//how far it can see from its center
     public string food = "stone";
+    [Range(0, 1)]
+    public float onDamageHealPercent = 0.2f;//what percent of damage it does to others it heals itself
 
     //Runtime vars
     private float speed = 0;//current speed
@@ -17,11 +21,14 @@ public class DiamondShell : MonoBehaviour
 
     //Components
     private Rigidbody2D rb2d;
+    private HardMaterial hm;
 
     // Use this for initialization
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        hm = GetComponent<HardMaterial>();
+        hm.hardCollision += eatDamage;
     }
 
     // Update is called once per frame
@@ -83,6 +90,17 @@ public class DiamondShell : MonoBehaviour
             //Stop
             speed = 0;
         }
+    }
+
+    /// <summary>
+    /// Heals the diamond shell when it does damage
+    /// Called from HardMaterial.hardCollision
+    /// </summary>
+    /// <param name="damageToSelf"></param>
+    /// <param name="damageToOther"></param>
+    void eatDamage(float damageToSelf, float damageToOther)
+    {
+        hm.addIntegrity(damageToOther * onDamageHealPercent);
     }
 
     /// <summary>
