@@ -9,6 +9,7 @@ public class DiamondShell : MonoBehaviour
     public float accelerationPerSecond = 2.0f;//how fast the diamondshell can accelerate each second
     public float initialSpeed = 2.0f;//start up speed independent of acceleration
     public float sightRange = 10.0f;//how far it can see from its center
+    public string food = "stone";
 
     //Runtime vars
     private float speed = 0;//current speed
@@ -99,7 +100,7 @@ public class DiamondShell : MonoBehaviour
             if (rch2d && rch2d.collider.gameObject != gameObject)
             {
                 HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
-                if (hm)
+                if (hm && hm.material == food)
                 {
                     Debug.DrawLine(transform.position, rch2d.point, Color.red);
                     Debug.Log("DiamondShell (" + gameObject.name + ") sees object: " + rch2d.collider.gameObject.name);

@@ -9,6 +9,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
 
     public static float MINIMUM_CRACKSOUND_THRESHOLD = 1.0f;//the minimum percent of damage done to make a sound
 
+    public string material;//the name of the thing this material is made of
     public float hardness = 1.0f;
     public float forceThreshold = 50.0f;//how much force it can withstand without cracking
     public float maxIntegrity = 100f;
