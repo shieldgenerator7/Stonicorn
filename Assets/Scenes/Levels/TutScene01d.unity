@@ -1051,6 +1051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  material: 
   hardness: 2
   forceThreshold: 50
   maxIntegrity: 100
@@ -1242,7 +1243,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   accelerationPerSecond: 5
+  initialSpeed: 2
   sightRange: 5
+  food: stone
 --- !u!1 &24648567
 GameObject:
   m_ObjectHideFlags: 0
