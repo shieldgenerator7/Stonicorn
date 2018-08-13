@@ -7,11 +7,12 @@ public class DiamondShell : MonoBehaviour
 
     //Settings
     public float accelerationPerSecond = 2.0f;//how fast the diamondshell can accelerate each second
+    public float initialSpeed = 2.0f;//start up speed independent of acceleration
     public float sightRange = 10.0f;//how far it can see from its center
 
     //Runtime vars
     private float speed = 0;//current speed
-    private float direction = 1;//-1 for left, 1 for right
+    private float direction = 0;//-1 for left, 1 for right, 0 for stopped
 
     //Components
     private Rigidbody2D rb2d;
@@ -31,6 +32,7 @@ public class DiamondShell : MonoBehaviour
         //If any stones in range
         if (distLeft > 0 || distRight > 0)
         {
+            float prevDirection = direction;
             if (distLeft > distRight)
             {
                 direction = -1;
@@ -39,21 +41,34 @@ public class DiamondShell : MonoBehaviour
             {
                 direction = 1;
             }
-            //Increase speed in that direction
-            speed += accelerationPerSecond * direction * Time.deltaTime;
+            if (direction == prevDirection)
+            {
+                //Increase speed in that direction
+                speed += accelerationPerSecond * Time.deltaTime;
+            }
+            else
+            {
+                //Switch directions
+                speed = initialSpeed;
+            }
         }
         else
         {
             //Otherwise slow down
-            if (speed != 0)
+            if (speed > 0)
             {
-                speed = Mathf.MoveTowards(speed, 0, accelerationPerSecond * Time.deltaTime);
+                speed -= accelerationPerSecond * Time.deltaTime;
+                speed = Mathf.Max(speed, 0);
+            }
+            else
+            {
+                direction = 0;
             }
         }
         //If moving, addforce to keep moving
-        if (speed != 0)
+        if (speed > 0)
         {
-            rb2d.AddForce(transform.right * rb2d.mass * speed);
+            rb2d.AddForce(transform.right * rb2d.mass * speed * direction);
         }
     }
 
