@@ -51,6 +51,7 @@ public class DiamondShell : MonoBehaviour
                 waitStartTime = 0;
                 quickTurnStartTime = Time.time;
                 quickTurnDirection = -direction;
+                Debug.Log("DiamondShell (" + name + ") trying new direction: " + quickTurnDirection);
             }
         }
         //Check to see if there's any stones in sight
@@ -126,9 +127,12 @@ public class DiamondShell : MonoBehaviour
         //If crashed into something in the direction of travel, 
         if (angle < 40)
         {
-            quickTurnStartTime = Time.time;
-            quickTurnDirection = -direction;
-            direction *= -1;
+            if (quickTurnDirection == 0)
+            {
+                quickTurnStartTime = Time.time;
+                quickTurnDirection = -direction;
+                direction *= -1;
+            }
         }
     }
 
