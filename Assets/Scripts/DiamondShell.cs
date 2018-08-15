@@ -31,10 +31,13 @@ public class DiamondShell : MonoBehaviour
     private float spriteTopY = 0;//the distance from the sprite center to the sprite top
     private float raycastIncrement = 0;
 
+    //Passed in Components
+    public Collider2D groundCollider;
+    public ParticleSystem huntParticles;
+
     //Components
     private Rigidbody2D rb2d;
     private HardMaterial hm;
-    public Collider2D groundCollider;
     private static RaycastHit2D[] rch2dsGround = new RaycastHit2D[10];
 
     // Use this for initialization
@@ -95,6 +98,7 @@ public class DiamondShell : MonoBehaviour
         //If any stones in range
         if (distLeft > 0 || distRight > 0 || quickTurnDirection != 0)
         {
+            activateHuntMode(true);
             float prevIntendedDirection = intendedDirection;
             float prevDirection = direction;
             if (quickTurnDirection == 0)
@@ -111,6 +115,7 @@ public class DiamondShell : MonoBehaviour
                 if (intendedDirection != prevIntendedDirection)
                 {
                     updateFacingDirection();
+                    activateHuntMode(true);
                 }
             }
             else
@@ -144,6 +149,7 @@ public class DiamondShell : MonoBehaviour
         else
         {
             intendedDirection = 0;
+            activateHuntMode(false);
             //Otherwise slow down
             if (speed > 0)
             {
@@ -260,6 +266,29 @@ public class DiamondShell : MonoBehaviour
                 scale.x *= -1;
             }
             transform.localScale = scale;
+        }
+    }
+
+    /// <summary>
+    /// When it has found food and wants to hunt it,
+    /// call this method to activate visual effects
+    /// </summary>
+    /// <param name="activate"></param>
+    void activateHuntMode(bool activate)
+    {
+        if (activate)
+        {
+            if (!huntParticles.isPlaying)
+            {
+                huntParticles.Play();
+            }
+        }
+        else
+        {
+            if (huntParticles.isPlaying)
+            {
+                huntParticles.Stop();
+            }
         }
     }
 }
