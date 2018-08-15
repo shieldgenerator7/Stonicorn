@@ -17,11 +17,13 @@ public class DiamondShell : MonoBehaviour
     public float quickTurnDuration = 1.0f;//how long quick turns last
     public float maxWaitPeriod = 3.0f;//how long it will spin its wheels before switching direction
     public int raycastCount = 3;//how many "horizontal" raycasts will be made to determine if food is near
+    public bool spriteFacesLeft = false;
 
     //Runtime vars
     private float accelerationPerSecond = 0;//how fast the diamondshell can accelerate each second
     private float speed = 0;//current speed
     private float direction = 0;//-1 for left, 1 for right, 0 for stopped
+    private float intendedDirection = 0;//same as direction, but what the creature wants to do, instead of what it is doing
     private float quickTurnStartTime = 0;
     private float quickTurnDirection = 0;//-1 for left, 1 for right, 0 for no quickTurn
     private float waitStartTime = 0;
@@ -45,9 +47,9 @@ public class DiamondShell : MonoBehaviour
         //Set spriteTopY
         {
             SpriteRenderer sr = GetComponent<SpriteRenderer>();
-            spriteTopY = sr.sprite.bounds.size.x * (1- (sr.sprite.pivot.y / sr.sprite.rect.height));
+            spriteTopY = sr.sprite.bounds.size.x * (1 - (sr.sprite.pivot.y / sr.sprite.rect.height));
             raycastIncrement = spriteTopY / raycastCount;
-            Debug.Log("DiamondShell ("+name+") spriteTopY: " + spriteTopY+", raycastIncrement: "+raycastIncrement);
+            Debug.Log("DiamondShell (" + name + ") spriteTopY: " + spriteTopY + ", raycastIncrement: " + raycastIncrement);
         }
         //Check groundCollider
         if (groundCollider == null)
@@ -93,16 +95,22 @@ public class DiamondShell : MonoBehaviour
         //If any stones in range
         if (distLeft > 0 || distRight > 0 || quickTurnDirection != 0)
         {
+            float prevIntendedDirection = intendedDirection;
             float prevDirection = direction;
             if (quickTurnDirection == 0)
             {
                 if (distLeft > distRight)
                 {
-                    direction = -1;
+                    intendedDirection = -1;
                 }
                 else
                 {
-                    direction = 1;
+                    intendedDirection = 1;
+                }
+                direction = intendedDirection;
+                if (intendedDirection != prevIntendedDirection)
+                {
+                    updateFacingDirection();
                 }
             }
             else
@@ -135,6 +143,7 @@ public class DiamondShell : MonoBehaviour
         }
         else
         {
+            intendedDirection = 0;
             //Otherwise slow down
             if (speed > 0)
             {
@@ -237,6 +246,20 @@ public class DiamondShell : MonoBehaviour
                 isGrounded = true;
                 return;
             }
+        }
+    }
+
+    void updateFacingDirection()
+    {
+        if (intendedDirection != 0)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = intendedDirection;
+            if (spriteFacesLeft)
+            {
+                scale.x *= -1;
+            }
+            transform.localScale = scale;
         }
     }
 }
