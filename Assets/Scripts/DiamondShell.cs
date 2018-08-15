@@ -16,6 +16,7 @@ public class DiamondShell : MonoBehaviour
     public float onDamageHealPercent = 0.2f;//what percent of damage it does to others it heals itself
     public float quickTurnDuration = 1.0f;//how long quick turns last
     public float maxWaitPeriod = 3.0f;//how long it will spin its wheels before switching direction
+    public int raycastCount = 3;//how many "horizontal" raycasts will be made to determine if food is near
 
     //Runtime vars
     private float accelerationPerSecond = 0;//how fast the diamondshell can accelerate each second
@@ -25,6 +26,8 @@ public class DiamondShell : MonoBehaviour
     private float quickTurnDirection = 0;//-1 for left, 1 for right, 0 for no quickTurn
     private float waitStartTime = 0;
     private bool isGrounded = true;
+    private float spriteTopY = 0;//the distance from the sprite center to the sprite top
+    private float raycastIncrement = 0;
 
     //Components
     private Rigidbody2D rb2d;
@@ -39,6 +42,14 @@ public class DiamondShell : MonoBehaviour
         hm = GetComponent<HardMaterial>();
         hm.hardCollision += eatDamage;
         accelerationPerSecond = maxSpeed / accelDuration;
+        //Set spriteTopY
+        {
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            spriteTopY = sr.sprite.bounds.size.x * (1- (sr.sprite.pivot.y / sr.sprite.rect.height));
+            raycastIncrement = spriteTopY / raycastCount;
+            Debug.Log("DiamondShell ("+name+") spriteTopY: " + spriteTopY+", raycastIncrement: "+raycastIncrement);
+        }
+        //Check groundCollider
         if (groundCollider == null)
         {
             foreach (Collider2D coll2d in GetComponents<Collider2D>())
@@ -181,26 +192,30 @@ public class DiamondShell : MonoBehaviour
     /// <returns></returns>
     float checkFoodInDirection(float direction)
     {
-        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(transform.position, transform.right * direction, sightRange);
-        Debug.DrawLine(transform.position, transform.position + transform.right * Mathf.Sign(direction) * sightRange, Color.blue);
-
-        foreach (RaycastHit2D rch2d in rch2ds)
+        for (int i = 0; i < raycastCount; i++)
         {
-            if (rch2d && rch2d.collider.gameObject != gameObject)
+            Vector3 start = transform.position + (transform.up * (i * raycastIncrement));
+            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(start, transform.right * direction, sightRange);
+            Debug.DrawLine(start, start + transform.right * Mathf.Sign(direction) * sightRange, Color.blue);
+
+            foreach (RaycastHit2D rch2d in rch2ds)
             {
-                HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
-                if (hm && hm.material == food)
+                if (rch2d && rch2d.collider.gameObject != gameObject)
                 {
-                    Debug.DrawLine(transform.position, rch2d.point, Color.red);
-                    Debug.Log("DiamondShell (" + gameObject.name + ") sees object: " + rch2d.collider.gameObject.name);
-                    return
-                        (sightRange - rch2d.distance)//the closer the object is, the higher this number will be
-                        + hm.getIntegrity();//the healthier this object is, the higher this number will be
-                }
-                else if (!isGrounded)
-                {
-                    return
-                        (sightRange - rch2d.distance);
+                    HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
+                    if (hm && hm.material == food)
+                    {
+                        Debug.DrawLine(start, rch2d.point, Color.red);
+                        Debug.Log("DiamondShell (" + gameObject.name + ") sees object: " + rch2d.collider.gameObject.name);
+                        return
+                            (sightRange - rch2d.distance)//the closer the object is, the higher this number will be
+                            + hm.getIntegrity();//the healthier this object is, the higher this number will be
+                    }
+                    else if (!isGrounded)
+                    {
+                        return
+                            (sightRange - rch2d.distance);
+                    }
                 }
             }
         }
