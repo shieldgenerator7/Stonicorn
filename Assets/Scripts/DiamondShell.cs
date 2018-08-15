@@ -8,8 +8,6 @@ public class DiamondShell : MonoBehaviour
 {
 
     //Settings
-    public float accelerationPerSecond = 2.0f;//how fast the diamondshell can accelerate each second
-    public float initialSpeed = 2.0f;//start up speed independent of acceleration
     public float maxSpeed = 10.0f;//max speed
     public float accelDuration = 2.0f;//how long it takes to get to max speed
     public float sightRange = 10.0f;//how far it can see from its center
@@ -17,15 +15,15 @@ public class DiamondShell : MonoBehaviour
     [Range(0, 1)]
     public float onDamageHealPercent = 0.2f;//what percent of damage it does to others it heals itself
     public float quickTurnDuration = 1.0f;//how long quick turns last
+    public float maxWaitPeriod = 3.0f;//how long it will spin its wheels before switching direction
 
     //Runtime vars
-    private float speed = 0;//current speed
-    private float direction = 0;//-1 for left, 1 for right, 0 for stopped
     public float accelerationPerSecond = 0;//how fast the diamondshell can accelerate each second
     public float speed = 0;//current speed
     public float direction = 0;//-1 for left, 1 for right, 0 for stopped
     public float quickTurnStartTime = 0;
     public float quickTurnDirection = 0;//-1 for left, 1 for right, 0 for no quickTurn
+    public float waitStartTime = 0;
 
     //Components
     private Rigidbody2D rb2d;
@@ -40,46 +38,63 @@ public class DiamondShell : MonoBehaviour
         accelerationPerSecond = maxSpeed / accelDuration;
     }
 
-    // Update is called once per frame
-    void Update()
     void FixedUpdate()
     {
+        //If it's stuck, change direction
+        if (direction != 0 && Mathf.Approximately(rb2d.velocity.magnitude, 0))
+        {
+            if (waitStartTime == 0)
+            {
+                waitStartTime = Time.time;
+            }
+            else if (Time.time > waitStartTime + maxWaitPeriod) {
+                waitStartTime = 0;
+                quickTurnStartTime = Time.time;
+                quickTurnDirection = -direction;
+            }
+        }
         //Check to see if there's any stones in sight
         float distLeft = checkFoodInDirection(-1.0f);
         float distRight = checkFoodInDirection(1.0f);
         //If any stones in range
-        if (distLeft > 0 || distRight > 0)
+        if (distLeft > 0 || distRight > 0 || quickTurnDirection != 0)
         {
             float prevDirection = direction;
-            if (distLeft > distRight)
+            if (quickTurnDirection == 0)
             {
-                direction = -1;
+                if (distLeft > distRight)
+                {
+                    direction = -1;
+                }
+                else
+                {
+                    direction = 1;
+                }
             }
             else
             {
-                direction = 1;
+                direction = quickTurnDirection;
+                if (Time.time > quickTurnStartTime + quickTurnDuration)
+                {
+                    quickTurnDirection = 0;
+                }
             }
             if (direction == prevDirection)
             {
                 //Increase speed in that direction
-                speed += accelerationPerSecond * Time.deltaTime;
                 speed += accelerationPerSecond * Time.fixedDeltaTime;
                 speed = Mathf.Min(speed, maxSpeed);
             }
             else
             {
-                if (speed <= initialSpeed)
+                //Decellerate before switching directions
                 speed -= accelerationPerSecond * 0.5f * Time.fixedDeltaTime;
                 if (speed <= 0)
                 {
-                    //Jump ahead to a speed
-                    speed = initialSpeed;
                     speed = 0;
                 }
                 else
                 {
-                    //Decellerate before switching directions
-                    speed -= accelerationPerSecond * 2 * Time.deltaTime;
                     direction = prevDirection;
                 }
             }
@@ -89,7 +104,6 @@ public class DiamondShell : MonoBehaviour
             //Otherwise slow down
             if (speed > 0)
             {
-                speed -= accelerationPerSecond * Time.deltaTime;
                 speed -= accelerationPerSecond * Time.fixedDeltaTime;
                 speed = Mathf.Max(speed, 0);
             }
@@ -107,14 +121,14 @@ public class DiamondShell : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        float angle = Vector2.Angle(transform.right, collision.contacts[0].point - (Vector2)transform.position);
-        float angle = Vector2.Angle(transform.right*direction, collision.contacts[0].point - (Vector2)transform.position);
+        float angle = Vector2.Angle(transform.right * direction, collision.contacts[0].point - (Vector2)transform.position);
         Debug.Log("DiamondShell (" + gameObject.name + ") hit something: " + collision.collider.gameObject.name + ", angle: " + angle);
         //If crashed into something in the direction of travel, 
-        if (angle < 10)
+        if (angle < 40)
         {
-            //Stop
-            speed = 0;
+            quickTurnStartTime = Time.time;
+            quickTurnDirection = -direction;
+            direction *= -1;
         }
     }
 
