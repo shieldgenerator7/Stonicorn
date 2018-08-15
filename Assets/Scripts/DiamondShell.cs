@@ -41,7 +41,7 @@ public class DiamondShell : MonoBehaviour
     void FixedUpdate()
     {
         //If it's stuck, change direction
-        if (direction != 0 && Mathf.Approximately(rb2d.velocity.magnitude, 0))
+        if (direction != 0 && Mathf.Approximately(rb2d.velocity.magnitude, 0) && speed == maxSpeed)
         {
             if (waitStartTime == 0)
             {
@@ -51,6 +51,7 @@ public class DiamondShell : MonoBehaviour
                 waitStartTime = 0;
                 quickTurnStartTime = Time.time;
                 quickTurnDirection = -direction;
+                direction *= -1;
                 Debug.Log("DiamondShell (" + name + ") trying new direction: " + quickTurnDirection);
             }
         }
