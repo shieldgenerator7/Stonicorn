@@ -10,6 +10,7 @@ public class DiamondShell : MonoBehaviour
     //Settings
     public float maxSpeed = 10.0f;//max speed
     public float accelDuration = 2.0f;//how long it takes to get to max speed
+    public float jumpForce = 50;//how much force to add when he needs to jump
     public float sightRange = 10.0f;//how far it can see from its center
     public string food = "stone";
     [Range(0, 1)]
@@ -173,7 +174,7 @@ public class DiamondShell : MonoBehaviour
         float angle = Vector2.Angle(transform.right * direction, collision.contacts[0].point - (Vector2)transform.position);
         Debug.Log("DiamondShell (" + gameObject.name + ") hit something: " + collision.collider.gameObject.name + ", angle: " + angle);
         //If crashed into something in the direction of travel, 
-        if (angle < 40 && angle > 10)
+        if (angle < 40)
         {
             if (quickTurnDirection == 0)
             {
@@ -181,6 +182,7 @@ public class DiamondShell : MonoBehaviour
                 quickTurnDirection = -direction;
                 direction *= -1;
             }
+            rb2d.AddForce(rb2d.mass * transform.up * jumpForce);
         }
         checkGroundedState();
     }
