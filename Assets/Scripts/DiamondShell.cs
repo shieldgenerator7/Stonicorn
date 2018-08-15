@@ -18,16 +18,19 @@ public class DiamondShell : MonoBehaviour
     public float maxWaitPeriod = 3.0f;//how long it will spin its wheels before switching direction
 
     //Runtime vars
-    public float accelerationPerSecond = 0;//how fast the diamondshell can accelerate each second
-    public float speed = 0;//current speed
-    public float direction = 0;//-1 for left, 1 for right, 0 for stopped
-    public float quickTurnStartTime = 0;
-    public float quickTurnDirection = 0;//-1 for left, 1 for right, 0 for no quickTurn
-    public float waitStartTime = 0;
+    private float accelerationPerSecond = 0;//how fast the diamondshell can accelerate each second
+    private float speed = 0;//current speed
+    private float direction = 0;//-1 for left, 1 for right, 0 for stopped
+    private float quickTurnStartTime = 0;
+    private float quickTurnDirection = 0;//-1 for left, 1 for right, 0 for no quickTurn
+    private float waitStartTime = 0;
+    private bool isGrounded = true;
 
     //Components
     private Rigidbody2D rb2d;
     private HardMaterial hm;
+    public Collider2D groundCollider;
+    private static RaycastHit2D[] rch2dsGround = new RaycastHit2D[10];
 
     // Use this for initialization
     void Start()
@@ -36,6 +39,23 @@ public class DiamondShell : MonoBehaviour
         hm = GetComponent<HardMaterial>();
         hm.hardCollision += eatDamage;
         accelerationPerSecond = maxSpeed / accelDuration;
+        if (groundCollider == null)
+        {
+            foreach (Collider2D coll2d in GetComponents<Collider2D>())
+            {
+                if (coll2d.isTrigger)
+                {
+                    groundCollider = coll2d;
+                    Debug.LogWarning("DiamondShell (" + name + ") had no groundCollider, so a collider of type " + coll2d.GetType() + " was used.");
+                    break;
+                }
+            }
+            //if it's still null, there's an error
+            if (groundCollider == null)
+            {
+                throw new UnityException("DiamondShell (" + name + ") has no groundCollider, and no trigger Collider2D!");
+            }
+        }
     }
 
     void FixedUpdate()
@@ -47,7 +67,8 @@ public class DiamondShell : MonoBehaviour
             {
                 waitStartTime = Time.time;
             }
-            else if (Time.time > waitStartTime + maxWaitPeriod) {
+            else if (Time.time > waitStartTime + maxWaitPeriod)
+            {
                 waitStartTime = 0;
                 quickTurnStartTime = Time.time;
                 quickTurnDirection = -direction;
@@ -135,6 +156,11 @@ public class DiamondShell : MonoBehaviour
                 direction *= -1;
             }
         }
+        checkGroundedState();
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        checkGroundedState();
     }
 
     /// <summary>
@@ -171,8 +197,31 @@ public class DiamondShell : MonoBehaviour
                         (sightRange - rch2d.distance)//the closer the object is, the higher this number will be
                         + hm.getIntegrity();//the healthier this object is, the higher this number will be
                 }
+                else if (!isGrounded)
+                {
+                    return
+                        (sightRange - rch2d.distance);
+                }
             }
         }
+        if (!isGrounded)
+        {
+            return sightRange;
+        }
         return 0;
+    }
+
+    void checkGroundedState()
+    {
+        isGrounded = false;
+        int count = groundCollider.Cast(Vector2.zero, rch2dsGround, 0, true);
+        for (int i = 0; i < count; i++)
+        {
+            if (!rch2dsGround[i].collider.isTrigger)
+            {
+                isGrounded = true;
+                return;
+            }
+        }
     }
 }
