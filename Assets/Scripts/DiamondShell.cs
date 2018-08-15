@@ -173,7 +173,7 @@ public class DiamondShell : MonoBehaviour
         float angle = Vector2.Angle(transform.right * direction, collision.contacts[0].point - (Vector2)transform.position);
         Debug.Log("DiamondShell (" + gameObject.name + ") hit something: " + collision.collider.gameObject.name + ", angle: " + angle);
         //If crashed into something in the direction of travel, 
-        if (angle < 40)
+        if (angle < 40 && angle > 10)
         {
             if (quickTurnDirection == 0)
             {
