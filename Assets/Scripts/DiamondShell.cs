@@ -183,7 +183,10 @@ public class DiamondShell : MonoBehaviour
             }
             else
             {
-                rb2d.AddTorque(speed * direction * torque);
+                if (Vector3.Angle(gravity.Gravity, -transform.up) > 20)
+                {
+                    rb2d.AddTorque(direction * torque);
+                }
             }
         }
         //Add force to keep on platform
