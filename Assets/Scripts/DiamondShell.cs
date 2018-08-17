@@ -11,6 +11,7 @@ public class DiamondShell : MonoBehaviour
     public float maxSpeed = 10.0f;//max speed
     public float accelDuration = 2.0f;//how long it takes to get to max speed
     public float jumpForce = 50;//how much force to add when he needs to jump
+    public float torque = 5;//how much torque it gets to right itself after falling upside down
     public float sightRange = 10.0f;//how far it can see from its center
     public string food = "stone";
     [Range(0, 1)]
@@ -40,6 +41,7 @@ public class DiamondShell : MonoBehaviour
     private Rigidbody2D rb2d;
     private HardMaterial hm;
     private static RaycastHit2D[] rch2dsGround = new RaycastHit2D[10];
+    private GravityAccepter gravity;
 
     // Use this for initialization
     void Start()
@@ -47,6 +49,7 @@ public class DiamondShell : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         hm = GetComponent<HardMaterial>();
         hm.hardCollision += eatDamage;
+        gravity = GetComponent<GravityAccepter>();
         accelerationPerSecond = maxSpeed / accelDuration;
         //Set spriteTopY
         {
@@ -73,6 +76,7 @@ public class DiamondShell : MonoBehaviour
                 throw new UnityException("DiamondShell (" + name + ") has no groundCollider, and no trigger Collider2D!");
             }
         }
+        checkGroundedState();
     }
 
     void FixedUpdate()
@@ -167,13 +171,25 @@ public class DiamondShell : MonoBehaviour
         //If moving, addforce to keep moving
         if (speed > 0)
         {
-            float factor = 1;
-            if (rb2d.velocity.magnitude < speed / 4
-                && isGrounded)
+            if (isGrounded)
             {
-                factor = 4;
+                float factor = 1;
+                if (rb2d.velocity.magnitude < speed / 4
+                    && isGrounded)
+                {
+                    factor = 4;
+                }
+                rb2d.AddForce(transform.right * rb2d.mass * speed * direction * factor);
             }
-            rb2d.AddForce(transform.right * rb2d.mass * speed * direction * factor);
+            else
+            {
+                rb2d.AddTorque(speed * direction * torque);
+            }
+        }
+        //Add force to keep on platform
+        if (isGrounded)
+        {
+            rb2d.AddForce(-transform.up * rb2d.mass * 10);
         }
     }
 
@@ -195,6 +211,14 @@ public class DiamondShell : MonoBehaviour
         checkGroundedState();
     }
     private void OnCollisionExit2D(Collision2D collision)
+    {
+        checkGroundedState();
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        checkGroundedState();
+    }
+    private void OnTriggerExit2D(Collider2D collision)
     {
         checkGroundedState();
     }
@@ -263,6 +287,7 @@ public class DiamondShell : MonoBehaviour
                 return;
             }
         }
+        gravity.AcceptsGravity = !isGrounded;
     }
 
     void updateFacingDirection()
