@@ -313,7 +313,7 @@ public class DiamondShell : MonoBehaviour
         if (intendedDirection != 0)
         {
             Vector3 scale = transform.localScale;
-            scale.x = intendedDirection;
+            scale.x = Mathf.Abs(scale.x) * Mathf.Sign(intendedDirection);
             if (spriteFacesLeft)
             {
                 scale.x *= -1;
