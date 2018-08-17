@@ -6581,6 +6581,12 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &151880445 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114100129681113904, guid: 2964a113d33795e4fa2f7f2b88fa9f80,
+    type: 2}
+  m_PrefabInternal: {fileID: 1013913931}
+  m_Script: {fileID: 11500000, guid: 65ceefcc30cb13142abcfa50f2853724, type: 3}
 --- !u!1001 &155794427
 Prefab:
   m_ObjectHideFlags: 0
@@ -79561,6 +79567,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1640872363 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114100129681113904, guid: 2964a113d33795e4fa2f7f2b88fa9f80,
+    type: 2}
+  m_PrefabInternal: {fileID: 1680856202}
+  m_Script: {fileID: 11500000, guid: 65ceefcc30cb13142abcfa50f2853724, type: 3}
 --- !u!4 &1643758846 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 468102, guid: 63e2cfc1280c0bc4a80925158676e245,
@@ -93814,12 +93826,12 @@ Prefab:
         type: 2}
       propertyPath: secretHiders.Array.data[0]
       value: 
-      objectReference: {fileID: 2098581561}
+      objectReference: {fileID: 151880445}
     - target: {fileID: 114544592810200564, guid: ae00d14429df82d418c99d7e545a74bd,
         type: 2}
       propertyPath: secretHiders.Array.data[1]
       value: 
-      objectReference: {fileID: 205908405}
+      objectReference: {fileID: 1640872363}
     - target: {fileID: 114544592810200564, guid: ae00d14429df82d418c99d7e545a74bd,
         type: 2}
       propertyPath: integrity
@@ -100190,11 +100202,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 443586, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10.25
+      value: 10.4
       objectReference: {fileID: 0}
     - target: {fileID: 443586, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -1.19
+      value: -1.3
       objectReference: {fileID: 0}
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
       propertyPath: m_TagString
