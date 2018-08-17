@@ -137,7 +137,8 @@ public class DiamondShell : MonoBehaviour
             {
                 //Decellerate before switching directions
                 speed -= accelerationPerSecond * 0.5f * Time.fixedDeltaTime;
-                if (speed <= 0)
+                speed = Mathf.Max(speed, 0);
+                if (rb2d.velocity.sqrMagnitude < 0.1f)
                 {
                     speed = 0;
                 }
@@ -152,20 +153,27 @@ public class DiamondShell : MonoBehaviour
             intendedDirection = 0;
             activateHuntMode(false);
             //Otherwise slow down
-            if (speed > 0)
+            if (rb2d.velocity.sqrMagnitude > 0.1)
             {
                 speed -= accelerationPerSecond * Time.fixedDeltaTime;
                 speed = Mathf.Max(speed, 0);
             }
             else
             {
+                speed = 0;
                 direction = 0;
             }
         }
         //If moving, addforce to keep moving
         if (speed > 0)
         {
-            rb2d.AddForce(transform.right * rb2d.mass * speed * direction);
+            float factor = 1;
+            if (rb2d.velocity.magnitude < speed / 4
+                && isGrounded)
+            {
+                factor = 4;
+            }
+            rb2d.AddForce(transform.right * rb2d.mass * speed * direction * factor);
         }
     }
 
