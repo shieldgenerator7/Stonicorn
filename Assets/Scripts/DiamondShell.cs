@@ -244,38 +244,53 @@ public class DiamondShell : MonoBehaviour
     /// <returns></returns>
     float checkFoodInDirection(float direction)
     {
+        float currentAnswer = 0;
         for (int i = 0; i < raycastCount; i++)
         {
             Vector3 start = transform.position + (transform.up * (i * raycastIncrement));
             RaycastHit2D[] rch2ds = Physics2D.RaycastAll(start, transform.right * direction, sightRange);
             Debug.DrawLine(start, start + transform.right * Mathf.Sign(direction) * sightRange, Color.blue);
 
+            if (rch2ds.Length == 0)
+            {
+                continue;
+            }
+            float closestRange = sightRange + 1;
+            float closestAnswer = 0;
+
             foreach (RaycastHit2D rch2d in rch2ds)
             {
-                if (rch2d && rch2d.collider.gameObject != gameObject)
+                if (rch2d
+                    && !rch2d.collider.isTrigger
+                    && rch2d.collider.gameObject != this.gameObject
+                    && rch2d.distance < closestRange)
                 {
+                    closestRange = rch2d.distance;
+                    closestAnswer = 0;
                     HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
                     if (hm && hm.material == food)
                     {
                         Debug.DrawLine(start, rch2d.point, Color.red);
                         Debug.Log("DiamondShell (" + gameObject.name + ") sees object: " + rch2d.collider.gameObject.name);
-                        return
-                            (sightRange - rch2d.distance)//the closer the object is, the higher this number will be
-                            + hm.getIntegrity();//the healthier this object is, the higher this number will be
+                        closestAnswer = (sightRange - rch2d.distance)//the closer the object is, the higher this number will be
+                                        + hm.getIntegrity();//the healthier this object is, the higher this number will be
                     }
                     else if (!isGrounded)
                     {
-                        return
-                            (sightRange - rch2d.distance);
+                        closestAnswer = (sightRange - rch2d.distance);
                     }
                 }
             }
+            if (closestAnswer > currentAnswer)
+            {
+                currentAnswer = closestAnswer;
+            }
         }
-        if (!isGrounded)
+        if (currentAnswer == 0 && !isGrounded)
         {
-            return sightRange;
+            currentAnswer = sightRange;
         }
-        return 0;
+        return currentAnswer;
     }
 
     void checkGroundedState()
