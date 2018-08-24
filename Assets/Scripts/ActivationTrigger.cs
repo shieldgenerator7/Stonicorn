@@ -25,6 +25,7 @@ public class ActivationTrigger : MonoBehaviour
     /// <summary>
     /// Trigger can only be activated by player
     /// </summary>
+    [Tooltip("Is the player the only one that can activate the trigger?")]
     public bool forPlayerOnly = true;
     [Header("Camera Zoom Activation Settings")]
     public ActivationOptions zoomLevelEnterAction = ActivationOptions.DO_NOTHING;
@@ -34,10 +35,12 @@ public class ActivationTrigger : MonoBehaviour
     /// <summary>
     /// Camera actions only active while something is in the trigger area
     /// </summary>
+    [Tooltip("Does something have to be in the trigger area for the camera zoom listener to do its action?")]
     public bool zoomRequireTrigger = true;
     /// <summary>
     /// Trigger actions only active while the camera is at the right zoom level
     /// </summary>
+    [Tooltip("Does the camera have to be at the right zoom level for the trigger area listener to do its action?")]
     public bool triggerRequireZoom = false;
     /// <summary>
     /// The minimum zoom scale point that defines the zoom level activation trigger
@@ -48,6 +51,8 @@ public class ActivationTrigger : MonoBehaviour
     /// The maximum zoom scale point that defines the zoom level activation trigger
     /// Set it negative to have no maximum
     /// </summary>
+    [Tooltip("The maximum zoom scale point that defines the zoom level activation trigger.\n"
+    + "Set it negative to have no maximum")]
     public int maxZoomScalePoint = 3;
 
     [Header("Camera Position Activation Settings")]
