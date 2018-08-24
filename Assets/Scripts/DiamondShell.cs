@@ -302,7 +302,7 @@ public class DiamondShell : MonoBehaviour
             if (!rch2dsGround[i].collider.isTrigger)
             {
                 isGrounded = true;
-                return;
+                break;
             }
         }
         gravity.AcceptsGravity = !isGrounded;
