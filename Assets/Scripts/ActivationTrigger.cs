@@ -50,11 +50,20 @@ public class ActivationTrigger : MonoBehaviour
     /// </summary>
     public int maxZoomScalePoint = 3;
 
+    [Header("Camera Position Activation Settings")]
+    [Tooltip("The collider that checks for the presence of the camera.\nLeave it null to deactivate this feature.")]
+    public Collider2D cameraPositionCollider;
+    public ActivationOptions cameraEnterAction = ActivationOptions.ACTIVATE;
+    public ActivationOptions cameraExitAction = ActivationOptions.DEACTIVATE;
+    [Tooltip("Does something have to be in the trigger area for the camera position listener to do its action?")]
+    public bool cameraPositionRequireTrigger = true;
+
     //
     // Runtime Vars
     //
     private bool triggerActive = false;
     private bool zoomLevelActive = false;
+    private bool cameraPositionActive = false;
 
     //
     // Components
@@ -71,6 +80,16 @@ public class ActivationTrigger : MonoBehaviour
             camController = FindObjectOfType<CameraController>();
             camController.onZoomLevelChanged += OnCameraZoomLevelChanged;
             zoomLevelActive = scalePointInRange(camController.ZoomLevel);
+        }
+        //Camera position trigger set up
+        if (cameraPositionCollider != null)
+        {
+            if (camController == null)
+            {
+                camController = FindObjectOfType<CameraController>();
+            }
+            camController.onOffsetChange += OnCameraOffsetChanged;
+            cameraPositionActive = cameraInArea();
         }
         //Error checking
         if (Application.isEditor)
@@ -174,5 +193,33 @@ public class ActivationTrigger : MonoBehaviour
             }
             zoomLevelActive = false;
         }
+    }
+
+    void OnCameraOffsetChanged()
+    {
+        if (!cameraPositionRequireTrigger || triggerActive)
+        {
+            if (cameraInArea())
+            {
+                if (!cameraPositionActive)
+                {
+                    processObjects(cameraEnterAction);
+                }
+                cameraPositionActive = true;
+            }
+            else
+            {
+                if (cameraPositionActive)
+                {
+                    processObjects(cameraExitAction);
+                }
+                cameraPositionActive = false;
+            }
+        }
+    }
+
+    bool cameraInArea()
+    {
+        return cameraPositionCollider.OverlapPoint((Vector2)camController.transform.position);
     }
 }
