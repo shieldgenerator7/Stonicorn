@@ -458,10 +458,16 @@ public class GameManager : MonoBehaviour
         Load(chosenId);
         musicManager.endEventSong(timeRewindMusic);
     }
+    /// <summary>
+    /// Sets into motion the rewind state.
+    /// FixedUpdate carries out the motions of calling Load()
+    /// </summary>
+    /// <param name="gamestateId"></param>
     void Rewind(int gamestateId)//rewinds one state at a time
     {
         musicManager.setEventSong(timeRewindMusic);
         rewindId = gamestateId;
+        camCtr.recenter();
     }
     void LoadMemories()
     {

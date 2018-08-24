@@ -168,8 +168,6 @@ public class CameraController : MonoBehaviour
             {
                 if (!inView(player.transform.position))
                 {
-                    lockCamera = false;
-                    planModeCanvas.SetActive(false);
                     recenter();
                 }
             }
@@ -207,8 +205,6 @@ public class CameraController : MonoBehaviour
             {
                 //zero the offset
                 recenter();
-                lockCamera = false;
-                planModeCanvas.SetActive(false);
             }
         }
 
@@ -291,6 +287,8 @@ public class CameraController : MonoBehaviour
     public void recenter()
     {
         Offset = new Vector3(0, 0, offset.z);
+        lockCamera = false;
+        planModeCanvas.SetActive(false);
     }
     /// <summary>
     /// Moves the camera directly to Merky's position + offset
