@@ -61,6 +61,7 @@ public class GravityAccepter : MonoBehaviour {
         }
         private set { sideVector = value; }
     }
+    [SerializeField]
     private bool acceptsGravity = true;
     public bool AcceptsGravity
     {
