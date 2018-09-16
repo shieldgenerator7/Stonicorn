@@ -63,5 +63,9 @@ public class GestureProfile
         {
             gestureManager.switchGestureProfile("Rewind");
         }
+        if (zoomLevel < camController.scalePointToZoomLevel(1))
+        {
+            gestureManager.switchGestureProfile("Menu");
+        }
     }
 }

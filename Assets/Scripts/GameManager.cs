@@ -625,6 +625,18 @@ public class GameManager : MonoBehaviour
         return instance.playerGhost;
     }
 
+    public static void showMainMenu(bool show)
+    {
+        if (show)
+        {
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
+        }
+        else
+        {
+            SceneManager.UnloadSceneAsync("MainMenu");
+        }
+    }
+
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);

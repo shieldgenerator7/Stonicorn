@@ -67,6 +67,7 @@ public class GestureManager : SavableMonoBehaviour
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
         camController = cam.GetComponent<CameraController>();
 
+        gestureProfiles.Add("Menu", new MenuGestureProfile());
         gestureProfiles.Add("Main", new GestureProfile());
         gestureProfiles.Add("Rewind", new RewindGestureProfile());
         currentGP = gestureProfiles["Main"];
