@@ -96,8 +96,8 @@ public class CameraController : MonoBehaviour
         }
     }
     List<ScalePoint> scalePoints = new List<ScalePoint>();
-    public static int SCALEPOINT_DEFAULT = 2;//the index of the default scalepoint
-    public static int SCALEPOINT_TIMEREWIND = 3;//the index of the time rewind mechanic
+    public static int SCALEPOINT_DEFAULT = 3;//the index of the default scalepoint
+    public static int SCALEPOINT_TIMEREWIND = 4;//the index of the time rewind mechanic
 
     // Use this for initialization
     void Start()
@@ -115,12 +115,13 @@ public class CameraController : MonoBehaviour
         scale = cam.orthographicSize;
         rotation = transform.rotation;
         //Initialize ScalePoints
+        scalePoints.Add(new ScalePoint(0.2f, false, plyrController));//Main Menu zoom level
         scalePoints.Add(new ScalePoint(1, false, plyrController));
         scalePoints.Add(new ScalePoint(1, true, plyrController));
         scalePoints.Add(new ScalePoint(2, true, plyrController));
         scalePoints.Add(new ScalePoint(4, true, plyrController));
         //Set the initialize scale point
-        scale = scalePoints[1].absoluteScalePoint();
+        scale = scalePoints[2].absoluteScalePoint();
         //Clean Delegates set up
         SceneManager.sceneUnloaded += cleanDelegates;
     }
