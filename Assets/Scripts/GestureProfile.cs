@@ -54,9 +54,8 @@ public class GestureProfile
     {
 
     }
-    public virtual void processPinchGesture(float zoomLevel)
+    public virtual void processZoomLevelChange(float zoomLevel)
     {
-        camController.ZoomLevel = zoomLevel;
         //GestureProfile switcher
         if (zoomLevel > camController.scalePointToZoomLevel(CameraController.SCALEPOINT_TIMEREWIND-1))
         //if (camController.getScalePointIndex() == CameraController.SCALEPOINT_TIMEREWIND)

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MenuButton : MonoBehaviour {
 
+    public MenuFrame frame;
+
     private BoxCollider2D bc2d;
 
 	// Use this for initialization
@@ -19,5 +21,6 @@ public class MenuButton : MonoBehaviour {
     public void activate()
     {
         Debug.Log("MenuButton " + name + " pressed");
+        frame.frameCamera();
     }
 }

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour {
 
-    public List<MenuButton> buttons = new List<MenuButton>();
+    public MenuFrame startFrame;
+
+    private List<MenuButton> buttons = new List<MenuButton>();
 
     private void Start()
     {
@@ -12,6 +14,7 @@ public class MenuManager : MonoBehaviour {
         {
             buttons.Add(mb);
         }
+        startFrame.frameCamera();
     }
 
     public void processTapGesture(Vector3 pos)

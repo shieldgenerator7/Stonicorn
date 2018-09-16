@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
     public Vector3 Offset
     {
         get { return offset; }
-        private set
+        set
         {
             offset = value;
             if (onOffsetChange != null)
@@ -63,15 +63,18 @@ public class CameraController : MonoBehaviour
         {
             float prevScale = scale;
             scale = value;
-            scale = Mathf.Clamp(
-                scale,
-                scalePoints[0].absoluteScalePoint(),
-                scalePoints[scalePoints.Count - 1].absoluteScalePoint());
-            if (onZoomLevelChanged != null)
+            if (prevScale != scale)
             {
-                onZoomLevelChanged(scale, scale - prevScale);
+                scale = Mathf.Clamp(
+                    scale,
+                    scalePoints[0].absoluteScalePoint(),
+                    scalePoints[scalePoints.Count - 1].absoluteScalePoint());
+                if (onZoomLevelChanged != null)
+                {
+                    onZoomLevelChanged(scale, scale - prevScale);
+                }
+                updateOrthographicSize();
             }
-            updateOrthographicSize();
         }
     }
 

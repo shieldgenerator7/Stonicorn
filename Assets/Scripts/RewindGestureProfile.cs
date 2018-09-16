@@ -23,7 +23,7 @@ public class RewindGestureProfile: GestureProfile
             GameObject.FindObjectOfType<GestureManager>().adjustHoldThreshold(holdTime);
         }
     }
-    public override void processPinchGesture(float zoomLevel)
+    public override void processZoomLevelChange(float zoomLevel)
     {
         camController.ZoomLevel = zoomLevel;
         //GestureProfile switcher
