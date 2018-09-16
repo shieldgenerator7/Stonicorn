@@ -46,6 +46,7 @@ public class CameraController : MonoBehaviour
     }
     private Quaternion rotation;//the rotation the camera should be rotated towards
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
+    private float desiredScale = 0;//the value that scale should move towards
     private Camera cam;
     private Rigidbody2D playerRB2D;
     private GestureManager gm;
@@ -76,6 +77,14 @@ public class CameraController : MonoBehaviour
                 updateOrthographicSize();
             }
         }
+    }
+    /// <summary>
+    /// Set this to make the scale smoothly move to the new value
+    /// </summary>
+    public float TargetZoomLevel
+    {
+        get { return desiredScale; }
+        set { desiredScale = value; }
     }
 
     struct ScalePoint
@@ -183,6 +192,19 @@ public class CameraController : MonoBehaviour
                 float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
                 transform.rotation = Quaternion.Lerp(transform.rotation, rotation, deltaTime);
                 Offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
+            }
+
+            //Scale Orthographic Size
+            if (TargetZoomLevel > 0)
+            {
+                if (ZoomLevel != TargetZoomLevel)
+                {
+                    ZoomLevel = Mathf.MoveTowards(ZoomLevel, TargetZoomLevel, Time.deltaTime);
+                }
+                else
+                {
+                    TargetZoomLevel = 0;
+                }
             }
         }
     }
