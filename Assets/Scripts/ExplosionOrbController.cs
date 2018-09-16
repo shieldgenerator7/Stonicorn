@@ -49,7 +49,7 @@ public class ExplosionOrbController : SavableMonoBehaviour
                 if (validTrigger)
                 {
                     Debug.Log("Collision!");
-                    if (chargeTime >= fta.maxHoldTime)
+                    if (chargeTime >= fta.maxCharge)
                     {
                         trigger();
                     }
@@ -108,7 +108,7 @@ public class ExplosionOrbController : SavableMonoBehaviour
     //When this object's HardMaterial breaks, it will explode
     private void destroyed()
     {
-        chargeTime = fta.maxHoldTime;
+        chargeTime = fta.maxCharge;
         trigger();
         fta.dropHoldGesture();
     }

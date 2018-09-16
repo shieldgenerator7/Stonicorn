@@ -3,23 +3,22 @@ using System.Collections;
 
 public class BoundsChecker : MonoBehaviour {
 
-    public bool active = false;//whether or not it will actually check the bounds
+    public Vector3 resetPoint = Vector3.zero;
 
-	//// Use this for initialization
-	//void Start () {
-	
-	//}
-	
-	//// Update is called once per frame
-	//void Update () {
-	
-	//}
+    //// Use this for initialization
+    void Start()
+    {
+        if (resetPoint == Vector3.zero)
+        {
+            resetPoint = Utility.getCollectiveColliderCenter(gameObject);
+        }
+    }
 
     void OnTriggerExit2D(Collider2D coll)
     {
-        if (active)
+        if (enabled)
         {
-            coll.gameObject.transform.position = new Vector3(0, 0, coll.gameObject.transform.position.z);
+            coll.gameObject.transform.position = new Vector3(resetPoint.x, resetPoint.y, coll.gameObject.transform.position.z);
         }
     }
 }

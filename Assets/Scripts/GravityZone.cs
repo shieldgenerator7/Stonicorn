@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class GravityZone : MonoBehaviour
 {
-
-    private PolygonCollider2D coll;
     public float gravityScale = 9.81f;
     public bool mainGravityZone = true;//true to change camera angle, false to not
     private Vector2 gravityVector;
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
     private bool playerIsTenant = false;//whether the player is inside this GravityZone
 
+    private static RaycastHit2D[] rch2dStartup = new RaycastHit2D[100];
+
     // Use this for initialization
     void Start()
     {
-        coll = GetComponent<PolygonCollider2D>();
         gravityVector = -transform.up.normalized * gravityScale;
     }
 
@@ -26,10 +25,13 @@ public class GravityZone : MonoBehaviour
             Rigidbody2D rb2d = coll.gameObject.GetComponent<Rigidbody2D>();
             if (rb2d != null)
             {
-                tenants.Add(rb2d);
-                if (coll.gameObject == GameManager.getPlayerObject())
+                if (!tenants.Contains(rb2d))
                 {
-                    playerIsTenant = true;
+                    tenants.Add(rb2d);
+                    if (coll.gameObject == GameManager.getPlayerObject())
+                    {
+                        playerIsTenant = true;
+                    }
                 }
             }
         }

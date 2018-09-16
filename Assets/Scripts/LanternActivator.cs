@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class LanternActivator : MemoryMonoBehaviour {
 
+    /// <summary>
+    /// The sound that plays when this lantern is lit.
+    /// </summary>
+    public AudioClip lightSound;
     public bool lit = false;
 
     void OnTriggerEnter2D(Collider2D coll)
@@ -13,13 +17,21 @@ public class LanternActivator : MemoryMonoBehaviour {
             lightTorch();
         }
     }
-
-    void lightTorch()
+    
+    /// <summary>
+    /// Lights the torch
+    /// </summary>
+    /// <param name="firstTime">True if it has just been activated, false if being reactivated after loading</param>
+    void lightTorch(bool firstTime = true)
     {
         lit = true;
         foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
         {
             ps.Play();
+        }
+        if (firstTime)
+        {
+            AudioSource.PlayClipAtPoint(lightSound, transform.position);
         }
         GameManager.saveMemory(this);
         Destroy(this);//delete this script
@@ -33,7 +45,7 @@ public class LanternActivator : MemoryMonoBehaviour {
     {
         if (memObj.found)
         {
-            lightTorch();
+            lightTorch(false);
         }
     }
 }
