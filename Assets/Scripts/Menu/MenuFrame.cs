@@ -31,7 +31,7 @@ public class MenuFrame : MonoBehaviour
         Vector3 offset = camcon.Offset;
         camcon.Offset =
             transform.position
-            - GameObject.FindGameObjectWithTag("Player").transform.position
+            - GameManager.getPlayerObject().transform.position
             + new Vector3(0, 0, offset.z);
     }
 }

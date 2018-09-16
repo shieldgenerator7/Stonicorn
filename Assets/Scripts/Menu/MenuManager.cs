@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour {
         {
             buttons.Add(mb);
         }
+        transform.position = GameManager.getPlayerObject().transform.position;
         startFrame.frameCamera();
     }
 
