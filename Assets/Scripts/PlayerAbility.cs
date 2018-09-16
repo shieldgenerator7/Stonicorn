@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerAbility : MonoBehaviour {
 
     GameObject player;
+    protected PlayerController playerController;
     public GameObject teleportParticleEffects;
     protected ParticleSystemController particleController;
     protected new ParticleSystem particleSystem;
@@ -12,17 +13,27 @@ public class PlayerAbility : MonoBehaviour {
     public GameObject abilityIndicatorParticleEffects;
     public ProgressBarCircular circularProgressBar;
 
-    public float maxGestureRange = 1;//how far from the center of the player character this ability can activate
-
     // Use this for initialization
-    protected virtual void Start () {
+    protected virtual void init () {
         player = gameObject;
+        playerController = player.GetComponent<PlayerController>();
         particleController = teleportParticleEffects.GetComponent<ParticleSystemController>();
         particleSystem = teleportParticleEffects.GetComponent<ParticleSystem>();
         if (abilityIndicatorParticleEffects != null)
         {
-            abilityIndicatorParticleEffects.GetComponent<ParticleSystem>().Play();
+            abilityIndicatorParticleEffects.GetComponent<ParticleSystemController>().activate(true);
         }
+    }
+    public virtual void OnDisable()
+    {
+        if (abilityIndicatorParticleEffects != null)
+        {
+            abilityIndicatorParticleEffects.GetComponent<ParticleSystemController>().activate(false);
+        }
+    }
+    public void OnEnable()
+    {
+        init();
     }
 
     public bool effectsGroundCheck()

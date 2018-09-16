@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public int chosenId = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
     public AudioSource timeRewindMusic;//the music to play while time rewinds
-    public Vector2 firstTeleportGuide;//where the first teleport guide highlight will be shown
     private int rewindId = 0;//the id to eventually load back to
     private float respawnTime = 0;//the earliest time Merky can rewind after shattering
     public float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
@@ -70,12 +69,6 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
         blackScreenCanvas.AddComponent<Fader>();
-        EffectManager.highlightTapArea(firstTeleportGuide);
-        gestureManager.tapGesture += delegate ()
-        {
-            EffectManager.highlightTapArea(Vector2.zero, false);
-            gestureManager.tapGesture = null;
-        };
     }
 
     /// <summary>
@@ -172,6 +165,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (instance == null)
+        {
+            //2018-06-04: band aid code
+            instance = this;
+        }
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
@@ -322,7 +320,10 @@ public class GameManager : MonoBehaviour
     }
     public static void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
     {
-        instance.activeCheckPoints.Add(cpc);
+        if (!instance.activeCheckPoints.Contains(cpc))
+        {
+            instance.activeCheckPoints.Add(cpc);
+        }
     }
     /// <summary>
     /// Stores the given object before it gets set inactive
@@ -400,7 +401,7 @@ public class GameManager : MonoBehaviour
         }
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
         {
-            Destroy(gameStates[i].representation);
+            Destroy(gameStates[i].Representation);
             gameStates.RemoveAt(i);
         }
         GameState.nextid = gamestateId + 1;
@@ -457,10 +458,16 @@ public class GameManager : MonoBehaviour
         Load(chosenId);
         musicManager.endEventSong(timeRewindMusic);
     }
+    /// <summary>
+    /// Sets into motion the rewind state.
+    /// FixedUpdate carries out the motions of calling Load()
+    /// </summary>
+    /// <param name="gamestateId"></param>
     void Rewind(int gamestateId)//rewinds one state at a time
     {
         musicManager.setEventSong(timeRewindMusic);
         rewindId = gamestateId;
+        camCtr.recenter();
     }
     void LoadMemories()
     {
@@ -542,6 +549,10 @@ public class GameManager : MonoBehaviour
 
     public static GameObject getPlayerObject()
     {
+        if (playerObject == null)
+        {
+            GameObject.FindGameObjectWithTag(playerTag);
+        }
         return playerObject;
     }
     public static int getCurrentStateId()
@@ -556,7 +567,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public static bool isInTeleportRange(GameObject other)
     {
-        float range = playerObject.GetComponent<PlayerController>().range;
+        float range = playerObject.GetComponent<PlayerController>().Range;
         return (other.transform.position - playerObject.transform.position).sqrMagnitude <= range * range;
     }
 
@@ -574,7 +585,7 @@ public class GameManager : MonoBehaviour
         {
             if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
             {//don't include last game state if merky is shattered
-                gs.showRepresentation(instance.playerGhost, instance.chosenId);
+                gs.showRepresentation(instance.chosenId);
             }
         }
     }
@@ -599,15 +610,19 @@ public class GameManager : MonoBehaviour
         GameObject closestObject = null;
         foreach (GameState gs in instance.gameStates)
         {
-            Vector2 gsPos = gs.representation.transform.position;
+            Vector2 gsPos = gs.Representation.transform.position;
             float gsDistance = Vector2.Distance(gsPos, pos);
             if (gsDistance < closestDistance)
             {
                 closestDistance = gsDistance;
-                closestObject = gs.representation;
+                closestObject = gs.Representation;
             }
         }
         return closestObject;
+    }
+    public static GameObject getPlayerGhostPrefab()
+    {
+        return instance.playerGhost;
     }
 
     public void processTapGesture(Vector3 curMPWorld)
@@ -620,10 +635,13 @@ public class GameManager : MonoBehaviour
         }
         GameState final = null;
         GameState prevFinal = null;
+        //Sprite detection pass
         foreach (GameState gs in gameStates)
         {
+            //don't include last game state if merky is shattered
             if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
-            {//don't include last game state if merky is shattered
+            {
+                //Check sprite overlap
                 if (gs.checkRepresentation(curMPWorld))
                 {
                     if (final == null || gs.id > final.id)//assuming the later ones have higher id values
@@ -634,6 +652,27 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        //Collider detection pass
+        if (final == null)
+        {
+            foreach (GameState gs in gameStates)
+            {
+                //don't include last game state if merky is shattered
+                if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+                {
+                    //Check collider overlap
+                    if (gs.checkRepresentation(curMPWorld, false))
+                    {
+                        if (final == null || gs.id > final.id)//assuming the later ones have higher id values
+                        {
+                            prevFinal = final;//keep the second-to-latest one
+                            final = gs;//keep the latest one
+                        }
+                    }
+                }
+            }
+        }
+        //Process tapped game state
         if (final != null)
         {
             if (final.id == chosenId)
@@ -661,10 +700,11 @@ public class GameManager : MonoBehaviour
             EffectManager.highlightTapArea(Vector2.zero, false);
         }
         gestureManager.switchGestureProfile("Main");
-        if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
+        float defaultZoomLevel = camCtr.scalePointToZoomLevel(CameraController.SCALEPOINT_DEFAULT);
+        if (camCtr.ZoomLevel > defaultZoomLevel)
         {
             //leave this zoom level even if no past merky was chosen
-            camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);
+            camCtr.ZoomLevel = defaultZoomLevel;
         }
         if (gameManagerTapProcessed != null)
         {

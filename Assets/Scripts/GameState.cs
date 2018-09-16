@@ -10,7 +10,22 @@ public class GameState
     public ObjectState merky;//the object state in the list specifically for Merky
 
     public static int nextid = 0;
-    public GameObject representation;//the player ghost that represents this game state
+    private GameObject representation;//the player ghost that represents this game state
+    public GameObject Representation
+    {
+        get
+        {
+            if (representation == null)
+            {
+                representation = GameObject.Instantiate(GameManager.getPlayerGhostPrefab());
+                representation.transform.position = merky.position;
+                representation.transform.localScale = merky.localScale;
+                representation.transform.rotation = merky.rotation;
+            }
+            return representation;
+        }
+        private set { }
+    }
 
     //Instantiation
     public GameState()
@@ -89,23 +104,13 @@ public class GameState
         return false;
     }
     //Representation (check point ghost)
-    public void showRepresentation(GameObject ghostPrefab, int mostRecentId)
+    public void showRepresentation(int mostRecentId)
     {
-        if (representation == null)
-        {
-            representation = GameObject.Instantiate(ghostPrefab);
-            representation.transform.position = merky.position;
-            representation.transform.localScale = merky.localScale;
-            representation.transform.rotation = merky.rotation;
-        }
-        else
-        {
-            representation.SetActive(true);
-        }
+        Representation.SetActive(true);
         //Set the Alpha Value
-        SpriteRenderer sr = representation.GetComponent<SpriteRenderer>();
+        SpriteRenderer sr = Representation.GetComponent<SpriteRenderer>();
         Color c = sr.color;
-        ParticleSystem ps = representation.GetComponentInChildren<ParticleSystem>();
+        ParticleSystem ps = Representation.GetComponentInChildren<ParticleSystem>();
 
         if (mostRecentId - id < 10)
         {
@@ -123,9 +128,16 @@ public class GameState
             ps.Stop();
         }
     }
-    public bool checkRepresentation(Vector3 touchPoint)
+    public bool checkRepresentation(Vector3 touchPoint, bool checkSprite = true)
     {
-        return representation.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
+        if (checkSprite)
+        {
+            return Representation.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
+        }
+        else
+        {
+            return Representation.GetComponent<Collider2D>().OverlapPoint(touchPoint);
+        }
     }
     public void hideRepresentation()
     {

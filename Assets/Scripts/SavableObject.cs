@@ -84,14 +84,18 @@ public class SavableObject
     {
         switch (typeName)
         {
-            case "CrackedGroundChecker":
-                return typeof(CrackedGroundChecker);
             case "GestureManager":
                 return typeof(GestureManager);
             case "Rigidbody2DLock":
                 return typeof(Rigidbody2DLock);
+            case "AfterWind":
+                return typeof(AfterWind);
+            case "StickyPadChecker":
+                return typeof(StickyPadChecker);
             case "ShieldBubbleController":
                 return typeof(ShieldBubbleController);
+            case "ElectricFieldController":
+                return typeof(ElectricFieldController);
             case "PowerConduit":
                 return typeof(PowerConduit);
             case "ExplosionOrbController":

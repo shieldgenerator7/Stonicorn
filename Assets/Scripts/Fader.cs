@@ -7,6 +7,7 @@ public class Fader : MonoBehaviour {
     public float endfade = 0.0f;
     public float fadetime = 30;
     public float delayTime = 0f;
+    public bool destroyColliders = true;
     
     private ArrayList srs;
     private float startTime;
@@ -23,10 +24,12 @@ public class Fader : MonoBehaviour {
         srs.Add(GetComponent<CanvasRenderer>());
         srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
         srs.AddRange(GetComponentsInChildren<Ferr2DT_PathTerrain>());
-        foreach (Collider2D bc in GetComponentsInChildren<Collider2D>())
+        if (destroyColliders)
         {
-            Destroy(bc);
-            //bc.enabled = false;
+            foreach (Collider2D bc in GetComponentsInChildren<Collider2D>())
+            {
+                Destroy(bc);
+            }
         }
         foreach (Renderer r in GetComponentsInChildren<Renderer>())
         {

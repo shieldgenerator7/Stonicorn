@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HardMaterial : SavableMonoBehaviour
+public class HardMaterial : SavableMonoBehaviour, Blastable
 {
 
     public static float MINIMUM_CRACKSOUND_THRESHOLD = 1.0f;//the minimum percent of damage done to make a sound
 
+    public string material;//the name of the thing this material is made of
     public float hardness = 1.0f;
     public float forceThreshold = 50.0f;//how much force it can withstand without cracking
     public float maxIntegrity = 100f;
@@ -24,6 +25,7 @@ public class HardMaterial : SavableMonoBehaviour
     public List<HiddenArea> secretHiders;//the hidden areas to show when cracked
 
     public Shattered shattered;
+    public HardCollision hardCollision;
 
     void Start()
     {
@@ -52,13 +54,21 @@ public class HardMaterial : SavableMonoBehaviour
         {
             return;//don't process collisions while rewinding
         }
+        ContactPoint2D[] cp2ds = new ContactPoint2D[1];
+        coll.GetContacts(cp2ds);
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
         if (hm != null)
         {
+            //Take damage
             float hitHardness = hm.hardness / hardness * coll.relativeVelocity.magnitude;
             addIntegrity(-1 * hitHardness);
+            if (hardCollision != null)
+            {
+                hardCollision(hitHardness, hardness / hm.hardness * coll.relativeVelocity.magnitude);
+            }
+            //Play Crack Sound
             float hitPercentage = hitHardness * 100 / maxIntegrity;
-            EffectManager.collisionEffect(coll.contacts[0].point, hitPercentage);
+            EffectManager.collisionEffect(cp2ds[0].point, hitPercentage);
             for (int i = crackSounds.Count - 1; i >= 0; i--)
             {
                 float crackThreshold = 100 / (crackSprites.Count + 1 - i) - 20;
@@ -68,7 +78,7 @@ public class HardMaterial : SavableMonoBehaviour
                 }
                 if (hitPercentage > crackThreshold)
                 {
-                    AudioSource.PlayClipAtPoint(crackSounds[i], coll.contacts[0].point, hitPercentage / 400 + 0.75f);
+                    AudioSource.PlayClipAtPoint(crackSounds[i], cp2ds[0].point, hitPercentage / 400 + 0.75f);
                     break;
                 }
             }
@@ -82,7 +92,7 @@ public class HardMaterial : SavableMonoBehaviour
                 float force = rb2d.velocity.magnitude * rb2d.mass;
                 float damage = checkForce(force);
                 float hitPercentage = damage * 100 / maxIntegrity;
-                EffectManager.collisionEffect(coll.contacts[0].point, hitPercentage);
+                EffectManager.collisionEffect(cp2ds[0].point, hitPercentage);
             }
         }
     }
@@ -101,6 +111,10 @@ public class HardMaterial : SavableMonoBehaviour
             return damage;
         }
         return 0;
+    }
+    public float getDistanceFromExplosion(Vector2 explosionPos)
+    {
+        return Utility.distanceToObject(explosionPos, gameObject);
     }
 
     public bool isIntact()
@@ -208,6 +222,10 @@ public class HardMaterial : SavableMonoBehaviour
     /// Gets called when integrity reaches 0
     /// </summary>
     public delegate void Shattered();
+    /// <summary>
+    /// Gets called when it collides with another HardMaterial
+    /// </summary>
+    public delegate void HardCollision(float damageToSelf, float damageToOther);
 
     public override SavableObject getSavableObject()
     {

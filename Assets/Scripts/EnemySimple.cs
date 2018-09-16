@@ -7,6 +7,8 @@ public class EnemySimple : MonoBehaviour
 
     public float speed = 1.0f;//units per second
     public float healsPerSecond = 5.0f;
+    [Range(0, 1)]
+    public float onDamageHealPercent = 0.2f;//what percent of damage it does to others it heals itself
     public bool activeMove = false;//controls whether it can move or not
     public float allowedLeftAndRightVariance = 25.0f;//used to determine if a colliding object is left or right of this enemy
     public float directionSwitchCooldown = 0.5f;//how many seconds after switching direction this enemy can switch it again
@@ -21,6 +23,8 @@ public class EnemySimple : MonoBehaviour
     private bool goingRight = true;//whether the bug is going right relative to its orientation
     private bool healing = false;
     private bool losToPlayer = false;//"Line Of Sight to Player": whether this bug can see the player
+    [Range(0,1)]
+    public float senseVerticalOffset = 0.25f;//how higher up then center point wall detection ray should start
     private static RaycastHit2D[] rch2ds = new RaycastHit2D[10];//for processing collider casts
 
     private Rigidbody2D rb2d;
@@ -34,6 +38,7 @@ public class EnemySimple : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         hm = GetComponent<HardMaterial>();
+        hm.hardCollision += eatDamage;
         groundCollider = GetComponent<BoxCollider2D>();
         gravity = GetComponent<GravityAccepter>();
         direction = Utility.PerpendicularLeft(transform.up).normalized;
@@ -44,7 +49,8 @@ public class EnemySimple : MonoBehaviour
     private void Update()
     {
         losToPlayer = false;
-        if ((player.transform.position - transform.position).sqrMagnitude <= sightRange * sightRange) {
+        if ((player.transform.position - transform.position).sqrMagnitude <= sightRange * sightRange)
+        {
             losToPlayer = Utility.lineOfSight(gameObject, player);
         }
         if (losToPlayer)
@@ -89,7 +95,7 @@ public class EnemySimple : MonoBehaviour
             {
                 rb2d.AddForce(rb2d.mass * direction * tempSpeed);
             }
-            rb2d.AddForce(rb2d.mass * - transform.up * 0.1f);
+            rb2d.AddForce(rb2d.mass * -transform.up * 0.1f);
             //Cliff detection
             if (!losToPlayer) //nothing between it and the player
             {
@@ -135,8 +141,10 @@ public class EnemySimple : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
+        ContactPoint2D[] cp2ds = new ContactPoint2D[1];
+        coll.GetContacts(cp2ds);
         //If the object is left or ride of this enemy
-        float angle = Vector2.Angle(transform.up, coll.contacts[0].point - (Vector2)transform.position);
+        float angle = Vector2.Angle(transform.up, cp2ds[0].point - (Vector2)transform.position);
         if (angle > 90 - allowedLeftAndRightVariance && angle < 90 + allowedLeftAndRightVariance)
         {
             //Logger.log(this.gameObject, "Switchdir after collision: " + coll.gameObject.name);
@@ -146,6 +154,17 @@ public class EnemySimple : MonoBehaviour
                 quickTurn = true;
             }
         }
+    }
+
+    /// <summary>
+    /// Heals the diamond shell when it does damage
+    /// Called from HardMaterial.hardCollision
+    /// </summary>
+    /// <param name="damageToSelf"></param>
+    /// <param name="damageToOther"></param>
+    void eatDamage(float damageToSelf, float damageToOther)
+    {
+        hm.addIntegrity(damageToOther * onDamageHealPercent);
     }
 
     void switchDirection()
@@ -159,6 +178,14 @@ public class EnemySimple : MonoBehaviour
         {
             direction = -transform.right;
         }
+
+        float facingDir = -1 * Mathf.Sign(direction.x);//times -1 bc the sprite was drawn facing left
+        if (facingDir != transform.localScale.x)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Sign(facingDir) * Mathf.Abs(transform.localScale.x);
+            transform.localScale = scale;
+        }
     }
 
     GameObject senseFloorInFront()
@@ -166,25 +193,31 @@ public class EnemySimple : MonoBehaviour
         Vector2 ahead = direction * 2;
         Vector2 senseDir = ahead - (Vector2)transform.up.normalized;
         Debug.DrawLine((Vector2)transform.position + ahead, senseDir + (Vector2)transform.position, Color.blue);
-        RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position + ahead, -transform.up, 1);
-        if (rch2d)
+        RaycastHit2D[] rch2ds = Physics2D.RaycastAll((Vector2)transform.position + ahead, -transform.up, 1);
+        foreach (RaycastHit2D rch2d in rch2ds)
         {
-            return rch2d.collider.gameObject;
+            if (!rch2d.collider.isTrigger)
+            {
+                return rch2d.collider.gameObject;
+            }
         }
         return null;
     }
     GameObject senseWallInFront()
     {
-        Vector2 ahead = direction;
+        Vector2 ahead = direction * Mathf.Abs(transform.localScale.x);
         float distance = 0.1f;
-        Vector2 length = direction * distance;
+        Vector2 length = direction * distance * Mathf.Abs(transform.localScale.x);
         Vector2 senseDir = ahead + length;
-        Vector2 offset = transform.up.normalized * 0.25f;
+        Vector2 offset = transform.up.normalized * senseVerticalOffset;
         Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);
-        RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position +offset + ahead, length, distance);
-        if (rch2d)
+        RaycastHit2D[] rch2ds = Physics2D.RaycastAll((Vector2)transform.position + offset + ahead, length, distance);
+        foreach (RaycastHit2D rch2d in rch2ds)
         {
-            return rch2d.collider.gameObject;
+            if (!rch2d.collider.isTrigger)
+            {
+                return rch2d.collider.gameObject;
+            }
         }
         return null;
     }

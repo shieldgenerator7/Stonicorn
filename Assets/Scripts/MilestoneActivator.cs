@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 
 public abstract class MilestoneActivator : MemoryMonoBehaviour {
-
-    public int incrementAmount = 1;
+    
     public GameObject particle;
     public int starAmount = 25;
     public int starSpawnDuration = 25;
     public string abilityIndicatorName;//used for AbilityGainEffect
-    public string abilityRangeTutorialIndicatorName;//the name of the particle system that shows the range of the ability, if applicable
-    public Vector2 disengagePoint;//used for AbilityGainEffect
     
     public bool used = false;
     private float minX, maxX, minY, maxY;
@@ -39,20 +36,6 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     {
         if (showFX)
         {
-            //Ability Range Tutorial
-            if (abilityRangeTutorialIndicatorName != null && abilityRangeTutorialIndicatorName != "")
-            {
-                foreach (GameObject abilityRangeIndicator in GameObject.FindGameObjectsWithTag("AbilityIndicator"))
-                {
-                    if (abilityRangeIndicator.name.Contains(abilityRangeTutorialIndicatorName))
-                    {
-                        AbilityRangeTutorialDisengager artd = abilityRangeIndicator.AddComponent<AbilityRangeTutorialDisengager>();
-                        artd.disengagePoint = this.disengagePoint;
-                        abilityRangeIndicator.GetComponent<ParticleSystem>().Play();
-                        break;
-                    }
-                }
-            }
             //Ability Indicator Animation Setup
             if (abilityIndicatorName != null)
             {

@@ -24,7 +24,7 @@ public class NPCPrincessController : MonoBehaviour
         fta = GetComponent<ForceTeleportAbility>();
         if (fta)
         {
-            maxHoldTime = fta.maxHoldTime;
+            maxHoldTime = fta.maxCharge;
             ability = fta;
         }
         sba = GetComponent<ShieldBubbleAbility>();

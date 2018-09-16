@@ -23,6 +23,7 @@ public class NPCManager : MonoBehaviour
             instance = this;
 
             npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
+            npcDialogueText.color = Color.white;
             musicManager = FindObjectOfType<MusicManager>();
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
             {

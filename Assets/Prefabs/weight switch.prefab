@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 442556}
   - component: {fileID: 21295710}
   - component: {fileID: 6043918}
+  - component: {fileID: 61044221549618410}
   - component: {fileID: 11458498}
   m_Layer: 0
   m_Name: weight switch
@@ -35,22 +36,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &166530
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 471232}
-  - component: {fileID: 6147958}
-  m_Layer: 0
-  m_Name: triggerArea
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!4 &442556
 Transform:
   m_ObjectHideFlags: 1
@@ -58,28 +43,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 138040}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 252.51332, y: -52.331505, z: 0}
-  m_LocalScale: {x: 0.8592974, y: 0.8592974, z: 0.8592974}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 498144}
-  - {fileID: 471232}
   - {fileID: 4336223604447622}
   - {fileID: 4438928974708496}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &471232
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 166530}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1637415, y: 1.1637415, z: 1.1637415}
-  m_Children: []
-  m_Father: {fileID: 442556}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &498144
 Transform:
@@ -124,31 +95,6 @@ PolygonCollider2D:
       - {x: -0.68359375, y: 0.11328125}
       - {x: -0.8359375, y: -0.1328125}
       - {x: 0.8359375, y: -0.1328125}
---- !u!61 &6147958
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 166530}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.004234314, y: -0.008487701}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.1612515, y: 0.15134504}
-  m_EdgeRadius: 0
 --- !u!114 &11458498
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -162,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pressed: 0
   psgoSparks: {fileID: 141764}
+  psSparks: {fileID: 0}
   psExhaust: {fileID: 198057373606599502}
 --- !u!198 &19898612
 ParticleSystem:
@@ -174,7 +121,7 @@ ParticleSystem:
   simulationSpeed: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -222,7 +169,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1785344655
+  randomSeed: -251207632
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3603,7 +3550,7 @@ Transform:
   m_Children:
   - {fileID: 4388149607273938}
   m_Father: {fileID: 442556}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4388149607273938
 Transform:
@@ -3629,8 +3576,33 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 442556}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61044221549618410
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 138040}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0042409897, y: 0.016807467}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.671875, y: 0.265625}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.3467302, y: 0.20193538}
+  m_EdgeRadius: 0
 --- !u!198 &198057373606599502
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -3642,7 +3614,7 @@ ParticleSystem:
   simulationSpeed: 1
   looping: 1
   prewarm: 1
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -3690,7 +3662,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1874650018
+  randomSeed: 585212381
   InitialModule:
     serializedVersion: 3
     enabled: 1

@@ -7,6 +7,27 @@ using UnityEngine.SceneManagement;
 
 public class CustomMenu
 {
+    [MenuItem("SG7/Editor/Change HideableArea to NonTeleportableArea")]
+    public static void changeTag()
+    {
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene s = SceneManager.GetSceneAt(i);
+            if (s.isLoaded)
+            {
+                foreach (GameObject go in s.GetRootGameObjects())
+                {
+                    foreach (Transform tf in go.transform)
+                    {
+                        if (tf.gameObject.tag == "HideableArea")//NonTeleportableArea" || go.name == "HiddenAreas" || go.name == "Hidden Areas")
+                        {
+                            tf.gameObject.tag = "NonTeleportableArea";
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     [MenuItem("SG7/Editor/Call Merky %`")]
     public static void callMerky()
@@ -26,16 +47,21 @@ public class CustomMenu
             Scene s = SceneManager.GetSceneAt(i);
             if (s.isLoaded)
             {
-                foreach (GameObject go in s.GetRootGameObjects())
+                foreach (GameObject go1 in s.GetRootGameObjects())
                 {
-                    if (go.tag == "HideableArea" || go.name == "HiddenAreas" || go.name == "Hidden Areas")
+                    foreach (Transform tf in go1.transform)
                     {
-                        if (!changeDetermined)
+                        GameObject go = tf.gameObject;
+                        if (go.CompareTag("NonTeleportableArea")
+                            || go.name == "HiddenAreas" || go.name == "Hidden Areas")
                         {
-                            show = !go.activeInHierarchy;
-                            changeDetermined = true;
+                            if (!changeDetermined)
+                            {
+                                show = !go.activeInHierarchy;
+                                changeDetermined = true;
+                            }
+                            go.SetActive(show);
                         }
-                        go.SetActive(show);
                     }
                 }
             }
@@ -84,13 +110,18 @@ public class CustomMenu
     [MenuItem("SG7/Build/Build Mac OS X %#l")]
     public static void buildMacOSX()
     {
-        build(BuildTarget.StandaloneOSXUniversal, "");
+        build(BuildTarget.StandaloneOSX, "");
     }
     public static void build(BuildTarget buildTarget, string extension)
     {
+        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        if (!System.IO.Directory.Exists(defaultPath))
+        {
+            System.IO.Directory.CreateDirectory(defaultPath);
+        }
         //2017-10-19 copied from https://docs.unity3d.com/Manual/BuildPlayerPipeline.html
         // Get filename.
-        string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", "C:/Users/shieldgenerator7/Documents/Unity/Stoned Builds/Builds", "Stonicorn 0_100", extension);
+        string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", defaultPath, PlayerSettings.productName, extension);
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
         UnityEngine.Debug.Log("BUILDNAME: " + buildName);
         UnityEngine.Debug.Log("PATH: " + path);
@@ -120,6 +151,23 @@ public class CustomMenu
                 );
         }
 
+        // Run the game (Process class from System.Diagnostics).
+        Process proc = new Process();
+        proc.StartInfo.FileName = buildName;
+        proc.Start();
+    }
+
+    [MenuItem("SG7/Run/Run Windows %#w")]
+    public static void runWindows()
+    {//2018-08-10: copied from build()
+        string extension = "exe";
+        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        if (!System.IO.Directory.Exists(defaultPath))
+        {
+            throw new UnityException("You need to build the windows version for "+ PlayerSettings.productName + " first!");
+        }
+        string buildName = defaultPath+"/"+PlayerSettings.productName+"."+extension;
+        UnityEngine.Debug.Log("Launching: " + buildName);
         // Run the game (Process class from System.Diagnostics).
         Process proc = new Process();
         proc.StartInfo.FileName = buildName;
