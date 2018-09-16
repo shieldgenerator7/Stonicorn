@@ -26,7 +26,6 @@ public class MenuFrame : MonoBehaviour
         float widthRatio = cam.pixelWidth / bc2d.bounds.size.x;
         float heightRatio = cam.pixelHeight / bc2d.bounds.size.y;
         CameraController camcon = cam.GetComponent<CameraController>();
-        camcon.ZoomLevel = camcon.scalePointToZoomLevel(scalePoint);
         camcon.TargetZoomLevel = camcon.scalePointToZoomLevel(scalePoint);
 
         Vector3 offset = camcon.Offset;
