@@ -8,4 +8,10 @@ public class MenuActionSwitchSound : MenuActionSwitch {
     {
         FindObjectOfType<SoundManager>().Mute = !active;
     }
+
+    public override bool getActiveState()
+    {
+        bool mute = FindObjectOfType<SoundManager>().Mute;
+        return !mute;
+    }
 }

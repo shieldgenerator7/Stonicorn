@@ -17,6 +17,7 @@ public class MenuButtonSwitch : MenuButton {
         base.Start();
         sr = GetComponent<SpriteRenderer>();
         mas = GetComponent<MenuActionSwitch>();
+        active = mas.getActiveState();
         updateSprite();
     }
 

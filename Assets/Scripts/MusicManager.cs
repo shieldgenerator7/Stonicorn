@@ -16,6 +16,23 @@ public class MusicManager : MonoBehaviour
     public float maxVolume = 0.7f;//the loudest it should be
     [SerializeField]
     private bool mute = false;
+    public bool Mute
+    {
+        get { return mute; }
+        set
+        {
+            mute = value;
+            enabled = !mute;
+            if (mute)
+            {
+                currentSong.Stop();
+            }
+            else
+            {
+                currentSong.Play();
+            }
+        }
+    }
     public float fadeTime = 2.0f;//how long it should take to fade in or out
     public float eventFadeTime = 0.1f;//how long it takes to fade into and out of event songs
     private float fadeSpeed = 0;//how fast it fades in or out (determined by fadeTime)    
@@ -130,20 +147,6 @@ public class MusicManager : MonoBehaviour
         if (prevSong)
         {
             prevSong.volume = prevSong.volume * newVolScale / oldVolScale;
-        }
-    }
-
-    public void muteMusic(bool shouldMute)
-    {
-        mute = shouldMute;
-        enabled = !mute;
-        if (mute)
-        {
-            currentSong.Stop();
-        }
-        else
-        {
-            currentSong.Play();
         }
     }
 }
