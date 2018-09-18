@@ -6,13 +6,16 @@ using UnityEngine;
 /// Manages which bgm to play.
 /// It takes "song requests" from multiple sources and decides which one to play
 /// </summary>
-public class MusicManager : MonoBehaviour {
+public class MusicManager : MonoBehaviour
+{
 
     private AudioSource currentSong;//the current song that is playing
     private AudioSource prevSong;//the previous song that was playing
 
-    [Range(0.0f,1.0f)]
+    [Range(0.0f, 1.0f)]
     public float maxVolume = 0.7f;//the loudest it should be
+    [SerializeField]
+    private bool mute = false;
     public float fadeTime = 2.0f;//how long it should take to fade in or out
     public float eventFadeTime = 0.1f;//how long it takes to fade into and out of event songs
     private float fadeSpeed = 0;//how fast it fades in or out (determined by fadeTime)    
@@ -22,13 +25,15 @@ public class MusicManager : MonoBehaviour {
     public float quietVolumeScaling = 0.5f;//the scale for when it should be quieter
     private float volumeScaling = 1.0f;//how much to scale the volume by (gets reduced when song should be quieter)
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (fadeSpeed != 0)
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (fadeSpeed != 0)
         {
             bool finished = true;
             float shift = fadeSpeed * Time.deltaTime;
@@ -61,7 +66,7 @@ public class MusicManager : MonoBehaviour {
                 fadeSpeed = 0;
             }
         }
-	}
+    }
 
     public void setCurrentSong(AudioSource newSong)
     {
@@ -125,6 +130,20 @@ public class MusicManager : MonoBehaviour {
         if (prevSong)
         {
             prevSong.volume = prevSong.volume * newVolScale / oldVolScale;
+        }
+    }
+
+    public void muteMusic(bool shouldMute)
+    {
+        mute = shouldMute;
+        enabled = !mute;
+        if (mute)
+        {
+            currentSong.Stop();
+        }
+        else
+        {
+            currentSong.Play();
         }
     }
 }

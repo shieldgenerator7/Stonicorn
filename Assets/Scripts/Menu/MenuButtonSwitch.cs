@@ -10,17 +10,20 @@ public class MenuButtonSwitch : MenuButton {
     public bool active = true;
 
     private SpriteRenderer sr;
+    private MenuActionSwitch mas;
 
     protected override void Start()
     {
         base.Start();
         sr = GetComponent<SpriteRenderer>();
+        mas = GetComponent<MenuActionSwitch>();
         updateSprite();
     }
 
     public override void activate()
     {
         active = !active;
+        mas.doAction(active);
         updateSprite();
     }
 

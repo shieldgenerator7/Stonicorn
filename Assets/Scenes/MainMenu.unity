@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalePoint: 0
+  buttons: []
 --- !u!61 &11584383
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -556,6 +557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalePoint: 2
+  buttons: []
 --- !u!61 &953011636
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -623,6 +625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalePoint: 0
+  buttons: []
 --- !u!61 &1037794871
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -692,6 +695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startFrame: {fileID: 11584382}
+  frames: []
 --- !u!4 &1627845402
 Transform:
   m_ObjectHideFlags: 0
@@ -719,6 +723,7 @@ GameObject:
   - component: {fileID: 1929837258}
   - component: {fileID: 1929837257}
   - component: {fileID: 1929837256}
+  - component: {fileID: 1929837259}
   m_Layer: 0
   m_Name: ui_music
   m_TagString: Untagged
@@ -825,6 +830,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1929837259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1929837254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0f23b2a76bc72e4ab61efe26ca90fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2118968476
 GameObject:
   m_ObjectHideFlags: 0
