@@ -7,13 +7,16 @@ public class MenuManager : MonoBehaviour
 
     public MenuFrame startFrame;
 
-    private List<MenuFrame> frames = new List<MenuFrame>();
+    public List<MenuFrame> frames = new List<MenuFrame>();
 
     private void Start()
     {
         foreach (MenuFrame mf in FindObjectsOfType<MenuFrame>())
         {
-            frames.Add(mf);
+            if (mf.canDelegateTaps())
+            {
+                frames.Add(mf);
+            }
         }
         transform.position = GameManager.getPlayerObject().transform.position;
         startFrame.frameCamera();

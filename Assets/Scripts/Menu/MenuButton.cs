@@ -9,7 +9,7 @@ public class MenuButton : MonoBehaviour {
     private BoxCollider2D bc2d;
 
 	// Use this for initialization
-	void Start () {
+	protected virtual void Start () {
         bc2d = GetComponent<BoxCollider2D>();
 	}
 	
@@ -18,7 +18,7 @@ public class MenuButton : MonoBehaviour {
         return bc2d.OverlapPoint(pos);
     }
 
-    public void activate()
+    public virtual void activate()
     {
         Debug.Log("MenuButton " + name + " pressed");
         frame.frameCamera();

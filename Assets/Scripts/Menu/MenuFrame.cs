@@ -9,7 +9,7 @@ public class MenuFrame : MonoBehaviour
 {
     public int scalePoint = 0;
 
-    private List<MenuButton> buttons = new List<MenuButton>();
+    public List<MenuButton> buttons = new List<MenuButton>();
 
     private BoxCollider2D bc2d;
 
@@ -43,6 +43,11 @@ public class MenuFrame : MonoBehaviour
             transform.position
             - GameManager.getPlayerObject().transform.position
             + new Vector3(0, 0, offset.z);
+    }
+
+    public bool canDelegateTaps()
+    {
+        return buttons != null && buttons.Count > 0;
     }
 
     public bool tapInArea(Vector3 tapPos)
