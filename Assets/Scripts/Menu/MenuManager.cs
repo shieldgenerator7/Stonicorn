@@ -18,7 +18,9 @@ public class MenuManager : MonoBehaviour
                 frames.Add(mf);
             }
         }
-        transform.position = GameManager.getPlayerObject().transform.position;
+        GameObject player = GameManager.getPlayerObject();
+        transform.position = player.transform.position;
+        transform.rotation = player.transform.rotation;
         startFrame.frameCamera();
     }
 
