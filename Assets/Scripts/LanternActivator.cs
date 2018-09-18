@@ -31,7 +31,7 @@ public class LanternActivator : MemoryMonoBehaviour {
         }
         if (firstTime)
         {
-            AudioSource.PlayClipAtPoint(lightSound, transform.position);
+            SoundManager.playSound(lightSound, transform.position);
         }
         GameManager.saveMemory(this);
         Destroy(this);//delete this script

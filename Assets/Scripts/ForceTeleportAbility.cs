@@ -158,7 +158,7 @@ public class ForceTeleportAbility : PlayerAbility
                 }
             }
             showExplosionEffect(pos, range * 2);
-            AudioSource.PlayClipAtPoint(forceTeleportSound, pos);
+            SoundManager.playSound(forceTeleportSound, pos);
             Destroy(frii);
             frii = null;
             particleController.activateTeleportParticleSystem(false);

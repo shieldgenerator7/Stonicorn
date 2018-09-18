@@ -78,7 +78,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                 }
                 if (hitPercentage > crackThreshold)
                 {
-                    AudioSource.PlayClipAtPoint(crackSounds[i], cp2ds[0].point, hitPercentage / 400 + 0.75f);
+                    SoundManager.playSound(crackSounds[i], cp2ds[0].point, hitPercentage / 400 + 0.75f);
                     break;
                 }
             }

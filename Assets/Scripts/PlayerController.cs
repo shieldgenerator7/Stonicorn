@@ -234,11 +234,11 @@ public class PlayerController : MonoBehaviour
         {
             if (groundedAbility && wca.enabled)
             {
-                AudioSource.PlayClipAtPoint(wca.wallClimbSound, oldPos);
+                SoundManager.playSound(wca.wallClimbSound, oldPos);
             }
             else
             {
-                AudioSource.PlayClipAtPoint(teleportSound, oldPos);
+                SoundManager.playSound(teleportSound, oldPos);
             }
         }
 

@@ -42,11 +42,11 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public static void playSound(AudioClip clip, Vector3 pos)
+    public static void playSound(AudioClip clip, Vector3 pos, float volume = 1)
     {
         if (!instance.mute)
         {
-            AudioSource.PlayClipAtPoint(clip, pos, instance.maxVolume * instance.volumeScaling);
+            AudioSource.PlayClipAtPoint(clip, pos, volume * instance.maxVolume * instance.volumeScaling);
         }
     }
 
