@@ -133,7 +133,7 @@ public class CameraController : MonoBehaviour
         scalePoints.Add(new ScalePoint(2, true, plyrController));
         scalePoints.Add(new ScalePoint(4, true, plyrController));
         //Set the initialize scale point
-        scale = scalePoints[2].absoluteScalePoint();
+        scale = scalePoints[0].absoluteScalePoint();
         //Clean Delegates set up
         SceneManager.sceneUnloaded += cleanDelegates;
     }

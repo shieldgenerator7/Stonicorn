@@ -71,7 +71,8 @@ public class GestureManager : SavableMonoBehaviour
         gestureProfiles.Add("Menu", new MenuGestureProfile());
         gestureProfiles.Add("Main", new GestureProfile());
         gestureProfiles.Add("Rewind", new RewindGestureProfile());
-        currentGP = gestureProfiles["Main"];
+        currentGP = gestureProfiles["Menu"];
+        currentGP.activate();
 
         Input.simulateMouseWithTouches = false;
     }
