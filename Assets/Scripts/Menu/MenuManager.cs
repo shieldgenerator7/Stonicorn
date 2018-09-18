@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuManager : MonoBehaviour {
+public class MenuManager : MonoBehaviour
+{
 
     public MenuFrame startFrame;
 
-    private List<MenuButton> buttons = new List<MenuButton>();
+    private List<MenuFrame> frames = new List<MenuFrame>();
 
     private void Start()
     {
-        foreach (MenuButton mb in FindObjectsOfType<MenuButton>())
+        foreach (MenuFrame mf in FindObjectsOfType<MenuFrame>())
         {
-            buttons.Add(mb);
+            frames.Add(mf);
         }
         transform.position = GameManager.getPlayerObject().transform.position;
         startFrame.frameCamera();
@@ -20,11 +21,11 @@ public class MenuManager : MonoBehaviour {
 
     public void processTapGesture(Vector3 pos)
     {
-        foreach(MenuButton mb in buttons)
+        foreach (MenuFrame mf in frames)
         {
-            if (mb.tapInArea(pos))
+            if (mf.tapInArea(pos))
             {
-                mb.activate();
+                mf.delegateTap(pos);
                 return;
             }
         }

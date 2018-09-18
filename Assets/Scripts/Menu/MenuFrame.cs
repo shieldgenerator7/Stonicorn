@@ -9,12 +9,22 @@ public class MenuFrame : MonoBehaviour
 {
     public int scalePoint = 0;
 
+    private List<MenuButton> buttons = new List<MenuButton>();
+
     private BoxCollider2D bc2d;
 
     // Use this for initialization
     void Start()
     {
         bc2d = GetComponent<BoxCollider2D>();
+        foreach (Transform t in transform)
+        {
+            MenuButton mb = t.GetComponent<MenuButton>();
+            if (mb != null)
+            {
+                buttons.Add(mb);
+            }
+        }
     }
 
     /// <summary>
@@ -33,5 +43,22 @@ public class MenuFrame : MonoBehaviour
             transform.position
             - GameManager.getPlayerObject().transform.position
             + new Vector3(0, 0, offset.z);
+    }
+
+    public bool tapInArea(Vector3 tapPos)
+    {
+        return bc2d.OverlapPoint(tapPos);
+    }
+
+    public void delegateTap(Vector3 tapPos)
+    {
+        foreach (MenuButton mb in buttons)
+        {
+            if (mb.tapInArea(tapPos))
+            {
+                mb.activate();
+                return;
+            }
+        }
     }
 }
