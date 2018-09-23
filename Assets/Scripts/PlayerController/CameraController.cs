@@ -108,8 +108,12 @@ public class CameraController : MonoBehaviour
         }
     }
     List<ScalePoint> scalePoints = new List<ScalePoint>();
-    public static int SCALEPOINT_DEFAULT = 3;//the index of the default scalepoint
-    public static int SCALEPOINT_TIMEREWIND = 4;//the index of the time rewind mechanic
+    public enum CameraScalePoints
+    {
+        MENU = 0,//the index of the main menu
+        DEFAULT = 3,//the index of the default scalepoint
+        TIMEREWIND = 4//the index of the time rewind mechanic
+    }
 
     // Use this for initialization
     void Start()

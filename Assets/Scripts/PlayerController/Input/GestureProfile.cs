@@ -57,8 +57,7 @@ public class GestureProfile
     public virtual void processZoomLevelChange(float zoomLevel)
     {
         //GestureProfile switcher
-        if (zoomLevel > camController.scalePointToZoomLevel(CameraController.SCALEPOINT_TIMEREWIND-1))
-        //if (camController.getScalePointIndex() == CameraController.SCALEPOINT_TIMEREWIND)
+        if (zoomLevel > camController.scalePointToZoomLevel((int)CameraController.CameraScalePoints.TIMEREWIND - 1))
         {
             gestureManager.switchGestureProfile("Rewind");
         }
