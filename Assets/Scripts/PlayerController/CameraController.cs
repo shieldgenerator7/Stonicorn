@@ -110,7 +110,10 @@ public class CameraController : MonoBehaviour
     List<ScalePoint> scalePoints = new List<ScalePoint>();
     public enum CameraScalePoints
     {
+        NONE = -1,//invalid index, used for ActivationTrigger
         MENU = 0,//the index of the main menu
+        PORTRAIT = 1,//shows Merky's body close up
+        RANGE = 2,//camera size is as large as Merky's teleport range
         DEFAULT = 3,//the index of the default scalepoint
         TIMEREWIND = 4//the index of the time rewind mechanic
     }
@@ -126,7 +129,7 @@ public class CameraController : MonoBehaviour
         plyrController.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)
         {
-            Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object ("+planModeCanvas.name+") doesn't have a Canvas component!");
+            Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object (" + planModeCanvas.name + ") doesn't have a Canvas component!");
         }
         scale = cam.orthographicSize;
         rotation = transform.rotation;
@@ -396,7 +399,7 @@ public class CameraController : MonoBehaviour
     {
         return scalePoints[scalePoint].absoluteScalePoint();
     }
-    
+
     void cleanDelegates(Scene s)
     {
         if (onZoomLevelChanged != null)
