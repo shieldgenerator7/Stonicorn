@@ -5,7 +5,7 @@ using UnityEngine;
 public class ZoomOutTrigger : MemoryMonoBehaviour {
 
     //Settings
-    public int scalePoint = CameraController.SCALEPOINT_DEFAULT;
+    public int scalePoint = (int)CameraController.CameraScalePoints.DEFAULT;
     public bool triggersOnce = true;//true if it only triggers once
     //State
     public bool triggered = false;//whether or this has zoomed out the camera
@@ -22,7 +22,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
     {
         var camCtr = Camera.main.GetComponent<CameraController>();
         camCtr.ZoomLevel = camCtr.scalePointToZoomLevel(scalePoint);//zoom out
-        if (scalePoint == CameraController.SCALEPOINT_TIMEREWIND)
+        if (scalePoint == (int)CameraController.CameraScalePoints.TIMEREWIND)
         {
             FindObjectOfType<GestureManager>().switchGestureProfile("Rewind");
         }

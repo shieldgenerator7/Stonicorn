@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
     public Vector3 Offset
     {
         get { return offset; }
-        private set
+        set
         {
             offset = value;
             if (onOffsetChange != null)
@@ -46,6 +46,7 @@ public class CameraController : MonoBehaviour
     }
     private Quaternion rotation;//the rotation the camera should be rotated towards
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
+    private float desiredScale = 0;//the value that scale should move towards
     private Camera cam;
     private Rigidbody2D playerRB2D;
     private GestureManager gm;
@@ -63,16 +64,27 @@ public class CameraController : MonoBehaviour
         {
             float prevScale = scale;
             scale = value;
-            scale = Mathf.Clamp(
-                scale,
-                scalePoints[0].absoluteScalePoint(),
-                scalePoints[scalePoints.Count - 1].absoluteScalePoint());
-            if (onZoomLevelChanged != null)
+            if (prevScale != scale)
             {
-                onZoomLevelChanged(scale, scale - prevScale);
+                scale = Mathf.Clamp(
+                    scale,
+                    scalePoints[0].absoluteScalePoint(),
+                    scalePoints[scalePoints.Count - 1].absoluteScalePoint());
+                if (onZoomLevelChanged != null)
+                {
+                    onZoomLevelChanged(scale, scale - prevScale);
+                }
+                updateOrthographicSize();
             }
-            updateOrthographicSize();
         }
+    }
+    /// <summary>
+    /// Set this to make the scale smoothly move to the new value
+    /// </summary>
+    public float TargetZoomLevel
+    {
+        get { return desiredScale; }
+        set { desiredScale = value; }
     }
 
     struct ScalePoint
@@ -96,8 +108,15 @@ public class CameraController : MonoBehaviour
         }
     }
     List<ScalePoint> scalePoints = new List<ScalePoint>();
-    public static int SCALEPOINT_DEFAULT = 2;//the index of the default scalepoint
-    public static int SCALEPOINT_TIMEREWIND = 3;//the index of the time rewind mechanic
+    public enum CameraScalePoints
+    {
+        NONE = -1,//invalid index, used for ActivationTrigger
+        MENU = 0,//the index of the main menu
+        PORTRAIT = 1,//shows Merky's body close up
+        RANGE = 2,//camera size is as large as Merky's teleport range
+        DEFAULT = 3,//the index of the default scalepoint
+        TIMEREWIND = 4//the index of the time rewind mechanic
+    }
 
     // Use this for initialization
     void Start()
@@ -110,17 +129,18 @@ public class CameraController : MonoBehaviour
         plyrController.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)
         {
-            Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object ("+planModeCanvas.name+") doesn't have a Canvas component!");
+            Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object (" + planModeCanvas.name + ") doesn't have a Canvas component!");
         }
         scale = cam.orthographicSize;
         rotation = transform.rotation;
         //Initialize ScalePoints
+        scalePoints.Add(new ScalePoint(0.2f, false, plyrController));//Main Menu zoom level
         scalePoints.Add(new ScalePoint(1, false, plyrController));
         scalePoints.Add(new ScalePoint(1, true, plyrController));
         scalePoints.Add(new ScalePoint(2, true, plyrController));
         scalePoints.Add(new ScalePoint(4, true, plyrController));
         //Set the initialize scale point
-        scale = scalePoints[1].absoluteScalePoint();
+        scale = scalePoints[0].absoluteScalePoint();
         //Clean Delegates set up
         SceneManager.sceneUnloaded += cleanDelegates;
     }
@@ -179,6 +199,19 @@ public class CameraController : MonoBehaviour
                 float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
                 transform.rotation = Quaternion.Lerp(transform.rotation, rotation, deltaTime);
                 Offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
+            }
+
+            //Scale Orthographic Size
+            if (TargetZoomLevel > 0)
+            {
+                if (ZoomLevel != TargetZoomLevel)
+                {
+                    ZoomLevel = Mathf.MoveTowards(ZoomLevel, TargetZoomLevel, Time.deltaTime);
+                }
+                else
+                {
+                    TargetZoomLevel = 0;
+                }
             }
         }
     }
@@ -366,7 +399,7 @@ public class CameraController : MonoBehaviour
     {
         return scalePoints[scalePoint].absoluteScalePoint();
     }
-    
+
     void cleanDelegates(Scene s)
     {
         if (onZoomLevelChanged != null)

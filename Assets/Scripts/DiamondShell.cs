@@ -56,7 +56,6 @@ public class DiamondShell : MonoBehaviour
             SpriteRenderer sr = GetComponent<SpriteRenderer>();
             spriteTopY = sr.sprite.bounds.size.x * (1 - (sr.sprite.pivot.y / sr.sprite.rect.height));
             raycastIncrement = spriteTopY / raycastCount;
-            Debug.Log("DiamondShell (" + name + ") spriteTopY: " + spriteTopY + ", raycastIncrement: " + raycastIncrement);
         }
         //Check groundCollider
         if (groundCollider == null)
@@ -94,7 +93,6 @@ public class DiamondShell : MonoBehaviour
                 quickTurnStartTime = Time.time;
                 quickTurnDirection = -direction;
                 direction *= -1;
-                Debug.Log("DiamondShell (" + name + ") trying new direction: " + quickTurnDirection);
             }
         }
         //Check to see if there's any stones in sight
@@ -199,7 +197,6 @@ public class DiamondShell : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         float angle = Vector2.Angle(transform.right * direction, collision.contacts[0].point - (Vector2)transform.position);
-        Debug.Log("DiamondShell (" + gameObject.name + ") hit something: " + collision.collider.gameObject.name + ", angle: " + angle);
         //If crashed into something in the direction of travel, 
         if (angle < 40)
         {
@@ -271,7 +268,6 @@ public class DiamondShell : MonoBehaviour
                     if (hm && hm.material == food)
                     {
                         Debug.DrawLine(start, rch2d.point, Color.red);
-                        Debug.Log("DiamondShell (" + gameObject.name + ") sees object: " + rch2d.collider.gameObject.name);
                         closestAnswer = (sightRange - rch2d.distance)//the closer the object is, the higher this number will be
                                         + hm.getIntegrity();//the healthier this object is, the higher this number will be
                     }

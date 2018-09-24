@@ -51,11 +51,11 @@ public class ShieldBubbleAbility : PlayerAbility
                     GameManager.addObject(newSB);
                 }
                 spawnedShield = newSB;
-                AudioSource.PlayClipAtPoint(shieldBubbleSound, pos);
+                SoundManager.playSound(shieldBubbleSound, pos);
             }
             else
             {
-                AudioSource.PlayClipAtPoint(shieldBubbleFailSound, pos);
+                SoundManager.playSound(shieldBubbleFailSound, pos);
             }
             Destroy(srii);
             srii = null;

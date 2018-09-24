@@ -625,6 +625,18 @@ public class GameManager : MonoBehaviour
         return instance.playerGhost;
     }
 
+    public static void showMainMenu(bool show)
+    {
+        if (show)
+        {
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
+        }
+        else
+        {
+            SceneManager.UnloadSceneAsync("MainMenu");
+        }
+    }
+
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
@@ -699,13 +711,11 @@ public class GameManager : MonoBehaviour
         {
             EffectManager.highlightTapArea(Vector2.zero, false);
         }
-        gestureManager.switchGestureProfile("Main");
-        float defaultZoomLevel = camCtr.scalePointToZoomLevel(CameraController.SCALEPOINT_DEFAULT);
-        if (camCtr.ZoomLevel > defaultZoomLevel)
-        {
-            //leave this zoom level even if no past merky was chosen
-            camCtr.ZoomLevel = defaultZoomLevel;
-        }
+
+        //leave this zoom level even if no past merky was chosen
+        float defaultZoomLevel = camCtr.scalePointToZoomLevel((int)CameraController.CameraScalePoints.DEFAULT);
+        camCtr.ZoomLevel = defaultZoomLevel;
+
         if (gameManagerTapProcessed != null)
         {
             gameManagerTapProcessed(curMPWorld);

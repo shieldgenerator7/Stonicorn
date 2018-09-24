@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RewindGestureProfile: GestureProfile
+public class RewindGestureProfile : GestureProfile
 {
     public override void activate()
     {
@@ -23,12 +23,11 @@ public class RewindGestureProfile: GestureProfile
             GameObject.FindObjectOfType<GestureManager>().adjustHoldThreshold(holdTime);
         }
     }
-    public override void processPinchGesture(float zoomLevel)
+    public override void processZoomLevelChange(float zoomLevel)
     {
         camController.ZoomLevel = zoomLevel;
         //GestureProfile switcher
-        if (zoomLevel <= camController.scalePointToZoomLevel(CameraController.SCALEPOINT_TIMEREWIND - 1)
-        //if (camController.getScalePointIndex() < CameraController.SCALEPOINT_TIMEREWIND
+        if (zoomLevel <= camController.scalePointToZoomLevel((int)CameraController.CameraScalePoints.TIMEREWIND - 1)
             && plrController.isIntact())
         {
             gestureManager.switchGestureProfile("Main");

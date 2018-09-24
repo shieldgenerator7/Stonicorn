@@ -46,14 +46,14 @@ public class ActivationTrigger : MonoBehaviour
     /// The minimum zoom scale point that defines the zoom level activation trigger
     /// Set it negative to have no maximum
     /// </summary>
-    public int minZoomScalePoint = 0;
+    public CameraController.CameraScalePoints minZoomScalePoint = 0;
     /// <summary>
     /// The maximum zoom scale point that defines the zoom level activation trigger
     /// Set it negative to have no maximum
     /// </summary>
     [Tooltip("The maximum zoom scale point that defines the zoom level activation trigger.\n"
     + "Set it negative to have no maximum")]
-    public int maxZoomScalePoint = 3;
+    public CameraController.CameraScalePoints maxZoomScalePoint = CameraController.CameraScalePoints.TIMEREWIND;
 
     [Header("Camera Position Activation Settings")]
     [Tooltip("The collider that checks for the presence of the camera.\nLeave it null to deactivate this feature.")]
@@ -158,11 +158,11 @@ public class ActivationTrigger : MonoBehaviour
     {
         return (
                 minZoomScalePoint < 0
-                || zoomLevel >= camController.scalePointToZoomLevel(minZoomScalePoint)
+                || zoomLevel >= camController.scalePointToZoomLevel((int)minZoomScalePoint)
             )
             && (
                 maxZoomScalePoint < 0
-                || zoomLevel <= camController.scalePointToZoomLevel(maxZoomScalePoint)
+                || zoomLevel <= camController.scalePointToZoomLevel((int)maxZoomScalePoint)
             );
     }
 

@@ -66,10 +66,13 @@ public class GestureManager : SavableMonoBehaviour
         plrController = player.GetComponent<PlayerController>();
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
         camController = cam.GetComponent<CameraController>();
+        camController.onZoomLevelChanged += processZoomLevelChange;
 
+        gestureProfiles.Add("Menu", new MenuGestureProfile());
         gestureProfiles.Add("Main", new GestureProfile());
         gestureProfiles.Add("Rewind", new RewindGestureProfile());
-        currentGP = gestureProfiles["Main"];
+        currentGP = gestureProfiles["Menu"];
+        currentGP.activate();
 
         Input.simulateMouseWithTouches = false;
     }
@@ -356,11 +359,11 @@ public class GestureManager : SavableMonoBehaviour
                 //
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    currentGP.processPinchGesture(camController.ZoomLevel + 1);
+                    camController.ZoomLevel = camController.ZoomLevel + 1;
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    currentGP.processPinchGesture(camController.ZoomLevel - 1);
+                    camController.ZoomLevel = camController.ZoomLevel - 1;
                 }
                 //
                 //Pinch Touch Zoom
@@ -384,7 +387,7 @@ public class GestureManager : SavableMonoBehaviour
 
                     float newZoomLevel = origOrthoSize * prevTouchDeltaMag / touchDeltaMag;
 
-                    currentGP.processPinchGesture(newZoomLevel);
+                    camController.ZoomLevel = newZoomLevel;
                 }
             }
             else if (clickState == ClickState.Ended)
@@ -470,6 +473,11 @@ public class GestureManager : SavableMonoBehaviour
         currentGP = gestureProfiles[gpName];
         //Activate new
         currentGP.activate();
+    }
+
+    public void processZoomLevelChange(float newZoomLevel, float delta)
+    {
+        currentGP.processZoomLevelChange(newZoomLevel);
     }
 
     /// <summary>
