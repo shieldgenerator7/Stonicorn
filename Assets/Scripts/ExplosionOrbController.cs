@@ -17,6 +17,8 @@ public class ExplosionOrbController : SavableMonoBehaviour
     public bool chargesAutomatically = true;//false = requires hold to charge
     public bool explodesAtAll = true;//false = doesn't do anything
 
+    private RaycastHit2D[] rch2dsTrigger = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+
     // Use this for initialization
     void Start()
     {
@@ -35,9 +37,8 @@ public class ExplosionOrbController : SavableMonoBehaviour
             if (explodesUponContact)
             {
                 bool validTrigger = false;
-                RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
-                Utility.Cast(cc2D, Vector2.zero, rch2ds, 0, true);
-                foreach (RaycastHit2D rch2d in rch2ds)
+                Utility.Cast(cc2D, Vector2.zero, rch2dsTrigger, 0, true);
+                foreach (RaycastHit2D rch2d in rch2dsTrigger)
                 {
                     if (rch2d && !rch2d.collider.isTrigger
                         && rch2d.collider.gameObject.GetComponent<Rigidbody2D>() != null)

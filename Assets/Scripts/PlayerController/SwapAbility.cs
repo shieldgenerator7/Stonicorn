@@ -12,6 +12,15 @@ public class SwapAbility : PlayerAbility
         get { return swappableObjects; }
     }
 
+    /// <summary>
+    /// Used for determining if the swapped object's landing spot is occupied
+    /// </summary>
+    private RaycastHit2D[] rh2dsOccupied = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+    /// <summary>
+    /// Used for determining which objects can be swapped for any given teleport attempt
+    /// </summary>
+    private RaycastHit2D[] rh2dsSwappable = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+
     protected override void init()
     {
         base.init();
@@ -51,7 +60,6 @@ public class SwapAbility : PlayerAbility
     /// <returns></returns>
     public bool isOccupiedForObject(Collider2D coll, Vector3 pos)
     {
-        RaycastHit2D[] rh2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
         Vector3 offset = pos - coll.gameObject.transform.position;
         float angle = coll.gameObject.transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
@@ -59,9 +67,9 @@ public class SwapAbility : PlayerAbility
         //Do the test
         Vector3 savedOffset = coll.offset;
         coll.offset = rOffset;
-        Utility.Cast(coll,Vector2.zero, rh2ds, 0, true);
+        Utility.Cast(coll, Vector2.zero, rh2dsOccupied, 0, true);
         coll.offset = savedOffset;
-        foreach (RaycastHit2D rh2d in rh2ds)
+        foreach (RaycastHit2D rh2d in rh2dsOccupied)
         {
             if (rh2d.collider == null)
             {
@@ -124,7 +132,6 @@ public class SwapAbility : PlayerAbility
     {
         List<GameObject> gos = new List<GameObject>();
         //2018-02-12: copied from PlayerController.isOccupied(.)       
-        RaycastHit2D[] rh2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
         Vector3 offset = pos - transform.position;
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
@@ -133,9 +140,9 @@ public class SwapAbility : PlayerAbility
         //if it were at this location.
         Vector3 savedOffset = pc2d.offset;
         pc2d.offset = rOffset;
-        Utility.Cast(pc2d,Vector2.zero, rh2ds, 0, true);
+        Utility.Cast(pc2d, Vector2.zero, rh2dsSwappable, 0, true);
         pc2d.offset = savedOffset;
-        foreach (RaycastHit2D rh2d in rh2ds)
+        foreach (RaycastHit2D rh2d in rh2dsSwappable)
         {
             if (rh2d.collider == null)
             {

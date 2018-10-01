@@ -17,6 +17,10 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
 
     private ParticleSystemController particleController;
     private Color effectColor;
+    /// <summary>
+    /// Used to determine which objects this field can power
+    /// </summary>
+    private RaycastHit2D[] rch2dsPowerable = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
     private void Start()
     {
@@ -68,11 +72,10 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
     void FixedUpdate()
     {
         //2017-01-24: copied from WeightSwitchActivator.FixedUpdate()
-        RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
-        int count = Utility.Cast(aoeCollider,Vector2.zero, rch2ds, 0);
+        int count = Utility.Cast(aoeCollider,Vector2.zero, rch2dsPowerable, 0);
         for (int i = 0; i < count; i++)
         {
-            GameObject hc = rch2ds[i].collider.gameObject;
+            GameObject hc = rch2dsPowerable[i].collider.gameObject;
 
             //Power objects
             PowerConduit pc = hc.GetComponent<PowerConduit>();

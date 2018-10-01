@@ -12,6 +12,7 @@ public class ShieldBubbleController : SavableMonoBehaviour, Blastable
     public float MAX_ENERGY = 100;//The max amount of energy for any shield
 
     private SpriteRenderer sr;
+    private RaycastHit2D[] rch2dsLock = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
     // Use this for initialization
     void Start()
@@ -146,11 +147,10 @@ public class ShieldBubbleController : SavableMonoBehaviour, Blastable
     ///</summary>
     void lockRB2Ds()
     {
-        RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
-        int length = Utility.Cast(GetComponent<EdgeCollider2D>(), Vector2.up, rch2ds, 0, true);
+        int length = Utility.Cast(GetComponent<EdgeCollider2D>(), Vector2.up, rch2dsLock, 0, true);
         for (int i = 0; i < length; i++)
         {
-            GameObject hc = rch2ds[i].collider.gameObject;
+            GameObject hc = rch2dsLock[i].collider.gameObject;
             if (hc.GetComponent<Rigidbody2D>() != null)
             {
                 lockRB2D(hc);

@@ -21,6 +21,10 @@ public class FloatCubeController : MonoBehaviour
     private BoxCollider2D bc2d;
     private Vector3 upDirection;//used to determine the up direction of the float cube
     private Quaternion upAngle;//used to determine which direction the float cube should rotate towards
+    /// <summary>
+    /// Used to determine if it's within range of ground
+    /// </summary>
+    private RaycastHit2D[] rch2dsGround = new RaycastHit2D[Utility.MAX_HIT_COUNT];
     //Particles
     private ParticleSystem psTrail;
     private ParticleSystem psSparks;
@@ -109,9 +113,8 @@ public class FloatCubeController : MonoBehaviour
 
                 Vector2 start = getGroundVector(propulsionHeight);
                 Debug.DrawLine(start, transform.position, Color.black);
-                RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
-                Utility.Cast(bc2d, -transform.up, rch2ds, propulsionHeight, true);
-                foreach (RaycastHit2D rch2d in rch2ds)
+                Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight, true);
+                foreach (RaycastHit2D rch2d in rch2dsGround)
                 {
                     if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
                     {
@@ -123,8 +126,8 @@ public class FloatCubeController : MonoBehaviour
                     }
                 }
                 start = getGroundVector((propulsionHeight + variance));
-                Utility.Cast(bc2d, -transform.up, rch2ds, propulsionHeight + variance, true);
-                foreach (RaycastHit2D rch2d in rch2ds)
+                Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight + variance, true);
+                foreach (RaycastHit2D rch2d in rch2dsGround)
                 {
                     if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
                     {
