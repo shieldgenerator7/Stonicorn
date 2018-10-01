@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Utility  {
+public static class Utility
+{
+    public const int MAX_HIT_COUNT = 70;
 
     /// <summary>
     /// Returns the given vector rotated by the given angle
@@ -39,7 +41,7 @@ public static class Utility  {
 
     public static Vector3 PerpendicularRight(Vector3 v)
     {
-        return RotateZ(v, -Mathf.PI/2);
+        return RotateZ(v, -Mathf.PI / 2);
     }
     public static Vector3 PerpendicularLeft(Vector3 v)
     {
@@ -72,8 +74,8 @@ public static class Utility  {
     /// <param name="maxForce">The maximum amount of force that can be applied</param>
     public static void AddWeightedExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius, float maxForce)
     {
-        Vector2 dir = (body.transform.position - expPosition).normalized;        
-        float distanceToEdge = expRadius - distanceToObject(expPosition,body.gameObject);
+        Vector2 dir = (body.transform.position - expPosition).normalized;
+        float distanceToEdge = expRadius - distanceToObject(expPosition, body.gameObject);
         if (distanceToEdge < 0)
         {
             distanceToEdge = 0;
@@ -99,7 +101,7 @@ public static class Utility  {
                 return rch2d.distance;
             }
         }
-        throw new UnityException("Object "+obj+"'s raycast not found! This should not be possible!");
+        throw new UnityException("Object " + obj + "'s raycast not found! This should not be possible!");
     }
     /// <summary>
     /// Sums the centers of all non-trigger colliders
@@ -201,7 +203,7 @@ public static class Utility  {
         }
         //Conversion
         return (((number - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow);
-    }    
+    }
 
     /// <summary>
     /// Instantiates a GameObject so that it can be rewound.
@@ -213,7 +215,7 @@ public static class Utility  {
     {
         //Checks to make sure it's rewindable
         bool foundValidSavable = false;
-        foreach(SavableMonoBehaviour smb in prefab.GetComponents<SavableMonoBehaviour>())
+        foreach (SavableMonoBehaviour smb in prefab.GetComponents<SavableMonoBehaviour>())
         {
             if (smb.isSpawnedObject())
             {
@@ -230,5 +232,36 @@ public static class Utility  {
         SceneLoader.moveToCurrentScene(newObj);
         GameManager.addObject(newObj);
         return newObj;
+    }
+
+    static int maxReturnedList = 0;
+    /// <summary>
+    /// Test method to see how many objects are typically returned in a raycast call
+    /// </summary>
+    public static RaycastHit2D[] RaycastAll(Vector2 origin, Vector2 direction, float distance = 0)
+    {
+        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(origin, direction, distance);
+        if (rch2ds.Length > maxReturnedList)
+        {
+            maxReturnedList = rch2ds.Length;
+            Debug.Log("Utility.RaycastAll: max list count: " + maxReturnedList);
+        }
+        return rch2ds;
+    }
+    public static int Cast(Collider2D coll2d, Vector2 direction, RaycastHit2D[] results, float distance = 0, bool ignoreSiblingColliders = true)
+    {
+        if (results.Length != MAX_HIT_COUNT)
+        {
+            throw new UnityException("Script using collider on object " + coll2d.gameObject.name + " is using result array != MAX_HIT_COUNT: " +
+                "results.count: " + results.Length + ", MAX_HIT_COUNT: " + MAX_HIT_COUNT);
+        }
+        int count = 0;
+        count = coll2d.Cast(direction, results, distance, ignoreSiblingColliders);
+        if (count > maxReturnedList)
+        {
+            maxReturnedList = count;
+            Debug.Log("Utility.Cast: max list count: " + maxReturnedList);
+        }
+        return count;
     }
 }

@@ -63,8 +63,8 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         {
             //Find one that he's currently in
             Collider2D coll2d = GetComponent<Collider2D>();
-            RaycastHit2D[] rch2ds = new RaycastHit2D[100];
-            int collCount = coll2d.Cast(Vector2.zero, rch2ds);
+            RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+            int collCount = Utility.Cast(coll2d,Vector2.zero, rch2ds);
             for (int i = 0; i < collCount; i++)
             {
                 ElectricFieldController efc = rch2ds[i].collider.gameObject.GetComponent<ElectricFieldController>();

@@ -25,7 +25,10 @@ public class BackgroundParallax : MonoBehaviour
                 startPos = transform.position;
             }
         }
-        camBounds = cameraContainerCollider.bounds;
+        if (cameraContainerCollider != null)
+        {
+            camBounds = cameraContainerCollider.bounds;
+        }
     }
 
     // Update is called once per frame

@@ -8,7 +8,7 @@ public class StickyPadChecker : SavableMonoBehaviour
 
     private Rigidbody2D rb2d;
     private Collider2D coll2d;
-    private static RaycastHit2D[] rch2ds = new RaycastHit2D[100];
+    private static RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
     // Use this for initialization
     void Start()
@@ -49,7 +49,7 @@ public class StickyPadChecker : SavableMonoBehaviour
             }
         }
         //Get list of objects in area
-        int colliderCount = coll2d.Cast(Vector2.zero, rch2ds, 0);
+        int colliderCount = Utility.Cast(coll2d, Vector2.zero, rch2ds, 0);
         //Find names that don't have a FixedJoint2D
         foreach (string objname in connectedObjs)
         {

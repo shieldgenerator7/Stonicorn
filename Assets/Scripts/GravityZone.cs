@@ -10,7 +10,7 @@ public class GravityZone : MonoBehaviour
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
     private bool playerIsTenant = false;//whether the player is inside this GravityZone
 
-    private static RaycastHit2D[] rch2dStartup = new RaycastHit2D[100];
+    private static RaycastHit2D[] rch2dStartup = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
     // Use this for initialization
     void Start()

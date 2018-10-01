@@ -40,7 +40,7 @@ public class DiamondShell : MonoBehaviour
     //Components
     private Rigidbody2D rb2d;
     private HardMaterial hm;
-    private static RaycastHit2D[] rch2dsGround = new RaycastHit2D[10];
+    private static RaycastHit2D[] rch2dsGround = new RaycastHit2D[Utility.MAX_HIT_COUNT];
     private GravityAccepter gravity;
 
     // Use this for initialization
@@ -245,7 +245,7 @@ public class DiamondShell : MonoBehaviour
         for (int i = 0; i < raycastCount; i++)
         {
             Vector3 start = transform.position + (transform.up * (i * raycastIncrement));
-            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(start, transform.right * direction, sightRange);
+            RaycastHit2D[] rch2ds = Utility.RaycastAll(start, transform.right * direction, sightRange);
             Debug.DrawLine(start, start + transform.right * Mathf.Sign(direction) * sightRange, Color.blue);
 
             if (rch2ds.Length == 0)
@@ -292,7 +292,7 @@ public class DiamondShell : MonoBehaviour
     void checkGroundedState()
     {
         isGrounded = false;
-        int count = groundCollider.Cast(Vector2.zero, rch2dsGround, 0, true);
+        int count = Utility.Cast(groundCollider, Vector2.zero, rch2dsGround, 0, true);
         for (int i = 0; i < count; i++)
         {
             if (!rch2dsGround[i].collider.isTrigger)

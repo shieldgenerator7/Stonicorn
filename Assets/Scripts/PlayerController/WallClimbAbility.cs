@@ -53,7 +53,7 @@ public class WallClimbAbility : PlayerAbility
         if (playerController.GroundedPreTeleportAbility)
         {
             //Look right
-            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, Utility.PerpendicularRight(-gravity.Gravity), wallDetectRange);
+            RaycastHit2D[] rch2ds = Utility.RaycastAll(oldPos, Utility.PerpendicularRight(-gravity.Gravity), wallDetectRange);
             //Debug.DrawLine(oldPos, oldPos + (Vector2)Utility.PerpendicularRight(-gravity.Gravity).normalized * wallDetectRange, Color.magenta, 2);
             foreach (RaycastHit2D rch2d in rch2ds)
             {
@@ -64,7 +64,7 @@ public class WallClimbAbility : PlayerAbility
                 }
             }
             //Look left
-            rch2ds = Physics2D.RaycastAll(oldPos, Utility.PerpendicularLeft(-gravity.Gravity), wallDetectRange);
+            rch2ds = Utility.RaycastAll(oldPos, Utility.PerpendicularLeft(-gravity.Gravity), wallDetectRange);
             //Debug.DrawLine(oldPos, oldPos + (Vector2)Utility.PerpendicularLeft(-gravity.Gravity).normalized * wallDetectRange, Color.yellow, 2);
             foreach (RaycastHit2D rch2d in rch2ds)
             {

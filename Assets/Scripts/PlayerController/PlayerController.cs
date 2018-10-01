@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
     private float[] rotations = new float[] { 285, 155, 90, 0 };
-    private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[100];//used for determining if Merky is grounded
+    private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for determining if Merky is grounded
 
     public AudioClip teleportSound;
     public BoxCollider2D scoutCollider;//collider used to scout the level for teleportable spots
@@ -473,7 +473,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded(Vector3 direction)
     {
         float length = 0.25f;
-        int count = pc2d.Cast(direction, rch2dsGrounded, length, true);
+        int count = Utility.Cast(pc2d, direction, rch2dsGrounded, length, true);
         for (int i = 0; i < count; i++)
         {
             RaycastHit2D rch2d = rch2dsGrounded[i];
@@ -502,7 +502,7 @@ public class PlayerController : MonoBehaviour
     {
         bool occupied = false;
         //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);        
-        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
+        RaycastHit2D[] rh2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
         Vector3 offset = pos - transform.position;
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
@@ -510,7 +510,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 savedOffset = scoutCollider.offset;
             scoutCollider.offset = rOffset;
-            scoutCollider.Cast(Vector2.zero, rh2ds, 0, true);
+            Utility.Cast(scoutCollider, Vector2.zero, rh2ds, 0, true);
             occupied = isOccupied(rh2ds, pos);
             scoutCollider.offset = savedOffset;
         }
@@ -519,7 +519,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 savedOffset = pc2d.offset;
             pc2d.offset = rOffset;
-            pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+            Utility.Cast(pc2d, Vector2.zero, rh2ds, 0, true);
             occupied = isOccupied(rh2ds, pos);
             pc2d.offset = savedOffset;
         }
@@ -586,8 +586,8 @@ public class PlayerController : MonoBehaviour
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
         pc2d.offset = rOffset;
-        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
-        int count = pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        RaycastHit2D[] rh2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+        int count = Utility.Cast(pc2d,Vector2.zero,  rh2ds, 0, true);
         pc2d.offset = savedOffset;
         for (int i = 0; i < count; i++)
         {

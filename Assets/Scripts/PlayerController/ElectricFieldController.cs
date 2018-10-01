@@ -68,8 +68,8 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
     void FixedUpdate()
     {
         //2017-01-24: copied from WeightSwitchActivator.FixedUpdate()
-        RaycastHit2D[] rch2ds = new RaycastHit2D[10];
-        int count = aoeCollider.Cast(Vector2.zero, rch2ds, 0);
+        RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+        int count = Utility.Cast(aoeCollider,Vector2.zero, rch2ds, 0);
         for (int i = 0; i < count; i++)
         {
             GameObject hc = rch2ds[i].collider.gameObject;

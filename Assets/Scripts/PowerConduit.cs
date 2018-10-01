@@ -26,7 +26,7 @@ public class PowerConduit : SavableMonoBehaviour
     private SpriteRenderer lightEffectRenderer;
     private Color lightEffectColor;
     private BoxCollider2D bc2d;
-    private RaycastHit2D[] rh2ds = new RaycastHit2D[100];//used for detection of other PowerConduits
+    private RaycastHit2D[] rh2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for detection of other PowerConduits
 
     // Use this for initialization
     void Start()

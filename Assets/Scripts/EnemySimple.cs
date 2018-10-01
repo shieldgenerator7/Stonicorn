@@ -25,7 +25,7 @@ public class EnemySimple : MonoBehaviour
     private bool losToPlayer = false;//"Line Of Sight to Player": whether this bug can see the player
     [Range(0,1)]
     public float senseVerticalOffset = 0.25f;//how higher up then center point wall detection ray should start
-    private static RaycastHit2D[] rch2ds = new RaycastHit2D[10];//for processing collider casts
+    private static RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];//for processing collider casts
 
     private Rigidbody2D rb2d;
     private HardMaterial hm;
@@ -193,7 +193,7 @@ public class EnemySimple : MonoBehaviour
         Vector2 ahead = direction * 2;
         Vector2 senseDir = ahead - (Vector2)transform.up.normalized;
         Debug.DrawLine((Vector2)transform.position + ahead, senseDir + (Vector2)transform.position, Color.blue);
-        RaycastHit2D[] rch2ds = Physics2D.RaycastAll((Vector2)transform.position + ahead, -transform.up, 1);
+        RaycastHit2D[] rch2ds = Utility.RaycastAll((Vector2)transform.position + ahead, -transform.up, 1);
         foreach (RaycastHit2D rch2d in rch2ds)
         {
             if (!rch2d.collider.isTrigger)
@@ -211,7 +211,7 @@ public class EnemySimple : MonoBehaviour
         Vector2 senseDir = ahead + length;
         Vector2 offset = transform.up.normalized * senseVerticalOffset;
         Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);
-        RaycastHit2D[] rch2ds = Physics2D.RaycastAll((Vector2)transform.position + offset + ahead, length, distance);
+        RaycastHit2D[] rch2ds = Utility.RaycastAll((Vector2)transform.position + offset + ahead, length, distance);
         foreach (RaycastHit2D rch2d in rch2ds)
         {
             if (!rch2d.collider.isTrigger)
@@ -228,7 +228,7 @@ public class EnemySimple : MonoBehaviour
     /// <returns></returns>
     bool isGrounded()
     {
-        int amount = groundCollider.Cast(-transform.up, rch2ds, 0, true);
+        int amount = Utility.Cast(groundCollider, - transform.up, rch2ds, 0, true);
         for (int i = 0; i < amount; i++)
         {
             RaycastHit2D rch2d = rch2ds[i];

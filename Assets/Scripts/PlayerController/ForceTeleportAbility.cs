@@ -90,7 +90,7 @@ public class ForceTeleportAbility : PlayerAbility
             else
             {
                 //Push the player and all objects in the teleport path
-                RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, newPos - oldPos, Vector2.Distance(oldPos, newPos));
+                RaycastHit2D[] rch2ds = Utility.RaycastAll(oldPos, newPos - oldPos, Vector2.Distance(oldPos, newPos));
                 foreach (RaycastHit2D rch2d in rch2ds)
                 {
                     Rigidbody2D orb2d = rch2d.collider.gameObject.GetComponent<Rigidbody2D>();
@@ -266,7 +266,7 @@ public class ForceTeleportAbility : PlayerAbility
         //Find objects blocking line of sight to explode onto
         if (explodeOnClosestWall)
         {
-            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, triedPos - oldPos, Vector2.Distance(oldPos, triedPos));
+            RaycastHit2D[] rch2ds = Utility.RaycastAll(oldPos, triedPos - oldPos, Vector2.Distance(oldPos, triedPos));
             foreach (RaycastHit2D rch2d in rch2ds)
             {
                 if (rch2d.collider.gameObject == gameObject)

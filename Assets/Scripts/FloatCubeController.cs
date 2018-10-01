@@ -79,9 +79,10 @@ public class FloatCubeController : MonoBehaviour
             if (psSparks != null)
             {
                 psSparks.Play();
-            }            
+            }
         }
-        else {
+        else
+        {
             if (psTrail != null)
             {
                 psTrail.Pause();
@@ -108,8 +109,8 @@ public class FloatCubeController : MonoBehaviour
 
                 Vector2 start = getGroundVector(propulsionHeight);
                 Debug.DrawLine(start, transform.position, Color.black);
-                RaycastHit2D[] rch2ds = new RaycastHit2D[10];
-                bc2d.Cast(-transform.up, rch2ds, propulsionHeight, true);
+                RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+                Utility.Cast(bc2d, -transform.up, rch2ds, propulsionHeight, true);
                 foreach (RaycastHit2D rch2d in rch2ds)
                 {
                     if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
@@ -122,7 +123,7 @@ public class FloatCubeController : MonoBehaviour
                     }
                 }
                 start = getGroundVector((propulsionHeight + variance));
-                bc2d.Cast(-transform.up, rch2ds, propulsionHeight + variance, true);
+                Utility.Cast(bc2d, -transform.up, rch2ds, propulsionHeight + variance, true);
                 foreach (RaycastHit2D rch2d in rch2ds)
                 {
                     if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)

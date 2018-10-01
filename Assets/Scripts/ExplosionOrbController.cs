@@ -35,8 +35,8 @@ public class ExplosionOrbController : SavableMonoBehaviour
             if (explodesUponContact)
             {
                 bool validTrigger = false;
-                RaycastHit2D[] rch2ds = new RaycastHit2D[10];
-                cc2D.Cast(Vector2.zero, rch2ds, 0, true);
+                RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+                Utility.Cast(cc2D, Vector2.zero, rch2ds, 0, true);
                 foreach (RaycastHit2D rch2d in rch2ds)
                 {
                     if (rch2d && !rch2d.collider.isTrigger
