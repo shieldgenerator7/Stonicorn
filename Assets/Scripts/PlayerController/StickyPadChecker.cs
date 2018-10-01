@@ -11,7 +11,7 @@ public class StickyPadChecker : SavableMonoBehaviour
     private static RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
     // Use this for initialization
-    void Start()
+    void OnEnable()
     {
         rb2d = GetComponent<Rigidbody2D>();
         coll2d = GetComponent<Collider2D>();
