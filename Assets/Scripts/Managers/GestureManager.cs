@@ -185,6 +185,10 @@ public class GestureManager : SavableMonoBehaviour
         {
             touchCount = 0;
             clickState = ClickState.None;
+            //
+            isDrag = false;
+            isPinchGesture = false;
+            isCameraMovementOnly = false;
         }
 
         //
@@ -424,6 +428,7 @@ public class GestureManager : SavableMonoBehaviour
         touchCount = 1;
         clickState = ClickState.Began;
         origMP = Input.GetTouch(tapIndex).position;
+        isCameraMovementOnly = false;
     }
 
     /// <summary>
