@@ -591,14 +591,7 @@ public class PlayerController : MonoBehaviour
             GameObject go = rh2d.collider.gameObject;
             if (!rh2d.collider.isTrigger)
             {
-                if (go.CompareTag("Checkpoint_Root"))
-                {
-                    if (rh2d.collider.OverlapPoint(pos))
-                    {
-                        return go.transform.position;
-                    }
-                }
-                if (!go.Equals(transform.gameObject))
+                if (go != transform.gameObject)
                 {
                     Vector3 closPos = rh2d.point;
                     Vector3 dir = pos - closPos;
@@ -607,10 +600,6 @@ public class PlayerController : MonoBehaviour
                     moveDir += dir.normalized * d2;
                 }
             }
-            //if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
-            //{
-            //    return true;//yep, it's occupied by a hidden area
-            //}
         }
         return pos + moveDir;//not adjusted because there's nothing to adjust for
     }
