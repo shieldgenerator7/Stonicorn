@@ -147,7 +147,7 @@ public class ShieldBubbleController : SavableMonoBehaviour, Blastable
     ///</summary>
     void lockRB2Ds()
     {
-        int length = Utility.Cast(GetComponent<EdgeCollider2D>(), Vector2.up, rch2dsLock, 0, true);
+        int length = Utility.Cast(GetComponent<EdgeCollider2D>(), Vector2.up, rch2dsLock, 0, true).count;
         for (int i = 0; i < length; i++)
         {
             GameObject hc = rch2dsLock[i].collider.gameObject;

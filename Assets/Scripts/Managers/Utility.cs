@@ -234,22 +234,41 @@ public static class Utility
         return newObj;
     }
 
+
+
+    public class RaycastAnswer
+    {
+        public RaycastHit2D[] rch2ds;
+        public int count;
+
+        public RaycastAnswer(RaycastHit2D[] rch2ds, int count)
+        {
+            this.rch2ds = rch2ds;
+            this.count = count;
+        }
+    }
+
     static int maxReturnedList = 0;
+    static RaycastHit2D[] rch2dsNonAlloc = new RaycastHit2D[MAX_HIT_COUNT];
     /// <summary>
     /// Test method to see how many objects are typically returned in a raycast call
     /// </summary>
-    public static RaycastHit2D[] RaycastAll(Vector2 origin, Vector2 direction, float distance = 0)
+    public static RaycastAnswer RaycastAll(Vector2 origin, Vector2 direction, float distance = 0)
     {
-        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(origin, direction, distance);
-        if (rch2ds.Length > maxReturnedList)
+        int count = Physics2D.RaycastNonAlloc(origin, direction, rch2dsNonAlloc, distance);
+        if (count > maxReturnedList)
         {
-            maxReturnedList = rch2ds.Length;
+            maxReturnedList = count;
             Debug.Log("Utility.RaycastAll: max list count: " + maxReturnedList);
         }
-        return rch2ds;
+        return new RaycastAnswer(rch2dsNonAlloc, count);
     }
-    public static int Cast(Collider2D coll2d, Vector2 direction, RaycastHit2D[] results, float distance = 0, bool ignoreSiblingColliders = true)
+    public static RaycastAnswer Cast(Collider2D coll2d, Vector2 direction, RaycastHit2D[] results = null, float distance = 0, bool ignoreSiblingColliders = true)
     {
+        if (results == null)
+        {
+            results = rch2dsNonAlloc;
+        }
         if (results.Length != MAX_HIT_COUNT)
         {
             throw new UnityException("Script using collider on object " + coll2d.gameObject.name + " is using result array != MAX_HIT_COUNT: " +
@@ -262,6 +281,6 @@ public static class Utility
             maxReturnedList = count;
             Debug.Log("Utility.Cast: max list count: " + maxReturnedList);
         }
-        return count;
+        return new RaycastAnswer(results, count);
     }
 }

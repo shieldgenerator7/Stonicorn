@@ -68,7 +68,7 @@ public class ShieldOrbController : MonoBehaviour
 
     public bool isBeingTriggered()
     {
-        int count = Utility.Cast(cc2D,Vector2.zero, rh2ds, 0, true);
+        int count = Utility.Cast(cc2D,Vector2.zero, rh2ds, 0, true).count;
         if (count <= 0) { return false; }
         for (int i=0; i<count; i++)
         {

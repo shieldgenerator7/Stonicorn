@@ -216,13 +216,14 @@ public class NPCController : SavableMonoBehaviour
         {
             return false;
         }
-        RaycastHit2D[] hits = Utility.RaycastAll(transform.position, playerObject.transform.position - transform.position, distance);
-        int thingsFound = hits.Length;
+        Utility.RaycastAnswer answer = Utility.RaycastAll(transform.position, playerObject.transform.position - transform.position, distance);
+        int thingsFound = answer.count;
         //If only 2 things, there's nothing in between
         if (thingsFound > 2)
         {
-            foreach (RaycastHit2D rch2d in hits)
+            for (int i = 0; i < answer.count; i++)
             {
+                RaycastHit2D rch2d = answer.rch2ds[i];
                 //If the thing in between is just a trigger, don't worry about it
                 if (!rch2d.collider.isTrigger
                     && rch2d.collider.gameObject != playerObject

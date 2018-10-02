@@ -245,20 +245,20 @@ public class DiamondShell : MonoBehaviour
         for (int i = 0; i < raycastCount; i++)
         {
             Vector3 start = transform.position + (transform.up * (i * raycastIncrement));
-            RaycastHit2D[] rch2ds = Utility.RaycastAll(start, transform.right * direction, sightRange);
+            Utility.RaycastAnswer answer = Utility.RaycastAll(start, transform.right * direction, sightRange);
             Debug.DrawLine(start, start + transform.right * Mathf.Sign(direction) * sightRange, Color.blue);
 
-            if (rch2ds.Length == 0)
+            if (answer.count == 0)
             {
                 continue;
             }
             float closestRange = sightRange + 1;
             float closestAnswer = 0;
 
-            foreach (RaycastHit2D rch2d in rch2ds)
+            for(int j = 0; j < answer.count; j++)
             {
-                if (rch2d
-                    && !rch2d.collider.isTrigger
+                RaycastHit2D rch2d = answer.rch2ds[j];
+                if (!rch2d.collider.isTrigger
                     && rch2d.collider.gameObject != this.gameObject
                     && rch2d.distance < closestRange)
                 {
@@ -292,7 +292,7 @@ public class DiamondShell : MonoBehaviour
     void checkGroundedState()
     {
         isGrounded = false;
-        int count = Utility.Cast(groundCollider, Vector2.zero, rch2dsGround, 0, true);
+        int count = Utility.Cast(groundCollider, Vector2.zero, rch2dsGround, 0, true).count;
         for (int i = 0; i < count; i++)
         {
             if (!rch2dsGround[i].collider.isTrigger)
