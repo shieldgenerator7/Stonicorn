@@ -12,9 +12,9 @@ public class EnemyTrigger : MonoBehaviour {
         if (enemies.Count == 0)
         {
             RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
-            Utility.Cast(GetComponent<BoxCollider2D>(), Vector2.zero, rch2ds, 0, true);
-            foreach (RaycastHit2D rch2d in rch2ds)
-            {
+            Utility.RaycastAnswer answer = Utility.Cast(GetComponent<BoxCollider2D>(), Vector2.zero, rch2ds, 0, true);
+            for (int i = 0; i < answer.count; i++){
+                RaycastHit2D rch2d = answer.rch2ds[i];
                 if (rch2d && !rch2d.collider.isTrigger)
                 {
                     EnemySimple es = rch2d.collider.gameObject.GetComponent<EnemySimple>();

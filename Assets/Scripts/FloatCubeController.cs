@@ -113,26 +113,28 @@ public class FloatCubeController : MonoBehaviour
 
                 Vector2 start = getGroundVector(propulsionHeight);
                 Debug.DrawLine(start, transform.position, Color.black);
-                Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight, true);
-                foreach (RaycastHit2D rch2d in rch2dsGround)
+                Utility.RaycastAnswer answer = Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight, true);
+                for (int i = 0; i < answer.count; i++)
                 {
-                    if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
+                    RaycastHit2D rch2d = answer.rch2ds[i];
+                    if (!rch2d.collider.isTrigger)
                     {
                         GameObject ground = rch2d.collider.gameObject;
-                        if (ground != null && !ground.Equals(transform.gameObject))
+                        if (!ground.Equals(transform.gameObject))
                         {
                             propping1 = true;
                         }
                     }
                 }
                 start = getGroundVector((propulsionHeight + variance));
-                Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight + variance, true);
-                foreach (RaycastHit2D rch2d in rch2dsGround)
+                answer = Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight + variance, true);
+                for (int i = 0; i < answer.count; i++)
                 {
-                    if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
+                    RaycastHit2D rch2d = answer.rch2ds[i];
+                    if (!rch2d.collider.isTrigger)
                     {
                         GameObject ground = rch2d.collider.gameObject;
-                        if (ground != null && !ground.Equals(transform.gameObject))
+                        if (!ground.Equals(transform.gameObject))
                         {
                             propping2 = true;
                         }

@@ -67,17 +67,14 @@ public class SwapAbility : PlayerAbility
         //Do the test
         Vector3 savedOffset = coll.offset;
         coll.offset = rOffset;
-        Utility.Cast(coll, Vector2.zero, rh2dsOccupied, 0, true);
+        Utility.RaycastAnswer answer = Utility.Cast(coll, Vector2.zero, rh2dsOccupied, 0, true);
         coll.offset = savedOffset;
-        foreach (RaycastHit2D rh2d in rh2dsOccupied)
+        for (int i = 0; i < answer.count; i++)
         {
-            if (rh2d.collider == null)
-            {
-                break;//reached the end of the valid RaycastHit2Ds
-            }
-            GameObject go = rh2d.collider.gameObject;
+            RaycastHit2D rch2d = answer.rch2ds[i];
+            GameObject go = rch2d.collider.gameObject;
             //Make sure it's not a trigger
-            if (!rh2d.collider.isTrigger)
+            if (!rch2d.collider.isTrigger)
             {
                 //Make sure it's not detecting itself or this gameObject
                 if (go != coll.gameObject && go != gameObject)
@@ -140,14 +137,11 @@ public class SwapAbility : PlayerAbility
         //if it were at this location.
         Vector3 savedOffset = pc2d.offset;
         pc2d.offset = rOffset;
-        Utility.Cast(pc2d, Vector2.zero, rh2dsSwappable, 0, true);
+        Utility.RaycastAnswer answer = Utility.Cast(pc2d, Vector2.zero, rh2dsSwappable, 0, true);
         pc2d.offset = savedOffset;
-        foreach (RaycastHit2D rh2d in rh2dsSwappable)
+        for (int i = 0; i < answer.count; i++)
         {
-            if (rh2d.collider == null)
-            {
-                break;//reached the end of the valid RaycastHit2Ds
-            }
+            RaycastHit2D rh2d = answer.rch2ds[i];
             GameObject go = rh2d.collider.gameObject;
             if (!rh2d.collider.isTrigger)
             {
