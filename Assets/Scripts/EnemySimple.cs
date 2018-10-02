@@ -233,8 +233,7 @@ public class EnemySimple : MonoBehaviour
         for (int i = 0; i < amount; i++)
         {
             RaycastHit2D rch2d = rch2ds[i];
-            if (rch2d
-                && !rch2d.collider.isTrigger
+            if (!rch2d.collider.isTrigger
                 && rch2d.collider.gameObject != gameObject)
             {
                 return true;

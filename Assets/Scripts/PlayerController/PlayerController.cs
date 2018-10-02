@@ -479,10 +479,10 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             RaycastHit2D rch2d = rch2dsGrounded[i];
-            if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
+            if (!rch2d.collider.isTrigger)
             {
                 GameObject ground = rch2d.collider.gameObject;
-                if (ground != null && !ground.Equals(transform.gameObject))
+                if (!ground.Equals(transform.gameObject))
                 {
                     //Debug.Log("isGround: grounded on: " + ground.name);
                     return true;
