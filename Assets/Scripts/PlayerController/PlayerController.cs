@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
     private GravityAccepter gravity;
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
-    private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
     private float halfWidth = 0;//half of Merky's sprite width
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
@@ -67,6 +66,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip teleportSound;
     public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
     public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
+    public Collider2D groundedTrigger;//the collider that is used to check if Merky is grounded
 
     private CameraController mainCamCtr;//the camera controller for the main camera
     public CameraController Cam
@@ -101,30 +101,28 @@ public class PlayerController : MonoBehaviour
         teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
         onPreTeleport += canTeleport;
         setRange(baseRange);
+        //Check grounded collider
+        if (groundedTrigger == null)
+        {
+            throw new UnityException("Player object " + name + "'s groundedTrigger is " + groundedTrigger + "!");
+        }
+        else if (!groundedTrigger.isTrigger)
+        {
+            throw new UnityException("Player object " + name + "'s groundedTrigger must have isTrigger = TRUE!");
+        }
     }
 
     void FixedUpdate()
     {
-        Vector3 pos = transform.position;
-        Vector2 pos2 = new Vector2(pos.x, pos.y);
+        checkGravityImmunity();
+    }
+    private void OnTriggerEnter2D(Collider2D coll)
+    {        
         checkGroundedState(false);
         if (shouldGrantGIT && grounded)//first grounded frame after teleport
         {
             shouldGrantGIT = false;
             grantGravityImmunity();
-        }
-        if (gravityImmuneTime > Time.time)
-        {
-        }
-        else
-        {
-            gravity.AcceptsGravity = true;
-            if (velocityNeedsReloaded)
-            {
-                rb2d.velocity = savedVelocity;
-                rb2d.angularVelocity = savedAngularVelocity;
-                velocityNeedsReloaded = false;
-            }
         }
     }
 
@@ -134,9 +132,22 @@ public class PlayerController : MonoBehaviour
         savedVelocity = rb2d.velocity;
         savedAngularVelocity = rb2d.angularVelocity;
         gravity.AcceptsGravity = false;
-        velocityNeedsReloaded = true;
         rb2d.velocity = new Vector3(0, 0);
         rb2d.angularVelocity = 0f;
+    }
+    /// <summary>
+    /// Updates gravity immunity
+    /// </summary>
+    void checkGravityImmunity()
+    {
+        if (Time.time >= gravityImmuneTime
+            && gravityImmuneTime > 0)
+        {
+            gravityImmuneTime = 0;
+            gravity.AcceptsGravity = true;
+            rb2d.velocity = savedVelocity;
+            rb2d.angularVelocity = savedAngularVelocity;
+        }
     }
 
     /// <summary>
@@ -276,8 +287,6 @@ public class PlayerController : MonoBehaviour
             rb2d.velocity = new Vector2(newX, newY);
         }
         //Gravity Immunity
-        velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
-        gravityImmuneTime = 0f;
         shouldGrantGIT = true;
         checkGroundedState(true);//have to call it again because state has changed
         //On Teleport Effects
