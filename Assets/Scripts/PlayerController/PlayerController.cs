@@ -65,7 +65,8 @@ public class PlayerController : MonoBehaviour
     private RaycastHit2D[] rchdsAdjustForOccupant = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for finding Merky a new landing spot
 
     public AudioClip teleportSound;
-    public BoxCollider2D scoutCollider;//collider used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
 
     private CameraController mainCamCtr;//the camera controller for the main camera
     public CameraController Cam
@@ -511,29 +512,43 @@ public class PlayerController : MonoBehaviour
         Vector3 offset = pos - transform.position;
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-        //Test with scout collider
+        //Test with max scout collider
         {
-            Vector3 savedOffset = scoutCollider.offset;
-            scoutCollider.offset = rOffset;
-            answerIsOccupied.count = Utility.Cast(scoutCollider, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
+            //Debug.Log("max collider: pos: " + pos);
+            Vector3 savedOffset = scoutColliderMax.offset;
+            scoutColliderMax.offset = rOffset;
+            answerIsOccupied.count = Utility.Cast(scoutColliderMax, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
             occupied = isOccupied(answerIsOccupied, pos);
-            scoutCollider.offset = savedOffset;
+            scoutColliderMax.offset = savedOffset;
         }
-        //Test with actual collider
-        if (!occupied)
+        //Test with min scout collider
+        if (occupied)
         {
-            Vector3 savedOffset = pc2d.offset;
-            pc2d.offset = rOffset;
-            answerIsOccupied.count = Utility.Cast(pc2d, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
+            //Debug.Log("min collider: pos: " + pos);
+            Vector3 savedOffset = scoutColliderMin.offset;
+            scoutColliderMin.offset = rOffset;
+            answerIsOccupied.count = Utility.Cast(scoutColliderMin, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
             occupied = isOccupied(answerIsOccupied, pos);
-            pc2d.offset = savedOffset;
+            scoutColliderMin.offset = savedOffset;
+
+            //Test with actual collider
+            if (!occupied)
+            {
+                //Debug.Log("reg collider: pos: " + pos);
+                savedOffset = pc2d.offset;
+                pc2d.offset = rOffset;
+                answerIsOccupied.count = Utility.Cast(pc2d, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
+                occupied = isOccupied(answerIsOccupied, pos);
+                pc2d.offset = savedOffset;
+            }
         }
         //Debug.DrawLine(pc2d.offset+(Vector2)transform.position, pc2d.bounds.center, Color.grey, 10);
         return occupied;
     }
     bool isOccupied(Utility.RaycastAnswer answer, Vector3 triedPos)
     {
-        for (int i=0; i < answer.count; i++){
+        for (int i = 0; i < answer.count; i++)
+        {
             RaycastHit2D rh2d = answer.rch2ds[i];
             GameObject go = rh2d.collider.gameObject;
             if (!rh2d.collider.isTrigger)
