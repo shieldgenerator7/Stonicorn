@@ -93,9 +93,10 @@ public static class Utility
     {
         Vector2 center = getCollectiveColliderCenter(obj);
         Vector2 dir = (center - position).normalized;
-        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(position, dir);
-        foreach (RaycastHit2D rch2d in rch2ds)
+        RaycastAnswer answer = Utility.RaycastAll(position, dir);
+        for (int i = 0; i < answer.count; i++)
         {
+            RaycastHit2D rch2d = answer.rch2ds[i];
             if (rch2d.collider.gameObject == obj)
             {
                 return rch2d.distance;
@@ -146,9 +147,10 @@ public static class Utility
     {
         Vector2 pos1 = first.transform.position;
         Vector2 pos2 = second.transform.position;
-        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(pos1, pos2 - pos1, Vector2.Distance(pos1, pos2));
-        foreach (RaycastHit2D rch2d in rch2ds)
+        RaycastAnswer answer = Utility.RaycastAll(pos1, pos2 - pos1, Vector2.Distance(pos1, pos2));
+        for (int i = 0; i < answer.count; i++)
         {
+            RaycastHit2D rch2d = answer.rch2ds[i];
             if (rch2d.collider.gameObject != first && rch2d.collider.gameObject != second)
             {
                 return false;
