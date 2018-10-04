@@ -229,7 +229,7 @@ public class EnemySimple : MonoBehaviour
     /// <returns></returns>
     bool isGrounded()
     {
-        int amount = Utility.Cast(groundCollider, -transform.up, rch2ds, 0, true).count;
+        int amount = Utility.Cast(groundCollider, -transform.up, rch2ds, 0, true);
         for (int i = 0; i < amount; i++)
         {
             RaycastHit2D rch2d = rch2ds[i];

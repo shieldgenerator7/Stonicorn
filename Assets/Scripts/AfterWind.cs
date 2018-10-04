@@ -65,7 +65,7 @@ public class AfterWind : SavableMonoBehaviour
         Vector2 pushVector = windVector * fadeFactor;
 
         //Push objects in zone
-        int count = Utility.Cast(coll, Vector2.zero, rch2dStartup).count;
+        int count = Utility.Cast(coll, Vector2.zero, rch2dStartup);
         for (int i = 0; i < count; i++)
         {
             Rigidbody2D rb2d = rch2dStartup[i].collider.gameObject.GetComponent<Rigidbody2D>();

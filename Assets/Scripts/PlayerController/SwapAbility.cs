@@ -67,11 +67,11 @@ public class SwapAbility : PlayerAbility
         //Do the test
         Vector3 savedOffset = coll.offset;
         coll.offset = rOffset;
-        Utility.RaycastAnswer answer = Utility.Cast(coll, Vector2.zero, rh2dsOccupied, 0, true);
+        int count = Utility.Cast(coll, Vector2.zero, rh2dsOccupied, 0, true);
         coll.offset = savedOffset;
-        for (int i = 0; i < answer.count; i++)
+        for (int i = 0; i < count; i++)
         {
-            RaycastHit2D rch2d = answer.rch2ds[i];
+            RaycastHit2D rch2d = rh2dsOccupied[i];
             GameObject go = rch2d.collider.gameObject;
             //Make sure it's not a trigger
             if (!rch2d.collider.isTrigger)
@@ -137,11 +137,11 @@ public class SwapAbility : PlayerAbility
         //if it were at this location.
         Vector3 savedOffset = pc2d.offset;
         pc2d.offset = rOffset;
-        Utility.RaycastAnswer answer = Utility.Cast(pc2d, Vector2.zero, rh2dsSwappable, 0, true);
+        int count = Utility.Cast(pc2d, Vector2.zero, rh2dsSwappable, 0, true);
         pc2d.offset = savedOffset;
-        for (int i = 0; i < answer.count; i++)
+        for (int i = 0; i < count; i++)
         {
-            RaycastHit2D rh2d = answer.rch2ds[i];
+            RaycastHit2D rh2d = rh2dsSwappable[i];
             GameObject go = rh2d.collider.gameObject;
             if (!rh2d.collider.isTrigger)
             {

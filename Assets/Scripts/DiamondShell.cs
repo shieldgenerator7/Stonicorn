@@ -292,7 +292,7 @@ public class DiamondShell : MonoBehaviour
     void checkGroundedState()
     {
         isGrounded = false;
-        int count = Utility.Cast(groundCollider, Vector2.zero, rch2dsGround, 0, true).count;
+        int count = Utility.Cast(groundCollider, Vector2.zero, rch2dsGround, 0, true);
         for (int i = 0; i < count; i++)
         {
             if (!rch2dsGround[i].collider.isTrigger)

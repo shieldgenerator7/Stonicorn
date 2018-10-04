@@ -57,7 +57,11 @@ public class PlayerController : MonoBehaviour
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
     private float[] rotations = new float[] { 285, 155, 90, 0 };
     private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for determining if Merky is grounded
-    private RaycastHit2D[] rh2dsIsOccupied = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for determining if Merky's landing spot is taken
+    /// <summary>
+    /// Used for determining if Merky's landing spot is taken
+    /// </summary>
+    private Utility.RaycastAnswer answerIsOccupied
+        = new Utility.RaycastAnswer(new RaycastHit2D[Utility.MAX_HIT_COUNT], 0);
     private RaycastHit2D[] rchdsAdjustForOccupant = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for finding Merky a new landing spot
 
     public AudioClip teleportSound;
@@ -475,7 +479,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded(Vector3 direction)
     {
         float length = 0.25f;
-        int count = Utility.Cast(pc2d, direction, rch2dsGrounded, length, true).count;
+        int count = Utility.Cast(pc2d, direction, rch2dsGrounded, length, true);
         for (int i = 0; i < count; i++)
         {
             RaycastHit2D rch2d = rch2dsGrounded[i];
@@ -511,8 +515,8 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 savedOffset = scoutCollider.offset;
             scoutCollider.offset = rOffset;
-            Utility.RaycastAnswer answer = Utility.Cast(scoutCollider, Vector2.zero, rh2dsIsOccupied, 0, true);
-            occupied = isOccupied(answer, pos);
+            answerIsOccupied.count = Utility.Cast(scoutCollider, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
+            occupied = isOccupied(answerIsOccupied, pos);
             scoutCollider.offset = savedOffset;
         }
         //Test with actual collider
@@ -520,8 +524,8 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 savedOffset = pc2d.offset;
             pc2d.offset = rOffset;
-            Utility.RaycastAnswer answer = Utility.Cast(pc2d, Vector2.zero, rh2dsIsOccupied, 0, true);
-            occupied = isOccupied(answer, pos);
+            answerIsOccupied.count = Utility.Cast(pc2d, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
+            occupied = isOccupied(answerIsOccupied, pos);
             pc2d.offset = savedOffset;
         }
         //Debug.DrawLine(pc2d.offset+(Vector2)transform.position, pc2d.bounds.center, Color.grey, 10);
@@ -583,7 +587,7 @@ public class PlayerController : MonoBehaviour
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
         pc2d.offset = rOffset;
-        int count = Utility.Cast(pc2d, Vector2.zero, rchdsAdjustForOccupant, 0, true).count;
+        int count = Utility.Cast(pc2d, Vector2.zero, rchdsAdjustForOccupant, 0, true);
         pc2d.offset = savedOffset;
         for (int i = 0; i < count; i++)
         {

@@ -263,7 +263,7 @@ public static class Utility
         }
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
-    public static RaycastAnswer Cast(Collider2D coll2d, Vector2 direction, RaycastHit2D[] results = null, float distance = 0, bool ignoreSiblingColliders = true)
+    public static int Cast(Collider2D coll2d, Vector2 direction, RaycastHit2D[] results = null, float distance = 0, bool ignoreSiblingColliders = true)
     {
         if (results == null)
         {
@@ -281,6 +281,6 @@ public static class Utility
             maxReturnedList = count;
             Debug.Log("Utility.Cast: max list count: " + maxReturnedList);
         }
-        return new RaycastAnswer(results, count);
+        return count;
     }
 }

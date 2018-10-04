@@ -113,10 +113,10 @@ public class FloatCubeController : MonoBehaviour
 
                 Vector2 start = getGroundVector(propulsionHeight);
                 Debug.DrawLine(start, transform.position, Color.black);
-                Utility.RaycastAnswer answer = Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight, true);
-                for (int i = 0; i < answer.count; i++)
+                int count = Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight, true);
+                for (int i = 0; i < count; i++)
                 {
-                    RaycastHit2D rch2d = answer.rch2ds[i];
+                    RaycastHit2D rch2d = rch2dsGround[i];
                     if (!rch2d.collider.isTrigger)
                     {
                         GameObject ground = rch2d.collider.gameObject;
@@ -127,10 +127,10 @@ public class FloatCubeController : MonoBehaviour
                     }
                 }
                 start = getGroundVector((propulsionHeight + variance));
-                answer = Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight + variance, true);
-                for (int i = 0; i < answer.count; i++)
+                count = Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight + variance, true);
+                for (int i = 0; i < count; i++)
                 {
-                    RaycastHit2D rch2d = answer.rch2ds[i];
+                    RaycastHit2D rch2d = rch2dsGround[i];
                     if (!rch2d.collider.isTrigger)
                     {
                         GameObject ground = rch2d.collider.gameObject;

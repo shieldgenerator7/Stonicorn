@@ -49,7 +49,7 @@ public class StickyPadChecker : SavableMonoBehaviour
             }
         }
         //Get list of objects in area
-        int colliderCount = Utility.Cast(coll2d, Vector2.zero, rch2ds, 0).count;
+        int colliderCount = Utility.Cast(coll2d, Vector2.zero, rch2ds, 0);
         //Find names that don't have a FixedJoint2D
         foreach (string objname in connectedObjs)
         {

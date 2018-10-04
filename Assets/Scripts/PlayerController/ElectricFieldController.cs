@@ -72,7 +72,7 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
     void FixedUpdate()
     {
         //2017-01-24: copied from WeightSwitchActivator.FixedUpdate()
-        int count = Utility.Cast(aoeCollider,Vector2.zero, rch2dsPowerable, 0).count;
+        int count = Utility.Cast(aoeCollider,Vector2.zero, rch2dsPowerable, 0);
         for (int i = 0; i < count; i++)
         {
             GameObject hc = rch2dsPowerable[i].collider.gameObject;
