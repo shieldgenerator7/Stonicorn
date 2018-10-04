@@ -285,4 +285,15 @@ public static class Utility
         }
         return count;
     }
+    public static RaycastAnswer CastAnswer(Collider2D coll2d, Vector2 direction, float distance = 0, bool ignoreSiblingColliders = true)
+    {
+        int count = 0;
+        count = coll2d.Cast(direction, rch2dsNonAlloc, distance, ignoreSiblingColliders);
+        if (count > maxReturnedList)
+        {
+            maxReturnedList = count;
+            Debug.Log("Utility.CastAnswer: max list count: " + maxReturnedList);
+        }
+        return new RaycastAnswer(rch2dsNonAlloc, count);
+    }
 }

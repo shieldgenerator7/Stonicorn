@@ -30,11 +30,13 @@ public class DiamondShell : MonoBehaviour
     private float quickTurnDirection = 0;//-1 for left, 1 for right, 0 for no quickTurn
     private float waitStartTime = 0;
     private bool isGrounded = true;
+    private bool isHuntModeActivated = false;
     private float spriteTopY = 0;//the distance from the sprite center to the sprite top
     private float raycastIncrement = 0;
 
     //Passed in Components
     public Collider2D groundCollider;
+    public BoxCollider2D huntCollider;
     public ParticleSystem huntParticles;
 
     //Components
@@ -75,7 +77,20 @@ public class DiamondShell : MonoBehaviour
                 throw new UnityException("DiamondShell (" + name + ") has no groundCollider, and no trigger Collider2D!");
             }
         }
+        //Check huntCollider
+        if (huntCollider == null)
+        {
+            throw new UnityException("DiamondShell (" + name + ") has no huntCollider, which must be a trigger Collider2D!");
+        }
+        else if (!huntCollider.isTrigger)
+        {
+            throw new UnityException("DiamondShell (" + name + ")'s huntCollider must have isTrigger set to TRUE!");
+        }
+        //Update huntCollider's width to match sightrange
+        huntCollider.size = new Vector2(sightRange * 2 / transform.localScale.x, huntCollider.size.y);
+        //Check current states
         checkGroundedState();
+        checkHuntState();
     }
 
     void FixedUpdate()
@@ -96,8 +111,13 @@ public class DiamondShell : MonoBehaviour
             }
         }
         //Check to see if there's any stones in sight
-        float distLeft = checkFoodInDirection(-1.0f);
-        float distRight = checkFoodInDirection(1.0f);
+        float distLeft = 0;
+        float distRight = 0;
+        if (isHuntModeActivated)
+        {
+            distLeft = checkFoodInDirection(-1.0f);
+            distRight = checkFoodInDirection(1.0f);
+        }
         //If any stones in range
         if (distLeft > 0 || distRight > 0 || quickTurnDirection != 0)
         {
@@ -217,10 +237,12 @@ public class DiamondShell : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         checkGroundedState();
+        checkHuntState();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         checkGroundedState();
+        checkHuntState();
     }
 
     /// <summary>
@@ -246,7 +268,7 @@ public class DiamondShell : MonoBehaviour
         {
             Vector3 start = transform.position + (transform.up * (i * raycastIncrement));
             Utility.RaycastAnswer answer = Utility.RaycastAll(start, transform.right * direction, sightRange);
-            Debug.DrawLine(start, start + transform.right * Mathf.Sign(direction) * sightRange, Color.blue);
+            Debug.DrawLine(start, start + (transform.right * Mathf.Sign(direction) * sightRange), Color.blue);
 
             if (answer.count == 0)
             {
@@ -255,7 +277,7 @@ public class DiamondShell : MonoBehaviour
             float closestRange = sightRange + 1;
             float closestAnswer = 0;
 
-            for(int j = 0; j < answer.count; j++)
+            for (int j = 0; j < answer.count; j++)
             {
                 RaycastHit2D rch2d = answer.rch2ds[j];
                 if (!rch2d.collider.isTrigger
@@ -302,6 +324,33 @@ public class DiamondShell : MonoBehaviour
             }
         }
         gravity.AcceptsGravity = !isGrounded;
+    }
+
+    /// <summary>
+    /// Looks to see if there's food inside its collider
+    /// </summary>
+    void checkHuntState()
+    {
+        Utility.RaycastAnswer answer = Utility.CastAnswer(huntCollider, Vector2.zero);
+        for (int i = 0; i < answer.count; i++)
+        {
+            RaycastHit2D rch2d = answer.rch2ds[i];
+            HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
+            if (hm && hm.material == food)
+            {
+                //there is food in the collider
+                isHuntModeActivated = true;
+                return;
+            }
+        }
+        //there is no food in the collider,
+        //so just sleep for now,
+        //but only on safe ground to do so
+        if (isGrounded)
+        {
+            isHuntModeActivated = false;
+            activateHuntMode(false);
+        }
     }
 
     void updateFacingDirection()

@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 50793210120767540}
   - component: {fileID: 60000574227509196}
   - component: {fileID: 61145201624577634}
+  - component: {fileID: 61574043353076066}
   - component: {fileID: 114237505744725508}
   - component: {fileID: 114478089731063420}
   m_Layer: 0
@@ -274,6 +275,31 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7166214, y: 0.19598436}
   m_EdgeRadius: 0
+--- !u!61 &61574043353076066
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1458455247043522}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.032194614, y: 0.3573746}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.1}
+    oldSize: {x: 1.168, y: 0.916}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 20.004025, y: 0.9372957}
+  m_EdgeRadius: 0
 --- !u!114 &114237505744725508
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -339,6 +365,7 @@ MonoBehaviour:
   raycastCount: 3
   spriteFacesLeft: 1
   groundCollider: {fileID: 61145201624577634}
+  huntCollider: {fileID: 61574043353076066}
   huntParticles: {fileID: 198411813743243518}
 --- !u!198 &198411813743243518
 ParticleSystem:
