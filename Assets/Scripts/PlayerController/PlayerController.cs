@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1)]
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
+    public float groundTestDistance = 0.25f;//how far from Merky the ground test should go
 
     //Processing
     public float teleportTime = 0f;//the earliest time that Merky can teleport
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
+    private PolygonCollider2D triggerPC2D;//used to determine when Merky is near ground
     private GravityAccepter gravity;
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
@@ -104,7 +106,14 @@ public class PlayerController : MonoBehaviour
         //Check grounded collider
         if (groundedTrigger == null)
         {
-            throw new UnityException("Player object " + name + "'s groundedTrigger is " + groundedTrigger + "!");
+            //Use triggerPC2D
+            updateTriggerPC2D();
+            groundedTrigger = triggerPC2D;
+            //If it's still null, then throw an exception
+            if (groundedTrigger == null)
+            {
+                throw new UnityException("Player object " + name + "'s groundedTrigger is " + groundedTrigger + "!");
+            }
         }
         else if (!groundedTrigger.isTrigger)
         {
@@ -115,15 +124,44 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         checkGravityImmunity();
+        updateTriggerPC2D();
     }
     private void OnTriggerEnter2D(Collider2D coll)
-    {        
+    {
         checkGroundedState(false);
         if (shouldGrantGIT && grounded)//first grounded frame after teleport
         {
             shouldGrantGIT = false;
             grantGravityImmunity();
         }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        checkGroundedState(false);
+        if (shouldGrantGIT && grounded)//first grounded frame after teleport
+        {
+            shouldGrantGIT = false;
+            grantGravityImmunity();
+        }
+    }
+
+    void updateTriggerPC2D()
+    {
+        if (triggerPC2D == null)
+        {
+            //PC2D ground trigger
+            triggerPC2D = gameObject.AddComponent<PolygonCollider2D>();
+            triggerPC2D.points = pc2d.points;
+            triggerPC2D.isTrigger = true;
+        }
+        //Move triggerPC2D to its new position based on the current gravity
+        //triggerPC2D.offset = Quaternion.AngleAxis(-transform.localEulerAngles.z, Vector3.forward)
+        //    * (transform.position + ((Vector3)gravity.Gravity.normalized * groundTestDistance))
+        //    - transform.position;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html        
+        Vector3 offset = gravity.Gravity.normalized * groundTestDistance;
+        float angle = transform.localEulerAngles.z;
+        triggerPC2D.offset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
+
     }
 
     void grantGravityImmunity()
@@ -488,8 +526,7 @@ public class PlayerController : MonoBehaviour
     }
     public bool isGrounded(Vector3 direction)
     {
-        float length = 0.25f;
-        int count = Utility.Cast(pc2d, direction, rch2dsGrounded, length, true);
+        int count = Utility.Cast(pc2d, direction, rch2dsGrounded, groundTestDistance, true);
         for (int i = 0; i < count; i++)
         {
             RaycastHit2D rch2d = rch2dsGrounded[i];
@@ -522,13 +559,18 @@ public class PlayerController : MonoBehaviour
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
         //Test with max scout collider
-        {
+        if (scoutColliderMax){
             //Debug.Log("max collider: pos: " + pos);
             Vector3 savedOffset = scoutColliderMax.offset;
             scoutColliderMax.offset = rOffset;
             answerIsOccupied.count = Utility.Cast(scoutColliderMax, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
             occupied = isOccupied(answerIsOccupied, pos);
             scoutColliderMax.offset = savedOffset;
+        }
+        else
+        {
+            //assume the space is occupied so that it processes with the other colliders
+            occupied = true;
         }
         //Test with min scout collider
         if (occupied)
