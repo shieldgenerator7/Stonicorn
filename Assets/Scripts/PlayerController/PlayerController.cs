@@ -155,13 +155,9 @@ public class PlayerController : MonoBehaviour
             triggerPC2D.isTrigger = true;
         }
         //Move triggerPC2D to its new position based on the current gravity
-        //triggerPC2D.offset = Quaternion.AngleAxis(-transform.localEulerAngles.z, Vector3.forward)
-        //    * (transform.position + ((Vector3)gravity.Gravity.normalized * groundTestDistance))
-        //    - transform.position;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html        
         Vector3 offset = gravity.Gravity.normalized * groundTestDistance;
         float angle = transform.localEulerAngles.z;
         triggerPC2D.offset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-
     }
 
     void grantGravityImmunity()
@@ -560,8 +556,8 @@ public class PlayerController : MonoBehaviour
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
         //Test with max scout collider
-        if (scoutColliderMax){
-            //Debug.Log("max collider: pos: " + pos);
+        if (scoutColliderMax)
+        {
             Vector3 savedOffset = scoutColliderMax.offset;
             scoutColliderMax.offset = rOffset;
             answerIsOccupied.count = Utility.Cast(scoutColliderMax, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
@@ -576,7 +572,6 @@ public class PlayerController : MonoBehaviour
         //Test with min scout collider
         if (occupied)
         {
-            //Debug.Log("min collider: pos: " + pos);
             Vector3 savedOffset = scoutColliderMin.offset;
             scoutColliderMin.offset = rOffset;
             answerIsOccupied.count = Utility.Cast(scoutColliderMin, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
@@ -586,7 +581,6 @@ public class PlayerController : MonoBehaviour
             //Test with actual collider
             if (!occupied)
             {
-                //Debug.Log("reg collider: pos: " + pos);
                 savedOffset = pc2d.offset;
                 pc2d.offset = rOffset;
                 answerIsOccupied.count = Utility.Cast(pc2d, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
@@ -594,7 +588,6 @@ public class PlayerController : MonoBehaviour
                 pc2d.offset = savedOffset;
             }
         }
-        //Debug.DrawLine(pc2d.offset+(Vector2)transform.position, pc2d.bounds.center, Color.grey, 10);
         return occupied;
     }
     bool isOccupied(Utility.RaycastAnswer answer, Vector3 triedPos)
