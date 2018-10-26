@@ -327,6 +327,7 @@ public class PlayerController : MonoBehaviour
         //Gravity Immunity
         shouldGrantGIT = true;
         checkGroundedState(true);//have to call it again because state has changed
+        triggerPC2D.offset = Vector2.zero;//reset the ground check trigger's offset to zero so Unity can know to trigger OnTriggerEnter2D() again in certain cases
         //On Teleport Effects
         if (onTeleport != null)
         {
