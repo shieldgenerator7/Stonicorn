@@ -53,10 +53,11 @@ public class WallClimbAbility : PlayerAbility
         if (playerController.GroundedPreTeleportAbility)
         {
             //Look right
-            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, Utility.PerpendicularRight(-gravity.Gravity), wallDetectRange);
+            Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, Utility.PerpendicularRight(-gravity.Gravity), wallDetectRange);
             //Debug.DrawLine(oldPos, oldPos + (Vector2)Utility.PerpendicularRight(-gravity.Gravity).normalized * wallDetectRange, Color.magenta, 2);
-            foreach (RaycastHit2D rch2d in rch2ds)
+            for (int i = 0; i < answer.count; i++)
             {
+                RaycastHit2D rch2d = answer.rch2ds[i];
                 if (!rch2d.collider.isTrigger && rch2d.collider.gameObject != gameObject)
                 {
                     spawnSticky(rch2d.point);
@@ -64,10 +65,11 @@ public class WallClimbAbility : PlayerAbility
                 }
             }
             //Look left
-            rch2ds = Physics2D.RaycastAll(oldPos, Utility.PerpendicularLeft(-gravity.Gravity), wallDetectRange);
+            answer = Utility.RaycastAll(oldPos, Utility.PerpendicularLeft(-gravity.Gravity), wallDetectRange);
             //Debug.DrawLine(oldPos, oldPos + (Vector2)Utility.PerpendicularLeft(-gravity.Gravity).normalized * wallDetectRange, Color.yellow, 2);
-            foreach (RaycastHit2D rch2d in rch2ds)
+            for (int i = 0; i < answer.count; i++)
             {
+                RaycastHit2D rch2d = answer.rch2ds[i];
                 if (!rch2d.collider.isTrigger && rch2d.collider.gameObject != gameObject)
                 {
                     spawnSticky(rch2d.point);

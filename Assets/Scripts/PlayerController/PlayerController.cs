@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1)]
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
+    public float groundTestDistance = 0.25f;//how far from Merky the ground test should go
 
     //Processing
     public float teleportTime = 0f;//the earliest time that Merky can teleport
@@ -48,18 +49,26 @@ public class PlayerController : MonoBehaviour
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
+    private PolygonCollider2D triggerPC2D;//used to determine when Merky is near ground
     private GravityAccepter gravity;
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
-    private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
     private float halfWidth = 0;//half of Merky's sprite width
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
     private float[] rotations = new float[] { 285, 155, 90, 0 };
-    private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[100];//used for determining if Merky is grounded
+    private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for determining if Merky is grounded
+    /// <summary>
+    /// Used for determining if Merky's landing spot is taken
+    /// </summary>
+    private Utility.RaycastAnswer answerIsOccupied
+        = new Utility.RaycastAnswer(new RaycastHit2D[Utility.MAX_HIT_COUNT], 0);
+    private RaycastHit2D[] rchdsAdjustForOccupant = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for finding Merky a new landing spot
 
     public AudioClip teleportSound;
-    public BoxCollider2D scoutCollider;//collider used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
+    public Collider2D groundedTrigger;//the collider that is used to check if Merky is grounded
 
     private CameraController mainCamCtr;//the camera controller for the main camera
     public CameraController Cam
@@ -94,31 +103,61 @@ public class PlayerController : MonoBehaviour
         teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
         onPreTeleport += canTeleport;
         setRange(baseRange);
+        //Check grounded collider
+        if (groundedTrigger == null)
+        {
+            //Use triggerPC2D
+            updateTriggerPC2D();
+            groundedTrigger = triggerPC2D;
+            //If it's still null, then throw an exception
+            if (groundedTrigger == null)
+            {
+                throw new UnityException("Player object " + name + "'s groundedTrigger is " + groundedTrigger + "!");
+            }
+        }
+        else if (!groundedTrigger.isTrigger)
+        {
+            throw new UnityException("Player object " + name + "'s groundedTrigger must have isTrigger = TRUE!");
+        }
     }
 
     void FixedUpdate()
     {
-        Vector3 pos = transform.position;
-        Vector2 pos2 = new Vector2(pos.x, pos.y);
+        checkGravityImmunity();
+        updateTriggerPC2D();
+    }
+    private void OnTriggerEnter2D(Collider2D coll)
+    {
         checkGroundedState(false);
         if (shouldGrantGIT && grounded)//first grounded frame after teleport
         {
             shouldGrantGIT = false;
             grantGravityImmunity();
         }
-        if (gravityImmuneTime > Time.time)
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        checkGroundedState(false);
+        if (shouldGrantGIT && grounded)//first grounded frame after teleport
         {
+            shouldGrantGIT = false;
+            grantGravityImmunity();
         }
-        else
+    }
+
+    void updateTriggerPC2D()
+    {
+        if (triggerPC2D == null)
         {
-            gravity.AcceptsGravity = true;
-            if (velocityNeedsReloaded)
-            {
-                rb2d.velocity = savedVelocity;
-                rb2d.angularVelocity = savedAngularVelocity;
-                velocityNeedsReloaded = false;
-            }
+            //PC2D ground trigger
+            triggerPC2D = gameObject.AddComponent<PolygonCollider2D>();
+            triggerPC2D.points = pc2d.points;
+            triggerPC2D.isTrigger = true;
         }
+        //Move triggerPC2D to its new position based on the current gravity
+        Vector3 offset = gravity.Gravity.normalized * groundTestDistance;
+        float angle = transform.localEulerAngles.z;
+        triggerPC2D.offset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
     }
 
     void grantGravityImmunity()
@@ -127,9 +166,22 @@ public class PlayerController : MonoBehaviour
         savedVelocity = rb2d.velocity;
         savedAngularVelocity = rb2d.angularVelocity;
         gravity.AcceptsGravity = false;
-        velocityNeedsReloaded = true;
         rb2d.velocity = new Vector3(0, 0);
         rb2d.angularVelocity = 0f;
+    }
+    /// <summary>
+    /// Updates gravity immunity
+    /// </summary>
+    void checkGravityImmunity()
+    {
+        if (Time.time >= gravityImmuneTime
+            && gravityImmuneTime > 0)
+        {
+            gravityImmuneTime = 0;
+            gravity.AcceptsGravity = true;
+            rb2d.velocity = savedVelocity;
+            rb2d.angularVelocity = savedAngularVelocity;
+        }
     }
 
     /// <summary>
@@ -269,10 +321,9 @@ public class PlayerController : MonoBehaviour
             rb2d.velocity = new Vector2(newX, newY);
         }
         //Gravity Immunity
-        velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
-        gravityImmuneTime = 0f;
         shouldGrantGIT = true;
         checkGroundedState(true);//have to call it again because state has changed
+        triggerPC2D.offset = Vector2.zero;//reset the ground check trigger's offset to zero so Unity can know to trigger OnTriggerEnter2D() again in certain cases
         //On Teleport Effects
         if (onTeleport != null)
         {
@@ -472,15 +523,14 @@ public class PlayerController : MonoBehaviour
     }
     public bool isGrounded(Vector3 direction)
     {
-        float length = 0.25f;
-        int count = pc2d.Cast(direction, rch2dsGrounded, length, true);
+        int count = Utility.Cast(pc2d, direction, rch2dsGrounded, groundTestDistance, true);
         for (int i = 0; i < count; i++)
         {
             RaycastHit2D rch2d = rch2dsGrounded[i];
-            if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
+            if (!rch2d.collider.isTrigger)
             {
                 GameObject ground = rch2d.collider.gameObject;
-                if (ground != null && !ground.Equals(transform.gameObject))
+                if (!ground.Equals(transform.gameObject))
                 {
                     //Debug.Log("isGround: grounded on: " + ground.name);
                     return true;
@@ -502,38 +552,49 @@ public class PlayerController : MonoBehaviour
     {
         bool occupied = false;
         //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);        
-        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
         Vector3 offset = pos - transform.position;
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-        //Test with scout collider
+        //Test with max scout collider
+        if (scoutColliderMax)
         {
-            Vector3 savedOffset = scoutCollider.offset;
-            scoutCollider.offset = rOffset;
-            scoutCollider.Cast(Vector2.zero, rh2ds, 0, true);
-            occupied = isOccupied(rh2ds, pos);
-            scoutCollider.offset = savedOffset;
+            Vector3 savedOffset = scoutColliderMax.offset;
+            scoutColliderMax.offset = rOffset;
+            answerIsOccupied.count = Utility.Cast(scoutColliderMax, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
+            occupied = isOccupied(answerIsOccupied, pos);
+            scoutColliderMax.offset = savedOffset;
         }
-        //Test with actual collider
-        if (!occupied)
+        else
         {
-            Vector3 savedOffset = pc2d.offset;
-            pc2d.offset = rOffset;
-            pc2d.Cast(Vector2.zero, rh2ds, 0, true);
-            occupied = isOccupied(rh2ds, pos);
-            pc2d.offset = savedOffset;
+            //assume the space is occupied so that it processes with the other colliders
+            occupied = true;
         }
-        //Debug.DrawLine(pc2d.offset+(Vector2)transform.position, pc2d.bounds.center, Color.grey, 10);
+        //Test with min scout collider
+        if (occupied)
+        {
+            Vector3 savedOffset = scoutColliderMin.offset;
+            scoutColliderMin.offset = rOffset;
+            answerIsOccupied.count = Utility.Cast(scoutColliderMin, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
+            occupied = isOccupied(answerIsOccupied, pos);
+            scoutColliderMin.offset = savedOffset;
+
+            //Test with actual collider
+            if (!occupied)
+            {
+                savedOffset = pc2d.offset;
+                pc2d.offset = rOffset;
+                answerIsOccupied.count = Utility.Cast(pc2d, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
+                occupied = isOccupied(answerIsOccupied, pos);
+                pc2d.offset = savedOffset;
+            }
+        }
         return occupied;
     }
-    bool isOccupied(RaycastHit2D[] rch2ds, Vector3 triedPos)
+    bool isOccupied(Utility.RaycastAnswer answer, Vector3 triedPos)
     {
-        foreach (RaycastHit2D rh2d in rch2ds)
+        for (int i = 0; i < answer.count; i++)
         {
-            if (rh2d.collider == null)
-            {
-                break;//reached the end of the valid RaycastHit2Ds
-            }
+            RaycastHit2D rh2d = answer.rch2ds[i];
             GameObject go = rh2d.collider.gameObject;
             if (!rh2d.collider.isTrigger)
             {
@@ -586,23 +647,15 @@ public class PlayerController : MonoBehaviour
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
         pc2d.offset = rOffset;
-        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
-        int count = pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        int count = Utility.Cast(pc2d, Vector2.zero, rchdsAdjustForOccupant, 0, true);
         pc2d.offset = savedOffset;
         for (int i = 0; i < count; i++)
         {
-            RaycastHit2D rh2d = rh2ds[i];
+            RaycastHit2D rh2d = rchdsAdjustForOccupant[i];
             GameObject go = rh2d.collider.gameObject;
             if (!rh2d.collider.isTrigger)
             {
-                if (go.CompareTag("Checkpoint_Root"))
-                {
-                    if (rh2d.collider.OverlapPoint(pos))
-                    {
-                        return go.transform.position;
-                    }
-                }
-                if (!go.Equals(transform.gameObject))
+                if (go != transform.gameObject)
                 {
                     Vector3 closPos = rh2d.point;
                     Vector3 dir = pos - closPos;
@@ -611,10 +664,6 @@ public class PlayerController : MonoBehaviour
                     moveDir += dir.normalized * d2;
                 }
             }
-            //if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
-            //{
-            //    return true;//yep, it's occupied by a hidden area
-            //}
         }
         return pos + moveDir;//not adjusted because there's nothing to adjust for
     }

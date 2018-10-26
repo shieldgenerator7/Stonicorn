@@ -22,6 +22,10 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
     private bool newlyCreatedEF = false;//true if the current electric field is one that was just created by Merky
 
     public AudioClip shieldBubbleSound;
+    /// <summary>
+    /// Used to find the current electric field
+    /// </summary>
+    private RaycastHit2D[] rch2dsWait = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
     protected override void init()
     {
@@ -63,11 +67,10 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         {
             //Find one that he's currently in
             Collider2D coll2d = GetComponent<Collider2D>();
-            RaycastHit2D[] rch2ds = new RaycastHit2D[100];
-            int collCount = coll2d.Cast(Vector2.zero, rch2ds);
+            int collCount = Utility.Cast(coll2d,Vector2.zero, rch2dsWait);
             for (int i = 0; i < collCount; i++)
             {
-                ElectricFieldController efc = rch2ds[i].collider.gameObject.GetComponent<ElectricFieldController>();
+                ElectricFieldController efc = rch2dsWait[i].collider.gameObject.GetComponent<ElectricFieldController>();
                 if (efc)
                 {
                     currentElectricField = efc.gameObject;

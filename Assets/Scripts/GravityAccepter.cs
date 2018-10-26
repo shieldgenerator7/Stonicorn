@@ -2,29 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityAccepter : MonoBehaviour {
+public class GravityAccepter : MonoBehaviour
+{
     //used for objects that need to know their gravity direction
 
     //Settings
     public bool usesSideVector = false;//whether or not this use case needs to use the side vector
-    /// <summary>
-    /// How many frames to wait for a GravityZone to add gravity
-    /// before declaring it's outside a GravityZone
-    /// </summary>
-    public int framesToWait = 100;
 
-    //State
-    private int framesWaited = 0;
 
     private Vector2 gravityVector;
     public Vector2 Gravity
     {
-        get {
+        get
+        {
             if (gravityVector == Vector2.zero)
             {
                 return prevGravityVector;
             }
-            return gravityVector; }
+            return gravityVector;
+        }
         private set
         {
             if (value == prevGravityVector)
@@ -77,21 +73,14 @@ public class GravityAccepter : MonoBehaviour {
     Vector2 prevSideVector;
     private void LateUpdate()
     {
-        if (gravityVector != Vector2.zero)
+        if (prevGravityVector != gravityVector
+            && gravityVector != Vector2.zero)
         {
-            prevGravityVector = gravityVector;
-            if (framesWaited != 0) {
-                framesWaited = 0;
-            }
-        }
-        else
-        {
-            framesWaited++;
-            if (framesWaited == framesToWait)
+            if (onGravityChanged != null)
             {
-                framesWaited = 0;
-                prevGravityVector = gravityVector;
+                onGravityChanged(gravityVector);
             }
+            prevGravityVector = gravityVector;
         }
         gravityVector = Vector2.zero;
         if (usesSideVector)
@@ -100,4 +89,7 @@ public class GravityAccepter : MonoBehaviour {
             sideVector = Vector2.zero;
         }
     }
+
+    public delegate void OnGravityChanged(Vector2 newGravity);
+    public OnGravityChanged onGravityChanged;
 }

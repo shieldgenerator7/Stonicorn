@@ -28,9 +28,10 @@ public class AirSliceAbility : PlayerAbility {
         if (!playerController.GroundedPreTeleport)
         {
             bool slicedSomething = false;
-            RaycastHit2D[] rch2ds = Physics2D.RaycastAll(oldPos, (newPos - oldPos), Vector2.Distance(oldPos,newPos));
-            foreach (RaycastHit2D rch2d in rch2ds)
+            Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, (newPos - oldPos), Vector2.Distance(oldPos, newPos));
+            for (int i = 0; i < answer.count; i++)
             {
+                RaycastHit2D rch2d = answer.rch2ds[i];
                 if (rch2d.collider.gameObject != gameObject
                     && !swapAbility.SwappableObjects.Contains(rch2d.collider.gameObject))
                 {

@@ -12,6 +12,15 @@ public class SwapAbility : PlayerAbility
         get { return swappableObjects; }
     }
 
+    /// <summary>
+    /// Used for determining if the swapped object's landing spot is occupied
+    /// </summary>
+    private RaycastHit2D[] rh2dsOccupied = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+    /// <summary>
+    /// Used for determining which objects can be swapped for any given teleport attempt
+    /// </summary>
+    private RaycastHit2D[] rh2dsSwappable = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+
     protected override void init()
     {
         base.init();
@@ -51,7 +60,6 @@ public class SwapAbility : PlayerAbility
     /// <returns></returns>
     public bool isOccupiedForObject(Collider2D coll, Vector3 pos)
     {
-        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
         Vector3 offset = pos - coll.gameObject.transform.position;
         float angle = coll.gameObject.transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
@@ -59,17 +67,14 @@ public class SwapAbility : PlayerAbility
         //Do the test
         Vector3 savedOffset = coll.offset;
         coll.offset = rOffset;
-        coll.Cast(Vector2.zero, rh2ds, 0, true);
+        int count = Utility.Cast(coll, Vector2.zero, rh2dsOccupied, 0, true);
         coll.offset = savedOffset;
-        foreach (RaycastHit2D rh2d in rh2ds)
+        for (int i = 0; i < count; i++)
         {
-            if (rh2d.collider == null)
-            {
-                break;//reached the end of the valid RaycastHit2Ds
-            }
-            GameObject go = rh2d.collider.gameObject;
+            RaycastHit2D rch2d = rh2dsOccupied[i];
+            GameObject go = rch2d.collider.gameObject;
             //Make sure it's not a trigger
-            if (!rh2d.collider.isTrigger)
+            if (!rch2d.collider.isTrigger)
             {
                 //Make sure it's not detecting itself or this gameObject
                 if (go != coll.gameObject && go != gameObject)
@@ -124,7 +129,6 @@ public class SwapAbility : PlayerAbility
     {
         List<GameObject> gos = new List<GameObject>();
         //2018-02-12: copied from PlayerController.isOccupied(.)       
-        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
         Vector3 offset = pos - transform.position;
         float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
@@ -133,14 +137,11 @@ public class SwapAbility : PlayerAbility
         //if it were at this location.
         Vector3 savedOffset = pc2d.offset;
         pc2d.offset = rOffset;
-        pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        int count = Utility.Cast(pc2d, Vector2.zero, rh2dsSwappable, 0, true);
         pc2d.offset = savedOffset;
-        foreach (RaycastHit2D rh2d in rh2ds)
+        for (int i = 0; i < count; i++)
         {
-            if (rh2d.collider == null)
-            {
-                break;//reached the end of the valid RaycastHit2Ds
-            }
+            RaycastHit2D rh2d = rh2dsSwappable[i];
             GameObject go = rh2d.collider.gameObject;
             if (!rh2d.collider.isTrigger)
             {

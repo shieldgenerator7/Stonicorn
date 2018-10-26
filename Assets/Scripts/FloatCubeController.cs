@@ -21,6 +21,10 @@ public class FloatCubeController : MonoBehaviour
     private BoxCollider2D bc2d;
     private Vector3 upDirection;//used to determine the up direction of the float cube
     private Quaternion upAngle;//used to determine which direction the float cube should rotate towards
+    /// <summary>
+    /// Used to determine if it's within range of ground
+    /// </summary>
+    private RaycastHit2D[] rch2dsGround = new RaycastHit2D[Utility.MAX_HIT_COUNT];
     //Particles
     private ParticleSystem psTrail;
     private ParticleSystem psSparks;
@@ -79,9 +83,10 @@ public class FloatCubeController : MonoBehaviour
             if (psSparks != null)
             {
                 psSparks.Play();
-            }            
+            }
         }
-        else {
+        else
+        {
             if (psTrail != null)
             {
                 psTrail.Pause();
@@ -108,27 +113,28 @@ public class FloatCubeController : MonoBehaviour
 
                 Vector2 start = getGroundVector(propulsionHeight);
                 Debug.DrawLine(start, transform.position, Color.black);
-                RaycastHit2D[] rch2ds = new RaycastHit2D[10];
-                bc2d.Cast(-transform.up, rch2ds, propulsionHeight, true);
-                foreach (RaycastHit2D rch2d in rch2ds)
+                int count = Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight, true);
+                for (int i = 0; i < count; i++)
                 {
-                    if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
+                    RaycastHit2D rch2d = rch2dsGround[i];
+                    if (!rch2d.collider.isTrigger)
                     {
                         GameObject ground = rch2d.collider.gameObject;
-                        if (ground != null && !ground.Equals(transform.gameObject))
+                        if (!ground.Equals(transform.gameObject))
                         {
                             propping1 = true;
                         }
                     }
                 }
                 start = getGroundVector((propulsionHeight + variance));
-                bc2d.Cast(-transform.up, rch2ds, propulsionHeight + variance, true);
-                foreach (RaycastHit2D rch2d in rch2ds)
+                count = Utility.Cast(bc2d, -transform.up, rch2dsGround, propulsionHeight + variance, true);
+                for (int i = 0; i < count; i++)
                 {
-                    if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
+                    RaycastHit2D rch2d = rch2dsGround[i];
+                    if (!rch2d.collider.isTrigger)
                     {
                         GameObject ground = rch2d.collider.gameObject;
-                        if (ground != null && !ground.Equals(transform.gameObject))
+                        if (!ground.Equals(transform.gameObject))
                         {
                             propping2 = true;
                         }

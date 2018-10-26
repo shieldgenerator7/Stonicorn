@@ -10,7 +10,7 @@ public class AfterWind : SavableMonoBehaviour
 
     private BoxCollider2D coll;
     private SpriteRenderer sr;
-    private RaycastHit2D[] rch2dStartup = new RaycastHit2D[100];
+    private RaycastHit2D[] rch2dStartup = new RaycastHit2D[Utility.MAX_HIT_COUNT];
     private float fadeStartTime = 0f;//when the fade out started
     private float fadeEndTime = 0f;//when the fade out will end and this GameObject will be deleted
 
@@ -65,7 +65,7 @@ public class AfterWind : SavableMonoBehaviour
         Vector2 pushVector = windVector * fadeFactor;
 
         //Push objects in zone
-        int count = coll.Cast(Vector2.zero, rch2dStartup);
+        int count = Utility.Cast(coll, Vector2.zero, rch2dStartup);
         for (int i = 0; i < count; i++)
         {
             Rigidbody2D rb2d = rch2dStartup[i].collider.gameObject.GetComponent<Rigidbody2D>();
