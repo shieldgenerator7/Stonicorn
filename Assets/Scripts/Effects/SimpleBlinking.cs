@@ -14,7 +14,7 @@ public class SimpleBlinking : MonoBehaviour
     public float offOnTransition = 0;//how long it takes after offTime ends to go all the way to on
 
     [Tooltip("How far along into the first cycle it starts")]
-    public float initialStartTime = 0;//how far along into the first cycle it starts
+    public float timeOffset = 0;//offset the timing of the cycle (sec)
 
     public enum BlinkState
     {
@@ -33,7 +33,7 @@ public class SimpleBlinking : MonoBehaviour
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        lastKeyFrame = initialStartTime;
+        lastKeyFrame = Time.time + timeOffset;
     }
 
     // Update is called once per frame
