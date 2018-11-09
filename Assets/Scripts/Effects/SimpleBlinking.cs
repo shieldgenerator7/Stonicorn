@@ -5,10 +5,13 @@ using UnityEngine;
 /// <summary>
 /// Cycles an object between hidden and shown, using sprite alpha.
 /// </summary>
-public class SimpleBlinking : MonoBehaviour {
+public class SimpleBlinking : MonoBehaviour
+{
 
     public float onTime = 1;//how long to be shown
     public float offTime = 1;//how long to be hidden
+    public float onOffTransition = 0;//how long it takes after onTime ends to go all the way to off
+    public float offOnTransition = 0;//how long it takes after offTime ends to go all the way to on
 
     [Tooltip("How far along into the first cycle it starts")]
     public float initialStartTime = 0;//how far along into the first cycle it starts
@@ -25,14 +28,16 @@ public class SimpleBlinking : MonoBehaviour {
 
     private SpriteRenderer sr;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         sr = GetComponent<SpriteRenderer>();
         lastKeyFrame = initialStartTime;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (Time.time > lastKeyFrame + currentDuration)
         {
             lastKeyFrame = Time.time;
@@ -41,20 +46,27 @@ public class SimpleBlinking : MonoBehaviour {
                 case BlinkState.ON:
                     blinkState = BlinkState.OFF;
                     currentDuration = offTime;
+                    if (onOffTransition == 0)
+                    {
+                        updateAlpha();
+                    }
                     break;
                 case BlinkState.OFF:
                     blinkState = BlinkState.ON;
                     currentDuration = onTime;
+                    if (offOnTransition == 0)
+                    {
+                        updateAlpha();
+                    }
                     break;
             }
-            updateAlpha();
         }
 	}
 
-    void updateAlpha()
+    void updateAlpha(float percent = 1)
     {
         Color c = sr.color;
-        c.a = (blinkState == BlinkState.ON) ? 1 : 0;
+        c.a = (blinkState == BlinkState.ON) ? 0 + percent : 1 - percent;
         sr.color = c;
     }
 }
