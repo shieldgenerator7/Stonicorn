@@ -41,7 +41,6 @@ public class SimpleBlinking : MonoBehaviour
     {
         if (Time.time > lastKeyFrame + currentDuration)
         {
-            lastKeyFrame = lastKeyFrame + currentDuration;
             switch (blinkState)
             {
                 case BlinkState.ON:
@@ -63,6 +62,7 @@ public class SimpleBlinking : MonoBehaviour
                     }
                     break;
             }
+            lastKeyFrame = lastKeyFrame + currentDuration;
         }
         //Transitions
         if (currentTransitionDuration > 0)
