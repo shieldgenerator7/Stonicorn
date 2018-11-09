@@ -13,11 +13,13 @@ public class SimpleMovement : MonoBehaviour
     
     private Vector2 startPosition;
 
-    //Runtime vars
+    //Runtime constants
     private float speed;
     private Vector2 endPosition;
-    private float endDelayStartTime = 0;
+    //Runtime vars
+    private float lastKeyFrame;
     private bool forwards = true;//true to return back to start
+    private bool paused = false;
 
     // Use this for initialization
     void Start()
@@ -30,11 +32,12 @@ public class SimpleMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (endDelayStartTime != 0)
+        if (paused)
         {
-            if (Time.time > endDelayStartTime + endDelay)
+            if (Time.time > lastKeyFrame + endDelay)
             {
-                endDelayStartTime = 0;
+                paused = false;
+                lastKeyFrame = lastKeyFrame + endDelay;
                 if (roundTrip)
                 {
                     forwards = !forwards;
@@ -56,7 +59,8 @@ public class SimpleMovement : MonoBehaviour
                     );
                 if ((Vector2)transform.position == endPosition)
                 {
-                    endDelayStartTime = Time.time;
+                    paused = true;
+                    lastKeyFrame = lastKeyFrame + duration;
                 }
             }
             else
@@ -68,7 +72,8 @@ public class SimpleMovement : MonoBehaviour
                     );
                 if ((Vector2)transform.position == startPosition)
                 {
-                    endDelayStartTime = Time.time;
+                    paused = true;
+                    lastKeyFrame = lastKeyFrame + duration;
                 }
             }
         }
