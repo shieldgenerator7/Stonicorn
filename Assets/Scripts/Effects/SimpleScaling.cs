@@ -14,7 +14,6 @@ public class SimpleScaling : MonoBehaviour
     private float speed;
     private Vector3 startScale;
     private Vector3 endScale;
-    private float scaleDiff;
     //Runtime vars
     private bool forwards = true;//true to move towards endScale
     private float lastKeyFrame = 0;//the last time it switched states
@@ -25,7 +24,7 @@ public class SimpleScaling : MonoBehaviour
     {
         startScale = transform.localScale;
         endScale = startScale * scale;
-        scaleDiff = (endScale - startScale).magnitude;
+        float scaleDiff = (endScale - startScale).magnitude;
         speed = scaleDiff / duration;
     }
 
@@ -48,7 +47,7 @@ public class SimpleScaling : MonoBehaviour
                 transform.localScale = Vector3.MoveTowards(
                     startScale,
                     endScale,
-                    scaleDiff * (Time.time - lastKeyFrame) / duration
+                    speed * (Time.time - lastKeyFrame)
                     );
                 if (transform.localScale == endScale)
                 {
@@ -61,7 +60,7 @@ public class SimpleScaling : MonoBehaviour
                 transform.localScale = Vector3.MoveTowards(
                     endScale,
                     startScale,
-                    scaleDiff * (Time.time - lastKeyFrame) / duration
+                    speed * (Time.time - lastKeyFrame)
                     );
                 if (transform.localScale == startScale)
                 {
