@@ -22,11 +22,17 @@ public class SimpleMovement : MonoBehaviour
     private bool paused = false;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         startPosition = transform.position;
         endPosition = startPosition + direction;
         speed = (endPosition - startPosition).magnitude / duration;
+    }
+    void OnEnable()
+    {
+        lastKeyFrame = Time.time;
+        forwards = true;
+        paused = false;
     }
 
     // Update is called once per frame

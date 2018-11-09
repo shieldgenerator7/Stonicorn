@@ -29,10 +29,12 @@ public class SimpleBlinking : MonoBehaviour
 
     private SpriteRenderer sr;
 
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+    }
+    void OnEnable()
+    {
         lastKeyFrame = Time.time + timeOffset;
     }
 
