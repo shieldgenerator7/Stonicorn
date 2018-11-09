@@ -10,6 +10,9 @@ public class SimpleBlinking : MonoBehaviour {
     public float onTime = 1;//how long to be shown
     public float offTime = 1;//how long to be hidden
 
+    [Tooltip("How far along into the first cycle it starts")]
+    public float initialStartTime = 0;//how far along into the first cycle it starts
+
     public enum BlinkState
     {
         ON,//shown
@@ -25,6 +28,7 @@ public class SimpleBlinking : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         sr = GetComponent<SpriteRenderer>();
+        lastKeyFrame = initialStartTime;
 	}
 	
 	// Update is called once per frame
