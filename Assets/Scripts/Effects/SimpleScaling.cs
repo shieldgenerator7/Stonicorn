@@ -28,6 +28,13 @@ public class SimpleScaling : MonoBehaviour
         speed = scaleDiff / duration;
     }
 
+    private void OnEnable()
+    {
+        forwards = true;
+        lastKeyFrame = Time.time;
+        pausing = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
