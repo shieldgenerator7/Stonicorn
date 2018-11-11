@@ -54,6 +54,13 @@ public class ActivationTrigger : MonoBehaviour
     [Tooltip("The maximum zoom scale point that defines the zoom level activation trigger.\n"
     + "Set it negative to have no maximum")]
     public CameraController.CameraScalePoints maxZoomScalePoint = CameraController.CameraScalePoints.TIMEREWIND;
+    public enum ClusivityOption
+    {
+        INCLUSIVE,
+        EXCLUSIVE
+    }
+    public ClusivityOption minZoomClusivity = ClusivityOption.INCLUSIVE;
+    public ClusivityOption maxZoomClusivity = ClusivityOption.INCLUSIVE;
 
     [Header("Camera Position Activation Settings")]
     [Tooltip("The collider that checks for the presence of the camera.\nLeave it null to deactivate this feature.")]
@@ -156,13 +163,21 @@ public class ActivationTrigger : MonoBehaviour
 
     bool scalePointInRange(float zoomLevel)
     {
+        float minZoom = (minZoomScalePoint < 0) ? -1 : camController.scalePointToZoomLevel((int)minZoomScalePoint);
+        float maxZoom = (maxZoomScalePoint < 0) ? -1 : camController.scalePointToZoomLevel((int)maxZoomScalePoint);
         return (
                 minZoomScalePoint < 0
-                || zoomLevel >= camController.scalePointToZoomLevel((int)minZoomScalePoint)
+                || (minZoomClusivity == ClusivityOption.INCLUSIVE &&
+                zoomLevel >= minZoom)
+                || (minZoomClusivity == ClusivityOption.EXCLUSIVE &&
+                zoomLevel > minZoom)
             )
             && (
                 maxZoomScalePoint < 0
-                || zoomLevel <= camController.scalePointToZoomLevel((int)maxZoomScalePoint)
+                || (maxZoomClusivity == ClusivityOption.INCLUSIVE &&
+                zoomLevel <= maxZoom)
+                || (maxZoomClusivity == ClusivityOption.EXCLUSIVE &&
+                zoomLevel < maxZoom)
             );
     }
 

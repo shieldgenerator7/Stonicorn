@@ -5730,6 +5730,8 @@ MonoBehaviour:
   triggerRequireZoom: 1
   minZoomScalePoint: 0
   maxZoomScalePoint: 3
+  minZoomClusivity: 0
+  maxZoomClusivity: 0
   cameraPositionCollider: {fileID: 0}
   cameraEnterAction: 0
   cameraExitAction: 1
@@ -5796,6 +5798,8 @@ MonoBehaviour:
   triggerRequireZoom: 1
   minZoomScalePoint: 3
   maxZoomScalePoint: -1
+  minZoomClusivity: 0
+  maxZoomClusivity: 0
   cameraPositionCollider: {fileID: 0}
   cameraEnterAction: 0
   cameraExitAction: 1
@@ -16877,6 +16881,8 @@ MonoBehaviour:
   triggerRequireZoom: 1
   minZoomScalePoint: 0
   maxZoomScalePoint: 3
+  minZoomClusivity: 0
+  maxZoomClusivity: 0
   cameraPositionCollider: {fileID: 0}
   cameraEnterAction: 0
   cameraExitAction: 1
@@ -34539,9 +34545,11 @@ MonoBehaviour:
   zoomLevelEnterStayAction: 0
   zoomLevelExitStayAction: 1
   zoomRequireTrigger: 1
-  triggerRequireZoom: 0
+  triggerRequireZoom: 1
   minZoomScalePoint: 0
-  maxZoomScalePoint: 2
+  maxZoomScalePoint: 3
+  minZoomClusivity: 1
+  maxZoomClusivity: 1
   cameraPositionCollider: {fileID: 0}
   cameraEnterAction: 0
   cameraExitAction: 1
@@ -39645,6 +39653,8 @@ MonoBehaviour:
   triggerRequireZoom: 0
   minZoomScalePoint: 0
   maxZoomScalePoint: 3
+  minZoomClusivity: 0
+  maxZoomClusivity: 0
   cameraPositionCollider: {fileID: 0}
   cameraEnterAction: 0
   cameraExitAction: 1
@@ -39698,6 +39708,8 @@ MonoBehaviour:
   triggerRequireZoom: 1
   minZoomScalePoint: 3
   maxZoomScalePoint: -1
+  minZoomClusivity: 0
+  maxZoomClusivity: 0
   cameraPositionCollider: {fileID: 0}
   cameraEnterAction: 0
   cameraExitAction: 1
@@ -71919,6 +71931,8 @@ MonoBehaviour:
   triggerRequireZoom: 0
   minZoomScalePoint: 0
   maxZoomScalePoint: 3
+  minZoomClusivity: 0
+  maxZoomClusivity: 0
   cameraPositionCollider: {fileID: 0}
   cameraEnterAction: 0
   cameraExitAction: 1
@@ -83528,6 +83542,8 @@ MonoBehaviour:
   triggerRequireZoom: 0
   minZoomScalePoint: 0
   maxZoomScalePoint: 3
+  minZoomClusivity: 0
+  maxZoomClusivity: 0
   cameraPositionCollider: {fileID: 1764997185}
   cameraEnterAction: 0
   cameraExitAction: 1
