@@ -33,19 +33,44 @@ public class PolygonCollider2DWorkerEditor : Editor
 
     public static void cutCollider(PolygonCollider2D pc2d, Bounds b)
     {
-        Debug.Log("BOUNDS: " + b);
-        Vector2[] points = pc2d.GetPath(0);
         Vector2 stud = pc2d.transform.position;
-        for (int i = 0; i < points.Length; i++)
+        int count = 0;
+        bool changes = true;
+        while (changes && count < 100)
         {
-            int i2 = (i + 1) % points.Length;
-            Debug.Log("...checking: " + (points[i] + stud) + ", " + (points[i2] + stud) + ", >>" + i);
-            Ray ray = new Ray(points[i] + stud, points[i2] - points[i] + stud);
-            if (b.IntersectRay(ray))
+            count++;
+            changes = false;
+            Debug.Log("BOUNDS: " + b);
+            List<Vector2> points = new List<Vector2>(pc2d.GetPath(0));
+            
+            for (int i = 0; i < points.Count; i++)
             {
-                Debug.Log("intersection: " + (points[i] + stud) + ", " + (points[i2] + stud) + ", >>" + i);
+                int i2 = (i + 1) % points.Count;
+                int i0 = ((i - 1) + points.Count) % points.Count;
+                Debug.Log("i0: " + i0);
+                //Point Checking
+                if (b.Contains(points[i] + stud))
+                {
+                    Debug.Log("Contains point: " + points[i] + " >>" + i);
+                    changes = true;
+                    //add new point forward
+                    Vector2 newPoint = (points[i2] - points[i])/2 + points[i];
+                    points.Insert(i + 1, newPoint);
+                    //move existing point backward
+                    points[i] = (points[i0] - points[i]) / 2 + points[i];
+                    pc2d.points = points.ToArray();
+                    break;
+                }
+                //Line Checking
+                //Debug.Log("...checking: " + (points[i] + stud) + ", " + (points[i2] + stud) + ", >>" + i);
+                //Ray ray = new Ray(points[i] + stud, points[i2] - points[i] + stud);
+                //if (b.IntersectRay(ray))
+                //{
+                //    Debug.Log("intersection: " + (points[i] + stud) + ", " + (points[i2] + stud) + ", >>" + i);
+                //    //changes = true;
+                //}
             }
+            Debug.Log("====");
         }
-        Debug.Log("====");
     }
 }
