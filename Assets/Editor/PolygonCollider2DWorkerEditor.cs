@@ -111,8 +111,9 @@ public class PolygonCollider2DWorkerEditor : Editor
                         && !interdata.segmentIntersection)
                     {
                         int i0 = ((interdata.targetLineSegmentID - 1) + points.Count) % points.Count;
+                        LineSegment prevLS = new LineSegment(points, i0, stud, pc2dScale);
                         //and the point before is also in the stencil,
-                        if (stencil.OverlapPoint(points[i0]))
+                        if (stencil.OverlapPoint(prevLS.startPos))
                         {
                             //remove the point that starts the segment
                             points.RemoveAt(interdata.targetLineSegmentID);
