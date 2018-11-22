@@ -34,8 +34,10 @@ public class PolygonCollider2DWorkerEditor : Editor
     public static void cutCollider(PolygonCollider2D pc2d, PolygonCollider2D stencil)
     {
         Vector2 stud = pc2d.transform.position;
+        Vector2 pc2dScale = pc2d.transform.localScale;
         List<Vector2> points = new List<Vector2>(pc2d.GetPath(0));
         Vector2 stencilStud = stencil.transform.position;
+        Vector2 stencilScale = stencil.transform.localScale;
         Vector2[] stencilPoints = stencil.GetPath(0);
 
         bool changed = true;
@@ -49,7 +51,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                 int i2 = (i + 1) % points.Count;
 
                 //Line Checking
-                LineSegment targetLine = new LineSegment(points, i, stud);
+                LineSegment targetLine = new LineSegment(points, i, stud, pc2dScale);
                 //Check to see if the bounds overlap
                 if (stencil.bounds.Intersects(targetLine.Bounds))
                 {
@@ -59,7 +61,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                     bool intersectsSegment = false;
                     for (int j = 0; j < stencilPoints.Length; j++)
                     {
-                        LineSegment stencilLine = new LineSegment(stencilPoints, j, stencilStud);
+                        LineSegment stencilLine = new LineSegment(stencilPoints, j, stencilStud, stencilScale);
                         Vector2 intersection = Vector2.zero;
                         bool intersects = LineIntersection(targetLine, stencilLine, ref intersection);
                         //If it intersects,
