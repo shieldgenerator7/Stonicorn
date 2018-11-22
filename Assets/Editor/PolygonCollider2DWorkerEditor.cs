@@ -71,7 +71,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                         {
                             //Record a data point
                             intersectsSegment = true;
-                            IntersectionData interdata = new IntersectionData(intersection, i, j);
+                            IntersectionData interdata = new IntersectionData(intersection, i, j, intersects, startInStencil, endInStencil);
                             intersectionData.Add(interdata);
                         }
                     }
@@ -94,7 +94,9 @@ public class PolygonCollider2DWorkerEditor : Editor
                         //bounds checking is quick but liable to give false positives
                     }
                 }
+
             }
+
             //
             // Refine intersection data entries
             //
@@ -148,6 +150,23 @@ public class PolygonCollider2DWorkerEditor : Editor
                     streakFirstIndex = streakEndIndex;
                 }
             }
+            //Set the intersection type of the data
+            int side = 0;//0 =not set, 1 =inside, -1 =outside
+            foreach (IntersectionData interdata in intersectionData)
+            {
+                if (side == 0)
+                {
+                    side = (interdata.startsInStencil) ? 1 : -1;
+                }
+                if (interdata.segmentIntersection)
+                {
+                    side *= -1;
+                    interdata.type = (side > 0) ? IntersectionData.IntersectionType.ENTER : IntersectionData.IntersectionType.EXIT;
+                }
+                else
+                {
+                    interdata.type = (side > 0) ? IntersectionData.IntersectionType.INSIDE : IntersectionData.IntersectionType.OUTSIDE;
+                }
             }
 
             //
