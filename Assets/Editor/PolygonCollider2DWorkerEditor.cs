@@ -108,7 +108,8 @@ public class PolygonCollider2DWorkerEditor : Editor
                     //If the line segment is completely in the stencil,
                     if (interdata.startsInStencil
                         && interdata.endsInStencil
-                        && !interdata.segmentIntersection)
+                        && !interdata.segmentIntersection
+                        )
                     {
                         int i0 = ((interdata.targetLineSegmentID - 1) + points.Count) % points.Count;
                         LineSegment prevLS = new LineSegment(points, i0, stud, pc2dScale);
