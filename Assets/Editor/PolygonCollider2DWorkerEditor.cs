@@ -99,29 +99,40 @@ public class PolygonCollider2DWorkerEditor : Editor
             //Start cutting
             //
 
-            //Remove line segments engulfed by stencil
+            //Replace line segments inside the stencil
             if (!changed)
             {
-                for (int i = intersectionData.Count - 1; i >= 0; i--)
+                int count = intersectionData.Count;
+                //Search for start of vein of changes
+                int veinStart = -1;//the id of the segment where the vein starts
+                int veinEnd = -1;//the id of the segment where the vein ends
+                for (int iData = 0; iData < count; iData++)
                 {
-                    IntersectionData interdata = intersectionData[i];
-                    //If the line segment is completely in the stencil,
-                    if (interdata.startsInStencil
-                        && interdata.endsInStencil
-                        && !interdata.segmentIntersection
-                        )
+                    IntersectionData interdata = intersectionData[iData];
+                    //if this segment starts outside and ends inside the stencil
+                    if (!interdata.startsInStencil && interdata.endsInStencil)
                     {
-                        int i0 = ((interdata.targetLineSegmentID - 1) + points.Count) % points.Count;
-                        LineSegment prevLS = new LineSegment(points, i0, stud, pc2dScale);
-                        //and the point before is also in the stencil,
-                        if (stencil.OverlapPoint(prevLS.startPos))
-                        {
-                            //remove the point that starts the segment
-                            points.RemoveAt(interdata.targetLineSegmentID);
-                            changed = true;
+                        IntersectionData nextData = intersectionData[nextIndex(iData, count)];
+                        //and if this segment only traverses a stencil segment once,
+                        if (interdata.targetLineSegmentID != nextData.targetLineSegmentID) {
+                            //then it's a vein start
+                            veinStart = interdata.targetLineSegmentID;
+                            break;
                         }
                     }
                 }
+                //Find the end of the vein of changes
+                for (int iData = veinStart; iData < veinStart + count; iData++)
+                {
+                    IntersectionData interdata = intersectionData[iData];
+                    if (interdata.startsInStencil && intersectionData[iData].segmentIntersection)
+                    {
+                        veinEnd = interdata.targetLineSegmentID;
+                        break;
+                    }
+                }
+                //Find out how to replace vein with stencil path
+
             }
         }
 
