@@ -131,6 +131,11 @@ public class PolygonCollider2DWorkerEditor : Editor
         pc2d.SetPath(0, points.ToArray());
     }
 
+    public static int nextIndex(int index, int listCount, int delta = 1)
+    {
+        return (index + delta + listCount) % listCount;
+    }
+
     public static bool LineIntersection(LineSegment l1, LineSegment l2, ref Vector2 intersection)
     {
         return LineIntersection(l1.startPos, l1.endPos, l2.startPos, l2.endPos, ref intersection);
