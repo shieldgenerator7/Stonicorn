@@ -36,9 +36,11 @@ public class PolygonCollider2DWorkerEditor : Editor
         Vector2 stud = pc2d.transform.position;
         Vector2 pc2dScale = pc2d.transform.localScale;
         List<Vector2> points = new List<Vector2>(pc2d.GetPath(0));
+        convertPathToWorldSpace(ref points, stud, pc2dScale);
         Vector2 stencilStud = stencil.transform.position;
         Vector2 stencilScale = stencil.transform.localScale;
-        Vector2[] stencilPoints = stencil.GetPath(0);
+        List<Vector2> stencilPoints = new List<Vector2>(stencil.GetPath(0));
+        convertPathToWorldSpace(ref stencilPoints, stencilStud, stencilScale);
 
         bool changed = true;
         while (changed)
@@ -51,7 +53,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                 int i2 = (i + 1) % points.Count;
 
                 //Line Checking
-                LineSegment targetLine = new LineSegment(points, i, stud, pc2dScale);
+                LineSegment targetLine = new LineSegment(points, i);
                 //Check to see if the bounds overlap
                 if (stencil.bounds.Intersects(targetLine.Bounds))
                 {
@@ -59,9 +61,9 @@ public class PolygonCollider2DWorkerEditor : Editor
                     bool endInStencil = stencil.OverlapPoint(targetLine.endPos);
                     //Check which stencil edges intersect the line segment
                     bool intersectsSegment = false;
-                    for (int j = 0; j < stencilPoints.Length; j++)
+                    for (int j = 0; j < stencilPoints.Count; j++)
                     {
-                        LineSegment stencilLine = new LineSegment(stencilPoints, j, stencilStud, stencilScale);
+                        LineSegment stencilLine = new LineSegment(stencilPoints, j);
                         Vector2 intersection = Vector2.zero;
                         bool intersects = LineIntersection(targetLine, stencilLine, ref intersection);
                         //If it intersects,
@@ -140,7 +142,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                 {
                     int startIndex = intersectionData[dataStart].stencilLineSegmentID;
                     int endIndex = intersectionData[dataEnd].stencilLineSegmentID;
-                    int stencilCount = stencilPoints.Length;
+                    int stencilCount = stencilPoints.Count;
                     Vector2[] newPath = new Vector2[(startIndex - endIndex + stencilCount) % stencilCount + 2];
                     //Get the new path data
                     newPath[0] = intersectionData[dataStart].intersectionPoint;
@@ -160,7 +162,27 @@ public class PolygonCollider2DWorkerEditor : Editor
         //
         // Finish up
         //
+        convertPathToLocalSpace(ref points, stud, pc2dScale);
         pc2d.SetPath(0, points.ToArray());
+    }
+
+    static void convertPathToWorldSpace(ref List<Vector2> points, Vector2 center, Vector2 scale)
+    {
+        for (int i = 0; i < points.Count; i++)
+        {
+            Vector2 v = points[i];
+            v = (v * scale) + center;
+            points[i] = v;
+        }
+    }
+    static void convertPathToLocalSpace(ref List<Vector2> points, Vector2 center, Vector2 scale)
+    {
+        for (int i = 0; i < points.Count; i++)
+        {
+            Vector2 v = points[i];
+            v = (v - center) / scale;
+            points[i] = v;
+        }
     }
 
     public static int nextIndex(int index, int listCount, int delta = 1)

@@ -16,14 +16,14 @@ public class LineSegment
     /// </summary>
     /// <param name="path"></param>
     /// <param name="index">The index of the first point in the line segment. EX: Index 7 is the line segment between 7 and 8</param>
-    public LineSegment(Vector2[] path, int index, Vector2 center, Vector2 scale)
+    public LineSegment(Vector2[] path, int index)
     {
         int i2 = (index + 1) % path.Length;
-        this.startPos = (path[index] * scale) + center;
-        this.endPos = (path[i2] * scale) + center;
+        this.startPos = path[index];
+        this.endPos = path[i2];
     }
-    public LineSegment(List<Vector2> path, int index, Vector2 center, Vector2 scale)
-        : this(path.ToArray(), index, center, scale) { }
+    public LineSegment(List<Vector2> path, int index)
+        : this(path.ToArray(), index) { }
 
     public static LineSegment rayToLineSegment(Ray ray)
     {
