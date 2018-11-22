@@ -44,11 +44,15 @@ public class LineSegment
         get
         {
             return new Bounds(
-                (startPos + endPos) / 2,
-                (endPos - startPos)
+                abs((startPos + endPos) / 2),
+                abs((endPos - startPos))
             );
         }
         private set { }
+    }
+    Vector2 abs(Vector2 v)
+    {
+        return new Vector2(Mathf.Abs(v.x), Mathf.Abs(v.y));
     }
     public Vector2 Direction
     {
