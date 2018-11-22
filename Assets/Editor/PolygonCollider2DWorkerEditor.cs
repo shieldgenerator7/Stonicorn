@@ -94,7 +94,60 @@ public class PolygonCollider2DWorkerEditor : Editor
                         //bounds checking is quick but liable to give false positives
                     }
                 }
+            }
+            //
+            // Refine intersection data entries
+            //
 
+            //Correct reversed data entries
+            int lastPoint = -1;//the index of the point from the last interdata
+            int streakFirstIndex = -1;//if there's a streak of data with same line segment, this stores the index of the first data that has it
+            int streakEndIndex = 0;//the last data index in the streak
+            bool listChanged = true;
+            while (listChanged)
+            {
+                listChanged = false;
+                for (int i = streakEndIndex; i < intersectionData.Count; i++)
+                {
+                    IntersectionData interdata = intersectionData[i];
+                    if (lastPoint != interdata.targetLineSegmentID)
+                    {
+                        if (Mathf.Abs(streakFirstIndex - streakEndIndex) == 1)
+                        {
+                            lastPoint = interdata.targetLineSegmentID;
+                            streakFirstIndex = i;
+                        }
+                        else
+                        {
+                            //Found a string of them, hop out and check them
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        streakEndIndex = i;
+                    }
+                }
+                if (streakFirstIndex < streakEndIndex)
+                {
+                    float firstDistSqr = (
+                        intersectionData[streakFirstIndex].intersectionPoint
+                        - points[intersectionData[streakFirstIndex].targetLineSegmentID]
+                        ).sqrMagnitude;
+                    float lastDistSqr = (
+                        intersectionData[streakEndIndex].intersectionPoint
+                        - points[intersectionData[streakEndIndex].targetLineSegmentID]
+                        ).sqrMagnitude;
+                    //If the first data point is further from the start of the segment than the last one,
+                    if (firstDistSqr > lastDistSqr)
+                    {
+                        //reverse the entries
+                        intersectionData.Reverse(streakFirstIndex, streakEndIndex - streakFirstIndex + 1);
+                        listChanged = true;
+                    }
+                    streakFirstIndex = streakEndIndex;
+                }
+            }
             }
 
             //
