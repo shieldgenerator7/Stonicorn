@@ -7,18 +7,28 @@ public class IntersectionData
     public Vector2 intersectionPoint;
     public int targetLineSegmentID;
     public int stencilLineSegmentID;
-    public bool segmentIntersection;//true if the target line segment intersects a stencil line segment
-    public bool startsInStencil;//true if the segment start point is in the stencil
-    public bool endsInStencil;//true if the segment end point is in the stencil
+    public enum IntersectionType
+    {
+        ENTER,//when the line enters the stencil
+        EXIT,//when the line exits the stencil
+        INSIDE,//when the line segment is entirely within the stencil
+        OUTSIDE//not used bc if it's outside no IntersectionData object will be created
+    }
+    public IntersectionType type = IntersectionType.OUTSIDE;
 
-    public IntersectionData(Vector2 intersection, int targetLS, int stencilLS, bool segmentIntersection = true, bool startsInStencil = false, bool endsInStencil = false)
+    public IntersectionData(Vector2 intersection, int targetLS, int stencilLS, IntersectionType type)
     {
         this.intersectionPoint = intersection;
         this.targetLineSegmentID = targetLS;
         this.stencilLineSegmentID = stencilLS;
-        this.segmentIntersection = segmentIntersection;
-        this.startsInStencil = startsInStencil;
-        this.endsInStencil = endsInStencil;
+        this.type = type;
+        Debug.Log("Added InterData point: " + this);
+    }
+    public IntersectionData(Vector2 intersection, int targetLS, int stencilLS)
+    {
+        this.intersectionPoint = intersection;
+        this.targetLineSegmentID = targetLS;
+        this.stencilLineSegmentID = stencilLS;
         Debug.Log("Added InterData point: " + this);
     }
 
@@ -26,9 +36,7 @@ public class IntersectionData
     {
         return "tID: " + targetLineSegmentID + ", "
             + "sID: " + stencilLineSegmentID + ", "
-            + "(segment: " + segmentIntersection + ") "
-            + "(start: " + startsInStencil + ") "
-            + "(end: " + endsInStencil + ") "
-            + "inter: " + intersectionPoint + ", ";
+            + "type: " + type + ", "
+            + "inter: " + intersectionPoint;
     }
 }

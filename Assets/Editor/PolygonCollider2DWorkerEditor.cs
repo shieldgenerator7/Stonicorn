@@ -71,7 +71,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                         {
                             //Record a data point
                             intersectsSegment = true;
-                            IntersectionData interdata = new IntersectionData(intersection, i, j, true, startInStencil, endInStencil);
+                            IntersectionData interdata = new IntersectionData(intersection, i, j);
                             intersectionData.Add(interdata);
                         }
                     }
@@ -82,7 +82,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                         if (startInStencil || endInStencil)
                         {
                             //Make an intersection data point anyway, with slightly different arguments
-                            IntersectionData interdata = new IntersectionData(Vector2.zero, i, -1, false, startInStencil, endInStencil);
+                            IntersectionData interdata = new IntersectionData(Vector2.zero, i, -1, IntersectionData.IntersectionType.INSIDE);
                             intersectionData.Add(interdata);
                         }
                     }
@@ -113,18 +113,13 @@ public class PolygonCollider2DWorkerEditor : Editor
                 for (int iData = 0; iData < dataCount; iData++)
                 {
                     IntersectionData interdata = intersectionData[iData];
-                    //if this segment starts outside and ends inside the stencil
-                    if (!interdata.startsInStencil && interdata.endsInStencil)
+                    //if this segment enters the stencil at this data point,
+                    if (interdata.type == IntersectionData.IntersectionType.ENTER)
                     {
-                        IntersectionData nextData = intersectionData[nextIndex(iData, dataCount)];
-                        //and if this segment only traverses a stencil segment once,
-                        if (interdata.targetLineSegmentID != nextData.targetLineSegmentID)
-                        {
-                            //then it's a vein start
-                            veinStart = interdata.targetLineSegmentID;
-                            dataStart = iData;
-                            break;
-                        }
+                        //then it's a vein start
+                        veinStart = interdata.targetLineSegmentID;
+                        dataStart = iData;
+                        break;
                     }
                 }
                 if (dataStart > -1)
@@ -133,7 +128,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                     for (int iData = dataStart; iData < dataStart + dataCount; iData++)
                     {
                         IntersectionData interdata = intersectionData[iData % dataCount];
-                        if (interdata.startsInStencil && interdata.segmentIntersection)
+                        if (interdata.type == IntersectionData.IntersectionType.EXIT)
                         {
                             veinEnd = interdata.targetLineSegmentID;
                             dataEnd = iData % dataCount;
