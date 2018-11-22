@@ -131,7 +131,7 @@ public class PolygonCollider2DWorkerEditor : Editor
 
     public static bool LineIntersection(LineSegment l1, LineSegment l2, ref Vector2 intersection)
     {
-        return LineIntersection(l1.startPos, l1.Direction, l2.startPos, l2.Direction, ref intersection);
+        return LineIntersection(l1.startPos, l1.endPos, l2.startPos, l2.endPos, ref intersection);
     }
     /// <summary>
     /// Returns true if the two lines intersect
