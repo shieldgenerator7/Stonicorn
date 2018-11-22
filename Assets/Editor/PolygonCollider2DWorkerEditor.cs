@@ -158,7 +158,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                     newPath[newPath.Length - 1] = intersectionData[dataEnd].intersectionPoint;
                     //Replace vein with stencil path
                     int removeCount = (veinEnd - veinStart + points.Count) % points.Count;
-                    replacePoints(ref points, newPath, veinStart+1, removeCount);
+                    replacePoints(ref points, newPath, veinStart + 1, removeCount);
                 }
             }
         }
