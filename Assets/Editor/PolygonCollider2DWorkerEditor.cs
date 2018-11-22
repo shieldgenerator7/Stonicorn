@@ -236,5 +236,15 @@ public class PolygonCollider2DWorkerEditor : Editor
             this.startsInStencil = startsInStencil;
             this.endsInStencil = endsInStencil;
         }
+
+        public override string ToString()
+        {
+            return "tID: " + targetLineSegmentID + ", "
+                + "sID: " + stencilLineSegmentID + ", "
+                + "(segment: " + segmentIntersection + ") "
+                + "(start: " + startsInStencil + ") "
+                + "(end: " + endsInStencil + ") "
+                + "inter: " + intersectionPoint + ", ";
+        }
     }
 }

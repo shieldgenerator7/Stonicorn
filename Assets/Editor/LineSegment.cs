@@ -58,4 +58,9 @@ public class LineSegment
         }
         private set { }
     }
+    public override string ToString()
+    {
+        return "Line Segment: " + startPos + " -> " + endPos
+            +", Bounds: "+Bounds;
+    }
 }
