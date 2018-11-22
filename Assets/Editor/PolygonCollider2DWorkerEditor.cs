@@ -106,6 +106,8 @@ public class PolygonCollider2DWorkerEditor : Editor
                 //Search for start of vein of changes
                 int veinStart = -1;//the id of the segment where the vein starts
                 int veinEnd = -1;//the id of the segment where the vein ends
+                int dataStart = -1;//the index of the interdata where the vein starts
+                int dataEnd = -1;//the index of the interdata where the vein ends
                 for (int iData = 0; iData < count; iData++)
                 {
                     IntersectionData interdata = intersectionData[iData];
@@ -114,25 +116,44 @@ public class PolygonCollider2DWorkerEditor : Editor
                     {
                         IntersectionData nextData = intersectionData[nextIndex(iData, count)];
                         //and if this segment only traverses a stencil segment once,
-                        if (interdata.targetLineSegmentID != nextData.targetLineSegmentID) {
+                        if (interdata.targetLineSegmentID != nextData.targetLineSegmentID)
+                        {
                             //then it's a vein start
                             veinStart = interdata.targetLineSegmentID;
+                            dataStart = iData;
                             break;
                         }
                     }
                 }
                 //Find the end of the vein of changes
-                for (int iData = veinStart; iData < veinStart + count; iData++)
+                for (int iData = dataStart; iData < dataStart + count; iData++)
                 {
-                    IntersectionData interdata = intersectionData[iData];
-                    if (interdata.startsInStencil && intersectionData[iData].segmentIntersection)
+                    IntersectionData interdata = intersectionData[iData % count];
+                    if (interdata.startsInStencil && interdata.segmentIntersection)
                     {
                         veinEnd = interdata.targetLineSegmentID;
+                        dataEnd = iData % count;
                         break;
                     }
                 }
-                //Find out how to replace vein with stencil path
-
+                if (veinStart > -1 && veinEnd > -1)
+                {
+                    int startIndex = intersectionData[dataStart].stencilLineSegmentID;
+                    int endIndex = intersectionData[dataEnd].stencilLineSegmentID;
+                    int stencilCount = stencilPoints.Length;
+                    Vector2[] newPath = new Vector2[(startIndex - endIndex + stencilCount) % stencilCount + 2];
+                    //Get the new path data
+                    newPath[0] = intersectionData[dataStart].intersectionPoint;
+                    int writeIndex = 1;
+                    for (int i = startIndex; i > endIndex; i--, writeIndex++)
+                    {
+                        newPath[writeIndex] = stencilPoints[i];
+                    }
+                    newPath[newPath.Length - 1] = intersectionData[dataEnd].intersectionPoint;
+                    //Replace vein with stencil path
+                    int removeCount = (veinEnd - veinStart + points.Count) % points.Count;
+                    replacePoints(ref points, newPath, veinStart, removeCount);
+                }
             }
         }
 
@@ -263,6 +284,28 @@ public class PolygonCollider2DWorkerEditor : Editor
                 + "(start: " + startsInStencil + ") "
                 + "(end: " + endsInStencil + ") "
                 + "inter: " + intersectionPoint + ", ";
+        }
+    }
+
+    static void replacePoints(ref List<Vector2> points, Vector2[] newVectors, int index, int removeCount)
+    {
+        insertPoints(ref points, newVectors, index);
+        index += newVectors.Length;
+        removePoints(ref points, index, removeCount);
+    }
+    static void insertPoints(ref List<Vector2> points, Vector2[] vectors, int index)
+    {
+        points.InsertRange(index, vectors);
+    }
+    static void removePoints(ref List<Vector2> points, int index, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (index >= points.Count)
+            {
+                index = 0;
+            }
+            points.RemoveAt(index);
         }
     }
 }
