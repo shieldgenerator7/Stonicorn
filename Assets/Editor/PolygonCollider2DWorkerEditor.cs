@@ -283,36 +283,6 @@ public class PolygonCollider2DWorkerEditor : Editor
         return true;
     }
 
-    public class IntersectionData
-    {
-        public Vector2 intersectionPoint;
-        public int targetLineSegmentID;
-        public int stencilLineSegmentID;
-        public bool segmentIntersection;//true if the target line segment intersects a stencil line segment
-        public bool startsInStencil;//true if the segment start point is in the stencil
-        public bool endsInStencil;//true if the segment end point is in the stencil
-
-        public IntersectionData(Vector2 intersection, int targetLS, int stencilLS, bool segmentIntersection = true, bool startsInStencil = false, bool endsInStencil = false)
-        {
-            this.intersectionPoint = intersection;
-            this.targetLineSegmentID = targetLS;
-            this.stencilLineSegmentID = stencilLS;
-            this.segmentIntersection = segmentIntersection;
-            this.startsInStencil = startsInStencil;
-            this.endsInStencil = endsInStencil;
-        }
-
-        public override string ToString()
-        {
-            return "tID: " + targetLineSegmentID + ", "
-                + "sID: " + stencilLineSegmentID + ", "
-                + "(segment: " + segmentIntersection + ") "
-                + "(start: " + startsInStencil + ") "
-                + "(end: " + endsInStencil + ") "
-                + "inter: " + intersectionPoint + ", ";
-        }
-    }
-
     static void replacePoints(ref List<Vector2> points, Vector2[] newVectors, int index, int removeCount)
     {
         insertPoints(ref points, newVectors, index);
