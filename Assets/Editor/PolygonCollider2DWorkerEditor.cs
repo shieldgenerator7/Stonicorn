@@ -42,6 +42,10 @@ public class PolygonCollider2DWorkerEditor : Editor
         List<Vector2> stencilPoints = new List<Vector2>(stencil.GetPath(0));
         convertPathToWorldSpace(ref stencilPoints, stencilStud, stencilScale);
 
+        //Show paths (for debugging)
+        //showPath(points);
+        //showPath(stencilPoints);
+
         //Gather overlap info
         List<IntersectionData> intersectionData = new List<IntersectionData>();
         for (int i = 0; i < points.Count; i++)
@@ -216,6 +220,16 @@ public class PolygonCollider2DWorkerEditor : Editor
             Vector2 v = points[i];
             v = (v - center) / scale;
             points[i] = v;
+        }
+    }
+    static void showPath(List<Vector2> points)
+    {
+        for (int i = 0; i < points.Count; i++)
+        {
+            Vector2 v = points[i];
+            int i2 = (i + 1) % points.Count;
+            Vector2 v2 = points[i2];
+            Debug.DrawLine(v, v2, Color.yellow, 10);
         }
     }
 
