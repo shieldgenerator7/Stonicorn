@@ -42,9 +42,13 @@ public class IndexOffset
                 {
                     index -= io.count;
                 }
-                else if ((io.index + io.count - 1) % originalCount < index)
+                else
                 {
-                    index -= (io.index + io.count - 1) % originalCount;
+                    int roundIndex = (io.index + io.count - 1) % originalCount;
+                    if (roundIndex < index)
+                    {
+                        index -= roundIndex;
+                    }
                 }
                 originalCount -= io.count;
             }
