@@ -36,11 +36,11 @@ public class PolygonCollider2DWorkerEditor : Editor
         Vector2 stud = pc2d.transform.position;
         Vector2 pc2dScale = pc2d.transform.localScale;
         List<Vector2> points = new List<Vector2>(pc2d.GetPath(0));
-        convertPathToWorldSpace(ref points, stud, pc2dScale);
+        convertPathToWorldSpace(ref points, pc2d.transform);
         Vector2 stencilStud = stencil.transform.position;
         Vector2 stencilScale = stencil.transform.localScale;
         List<Vector2> stencilPoints = new List<Vector2>(stencil.GetPath(0));
-        convertPathToWorldSpace(ref stencilPoints, stencilStud, stencilScale);
+        convertPathToWorldSpace(ref stencilPoints, stencil.transform);
 
         //Show paths (for debugging)
         //showPath(points);
@@ -200,16 +200,33 @@ public class PolygonCollider2DWorkerEditor : Editor
         //
         // Finish up
         //
-        convertPathToLocalSpace(ref points, stud, pc2dScale);
+        convertPathToLocalSpace(ref points, pc2d.transform);
         pc2d.SetPath(0, points.ToArray());
     }
-
+    static void convertPathToWorldSpace(ref List<Vector2> points, Transform t)
+    {
+        for (int i = 0; i < points.Count; i++)
+        {
+            Vector2 v = points[i];
+            v = t.TransformPoint(v);
+            points[i] = v;
+        }
+    }
     static void convertPathToWorldSpace(ref List<Vector2> points, Vector2 center, Vector2 scale)
     {
         for (int i = 0; i < points.Count; i++)
         {
             Vector2 v = points[i];
             v = (v * scale) + center;
+            points[i] = v;
+        }
+    }
+    static void convertPathToLocalSpace(ref List<Vector2> points, Transform t)
+    {
+        for (int i = 0; i < points.Count; i++)
+        {
+            Vector2 v = points[i];
+            v = t.InverseTransformPoint(v);
             points[i] = v;
         }
     }
