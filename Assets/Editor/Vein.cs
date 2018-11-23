@@ -11,6 +11,9 @@ public class Vein
     IntersectionData interdataStart;
     IntersectionData interdataEnd;
 
+    int origVeinStart;//used for calculating index offsets
+    int origVeinEnd;//used for calculating index offsets
+
     public int VeinStart
     {
         get
@@ -34,16 +37,20 @@ public class Vein
         this.interdataStart = interdataStart;
         this.dataEndIndex = dataEndIndex;
         this.interdataEnd = interdataEnd;
+        this.origVeinStart = VeinStart;
+        this.origVeinEnd = VeinEnd;
     }
     public Vein(int dataStartIndex, IntersectionData interdataStart)
     {
         this.dataStartIndex = dataStartIndex;
         this.interdataStart = interdataStart;
+        this.origVeinStart = VeinStart;
     }
     public void update(int dataEndIndex, IntersectionData interdataEnd)
     {
         this.dataEndIndex = dataEndIndex;
         this.interdataEnd = interdataEnd;
+        this.origVeinEnd = VeinEnd;
     }
     /// <summary>
     /// Give it the start of the vein and the list to look through and it'll find its own end point
@@ -63,6 +70,7 @@ public class Vein
             {
                 this.dataEndIndex = iData;
                 this.interdataEnd = interdata;
+                this.origVeinEnd = VeinEnd;
                 break;
             }
         }
@@ -70,8 +78,8 @@ public class Vein
 
     public void updateIndexes(IndexOffset.IndexOffsetContainer ioc)
     {
-        interdataStart.targetLineSegmentID = ioc.getNewIndex(interdataStart.targetLineSegmentID);
-        interdataEnd.targetLineSegmentID = ioc.getNewIndex(interdataEnd.targetLineSegmentID);
+        interdataStart.targetLineSegmentID = ioc.getNewIndex(origVeinStart);
+        interdataEnd.targetLineSegmentID = ioc.getNewIndex(origVeinEnd);
     }
 
     public Vector2[] getStencilPath(List<Vector2> stencilPoints)
