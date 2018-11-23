@@ -19,13 +19,13 @@ public class PolygonCollider2DWorkerEditor : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        //GUI.enabled = !EditorApplication.isPlaying;
+        GUI.enabled = !EditorApplication.isPlaying;
         if (GUILayout.Button("Cut PolygonCollider2D"))
         {
-            //if (EditorApplication.isPlaying)
-            //{
-            //    throw new UnityException("You must be in Edit Mode to use this function!");
-            //}
+            if (EditorApplication.isPlaying)
+            {
+                throw new UnityException("You must be in Edit Mode to use this function!");
+            }
             Debug.Log("Will now cut the pc2d " + pc2dw.editTarget.name);
             cutCollider(pc2dw.editTarget, stencil);
         }
