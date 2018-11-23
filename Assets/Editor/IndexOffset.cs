@@ -12,10 +12,16 @@ public class IndexOffset
     int count;//the amount of points inserted or deleted
     bool inserted = true;//true = points inserted, false = points deleted
 
+    /// <summary>
+    /// Makes a new IndexOffset
+    /// </summary>
+    /// <param name="index">the index where things were inserted or deleted</param>
+    /// <param name="count">The net insertion or deletion of items. Positive = net insertion, Negative = new deletion</param>
     public IndexOffset(int index, int count)
     {
         this.index = index;
-        this.count = count;
+        this.inserted = (count < 0) ? false : true;
+        this.count = Mathf.Abs(count);
     }
 
     public static int getNewIndex(List<IndexOffset> offsets, int index, int originalCount)
