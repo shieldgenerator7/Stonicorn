@@ -118,4 +118,29 @@ public class Vein
             % listCount;
     }
 
+    /// <summary>
+    /// Returns whether or not this vein and the given vein cut the target in two
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public bool formsSlice(Vein other, int stencilCount)
+    {
+        int start = interdataStart.stencilLineSegmentID;
+        for (int i = start; i < start + stencilCount; i++)
+        {
+            if (i % stencilCount == other.interdataStart.stencilLineSegmentID % stencilCount)
+            {
+                Debug.Log("formsSLice: is slice");
+                return true;
+            }
+            if (i % stencilCount == other.interdataEnd.stencilLineSegmentID % stencilCount)
+            {
+                Debug.Log("formsSLice: is bumps");
+                return false;
+            }
+        }
+        Debug.Log("formsSLice: default");
+        return false;
+    }
+
 }
