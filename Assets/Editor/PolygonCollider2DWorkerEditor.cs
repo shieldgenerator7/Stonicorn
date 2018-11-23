@@ -178,10 +178,7 @@ public class PolygonCollider2DWorkerEditor : Editor
             {
                 int dataCount = intersectionData.Count;
                 //Search for start of vein of changes
-                int veinStart = -1;//the id of the segment where the vein starts
-                int veinEnd = -1;//the id of the segment where the vein ends
-                int dataStart = -1;//the index of the interdata where the vein starts
-                int dataEnd = -1;//the index of the interdata where the vein ends
+                List<Vein> veins = new List<Vein>();
                 for (int iData = 0; iData < dataCount; iData++)
                 {
                     IntersectionData interdata = intersectionData[iData];
@@ -189,47 +186,16 @@ public class PolygonCollider2DWorkerEditor : Editor
                     if (interdata.type == IntersectionData.IntersectionType.ENTER)
                     {
                         //then it's a vein start
-                        veinStart = interdata.targetLineSegmentID;
-                        dataStart = iData;
-                        break;
+                        Vein vein = new Vein(iData, interdata, intersectionData);
+                        veins.Add(vein);
                     }
                 }
-                if (dataStart > -1)
+                if (veins.Count == 1)
                 {
-                    //Find the end of the vein of changes
-                    for (int iData = dataStart; iData < dataStart + dataCount; iData++)
-                    {
-                        IntersectionData interdata = intersectionData[iData % dataCount];
-                        if (interdata.type == IntersectionData.IntersectionType.EXIT)
-                        {
-                            veinEnd = interdata.targetLineSegmentID;
-                            dataEnd = iData % dataCount;
-                            break;
-                        }
-                    }
-                    Debug.Log("vein end: " + veinEnd);
-                }
-                if (veinStart > -1 && veinEnd > -1)
-                {
-                    int startIndex = intersectionData[dataStart].stencilLineSegmentID;
-                    int endIndex = intersectionData[dataEnd].stencilLineSegmentID;
-                    int stencilCount = stencilPoints.Count;
-                    Vector2[] newPath = new Vector2[(startIndex - endIndex + stencilCount) % stencilCount + 2];
-                    //Get the new path data
-                    newPath[0] = intersectionData[dataStart].intersectionPoint;
-                    int writeIndex = 1;
-                    if (startIndex < endIndex)
-                    {
-                        startIndex += stencilCount;
-                    }
-                    for (int i = startIndex; i > endIndex; i--, writeIndex++)
-                    {
-                        newPath[writeIndex] = stencilPoints[(i + stencilCount) % stencilCount];
-                    }
-                    newPath[newPath.Length - 1] = intersectionData[dataEnd].intersectionPoint;
+                    Vector2[] newPath = veins[0].getStencilPath(stencilPoints);
                     //Replace vein with stencil path
-                    int removeCount = (veinEnd - veinStart + points.Count) % points.Count;
-                    replacePoints(ref points, newPath, veinStart + 1, removeCount);
+                    int removeCount = veins[0].getRemoveCount(points.Count);
+                    replacePoints(ref points, newPath, veins[0].VeinStart + 1, removeCount);
                 }
             }
         }
