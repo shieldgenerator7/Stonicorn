@@ -55,4 +55,31 @@ public class IndexOffset
         }
         return index;
     }
+
+    public class IndexOffsetContainer
+    {
+        int originalCount;
+        List<IndexOffset> offsets;
+
+        public IndexOffsetContainer(int originalCount) :
+            this(originalCount, new List<IndexOffset>())
+        {
+        }
+
+        public IndexOffsetContainer(int originalCount, List<IndexOffset> offsets)
+        {
+            this.originalCount = originalCount;
+            this.offsets = offsets;
+        }
+
+        public void Add(IndexOffset offset)
+        {
+            offsets.Add(offset);
+        }
+
+        public int getNewIndex(int index)
+        {
+            return IndexOffset.getNewIndex(offsets, index, originalCount);
+        }
+    }
 }
