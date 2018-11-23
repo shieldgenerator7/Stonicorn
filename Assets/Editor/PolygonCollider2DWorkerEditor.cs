@@ -114,10 +114,11 @@ public class PolygonCollider2DWorkerEditor : Editor
                 IntersectionData interdata = intersectionData[i];
                 if (lastPoint != interdata.targetLineSegmentID)
                 {
-                    if (Mathf.Abs(streakFirstIndex - streakEndIndex) == 1)
+                    if (Mathf.Abs(streakFirstIndex - streakEndIndex) >= 1)
                     {
                         lastPoint = interdata.targetLineSegmentID;
                         streakFirstIndex = i;
+                        streakEndIndex = i;
                     }
                     else
                     {
@@ -131,7 +132,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                 }
             }
             if (streakFirstIndex < streakEndIndex
-                && streakFirstIndex > 0 && streakFirstIndex < intersectionData.Count)
+                && streakFirstIndex >= 0 && streakFirstIndex < intersectionData.Count)
             {
                 float firstDistSqr = (
                     intersectionData[streakFirstIndex].intersectionPoint
