@@ -218,9 +218,9 @@ public class PolygonCollider2DWorkerEditor : Editor
                     //Get the new path data
                     newPath[0] = intersectionData[dataStart].intersectionPoint;
                     int writeIndex = 1;
-                    for (int i = startIndex; i > endIndex; i--, writeIndex++)
+                    for (int i = startIndex + stencilCount; i > endIndex; i--, writeIndex++)
                     {
-                        newPath[writeIndex] = stencilPoints[i];
+                        newPath[writeIndex] = stencilPoints[(i + stencilCount) % stencilCount];
                     }
                     newPath[newPath.Length - 1] = intersectionData[dataEnd].intersectionPoint;
                     //Replace vein with stencil path
