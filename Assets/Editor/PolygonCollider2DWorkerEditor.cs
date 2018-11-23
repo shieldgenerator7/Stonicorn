@@ -42,162 +42,155 @@ public class PolygonCollider2DWorkerEditor : Editor
         List<Vector2> stencilPoints = new List<Vector2>(stencil.GetPath(0));
         convertPathToWorldSpace(ref stencilPoints, stencilStud, stencilScale);
 
-        bool changed = true;
-        while (changed)
+        //Gather overlap info
+        List<IntersectionData> intersectionData = new List<IntersectionData>();
+        for (int i = 0; i < points.Count; i++)
         {
-            changed = false;
-            //Gather overlap info
-            List<IntersectionData> intersectionData = new List<IntersectionData>();
-            for (int i = 0; i < points.Count; i++)
-            {
-                int i2 = (i + 1) % points.Count;
+            int i2 = (i + 1) % points.Count;
 
-                //Line Checking
-                LineSegment targetLine = new LineSegment(points, i);
-                //Check to see if the bounds overlap
-                if (stencil.bounds.Intersects(targetLine.Bounds))
+            //Line Checking
+            LineSegment targetLine = new LineSegment(points, i);
+            //Check to see if the bounds overlap
+            if (stencil.bounds.Intersects(targetLine.Bounds))
+            {
+                bool startInStencil = stencil.OverlapPoint(targetLine.startPos);
+                bool endInStencil = stencil.OverlapPoint(targetLine.endPos);
+                //Check which stencil edges intersect the line segment
+                bool intersectsSegment = false;
+                for (int j = 0; j < stencilPoints.Count; j++)
                 {
-                    bool startInStencil = stencil.OverlapPoint(targetLine.startPos);
-                    bool endInStencil = stencil.OverlapPoint(targetLine.endPos);
-                    //Check which stencil edges intersect the line segment
-                    bool intersectsSegment = false;
-                    for (int j = 0; j < stencilPoints.Count; j++)
+                    LineSegment stencilLine = new LineSegment(stencilPoints, j);
+                    Vector2 intersection = Vector2.zero;
+                    bool intersects = LineIntersection(targetLine, stencilLine, ref intersection);
+                    //If it intersects,
+                    if (intersects)
                     {
-                        LineSegment stencilLine = new LineSegment(stencilPoints, j);
-                        Vector2 intersection = Vector2.zero;
-                        bool intersects = LineIntersection(targetLine, stencilLine, ref intersection);
-                        //If it intersects,
-                        if (intersects)
-                        {
-                            //Record a data point
-                            intersectsSegment = true;
-                            IntersectionData interdata = new IntersectionData(intersection, i, j, intersects, startInStencil, endInStencil);
-                            intersectionData.Add(interdata);
-                        }
-                    }
-                    //If no line segment intersections were found,
-                    if (!intersectsSegment)
-                    {
-                        //but one or more end points are in the stencil,
-                        if (startInStencil || endInStencil)
-                        {
-                            //Make an intersection data point anyway, with slightly different arguments
-                            IntersectionData interdata = new IntersectionData(Vector2.zero, i, -1, IntersectionData.IntersectionType.INSIDE);
-                            intersectionData.Add(interdata);
-                        }
-                    }
-                    //else,
-                    else
-                    {
-                        //do nothing because the bounds lied about the line segment and stencil colliding
-                        //don't worry, it's a known thing that can happen:
-                        //bounds checking is quick but liable to give false positives
+                        //Record a data point
+                        intersectsSegment = true;
+                        IntersectionData interdata = new IntersectionData(intersection, i, j, intersects, startInStencil, endInStencil);
+                        intersectionData.Add(interdata);
                     }
                 }
-
+                //If no line segment intersections were found,
+                if (!intersectsSegment)
+                {
+                    //but one or more end points are in the stencil,
+                    if (startInStencil || endInStencil)
+                    {
+                        //Make an intersection data point anyway, with slightly different arguments
+                        IntersectionData interdata = new IntersectionData(Vector2.zero, i, -1, IntersectionData.IntersectionType.INSIDE);
+                        intersectionData.Add(interdata);
+                    }
+                }
+                //else,
+                else
+                {
+                    //do nothing because the bounds lied about the line segment and stencil colliding
+                    //don't worry, it's a known thing that can happen:
+                    //bounds checking is quick but liable to give false positives
+                }
             }
 
-            //
-            // Refine intersection data entries
-            //
+        }
 
-            //Correct reversed data entries
-            int lastPoint = -1;//the index of the point from the last interdata
-            int streakFirstIndex = -1;//if there's a streak of data with same line segment, this stores the index of the first data that has it
-            int streakEndIndex = 0;//the last data index in the streak
-            bool listChanged = true;
-            while (listChanged)
+        //
+        // Refine intersection data entries
+        //
+
+        //Correct reversed data entries
+        int lastPoint = -1;//the index of the point from the last interdata
+        int streakFirstIndex = -1;//if there's a streak of data with same line segment, this stores the index of the first data that has it
+        int streakEndIndex = 0;//the last data index in the streak
+        bool listChanged = true;
+        while (listChanged)
+        {
+            listChanged = false;
+            for (int i = streakEndIndex; i < intersectionData.Count; i++)
             {
-                listChanged = false;
-                for (int i = streakEndIndex; i < intersectionData.Count; i++)
+                IntersectionData interdata = intersectionData[i];
+                if (lastPoint != interdata.targetLineSegmentID)
                 {
-                    IntersectionData interdata = intersectionData[i];
-                    if (lastPoint != interdata.targetLineSegmentID)
+                    if (Mathf.Abs(streakFirstIndex - streakEndIndex) == 1)
                     {
-                        if (Mathf.Abs(streakFirstIndex - streakEndIndex) == 1)
-                        {
-                            lastPoint = interdata.targetLineSegmentID;
-                            streakFirstIndex = i;
-                        }
-                        else
-                        {
-                            //Found a string of them, hop out and check them
-                            break;
-                        }
+                        lastPoint = interdata.targetLineSegmentID;
+                        streakFirstIndex = i;
                     }
                     else
                     {
-                        streakEndIndex = i;
+                        //Found a string of them, hop out and check them
+                        break;
                     }
-                }
-                if (streakFirstIndex < streakEndIndex)
-                {
-                    float firstDistSqr = (
-                        intersectionData[streakFirstIndex].intersectionPoint
-                        - points[intersectionData[streakFirstIndex].targetLineSegmentID]
-                        ).sqrMagnitude;
-                    float lastDistSqr = (
-                        intersectionData[streakEndIndex].intersectionPoint
-                        - points[intersectionData[streakEndIndex].targetLineSegmentID]
-                        ).sqrMagnitude;
-                    //If the first data point is further from the start of the segment than the last one,
-                    if (firstDistSqr > lastDistSqr)
-                    {
-                        //reverse the entries
-                        intersectionData.Reverse(streakFirstIndex, streakEndIndex - streakFirstIndex + 1);
-                        listChanged = true;
-                    }
-                    streakFirstIndex = streakEndIndex;
-                }
-            }
-            //Set the intersection type of the data
-            int side = 0;//0 =not set, 1 =inside, -1 =outside
-            foreach (IntersectionData interdata in intersectionData)
-            {
-                if (side == 0)
-                {
-                    side = (interdata.startsInStencil) ? 1 : -1;
-                }
-                if (interdata.segmentIntersection)
-                {
-                    side *= -1;
-                    interdata.type = (side > 0) ? IntersectionData.IntersectionType.ENTER : IntersectionData.IntersectionType.EXIT;
                 }
                 else
                 {
-                    interdata.type = (side > 0) ? IntersectionData.IntersectionType.INSIDE : IntersectionData.IntersectionType.OUTSIDE;
+                    streakEndIndex = i;
                 }
             }
-
-            //
-            //Start cutting
-            //
-
-            //Replace line segments inside the stencil
-            if (!changed)
+            if (streakFirstIndex < streakEndIndex)
             {
-                int dataCount = intersectionData.Count;
-                //Search for start of vein of changes
-                List<Vein> veins = new List<Vein>();
-                for (int iData = 0; iData < dataCount; iData++)
+                float firstDistSqr = (
+                    intersectionData[streakFirstIndex].intersectionPoint
+                    - points[intersectionData[streakFirstIndex].targetLineSegmentID]
+                    ).sqrMagnitude;
+                float lastDistSqr = (
+                    intersectionData[streakEndIndex].intersectionPoint
+                    - points[intersectionData[streakEndIndex].targetLineSegmentID]
+                    ).sqrMagnitude;
+                //If the first data point is further from the start of the segment than the last one,
+                if (firstDistSqr > lastDistSqr)
                 {
-                    IntersectionData interdata = intersectionData[iData];
-                    //if this segment enters the stencil at this data point,
-                    if (interdata.type == IntersectionData.IntersectionType.ENTER)
-                    {
-                        //then it's a vein start
-                        Vein vein = new Vein(iData, interdata, intersectionData);
-                        veins.Add(vein);
-                    }
+                    //reverse the entries
+                    intersectionData.Reverse(streakFirstIndex, streakEndIndex - streakFirstIndex + 1);
+                    listChanged = true;
                 }
-                if (veins.Count == 1)
-                {
-                    Vector2[] newPath = veins[0].getStencilPath(stencilPoints);
-                    //Replace vein with stencil path
-                    int removeCount = veins[0].getRemoveCount(points.Count);
-                    replacePoints(ref points, newPath, veins[0].VeinStart + 1, removeCount);
-                }
+                streakFirstIndex = streakEndIndex;
             }
+        }
+        //Set the intersection type of the data
+        int side = 0;//0 =not set, 1 =inside, -1 =outside
+        foreach (IntersectionData interdata in intersectionData)
+        {
+            if (side == 0)
+            {
+                side = (interdata.startsInStencil) ? 1 : -1;
+            }
+            if (interdata.segmentIntersection)
+            {
+                side *= -1;
+                interdata.type = (side > 0) ? IntersectionData.IntersectionType.ENTER : IntersectionData.IntersectionType.EXIT;
+            }
+            else
+            {
+                interdata.type = (side > 0) ? IntersectionData.IntersectionType.INSIDE : IntersectionData.IntersectionType.OUTSIDE;
+            }
+        }
+
+        //
+        //Start cutting
+        //
+
+        //Replace line segments inside the stencil
+        int dataCount = intersectionData.Count;
+        //Search for start of vein of changes
+        List<Vein> veins = new List<Vein>();
+        for (int iData = 0; iData < dataCount; iData++)
+        {
+            IntersectionData interdata = intersectionData[iData];
+            //if this segment enters the stencil at this data point,
+            if (interdata.type == IntersectionData.IntersectionType.ENTER)
+            {
+                //then it's a vein start
+                Vein vein = new Vein(iData, interdata, intersectionData);
+                veins.Add(vein);
+            }
+        }
+        //Process found veins
+        if (veins.Count == 1)
+        {
+            Vector2[] newPath = veins[0].getStencilPath(stencilPoints);
+            //Replace vein with stencil path
+            int removeCount = veins[0].getRemoveCount(points.Count);
+            replacePoints(ref points, newPath, veins[0].VeinStart + 1, removeCount);
         }
 
         //
