@@ -130,7 +130,8 @@ public class PolygonCollider2DWorkerEditor : Editor
                     streakEndIndex = i;
                 }
             }
-            if (streakFirstIndex < streakEndIndex)
+            if (streakFirstIndex < streakEndIndex
+                && streakFirstIndex > 0 && streakFirstIndex < intersectionData.Count)
             {
                 float firstDistSqr = (
                     intersectionData[streakFirstIndex].intersectionPoint
