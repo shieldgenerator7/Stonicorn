@@ -68,6 +68,12 @@ public class Vein
         }
     }
 
+    public void updateIndexes(IndexOffset.IndexOffsetContainer ioc)
+    {
+        interdataStart.targetLineSegmentID = ioc.getNewIndex(interdataStart.targetLineSegmentID);
+        interdataEnd.targetLineSegmentID = ioc.getNewIndex(interdataEnd.targetLineSegmentID);
+    }
+
     public Vector2[] getStencilPath(List<Vector2> stencilPoints)
     {
         int startIndex = interdataStart.stencilLineSegmentID;

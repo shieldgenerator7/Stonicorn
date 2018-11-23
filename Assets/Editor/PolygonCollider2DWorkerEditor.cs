@@ -197,6 +197,24 @@ public class PolygonCollider2DWorkerEditor : Editor
             int removeCount = veins[0].getRemoveCount(points.Count);
             replacePoints(ref points, newPath, veins[0].VeinStart + 1, removeCount);
         }
+        else
+        {
+            //Process all the veins
+            IndexOffset.IndexOffsetContainer offsets = new IndexOffset.IndexOffsetContainer(points.Count);
+            for (int i = 0; i < veins.Count; i++)
+            {
+                Vein vein = veins[i];
+                //Update vein with new offsets
+                vein.updateIndexes(offsets);
+                //Replace vein with stencil path
+                Vector2[] newPath = vein.getStencilPath(stencilPoints);
+                int removeCount = vein.getRemoveCount(points.Count);
+                replacePoints(ref points, newPath, vein.VeinStart + 1, removeCount);
+                //Add offset to the collection
+                IndexOffset offset = new IndexOffset(vein.VeinStart, newPath.Length - removeCount);
+                offsets.Add(offset);
+            }
+        }
 
         //
         // Finish up
