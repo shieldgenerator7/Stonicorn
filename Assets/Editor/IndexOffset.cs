@@ -30,7 +30,7 @@ public class IndexOffset
         {
             if (io.inserted)
             {
-                if (io.index < index)
+                if (io.index <= index)
                 {
                     index += io.count;
                 }
