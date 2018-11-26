@@ -105,31 +105,26 @@ public class PolygonCollider2DWorkerEditor : Editor
         int lastPoint = 0;//the index of the point from the last interdata
         int streakFirstIndex = 0;//if there's a streak of data with same line segment, this stores the index of the first data that has it
         int streakEndIndex = 0;//the last data index in the streak
-        bool listChanged = true;
-        while (listChanged)
+        for (int i = 0; i < intersectionData.Count; i++)
         {
-            listChanged = false;
-            for (int i = 0; i < intersectionData.Count; i++)
+            IntersectionData interdata = intersectionData[i];
+            //If this data's line segment is not the last data's segment,
+            if (lastPoint != interdata.targetLineSegmentID)
             {
-                IntersectionData interdata = intersectionData[i];
-                //If this data's line segment is not the last data's segment,
-                if (lastPoint != interdata.targetLineSegmentID)
-                {
-                    //Check last streak
-                    Vector2 point = points[lastPoint];
-                    IntersectionData.reverseDataInList(ref intersectionData, streakFirstIndex, streakEndIndex, point, points);
-                    //Start next streak
-                    lastPoint = interdata.targetLineSegmentID;
-                    streakFirstIndex = i;
-                    streakEndIndex = i;
-                }
-                else
-                {
-                    streakEndIndex = i;
-                }
+                //Check last streak
+                Vector2 point = points[lastPoint];
+                IntersectionData.reverseDataInList(ref intersectionData, streakFirstIndex, streakEndIndex, point, points);
+                //Start next streak
+                lastPoint = interdata.targetLineSegmentID;
+                streakFirstIndex = i;
+                streakEndIndex = i;
             }
-
+            else
+            {
+                streakEndIndex = i;
+            }
         }
+
         //Set the intersection type of the data
         int side = 0;//0 =not set, 1 =inside, -1 =outside
         foreach (IntersectionData interdata in intersectionData)
