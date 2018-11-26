@@ -192,6 +192,8 @@ public class PolygonCollider2DWorkerEditor : Editor
                             rotatePoints(ref newPoints, vein2.VeinStart);
                             pc2dNew.SetPath(0, newPoints.ToArray());
                             pc2dwCurrent.editTargets.Add(pc2dNew);
+                            pc2dNew.transform.parent = pc2d.transform.parent;
+                            pc2dNew.transform.position = pc2d.transform.position;
                             cutCollider(pc2dNew, stencil, false);
                         }
                         //skip the next vein
