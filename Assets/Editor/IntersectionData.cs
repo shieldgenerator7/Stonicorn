@@ -51,4 +51,44 @@ public class IntersectionData
             + "type: " + type + ", "
             + "inter: " + intersectionPoint;
     }
+
+    public static void reverseDataInList(ref List<IntersectionData> intersectionData, int start, int end, Vector2 point, List<Vector2> points)
+    {
+        if (start < end
+                && start >= 0 && start < intersectionData.Count)
+        {
+            float firstDistSqr = (
+                intersectionData[start].intersectionPoint
+                - point
+                ).sqrMagnitude;
+            float lastDistSqr = (
+                intersectionData[end].intersectionPoint
+                - point
+                ).sqrMagnitude;
+            //If the first data point is further from the start of the segment than the last one,
+            if (firstDistSqr > lastDistSqr)
+            {
+                //reverse the entries
+                for (int i = start, j = end; i < end; i++, j++)
+                {
+                    IntersectionData tempData = intersectionData[start];
+                    intersectionData[start] = intersectionData[end];
+                    intersectionData[end] = tempData;
+                }
+            }
+        }
+    }
+
+    public static void printDataList(List<IntersectionData> intersectionData, List<Vector2> points)
+    {
+        //Print out the data order to confirm it's correct (debug)
+        foreach (IntersectionData data in intersectionData)
+        {
+            float dist = (
+                    data.intersectionPoint
+                    - points[data.targetLineSegmentID]
+                    ).magnitude;
+            Debug.Log("Data: " + data + "; Distance: " + dist);
+        }
+    }
 }
