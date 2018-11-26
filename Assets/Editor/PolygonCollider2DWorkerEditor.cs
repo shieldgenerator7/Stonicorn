@@ -10,6 +10,8 @@ public class PolygonCollider2DWorkerEditor : Editor
     PolygonCollider2DWorker pc2dw;
     PolygonCollider2D stencil;
 
+    static PolygonCollider2DWorker pc2dwCurrent;
+
     private void OnEnable()
     {
         pc2dw = (PolygonCollider2DWorker)target;
@@ -26,14 +28,17 @@ public class PolygonCollider2DWorkerEditor : Editor
             {
                 throw new UnityException("You must be in Edit Mode to use this function!");
             }
-            foreach (PolygonCollider2D pc2d in pc2dw.editTargets)
+            pc2dwCurrent = pc2dw;
+            int originalCount = pc2dw.editTargets.Count;
+            for (int i = 0; i < originalCount; i++)
             {
+                PolygonCollider2D pc2d = pc2dw.editTargets[i];
                 cutCollider(pc2d, stencil);
             }
         }
     }
 
-    public static void cutCollider(PolygonCollider2D pc2d, PolygonCollider2D stencil)
+    public static void cutCollider(PolygonCollider2D pc2d, PolygonCollider2D stencil, bool splitFurther = true)
     {
         Vector2 stud = pc2d.transform.position;
         Vector2 pc2dScale = pc2d.transform.localScale;
@@ -177,6 +182,17 @@ public class PolygonCollider2DWorkerEditor : Editor
                     if (slices)
                     {
                         vein.slice(vein2);
+                        if (splitFurther)
+                        {
+                            //make a new collider to make the new piece
+                            PolygonCollider2D pc2dNew = GameObject.Instantiate(pc2d.gameObject)
+                                .GetComponent<PolygonCollider2D>();
+                            List<Vector2> newPoints = new List<Vector2>(pc2dNew.GetPath(0));
+                            rotatePoints(ref newPoints, vein2.VeinStart);
+                            pc2dNew.SetPath(0, newPoints.ToArray());
+                            pc2dwCurrent.editTargets.Add(pc2dNew);
+                            cutCollider(pc2dNew, stencil, false);
+                        }
                         //skip the next vein
                         i++;
                     }
@@ -360,6 +376,22 @@ public class PolygonCollider2DWorkerEditor : Editor
                 index = 0;
             }
             points.RemoveAt(index);
+        }
+    }
+
+    /// <summary>
+    /// Rotates the points forward or backward in the array to change the anchor point
+    /// </summary>
+    /// <param name="points"></param>
+    /// <param name="offset"></param>
+    static void rotatePoints(ref List<Vector2> points, int newAnchor)
+    {
+        List<Vector2> originalPoints = new List<Vector2>(points.ToArray());
+        int count = points.Count;
+        for (int i = 0; i < points.Count; i++)
+        {
+            Vector2 v = originalPoints[(i + newAnchor) % count];
+            points[i] = v;
         }
     }
 }

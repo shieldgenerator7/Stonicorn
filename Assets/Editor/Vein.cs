@@ -132,7 +132,7 @@ public class Vein
     public bool formsSlice(Vein other, int stencilCount)
     {
         int start = interdataStart.stencilLineSegmentID;
-        for (int i = start; i <= start + stencilCount; i++)
+        for (int i = start+1; i <= start + stencilCount; i++)
         {
             if (i % stencilCount == other.interdataStart.stencilLineSegmentID % stencilCount)
             {
