@@ -119,11 +119,19 @@ public class PolygonCollider2DWorkerEditor : Editor
                 streakFirstIndex = i;
                 streakEndIndex = i;
             }
+            //otherwise,
             else
             {
+                //update the end point
                 streakEndIndex = i;
             }
         }
+        {
+            //Check the very last streak
+            Vector2 point = points[lastPoint];
+            IntersectionData.reverseDataInList(ref intersectionData, streakFirstIndex, streakEndIndex, point, points);
+        }
+
 
         //Set the intersection type of the data
         int side = 0;//0 =not set, 1 =inside, -1 =outside
