@@ -128,12 +128,12 @@ public class Vein
         int start = interdataStart.stencilLineSegmentID;
         for (int i = start; i < start + stencilCount; i++)
         {
-            if (i % stencilCount == other.interdataStart.stencilLineSegmentID % stencilCount)
+            if (i % stencilCount == other.interdataEnd.stencilLineSegmentID % stencilCount)
             {
                 Debug.Log("formsSLice: is slice");
                 return true;
             }
-            if (i % stencilCount == other.interdataEnd.stencilLineSegmentID % stencilCount)
+            if (i % stencilCount == other.interdataStart.stencilLineSegmentID % stencilCount)
             {
                 Debug.Log("formsSLice: is bumps");
                 return false;
