@@ -39,4 +39,19 @@ public class PolygonCollider2DWorker : MonoBehaviour
             editTargets.TrimExcess();
         }
     }
+
+    public void autoSelectTargetList()
+    {
+        editTargets.Clear();
+        PolygonCollider2D pc2d = GetComponent<PolygonCollider2D>();
+        
+        foreach (PolygonCollider2D pc2dOther in GameObject.FindObjectsOfType<PolygonCollider2D>())
+        {
+            if (pc2d != pc2dOther && pc2d.bounds.Intersects(pc2dOther.bounds))
+            {
+                editTargets.Add(pc2dOther);
+            }
+        }
+        cleanTargetList();
+    }
 }

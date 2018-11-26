@@ -22,6 +22,10 @@ public class PolygonCollider2DWorkerEditor : Editor
     {
         DrawDefaultInspector();
         GUI.enabled = !EditorApplication.isPlaying;
+        if (GUILayout.Button("Auto Select PolygonCollider2Ds"))
+        {
+            pc2dw.autoSelectTargetList();
+        }
         if (GUILayout.Button("Cut PolygonCollider2D"))
         {
             if (EditorApplication.isPlaying)
