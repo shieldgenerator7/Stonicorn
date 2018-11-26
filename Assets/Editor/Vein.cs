@@ -149,6 +149,11 @@ public class Vein
         return false;
     }
 
+    public void slice(Vein other)
+    {
+        this.interdataEnd = other.interdataEnd;
+    }
+
     public override string ToString()
     {
         return "Vein: " + interdataStart + " -> " + interdataEnd;

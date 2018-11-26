@@ -133,6 +133,9 @@ public class PolygonCollider2DWorkerEditor : Editor
         int dataCount = intersectionData.Count;
         //Search for start of vein of changes
         List<Vein> veins = new List<Vein>();
+        //only need to go through the loop once,
+        //because the veins will find their own end points:
+        //here we just need to find the start of each vein
         for (int iData = 0; iData < dataCount; iData++)
         {
             IntersectionData interdata = intersectionData[iData];
@@ -169,8 +172,14 @@ public class PolygonCollider2DWorkerEditor : Editor
                     vein.updateIndexes(offsets);
                     slices = vein.formsSlice(vein2, stencilPoints.Count);
                     Debug.Log("slices: " + slices);
+                    if (slices)
+                    {
+                        vein.slice(vein2);
+                        //skip the next vein
+                        i++;
+                    }
                 }
-                if (!slices)
+                if (true || !slices)
                 {
                     //Replace vein with stencil path
                     Vector2[] newPath = vein.getStencilPath(stencilPoints);
