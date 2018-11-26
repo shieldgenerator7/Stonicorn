@@ -26,8 +26,10 @@ public class PolygonCollider2DWorkerEditor : Editor
             {
                 throw new UnityException("You must be in Edit Mode to use this function!");
             }
-            Debug.Log("Will now cut the pc2d " + pc2dw.editTarget.name);
-            cutCollider(pc2dw.editTarget, stencil);
+            foreach (PolygonCollider2D pc2d in pc2dw.editTargets)
+            {
+                cutCollider(pc2d, stencil);
+            }
         }
     }
 

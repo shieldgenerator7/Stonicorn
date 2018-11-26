@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class PolygonCollider2DWorker : MonoBehaviour {
 
-    public PolygonCollider2D editTarget;
+    public List<PolygonCollider2D> editTargets;
 
 }
