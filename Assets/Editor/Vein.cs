@@ -20,7 +20,10 @@ public class Vein
         {
             return interdataStart.targetLineSegmentID;
         }
-        private set { }
+        set
+        {
+            interdataStart.targetLineSegmentID = value;
+        }
     }
     public int VeinEnd
     {
@@ -28,7 +31,10 @@ public class Vein
         {
             return interdataEnd.targetLineSegmentID;
         }
-        private set { }
+        set
+        {
+            interdataEnd.targetLineSegmentID = value;
+        }
     }
 
     public Vein(int dataStartIndex, IntersectionData interdataStart, int dataEndIndex, IntersectionData interdataEnd)
@@ -40,7 +46,7 @@ public class Vein
         this.origVeinStart = VeinStart;
         this.origVeinEnd = VeinEnd;
     }
-    public Vein(int dataStartIndex, IntersectionData interdataStart)
+    private Vein(int dataStartIndex, IntersectionData interdataStart)
     {
         this.dataStartIndex = dataStartIndex;
         this.interdataStart = interdataStart;
@@ -59,7 +65,7 @@ public class Vein
     /// <param name="interdataStart"></param>
     /// <param name="intersectionData"></param>
     public Vein(int dataStartIndex, IntersectionData interdataStart, List<IntersectionData> intersectionData)
-        :this(dataStartIndex, interdataStart)
+        : this(dataStartIndex, interdataStart)
     {
         int dataCount = intersectionData.Count;
         //Find the end of the vein of changes
@@ -114,7 +120,7 @@ public class Vein
             interdataEnd.targetLineSegmentID
             - interdataStart.targetLineSegmentID
             + listCount
-            ) 
+            )
             % listCount;
     }
 
@@ -143,4 +149,8 @@ public class Vein
         return false;
     }
 
+    public override string ToString()
+    {
+        return "Vein: " + interdataStart + " -> " + interdataEnd;
+    }
 }
