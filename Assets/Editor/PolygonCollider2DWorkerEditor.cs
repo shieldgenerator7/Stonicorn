@@ -29,6 +29,7 @@ public class PolygonCollider2DWorkerEditor : Editor
                 throw new UnityException("You must be in Edit Mode to use this function!");
             }
             pc2dwCurrent = pc2dw;
+            pc2dw.cleanTargetList();
             int originalCount = pc2dw.editTargets.Count;
             for (int i = 0; i < originalCount; i++)
             {
