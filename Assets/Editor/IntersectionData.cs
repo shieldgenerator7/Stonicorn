@@ -54,33 +54,6 @@ public class IntersectionData
             + "inter: " + intersectionPoint;
     }
 
-    public static void reverseDataInList(ref List<IntersectionData> intersectionData, int start, int end, Vector2 point, List<Vector2> points)
-    {
-        if (start < end
-                && start >= 0 && start < intersectionData.Count)
-        {
-            float firstDistSqr = (
-                intersectionData[start].intersectionPoint
-                - point
-                ).sqrMagnitude;
-            float lastDistSqr = (
-                intersectionData[end].intersectionPoint
-                - point
-                ).sqrMagnitude;
-            //If the first data point is further from the start of the segment than the last one,
-            if (firstDistSqr > lastDistSqr)
-            {
-                //reverse the entries
-                for (int i = start, j = end; i < end; i++, j++)
-                {
-                    IntersectionData tempData = intersectionData[start];
-                    intersectionData[start] = intersectionData[end];
-                    intersectionData[end] = tempData;
-                }
-            }
-        }
-    }
-
     public static void printDataList(List<IntersectionData> intersectionData, List<Vector2> points)
     {
         //Print out the data order to confirm it's correct (debug)
@@ -91,6 +64,46 @@ public class IntersectionData
                     - points[data.targetLineSegmentID]
                     ).magnitude;
             Debug.Log("Data: " + data + "; Distance: " + dist);
+        }
+    }
+
+    public class IntersectionDataComparer: IComparer<IntersectionData>
+    {
+        public int Compare(IntersectionData interdata1, IntersectionData interdata2)
+        {
+            //Sort by target segment first
+            if (interdata1.targetLineSegmentID == interdata2.targetLineSegmentID)
+            {
+                //Then check to see if first data is inside
+                if (interdata1.type == IntersectionType.INSIDE)
+                {
+                    switch (interdata2.type)
+                    {
+                        case IntersectionType.ENTER:
+                            return 1;
+                        case IntersectionType.EXIT:
+                            return -1;
+                    }
+                }
+                //Then second data
+                if (interdata2.type == IntersectionType.INSIDE)
+                {
+                    switch (interdata1.type)
+                    {
+                        case IntersectionType.ENTER:
+                            return -1;
+                        case IntersectionType.EXIT:
+                            return 1;
+                    }
+                }
+                //And finally by distance to target segment first point
+                return (int)Mathf.Sign(interdata1.distanceToPoint - interdata2.distanceToPoint);
+            }
+            else
+            {
+                //If they're on separate line segments, sort by target line segment index
+                return (int)Mathf.Sign(interdata1.targetLineSegmentID - interdata2.targetLineSegmentID);
+            }
         }
     }
 }
