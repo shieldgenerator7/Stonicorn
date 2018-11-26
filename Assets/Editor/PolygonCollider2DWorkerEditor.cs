@@ -71,7 +71,8 @@ public class PolygonCollider2DWorkerEditor : Editor
                     {
                         //Record a data point
                         intersectsSegment = true;
-                        IntersectionData interdata = new IntersectionData(intersection, i, j, intersects, startInStencil, endInStencil);
+                        float distanceToPoint = (intersection - targetLine.startPos).magnitude;
+                        IntersectionData interdata = new IntersectionData(intersection, i, j, intersects, startInStencil, endInStencil, distanceToPoint);
                         intersectionData.Add(interdata);
                     }
                 }

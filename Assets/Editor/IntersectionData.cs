@@ -10,6 +10,7 @@ public class IntersectionData
     public bool segmentIntersection = true;//true if the target line segment intersects a stencil line segment
     public bool startsInStencil = false;//true if the segment start point is in the stencil
     public bool endsInStencil = false;//true if the segment end point is in the stencil
+    public float distanceToPoint = float.MaxValue;//how far away it is from its target segment's first point
     public enum IntersectionType
     {
         ENTER,//when the line enters the stencil
@@ -33,7 +34,7 @@ public class IntersectionData
         }
         Debug.Log("Added InterData point: " + this);
     }
-    public IntersectionData(Vector2 intersection, int targetLS, int stencilLS, bool segmentIntersection, bool startsInStencil, bool endsInStencil)
+    public IntersectionData(Vector2 intersection, int targetLS, int stencilLS, bool segmentIntersection, bool startsInStencil, bool endsInStencil, float distanceToPoint)
     {
         this.intersectionPoint = intersection;
         this.targetLineSegmentID = targetLS;
@@ -41,6 +42,7 @@ public class IntersectionData
         this.segmentIntersection = segmentIntersection;
         this.startsInStencil = startsInStencil;
         this.endsInStencil = endsInStencil;
+        this.distanceToPoint = distanceToPoint;
         Debug.Log("Added InterData point: " + this);
     }
 
