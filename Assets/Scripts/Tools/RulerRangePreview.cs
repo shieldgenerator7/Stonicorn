@@ -9,8 +9,19 @@ public class RulerRangePreview : MonoBehaviour
     [Tooltip("How far Merky can teleport")]
     public float range = 3;
 
-    [Tooltip("True to turn on while the ruler isn't moving")]
-    public bool active = true;
+    /// <summary>
+    /// True to turn on while the ruler isn't moving
+    /// </summary>
+    private bool active = true;
+    public bool Active
+    {
+        get { return active; }
+        set
+        {
+            active = value;
+            GetComponent<SpriteRenderer>().enabled = active;
+        }
+    }
 
     public RulerDisplayer parentRuler;
 

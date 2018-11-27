@@ -57,6 +57,26 @@ public class CustomMenu
             rd.active = !anyOn;
         }
     }
+    [MenuItem("SG7/Editor/Toggle Ruler Range Preview #`")]
+    /// <summary>
+    /// Turns the ruler tools on and off
+    /// </summary>
+    public static void toggleRulerRangePreviews()
+    {
+        bool anyOn = false;
+        foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+        {
+            if (rrp.Active)
+            {
+                anyOn = true;
+                break;
+            }
+        }
+        foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+        {
+            rrp.Active = !anyOn;
+        }
+    }
 
     [MenuItem("SG7/Editor/Hide or Unhide Hidden Areas %h")]
     public static void hideUnhideHiddenAreas()
