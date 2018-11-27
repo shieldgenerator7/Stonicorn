@@ -29,7 +29,7 @@ public class CustomMenu
         }
     }
 
-    [MenuItem("SG7/Editor/Call Merky %`")]
+    [MenuItem("SG7/Editor/Call Merky %#`")]
     public static void callMerky()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag(GameManager.playerTag);
@@ -44,7 +44,7 @@ public class CustomMenu
         Selection.activeGameObject = playerObject;
     }
 
-    [MenuItem("SG7/Editor/Toggle Ruler %#`")]
+    [MenuItem("SG7/Editor/Toggle Ruler %`")]
     /// <summary>
     /// Turns the ruler tools on and off
     /// </summary>
