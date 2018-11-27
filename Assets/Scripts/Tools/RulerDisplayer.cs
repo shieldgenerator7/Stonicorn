@@ -16,6 +16,7 @@ public class RulerDisplayer : MonoBehaviour
         {
             Vector2 currentMousePos = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
             transform.position = currentMousePos;
+            HandleUtility.Repaint();
         }
     }
 }

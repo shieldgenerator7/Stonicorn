@@ -38,6 +38,7 @@ public class RulerRangePreview : MonoBehaviour
                     direction = direction.normalized * range;
                 }
                 transform.position = direction + (Vector2)parentRuler.transform.position;
+                HandleUtility.Repaint();
             }
         }
     }
