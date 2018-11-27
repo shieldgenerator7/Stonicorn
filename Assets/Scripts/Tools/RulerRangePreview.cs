@@ -42,4 +42,9 @@ public class RulerRangePreview : MonoBehaviour
             }
         }
     }
+
+    public void callParentRuler()
+    {
+        parentRuler.transform.position = transform.position;
+    }
 }

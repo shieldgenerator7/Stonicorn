@@ -64,7 +64,19 @@ public class CustomMenu
             rd.active = !anyOn;
         }
     }
-    [MenuItem("SG7/Editor/Toggle Ruler Range Preview #`")]
+
+    [MenuItem("SG7/Editor/Call Ruler to its Range Preview #`")]
+    /// <summary>
+    /// Repositions the ruler to its range preview's position
+    /// </summary>
+    public static void callRulerToPreview()
+    {
+        foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+        {
+            rrp.callParentRuler();
+        }
+    }
+    [MenuItem("SG7/Editor/Toggle Ruler Range Preview &`")]
     /// <summary>
     /// Turns the ruler tools on and off
     /// </summary>
