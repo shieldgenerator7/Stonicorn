@@ -33,8 +33,36 @@ public class CustomMenu
     public static void callMerky()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag(GameManager.playerTag);
-        playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+        if (GameObject.FindObjectsOfType<RulerDisplayer>().Length > 0)
+        {
+            playerObject.transform.position = RulerDisplayer.currentMousePos;
+        }
+        else
+        {
+            playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+        }
         Selection.activeGameObject = playerObject;
+    }
+
+    [MenuItem("SG7/Editor/Toggle Ruler %#`")]
+    /// <summary>
+    /// Turns the ruler tools on and off
+    /// </summary>
+    public static void toggleRulers()
+    {
+        bool anyOn = false;
+        foreach (RulerDisplayer rd in GameObject.FindObjectsOfType<RulerDisplayer>())
+        {
+            if (rd.active)
+            {
+                anyOn = true;
+                break;
+            }
+        }
+        foreach (RulerDisplayer rd in GameObject.FindObjectsOfType<RulerDisplayer>())
+        {
+            rd.active = !anyOn;
+        }
     }
 
     [MenuItem("SG7/Editor/Hide or Unhide Hidden Areas %h")]
@@ -164,9 +192,9 @@ public class CustomMenu
         string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
         if (!System.IO.Directory.Exists(defaultPath))
         {
-            throw new UnityException("You need to build the windows version for "+ PlayerSettings.productName + " first!");
+            throw new UnityException("You need to build the windows version for " + PlayerSettings.productName + " first!");
         }
-        string buildName = defaultPath+"/"+PlayerSettings.productName+"."+extension;
+        string buildName = defaultPath + "/" + PlayerSettings.productName + "." + extension;
         UnityEngine.Debug.Log("Launching: " + buildName);
         // Run the game (Process class from System.Diagnostics).
         Process proc = new Process();
