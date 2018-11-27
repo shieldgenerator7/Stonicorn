@@ -29,22 +29,15 @@ public class CustomMenu
         }
     }
 
-    [MenuItem("SG7/Editor/Call Merky %`")]
+    [MenuItem("SG7/Editor/Call Merky %#`")]
     public static void callMerky()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag(GameManager.playerTag);
-        if (GameObject.FindObjectsOfType<RulerDisplayer>().Length > 0)
-        {
-            playerObject.transform.position = RulerDisplayer.currentMousePos;
-        }
-        else
-        {
-            playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
-        }
+        playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
         Selection.activeGameObject = playerObject;
     }
 
-    [MenuItem("SG7/Editor/Toggle Ruler %#`")]
+    [MenuItem("SG7/Editor/Toggle Ruler %`")]
     /// <summary>
     /// Turns the ruler tools on and off
     /// </summary>
