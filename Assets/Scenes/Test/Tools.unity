@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 578159051}
   - component: {fileID: 578159053}
   - component: {fileID: 578159052}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: merky range preview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -705,7 +705,7 @@ GameObject:
   - component: {fileID: 942494484}
   - component: {fileID: 942494483}
   - component: {fileID: 942494482}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: merky size marker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -806,7 +806,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 443724, guid: e51c729829c6c104f8c7e7ac93b890df, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 443724, guid: e51c729829c6c104f8c7e7ac93b890df, type: 2}
       propertyPath: m_LocalRotation.y
@@ -843,6 +843,18 @@ Prefab:
     - target: {fileID: 21295510, guid: e51c729829c6c104f8c7e7ac93b890df, type: 2}
       propertyPath: m_SortingLayer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 21295510, guid: e51c729829c6c104f8c7e7ac93b890df, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 105302, guid: e51c729829c6c104f8c7e7ac93b890df, type: 2}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 105302, guid: e51c729829c6c104f8c7e7ac93b890df, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e51c729829c6c104f8c7e7ac93b890df, type: 2}
