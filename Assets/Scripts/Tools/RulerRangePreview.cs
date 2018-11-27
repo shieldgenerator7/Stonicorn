@@ -45,6 +45,16 @@ public class RulerRangePreview : MonoBehaviour
 
     public void callParentRuler()
     {
+        if (!Active)
+        {
+            Active = true;
+            transform.position = parentRuler.transform.position;
+        }
+        if (parentRuler.active)
+        {
+            parentRuler.active = false;
+            transform.position = parentRuler.transform.position;
+        }
         parentRuler.transform.position = transform.position;
     }
 }
