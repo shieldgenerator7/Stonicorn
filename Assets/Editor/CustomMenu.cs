@@ -63,6 +63,16 @@ public class CustomMenu
         {
             rd.active = !anyOn;
         }
+        anyOn = !anyOn;
+        //If the rulers are activating,
+        if (anyOn)
+        {
+            //turn off all the range previews
+            foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+            {
+                rrp.Active = false;
+            }
+        }
     }
 
     [MenuItem("SG7/Editor/Call Ruler to its Range Preview #`")]
