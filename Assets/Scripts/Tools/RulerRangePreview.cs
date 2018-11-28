@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
+[ExecuteInEditMode]
 public class RulerRangePreview : MonoBehaviour
 {
 
@@ -58,3 +60,4 @@ public class RulerRangePreview : MonoBehaviour
         parentRuler.transform.position = transform.position;
     }
 }
+#endif

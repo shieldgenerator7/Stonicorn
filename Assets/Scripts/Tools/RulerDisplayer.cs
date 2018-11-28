@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
+[ExecuteInEditMode]
 public class RulerDisplayer : MonoBehaviour
 {//2018-11-27: copied from PolygonColliderPen
 
@@ -25,3 +27,4 @@ public class RulerDisplayer : MonoBehaviour
         }
     }
 }
+#endif
