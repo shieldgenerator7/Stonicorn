@@ -296,4 +296,11 @@ public static class Utility
         }
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
+
+    public static void copyTransform(Transform fromTransform, ref GameObject toObject)
+    {
+        toObject.transform.position = fromTransform.position;
+        toObject.transform.rotation = fromTransform.rotation;
+        toObject.transform.localScale = fromTransform.localScale;
+    }
 }
