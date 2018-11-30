@@ -67,7 +67,7 @@ public class IntersectionData
         }
     }
 
-    public class IntersectionDataComparer: IComparer<IntersectionData>
+    public class IntersectionDataComparer : IComparer<IntersectionData>
     {
         public int Compare(IntersectionData interdata1, IntersectionData interdata2)
         {

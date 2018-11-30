@@ -85,7 +85,6 @@ public class SimpleBlinking : MonoBehaviour
     /// <param name="percent">The percent towards the current state. 1 for all the way, 0 for none of the way. NOTE: 1 does not always mean opaque, 0 does not always mean transparent.</param>
     void updateAlpha(float percent = 1)
     {
-        Debug.Log("percent: " + percent);
         Color c = sr.color;
         c.a = (blinkState == BlinkState.ON) ? 0 + percent : 1 - percent;
         sr.color = c;

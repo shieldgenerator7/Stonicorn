@@ -6,7 +6,6 @@ using UnityEngine;
 [CustomEditor(typeof(PolygonCollider2DWorker))]
 public class PolygonCollider2DWorkerEditor : Editor
 {
-
     PolygonCollider2DWorker pc2dw;
     PolygonCollider2D stencil;
 
