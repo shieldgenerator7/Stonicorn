@@ -36,6 +36,10 @@ public class Fader : MonoBehaviour
                 Destroy(bc);
             }
         }
+        //foreach (Renderer r in GetComponentsInChildren<Renderer>())
+        //{
+        //    r.sortingOrder = -1;
+        //}
     }
 
     // Update is called once per frame
@@ -81,8 +85,11 @@ public class Fader : MonoBehaviour
                     }
                     SpriteShapeRenderer sr = (SpriteShapeRenderer)o;
                     Transform tf = sr.gameObject.transform;
+                    Vector2 moveDir = tf.position - GameManager.getPlayerObject().transform.position;
+                    float speed = 0.075f;
+                    tf.position += (Vector3)moveDir.normalized * speed;
                     float variance = 0.075f;
-                    tf.position = tf.position + Utility.PerpendicularRight(tf.up).normalized * Random.Range(-variance, variance);
+                    tf.position += Utility.PerpendicularRight(moveDir).normalized * Random.Range(-variance, variance);
                 }
                 if (o is CanvasRenderer)
                 {
