@@ -110,6 +110,7 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Hide or Unhide Hidden Areas %h")]
     public static void hideUnhideHiddenAreas()
     {
+        int levelsDeep = 3;//go three levels deep
         bool changeDetermined = false;
         bool show = false;
         for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -119,21 +120,30 @@ public class CustomMenu
             {
                 foreach (GameObject go1 in s.GetRootGameObjects())
                 {
-                    foreach (Transform tf in go1.transform)
-                    {
-                        GameObject go = tf.gameObject;
-                        if (go.CompareTag("NonTeleportableArea")
-                            || go.name == "HiddenAreas" || go.name == "Hidden Areas")
-                        {
-                            if (!changeDetermined)
-                            {
-                                show = !go.activeInHierarchy;
-                                changeDetermined = true;
-                            }
-                            go.SetActive(show);
-                        }
-                    }
+                    hideUnhideHiddenAreas(go1, ref show, ref changeDetermined, levelsDeep-1);
                 }
+            }
+        }
+    }
+
+    public static void hideUnhideHiddenAreas(GameObject go1, ref bool show, ref bool changeDetermined, int levelsDeep)
+    {
+        foreach (Transform tf in go1.transform)
+        {
+            GameObject go = tf.gameObject;
+            if (go.CompareTag("NonTeleportableArea")
+                || go.name == "HiddenAreas" || go.name == "Hidden Areas")
+            {
+                if (!changeDetermined)
+                {
+                    show = !go.activeInHierarchy;
+                    changeDetermined = true;
+                }
+                go.SetActive(show);
+            }
+            if (levelsDeep > 0)
+            {
+                hideUnhideHiddenAreas(go, ref show, ref changeDetermined, levelsDeep - 1);
             }
         }
     }
