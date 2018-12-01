@@ -19,7 +19,7 @@ public class CheckPointCheckerEditor : Editor
                 throw new UnityException("You must be in Play Mode to use this function!");
             }
             string filename = cpc.grabCheckPointCameraData();
-            string srcFolder = "C:/Users/steph/AppData/LocalLow/shieldgenerator7/"+Application.productName+"/";
+            string srcFolder = "C:/Users/steph/AppData/LocalLow/"+Application.companyName+"/"+Application.productName+"/";
             string dstFolder = "Assets/Sprites/Checkpoints/";
             string dstFile = dstFolder + filename;
             FileUtil.DeleteFileOrDirectory(dstFile);
