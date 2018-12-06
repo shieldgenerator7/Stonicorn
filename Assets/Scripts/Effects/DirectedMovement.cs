@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DirectedMovement : SimpleMovement
 {
-
+    public float minDistance = 0;//the min distance the pointer should move
+    public float maxDistance = 1;//the max distance the pointer should move
     public GameObject target;//the game object to point to
     public string actorTag = "MainCamera";//the tag on the actor to identify it
     public string actorName = "Main Camera";//the name of the actor to identify it
@@ -31,7 +32,7 @@ public class DirectedMovement : SimpleMovement
             direction = Vector2.one;
         }
         //Set initial movement vector
-        setMovement((Vector2)actor.transform.position, (Vector2)actor.transform.position - (Vector2)target.transform.position, false, true);
+        setMovement((Vector2)actor.transform.position, (Vector2)actor.transform.position - (Vector2)target.transform.position, minDistance, maxDistance, false, true);
     }
 
     // Update is called once per frame
@@ -40,7 +41,7 @@ public class DirectedMovement : SimpleMovement
         if ((Vector2)actor.transform.position != prevPos)
         {
             prevPos = actor.transform.position;
-            setMovement(actor.transform.position, actor.transform.position - target.transform.position);
+            setMovement(actor.transform.position, actor.transform.position - target.transform.position, minDistance, maxDistance);
         }
         base.Update();
     }

@@ -24,7 +24,7 @@ public class SimpleMovement : MonoBehaviour
     // Use this for initialization
     protected virtual void Start()
     {
-        setMovement(transform.position, this.direction, false, true);
+        setMovement(transform.position, this.direction, this.direction.magnitude, this.direction.magnitude, false, true);
     }
     void OnEnable()
     {
@@ -83,7 +83,7 @@ public class SimpleMovement : MonoBehaviour
         }
     }
 
-    public void setMovement(Vector2 start, Vector2 dir, bool keepPercent = true, bool updateSpeed = false)
+    public void setMovement(Vector2 start, Vector2 dir, float minDist = 0, float maxDist = 1, bool keepPercent = true, bool updateSpeed = false)
     {
         Debug.Log("start: " + start + ", dir: " + dir + ", direction: " + direction);
         if (!updateSpeed)
@@ -97,22 +97,29 @@ public class SimpleMovement : MonoBehaviour
             dir = dir.normalized * this.direction.magnitude;
         }
         this.direction = dir;
+        if (this.direction.magnitude > maxDist)
+        {
+            this.direction = this.direction.normalized * maxDist;
+        }
+        if (this.direction.magnitude < minDist)
+        {
+            this.direction = this.direction.normalized * minDist;
+        }
         float percentThrough = 0;
         if (keepPercent)
         {
             percentThrough =
-                Vector3.Distance(transform.position, startPosition)
-                / Vector3.Distance(endPosition, startPosition);
+                (Time.time - lastKeyFrame) / duration;
         }
         startPosition = start;
-        endPosition = startPosition + dir;
+        endPosition = startPosition + this.direction;
         if (percentThrough == 0)
         {
             transform.position = startPosition;
         }
         else
         {
-            transform.position = startPosition + (dir.normalized * percentThrough);
+            transform.position = startPosition + (this.direction * percentThrough);
         }
         if (updateSpeed)
         {
