@@ -125,7 +125,7 @@ public class SimpleMovement : MonoBehaviour
         {
             speed = (endPosition - startPosition).magnitude / duration;
         }
-        Debug.Log("startpos: " + startPosition + ", endpos: " + endPosition+", speed: "+speed+", duration: "+duration);
+        Debug.Log("startpos: " + startPosition + ", endpos: " + endPosition + ", speed: " + speed + ", duration: " + duration);
     }
 
     public void setMovementEnd(Vector2 end, Vector2 dir)

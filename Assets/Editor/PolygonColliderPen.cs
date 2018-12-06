@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+//[CustomEditor(typeof(PolygonCollider2D))]
 public class PolygonColliderPen : Editor
 {//2018-11-21: referenced https://docs.unity3d.com/ScriptReference/DrawGizmo.html
 
