@@ -10,7 +10,7 @@ public class SimpleMovement : MonoBehaviour
     public float duration;//in seconds
     public float endDelay;//delay after reaching the end before resetting to the beginning
     public bool roundTrip = false;//true: move backwards instead of jumping to start pos
-    
+
     private Vector2 startPosition;
 
     //Runtime constants
@@ -22,11 +22,9 @@ public class SimpleMovement : MonoBehaviour
     private bool paused = false;
 
     // Use this for initialization
-    private void Start()
+    protected virtual void Start()
     {
-        startPosition = transform.position;
-        endPosition = startPosition + direction;
-        speed = (endPosition - startPosition).magnitude / duration;
+        setMovement(transform.position, this.direction, false, true);
     }
     void OnEnable()
     {
@@ -36,7 +34,7 @@ public class SimpleMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         if (paused)
         {
@@ -83,5 +81,49 @@ public class SimpleMovement : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void setMovement(Vector2 start, Vector2 dir, bool keepPercent = true, bool updateSpeed = false)
+    {
+        Debug.Log("start: " + start + ", dir: " + dir + ", direction: " + direction);
+        if (!updateSpeed)
+        {
+            //Make sure direction is valid
+            if (direction == Vector2.zero)
+            {
+                direction = Vector2.one;
+            }
+            //Trim dir to size
+            dir = dir.normalized * this.direction.magnitude;
+        }
+        this.direction = dir;
+        float percentThrough = 0;
+        if (keepPercent)
+        {
+            percentThrough =
+                Vector3.Distance(transform.position, startPosition)
+                / Vector3.Distance(endPosition, startPosition);
+        }
+        startPosition = start;
+        endPosition = startPosition + dir;
+        if (percentThrough == 0)
+        {
+            transform.position = startPosition;
+        }
+        else
+        {
+            transform.position = startPosition + (dir.normalized * percentThrough);
+        }
+        if (updateSpeed)
+        {
+            speed = (endPosition - startPosition).magnitude / duration;
+        }
+        Debug.Log("startpos: " + startPosition + ", endpos: " + endPosition+", speed: "+speed+", duration: "+duration);
+    }
+
+    public void setMovementEnd(Vector2 end, Vector2 dir)
+    {
+        dir = dir.normalized * this.direction.magnitude;
+        setMovement(end - dir, dir);
     }
 }
