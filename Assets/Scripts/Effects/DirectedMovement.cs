@@ -51,7 +51,7 @@ public class DirectedMovement : SimpleMovement
         {
             prevPosAnchor = anchorObject.transform.position;
             prevPosGoal = goalObject.transform.position;
-            setMovement(anchorObject.transform.position, getDirection(), minDistance, maxDistance);
+            setMovement(anchorObject.transform.position, getDirection(), minDistance, maxDistance, true, true);
         }
         base.Update();
     }
