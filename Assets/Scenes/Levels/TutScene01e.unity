@@ -4680,9 +4680,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onTime: 0.7
-  offTime: 0.5
+  offTime: 0.3
   onOffTransition: 0.5
-  offOnTransition: 0.4
+  offOnTransition: 0.2
   timeOffset: 0
   blinkState: 0
 --- !u!212 &149105986
@@ -4744,14 +4744,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 1, y: 0}
-  duration: 0.7
+  duration: 0.5
   endDelay: 0.5
   roundTrip: 0
-  minDistance: 2
-  maxDistance: 2
+  minDistance: 0
+  maxDistance: 3
   target: {fileID: 692507527}
   actorTag: MainCamera
   actorName: Main Camera
+  startFromActor: 0
+  pointAway: 0
 --- !u!1 &150796865
 GameObject:
   m_ObjectHideFlags: 0
