@@ -1606,7 +1606,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 19.911743, y: 87.98407, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1650610174}
   m_Father: {fileID: 978303211}
   m_RootOrder: 128
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2373,7 +2374,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 122.42174, y: 84.52407, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 273820329}
   m_Father: {fileID: 978303211}
   m_RootOrder: 137
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3395,6 +3397,29 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.283493, y: 0.95780945}
   m_EdgeRadius: 0
+--- !u!1001 &108770290
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1917702430}
+    m_Modifications:
+    - target: {fileID: 1661703660429096, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_Name
+      value: Windmill Small Wings Socket (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.382
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!4 &111301479 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da,
+    type: 2}
+  m_PrefabInternal: {fileID: 619208182}
 --- !u!1 &112810823
 GameObject:
   m_ObjectHideFlags: 0
@@ -5771,7 +5796,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 24.861742, y: 86.83407, z: -0.0390625}
   m_LocalScale: {x: 0.749, y: 0.749, z: 0.749}
-  m_Children: []
+  m_Children:
+  - {fileID: 1046792791}
   m_Father: {fileID: 978303211}
   m_RootOrder: 129
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7807,6 +7833,33 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 205908402}
   m_Script: {fileID: 11500000, guid: 65ceefcc30cb13142abcfa50f2853724, type: 3}
+--- !u!1001 &206326388
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1661547200}
+    m_Modifications:
+    - target: {fileID: 1548025231707758, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_Name
+      value: Windmill Wings Socket (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.47
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!4 &206326389 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da,
+    type: 2}
+  m_PrefabInternal: {fileID: 206326388}
 --- !u!4 &207616230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4445080347285916, guid: ba01380b370081b4d96c9cef68df6470,
@@ -9746,6 +9799,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &273820329 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11,
+    type: 2}
+  m_PrefabInternal: {fileID: 1302102210}
 --- !u!1 &276559689
 GameObject:
   m_ObjectHideFlags: 0
@@ -12364,7 +12422,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 28.111742, y: 88.12407, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 923474195}
   m_Father: {fileID: 978303211}
   m_RootOrder: 130
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16670,6 +16729,44 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 12.213562, y: 0.6202545}
   m_EdgeRadius: 0
+--- !u!1001 &407084886
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1854184336}
+    m_Modifications:
+    - target: {fileID: 1661703660429096, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_Name
+      value: Windmill Small Wings Socket Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.888
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1001 &409741584
 Prefab:
   m_ObjectHideFlags: 0
@@ -17409,6 +17506,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 468102, guid: 63e2cfc1280c0bc4a80925158676e245,
     type: 2}
   m_PrefabInternal: {fileID: 434828389}
+--- !u!4 &437182056 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11,
+    type: 2}
+  m_PrefabInternal: {fileID: 491089235}
 --- !u!1 &437998309
 GameObject:
   m_ObjectHideFlags: 0
@@ -19778,6 +19880,48 @@ PolygonCollider2D:
       - {x: -4.4383698, y: -0.81580544}
       - {x: -4.4326935, y: -1.1725645}
       - {x: 4.62, y: -1.235}
+--- !u!1001 &491089235
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1973549767}
+    m_Modifications:
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.733
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 2.156
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &492454516
 GameObject:
   m_ObjectHideFlags: 0
@@ -21921,6 +22065,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &556645917 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11,
+    type: 2}
+  m_PrefabInternal: {fileID: 2019380074}
 --- !u!1 &558171127
 GameObject:
   m_ObjectHideFlags: 0
@@ -24050,6 +24199,48 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: 16.544777, y: 8.634485, z: 0}
     m_Extent: {x: 3.0606613, y: 2.1845188, z: 0}
+--- !u!1001 &619208182
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1574746740}
+    m_Modifications:
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 2.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &619444729
 GameObject:
   m_ObjectHideFlags: 0
@@ -29830,6 +30021,28 @@ MonoBehaviour:
   cameraEnterAction: 0
   cameraExitAction: 1
   cameraPositionRequireTrigger: 1
+--- !u!1001 &801684569
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1854184336}
+    m_Modifications:
+    - target: {fileID: 1661703660429096, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_Name
+      value: Windmill Small Wings Socket Middle
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 2.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.44
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &801792014
 GameObject:
   m_ObjectHideFlags: 0
@@ -34272,6 +34485,33 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &923474194
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 353730500}
+    m_Modifications:
+    - target: {fileID: 1548025231707758, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_Name
+      value: Windmill Wings Socket (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 1.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.31
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!4 &923474195 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da,
+    type: 2}
+  m_PrefabInternal: {fileID: 923474194}
 --- !u!1 &923530540
 GameObject:
   m_ObjectHideFlags: 0
@@ -38644,6 +38884,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 468102, guid: 63e2cfc1280c0bc4a80925158676e245,
     type: 2}
   m_PrefabInternal: {fileID: 1045737571}
+--- !u!1001 &1046792790
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 164403535}
+    m_Modifications:
+    - target: {fileID: 1548025231707758, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_Name
+      value: Windmill Wings Socket (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 212909087612244626, guid: cab1106362300834f85aa6e29eaad3da,
+        type: 2}
+      propertyPath: m_SortingOrder
+      value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.51
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!4 &1046792791 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da,
+    type: 2}
+  m_PrefabInternal: {fileID: 1046792790}
 --- !u!1001 &1046954467
 Prefab:
   m_ObjectHideFlags: 0
@@ -48759,6 +49031,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &1231002995 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11,
+    type: 2}
+  m_PrefabInternal: {fileID: 407084886}
 --- !u!1 &1232191031
 GameObject:
   m_ObjectHideFlags: 0
@@ -51699,6 +51976,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4428749923894922, guid: 4f1c86bf60aca314b810fd7ea918a42a,
     type: 2}
   m_PrefabInternal: {fileID: 1300893485}
+--- !u!1001 &1302102210
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 71504594}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &1303211692
 GameObject:
   m_ObjectHideFlags: 0
@@ -72520,7 +72807,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 131.99174, y: 86.20407, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 111301479}
   m_Father: {fileID: 978303211}
   m_RootOrder: 126
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -72654,6 +72942,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 468102, guid: 63e2cfc1280c0bc4a80925158676e245,
     type: 2}
   m_PrefabInternal: {fileID: 1577718701}
+--- !u!4 &1578350496 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11,
+    type: 2}
+  m_PrefabInternal: {fileID: 108770290}
 --- !u!1 &1584567010
 GameObject:
   m_ObjectHideFlags: 0
@@ -74483,6 +74776,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60,
     type: 2}
   m_PrefabInternal: {fileID: 483956412}
+--- !u!1001 &1650610173
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 39153758}
+    m_Modifications:
+    - target: {fileID: 1548025231707758, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_Name
+      value: Windmill Wings Socket (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.55
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cab1106362300834f85aa6e29eaad3da, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!4 &1650610174 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4459305330458338, guid: cab1106362300834f85aa6e29eaad3da,
+    type: 2}
+  m_PrefabInternal: {fileID: 1650610173}
 --- !u!1 &1652206813
 GameObject:
   m_ObjectHideFlags: 0
@@ -74880,7 +75200,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 14.321743, y: 88.54407, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 206326389}
   m_Father: {fileID: 978303211}
   m_RootOrder: 127
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -80015,6 +80336,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &1820404617 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11,
+    type: 2}
+  m_PrefabInternal: {fileID: 801684569}
 --- !u!1001 &1820990781
 Prefab:
   m_ObjectHideFlags: 0
@@ -81029,7 +81355,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 7.831743, y: 86.73407, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1820404617}
+  - {fileID: 1231002995}
+  - {fileID: 556645917}
   m_Father: {fileID: 978303211}
   m_RootOrder: 134
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -82504,7 +82833,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 35.281742, y: 86.52407, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1578350496}
   m_Father: {fileID: 978303211}
   m_RootOrder: 133
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -84438,7 +84768,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 151.70175, y: 85.11407, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 437182056}
   m_Father: {fileID: 978303211}
   m_RootOrder: 136
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -85522,6 +85853,44 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &2019380074
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1854184336}
+    m_Modifications:
+    - target: {fileID: 1661703660429096, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_Name
+      value: Windmill Small Wings Socket Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.684
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 2.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812764087027256, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e84daf6625985914682f6c5116beeb11, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &2020049413
 GameObject:
   m_ObjectHideFlags: 0
