@@ -1197,6 +1197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 34892825}
   - component: {fileID: 34892826}
+  - component: {fileID: 34892827}
   m_Layer: 0
   m_Name: FrontRock (20)
   m_TagString: Untagged
@@ -1263,6 +1264,48 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &34892827
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 34892824}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.11, y: 1.53}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.3477173, y: -0.5736599}
+      - {x: 0.75743103, y: -0.5525727}
+      - {x: 0.31173706, y: -0.49554348}
+      - {x: 0.068309784, y: -0.42695975}
+      - {x: -0.041484833, y: -0.35420346}
+      - {x: -0.11960602, y: -0.2166307}
+      - {x: -0.20257187, y: -0.12960172}
+      - {x: -0.3979454, y: -0.16771793}
+      - {x: -0.6942024, y: -0.11500001}
+      - {x: -0.9220886, y: 0.32765472}
+      - {x: -1.0897217, y: 0.4567212}
+      - {x: -1.1732178, y: 0.6498003}
+      - {x: -1.2814751, y: 0.7023269}
+      - {x: -1.3992844, y: 0.711447}
+      - {x: -1.555, y: 0.765}
+      - {x: -1.5079117, y: -0.7581636}
+      - {x: 1.555, y: -0.765}
+      - {x: 1.5033684, y: -0.67554355}
 --- !u!1001 &36715447
 Prefab:
   m_ObjectHideFlags: 0
@@ -3158,7 +3201,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 178
+  m_RootOrder: 175
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 170.86}
 --- !u!212 &105343327
 SpriteRenderer:
@@ -3583,6 +3626,7 @@ GameObject:
   m_Component:
   - component: {fileID: 114510734}
   - component: {fileID: 114510735}
+  - component: {fileID: 114510736}
   m_Layer: 0
   m_Name: FrontRock (21)
   m_TagString: Untagged
@@ -3597,8 +3641,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 114510733}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 40.67, y: -3.62, z: -0.0390625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 40.26, y: -3.894, z: -0.0390625}
+  m_LocalScale: {x: 0.717, y: 0.753, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
   m_RootOrder: 162
@@ -3649,6 +3693,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &114510736
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 114510733}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.6, y: 2.22}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.6892139, y: -0.88316387}
+      - {x: 1.0876515, y: -0.84388024}
+      - {x: 0.54129326, y: -0.5219404}
+      - {x: 0.043733347, y: -0.5975517}
+      - {x: -0.1880587, y: -0.60407037}
+      - {x: -0.35069144, y: -0.5787765}
+      - {x: -0.5846063, y: -0.1607163}
+      - {x: -0.8933148, y: 0.02325357}
+      - {x: -1.1026975, y: 0.21737063}
+      - {x: -1.0946052, y: 0.90561193}
+      - {x: -1.28, y: 1.11}
+      - {x: -1.1824763, y: -0.987134}
+      - {x: 1.8, y: -1.11}
 --- !u!1 &116996991
 GameObject:
   m_ObjectHideFlags: 0
@@ -3942,81 +4023,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 468102, guid: 63e2cfc1280c0bc4a80925158676e245,
     type: 2}
   m_PrefabInternal: {fileID: 123431003}
---- !u!1 &123524682
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 123524683}
-  - component: {fileID: 123524684}
-  m_Layer: 0
-  m_Name: FrontRock (41)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &123524683
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 123524682}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 127.51, y: 27.68, z: -0.0390625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 978303211}
-  m_RootOrder: 182
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &123524684
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 123524682}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1837406103
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5ef502a2f4a70c74883bb8328b90ae82, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.47, y: 7.26}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &123908912
 GameObject:
   m_ObjectHideFlags: 0
@@ -5580,6 +5586,7 @@ GameObject:
   m_Component:
   - component: {fileID: 163229971}
   - component: {fileID: 163229972}
+  - component: {fileID: 163229973}
   m_Layer: 0
   m_Name: FrontRock (49)
   m_TagString: Untagged
@@ -5598,7 +5605,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 190
+  m_RootOrder: 185
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &163229972
 SpriteRenderer:
@@ -5646,6 +5653,53 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &163229973
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 163229970}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.16, y: 1.26}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 2.6100006, y: 0.06903267}
+      - {x: 2.2013397, y: 0.1992588}
+      - {x: 1.7937431, y: 0.25522518}
+      - {x: 0.96629715, y: 0.14121437}
+      - {x: 0.7533531, y: 0.15270329}
+      - {x: 0.6427727, y: 0.3434229}
+      - {x: 0.43857956, y: 0.580451}
+      - {x: 0.28380585, y: 0.5866442}
+      - {x: -0.012622833, y: 0.28517056}
+      - {x: -0.5447235, y: 0.117069244}
+      - {x: -0.98158646, y: 0.14240742}
+      - {x: -1.4700165, y: 0.082624435}
+      - {x: -1.6190338, y: 0.11373997}
+      - {x: -1.7941895, y: 0.45038414}
+      - {x: -1.9775734, y: 0.6059351}
+      - {x: -2.1038094, y: 0.60522556}
+      - {x: -2.1844025, y: 0.35286713}
+      - {x: -2.3177032, y: 0.19903755}
+      - {x: -2.5968208, y: 0.09470558}
+      - {x: -2.7200623, y: 0.13458824}
+      - {x: -2.915226, y: 0.07141876}
+      - {x: -2.9437408, y: -0.33889866}
+      - {x: 2.8879929, y: -0.3574791}
 --- !u!1 &164403533
 GameObject:
   m_ObjectHideFlags: 0
@@ -8068,81 +8122,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &222714751
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 222714752}
-  - component: {fileID: 222714753}
-  m_Layer: 0
-  m_Name: Pillar (4)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &222714752
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 222714751}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 136.41, y: 6.37, z: -0.0390625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 978303211}
-  m_RootOrder: 204
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &222714753
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 222714751}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1837406103
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 01f188be6c247a54aa7dc0b4585400c0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.47, y: 7.26}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &228371526
 GameObject:
   m_ObjectHideFlags: 0
@@ -9130,7 +9109,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 176
+  m_RootOrder: 173
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!212 &250559593
 SpriteRenderer:
@@ -9168,81 +9147,6 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 854bfe5c4068ba64bb98bd700a6cff2c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.47, y: 7.26}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!1 &257054413
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 257054414}
-  - component: {fileID: 257054415}
-  m_Layer: 0
-  m_Name: FrontRock (44)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &257054414
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 257054413}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 117.8, y: -4.66, z: -0.0390625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 978303211}
-  m_RootOrder: 185
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &257054415
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 257054413}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1837406103
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6475f0dddb8329a4bb0614263748f91f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9794,7 +9698,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 203
+  m_RootOrder: 196
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 75.261}
 --- !u!212 &268752782
 SpriteRenderer:
@@ -10540,6 +10444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 295233604}
   - component: {fileID: 295233605}
+  - component: {fileID: 295233606}
   m_Layer: 0
   m_Name: FrontRock (16)
   m_TagString: Untagged
@@ -10606,6 +10511,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &295233606
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 295233603}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.16, y: 1.26}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 2.6050797, y: 0.13444138}
+      - {x: 2.4895172, y: 0.13064003}
+      - {x: 2.0225601, y: 0.24015999}
+      - {x: 1.6692429, y: 0.23080063}
+      - {x: 0.82476044, y: 0.13064003}
+      - {x: 0.69886017, y: 0.20013809}
+      - {x: 0.6387863, y: 0.3474846}
+      - {x: 0.44363403, y: 0.5847225}
+      - {x: 0.27521515, y: 0.5955086}
+      - {x: 0.05041504, y: 0.3630352}
+      - {x: -0.20380402, y: 0.21150589}
+      - {x: -0.5198517, y: 0.120435715}
+      - {x: -1.0317459, y: 0.14014435}
+      - {x: -1.4076843, y: 0.09536362}
+      - {x: -1.6302872, y: 0.11203575}
+      - {x: -1.786377, y: 0.42710876}
+      - {x: -1.9602966, y: 0.5955086}
+      - {x: -2.105072, y: 0.6102886}
+      - {x: -2.1705933, y: 0.38965225}
+      - {x: -2.2845154, y: 0.24545288}
+      - {x: -2.5508041, y: 0.115400314}
+      - {x: -2.8760452, y: 0.099840164}
+      - {x: -2.8733597, y: -0.064201355}
+      - {x: 2.6076813, y: 0.009599686}
 --- !u!1 &298592304
 GameObject:
   m_ObjectHideFlags: 0
@@ -12513,7 +12466,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 187
+  m_RootOrder: 182
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!212 &355474697
 SpriteRenderer:
@@ -16009,7 +15962,7 @@ Transform:
   m_LocalScale: {x: 1.0000005, y: 1.0000005, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 196
+  m_RootOrder: 190
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 178.85101}
 --- !u!212 &395198512
 SpriteRenderer:
@@ -18130,7 +18083,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 188
+  m_RootOrder: 183
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!212 &452409240
 SpriteRenderer:
@@ -18767,7 +18720,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 476537859}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 65.76, y: 3.95, z: -0.0390625}
+  m_LocalPosition: {x: 65.95, y: 4.24, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
@@ -19639,7 +19592,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 175
+  m_RootOrder: 172
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!212 &490208471
 SpriteRenderer:
@@ -19696,6 +19649,7 @@ GameObject:
   m_Component:
   - component: {fileID: 490797983}
   - component: {fileID: 490797984}
+  - component: {fileID: 490797985}
   m_Layer: 0
   m_Name: FrontRock (45)
   m_TagString: Untagged
@@ -19714,7 +19668,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 186
+  m_RootOrder: 181
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &490797984
 SpriteRenderer:
@@ -19762,6 +19716,68 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &490797985
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 490797982}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 9.24, y: 2.47}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 4.3199997, y: -0.675}
+      - {x: 3.6360092, y: -0.61332226}
+      - {x: 3.3875504, y: -0.44537926}
+      - {x: 3.1379852, y: -0.056355476}
+      - {x: 2.982521, y: 0.5493746}
+      - {x: 2.7991486, y: 0.87179184}
+      - {x: 2.7034912, y: 0.8728304}
+      - {x: 2.418869, y: 0.10660362}
+      - {x: 2.1894379, y: -0.059339523}
+      - {x: 1.8937759, y: -0.5387745}
+      - {x: 1.791893, y: -0.5240803}
+      - {x: 1.6524658, y: -0.40157604}
+      - {x: 1.0124435, y: -0.3748188}
+      - {x: 0.77072144, y: -0.24619007}
+      - {x: 0.6266632, y: -0.014536858}
+      - {x: 0.39377594, y: 0.75905704}
+      - {x: 0.20783234, y: -0.055000305}
+      - {x: 0.0794754, y: -0.27116203}
+      - {x: -0.26514435, y: -0.5196905}
+      - {x: -0.5337372, y: -0.6081543}
+      - {x: -1.3892746, y: -0.3955698}
+      - {x: -2.0721893, y: 0.14018917}
+      - {x: -2.3921509, y: 1.1782398}
+      - {x: -2.5166626, y: 1.190423}
+      - {x: -2.7004242, y: 0.44418335}
+      - {x: -2.8109436, y: 0.22519779}
+      - {x: -2.9451141, y: 0.020374298}
+      - {x: -3.040474, y: -0.2888279}
+      - {x: -3.1679306, y: -0.3600874}
+      - {x: -3.4917068, y: -0.33350182}
+      - {x: -3.6726913, y: -0.24067497}
+      - {x: -3.880539, y: -0.25797176}
+      - {x: -4.081352, y: -0.38040733}
+      - {x: -4.318718, y: -0.40844727}
+      - {x: -4.271881, y: -0.66797256}
+      - {x: -4.4383698, y: -0.81580544}
+      - {x: -4.4326935, y: -1.1725645}
+      - {x: 4.62, y: -1.235}
 --- !u!1 &492454516
 GameObject:
   m_ObjectHideFlags: 0
@@ -19771,6 +19787,7 @@ GameObject:
   m_Component:
   - component: {fileID: 492454517}
   - component: {fileID: 492454518}
+  - component: {fileID: 492454519}
   m_Layer: 0
   m_Name: FrontRock (42)
   m_TagString: Untagged
@@ -19789,7 +19806,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 183
+  m_RootOrder: 179
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &492454518
 SpriteRenderer:
@@ -19837,6 +19854,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &492454519
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 492454516}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.71, y: 2.01}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.45590973, y: 0.8487396}
+      - {x: 0.2732849, y: 0.6604557}
+      - {x: 0.31035614, y: 0.1748972}
+      - {x: 0.2173233, y: -0.16227436}
+      - {x: 0.017829895, y: -0.30510235}
+      - {x: -0.10186005, y: -0.28499985}
+      - {x: -0.3319702, y: -0.38500023}
+      - {x: -0.57216644, y: -0.6185303}
+      - {x: -0.85499996, y: -1.005}
+      - {x: 0.85499996, y: -1.005}
+      - {x: 0.85499996, y: 1.005}
 --- !u!1 &499786434
 GameObject:
   m_ObjectHideFlags: 0
@@ -20200,7 +20252,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 189
+  m_RootOrder: 184
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!212 &512054803
 SpriteRenderer:
@@ -21600,7 +21652,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 174
+  m_RootOrder: 171
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!212 &545747889
 SpriteRenderer:
@@ -23097,6 +23149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 591757759}
   - component: {fileID: 591757760}
+  - component: {fileID: 591757761}
   m_Layer: 0
   m_Name: FrontRock (50)
   m_TagString: Untagged
@@ -23115,7 +23168,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 191
+  m_RootOrder: 186
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
 --- !u!212 &591757760
 SpriteRenderer:
@@ -23163,6 +23216,44 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &591757761
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 591757758}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.77, y: 3.98}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -1.305, y: -1.0699999}
+      - {x: -1.2659302, y: -0.65906894}
+      - {x: -1.0826712, y: -0.31601274}
+      - {x: -0.81523204, y: -0.078371525}
+      - {x: -0.4645369, y: 0.07999283}
+      - {x: -0.33227807, y: 0.26982018}
+      - {x: -0.39383793, y: 0.65999866}
+      - {x: -0.17430139, y: 1.05442}
+      - {x: 0.26011562, y: 1.3079078}
+      - {x: 1.6679425, y: 1.4777538}
+      - {x: 1.885, y: 1.78}
+      - {x: 1.885, y: 1.99}
+      - {x: -1.885, y: 1.99}
+      - {x: -1.8361651, y: -1.1178948}
 --- !u!1 &593861838
 GameObject:
   m_ObjectHideFlags: 0
@@ -24961,81 +25052,6 @@ SpriteRenderer:
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.81, y: 4}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!1 &644680295
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 644680296}
-  - component: {fileID: 644680297}
-  m_Layer: 0
-  m_Name: FrontRock (55)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &644680296
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 644680295}
-  m_LocalRotation: {x: -0, y: -0, z: 0.010032266, w: -0.99994975}
-  m_LocalPosition: {x: 138.43, y: 21.17, z: -0.0390625}
-  m_LocalScale: {x: 1.0000005, y: 1.0000005, z: 1}
-  m_Children: []
-  m_Father: {fileID: 978303211}
-  m_RootOrder: 198
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 358.85}
---- !u!212 &644680297
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 644680295}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1837406103
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 854bfe5c4068ba64bb98bd700a6cff2c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.47, y: 7.26}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -26862,7 +26878,7 @@ Transform:
   m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 180
+  m_RootOrder: 177
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &695123083
 SpriteRenderer:
@@ -27715,6 +27731,7 @@ GameObject:
   m_Component:
   - component: {fileID: 744394716}
   - component: {fileID: 744394717}
+  - component: {fileID: 744394718}
   m_Layer: 0
   m_Name: FrontRock (18)
   m_TagString: Untagged
@@ -27781,6 +27798,42 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &744394718
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 744394715}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.71, y: 2.01}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.417099, y: 0.8032818}
+      - {x: 0.27417755, y: 0.6423836}
+      - {x: 0.3071289, y: 0.2992592}
+      - {x: 0.2900772, y: 0.052207947}
+      - {x: 0.18597412, y: -0.16238403}
+      - {x: 0.036964417, y: -0.29963112}
+      - {x: -0.18286896, y: -0.3079481}
+      - {x: -0.36205292, y: -0.41712856}
+      - {x: -0.5417175, y: -0.5967951}
+      - {x: -0.5704346, y: -0.7800989}
+      - {x: 0.5612488, y: -0.74338055}
+      - {x: 0.6163254, y: 0.81681633}
 --- !u!1 &745564643
 GameObject:
   m_ObjectHideFlags: 0
@@ -30241,6 +30294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 810362623}
   - component: {fileID: 810362624}
+  - component: {fileID: 810362625}
   m_Layer: 0
   m_Name: FrontRock (17)
   m_TagString: Untagged
@@ -30307,6 +30361,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &810362625
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 810362622}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.22, y: 1.22}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 2.004631, y: 0.07534504}
+      - {x: 1.8657074, y: 0.3235178}
+      - {x: 1.7877502, y: 0.57640743}
+      - {x: 1.6822433, y: 0.58056545}
+      - {x: 1.3005676, y: 0.0000009536743}
+      - {x: 1.2122498, y: -0.105843544}
+      - {x: 1.0339355, y: -0.116971016}
+      - {x: 0.46922302, y: -0.006972313}
+      - {x: 0.12373352, y: 0.0005636215}
+      - {x: -0.25190353, y: -0.127532}
+      - {x: -0.35845947, y: -0.04256344}
+      - {x: -0.4300003, y: 0.13943768}
+      - {x: -0.62218857, y: 0.29489613}
+      - {x: -0.7466202, y: 0.5271845}
+      - {x: -0.8154793, y: 0.52673626}
+      - {x: -0.89764786, y: 0.3784399}
+      - {x: -1.0121117, y: 0.25169086}
+      - {x: -1.153759, y: 0.18786526}
+      - {x: -1.7513199, y: 0.16741657}
+      - {x: -2.036808, y: 0.10998821}
+      - {x: -2.2016258, y: 0.013861656}
+      - {x: -2.4067764, y: -0.34580517}
+      - {x: -2.61, y: -0.61}
+      - {x: 2.6100006, y: -0.615283}
 --- !u!1 &811735494
 GameObject:
   m_ObjectHideFlags: 0
@@ -30733,6 +30835,7 @@ GameObject:
   m_Component:
   - component: {fileID: 824622252}
   - component: {fileID: 824622253}
+  - component: {fileID: 824622254}
   m_Layer: 0
   m_Name: FrontRock (24)
   m_TagString: Untagged
@@ -30751,7 +30854,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 165
+  m_RootOrder: 164
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &824622253
 SpriteRenderer:
@@ -30799,6 +30902,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &824622254
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 824622251}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.16, y: 1.26}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 2.631733, y: 0.052260637}
+      - {x: 2.1539936, y: 0.23049498}
+      - {x: 1.8194714, y: 0.2572441}
+      - {x: 0.8507099, y: 0.13424087}
+      - {x: 0.7222271, y: 0.18300343}
+      - {x: 0.62202835, y: 0.37256646}
+      - {x: 0.41349792, y: 0.6007426}
+      - {x: 0.29325294, y: 0.5974916}
+      - {x: 0.029323578, y: 0.3535316}
+      - {x: -0.2219677, y: 0.20778799}
+      - {x: -0.5100002, y: 0.11424112}
+      - {x: -0.98420715, y: 0.14024758}
+      - {x: -1.5412369, y: 0.080990076}
+      - {x: -1.652277, y: 0.14595842}
+      - {x: -1.7600002, y: 0.3912375}
+      - {x: -1.9799995, y: 0.60724425}
+      - {x: -2.0937462, y: 0.6137459}
+      - {x: -2.1839924, y: 0.35049486}
+      - {x: -2.3404942, y: 0.20374584}
+      - {x: -2.6000004, y: 0.10099006}
+      - {x: -2.8227558, y: 0.11399341}
+      - {x: -2.9302464, y: 0.04448843}
+      - {x: -2.9238281, y: -0.19072413}
+      - {x: 2.6211987, y: -0.26132083}
 --- !u!1 &824862722
 GameObject:
   m_ObjectHideFlags: 0
@@ -33216,11 +33367,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 885688653}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 75.21, y: 22.16, z: -0.0390625}
+  m_LocalPosition: {x: 75.13, y: 22.38, z: -0.0390625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 192
+  m_RootOrder: 187
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &885688655
 SpriteRenderer:
@@ -35026,81 +35177,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &954514642
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 954514643}
-  - component: {fileID: 954514644}
-  m_Layer: 0
-  m_Name: FrontRock (32)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &954514643
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 954514642}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 130.25, y: -0.89, z: -0.0390625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 978303211}
-  m_RootOrder: 173
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &954514644
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 954514642}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1837406103
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 854bfe5c4068ba64bb98bd700a6cff2c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.47, y: 7.26}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!4 &957435594 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 468102, guid: 63e2cfc1280c0bc4a80925158676e245,
@@ -35641,16 +35717,13 @@ Transform:
   - {fileID: 34892825}
   - {fileID: 114510734}
   - {fileID: 1328779444}
-  - {fileID: 2056317006}
   - {fileID: 824622252}
-  - {fileID: 1253077812}
   - {fileID: 1432099166}
   - {fileID: 1497516014}
   - {fileID: 1811022822}
   - {fileID: 1995256775}
   - {fileID: 1835806672}
   - {fileID: 1327477678}
-  - {fileID: 954514643}
   - {fileID: 545747888}
   - {fileID: 490208470}
   - {fileID: 250559592}
@@ -35659,10 +35732,8 @@ Transform:
   - {fileID: 1927033590}
   - {fileID: 695123082}
   - {fileID: 1949565892}
-  - {fileID: 123524683}
   - {fileID: 492454517}
   - {fileID: 2027410428}
-  - {fileID: 257054414}
   - {fileID: 490797983}
   - {fileID: 355474696}
   - {fileID: 452409239}
@@ -35672,16 +35743,13 @@ Transform:
   - {fileID: 885688654}
   - {fileID: 1983750855}
   - {fileID: 2074245343}
-  - {fileID: 1934532030}
   - {fileID: 395198511}
   - {fileID: 1510455522}
-  - {fileID: 644680296}
   - {fileID: 1238304143}
   - {fileID: 1064300098}
   - {fileID: 1960117151}
   - {fileID: 1721176651}
   - {fileID: 268752781}
-  - {fileID: 222714752}
   - {fileID: 1037841471}
   - {fileID: 1190531701}
   m_Father: {fileID: 0}
@@ -36107,11 +36175,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 137.69287
+      value: 137.701
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.9736843
+      value: 1.067
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalPosition.z
@@ -36170,7 +36238,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.9962129
+      value: 1.0310804
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
@@ -38336,7 +38404,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 205
+  m_RootOrder: 197
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1037841472
 SpriteRenderer:
@@ -38893,7 +38961,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 200
+  m_RootOrder: 193
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!212 &1064300099
 SpriteRenderer:
@@ -47237,7 +47305,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 206
+  m_RootOrder: 198
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1190531702
 SpriteRenderer:
@@ -49017,6 +49085,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1238304143}
   - component: {fileID: 1238304144}
+  - component: {fileID: 1238304145}
   m_Layer: 0
   m_Name: FrontRock (56)
   m_TagString: Untagged
@@ -49035,7 +49104,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 199
+  m_RootOrder: 192
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1238304144
 SpriteRenderer:
@@ -49083,6 +49152,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1238304145
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1238304142}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.71, y: 2.01}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.35635376, y: 0.76652336}
+      - {x: 0.2782135, y: 0.6065216}
+      - {x: 0.31236267, y: 0.18517303}
+      - {x: 0.23083496, y: -0.09312916}
+      - {x: 0.093307495, y: -0.29067326}
+      - {x: -0.107040405, y: -0.2849989}
+      - {x: -0.31025696, y: -0.3642397}
+      - {x: -0.4427185, y: -0.47593403}
+      - {x: -0.43977356, y: -0.59392834}
+      - {x: 0.46469116, y: -0.57316875}
+      - {x: 0.48129272, y: 0.7683239}
 --- !u!1 &1238365728
 GameObject:
   m_ObjectHideFlags: 0
@@ -49977,81 +50081,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 499288, guid: ae00d14429df82d418c99d7e545a74bd,
     type: 2}
   m_PrefabInternal: {fileID: 1252134668}
---- !u!1 &1253077811
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1253077812}
-  - component: {fileID: 1253077813}
-  m_Layer: 0
-  m_Name: FrontRock (25)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1253077812
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1253077811}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 67.72, y: -3.35, z: -0.0390625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 978303211}
-  m_RootOrder: 166
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1253077813
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1253077811}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1837406103
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: dac97204250464f438c6da603bcc71fb, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.47, y: 7.26}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &1257125202
 GameObject:
   m_ObjectHideFlags: 0
@@ -52286,6 +52315,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1327477678}
   - component: {fileID: 1327477679}
+  - component: {fileID: 1327477680}
   m_Layer: 0
   m_Name: FrontRock (31)
   m_TagString: Untagged
@@ -52304,7 +52334,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 172
+  m_RootOrder: 170
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1327477679
 SpriteRenderer:
@@ -52352,6 +52382,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1327477680
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1327477677}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.6, y: 2.22}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.6440125, y: -0.88258934}
+      - {x: 1.1935043, y: -0.87416077}
+      - {x: 0.9893341, y: -0.80441475}
+      - {x: 0.47714996, y: -0.5220814}
+      - {x: -0.03883362, y: -0.61532974}
+      - {x: -0.30754852, y: -0.59648895}
+      - {x: -0.5755844, y: -0.16974449}
+      - {x: -0.873909, y: 0}
+      - {x: -1.0853271, y: 0.19883156}
+      - {x: -1.0853348, y: 0.678833}
+      - {x: -1.2137451, y: 1.0594301}
+      - {x: -1.5899999, y: 1.11}
+      - {x: -1.5571136, y: -1.0525894}
+      - {x: 1.8, y: -1.11}
+      - {x: 1.8, y: -1.01}
 --- !u!1 &1327927136
 GameObject:
   m_ObjectHideFlags: 0
@@ -52511,6 +52580,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1328779444}
   - component: {fileID: 1328779445}
+  - component: {fileID: 1328779446}
   m_Layer: 0
   m_Name: FrontRock (22)
   m_TagString: Untagged
@@ -52577,6 +52647,49 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1328779446
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1328779443}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.6, y: 2.22}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.693713, y: -0.8974258}
+      - {x: 1.5505064, y: -0.85418737}
+      - {x: 1.4048269, y: -0.8758577}
+      - {x: 1.3159754, y: -0.85485184}
+      - {x: 1.085001, y: -0.8400997}
+      - {x: 0.548861, y: -0.523713}
+      - {x: 0.42570996, y: -0.5274259}
+      - {x: -0.048283815, y: -0.61199677}
+      - {x: -0.31770682, y: -0.6028551}
+      - {x: -0.5571449, y: -0.19856465}
+      - {x: -0.96336484, y: 0.06289685}
+      - {x: -1.1094229, y: 0.24028099}
+      - {x: -1.0728548, y: 0.6700001}
+      - {x: -1.1445711, y: 0.982574}
+      - {x: -1.2539937, y: 1.0882835}
+      - {x: -1.4940093, y: 1.0962873}
+      - {x: -1.8, y: 0.9971452}
+      - {x: -1.8, y: -1.11}
+      - {x: 1.8, y: -1.11}
 --- !u!1 &1330887765
 GameObject:
   m_ObjectHideFlags: 0
@@ -58354,11 +58467,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1837406103
-  m_SortingLayer: 3
+  m_SortingLayerID: 1659163103
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 373726b050e9d2540a33f135ad8883e0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7830189, g: 0.77193844, b: 0.77193844, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -59036,6 +59149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1387874382}
   - component: {fileID: 1387874383}
+  - component: {fileID: 1387874384}
   m_Layer: 0
   m_Name: FrontRock (36)
   m_TagString: Untagged
@@ -59054,7 +59168,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 177
+  m_RootOrder: 174
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1387874383
 SpriteRenderer:
@@ -59102,6 +59216,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1387874384
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1387874381}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.11, y: 1.53}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.3602753, y: -0.5676441}
+      - {x: 0.7456207, y: -0.56111526}
+      - {x: 0.3358307, y: -0.5045872}
+      - {x: -0.031936646, y: -0.36376}
+      - {x: -0.1621399, y: -0.13111687}
+      - {x: -0.46473694, y: -0.1672306}
+      - {x: -0.6809082, y: -0.13132286}
+      - {x: -0.9049988, y: 0.30603218}
+      - {x: -1.1041718, y: 0.4847927}
+      - {x: -1.1894989, y: 0.67277336}
+      - {x: -1.450531, y: 0.71276665}
+      - {x: -1.427063, y: -0.6605396}
+      - {x: 1.5223541, y: -0.6931839}
 --- !u!1 &1391092813
 GameObject:
   m_ObjectHideFlags: 0
@@ -60046,6 +60197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1432099166}
   - component: {fileID: 1432099167}
+  - component: {fileID: 1432099168}
   m_Layer: 0
   m_Name: FrontRock (26)
   m_TagString: Untagged
@@ -60064,7 +60216,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 167
+  m_RootOrder: 165
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1432099167
 SpriteRenderer:
@@ -60112,6 +60264,53 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1432099168
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1432099165}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.22, y: 1.22}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.9407272, y: -0.14221185}
+      - {x: 1.9936371, y: -0.04975778}
+      - {x: 1.7774429, y: 0.5738637}
+      - {x: 1.6703644, y: 0.5699999}
+      - {x: 1.330658, y: 0.03613633}
+      - {x: 1.1474152, y: -0.044829547}
+      - {x: 0.8535843, y: -0.030350983}
+      - {x: 0.6322708, y: -0.035170615}
+      - {x: 0.30869293, y: 0.016449034}
+      - {x: 0.081962585, y: -0.019034207}
+      - {x: -0.18495941, y: 0.0076757073}
+      - {x: -0.28554535, y: -0.044341862}
+      - {x: -0.35375977, y: -0.0401147}
+      - {x: -0.4570999, y: 0.13644904}
+      - {x: -0.6420288, y: 0.31997305}
+      - {x: -0.7557907, y: 0.51224464}
+      - {x: -0.8178177, y: 0.5142037}
+      - {x: -0.986763, y: 0.26355094}
+      - {x: -1.1028366, y: 0.19277984}
+      - {x: -1.5249023, y: 0.18727797}
+      - {x: -1.9497147, y: 0.12776297}
+      - {x: -2.2561798, y: 0.015954792}
+      - {x: -2.2709427, y: -0.14553839}
 --- !u!1 &1432550562
 GameObject:
   m_ObjectHideFlags: 0
@@ -61981,7 +62180,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 168
+  m_RootOrder: 166
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!212 &1497516015
 SpriteRenderer:
@@ -62697,7 +62896,7 @@ Transform:
   m_LocalScale: {x: 1.0000005, y: 1.0000005, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 197
+  m_RootOrder: 191
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 178.85101}
 --- !u!212 &1510455523
 SpriteRenderer:
@@ -64419,12 +64618,12 @@ Prefab:
     - target: {fileID: 114311780819303452, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Spline.m_ControlPoints.Array.data[88].position.x
-      value: 135.83864
+      value: 135.45493
       objectReference: {fileID: 0}
     - target: {fileID: 114311780819303452, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Spline.m_ControlPoints.Array.data[88].position.y
-      value: 2.7087712
+      value: 2.730698
       objectReference: {fileID: 0}
     - target: {fileID: 114311780819303452, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
@@ -67999,42 +68198,42 @@ Prefab:
     - target: {fileID: 60259941249414702, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[200].x
-      value: 142.40356
+      value: 142.40388
       objectReference: {fileID: 0}
     - target: {fileID: 60259941249414702, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[200].y
-      value: 2.89108
+      value: 2.89121
       objectReference: {fileID: 0}
     - target: {fileID: 60259941249414702, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[201].x
-      value: 136.10982
+      value: 135.76859
       objectReference: {fileID: 0}
     - target: {fileID: 60259941249414702, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[201].y
-      value: 3.04235
+      value: 3.0627
       objectReference: {fileID: 0}
     - target: {fileID: 60259941249414702, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[202].x
-      value: 135.55255
+      value: 135.5754
       objectReference: {fileID: 0}
     - target: {fileID: 60259941249414702, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[202].y
-      value: 5.4263
+      value: 5.39352
       objectReference: {fileID: 0}
     - target: {fileID: 60259941249414702, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[203].x
-      value: 135.382
+      value: 135.396
       objectReference: {fileID: 0}
     - target: {fileID: 60259941249414702, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[203].y
-      value: 5.5714
+      value: 5.57044
       objectReference: {fileID: 0}
     - target: {fileID: 60259941249414702, guid: e1766666a9b496a41b1c7f80d695c588,
         type: 2}
@@ -76291,11 +76490,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1721176650}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 50.02, y: 3.78, z: -0.0390625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 49.458, y: 3.78, z: -0.0390625}
+  m_LocalScale: {x: 0.498, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 202
+  m_RootOrder: 195
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1721176652
 SpriteRenderer:
@@ -79629,7 +79828,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 169
+  m_RootOrder: 167
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1811022823
 SpriteRenderer:
@@ -80038,6 +80237,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1835806672}
   - component: {fileID: 1835806673}
+  - component: {fileID: 1835806674}
   m_Layer: 0
   m_Name: FrontRock (30)
   m_TagString: Untagged
@@ -80056,7 +80256,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 171
+  m_RootOrder: 169
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!212 &1835806673
 SpriteRenderer:
@@ -80104,6 +80304,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1835806674
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1835806671}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4.89, y: 3.67}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -2.425, y: 1.795}
+      - {x: -2.445, y: 1.545}
+      - {x: -2.2830648, y: 1.4692059}
+      - {x: -2.114997, y: 1.459092}
+      - {x: -1.769317, y: 1.545114}
+      - {x: -1.0710292, y: 1.5571603}
+      - {x: -0.8749986, y: 1.3690917}
+      - {x: -0.053290114, y: 1.3992059}
+      - {x: 0.22727384, y: 1.2709085}
+      - {x: 0.34488192, y: 1.0590912}
+      - {x: 0.64908874, y: 1.0671598}
+      - {x: 0.9872699, y: 0.9370458}
+      - {x: 1.2950013, y: 0.9852288}
+      - {x: 1.4871581, y: 0.36067882}
+      - {x: 1.4430625, y: -0.1609078}
+      - {x: 1.5651119, y: -0.5748858}
+      - {x: 1.5506798, y: -1.1724973}
+      - {x: 1.9948723, y: -1.511578}
+      - {x: 2.051956, y: -1.6096679}
+      - {x: 2.1271589, y: -1.6310232}
+      - {x: 2.1248863, y: -1.7988622}
+      - {x: 2.385, y: -1.8349999}
+      - {x: 2.445, y: -1.8149999}
+      - {x: 2.445, y: 1.8349999}
 --- !u!1 &1836105094
 GameObject:
   m_ObjectHideFlags: 0
@@ -82583,7 +82831,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 179
+  m_RootOrder: 176
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -3.8360002}
 --- !u!212 &1927033591
 SpriteRenderer:
@@ -83106,81 +83354,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1934532029
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1934532030}
-  - component: {fileID: 1934532031}
-  m_Layer: 0
-  m_Name: FrontRock (52)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1934532030
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1934532029}
-  m_LocalRotation: {x: -0, y: -0, z: 0.99994975, w: 0.010028004}
-  m_LocalPosition: {x: 149.41, y: 51.45, z: -0.0390625}
-  m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
-  m_Children: []
-  m_Father: {fileID: 978303211}
-  m_RootOrder: 195
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 178.85101}
---- !u!212 &1934532031
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1934532029}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1837406103
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: dd56e0cdd18790b4b858a2d10b3abffe, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.47, y: 7.26}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &1937180040
 GameObject:
   m_ObjectHideFlags: 0
@@ -83504,7 +83677,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 181
+  m_RootOrder: 178
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
 --- !u!212 &1949565893
 SpriteRenderer:
@@ -83711,6 +83884,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1960117151}
   - component: {fileID: 1960117152}
+  - component: {fileID: 1960117153}
   m_Layer: 0
   m_Name: FrontRock (58)
   m_TagString: Untagged
@@ -83729,7 +83903,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 201
+  m_RootOrder: 194
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90.00001}
 --- !u!212 &1960117152
 SpriteRenderer:
@@ -83777,6 +83951,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1960117153
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1960117150}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.93, y: 3.84}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -1.364557, y: 1.6186678}
+      - {x: -1.355, y: 1.3399999}
+      - {x: -0.59923315, y: 1.3498993}
+      - {x: -0.46237063, y: 1.2554321}
+      - {x: 0.36874986, y: 1.0277634}
+      - {x: 0.5752212, y: 0.3787002}
+      - {x: 0.95153594, y: 0.49027246}
+      - {x: 0.98431134, y: 1.5684509}
 --- !u!1001 &1963675408
 Prefab:
   m_ObjectHideFlags: 0
@@ -84338,7 +84544,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 193
+  m_RootOrder: 188
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1983750856
 SpriteRenderer:
@@ -84488,7 +84694,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 170
+  m_RootOrder: 168
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1995256776
 SpriteRenderer:
@@ -85471,6 +85677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2027410428}
   - component: {fileID: 2027410429}
+  - component: {fileID: 2027410430}
   m_Layer: 0
   m_Name: FrontRock (43)
   m_TagString: Untagged
@@ -85489,7 +85696,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 184
+  m_RootOrder: 180
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2027410429
 SpriteRenderer:
@@ -85537,6 +85744,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &2027410430
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2027410427}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.71, y: 2.01}
+    newSize: {x: 0.47, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.38287354, y: 0.80794525}
+      - {x: 0.27990723, y: 0.60865545}
+      - {x: 0.32737732, y: 0.20444107}
+      - {x: 0.18104553, y: -0.19697857}
+      - {x: -0.385, y: -0.385}
+      - {x: -0.85499996, y: -1.005}
+      - {x: 0.85499996, y: -1.005}
+      - {x: 0.8549957, y: 1.0224619}
 --- !u!1 &2028364324
 GameObject:
   m_ObjectHideFlags: 0
@@ -86604,81 +86843,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 468102, guid: 63e2cfc1280c0bc4a80925158676e245,
     type: 2}
   m_PrefabInternal: {fileID: 2056100775}
---- !u!1 &2056317005
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2056317006}
-  - component: {fileID: 2056317007}
-  m_Layer: 0
-  m_Name: FrontRock (23)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2056317006
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2056317005}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.54, y: 0.25, z: -0.0390625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 978303211}
-  m_RootOrder: 164
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &2056317007
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2056317005}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1837406103
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6475f0dddb8329a4bb0614263748f91f, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.47, y: 7.26}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!4 &2057069745 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60,
@@ -87318,7 +87482,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 978303211}
-  m_RootOrder: 194
+  m_RootOrder: 189
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2074245344
 SpriteRenderer:
