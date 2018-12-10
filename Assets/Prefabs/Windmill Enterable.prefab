@@ -86,6 +86,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4678866262018590}
   - component: {fileID: 61627551998706854}
+  - component: {fileID: 61684424709399516}
   m_Layer: 0
   m_Name: Trigger Area
   m_TagString: Untagged
@@ -352,6 +353,31 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 2.104782, y: 8.53611}
+  m_EdgeRadius: 0
+--- !u!61 &61684424709399516
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1961081260639018}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -1.6879349, y: -4.5602036}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.6249542, y: 1.2980499}
   m_EdgeRadius: 0
 --- !u!114 &114904772471304544
 MonoBehaviour:
