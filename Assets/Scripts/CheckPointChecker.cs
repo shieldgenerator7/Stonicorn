@@ -30,7 +30,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
         if (checkpointCamera == null)
         {
             GameObject cpBgCamera = GameObject.Find("CP BG Camera");
-            if (cpBgCamera) {
+            if (cpBgCamera)
+            {
                 checkpointCamera = cpBgCamera.GetComponent<Camera>();
                 checkpointCamera.gameObject.SetActive(false);
             }
@@ -66,14 +67,17 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public void activate()
     {
+        bool prevActivated = activated;
         activated = true;
         GameManager.saveMemory(this);
         GameManager.saveCheckPoint(this);
         //Start the particles
-        ParticleSystem ps = GetComponent<ParticleSystem>();
-        if (ps)
+        if (!prevActivated)
         {
-            ps.Play();
+            foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
+            {
+                ps.Play();
+            }
         }
         //Initialize ghost sprite (if necessary)
     }
@@ -149,10 +153,10 @@ public class CheckPointChecker : MemoryMonoBehaviour
         {
             for (int y = 0; y < screenShot.height; y++)
             {
-                float dx = Mathf.Abs(x - screenShot.width/2);
-                float dy = Mathf.Abs(y - screenShot.height/2);
+                float dx = Mathf.Abs(x - screenShot.width / 2);
+                float dy = Mathf.Abs(y - screenShot.height / 2);
                 //If the pixel is outside the circle inscribed in the rect,
-                if (dx * dx + dy * dy > screenShot.width * screenShot.width/ 4)
+                if (dx * dx + dy * dy > screenShot.width * screenShot.width / 4)
                 {
                     //set the pixel to transparent
                     screenShot.SetPixel(x, y, transparentColor);
