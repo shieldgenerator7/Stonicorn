@@ -67,13 +67,17 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public void activate()
     {
+        bool prevActivated = activated;
         activated = true;
         GameManager.saveMemory(this);
         GameManager.saveCheckPoint(this);
         //Start the particles
-        foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
+        if (!prevActivated)
         {
-            ps.Play();
+            foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
+            {
+                ps.Play();
+            }
         }
         //Initialize ghost sprite (if necessary)
     }
