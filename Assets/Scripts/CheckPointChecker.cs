@@ -67,19 +67,42 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public void activate()
     {
-        bool prevActivated = activated;
+        //Don't activate if already activated
+        if (activated)
+        {
+            return;
+        }
+        //Not already activated, go ahead and activate
         activated = true;
         GameManager.saveMemory(this);
         GameManager.saveCheckPoint(this);
-        //Start the particles
-        if (!prevActivated)
+        //if there's two or more active checkpoints
+        List<CheckPointChecker> activeCPCs = GameManager.getActiveCheckPoints();
+        if (activeCPCs.Count > 1)
         {
+            //Start the particles
             foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
             {
                 ps.Play();
             }
+            //Activate the other checkpoints
+            foreach (CheckPointChecker cpc in activeCPCs)
+            {
+                if (!cpc.activated)
+                {
+                    cpc.activate();
+                }
+            }
         }
-        //Initialize ghost sprite (if necessary)
+        else
+        {
+            //Pretend you're not activated so the next time
+            //a checkpoint gets activated,
+            //this one will get activated too.
+            //This is special code to keep a checkpoint
+            //from displaying as active when it's the only active checkpoint.
+            activated = false;
+        }
     }
     public void trigger()
     {
