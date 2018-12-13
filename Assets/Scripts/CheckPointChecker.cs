@@ -85,6 +85,11 @@ public class CheckPointChecker : MemoryMonoBehaviour
             {
                 ps.Play();
             }
+            //Start the fade-in effect
+            foreach (Fader f in GetComponentsInChildren<Fader>())
+            {
+                f.enabled = true;
+            }
             //Activate the other checkpoints
             foreach (CheckPointChecker cpc in activeCPCs)
             {
