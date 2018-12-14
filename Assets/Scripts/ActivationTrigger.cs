@@ -69,6 +69,7 @@ public class ActivationTrigger : MonoBehaviour
     public ActivationOptions cameraExitAction = ActivationOptions.DEACTIVATE;
     [Tooltip("Does something have to be in the trigger area for the camera position listener to do its action?")]
     public bool cameraPositionRequireTrigger = true;
+    public GameObject cameraSnapAnchor;//the object the camera snaps to when it enters the trigger
 
     //
     // Runtime Vars
@@ -219,13 +220,22 @@ public class ActivationTrigger : MonoBehaviour
     {
         if (!cameraPositionRequireTrigger || triggerActive)
         {
+            //If camera is in the area,
             if (cameraInArea())
             {
+                //but it wasn't before,
                 if (!cameraPositionActive)
                 {
+                    //Process on area enter actions
                     processObjects(cameraEnterAction);
                 }
                 cameraPositionActive = true;
+                if (cameraSnapAnchor != null)
+                {
+                    Vector3 newCamPos = cameraSnapAnchor.transform.position;
+                    newCamPos.z = camController.transform.position.z;
+                    camController.transform.position = newCamPos;
+                }
             }
             else
             {
