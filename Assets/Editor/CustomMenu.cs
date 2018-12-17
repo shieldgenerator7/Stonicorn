@@ -114,7 +114,7 @@ public class CustomMenu
     }
     public static void build(BuildTarget buildTarget, string extension)
     {
-        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        string defaultPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
         if (!System.IO.Directory.Exists(defaultPath))
         {
             System.IO.Directory.CreateDirectory(defaultPath);
@@ -122,6 +122,11 @@ public class CustomMenu
         //2017-10-19 copied from https://docs.unity3d.com/Manual/BuildPlayerPipeline.html
         // Get filename.
         string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", defaultPath, PlayerSettings.productName, extension);
+
+		// User hit the cancel button.
+		if (buildName == "")
+			return;
+
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
         UnityEngine.Debug.Log("BUILDNAME: " + buildName);
         UnityEngine.Debug.Log("PATH: " + path);
@@ -161,7 +166,7 @@ public class CustomMenu
     public static void runWindows()
     {//2018-08-10: copied from build()
         string extension = "exe";
-        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        string defaultPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
         if (!System.IO.Directory.Exists(defaultPath))
         {
             throw new UnityException("You need to build the windows version for "+ PlayerSettings.productName + " first!");
