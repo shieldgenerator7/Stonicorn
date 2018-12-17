@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
     public static string playerTag = "Player";
     private CameraController camCtr;
     private GestureManager gestureManager;
+    public static GestureManager GestureManager
+    {
+        get { return instance.gestureManager; }
+        private set { instance.gestureManager = value; }
+    }
     private MusicManager musicManager;
     private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
