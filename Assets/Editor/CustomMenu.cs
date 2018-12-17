@@ -145,7 +145,7 @@ public class CustomMenu
         }
 
         // Build player.
-        BuildPipeline.BuildPlayer(levels, buildName, BuildTarget.StandaloneWindows, BuildOptions.None);
+        BuildPipeline.BuildPlayer(levels, buildName, buildTarget, BuildOptions.None);
 
 		// Copy a file from the project folder to the build folder, alongside the built game.
 		string resourcesPath = path + "/Assets/Resources";
