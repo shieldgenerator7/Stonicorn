@@ -130,6 +130,7 @@ public class CustomMenu
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
         UnityEngine.Debug.Log("BUILDNAME: " + buildName);
         UnityEngine.Debug.Log("PATH: " + path);
+
         string[] levels = new string[EditorBuildSettings.scenes.Length];
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
         {
@@ -146,14 +147,19 @@ public class CustomMenu
         // Build player.
         BuildPipeline.BuildPlayer(levels, buildName, BuildTarget.StandaloneWindows, BuildOptions.None);
 
-        // Copy a file from the project folder to the build folder, alongside the built game.
-        //NOTE: Changes to the Dialogue folder won't reflected unless you delete the Dialogue folder in the build directory
-        if (!System.IO.Directory.Exists(path + "/Assets/Resources/Dialogue"))
-        {
-            System.IO.Directory.CreateDirectory(path + "/Assets/Resources");
-            FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/",
-                path + "/Assets/Resources/Dialogue/"
-                );
+		// Copy a file from the project folder to the build folder, alongside the built game.
+		string resourcesPath = path + "/Assets/Resources";
+		string dialogPath = resourcesPath + "/Dialogue";
+
+		if (!System.IO.Directory.Exists(dialogPath))
+		{
+			System.IO.Directory.CreateDirectory(resourcesPath);
+		}
+
+		if ( EditorUtility.DisplayDialog("Dialog Refresh", "Refresh the voice acting entries in " + dialogPath + "?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable." ) )
+		{
+			FileUtil.DeleteFileOrDirectory(dialogPath);
+            FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/", dialogPath);
         }
 
         // Run the game (Process class from System.Diagnostics).
