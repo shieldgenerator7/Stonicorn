@@ -54,7 +54,6 @@ public class GestureManager : SavableMonoBehaviour
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
     private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.TOUCH;
-    private Vector3 lastMousePosition;//used to determine if the mouse has been moved
     //Cheats
     public const bool CHEATS_ALLOWED = true;//whether or not cheats are allowed (turned off for final version)
     private int cheatTaps = 0;//how many taps have been put in for the cheat
@@ -106,9 +105,8 @@ public class GestureManager : SavableMonoBehaviour
                 //idm = InputDeviceMethod.KEYBOARD;
             }
             if (Input.mousePresent
-                    && (Input.GetMouseButton(0) || (Input.mousePosition - lastMousePosition).sqrMagnitude > 0.001f))
+                    && (Input.GetMouseButton(0) || Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0))
             {
-                lastMousePosition = Input.mousePosition;
                 idm = InputDeviceMethod.MOUSE;
             }
             if (Input.touchSupported && Input.touchCount > 0)
