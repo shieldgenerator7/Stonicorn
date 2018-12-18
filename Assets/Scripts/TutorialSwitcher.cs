@@ -11,6 +11,10 @@ public class TutorialSwitcher : MonoBehaviour
     void Start()
     {
         GameManager.GestureManager.onInputDeviceSwitched += updateLastUsedInputDevice;
+        if (inputDevice == InputDeviceMethod.NONE)
+        {
+            throw new UnityException("TutorialSwitcher (" + name + ") has invalid InputDeviceMethod: " + inputDevice+"!");
+        }
     }
 
     void updateLastUsedInputDevice(InputDeviceMethod inputDevice)

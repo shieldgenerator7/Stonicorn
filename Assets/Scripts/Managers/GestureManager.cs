@@ -53,7 +53,7 @@ public class GestureManager : SavableMonoBehaviour
     public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
-    private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.TOUCH;
+    private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.NONE;
     //Cheats
     public const bool CHEATS_ALLOWED = true;//whether or not cheats are allowed (turned off for final version)
     private int cheatTaps = 0;//how many taps have been put in for the cheat
