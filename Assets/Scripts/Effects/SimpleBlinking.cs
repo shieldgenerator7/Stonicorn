@@ -27,12 +27,6 @@ public class SimpleBlinking : MonoBehaviour
     private float currentDuration = 0;//the current span between keyframes
     private float currentTransitionDuration = 0;//the current time it takes to transition to current state
 
-    private SpriteRenderer sr;
-
-    private void Start()
-    {
-        sr = GetComponent<SpriteRenderer>();
-    }
     void OnEnable()
     {
         lastKeyFrame = Time.time + timeOffset;
@@ -85,8 +79,12 @@ public class SimpleBlinking : MonoBehaviour
     /// <param name="percent">The percent towards the current state. 1 for all the way, 0 for none of the way. NOTE: 1 does not always mean opaque, 0 does not always mean transparent.</param>
     void updateAlpha(float percent = 1)
     {
-        Color c = sr.color;
-        c.a = (blinkState == BlinkState.ON) ? 0 + percent : 1 - percent;
-        sr.color = c;
+        float newAlpha = (blinkState == BlinkState.ON) ? 0 + percent : 1 - percent;
+        foreach (SpriteRenderer tsr in GetComponentsInChildren<SpriteRenderer>())
+        {
+            Color c = tsr.color;
+            c.a = newAlpha;
+            tsr.color = c;
+        }
     }
 }
