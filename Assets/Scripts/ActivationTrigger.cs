@@ -16,6 +16,7 @@ public class ActivationTrigger : MonoBehaviour
     //
     //Settings
     //
+    public string triggerName;//the name to identify this trigger
     [Header("Trigger Activation Settings")]
     public ActivationOptions triggerEnterAction = ActivationOptions.ACTIVATE;
     public ActivationOptions triggerExitAction = ActivationOptions.DEACTIVATE;
@@ -77,6 +78,7 @@ public class ActivationTrigger : MonoBehaviour
     private bool triggerActive = false;
     private bool zoomLevelActive = false;
     private bool cameraPositionActive = false;
+    private static Dictionary<string, bool> tutorialTriggerStates = new Dictionary<string, bool>();
 
     //
     // Components
@@ -85,6 +87,15 @@ public class ActivationTrigger : MonoBehaviour
 
     private void Start()
     {
+        //Trigger name set up
+        if (triggerName == null || triggerName == "")
+        {
+            triggerName = transform.parent.name;
+        }
+        if (!tutorialTriggerStates.ContainsKey(triggerName))
+        {
+            tutorialTriggerStates.Add(triggerName, objectsToActivate[0].activeSelf);
+        }
         //Camera zoom trigger set up
         if (zoomLevelEnterAction != ActivationOptions.DO_NOTHING
             || zoomLevelExitAction != ActivationOptions.DO_NOTHING
@@ -116,6 +127,16 @@ public class ActivationTrigger : MonoBehaviour
             {
                 throw new UnityException("Activation Trigger (" + gameObject.name + ") needs its Collider2D to be a trigger! (set 'Is Trigger' to true)");
             }
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (tutorialTriggerStates.ContainsKey(triggerName))
+        {
+            ActivationOptions savedOption =
+                (tutorialTriggerStates[triggerName]) ? ActivationOptions.ACTIVATE : ActivationOptions.DEACTIVATE;
+            processObjects(savedOption);
         }
     }
 
@@ -159,6 +180,16 @@ public class ActivationTrigger : MonoBehaviour
                 case ActivationOptions.DO_NOTHING:
                     break;
             }
+        }
+        //Update tutorial states
+        switch (action)
+        {
+            case ActivationOptions.ACTIVATE:
+                tutorialTriggerStates[triggerName] = true;
+                break;
+            case ActivationOptions.DEACTIVATE:
+                tutorialTriggerStates[triggerName] = false;
+                break;
         }
     }
 
