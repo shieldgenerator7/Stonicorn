@@ -4,37 +4,47 @@ using UnityEngine;
 
 public class SimpleScaling : MonoBehaviour
 {//2018-08-11: copied from SimpleMovement
-    
+
     //Settings
     public float scale = 2f;//the scale to transition to
     public float duration = 0.4f;//in seconds
     public float endDelay = 0.2f;//delay after reaching the end before resetting to the beginning
 
-    private Vector3 startScale;
-
-    //Runtime vars
+    //Runtime constants
     private float speed;
+    private Vector3 startScale;
     private Vector3 endScale;
-    private float endDelayStartTime = 0;
-    private bool forwards = true;//true to return back to start
+    //Runtime vars
+    private bool forwards = true;//true to move towards endScale
+    private float lastKeyFrame = 0;//the last time it switched states
+    private bool pausing = false;
 
     // Use this for initialization
     void Start()
     {
         startScale = transform.localScale;
         endScale = startScale * scale;
-        speed = (endScale - startScale).magnitude / duration;
+        float scaleDiff = (endScale - startScale).magnitude;
+        speed = scaleDiff / duration;
+    }
+
+    private void OnEnable()
+    {
+        forwards = true;
+        lastKeyFrame = Time.time;
+        pausing = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (endDelayStartTime != 0)
+        if (pausing)
         {
-            if (Time.time > endDelayStartTime + endDelay)
+            if (Time.time > lastKeyFrame + endDelay)
             {
-                endDelayStartTime = 0;
+                lastKeyFrame = lastKeyFrame + endDelay;
                 forwards = !forwards;
+                pausing = false;
             }
         }
         else
@@ -42,25 +52,27 @@ public class SimpleScaling : MonoBehaviour
             if (forwards)
             {
                 transform.localScale = Vector3.MoveTowards(
-                    transform.localScale,
+                    startScale,
                     endScale,
-                    speed * Time.deltaTime
+                    speed * (Time.time - lastKeyFrame)
                     );
                 if (transform.localScale == endScale)
                 {
-                    endDelayStartTime = Time.time;
+                    lastKeyFrame = lastKeyFrame + duration;
+                    pausing = true;
                 }
             }
             else
             {
                 transform.localScale = Vector3.MoveTowards(
-                    transform.localScale,
+                    endScale,
                     startScale,
-                    speed * Time.deltaTime
+                    speed * (Time.time - lastKeyFrame)
                     );
                 if (transform.localScale == startScale)
                 {
-                    endDelayStartTime = Time.time;
+                    lastKeyFrame = lastKeyFrame + duration;
+                    pausing = true;
                 }
             }
         }

@@ -10,31 +10,38 @@ public class SimpleMovement : MonoBehaviour
     public float duration;//in seconds
     public float endDelay;//delay after reaching the end before resetting to the beginning
     public bool roundTrip = false;//true: move backwards instead of jumping to start pos
-    
+
     private Vector2 startPosition;
 
-    //Runtime vars
+    //Runtime constants
     private float speed;
     private Vector2 endPosition;
-    private float endDelayStartTime = 0;
+    //Runtime vars
+    private float lastKeyFrame;
     private bool forwards = true;//true to return back to start
+    private bool paused = false;
 
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
     {
-        startPosition = transform.position;
-        endPosition = startPosition + direction;
-        speed = (endPosition - startPosition).magnitude / duration;
+        setMovement(transform.position, this.direction, this.direction.magnitude, this.direction.magnitude, false, true);
+    }
+    void OnEnable()
+    {
+        lastKeyFrame = Time.time;
+        forwards = true;
+        paused = false;
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        if (endDelayStartTime != 0)
+        if (paused)
         {
-            if (Time.time > endDelayStartTime + endDelay)
+            if (Time.time > lastKeyFrame + endDelay)
             {
-                endDelayStartTime = 0;
+                paused = false;
+                lastKeyFrame = lastKeyFrame + endDelay;
                 if (roundTrip)
                 {
                     forwards = !forwards;
@@ -56,7 +63,8 @@ public class SimpleMovement : MonoBehaviour
                     );
                 if ((Vector2)transform.position == endPosition)
                 {
-                    endDelayStartTime = Time.time;
+                    paused = true;
+                    lastKeyFrame = lastKeyFrame + duration;
                 }
             }
             else
@@ -68,9 +76,61 @@ public class SimpleMovement : MonoBehaviour
                     );
                 if ((Vector2)transform.position == startPosition)
                 {
-                    endDelayStartTime = Time.time;
+                    paused = true;
+                    lastKeyFrame = lastKeyFrame + duration;
                 }
             }
         }
+    }
+
+    public void setMovement(Vector2 start, Vector2 dir, float minDist = 0, float maxDist = 1, bool keepPercent = true, bool updateSpeed = false)
+    {
+        Debug.Log("start: " + start + ", dir: " + dir + ", direction: " + direction);
+        if (!updateSpeed)
+        {
+            //Make sure direction is valid
+            if (direction == Vector2.zero)
+            {
+                direction = Vector2.one;
+            }
+            //Trim dir to size
+            dir = dir.normalized * this.direction.magnitude;
+        }
+        this.direction = dir;
+        if (this.direction.magnitude > maxDist)
+        {
+            this.direction = this.direction.normalized * maxDist;
+        }
+        if (this.direction.magnitude < minDist)
+        {
+            this.direction = this.direction.normalized * minDist;
+        }
+        float percentThrough = 0;
+        if (keepPercent)
+        {
+            percentThrough =
+                (Time.time - lastKeyFrame) / duration;
+        }
+        startPosition = start;
+        endPosition = startPosition + this.direction;
+        if (percentThrough == 0)
+        {
+            transform.position = startPosition;
+        }
+        else
+        {
+            transform.position = startPosition + (this.direction * percentThrough);
+        }
+        if (updateSpeed)
+        {
+            speed = (endPosition - startPosition).magnitude / duration;
+        }
+        Debug.Log("startpos: " + startPosition + ", endpos: " + endPosition + ", speed: " + speed + ", duration: " + duration);
+    }
+
+    public void setMovementEnd(Vector2 end, Vector2 dir)
+    {
+        dir = dir.normalized * this.direction.magnitude;
+        setMovement(end - dir, dir);
     }
 }

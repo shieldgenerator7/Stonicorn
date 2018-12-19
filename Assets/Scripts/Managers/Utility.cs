@@ -93,7 +93,7 @@ public static class Utility
     {
         Vector2 center = getCollectiveColliderCenter(obj);
         Vector2 dir = (center - position).normalized;
-        RaycastAnswer answer = Utility.RaycastAll(position, dir);
+        RaycastAnswer answer = Utility.RaycastAll(position, dir, (center - position).magnitude);
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
@@ -255,7 +255,7 @@ public static class Utility
     /// <summary>
     /// Test method to see how many objects are typically returned in a raycast call
     /// </summary>
-    public static RaycastAnswer RaycastAll(Vector2 origin, Vector2 direction, float distance = 0)
+    public static RaycastAnswer RaycastAll(Vector2 origin, Vector2 direction, float distance)
     {
         int count = Physics2D.RaycastNonAlloc(origin, direction, rch2dsNonAlloc, distance);
         if (count > maxReturnedList)
@@ -295,5 +295,12 @@ public static class Utility
             Debug.Log("Utility.CastAnswer: max list count: " + maxReturnedList);
         }
         return new RaycastAnswer(rch2dsNonAlloc, count);
+    }
+
+    public static void copyTransform(Transform fromTransform, ref GameObject toObject)
+    {
+        toObject.transform.position = fromTransform.position;
+        toObject.transform.rotation = fromTransform.rotation;
+        toObject.transform.localScale = fromTransform.localScale;
     }
 }

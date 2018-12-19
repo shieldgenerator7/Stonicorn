@@ -22,6 +22,7 @@ public class GestureManager : SavableMonoBehaviour
 
     //Gesture Event Methods
     public TapGesture tapGesture;
+    public OnInputDeviceSwitched onInputDeviceSwitched;
 
     //Original Positions
     private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
@@ -52,6 +53,7 @@ public class GestureManager : SavableMonoBehaviour
     public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
+    private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.NONE;
     //Cheats
     public const bool CHEATS_ALLOWED = true;//whether or not cheats are allowed (turned off for final version)
     private int cheatTaps = 0;//how many taps have been put in for the cheat
@@ -92,6 +94,32 @@ public class GestureManager : SavableMonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //
+        //Input Device Scouting
+        //
+        if (onInputDeviceSwitched != null)
+        {
+            InputDeviceMethod idm = lastUsedInputDevice;
+            if (Input.anyKey && !Input.GetMouseButton(0))
+            {
+                //idm = InputDeviceMethod.KEYBOARD;
+            }
+            if (Input.mousePresent
+                    && (Input.GetMouseButton(0) || Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0))
+            {
+                idm = InputDeviceMethod.MOUSE;
+            }
+            if (Input.touchSupported && Input.touchCount > 0)
+            {
+                idm = InputDeviceMethod.TOUCH;
+            }
+            //
+            if (idm != lastUsedInputDevice)
+            {
+                lastUsedInputDevice = idm;
+                onInputDeviceSwitched(idm);
+            }
+        }
         //
         //Threshold updating
         //
@@ -489,4 +517,10 @@ public class GestureManager : SavableMonoBehaviour
     /// Gets called when a tap gesture is processed
     /// </summary>
     public delegate void TapGesture();
+
+    /// <summary>
+    /// Gets called when the currently used input device is different than the last used input device
+    /// </summary>
+    /// <param name="inputDevice"></param>
+    public delegate void OnInputDeviceSwitched(InputDeviceMethod inputDevice);
 }

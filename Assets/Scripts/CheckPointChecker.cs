@@ -30,7 +30,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
         if (checkpointCamera == null)
         {
             GameObject cpBgCamera = GameObject.Find("CP BG Camera");
-            if (cpBgCamera) {
+            if (cpBgCamera)
+            {
                 checkpointCamera = cpBgCamera.GetComponent<Camera>();
                 checkpointCamera.gameObject.SetActive(false);
             }
@@ -66,16 +67,47 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public void activate()
     {
+        //Don't activate if already activated
+        if (activated)
+        {
+            return;
+        }
+        //Not already activated, go ahead and activate
         activated = true;
         GameManager.saveMemory(this);
         GameManager.saveCheckPoint(this);
-        //Start the particles
-        ParticleSystem ps = GetComponent<ParticleSystem>();
-        if (ps)
+        //if there's two or more active checkpoints
+        List<CheckPointChecker> activeCPCs = GameManager.getActiveCheckPoints();
+        if (activeCPCs.Count > 1)
         {
-            ps.Play();
+            //Start the particles
+            foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
+            {
+                ps.Play();
+            }
+            //Start the fade-in effect
+            foreach (Fader f in GetComponentsInChildren<Fader>())
+            {
+                f.enabled = true;
+            }
+            //Activate the other checkpoints
+            foreach (CheckPointChecker cpc in activeCPCs)
+            {
+                if (!cpc.activated)
+                {
+                    cpc.activate();
+                }
+            }
         }
-        //Initialize ghost sprite (if necessary)
+        else
+        {
+            //Pretend you're not activated so the next time
+            //a checkpoint gets activated,
+            //this one will get activated too.
+            //This is special code to keep a checkpoint
+            //from displaying as active when it's the only active checkpoint.
+            activated = false;
+        }
     }
     public void trigger()
     {
@@ -149,10 +181,10 @@ public class CheckPointChecker : MemoryMonoBehaviour
         {
             for (int y = 0; y < screenShot.height; y++)
             {
-                float dx = Mathf.Abs(x - screenShot.width/2);
-                float dy = Mathf.Abs(y - screenShot.height/2);
+                float dx = Mathf.Abs(x - screenShot.width / 2);
+                float dy = Mathf.Abs(y - screenShot.height / 2);
                 //If the pixel is outside the circle inscribed in the rect,
-                if (dx * dx + dy * dy > screenShot.width * screenShot.width/ 4)
+                if (dx * dx + dy * dy > screenShot.width * screenShot.width / 4)
                 {
                     //set the pixel to transparent
                     screenShot.SetPixel(x, y, transparentColor);

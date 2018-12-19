@@ -16,6 +16,7 @@ public class ActivationTrigger : MonoBehaviour
     //
     //Settings
     //
+    public string triggerName;//the name to identify this trigger
     [Header("Trigger Activation Settings")]
     public ActivationOptions triggerEnterAction = ActivationOptions.ACTIVATE;
     public ActivationOptions triggerExitAction = ActivationOptions.DEACTIVATE;
@@ -54,6 +55,13 @@ public class ActivationTrigger : MonoBehaviour
     [Tooltip("The maximum zoom scale point that defines the zoom level activation trigger.\n"
     + "Set it negative to have no maximum")]
     public CameraController.CameraScalePoints maxZoomScalePoint = CameraController.CameraScalePoints.TIMEREWIND;
+    public enum ClusivityOption
+    {
+        INCLUSIVE,
+        EXCLUSIVE
+    }
+    public ClusivityOption minZoomClusivity = ClusivityOption.INCLUSIVE;
+    public ClusivityOption maxZoomClusivity = ClusivityOption.INCLUSIVE;
 
     [Header("Camera Position Activation Settings")]
     [Tooltip("The collider that checks for the presence of the camera.\nLeave it null to deactivate this feature.")]
@@ -62,6 +70,7 @@ public class ActivationTrigger : MonoBehaviour
     public ActivationOptions cameraExitAction = ActivationOptions.DEACTIVATE;
     [Tooltip("Does something have to be in the trigger area for the camera position listener to do its action?")]
     public bool cameraPositionRequireTrigger = true;
+    public GameObject cameraSnapAnchor;//the object the camera snaps to when it enters the trigger
 
     //
     // Runtime Vars
@@ -69,6 +78,7 @@ public class ActivationTrigger : MonoBehaviour
     private bool triggerActive = false;
     private bool zoomLevelActive = false;
     private bool cameraPositionActive = false;
+    private static Dictionary<string, bool> tutorialTriggerStates = new Dictionary<string, bool>();
 
     //
     // Components
@@ -77,6 +87,15 @@ public class ActivationTrigger : MonoBehaviour
 
     private void Start()
     {
+        //Trigger name set up
+        if (triggerName == null || triggerName == "")
+        {
+            triggerName = transform.parent.name;
+        }
+        if (!tutorialTriggerStates.ContainsKey(triggerName))
+        {
+            tutorialTriggerStates.Add(triggerName, objectsToActivate[0].activeSelf);
+        }
         //Camera zoom trigger set up
         if (zoomLevelEnterAction != ActivationOptions.DO_NOTHING
             || zoomLevelExitAction != ActivationOptions.DO_NOTHING
@@ -108,6 +127,16 @@ public class ActivationTrigger : MonoBehaviour
             {
                 throw new UnityException("Activation Trigger (" + gameObject.name + ") needs its Collider2D to be a trigger! (set 'Is Trigger' to true)");
             }
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (tutorialTriggerStates.ContainsKey(triggerName))
+        {
+            ActivationOptions savedOption =
+                (tutorialTriggerStates[triggerName]) ? ActivationOptions.ACTIVATE : ActivationOptions.DEACTIVATE;
+            processObjects(savedOption);
         }
     }
 
@@ -152,17 +181,35 @@ public class ActivationTrigger : MonoBehaviour
                     break;
             }
         }
+        //Update tutorial states
+        switch (action)
+        {
+            case ActivationOptions.ACTIVATE:
+                tutorialTriggerStates[triggerName] = true;
+                break;
+            case ActivationOptions.DEACTIVATE:
+                tutorialTriggerStates[triggerName] = false;
+                break;
+        }
     }
 
     bool scalePointInRange(float zoomLevel)
     {
+        float minZoom = (minZoomScalePoint < 0) ? -1 : camController.scalePointToZoomLevel((int)minZoomScalePoint);
+        float maxZoom = (maxZoomScalePoint < 0) ? -1 : camController.scalePointToZoomLevel((int)maxZoomScalePoint);
         return (
                 minZoomScalePoint < 0
-                || zoomLevel >= camController.scalePointToZoomLevel((int)minZoomScalePoint)
+                || (minZoomClusivity == ClusivityOption.INCLUSIVE &&
+                zoomLevel >= minZoom)
+                || (minZoomClusivity == ClusivityOption.EXCLUSIVE &&
+                zoomLevel > minZoom)
             )
             && (
                 maxZoomScalePoint < 0
-                || zoomLevel <= camController.scalePointToZoomLevel((int)maxZoomScalePoint)
+                || (maxZoomClusivity == ClusivityOption.INCLUSIVE &&
+                zoomLevel <= maxZoom)
+                || (maxZoomClusivity == ClusivityOption.EXCLUSIVE &&
+                zoomLevel < maxZoom)
             );
     }
 
@@ -204,13 +251,22 @@ public class ActivationTrigger : MonoBehaviour
     {
         if (!cameraPositionRequireTrigger || triggerActive)
         {
+            //If camera is in the area,
             if (cameraInArea())
             {
+                //but it wasn't before,
                 if (!cameraPositionActive)
                 {
+                    //Process on area enter actions
                     processObjects(cameraEnterAction);
                 }
                 cameraPositionActive = true;
+                if (cameraSnapAnchor != null)
+                {
+                    Vector3 newCamPos = cameraSnapAnchor.transform.position;
+                    newCamPos.z = camController.transform.position.z;
+                    camController.transform.position = newCamPos;
+                }
             }
             else
             {

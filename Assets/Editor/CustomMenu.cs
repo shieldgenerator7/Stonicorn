@@ -29,17 +29,88 @@ public class CustomMenu
         }
     }
 
-    [MenuItem("SG7/Editor/Call Merky %`")]
+    [MenuItem("SG7/Editor/Call Merky %#`")]
     public static void callMerky()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag(GameManager.playerTag);
-        playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+        if (GameObject.FindObjectsOfType<RulerDisplayer>().Length > 0)
+        {
+            playerObject.transform.position = RulerDisplayer.currentMousePos;
+        }
+        else
+        {
+            playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+        }
         Selection.activeGameObject = playerObject;
+    }
+
+    [MenuItem("SG7/Editor/Toggle Ruler %`")]
+    /// <summary>
+    /// Turns the ruler tools on and off
+    /// </summary>
+    public static void toggleRulers()
+    {
+        bool anyOn = false;
+        foreach (RulerDisplayer rd in GameObject.FindObjectsOfType<RulerDisplayer>())
+        {
+            if (rd.active)
+            {
+                anyOn = true;
+                break;
+            }
+        }
+        foreach (RulerDisplayer rd in GameObject.FindObjectsOfType<RulerDisplayer>())
+        {
+            rd.active = !anyOn;
+        }
+        anyOn = !anyOn;
+        //If the rulers are activating,
+        if (anyOn)
+        {
+            //turn off all the range previews
+            foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+            {
+                rrp.Active = false;
+            }
+        }
+    }
+
+    [MenuItem("SG7/Editor/Call Ruler to its Range Preview #`")]
+    /// <summary>
+    /// Repositions the ruler to its range preview's position
+    /// </summary>
+    public static void callRulerToPreview()
+    {
+        foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+        {
+            rrp.callParentRuler();
+        }
+    }
+    [MenuItem("SG7/Editor/Toggle Ruler Range Preview &`")]
+    /// <summary>
+    /// Turns the ruler tools on and off
+    /// </summary>
+    public static void toggleRulerRangePreviews()
+    {
+        bool anyOn = false;
+        foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+        {
+            if (rrp.Active)
+            {
+                anyOn = true;
+                break;
+            }
+        }
+        foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+        {
+            rrp.Active = !anyOn;
+        }
     }
 
     [MenuItem("SG7/Editor/Hide or Unhide Hidden Areas %h")]
     public static void hideUnhideHiddenAreas()
     {
+        int levelsDeep = 3;//go three levels deep
         bool changeDetermined = false;
         bool show = false;
         for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -49,21 +120,30 @@ public class CustomMenu
             {
                 foreach (GameObject go1 in s.GetRootGameObjects())
                 {
-                    foreach (Transform tf in go1.transform)
-                    {
-                        GameObject go = tf.gameObject;
-                        if (go.CompareTag("NonTeleportableArea")
-                            || go.name == "HiddenAreas" || go.name == "Hidden Areas")
-                        {
-                            if (!changeDetermined)
-                            {
-                                show = !go.activeInHierarchy;
-                                changeDetermined = true;
-                            }
-                            go.SetActive(show);
-                        }
-                    }
+                    hideUnhideHiddenAreas(go1, ref show, ref changeDetermined, levelsDeep-1);
                 }
+            }
+        }
+    }
+
+    public static void hideUnhideHiddenAreas(GameObject go1, ref bool show, ref bool changeDetermined, int levelsDeep)
+    {
+        foreach (Transform tf in go1.transform)
+        {
+            GameObject go = tf.gameObject;
+            if (go.CompareTag("NonTeleportableArea")
+                || go.name == "HiddenAreas" || go.name == "Hidden Areas")
+            {
+                if (!changeDetermined)
+                {
+                    show = !go.activeInHierarchy;
+                    changeDetermined = true;
+                }
+                go.SetActive(show);
+            }
+            if (levelsDeep > 0)
+            {
+                hideUnhideHiddenAreas(go, ref show, ref changeDetermined, levelsDeep - 1);
             }
         }
     }
@@ -164,9 +244,9 @@ public class CustomMenu
         string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
         if (!System.IO.Directory.Exists(defaultPath))
         {
-            throw new UnityException("You need to build the windows version for "+ PlayerSettings.productName + " first!");
+            throw new UnityException("You need to build the windows version for " + PlayerSettings.productName + " first!");
         }
-        string buildName = defaultPath+"/"+PlayerSettings.productName+"."+extension;
+        string buildName = defaultPath + "/" + PlayerSettings.productName + "." + extension;
         UnityEngine.Debug.Log("Launching: " + buildName);
         // Run the game (Process class from System.Diagnostics).
         Process proc = new Process();
