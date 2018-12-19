@@ -96,6 +96,18 @@ public class TerrainConverter : MonoBehaviour
             );
     }
 
+    private TerrainData convertToVectorPath(SpriteShapeController ssc)
+    {
+        Vector2[] vectorPath = new Vector2[ssc.spline.GetPointCount()];
+        for (int i = 0; i < vectorPath.Length; i++)
+        {
+            vectorPath[i] = ssc.spline.GetPosition(i);
+        }
+        return new TerrainData(
+            vectorPath,
+            ssc.gameObject
+            );
+    }
 
     private GameObject convertToSpriteShapeTerrain(TerrainData terrainData)
     {
