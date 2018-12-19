@@ -5076,7 +5076,7 @@ MonoBehaviour:
   timeRewindMusic: {fileID: 94021249}
   respawnDelay: 1
   endDemoScreen: {fileID: 807971553}
-  blackScreenCanvas: {fileID: 1912468917}
+  blackScreenCanvas: {fileID: 0}
 --- !u!4 &94021248
 Transform:
   m_ObjectHideFlags: 0
@@ -70791,6 +70791,7 @@ GameObject:
   - component: {fileID: 1912468920}
   - component: {fileID: 1912468919}
   - component: {fileID: 1912468918}
+  - component: {fileID: 1912468923}
   m_Layer: 5
   m_Name: Splash Screen
   m_TagString: Untagged
@@ -70899,6 +70900,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1912468923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912468917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85f2e1f67090d6347b17f095e27a605b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  splashImages:
+  - {fileID: 1220841872}
+  - {fileID: 917696153}
+  showTime: 3
+  fadeInTime: 1
+  fadeOutTime: 1
 --- !u!1 &1950273296
 GameObject:
   m_ObjectHideFlags: 0
