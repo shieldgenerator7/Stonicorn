@@ -111,9 +111,12 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public void trigger()
     {
-        if (current == this.gameObject)
+        //If this checkpoint is already the current one,
+        if (current == this.gameObject
+            //or GameManager is rewinding time,
+            || GameManager.isRewinding())
         {
-            //don't trigger it twice
+            //don't trigger it
             return;
         }
         current = this.gameObject;
