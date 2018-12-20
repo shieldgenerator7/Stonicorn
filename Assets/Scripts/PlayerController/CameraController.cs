@@ -220,6 +220,8 @@ public class CameraController : MonoBehaviour
                 {
                     //Move current zoom closer to target zoom
                     ZoomLevel = Mathf.MoveTowards(ZoomLevel, TargetZoomLevel, Time.deltaTime);
+                    //Close in the zoom area where autozooming will continue
+                    preTargetZoomLevel = ZoomLevel;
                 }
                 else
                 {
