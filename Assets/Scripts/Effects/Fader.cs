@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.U2D;
 using UnityEngine.Experimental.U2D;
+using UnityEngine.UI;
 
 public class Fader : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class Fader : MonoBehaviour
         srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
         srs.AddRange(GetComponentsInChildren<Ferr2DT_PathTerrain>());
         srs.AddRange(GetComponentsInChildren<SpriteShapeRenderer>());
+        srs.AddRange(GetComponentsInChildren<Image>());
         if (destroyColliders)
         {
             foreach (Collider2D bc in GetComponentsInChildren<Collider2D>())
@@ -91,6 +93,15 @@ public class Fader : MonoBehaviour
                     CanvasRenderer sr = (CanvasRenderer)o;
                     float newAlpha = Mathf.SmoothStep(startfade, endfade, t);
                     sr.SetAlpha(newAlpha);
+                    checkDestroy(newAlpha);
+                }
+                if (o is Image)
+                {
+                    Image sr = (Image)o;
+                    float newAlpha = Mathf.SmoothStep(startfade, endfade, t);
+                    Color c = sr.color;
+                    c.a = newAlpha;
+                    sr.color = c;
                     checkDestroy(newAlpha);
                 }
             }
