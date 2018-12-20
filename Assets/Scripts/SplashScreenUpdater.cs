@@ -24,6 +24,7 @@ public class SplashScreenUpdater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SceneManager.sceneLoaded += OnLevelLoaded;
         currentSplashImage = splashImages[currentIndex];
     }
 
@@ -48,9 +49,13 @@ public class SplashScreenUpdater : MonoBehaviour
         {
             if (Time.time > lastKeyFrame + showTime)
             {
-                displayState = 2;
-                lastKeyFrame = Time.time;
-                fadeObjectOut(currentSplashImage);
+                //If the splash image is the last one, wait for the level to load before hiding it
+                if (levelLoaded || currentIndex < splashImages.Count - 1)
+                {
+                    displayState = 2;
+                    lastKeyFrame = Time.time;
+                    fadeObjectOut(currentSplashImage);
+                }
             }
         }
         else if (displayState == 2)
@@ -72,6 +77,18 @@ public class SplashScreenUpdater : MonoBehaviour
                 }
             }
         }
+    }
+
+    void OnLevelLoaded(Scene s, LoadSceneMode loadMode)
+    {
+        //If the loaded scene is not the player scene,
+        if (s.buildIndex != 0)
+        {
+            //level loaded condition is true
+            levelLoaded = true;
+        }
+        //Remove the listener
+        SceneManager.sceneLoaded -= OnLevelLoaded;
     }
 
     void fadeObjectIn(GameObject obj)
