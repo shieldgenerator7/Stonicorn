@@ -84,8 +84,17 @@ public class CameraController : MonoBehaviour
     public float TargetZoomLevel
     {
         get { return desiredScale; }
-        set { desiredScale = value; }
+        set
+        {
+            desiredScale = value;
+            preTargetZoomLevel = ZoomLevel;
+            if (desiredScale == 0)
+            {
+                preTargetZoomLevel = 0;
+            }
+        }
     }
+    private float preTargetZoomLevel;//used to determine if the targetZoomLevel is above or below the current one
 
     struct ScalePoint
     {
@@ -204,8 +213,12 @@ public class CameraController : MonoBehaviour
             //Scale Orthographic Size
             if (TargetZoomLevel > 0)
             {
-                if (ZoomLevel != TargetZoomLevel)
+                //If current zoom is not target zoom,
+                if (ZoomLevel != TargetZoomLevel
+                    //and current zoom is between starting zoom and target zoom,
+                    && Mathf.Clamp(ZoomLevel, preTargetZoomLevel, TargetZoomLevel) == ZoomLevel)
                 {
+                    //Move current zoom closer to target zoom
                     ZoomLevel = Mathf.MoveTowards(ZoomLevel, TargetZoomLevel, Time.deltaTime);
                 }
                 else
