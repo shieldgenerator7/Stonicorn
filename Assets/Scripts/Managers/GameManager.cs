@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour
     private static float resetGameTimer = 0.0f;//the time that the game will reset at
     private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
     public GameObject endDemoScreen;//the picture to show the player after the game resets
-    public GameObject blackScreenCanvas;//the canvas that displays all black at the beginning of the session
 
 
     // Use this for initialization
@@ -73,7 +72,6 @@ public class GameManager : MonoBehaviour
         refreshGameObjects();
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
-        blackScreenCanvas.AddComponent<Fader>();
     }
 
     /// <summary>
