@@ -166,6 +166,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                     pieces.name += tag;
                     CrackedPiece cp = pieces.GetComponent<CrackedPiece>();
                     cp.spawnTag = tag;
+                    SpriteRenderer origSR = gameObject.GetComponent<SpriteRenderer>();
                     foreach (Transform t in pieces.transform)
                     {
                         if (t.gameObject.GetComponent<CrackedPiece>() == null)
@@ -177,6 +178,11 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                         t.gameObject.name += tag;
                         t.localScale = transform.localScale;
                         t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
+                        //Sprite Renderer Copying
+                        SpriteRenderer sr = t.gameObject.GetComponent<SpriteRenderer>();
+                        sr.color = origSR.color;
+                        sr.sortingLayerID = origSR.sortingLayerID;
+                        sr.sortingOrder = origSR.sortingOrder;
                     }
                     shouldRefresh = true;
                 }
