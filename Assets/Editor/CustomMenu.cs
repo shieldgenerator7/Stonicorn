@@ -123,9 +123,9 @@ public class CustomMenu
         // Get filename.
         string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", defaultPath, PlayerSettings.productName, extension);
 
-		// User hit the cancel button.
-		if (buildName == "")
-			return;
+        // User hit the cancel button.
+        if (buildName == "")
+            return;
 
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
         UnityEngine.Debug.Log("BUILDNAME: " + buildName);
@@ -147,18 +147,18 @@ public class CustomMenu
         // Build player.
         BuildPipeline.BuildPlayer(levels, buildName, buildTarget, BuildOptions.None);
 
-		// Copy a file from the project folder to the build folder, alongside the built game.
-		string resourcesPath = path + "/Assets/Resources";
-		string dialogPath = resourcesPath + "/Dialogue";
+        // Copy a file from the project folder to the build folder, alongside the built game.
+        string resourcesPath = path + "/Assets/Resources";
+        string dialogPath = resourcesPath + "/Dialogue";
 
-		if (!System.IO.Directory.Exists(dialogPath))
-		{
-			System.IO.Directory.CreateDirectory(resourcesPath);
-		}
+        if (!System.IO.Directory.Exists(dialogPath))
+        {
+            System.IO.Directory.CreateDirectory(resourcesPath);
+        }
 
-		if ( EditorUtility.DisplayDialog("Dialog Refresh", "Refresh the voice acting entries in " + dialogPath + "?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable." ) )
-		{
-			FileUtil.DeleteFileOrDirectory(dialogPath);
+        if ( EditorUtility.DisplayDialog("Dialog Refresh", "Refresh the voice acting entries in " + dialogPath + "?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable." ) )
+        {
+            FileUtil.DeleteFileOrDirectory(dialogPath);
             FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/", dialogPath);
         }
 
