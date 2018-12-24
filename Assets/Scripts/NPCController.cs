@@ -54,80 +54,88 @@ public class NPCController : SavableMonoBehaviour
             //2017-09-05: copied from an answer by Drakestar: http://answers.unity3d.com/questions/279750/loading-data-from-a-txt-file-c.html
             try
             {
-                string line;
-                StreamReader theReader = new StreamReader("Assets/Resources/Dialogue/" + lineFileName, Encoding.Default);
-                using (theReader)
-                {
-                    do
-                    {
-                        line = theReader.ReadLine();
+                string lineFileFSPath = "Assets/Resources/Dialogue/" + lineFileName; // Relative path to linefile on the filesystem.
+                List<string> fileLines; // Array of script file lines.
 
-                        if (line != null)
+                // Attempt to read the data file from the local filesystem.  If it doesn't exist fall back to the
+                // packed assets.  This is to allow overriding base behaviors with custom client-side ones.
+                if (File.Exists(lineFileFSPath))
+                {
+                    StreamReader theReader = new StreamReader(lineFileFSPath, Encoding.Default);
+                    fileLines = new List<string>(theReader.ReadToEnd().Split('\n'));
+                    theReader.Close();
+                }
+                else
+                {
+                    TextAsset internalFile = Resources.Load<TextAsset>("Dialogue/" + lineFileName.Split('.')[0]);
+
+                    Debug.Assert(internalFile != null, "Could not load fallback NPC text script assumed to be located at Dialogue/" + lineFileName + "!" );
+
+                    fileLines = new List<string>(internalFile.ToString().Split('\n'));
+                }
+
+                foreach ( string line in fileLines )
+                {
+                    if (line.StartsWith(":"))
+                    {
+                        writeIndex++;
+                        NPCVoiceLine npcvl = new NPCVoiceLine();
+                        voiceLines.Add(npcvl);
+                    }
+                    else if (line.StartsWith("audio:"))
+                    {
+                        string audioPath = line.Substring("audio:".Length).Trim();
+                        voiceLines[writeIndex].voiceLine = Resources.Load<AudioClip>("Dialogue/" + audioPath);
+                    }
+                    else if (line.StartsWith("text:"))
+                    {
+                        string text = line.Substring("text:".Length).Trim();
+                        voiceLines[writeIndex].voiceLineText = text;
+                        if (voiceLines[writeIndex].lineSegments.Count == 0)
                         {
-                            if (line.StartsWith(":"))
-                            {
-                                writeIndex++;
-                                NPCVoiceLine npcvl = new NPCVoiceLine();
-                                voiceLines.Add(npcvl);
-                            }
-                            else if (line.StartsWith("audio:"))
-                            {
-                                string audioPath = line.Substring("audio:".Length).Trim();
-                                voiceLines[writeIndex].voiceLine = Resources.Load<AudioClip>("Dialogue/" + audioPath);
-                            }
-                            else if (line.StartsWith("text:"))
-                            {
-                                string text = line.Substring("text:".Length).Trim();
-                                voiceLines[writeIndex].voiceLineText = text;
-                                if (voiceLines[writeIndex].lineSegments.Count == 0)
-                                {
-                                    voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(text));
-                                }
-                            }
-                            else if (line.StartsWith("segments:"))
-                            {
-                                string segmentText = line.Substring("segments:".Length).Trim();
-                                voiceLines[writeIndex].lineSegments.Clear();
-                                string voiceLineText = voiceLines[writeIndex].voiceLineText;
-                                foreach (string s in segmentText.Split('>'))
-                                {
-                                    string[] strs = s.Trim().Split(' ');
-                                    NPCVoiceLine.Line lineSegment = new NPCVoiceLine.Line(strs[0], float.Parse(strs[1]));
-                                    voiceLines[writeIndex].lineSegments.Add(lineSegment);
-                                    voiceLineText = lineSegment.bite(voiceLineText);
-                                }
-                                //Add a dummy line segment for text animation purposes
-                                voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(null, voiceLines[writeIndex].voiceLine.length));
-                            }
-                            else if (line.StartsWith("req:"))
-                            {
-                                string eventName = line.Substring("req:".Length).Trim();
-                                voiceLines[writeIndex].eventReq = eventName;
-                            }
-                            else if (line.StartsWith("exclude:"))
-                            {
-                                string eventName = line.Substring("exclude:".Length).Trim();
-                                voiceLines[writeIndex].eventReqExclude = eventName;
-                            }
-                            else if (line.StartsWith("event:"))
-                            {
-                                string eventName = line.Substring("event:".Length).Trim();
-                                voiceLines[writeIndex].triggerEvent = eventName;
-                            }
-                            else if (line.StartsWith("cpl:"))
-                            {
-                                bool cpSetting = bool.Parse(line.Substring("cpl:".Length).Trim());
-                                voiceLines[writeIndex].checkPointLine = cpSetting;
-                            }
-                            else if (line.StartsWith("trigger:"))
-                            {
-                                bool triggerSetting = bool.Parse(line.Substring("trigger:".Length).Trim());
-                                voiceLines[writeIndex].triggerLine = triggerSetting;
-                            }
+                            voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(text));
                         }
                     }
-                    while (line != null);
-                    theReader.Close();
+                    else if (line.StartsWith("segments:"))
+                    {
+                        string segmentText = line.Substring("segments:".Length).Trim();
+                        voiceLines[writeIndex].lineSegments.Clear();
+                        string voiceLineText = voiceLines[writeIndex].voiceLineText;
+                        foreach (string s in segmentText.Split('>'))
+                        {
+                            string[] strs = s.Trim().Split(' ');
+                            NPCVoiceLine.Line lineSegment = new NPCVoiceLine.Line(strs[0], float.Parse(strs[1]));
+                            voiceLines[writeIndex].lineSegments.Add(lineSegment);
+                            voiceLineText = lineSegment.bite(voiceLineText);
+                        }
+                        //Add a dummy line segment for text animation purposes
+                        voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(null, voiceLines[writeIndex].voiceLine.length));
+                    }
+                    else if (line.StartsWith("req:"))
+                    {
+                        string eventName = line.Substring("req:".Length).Trim();
+                        voiceLines[writeIndex].eventReq = eventName;
+                    }
+                    else if (line.StartsWith("exclude:"))
+                    {
+                        string eventName = line.Substring("exclude:".Length).Trim();
+                        voiceLines[writeIndex].eventReqExclude = eventName;
+                    }
+                    else if (line.StartsWith("event:"))
+                    {
+                        string eventName = line.Substring("event:".Length).Trim();
+                        voiceLines[writeIndex].triggerEvent = eventName;
+                    }
+                    else if (line.StartsWith("cpl:"))
+                    {
+                        bool cpSetting = bool.Parse(line.Substring("cpl:".Length).Trim());
+                        voiceLines[writeIndex].checkPointLine = cpSetting;
+                    }
+                    else if (line.StartsWith("trigger:"))
+                    {
+                        bool triggerSetting = bool.Parse(line.Substring("trigger:".Length).Trim());
+                        voiceLines[writeIndex].triggerLine = triggerSetting;
+                    }
                 }
             }
             // If anything broke in the try block, we throw an exception with information
