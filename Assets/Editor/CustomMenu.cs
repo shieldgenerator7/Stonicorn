@@ -194,7 +194,7 @@ public class CustomMenu
     }
     public static void build(BuildTarget buildTarget, string extension)
     {
-        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        string defaultPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
         if (!System.IO.Directory.Exists(defaultPath))
         {
             System.IO.Directory.CreateDirectory(defaultPath);
@@ -202,9 +202,15 @@ public class CustomMenu
         //2017-10-19 copied from https://docs.unity3d.com/Manual/BuildPlayerPipeline.html
         // Get filename.
         string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", defaultPath, PlayerSettings.productName, extension);
+
+        // User hit the cancel button.
+        if (buildName == "")
+            return;
+
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
         UnityEngine.Debug.Log("BUILDNAME: " + buildName);
         UnityEngine.Debug.Log("PATH: " + path);
+
         string[] levels = new string[EditorBuildSettings.scenes.Length];
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
         {
@@ -219,16 +225,21 @@ public class CustomMenu
         }
 
         // Build player.
-        BuildPipeline.BuildPlayer(levels, buildName, BuildTarget.StandaloneWindows, BuildOptions.None);
+        BuildPipeline.BuildPlayer(levels, buildName, buildTarget, BuildOptions.None);
 
         // Copy a file from the project folder to the build folder, alongside the built game.
-        //NOTE: Changes to the Dialogue folder won't reflected unless you delete the Dialogue folder in the build directory
-        if (!System.IO.Directory.Exists(path + "/Assets/Resources/Dialogue"))
+        string resourcesPath = path + "/Assets/Resources";
+        string dialogPath = resourcesPath + "/Dialogue";
+
+        if (!System.IO.Directory.Exists(dialogPath))
         {
-            System.IO.Directory.CreateDirectory(path + "/Assets/Resources");
-            FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/",
-                path + "/Assets/Resources/Dialogue/"
-                );
+            System.IO.Directory.CreateDirectory(resourcesPath);
+        }
+
+        if ( EditorUtility.DisplayDialog("Dialog Refresh", "Refresh the voice acting entries in " + dialogPath + "?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable." ) )
+        {
+            FileUtil.DeleteFileOrDirectory(dialogPath);
+            FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/", dialogPath);
         }
 
         // Run the game (Process class from System.Diagnostics).
@@ -241,7 +252,7 @@ public class CustomMenu
     public static void runWindows()
     {//2018-08-10: copied from build()
         string extension = "exe";
-        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        string defaultPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
         if (!System.IO.Directory.Exists(defaultPath))
         {
             throw new UnityException("You need to build the windows version for " + PlayerSettings.productName + " first!");
