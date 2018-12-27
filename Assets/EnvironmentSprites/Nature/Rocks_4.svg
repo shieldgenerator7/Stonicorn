@@ -1,14 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="177.873" height="173.722" viewBox="0 0 177.873 173.722">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="177.87" height="173.72" viewBox="0 0 177.87 173.72">
   <defs>
-    <linearGradient id="a" y1="86.861" x2="155.1" y2="86.861" gradientUnits="userSpaceOnUse">
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient-2);
+      }
+    </style>
+    <linearGradient id="linear-gradient" y1="86.86" x2="155.1" y2="86.86" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#5c596c"/>
       <stop offset="1" stop-color="#b4a0a1"/>
     </linearGradient>
-    <linearGradient id="b" x1="64.479" y1="128.386" x2="177.873" y2="128.386" xlink:href="#a"/>
+    <linearGradient id="linear-gradient-2" x1="64.48" y1="128.39" x2="177.87" y2="128.39" xlink:href="#linear-gradient"/>
   </defs>
   <title>Rocks_4</title>
-  <g>
-    <path d="M.681,173.722s-3.556-37.589,5.587-57.907,9.235-49,20.826-69.083S56.048,0,70.271,0s33.017,17.108,38.1,25.906,27.937,49.78,30.477,69.59.08,30.725,6.1,41.145S155.1,173.722,155.1,173.722Z" fill="url(#a)"/>
-    <path d="M79.583,118.608s37.589-35.557,53.59-35.557,18.033,13.969,28.192,23.366,9.651,8.382,10.667,16,3.048,39.113,5.841,51.3H65.361S59.174,136.086,79.583,118.608Z" fill="url(#b)"/>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <g>
+        <path class="cls-1" d="M.68,173.72s-3.56-37.59,5.59-57.91,9.23-49,20.82-69.08S56.05,0,70.27,0s33,17.11,38.1,25.91,27.94,49.78,30.48,69.59.07,30.72,6.09,41.14,10.16,37.08,10.16,37.08Z"/>
+        <path class="cls-2" d="M79.58,118.61s37.59-35.56,53.59-35.56,18,14,28.19,23.37,9.66,8.38,10.67,16,3.05,39.11,5.84,51.3H65.36S59.17,136.09,79.58,118.61Z"/>
+      </g>
+    </g>
   </g>
 </svg>
