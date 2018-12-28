@@ -187,14 +187,23 @@ public static class Utility
     /// <param name="curHigh">The high end of the current range</param>
     /// <param name="newLow">The low end of the new range</param>
     /// <param name="newHigh">The high end of the new range</param>
+    /// <param name="autoClamp">True to automatically clamp the number between the current low and high before converting</param>
     /// <returns>A number between (newLow, newHigh), inclusive</returns>
-    public static float convertToRange(float number, float curLow, float curHigh, float newLow, float newHigh)
+    public static float convertToRange(float number, float curLow, float curHigh, float newLow, float newHigh, bool autoClamp = false)
     {
-        //Input checking
-        if (number > curHigh || number < curLow)
+        if (autoClamp)
         {
-            throw new System.ArgumentException("number is " + number + " but it should be between (" + curLow + ", " + curHigh + ")");
+            number = Mathf.Clamp(number, curLow, curHigh);
         }
+        else
+        {
+            //Check that number is between curLow and curHigh
+            if (number > curHigh || number < curLow)
+            {
+                throw new System.ArgumentException("number is " + number + " but it should be between (" + curLow + ", " + curHigh + ")");
+            }
+        }
+        //Check the bounds in relation to each other
         if (curLow > curHigh)
         {
             throw new System.ArgumentException("curLow (" + curLow + ") is higher than curHigh (" + curHigh + ")!");

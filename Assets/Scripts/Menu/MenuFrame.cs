@@ -65,7 +65,7 @@ public class MenuFrame : MonoBehaviour
         {
             if (mb.tapInArea(tapPos))
             {
-                mb.activate();
+                mb.processTap(tapPos);
                 return;
             }
         }
