@@ -13,7 +13,7 @@ public class MenuButtonSlide : MenuButton
         get { return value; }
         set
         {
-            this.value = Mathf.Clamp(value, valueBounds.x, valueBounds.y);
+            this.value = Mathf.Clamp(Mathf.Floor(value), valueBounds.x, valueBounds.y);
             Vector3 pos = sliderBar.transform.position;
             pos.x = Utility.convertToRange(
                 this.value,
