@@ -216,6 +216,38 @@ public static class Utility
         return (((number - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow);
     }
 
+    public static Vector2 convertToRange(Vector2 vector, Vector2 curStart, Vector2 curEnd, Vector2 newStart, Vector2 newEnd)
+    {
+        float startDistance = (curEnd - curStart).magnitude;
+        float distancePercent = (vector - curStart).magnitude / startDistance;
+        if (Vector3.Angle(vector - curStart, curEnd - curStart) > 90)
+        {
+            distancePercent = 0;
+        }
+        return convertPercentToVector2(distancePercent, newStart, newEnd);
+    }
+    public static Vector2 convertPercentToVector2(float distancePercent, Vector2 newStart, Vector2 newEnd)
+    {
+        return newStart + (newEnd - newStart) * distancePercent;
+    }
+    public static float convertToRange(Vector2 vector, Vector2 curStart, Vector2 curEnd, float newLow, float newHigh)
+    {
+        //Error checking
+        if (newLow > newHigh)
+        {
+            throw new System.ArgumentException("newLow (" + newLow + ") is higher than newHigh (" + newHigh + ")!");
+        }
+        //Get distance percent
+        float startDistance = (curEnd - curStart).magnitude;
+        float distancePercent = (vector - curStart).magnitude / startDistance;
+        if (Vector3.Angle(vector - curStart, curEnd - curStart) > 90)
+        {
+            distancePercent = 0;
+        }
+        //Use it find value within new range
+        return newLow + (newHigh - newLow) * distancePercent;
+    }
+
     /// <summary>
     /// Instantiates a GameObject so that it can be rewound.
     /// Only works on game objects that are "registered" to be rewound
