@@ -21,25 +21,35 @@ public class MenuButtonSlide : MenuButton
                 valueBounds.y,
                 validBarBounds.bounds.min.x,
                 validBarBounds.bounds.max.x
-                );
+                )
+                - sliderBarBC2D.bounds.size.x;
             sliderBar.transform.position = pos;
             valueText.text = ""+Mathf.Floor(this.value);
+            Vector2 size = sliderFillSR.size;
+            size.x = (sliderBarBC2D.bounds.max.x - sliderFill.transform.position.x)/sliderFill.transform.lossyScale.x;
+            sliderFillSR.size = size;
         }
     }
 
     public GameObject sliderFill;
     public GameObject sliderBar;
     public BoxCollider2D validBarBounds;//the box that binds where the slider bar can be
-    public Text valueText; 
+    public Text valueText;
+
+    private SpriteRenderer sliderFillSR;
+    private BoxCollider2D sliderBarBC2D;
 
     protected override void Start()
     {
         base.Start();
+        sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
+        sliderBarBC2D = sliderBar.GetComponent<BoxCollider2D>();
         if (value != 0)
         {
             value = valueBounds.y;
         }
         value = Mathf.Clamp(value, valueBounds.x, valueBounds.y);
+        Value = value;
     }
 
     public override void processTap(Vector2 tapPos)

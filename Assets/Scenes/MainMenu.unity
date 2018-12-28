@@ -723,6 +723,7 @@ GameObject:
   m_Component:
   - component: {fileID: 365986129}
   - component: {fileID: 365986130}
+  - component: {fileID: 365986131}
   m_Layer: 0
   m_Name: Slider Bar
   m_TagString: Untagged
@@ -792,6 +793,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &365986131
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365986128}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.095329165, y: 0.005563557}
+  m_SpriteTilingProperty:
+    border: {x: 0.07, y: 0.07, z: 0.06, w: 0.06}
+    pivot: {x: 0, y: 0.5}
+    oldSize: {x: 0.25, y: 0.58}
+    newSize: {x: 0.25, y: 1.3052329}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 1
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.17582276, y: 1.2958089}
+  m_EdgeRadius: 0
 --- !u!1 &459336821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1262,7 +1289,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241933698}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0097, y: -0.0018, z: 0}
+  m_LocalPosition: {x: -4.947, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1277695055}
