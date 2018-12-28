@@ -29,8 +29,10 @@ public class MenuButtonSlide : MenuButton
     {
         get
         {
-            return transform.TransformPoint(validBarBounds.points[1])
-                - ((transform.TransformPoint(validBarBounds.points[1])- transform.TransformPoint(validBarBounds.points[0])).normalized * sliderBarBC2D.bounds.size.x);
+            Vector2 pointOne = transform.TransformPoint(validBarBounds.points[1]);
+            Vector2 reverseDirection = (PointZero - pointOne);
+            return pointOne + (reverseDirection * sliderBarWidth * 10);
+            ;
         }
         private set { validBarBounds.points[1] = value; }
     }
@@ -59,7 +61,7 @@ public class MenuButtonSlide : MenuButton
             sliderBar.transform.position = pos;
             //Update Slider Fill
             Vector2 size = sliderFillSR.size;
-            size.x = ((sliderBar.transform.position - sliderFill.transform.position).magnitude + sliderBarBC2D.bounds.size.x) / sliderFill.transform.lossyScale.x;
+            size.x = ((sliderBar.transform.position - sliderFill.transform.position).magnitude + sliderBarWidth) / sliderFill.transform.lossyScale.x;
             sliderFillSR.size = size;
         }
     }
@@ -70,7 +72,8 @@ public class MenuButtonSlide : MenuButton
     public Text valueText;
 
     private SpriteRenderer sliderFillSR;
-    private BoxCollider2D sliderBarBC2D;
+    private EdgeCollider2D sliderBarEC2D;
+    private float sliderBarWidth;
     private MenuActionSlide mas;
 
     protected override void Start()
@@ -78,7 +81,8 @@ public class MenuButtonSlide : MenuButton
         base.Start();
         mas = GetComponent<MenuActionSlide>();
         sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
-        sliderBarBC2D = sliderBar.GetComponent<BoxCollider2D>();
+        sliderBarEC2D = sliderBar.GetComponent<EdgeCollider2D>();
+        sliderBarWidth = (transform.TransformPoint(sliderBarEC2D.points[1]) - transform.TransformPoint(sliderBarEC2D.points[0])).magnitude;
         //Update the value
         Value = Mathf.Clamp(mas.getCurrentValue(), MinValue, MaxValue);
     }
