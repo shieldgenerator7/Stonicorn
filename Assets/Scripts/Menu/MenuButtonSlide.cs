@@ -7,13 +7,13 @@ public class MenuButtonSlide : MenuButton
 {
     public Vector2 valueBounds = new Vector2(0, 100);//x is min, y is max
     [SerializeField]
-    private float value = 100;
+    private int value = 100;
     public float Value
     {
         get { return value; }
         set
         {
-            this.value = Mathf.Clamp(Mathf.Floor(value), valueBounds.x, valueBounds.y);
+            this.value = (int)Mathf.Clamp(Mathf.Round(value),valueBounds.x, valueBounds.y);
             Vector3 pos = sliderBar.transform.position;
             pos.x = Utility.convertToRange(
                 this.value,
@@ -24,7 +24,7 @@ public class MenuButtonSlide : MenuButton
                 )
                 - sliderBarBC2D.bounds.size.x;
             sliderBar.transform.position = pos;
-            valueText.text = ""+Mathf.Floor(this.value);
+            valueText.text = ""+this.value;
             Vector2 size = sliderFillSR.size;
             size.x = (sliderBarBC2D.bounds.max.x - sliderFill.transform.position.x)/sliderFill.transform.lossyScale.x;
             sliderFillSR.size = size;
@@ -44,12 +44,12 @@ public class MenuButtonSlide : MenuButton
         base.Start();
         sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
         sliderBarBC2D = sliderBar.GetComponent<BoxCollider2D>();
-        if (value != 0)
+        if (value == 0)
         {
-            value = valueBounds.y;
+            value = (int)valueBounds.y;
         }
-        value = Mathf.Clamp(value, valueBounds.x, valueBounds.y);
-        Value = value;
+        //Update the Property (this triggers the Value.set method)
+        Value = Mathf.Clamp(value, valueBounds.x, valueBounds.y);
     }
 
     public override void processTap(Vector2 tapPos)
