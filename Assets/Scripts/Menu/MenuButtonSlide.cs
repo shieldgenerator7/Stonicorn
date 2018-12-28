@@ -5,7 +5,19 @@ using UnityEngine.UI;
 
 public class MenuButtonSlide : MenuButton
 {
-    public Vector2 valueBounds = new Vector2(0, 100);//x is min, y is max
+    [SerializeField]
+    private Vector2 valueBounds = new Vector2(0, 100);//x is min, y is max
+    public float MinValue
+    {
+        get { return valueBounds.x; }
+        private set { valueBounds.x = value; }
+    }
+    public float MaxValue
+    {
+        get { return valueBounds.y; }
+        private set { valueBounds.y = value; }
+    }
+
     [SerializeField]
     private int value = 100;
     public float Value
@@ -13,20 +25,20 @@ public class MenuButtonSlide : MenuButton
         get { return value; }
         set
         {
-            this.value = (int)Mathf.Clamp(Mathf.Round(value),valueBounds.x, valueBounds.y);
+            this.value = (int)Mathf.Clamp(Mathf.Round(value), MinValue, MaxValue);
             Vector3 pos = sliderBar.transform.position;
             pos.x = Utility.convertToRange(
                 this.value,
-                valueBounds.x,
-                valueBounds.y,
+                MinValue,
+                MaxValue,
                 validBarBounds.bounds.min.x,
                 validBarBounds.bounds.max.x
                 )
                 - sliderBarBC2D.bounds.size.x;
             sliderBar.transform.position = pos;
-            valueText.text = ""+this.value;
+            valueText.text = "" + this.value;
             Vector2 size = sliderFillSR.size;
-            size.x = (sliderBarBC2D.bounds.max.x - sliderFill.transform.position.x)/sliderFill.transform.lossyScale.x;
+            size.x = (sliderBarBC2D.bounds.max.x - sliderFill.transform.position.x) / sliderFill.transform.lossyScale.x;
             sliderFillSR.size = size;
         }
     }
@@ -49,7 +61,7 @@ public class MenuButtonSlide : MenuButton
             value = (int)valueBounds.y;
         }
         //Update the Property (this triggers the Value.set method)
-        Value = Mathf.Clamp(value, valueBounds.x, valueBounds.y);
+        Value = Mathf.Clamp(value, MinValue, MaxValue);
     }
 
     public override void processTap(Vector2 tapPos)
@@ -59,8 +71,8 @@ public class MenuButtonSlide : MenuButton
                 tapPos.x,
                 validBarBounds.bounds.min.x,
                 validBarBounds.bounds.max.x,
-                valueBounds.x,
-                valueBounds.y,
+                MinValue,
+                MaxValue,
                 true//for clamping the value
                 );
     }
