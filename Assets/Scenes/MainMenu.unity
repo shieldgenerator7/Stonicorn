@@ -1357,6 +1357,7 @@ GameObject:
   - component: {fileID: 1277695058}
   - component: {fileID: 1277695060}
   - component: {fileID: 1277695059}
+  - component: {fileID: 1277695061}
   m_Layer: 0
   m_Name: Slider Control
   m_TagString: Untagged
@@ -1547,6 +1548,18 @@ MonoBehaviour:
   sliderBar: {fileID: 365986128}
   validBarBounds: {fileID: 1277695059}
   valueText: {fileID: 459336823}
+--- !u!114 &1277695061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277695054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 938331af42de81a4bae49294b9f97bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1491327179
 GameObject:
   m_ObjectHideFlags: 0
