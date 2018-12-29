@@ -56,7 +56,8 @@ public class GravityZone : MonoBehaviour
         //Check to see if the camera rotation needs updated
         if (mainGravityZone
             && playerIsTenant
-            && Camera.main.transform.rotation != transform.rotation)
+            && Camera.main.transform.rotation != transform.rotation
+            && !MenuManager.isMenuOpen())
         {
             Camera.main.GetComponent<CameraController>().setRotation(transform.rotation);
         }

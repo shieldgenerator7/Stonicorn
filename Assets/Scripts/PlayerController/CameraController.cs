@@ -204,7 +204,7 @@ public class CameraController : MonoBehaviour
             }
 
             //Rotate Transform
-            if (transform.rotation != rotation)
+            if (!rotationFinished())
             {
                 float deltaTime = 3 * Time.deltaTime;
                 float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
@@ -231,6 +231,11 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool rotationFinished()
+    {
+        return transform.rotation == rotation;
     }
 
     /// <summary>
