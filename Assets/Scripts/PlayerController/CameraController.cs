@@ -53,6 +53,8 @@ public class CameraController : MonoBehaviour
     private PlayerController plyrController;
 
     private bool lockCamera = false;//keep the camera from moving
+    [Tooltip("Runtime Var, Doesn't do anything from editor")]
+    public Vector3 originalCameraPosition;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
 
     private int prevScreenWidth;
     private int prevScreenHeight;
@@ -371,6 +373,20 @@ public class CameraController : MonoBehaviour
     public void setRotation(Quaternion rotation)
     {
         this.rotation = rotation;
+    }
+    public void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
+    {
+        //Check to make sure Merky doesn't get dragged off camera
+        Vector3 delta = origMPWorld - newMPWorld;
+        Vector3 newPos = player.transform.position + originalCameraPosition + delta;
+        Vector3 playerUIpos = cam.WorldToViewportPoint(player.transform.position + (new Vector3(cam.transform.position.x, cam.transform.position.y) - newPos));
+        if (playerUIpos.x >= 0 && playerUIpos.x <= 1 && playerUIpos.y >= 0 && playerUIpos.y <= 1)
+        {
+            //Move the camera
+            newPos.z = Offset.z;
+            transform.position = newPos;
+            pinPoint();
+        }
     }
 
 

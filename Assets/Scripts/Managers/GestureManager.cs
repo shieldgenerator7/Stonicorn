@@ -27,7 +27,7 @@ public class GestureManager : SavableMonoBehaviour
     //Original Positions
     private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
     private Vector3 origMP2;//second orginal "mouse position" for second touch
-    private Vector3 origCP;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
+    private Vector3 origMPWorld;//"original mouse position world" - the original mouse coordinate in the world
     private float origTime = 0f;//"original time": the clock time at the last mouse down (or tap down) event
     private float origOrthoSize = 1f;//"original orthographic size"
     //Current Positions
@@ -228,10 +228,11 @@ public class GestureManager : SavableMonoBehaviour
             case ClickState.Began:
                 curMP = origMP;
                 maxMouseMovement = 0;
-                origCP = cam.transform.position - player.transform.position;
+                camController.originalCameraPosition = cam.transform.position - player.transform.position;
                 origTime = Time.time;
                 curTime = origTime;
                 curMP2 = origMP2;
+                origMPWorld = (Vector2)cam.ScreenToWorldPoint(origMP);
                 break;
             case ClickState.Ended: //do the same thing you would for "in progress"
             case ClickState.InProgress:
@@ -304,16 +305,7 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 if (isDrag)
                 {
-                    //Check to make sure Merky doesn't get dragged off camera
-                    Vector3 delta = cam.ScreenToWorldPoint(origMP) - cam.ScreenToWorldPoint(curMP);
-                    Vector3 newPos = player.transform.position + origCP + delta;
-                    Vector3 playerUIpos = cam.WorldToViewportPoint(player.transform.position + (new Vector3(cam.transform.position.x, cam.transform.position.y) - newPos));
-                    if (playerUIpos.x >= 0 && playerUIpos.x <= 1 && playerUIpos.y >= 0 && playerUIpos.y <= 1)
-                    {
-                        //Move the camera
-                        cam.transform.position = newPos;
-                        camController.pinPoint();
-                    }
+                    currentGP.processDragGesture(cam.ScreenToWorldPoint(origMP), curMPWorld);
                 }
                 else if (isHoldGesture)
                 {
