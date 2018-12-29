@@ -554,7 +554,7 @@ public class GameManager : MonoBehaviour
     {
         if (playerObject == null)
         {
-            GameObject.FindGameObjectWithTag(playerTag);
+            playerObject = GameObject.FindGameObjectWithTag(playerTag);
         }
         return playerObject;
     }

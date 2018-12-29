@@ -187,14 +187,23 @@ public static class Utility
     /// <param name="curHigh">The high end of the current range</param>
     /// <param name="newLow">The low end of the new range</param>
     /// <param name="newHigh">The high end of the new range</param>
+    /// <param name="autoClamp">True to automatically clamp the number between the current low and high before converting</param>
     /// <returns>A number between (newLow, newHigh), inclusive</returns>
-    public static float convertToRange(float number, float curLow, float curHigh, float newLow, float newHigh)
+    public static float convertToRange(float number, float curLow, float curHigh, float newLow, float newHigh, bool autoClamp = false)
     {
-        //Input checking
-        if (number > curHigh || number < curLow)
+        if (autoClamp)
         {
-            throw new System.ArgumentException("number is " + number + " but it should be between (" + curLow + ", " + curHigh + ")");
+            number = Mathf.Clamp(number, curLow, curHigh);
         }
+        else
+        {
+            //Check that number is between curLow and curHigh
+            if (number > curHigh || number < curLow)
+            {
+                throw new System.ArgumentException("number is " + number + " but it should be between (" + curLow + ", " + curHigh + ")");
+            }
+        }
+        //Check the bounds in relation to each other
         if (curLow > curHigh)
         {
             throw new System.ArgumentException("curLow (" + curLow + ") is higher than curHigh (" + curHigh + ")!");
@@ -205,6 +214,38 @@ public static class Utility
         }
         //Conversion
         return (((number - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow);
+    }
+
+    public static Vector2 convertToRange(Vector2 vector, Vector2 curStart, Vector2 curEnd, Vector2 newStart, Vector2 newEnd)
+    {
+        float startDistance = (curEnd - curStart).magnitude;
+        float distancePercent = (vector - curStart).magnitude / startDistance;
+        if (Vector3.Angle(vector - curStart, curEnd - curStart) > 90)
+        {
+            distancePercent = 0;
+        }
+        return convertPercentToVector2(distancePercent, newStart, newEnd);
+    }
+    public static Vector2 convertPercentToVector2(float distancePercent, Vector2 newStart, Vector2 newEnd)
+    {
+        return newStart + (newEnd - newStart) * distancePercent;
+    }
+    public static float convertToRange(Vector2 vector, Vector2 curStart, Vector2 curEnd, float newLow, float newHigh)
+    {
+        //Error checking
+        if (newLow > newHigh)
+        {
+            throw new System.ArgumentException("newLow (" + newLow + ") is higher than newHigh (" + newHigh + ")!");
+        }
+        //Get distance percent
+        float startDistance = (curEnd - curStart).magnitude;
+        float distancePercent = (vector - curStart).magnitude / startDistance;
+        if (Vector3.Angle(vector - curStart, curEnd - curStart) > 90)
+        {
+            distancePercent = 0;
+        }
+        //Use it find value within new range
+        return newLow + (newHigh - newLow) * distancePercent;
     }
 
     /// <summary>

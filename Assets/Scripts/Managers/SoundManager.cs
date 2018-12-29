@@ -10,7 +10,16 @@ public class SoundManager : MonoBehaviour
 {//2018-09-17: copied from MusicManager
 
     [Range(0.0f, 1.0f)]
-    public float maxVolume = 0.7f;//the loudest it should be
+    [SerializeField]
+    private float userVolume = 1;//the volume that the user sets
+    public float Volume//for use by other scripts
+    {
+        get { return userVolume * 100; }
+        set
+        {
+            userVolume = value / 100;
+        }
+    }
     [SerializeField]
     private bool mute = false;
     public bool Mute
@@ -46,7 +55,7 @@ public class SoundManager : MonoBehaviour
     {
         if (!instance.mute)
         {
-            AudioSource.PlayClipAtPoint(clip, pos, volume * instance.maxVolume * instance.volumeScaling);
+            AudioSource.PlayClipAtPoint(clip, pos, volume * instance.userVolume * instance.volumeScaling);
         }
     }
 

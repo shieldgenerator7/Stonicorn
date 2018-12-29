@@ -13,7 +13,20 @@ public class MusicManager : MonoBehaviour
     private AudioSource prevSong;//the previous song that was playing
 
     [Range(0.0f, 1.0f)]
-    public float maxVolume = 0.7f;//the loudest it should be
+    [SerializeField]
+    private float userVolume = 1;//[0,1] the volume the user sets
+    /// <summary>
+    /// The user-set Volume for use by other scripts. Range: [0, 100]
+    /// </summary>
+    public float Volume
+    {
+        get { return userVolume * 100; }
+        set
+        {
+            userVolume = value / 100;
+            updateVolume();
+        }
+    }
     [SerializeField]
     private bool mute = false;
     public bool Mute
@@ -33,54 +46,44 @@ public class MusicManager : MonoBehaviour
             }
         }
     }
-    public float fadeTime = 2.0f;//how long it should take to fade in or out
-    public float eventFadeTime = 0.1f;//how long it takes to fade into and out of event songs
-    private float fadeSpeed = 0;//how fast it fades in or out (determined by fadeTime)    
+    public float fadeDuration = 2.0f;//how long it should take to fade in or out
+    public float eventFadeDuration = 0.1f;//how long it takes to fade into and out of event songs
+    //Fade Runtime Vars
+    private float currentFadeDuration = 0;//bounces between fadeDuration and eventFadeDuration
+    private float fadePercent = 0;//how far along the fade it is
+    private float fadeStartTime = 0;//the point in time when the fade started
     private bool lockCurrentSong = false;//true to keep the song from being set
 
     [Range(0, 1)]
     public float quietVolumeScaling = 0.5f;//the scale for when it should be quieter
     private float volumeScaling = 1.0f;//how much to scale the volume by (gets reduced when song should be quieter)
-    // Use this for initialization
-    void Start()
+    public float VolumeScaling
     {
-
+        get { return volumeScaling; }
+        set
+        {
+            volumeScaling = value;
+            updateVolume();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (fadeSpeed != 0)
+        if (fadePercent < 1)
         {
-            bool finished = true;
-            float shift = fadeSpeed * Time.deltaTime;
-            if (currentSong)
+            fadePercent = (Time.time - fadeStartTime) / currentFadeDuration;
+            fadePercent = Mathf.Clamp(fadePercent, 0, 1);
+            updateVolume();
+            if (Time.time > fadeStartTime + currentFadeDuration)
             {
-                currentSong.volume += shift * volumeScaling;
-            }
-            if (prevSong)
-            {
-                prevSong.volume -= shift * volumeScaling;
-                if (prevSong.volume <= 0)
+                fadeStartTime = 0;
+                fadePercent = 1;
+                currentFadeDuration = 0;
+                if (prevSong)
                 {
                     prevSong.Stop();
                 }
-                else
-                {
-                    finished = false;
-                }
-            }
-            else if (currentSong && currentSong.volume < maxVolume)
-            {
-                finished = false;
-            }
-            if (currentSong && currentSong.volume > maxVolume)
-            {
-                currentSong.volume = maxVolume * volumeScaling;
-            }
-            if (finished)
-            {
-                fadeSpeed = 0;
             }
         }
     }
@@ -93,12 +96,12 @@ public class MusicManager : MonoBehaviour
             {
                 prevSong = currentSong;
                 currentSong = newSong;
+                startSongFade();
+                updateVolume();
                 if (currentSong != null)
                 {
-                    currentSong.volume = 0 * volumeScaling;
                     currentSong.Play();
                 }
-                fadeSpeed = 1.0f / fadeTime;
             }
             else
             {
@@ -110,7 +113,7 @@ public class MusicManager : MonoBehaviour
     public void setEventSong(AudioSource newSong)
     {
         setCurrentSong(newSong);
-        fadeSpeed = 1.0f / eventFadeTime;
+        startSongFade(true);
         lockCurrentSong = true;
     }
     public void endEventSong(AudioSource song)
@@ -119,8 +122,14 @@ public class MusicManager : MonoBehaviour
         {
             lockCurrentSong = false;
             setCurrentSong(prevSong);
-            fadeSpeed = 1.0f / eventFadeTime;
+            startSongFade(true);
         }
+    }
+    void startSongFade(bool eventSong = false)
+    {
+        fadeStartTime = Time.time;
+        currentFadeDuration = (eventSong) ? eventFadeDuration : fadeDuration;
+        fadePercent = 0;
     }
     /// <summary>
     /// Sets it quieter than usual if true, regular volume if false
@@ -130,23 +139,23 @@ public class MusicManager : MonoBehaviour
     {
         if (quiet)
         {
-            setVolumeScale(volumeScaling, quietVolumeScaling);
+            VolumeScaling = quietVolumeScaling;
         }
         else
         {
-            setVolumeScale(volumeScaling, 1.0f);
+            VolumeScaling = 1.0f;
         }
     }
-    void setVolumeScale(float oldVolScale, float newVolScale)
+
+    void updateVolume()
     {
-        volumeScaling = newVolScale;
         if (currentSong)
         {
-            currentSong.volume = currentSong.volume * newVolScale / oldVolScale;
+            currentSong.volume = userVolume * fadePercent * volumeScaling;
         }
         if (prevSong)
         {
-            prevSong.volume = prevSong.volume * newVolScale / oldVolScale;
+            prevSong.volume = userVolume * (1 - fadePercent) * volumeScaling;
         }
     }
 }

@@ -40812,6 +40812,11 @@ PrefabInstance:
       propertyPath: planModeCanvas
       value: 
       objectReference: {fileID: 964666489}
+    - target: {fileID: 114546812024142924, guid: 0b3255d4b4dc0a443a420e93fb27f62b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 3}
 --- !u!20 &1113871236 stripped
@@ -70682,7 +70687,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: -1013862959
-  m_SortingOrder: 1
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!224 &1912468922
 RectTransform:
