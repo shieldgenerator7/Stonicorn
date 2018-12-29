@@ -25,6 +25,11 @@ public class MenuButton : MonoBehaviour
         activate();
     }
 
+    public virtual bool acceptsDragGesture()
+    {
+        return false;
+    }
+
     public virtual void activate()
     {
         Debug.Log("MenuButton " + name + " pressed");

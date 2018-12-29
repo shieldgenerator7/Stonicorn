@@ -87,6 +87,11 @@ public class MenuButtonSlide : MenuButton
         Value = Mathf.Clamp(mas.getCurrentValue(), MinValue, MaxValue);
     }
 
+    public override bool acceptsDragGesture()
+    {
+        return true;
+    }
+
     public override void processTap(Vector2 tapPos)
     {
         Value = Utility.convertToRange(

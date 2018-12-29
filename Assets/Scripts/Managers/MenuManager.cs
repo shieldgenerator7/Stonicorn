@@ -35,4 +35,18 @@ public class MenuManager : MonoBehaviour
             }
         }
     }
+    public bool processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
+    {
+        foreach (MenuFrame mf in frames)
+        {
+            if (mf.tapInArea(origMPWorld))
+            {
+                if (mf.delegateDrag(origMPWorld, newMPWorld))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

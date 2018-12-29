@@ -5,6 +5,11 @@ public class MenuGestureProfile : GestureProfile
 {//2018-09-15: copied from RewindGestureProfile
     private MenuManager menuManager;
 
+    public MenuGestureProfile() : base()
+    {
+        menuManager = GameObject.FindObjectOfType<MenuManager>();
+    }
+
     public override void activate()
     {
         GameManager.showMainMenu(true);
@@ -27,6 +32,17 @@ public class MenuGestureProfile : GestureProfile
         {
             processTapGesture(curMPWorld);
             GameObject.FindObjectOfType<GestureManager>().adjustHoldThreshold(holdTime);
+        }
+    }
+    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
+    {
+        if (menuManager == null)
+        {
+            menuManager = GameObject.FindObjectOfType<MenuManager>();
+        }
+        if (!menuManager.processDragGesture(origMPWorld, newMPWorld))
+        {
+            base.processDragGesture(origMPWorld, newMPWorld);
         }
     }
     public override void processZoomLevelChange(float zoomLevel)

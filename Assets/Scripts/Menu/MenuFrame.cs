@@ -70,4 +70,16 @@ public class MenuFrame : MonoBehaviour
             }
         }
     }
+    public bool delegateDrag(Vector3 origMPWorld, Vector3 newMPWorld)
+    {
+        foreach (MenuButton mb in buttons)
+        {
+            if (mb.acceptsDragGesture() && mb.tapInArea(origMPWorld))
+            {
+                mb.processTap(newMPWorld);
+                return true;
+            }
+        }
+        return false;
+    }
 }

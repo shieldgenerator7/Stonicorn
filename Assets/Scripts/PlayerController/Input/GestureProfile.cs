@@ -50,9 +50,9 @@ public class GestureProfile
     {
         plrController.processHoldGesture(curMPWorld, holdTime, finished);
     }
-    public void processDragGesture()
+    public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
     {
-
+        camController.processDragGesture(origMPWorld, newMPWorld);
     }
     public virtual void processZoomLevelChange(float zoomLevel)
     {
