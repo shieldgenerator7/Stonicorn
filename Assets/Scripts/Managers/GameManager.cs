@@ -77,11 +77,14 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Resets the game back to the very beginning
     /// </summary>
-    public static void resetGame()
+    public static void resetGame(bool savePrevGame = true)
     {
         //Save previous game
-        Save();
-        instance.saveToFile();
+        if (savePrevGame)
+        {
+            Save();
+            instance.saveToFile();
+        }
         //Unload all scenes and reload PlayerScene
         instance = null;
         GameState.nextid = 0;
