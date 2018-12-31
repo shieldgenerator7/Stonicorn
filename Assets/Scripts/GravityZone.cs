@@ -6,6 +6,7 @@ public class GravityZone : MonoBehaviour
 {
     public float gravityScale = 9.81f;
     public bool mainGravityZone = true;//true to change camera angle, false to not
+    public bool radialGravity = false;//true to make it gravitate towards the center of the gravity zone
     private Vector2 gravityVector;
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
     private bool playerIsTenant = false;//whether the player is inside this GravityZone
@@ -56,17 +57,24 @@ public class GravityZone : MonoBehaviour
         //Check to see if the camera rotation needs updated
         if (mainGravityZone
             && playerIsTenant
-            && Camera.main.transform.rotation != transform.rotation
             && !MenuManager.isMenuOpen())
         {
-            Camera.main.GetComponent<CameraController>().setRotation(transform.rotation);
+            Quaternion rotationToMatch = transform.rotation;
+            if (radialGravity)
+            {
+                rotationToMatch = Quaternion.Euler(transform.position - GameManager.getPlayerObject().transform.position);
+            }
+            if (Camera.main.transform.rotation != rotationToMatch)
+            {
+                Camera.main.GetComponent<CameraController>().setRotation(rotationToMatch);
+            }
         }
     }
     void FixedUpdate()
     {
         if (GameManager.isRewinding())
         {
-            return;//don't do anything if tie is rewinding
+            return;//don't do anything if the time is rewinding
         }
         bool cleanNeeded = false;
         foreach (Rigidbody2D rb2d in tenants)
@@ -76,7 +84,12 @@ public class GravityZone : MonoBehaviour
                 cleanNeeded = true;
                 continue;
             }
-            Vector3 vector = gravityVector * rb2d.mass;
+            Vector2 finalGravityVector = gravityVector;
+            if (radialGravity)
+            {
+                finalGravityVector = (transform.position - rb2d.transform.position).normalized * gravityScale;
+            }
+            Vector3 vector = finalGravityVector * rb2d.mass;
             GravityAccepter ga = rb2d.gameObject.GetComponent<GravityAccepter>();
             if (ga)
             {
@@ -84,7 +97,7 @@ public class GravityZone : MonoBehaviour
                 {
                     rb2d.AddForce(vector);
                     //Inform the gravity accepter of the direction
-                    ga.addGravity(this.gravityVector);
+                    ga.addGravity(finalGravityVector);
                 }
             }
             else
