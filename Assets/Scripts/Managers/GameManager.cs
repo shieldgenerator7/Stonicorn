@@ -464,12 +464,16 @@ public class GameManager : MonoBehaviour
         Load(chosenId);
         musicManager.endEventSong(timeRewindMusic);
     }
+    public static void RewindToStart()
+    {
+        instance.Rewind(0);
+    }
     /// <summary>
     /// Sets into motion the rewind state.
     /// FixedUpdate carries out the motions of calling Load()
     /// </summary>
     /// <param name="gamestateId"></param>
-    void Rewind(int gamestateId)//rewinds one state at a time
+    void Rewind(int gamestateId)
     {
         musicManager.setEventSong(timeRewindMusic);
         rewindId = gamestateId;

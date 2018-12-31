@@ -55716,9 +55716,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetPoint: {x: 0, y: 0, z: 0}
   loopSpace: 1
-  rewindTimeForPlayer: 1
---- !u!61 &1463035054
-BoxCollider2D:
+  rewindTimeForPlayer: 0
+--- !u!58 &1463035054
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -55731,18 +55731,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 10000, y: 10000}
-  m_EdgeRadius: 0
+  m_Radius: 10000
 --- !u!4 &1463035055
 Transform:
   m_ObjectHideFlags: 0

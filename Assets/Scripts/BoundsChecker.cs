@@ -15,6 +15,14 @@ public class BoundsChecker : MonoBehaviour
         {
             resetPoint = Utility.getCollectiveColliderCenter(gameObject);
         }
+        //Error checking
+        foreach (Collider2D coll2d in GetComponents<Collider2D>())
+        {
+            if (!coll2d.isTrigger)
+            {
+                throw new UnityException("Bounds Checker ("+name+") has a collider that is not a trigger!");
+            }
+        }
     }
 
     void OnTriggerExit2D(Collider2D coll)
@@ -22,7 +30,11 @@ public class BoundsChecker : MonoBehaviour
         if (enabled)
         {
             GameObject collGO = coll.gameObject;
-            if (loopSpace)
+            if (rewindTimeForPlayer && collGO.CompareTag(GameManager.playerTag))
+            {
+                GameManager.RewindToStart();
+            }
+            else if (loopSpace)
             {
                 //If the object is moving away,
                 Rigidbody2D rb2d = collGO.GetComponent<Rigidbody2D>();
