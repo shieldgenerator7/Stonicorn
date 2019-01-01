@@ -423,11 +423,18 @@ public class GestureManager : SavableMonoBehaviour
         }
 
         //
-        //Application closing
+        //Opening Main Menu
         //
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            if (MenuManager.isMenuOpen())
+            {
+                camController.ZoomScalePoint = CameraController.CameraScalePoints.RANGE;
+            }
+            else
+            {
+                camController.ZoomScalePoint = CameraController.CameraScalePoints.MENU;
+            }
         }
         //
         //Cheats

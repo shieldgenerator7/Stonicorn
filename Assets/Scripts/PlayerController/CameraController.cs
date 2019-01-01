@@ -84,6 +84,13 @@ public class CameraController : MonoBehaviour
             }
         }
     }
+    public CameraScalePoints ZoomScalePoint
+    {
+        set
+        {
+            ZoomLevel = scalePoints[(int)value].absoluteScalePoint();
+        }
+    }
     /// <summary>
     /// Set this to make the scale smoothly move to the new value
     /// </summary>
@@ -101,7 +108,16 @@ public class CameraController : MonoBehaviour
         }
     }
     private float preTargetZoomLevel;//used to determine if the targetZoomLevel is above or below the current one
-
+    /// <summary>
+    /// Used to set the target zoom level using scale points
+    /// </summary>
+    public CameraScalePoints TargetScalePoint
+    {
+        set
+        {
+            TargetZoomLevel = scalePoints[(int)value].absoluteScalePoint();
+        }
+    }
     struct ScalePoint
     {
         private float scalePoint;
@@ -223,7 +239,8 @@ public class CameraController : MonoBehaviour
                 //If current zoom is not target zoom,
                 if (ZoomLevel != TargetZoomLevel
                     //and current zoom is between starting zoom and target zoom,
-                    && Mathf.Clamp(ZoomLevel, preTargetZoomLevel, TargetZoomLevel) == ZoomLevel)
+                    && (Mathf.Clamp(ZoomLevel, preTargetZoomLevel, TargetZoomLevel) == ZoomLevel
+                    || Mathf.Clamp(ZoomLevel, TargetZoomLevel, preTargetZoomLevel) == ZoomLevel))
                 {
                     //Move current zoom closer to target zoom
                     ZoomLevel = Mathf.MoveTowards(ZoomLevel, TargetZoomLevel, Time.deltaTime);
