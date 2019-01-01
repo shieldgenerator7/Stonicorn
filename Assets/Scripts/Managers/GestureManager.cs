@@ -13,6 +13,7 @@ public class GestureManager : SavableMonoBehaviour
 
     //Settings
     public float dragThreshold = 50;//how far from the original mouse position the current position has to be to count as a drag
+    public float playerSpeedThreshold = 1;//the maximum speed a player can be going and still be able to do a drag gesture
     public float holdThreshold = 0.1f;//how long the tap has to be held to count as a hold (in seconds)
     public float orthoZoomSpeed = 0.5f;
 
@@ -285,7 +286,8 @@ public class GestureManager : SavableMonoBehaviour
             }
             else if (clickState == ClickState.InProgress)
             {
-                if (maxMouseMovement > dragThreshold)
+                if (maxMouseMovement > dragThreshold
+                    && rb2dPlayer.velocity.sqrMagnitude <= playerSpeedThreshold * playerSpeedThreshold)
                 {
                     if (!isHoldGesture && !isPinchGesture)
                     {
