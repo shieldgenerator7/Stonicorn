@@ -22,6 +22,10 @@ public class CameraController : MonoBehaviour
         get { return offset; }
         set
         {
+            if (value.z == 0)
+            {
+                value.z = offset.z;
+            }
             offset = value;
             if (onOffsetChange != null)
             {
