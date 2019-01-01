@@ -211,8 +211,8 @@ public class CameraController : MonoBehaviour
             if (!rotationFinished())
             {
                 float deltaTime = 3 * Time.deltaTime;
-                    float angle = Utility.RotationZ(transform.up, rotationUp) * deltaTime;
-                    Offset = Utility.RotateZ(offset, angle);
+                //    float angle = Utility.RotationZ(transform.up, rotationUp) * deltaTime;
+                //    Offset = Utility.RotateZ(offset, angle);
                 transform.up = Vector3.Lerp(transform.up, rotationUp, deltaTime);
 
             }

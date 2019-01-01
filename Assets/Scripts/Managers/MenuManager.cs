@@ -30,10 +30,6 @@ public class MenuManager : MonoBehaviour
     private void Update()
     {
         cam.setRotation(GameManager.getPlayerObject().transform.up);
-        if (!cam.rotationFinished())
-        {
-            startFrame.frameCamera();
-        }
     }
 
     public void processTapGesture(Vector3 pos)
