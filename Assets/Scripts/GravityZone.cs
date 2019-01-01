@@ -59,14 +59,14 @@ public class GravityZone : MonoBehaviour
             && playerIsTenant
             && !MenuManager.isMenuOpen())
         {
-            Quaternion rotationToMatch = transform.rotation;
+            Vector3 transformUp = transform.up;
             if (radialGravity)
             {
-                rotationToMatch = Quaternion.Euler(transform.position - GameManager.getPlayerObject().transform.position);
+                transformUp = GameManager.getPlayerObject().transform.position - transform.position;
             }
-            if (Camera.main.transform.rotation != rotationToMatch)
+            if (Camera.main.transform.up != transformUp)
             {
-                Camera.main.GetComponent<CameraController>().setRotation(rotationToMatch);
+                Camera.main.GetComponent<CameraController>().setRotation(transformUp);
             }
         }
     }

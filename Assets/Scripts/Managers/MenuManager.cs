@@ -29,7 +29,7 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-        cam.setRotation(GameManager.getPlayerObject().transform.localRotation);
+        cam.setRotation(GameManager.getPlayerObject().transform.up);
         if (!cam.rotationFinished())
         {
             startFrame.frameCamera();

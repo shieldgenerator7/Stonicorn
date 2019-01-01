@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour
         get { return transform.position - player.transform.position + offset; }
         private set { }
     }
-    private Quaternion rotation;//the rotation the camera should be rotated towards
+    private Vector3 rotationUp;//the up direction that the camera should be rotated towards
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
     private float desiredScale = 0;//the value that scale should move towards
     private Camera cam;
@@ -143,7 +143,7 @@ public class CameraController : MonoBehaviour
             Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object (" + planModeCanvas.name + ") doesn't have a Canvas component!");
         }
         scale = cam.orthographicSize;
-        rotation = transform.rotation;
+        rotationUp = transform.up;
         //Initialize ScalePoints
         scalePoints.Add(new ScalePoint(0.2f, false, plyrController));//Main Menu zoom level
         scalePoints.Add(new ScalePoint(1, false, plyrController));
@@ -207,8 +207,8 @@ public class CameraController : MonoBehaviour
             if (!rotationFinished())
             {
                 float deltaTime = 3 * Time.deltaTime;
-                float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
-                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, deltaTime);
+                float angle = Vector3.Angle(transform.up, rotationUp) * deltaTime;
+                transform.up = Vector3.Lerp(transform.up, rotationUp, deltaTime);
                 Offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
             }
 
@@ -235,7 +235,7 @@ public class CameraController : MonoBehaviour
 
     public bool rotationFinished()
     {
-        return transform.rotation == rotation;
+        return transform.up == rotationUp;
     }
 
     /// <summary>
@@ -375,9 +375,9 @@ public class CameraController : MonoBehaviour
     public delegate void OnOffsetChange();
     public OnOffsetChange onOffsetChange;
 
-    public void setRotation(Quaternion rotation)
+    public void setRotation(Vector3 rotationUp)
     {
-        this.rotation = rotation;
+        this.rotationUp = rotationUp;
     }
     public void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
     {

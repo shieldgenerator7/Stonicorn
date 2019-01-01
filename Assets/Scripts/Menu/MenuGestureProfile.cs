@@ -13,7 +13,7 @@ public class MenuGestureProfile : GestureProfile
     public override void activate()
     {
         GameManager.showMainMenu(true);
-        camController.setRotation(player.transform.localRotation);
+        camController.setRotation(player.transform.up);
     }
     public override void deactivate()
     {
