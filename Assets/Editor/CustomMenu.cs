@@ -194,7 +194,7 @@ public class CustomMenu
     }
     public static void build(BuildTarget buildTarget, string extension)
     {
-        string defaultPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        string defaultPath = getDefaultBuildPath();
         if (!System.IO.Directory.Exists(defaultPath))
         {
             System.IO.Directory.CreateDirectory(defaultPath);
@@ -252,7 +252,7 @@ public class CustomMenu
     public static void runWindows()
     {//2018-08-10: copied from build()
         string extension = "exe";
-        string defaultPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        string defaultPath = getDefaultBuildPath();
         if (!System.IO.Directory.Exists(defaultPath))
         {
             throw new UnityException("You need to build the windows version for " + PlayerSettings.productName + " first!");
@@ -263,5 +263,10 @@ public class CustomMenu
         Process proc = new Process();
         proc.StartInfo.FileName = buildName;
         proc.Start();
+    }
+
+    public static string getDefaultBuildPath()
+    {
+        return System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName + "_" + PlayerSettings.bundleVersion.Replace(".", "_");
     }
 }
