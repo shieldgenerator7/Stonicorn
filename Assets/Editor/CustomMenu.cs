@@ -110,20 +110,8 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Hide or Unhide Hidden Areas %h")]
     public static void hideUnhideHiddenAreas()
     {
-        int levelsDeep = 3;//go three levels deep
-        bool changeDetermined = false;
-        bool show = false;
-        for (int i = 0; i < SceneManager.sceneCount; i++)
-        {
-            Scene s = SceneManager.GetSceneAt(i);
-            if (s.isLoaded)
-            {
-                foreach (GameObject go1 in s.GetRootGameObjects())
-                {
-                    hideUnhideHiddenAreas(go1, ref show, ref changeDetermined, levelsDeep-1);
-                }
-            }
-        }
+        //2019-01-01: copied from a comment by Mikilo: https://answers.unity.com/questions/1039366/is-it-possible-to-access-layer-visibility-and-lock.html
+        Tools.visibleLayers ^= 1 << LayerMask.NameToLayer("Hidden Area"); // Toggle a value in lockedLayers.
     }
 
     public static void hideUnhideHiddenAreas(GameObject go1, ref bool show, ref bool changeDetermined, int levelsDeep)
