@@ -12,9 +12,14 @@ public class MenuFrame : MonoBehaviour
     private BoxCollider2D bc2d;
 
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
+    {
+        init();
+    }
+    public void init()
     {
         bc2d = GetComponent<BoxCollider2D>();
+        buttons.Clear();
         foreach (Transform t in transform)
         {
             MenuButton mb = t.GetComponent<MenuButton>();
