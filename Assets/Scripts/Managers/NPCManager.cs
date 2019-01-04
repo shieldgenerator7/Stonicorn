@@ -10,6 +10,7 @@ public class NPCManager : MonoBehaviour
     private static GameObject lastTalkingNPC;//the last NPC to talk
     public Text npcDialogueText;
     public Canvas canvas;
+    public GameObject npcQuoteBox;
 
     private static NPCManager instance;
     private static MusicManager musicManager;
@@ -23,7 +24,6 @@ public class NPCManager : MonoBehaviour
             instance = this;
 
             npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
-            npcDialogueText.color = Color.white;
             musicManager = FindObjectOfType<MusicManager>();
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
             {
@@ -60,11 +60,20 @@ public class NPCManager : MonoBehaviour
     /// <param name="talking">Whether to activate or deactivate the visual effects</param>
     public static void speakNPC(GameObject npc, bool talking, string message)
     {
+        instance.canvas.gameObject.SetActive(talking);
+        instance.npcDialogueText.text = message;
+        instance.enabled = talking;
         if (talking)
         {
             instance.npcTalkEffect.transform.position = npc.transform.position;
+            //Show text
+            float textWidth = instance.npcDialogueText.fontSize * 0.5f * message.Length * instance.canvas.transform.localScale.x;
             float textHeight = instance.npcDialogueText.fontSize * instance.canvas.transform.localScale.y;
             instance.canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
+            //Show quote box
+            instance.npcQuoteBox.transform.position = instance.canvas.transform.position;
+            instance.npcQuoteBox.GetComponent<SpriteRenderer>().size = new Vector2(textWidth, textHeight);
+            //Show speaking particles
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
             {
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Play();
@@ -83,8 +92,5 @@ public class NPCManager : MonoBehaviour
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
             }
         }
-        instance.canvas.gameObject.SetActive(talking);
-        instance.npcDialogueText.text = message;
-        instance.enabled = talking;
     }
 }
