@@ -136,12 +136,10 @@ public class NPCManager : MonoBehaviour
     {
         string[] strings = splitIntoSegments(canvas, text, message);
         string buildString = strings[0];
-        if (strings.Length > 1)
+        for (int i = 1; i < strings.Length; i++)
         {
-            for (int i = 1; i < buildString.Length; i++)
-            {
                 buildString += "\n" + strings[i];
-            }
+            buildString += "\n" + strings[i];
         }
         return buildString;
     }
@@ -162,21 +160,15 @@ public class NPCManager : MonoBehaviour
         List<string> strings = new List<string>();
         int sumLength = split[0].Length;
         string buildString = split[0];
-        if (split.Length > 1)
+        for (int i = 1; i < split.Length; i++)
         {
-            for (int i = 1; i < split.Length; i++)
+            if (sumLength + split[i].Length + 1 > maxLength)
             {
-                if (sumLength + split[i].Length + 1 <= maxLength)
-                {
-                    sumLength += split[i].Length + 1;
-                    buildString += " " + split[i];
-                }
-                else
-                {
-                    sumLength = 0;
-                    strings.Add(buildString);
-                }
+                sumLength = 0;
+                strings.Add(buildString);
             }
+            sumLength += split[i].Length + 1;
+            buildString += " " + split[i];
         }
         strings.Add(buildString);
         return strings.ToArray();
