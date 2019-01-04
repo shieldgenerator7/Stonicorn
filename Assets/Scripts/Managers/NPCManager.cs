@@ -72,6 +72,7 @@ public class NPCManager : MonoBehaviour
             float textHeight = instance.npcDialogueText.fontSize * instance.canvas.transform.localScale.y;
             float textBoxWidth = instance.npcDialogueText.rectTransform.rect.width * instance.canvas.transform.localScale.x;
             float textBoxHeight = textHeight;
+            float buffer = textHeight / 2;
             float maxWidth = Mathf.Min(Screen.width / 2, textBoxWidth);
             if (textWidth > maxWidth)
             {
@@ -86,11 +87,14 @@ public class NPCManager : MonoBehaviour
                 textWidth = textBoxWidth = textWidth / scalar;
                 textBoxHeight *= scalar;
             }
+            textBoxWidth = textWidth;
+            textBoxWidth += buffer * 2;
+            textBoxHeight += buffer * 2;
             instance.canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
             //Show quote box
             instance.npcQuoteBox.transform.position = instance.canvas.transform.position;
             SpriteRenderer quoteSR = instance.npcQuoteBox.GetComponent<SpriteRenderer>();
-            quoteSR.size = new Vector2(textWidth, textBoxHeight);
+            quoteSR.size = new Vector2(textBoxWidth, textBoxHeight);
             instance.npcQuoteBoxTail.transform.position = instance.npcQuoteBox.transform.position - (Vector3.up * quoteSR.size.y / 2);
             //Show speaking particles
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
