@@ -52,6 +52,7 @@ public class NPCManager : MonoBehaviour
         ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth * 3 / 4);
         ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight * 3 / 4);
         canvas.transform.rotation = cam.transform.rotation;
+        npcQuoteBox.transform.rotation = canvas.transform.rotation;
     }
 
     /// <summary>
@@ -89,7 +90,7 @@ public class NPCManager : MonoBehaviour
             instance.npcQuoteBox.transform.position = instance.canvas.transform.position;
             SpriteRenderer quoteSR = instance.npcQuoteBox.GetComponent<SpriteRenderer>();
             quoteSR.size = textBoxSize;
-            instance.npcQuoteBoxTail.transform.position = instance.npcQuoteBox.transform.position - (Vector3.up * quoteSR.size.y / 2);
+            instance.npcQuoteBoxTail.transform.position = instance.npcQuoteBox.transform.position - (instance.npcQuoteBox.transform.up * quoteSR.size.y / 2);
             //Show speaking particles
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
             {
