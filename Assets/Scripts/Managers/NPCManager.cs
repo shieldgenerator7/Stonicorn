@@ -71,10 +71,18 @@ public class NPCManager : MonoBehaviour
             //Show text
             float textHeight = getTextHeight(instance.canvas, instance.npcDialogueText);
             float buffer = textHeight / 2;
-            Vector2 textBoxSize =
-                getMessageDimensions(instance.canvas, instance.npcDialogueText, eventualMessage)
-                + (Vector2.one * buffer * 2);
             int maxTextLength = getMaxTextLength(instance.canvas, instance.npcDialogueText);
+            Vector2 messageDimensions = getMessageDimensions(instance.canvas, instance.npcDialogueText, eventualMessage);
+            maxTextLength = getTextLength(instance.canvas, instance.npcDialogueText, messageDimensions.x);
+            if (messageDimensions.y > textHeight)
+            {
+                float textWidth = getTextWidth(instance.canvas, instance.npcDialogueText, eventualMessage.Length);
+                int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(instance.canvas, instance.npcDialogueText));
+                maxTextLength = (maxTextLength + (eventualMessage.Length / lineCount)) / 2;
+                messageDimensions = getMessageDimensions(instance.canvas, instance.npcDialogueText, eventualMessage, maxTextLength);
+                maxTextLength = getTextLength(instance.canvas, instance.npcDialogueText, messageDimensions.x);
+            }
+            Vector2 textBoxSize = messageDimensions + (Vector2.one * buffer * 2);
             instance.canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
             instance.npcDialogueText.text = processMessage(instance.canvas, instance.npcDialogueText, message, maxTextLength);
             //Show quote box
