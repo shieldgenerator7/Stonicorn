@@ -62,6 +62,7 @@ public class NPCManager : MonoBehaviour
     public static void speakNPC(GameObject npc, bool talking, string message)
     {
         instance.canvas.gameObject.SetActive(talking);
+        instance.npcQuoteBox.SetActive(talking);
         instance.npcDialogueText.text = message;
         instance.enabled = talking;
         if (talking)
