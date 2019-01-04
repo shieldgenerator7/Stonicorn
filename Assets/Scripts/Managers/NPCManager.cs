@@ -70,11 +70,19 @@ public class NPCManager : MonoBehaviour
             //Show text
             float textWidth = instance.npcDialogueText.fontSize * 0.5f * message.Length * instance.canvas.transform.localScale.x;
             float textHeight = instance.npcDialogueText.fontSize * instance.canvas.transform.localScale.y;
+            float textBoxWidth = instance.npcDialogueText.rectTransform.rect.width * instance.canvas.transform.localScale.x;
+            float textBoxHeight = textHeight;
+            if (textWidth > textBoxWidth)
+            {
+                float scalar = Mathf.Ceil(textWidth / textBoxWidth);
+                textWidth = textBoxWidth;
+                textBoxHeight *= scalar;
+            }
             instance.canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
             //Show quote box
             instance.npcQuoteBox.transform.position = instance.canvas.transform.position;
             SpriteRenderer quoteSR = instance.npcQuoteBox.GetComponent<SpriteRenderer>();
-            quoteSR.size = new Vector2(textWidth, textHeight);
+            quoteSR.size = new Vector2(textWidth, textBoxHeight);
             instance.npcQuoteBoxTail.transform.position = instance.npcQuoteBox.transform.position - (Vector3.up * quoteSR.size.y / 2);
             //Show speaking particles
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
