@@ -11,6 +11,7 @@ public class NPCManager : MonoBehaviour
     public Text npcDialogueText;
     public Canvas canvas;
     public GameObject npcQuoteBox;
+    public GameObject npcQuoteBoxTail;
 
     private static NPCManager instance;
     private static MusicManager musicManager;
@@ -72,7 +73,9 @@ public class NPCManager : MonoBehaviour
             instance.canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
             //Show quote box
             instance.npcQuoteBox.transform.position = instance.canvas.transform.position;
-            instance.npcQuoteBox.GetComponent<SpriteRenderer>().size = new Vector2(textWidth, textHeight);
+            SpriteRenderer quoteSR = instance.npcQuoteBox.GetComponent<SpriteRenderer>();
+            quoteSR.size = new Vector2(textWidth, textHeight);
+            instance.npcQuoteBoxTail.transform.position = instance.npcQuoteBox.transform.position - (Vector3.up * quoteSR.size.y / 2);
             //Show speaking particles
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
             {
