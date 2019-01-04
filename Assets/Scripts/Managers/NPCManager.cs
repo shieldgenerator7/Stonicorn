@@ -74,8 +74,9 @@ public class NPCManager : MonoBehaviour
             Vector2 textBoxSize =
                 getMessageDimensions(instance.canvas, instance.npcDialogueText, eventualMessage)
                 + (Vector2.one * buffer * 2);
+            int maxTextLength = getMaxTextLength(instance.canvas, instance.npcDialogueText);
             instance.canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
-            instance.npcDialogueText.text = processMessage(instance.canvas, instance.npcDialogueText, message);
+            instance.npcDialogueText.text = processMessage(instance.canvas, instance.npcDialogueText, message, maxTextLength);
             //Show quote box
             instance.npcQuoteBox.transform.position = instance.canvas.transform.position;
             SpriteRenderer quoteSR = instance.npcQuoteBox.GetComponent<SpriteRenderer>();
@@ -110,32 +111,41 @@ public class NPCManager : MonoBehaviour
     {
         return text.fontSize * lines * canvas.transform.localScale.y;
     }
+    static float getMaxWidth(Canvas canvas, Text text)
+    {
+        return Mathf.Min(Screen.width / 2, text.rectTransform.rect.width * canvas.transform.localScale.x);
+    }
 
     static int getTextLength(Canvas canvas, Text text, float width)
     {
         return Mathf.FloorToInt(width / (text.fontSize * 0.5f * canvas.transform.localScale.x));
     }
-
-
-    static Vector2 getMessageDimensions(Canvas canvas, Text text, string message)
+    static int getMaxTextLength(Canvas canvas, Text text)
     {
-        string[] strings = splitIntoSegments(canvas, text, message);
-        int maxLength = 0;
+        return getTextLength(canvas, text, getMaxWidth(canvas, text));
+    }
+
+
+    static Vector2 getMessageDimensions(Canvas canvas, Text text, string message, int maxTextLength = 0)
+    {
+        string[] strings = splitIntoSegments(canvas, text, message, maxTextLength);
+        int foundMaxLength = 0;
         foreach (string s in strings)
         {
-            if (s.Length > maxLength)
+            if (s.Length > foundMaxLength)
             {
-                maxLength = s.Length;
+                foundMaxLength = s.Length;
             }
         }
-        float textWidth = getTextWidth(canvas, text, maxLength);
+        float textWidth = getTextWidth(canvas, text, foundMaxLength);
         float textHeight = getTextHeight(canvas, text, strings.Length);
         return new Vector2(textWidth, textHeight);
     }
-    static string processMessage(Canvas canvas, Text text, string message)
+
+    static string processMessage(Canvas canvas, Text text, string message, int maxTextLength)
     {
-        string[] strings = splitIntoSegments(canvas, text, message);
         string buildString = strings[0];
+        string[] strings = splitIntoSegments(canvas, text, message, maxTextLength);
         for (int i = 1; i < strings.Length; i++)
         {
                 buildString += "\n" + strings[i];
@@ -143,14 +153,18 @@ public class NPCManager : MonoBehaviour
         }
         return buildString;
     }
-    static string[] splitIntoSegments(Canvas canvas, Text text, string message)
+    static string[] splitIntoSegments(Canvas canvas, Text text, string message, int maxTextLength = 0)
     {
         float textWidth = getTextWidth(canvas, text, message.Length);
-        float maxWidth = Mathf.Min(Screen.width / 2, text.rectTransform.rect.width * canvas.transform.localScale.x);
+        float maxWidth = getMaxWidth(canvas, text);
         int segmentLength = message.Length;
         if (textWidth > maxWidth)
         {
-            segmentLength = getTextLength(canvas, text, maxWidth);
+            if (maxTextLength == 0)
+            {
+                maxTextLength = getMaxTextLength(canvas, text);
+            }
+            segmentLength = maxTextLength;
         }
         return splitIntoSegments(message, segmentLength);
     }
