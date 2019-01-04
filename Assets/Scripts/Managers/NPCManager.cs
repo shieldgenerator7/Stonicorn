@@ -168,7 +168,6 @@ public class NPCManager : MonoBehaviour
         {
             buildString += " ";
         }
-        Debug.Log("adding " + spaceCount + " spaces to: " + buildString + ".");
         return buildString;
     }
 
