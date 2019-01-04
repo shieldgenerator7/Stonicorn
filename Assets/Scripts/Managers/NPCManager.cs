@@ -144,15 +144,26 @@ public class NPCManager : MonoBehaviour
 
     static string processMessage(Canvas canvas, Text text, string message, int maxTextLength)
     {
-        string buildString = strings[0];
         string[] strings = splitIntoSegments(canvas, text, message, maxTextLength);
+        string buildString = addSpaces(strings[0], maxTextLength - strings[0].Length);
         for (int i = 1; i < strings.Length; i++)
         {
-                buildString += "\n" + strings[i];
+            strings[i] = addSpaces(strings[i], maxTextLength - strings[i].Length);
             buildString += "\n" + strings[i];
         }
         return buildString;
     }
+    static string addSpaces(string original, int spaceCount)
+    {
+        string buildString = original;
+        for (int i = 0; i < spaceCount; i++)
+        {
+            buildString += " ";
+        }
+        Debug.Log("adding " + spaceCount + " spaces to: " + buildString + ".");
+        return buildString;
+    }
+
     static string[] splitIntoSegments(Canvas canvas, Text text, string message, int maxTextLength = 0)
     {
         float textWidth = getTextWidth(canvas, text, message.Length);
