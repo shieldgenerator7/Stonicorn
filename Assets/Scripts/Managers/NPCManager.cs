@@ -72,10 +72,18 @@ public class NPCManager : MonoBehaviour
             float textHeight = instance.npcDialogueText.fontSize * instance.canvas.transform.localScale.y;
             float textBoxWidth = instance.npcDialogueText.rectTransform.rect.width * instance.canvas.transform.localScale.x;
             float textBoxHeight = textHeight;
-            if (textWidth > textBoxWidth)
+            float maxWidth = Mathf.Min(Screen.width / 2, textBoxWidth);
+            if (textWidth > maxWidth)
             {
-                float scalar = Mathf.Ceil(textWidth / textBoxWidth);
-                textWidth = textBoxWidth;
+                float scalar = Mathf.Ceil(textWidth / maxWidth);
+                string spacedString = message;
+                int segmentLength = (int)(message.Length / scalar);
+                for (int i = 1; i < scalar; i++)
+                {
+                    spacedString = spacedString.Insert(i * segmentLength, "\n");
+                }
+                instance.npcDialogueText.text = spacedString;
+                textWidth = textBoxWidth = textWidth / scalar;
                 textBoxHeight *= scalar;
             }
             instance.canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
