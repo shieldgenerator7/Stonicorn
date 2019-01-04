@@ -68,8 +68,8 @@ public class NPCManager : MonoBehaviour
         {
             instance.npcTalkEffect.transform.position = npc.transform.position;
             //Show text
-            float textWidth = instance.npcDialogueText.fontSize * 0.5f * message.Length * instance.canvas.transform.localScale.x;
-            float textHeight = instance.npcDialogueText.fontSize * instance.canvas.transform.localScale.y;
+            float textWidth = getTextWidth(instance.canvas, instance.npcDialogueText, message.Length);
+            float textHeight = getTextHeight(instance.canvas, instance.npcDialogueText);
             float textBoxWidth = instance.npcDialogueText.rectTransform.rect.width * instance.canvas.transform.localScale.x;
             float textBoxHeight = textHeight;
             float buffer = textHeight / 2;
@@ -79,12 +79,38 @@ public class NPCManager : MonoBehaviour
                 float scalar = Mathf.Ceil(textWidth / maxWidth);
                 string spacedString = message;
                 int segmentLength = (int)(message.Length / scalar);
+                int maxSegmentLength = 0;
+                int spaceIndex = 0;
                 for (int i = 1; i < scalar; i++)
                 {
-                    spacedString = spacedString.Insert(i * segmentLength, "\n");
+                    int searchStartIndex = i * segmentLength;
+                    int prevSpaceIndex = spaceIndex;
+                    spaceIndex = searchStartIndex;
+                    for (int j = 0; j < 5; j++)
+                    {
+                        int lowerIndex = Mathf.Max(0, searchStartIndex - j);
+                        if (spacedString.Substring(lowerIndex, 1) == " ")
+                        {
+                            spaceIndex = lowerIndex;
+                            break;
+                        }
+                        int higherIndex = Mathf.Min(spacedString.Length - 1, searchStartIndex + j);
+                        if (spacedString.Substring(higherIndex, 1) == " ")
+                        {
+                            spaceIndex = higherIndex;
+                            break;
+                        }
+                    }
+                    //
+                    if (spaceIndex - prevSpaceIndex > maxSegmentLength)
+                    {
+                        maxSegmentLength = spaceIndex - prevSpaceIndex;
+                    }
+                    //Insert new line
+                    spacedString = spacedString.Insert(spaceIndex, "\n");
                 }
                 instance.npcDialogueText.text = spacedString;
-                textWidth = textBoxWidth = textWidth / scalar;
+                textWidth = textBoxWidth = getTextWidth(instance.canvas, instance.npcDialogueText, maxSegmentLength);
                 textBoxHeight *= scalar;
             }
             textBoxWidth = textWidth;
@@ -115,5 +141,14 @@ public class NPCManager : MonoBehaviour
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
             }
         }
+    }
+
+    static float getTextWidth(Canvas canvas, Text text, int length)
+    {
+        return text.fontSize * 0.5f * length * canvas.transform.localScale.x;
+    }
+    static float getTextHeight(Canvas canvas, Text text)
+    {
+        return text.fontSize * canvas.transform.localScale.y;
     }
 }
