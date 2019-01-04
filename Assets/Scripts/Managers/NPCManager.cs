@@ -59,7 +59,7 @@ public class NPCManager : MonoBehaviour
     /// </summary>
     /// <param name="npc"></param>
     /// <param name="talking">Whether to activate or deactivate the visual effects</param>
-    public static void speakNPC(GameObject npc, bool talking, string message)
+    public static void speakNPC(GameObject npc, bool talking, string message, string eventualMessage)
     {
         instance.canvas.gameObject.SetActive(talking);
         instance.npcQuoteBox.SetActive(talking);
@@ -69,59 +69,17 @@ public class NPCManager : MonoBehaviour
         {
             instance.npcTalkEffect.transform.position = npc.transform.position;
             //Show text
-            float textWidth = getTextWidth(instance.canvas, instance.npcDialogueText, message.Length);
             float textHeight = getTextHeight(instance.canvas, instance.npcDialogueText);
-            float textBoxWidth = instance.npcDialogueText.rectTransform.rect.width * instance.canvas.transform.localScale.x;
-            float textBoxHeight = textHeight;
             float buffer = textHeight / 2;
-            float maxWidth = Mathf.Min(Screen.width / 2, textBoxWidth);
-            if (textWidth > maxWidth)
-            {
-                float scalar = Mathf.Ceil(textWidth / maxWidth);
-                string spacedString = message;
-                int segmentLength = (int)(message.Length / scalar);
-                int maxSegmentLength = 0;
-                int spaceIndex = 0;
-                for (int i = 1; i < scalar; i++)
-                {
-                    int searchStartIndex = i * segmentLength;
-                    int prevSpaceIndex = spaceIndex;
-                    spaceIndex = searchStartIndex;
-                    for (int j = 0; j < 5; j++)
-                    {
-                        int lowerIndex = Mathf.Max(0, searchStartIndex - j);
-                        if (spacedString.Substring(lowerIndex, 1) == " ")
-                        {
-                            spaceIndex = lowerIndex;
-                            break;
-                        }
-                        int higherIndex = Mathf.Min(spacedString.Length - 1, searchStartIndex + j);
-                        if (spacedString.Substring(higherIndex, 1) == " ")
-                        {
-                            spaceIndex = higherIndex;
-                            break;
-                        }
-                    }
-                    //
-                    if (spaceIndex - prevSpaceIndex > maxSegmentLength)
-                    {
-                        maxSegmentLength = spaceIndex - prevSpaceIndex;
-                    }
-                    //Insert new line
-                    spacedString = spacedString.Insert(spaceIndex, "\n");
-                }
-                instance.npcDialogueText.text = spacedString;
-                textWidth = textBoxWidth = getTextWidth(instance.canvas, instance.npcDialogueText, maxSegmentLength);
-                textBoxHeight *= scalar;
-            }
-            textBoxWidth = textWidth;
-            textBoxWidth += buffer * 2;
-            textBoxHeight += buffer * 2;
+            Vector2 textBoxSize =
+                getMessageDimensions(instance.canvas, instance.npcDialogueText, eventualMessage)
+                + (Vector2.one * buffer * 2);
             instance.canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
+            instance.npcDialogueText.text = processMessage(instance.canvas, instance.npcDialogueText, message);
             //Show quote box
             instance.npcQuoteBox.transform.position = instance.canvas.transform.position;
             SpriteRenderer quoteSR = instance.npcQuoteBox.GetComponent<SpriteRenderer>();
-            quoteSR.size = new Vector2(textBoxWidth, textBoxHeight);
+            quoteSR.size = textBoxSize;
             instance.npcQuoteBoxTail.transform.position = instance.npcQuoteBox.transform.position - (Vector3.up * quoteSR.size.y / 2);
             //Show speaking particles
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
@@ -148,8 +106,79 @@ public class NPCManager : MonoBehaviour
     {
         return text.fontSize * 0.5f * length * canvas.transform.localScale.x;
     }
-    static float getTextHeight(Canvas canvas, Text text)
+    static float getTextHeight(Canvas canvas, Text text, int lines = 1)
     {
-        return text.fontSize * canvas.transform.localScale.y;
+        return text.fontSize * lines * canvas.transform.localScale.y;
+    }
+
+    static int getTextLength(Canvas canvas, Text text, float width)
+    {
+        return Mathf.FloorToInt(width / (text.fontSize * 0.5f * canvas.transform.localScale.x));
+    }
+
+
+    static Vector2 getMessageDimensions(Canvas canvas, Text text, string message)
+    {
+        string[] strings = splitIntoSegments(canvas, text, message);
+        int maxLength = 0;
+        foreach (string s in strings)
+        {
+            if (s.Length > maxLength)
+            {
+                maxLength = s.Length;
+            }
+        }
+        float textWidth = getTextWidth(canvas, text, maxLength);
+        float textHeight = getTextHeight(canvas, text, strings.Length);
+        return new Vector2(textWidth, textHeight);
+    }
+    static string processMessage(Canvas canvas, Text text, string message)
+    {
+        string[] strings = splitIntoSegments(canvas, text, message);
+        string buildString = strings[0];
+        if (strings.Length > 1)
+        {
+            for (int i = 1; i < buildString.Length; i++)
+            {
+                buildString += "\n" + strings[i];
+            }
+        }
+        return buildString;
+    }
+    static string[] splitIntoSegments(Canvas canvas, Text text, string message)
+    {
+        float textWidth = getTextWidth(canvas, text, message.Length);
+        float maxWidth = Mathf.Min(Screen.width / 2, text.rectTransform.rect.width * canvas.transform.localScale.x);
+        int segmentLength = message.Length;
+        if (textWidth > maxWidth)
+        {
+            segmentLength = getTextLength(canvas, text, maxWidth);
+        }
+        return splitIntoSegments(message, segmentLength);
+    }
+    static string[] splitIntoSegments(string message, int maxLength)
+    {
+        string[] split = message.Split(' ');
+        List<string> strings = new List<string>();
+        int sumLength = split[0].Length;
+        string buildString = split[0];
+        if (split.Length > 1)
+        {
+            for (int i = 1; i < split.Length; i++)
+            {
+                if (sumLength + split[i].Length + 1 <= maxLength)
+                {
+                    sumLength += split[i].Length + 1;
+                    buildString += " " + split[i];
+                }
+                else
+                {
+                    sumLength = 0;
+                    strings.Add(buildString);
+                }
+            }
+        }
+        strings.Add(buildString);
+        return strings.ToArray();
     }
 }
