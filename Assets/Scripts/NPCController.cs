@@ -195,12 +195,13 @@ public class NPCController : SavableMonoBehaviour
         if (source.isPlaying)
         {
             string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time);
-            NPCManager.speakNPC(gameObject, true, voicelinetext);
+            string voicelinetextWhole = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time, true);
+            NPCManager.speakNPC(gameObject, true, voicelinetext, voicelinetextWhole);
         }
         else if (currentVoiceLineIndex >= 0)
         {
             currentVoiceLineIndex = -1;
-            NPCManager.speakNPC(gameObject, false, "");
+            NPCManager.speakNPC(gameObject, false, "", "");
         }
     }
 

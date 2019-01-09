@@ -53,7 +53,7 @@ public class NPCVoiceLine {
     /// </summary>
     /// <param name="playtime"></param>
     /// <returns></returns>
-    public string getVoiceLineText(float playtime)
+    public string getVoiceLineText(float playtime, bool wholeSegment = false)
     {
         if (lineSegments.Count == 0)
         {
@@ -76,7 +76,7 @@ public class NPCVoiceLine {
                 }
             }
         }
-        if (prevCurrentLine < lineSegments.Count-1)
+        if (!wholeSegment && prevCurrentLine < lineSegments.Count-1)
         {
             float percentage = (playtime - lineSegments[prevCurrentLine].audioBeginTime) / (lineSegments[prevCurrentLine + 1].audioBeginTime - lineSegments[prevCurrentLine].audioBeginTime);
             string text = lineSegments[prevCurrentLine].lineText;
