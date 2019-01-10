@@ -37,6 +37,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     void initializeGhost()
     {        
         ghost = (GameObject)Instantiate(ghostPrefab);
+        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(ghost, gameObject.scene);
         ghost.SetActive(false);
         cpGhostMover = ghost.GetComponent<CheckPointGhostMover>();
         cpGhostMover.parentCPC = this;
