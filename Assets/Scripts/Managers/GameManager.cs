@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         //Unload all scenes and reload PlayerScene
         instance = null;
         GameState.nextid = 0;
-        SceneManager.LoadScene("PlayerScene");
+        SceneManager.LoadScene(0);
     }
     /// <summary>
     /// Schedules the game reset in the future
@@ -510,11 +510,11 @@ public class GameManager : MonoBehaviour
         gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
         //Scenes
         List<SceneLoader> rsls = ES2.LoadList<SceneLoader>("merky.txt?tag=scenes");
-        foreach (SceneLoader sl in sceneLoaders)//actually loaded scene loaders
+        foreach (SceneLoader sl in sceneLoaders)//all scene loaders
         {
             foreach (SceneLoader rsl in rsls)//read in scene loaders
             {
-                if (rsl != null && sl.sceneName == rsl.sceneName)
+                if (rsl != null && sl.sceneName == rsl.sceneName && rsl != sl)
                 {
                     sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
                     Destroy(rsl);

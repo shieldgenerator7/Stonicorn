@@ -13,7 +13,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        if (transform.parent != null)
+        if (transform.parent != null && !(transform.parent.position == Vector3.zero))
         {
             Bounds bounds = GetComponentInParent<SpriteRenderer>().bounds;
             float extra = 0.1f;
