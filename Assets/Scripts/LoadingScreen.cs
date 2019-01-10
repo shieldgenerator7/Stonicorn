@@ -7,11 +7,16 @@ using UnityEngine.UI;
 public class LoadingScreen : MonoBehaviour
 {
     public string sceneName;
+    public float growSpeed = 0.5f;
 
+    //Runtime vars
     private List<AsyncOperation> operations = new List<AsyncOperation>();
+    private float targetFillAmount = 0;//the fill amount that Image.fillAmount should get to
 
+    //Singleton
     private static LoadingScreen instance;
 
+    //Components
     private Image image;
 
     // Start is called before the first frame update
@@ -19,8 +24,22 @@ public class LoadingScreen : MonoBehaviour
     {
         instance = this;
         image = GetComponent<Image>();
+        image.fillAmount = 0;
         //Load start scenes
         StartCoroutine(LoadSceneAsynchronously(sceneName));
+    }
+
+    private void Update()
+    {
+        if (image.fillAmount != targetFillAmount)
+        {
+            image.fillAmount = Mathf.MoveTowards(image.fillAmount, targetFillAmount, growSpeed * Time.deltaTime);
+        }
+        if (image.fillAmount == 1)
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("PlayerScene"));
+            SceneManager.UnloadSceneAsync("LoadingScreen");
+        }
     }
 
     //2019-01-09: copied from https://www.youtube.com/watch?v=YMj2qPq9CP8
@@ -41,12 +60,10 @@ public class LoadingScreen : MonoBehaviour
                     sum += ao.progress;
                 }
                 percentDone = sum / count;
-                instance.image.fillAmount = percentDone;
+                instance.targetFillAmount = percentDone;
                 yield return null;
             }
         }
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName("PlayerScene"));
-        SceneManager.UnloadSceneAsync("LoadingScreen");
     }
     public static void LoadScene(string sceneName)
     {

@@ -632,7 +632,7 @@ public class GameManager : MonoBehaviour
     {
         if (show)
         {
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
+            LoadingScreen.LoadScene("MainMenu");
         }
         else
         {
