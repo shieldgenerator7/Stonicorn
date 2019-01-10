@@ -35,11 +35,12 @@ public class LoadingScreen : MonoBehaviour
             while (percentDone < 1)
             {
                 float sum = 0;
+                int count = Mathf.Max(2, instance.operations.Count);
                 foreach (AsyncOperation ao in instance.operations)
                 {
                     sum += ao.progress;
                 }
-                percentDone = sum / instance.operations.Count;
+                percentDone = sum / count;
                 instance.image.fillAmount = percentDone;
                 yield return null;
             }
