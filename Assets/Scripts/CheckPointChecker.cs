@@ -21,10 +21,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if (ghost == null)
-        {
-            initializeGhost();
-        }
+        initializeGhost();
         player = GameManager.getPlayerObject();
         plyrController = player.GetComponent<PlayerController>();
         if (checkpointCamera == null)
@@ -38,7 +35,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
     }
     void initializeGhost()
-    {
+    {        
         ghost = (GameObject)Instantiate(ghostPrefab);
         ghost.SetActive(false);
         cpGhostMover = ghost.GetComponent<CheckPointGhostMover>();
@@ -67,6 +64,11 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public void activate()
     {
+        //Make sure the ghost is there
+        if (ghost == null || ReferenceEquals(ghost, null))
+        {
+            initializeGhost();
+        }
         //Don't activate if already activated
         if (activated)
         {
@@ -223,7 +225,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     /// <returns></returns>
     public bool checkGhostActivation(Vector3 targetPos)
     {
-        return activated && ghost.GetComponent<CircleCollider2D>().bounds.Contains(targetPos);
+        return activated && ghost && ghost.GetComponent<CircleCollider2D>().bounds.Contains(targetPos);
     }
     /// <summary>
     /// So now the player has teleported out and the checkpoint ghosts need to go away
