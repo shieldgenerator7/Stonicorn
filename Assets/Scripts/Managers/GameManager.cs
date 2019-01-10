@@ -65,6 +65,11 @@ public class GameManager : MonoBehaviour
             Load(chosenId);
             LoadMemories();
         }
+        //If a limit has been set on the demo playtime
+        if (gamePlayTime > 0)
+        {
+            gestureManager.tapGesture += startDemoTimer;
+        }
 
         refreshGameObjects();
         SceneManager.sceneLoaded += sceneLoaded;
@@ -111,6 +116,14 @@ public class GameManager : MonoBehaviour
     public static float getGameDemoLength()
     {
         return gamePlayTime;
+    }
+    void startDemoTimer()
+    {
+        if (camCtr.ZoomLevel != camCtr.scalePointToZoomLevel((int)CameraController.CameraScalePoints.MENU))
+        {
+            resetGameTimer = gamePlayTime + Time.time;
+            gestureManager.tapGesture -= startDemoTimer;
+        }
     }
 
     private void showEndDemoScreen(bool show)
