@@ -108,6 +108,10 @@ public class GameManager : MonoBehaviour
         }
         instance.showEndDemoScreen(false);
     }
+    public static float getGameDemoLength()
+    {
+        return gamePlayTime;
+    }
 
     private void showEndDemoScreen(bool show)
     {
