@@ -453,6 +453,10 @@ public class GameManager : MonoBehaviour
     }
     public static bool isRewinding()
     {
+        if (instance == null)
+        {
+            instance = FindObjectOfType<GameManager>();
+        }
         return instance.chosenId > instance.rewindId;
     }
     public void cancelRewind()
@@ -529,7 +533,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
             return;

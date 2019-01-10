@@ -16,7 +16,7 @@ public class Follow : MonoBehaviour {
     {
         if (followObject == null)
         {
-            followObject = GameObject.FindGameObjectWithTag(followObjectTag);
+            followObject = findFollowObject();
         }
         else{
             followObjectTag = followObject.tag;
@@ -25,8 +25,17 @@ public class Follow : MonoBehaviour {
 
     private void LateUpdate()
     {
+        if (followObject == null)
+        {
+            followObject = findFollowObject();
+        }
         transform.position = followObject.transform.position;
         transform.rotation = followObject.transform.rotation;
         transform.localScale = followObject.transform.localScale;
+    }
+
+    GameObject findFollowObject()
+    {
+        return GameObject.FindGameObjectWithTag(followObjectTag);
     }
 }
