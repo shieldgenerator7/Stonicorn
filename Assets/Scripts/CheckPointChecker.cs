@@ -21,10 +21,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if (ghost == null)
-        {
-            initializeGhost();
-        }
+        initializeGhost();
         player = GameManager.getPlayerObject();
         plyrController = player.GetComponent<PlayerController>();
         if (checkpointCamera == null)
@@ -38,7 +35,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
     }
     void initializeGhost()
-    {
+    {        
         ghost = (GameObject)Instantiate(ghostPrefab);
         ghost.SetActive(false);
         cpGhostMover = ghost.GetComponent<CheckPointGhostMover>();

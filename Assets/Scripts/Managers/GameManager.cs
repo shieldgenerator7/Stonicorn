@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private float respawnTime = 0;//the earliest time Merky can rewind after shattering
     public float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
     private List<GameState> gameStates = new List<GameState>();
+    [SerializeField]
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
@@ -50,10 +51,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         playerObject = GameObject.FindGameObjectWithTag(playerTag);
-        foreach (GameObject go in SceneManager.GetSceneByName("SceneLoaderTriggers").GetRootGameObjects())
-        {
-            sceneLoaders.Add(go.GetComponent<SceneLoader>());
-        }
         camCtr = FindObjectOfType<CameraController>();
         camCtr.pinPoint();
         camCtr.recenter();
@@ -88,7 +85,7 @@ public class GameManager : MonoBehaviour
         //Unload all scenes and reload PlayerScene
         instance = null;
         GameState.nextid = 0;
-        SceneManager.LoadScene("PlayerScene");
+        SceneManager.LoadScene(0);
     }
     /// <summary>
     /// Schedules the game reset in the future
@@ -456,6 +453,10 @@ public class GameManager : MonoBehaviour
     }
     public static bool isRewinding()
     {
+        if (instance == null)
+        {
+            instance = FindObjectOfType<GameManager>();
+        }
         return instance.chosenId > instance.rewindId;
     }
     public void cancelRewind()
@@ -513,11 +514,11 @@ public class GameManager : MonoBehaviour
         gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
         //Scenes
         List<SceneLoader> rsls = ES2.LoadList<SceneLoader>("merky.txt?tag=scenes");
-        foreach (SceneLoader sl in sceneLoaders)//actually loaded scene loaders
+        foreach (SceneLoader sl in sceneLoaders)//all scene loaders
         {
             foreach (SceneLoader rsl in rsls)//read in scene loaders
             {
-                if (rsl != null && sl.sceneName == rsl.sceneName)
+                if (rsl != null && sl.sceneName == rsl.sceneName && rsl != sl)
                 {
                     sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
                     Destroy(rsl);
@@ -532,18 +533,10 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
             return;
-        }
-        if (!SceneManager.GetSceneByName("SceneLoaderTriggers").isLoaded)
-        {
-            SceneManager.LoadScene("SceneLoaderTriggers", LoadSceneMode.Additive);//load the SceneLoaderTriggers scene
-        }
-        if (!SceneManager.GetSceneByName("CheckPointScene").isLoaded)
-        {
-            SceneManager.LoadScene("CheckPointScene", LoadSceneMode.Additive);//load the CheckPointScene scene
         }
     }
     void OnApplicationQuit()
@@ -639,7 +632,7 @@ public class GameManager : MonoBehaviour
     {
         if (show)
         {
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
+            LoadingScreen.LoadScene("MainMenu");
         }
         else
         {

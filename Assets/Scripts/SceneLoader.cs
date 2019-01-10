@@ -59,7 +59,7 @@ public class SceneLoader : MonoBehaviour
     }
     void loadLevel()
     {
-        SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        LoadingScreen.LoadScene(sceneName);
     }
     void unloadLevel()
     {
