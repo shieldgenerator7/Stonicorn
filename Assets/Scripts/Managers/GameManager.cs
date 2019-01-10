@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private float respawnTime = 0;//the earliest time Merky can rewind after shattering
     public float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
     private List<GameState> gameStates = new List<GameState>();
+    [SerializeField]
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
@@ -50,10 +51,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         playerObject = GameObject.FindGameObjectWithTag(playerTag);
-        foreach (GameObject go in SceneManager.GetSceneByName("SceneLoaderTriggers").GetRootGameObjects())
-        {
-            sceneLoaders.Add(go.GetComponent<SceneLoader>());
-        }
         camCtr = FindObjectOfType<CameraController>();
         camCtr.pinPoint();
         camCtr.recenter();
@@ -536,14 +533,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
             return;
-        }
-        if (!SceneManager.GetSceneByName("SceneLoaderTriggers").isLoaded)
-        {
-            SceneManager.LoadScene("SceneLoaderTriggers", LoadSceneMode.Additive);//load the SceneLoaderTriggers scene
-        }
-        if (!SceneManager.GetSceneByName("CheckPointScene").isLoaded)
-        {
-            SceneManager.LoadScene("CheckPointScene", LoadSceneMode.Additive);//load the CheckPointScene scene
         }
     }
     void OnApplicationQuit()
