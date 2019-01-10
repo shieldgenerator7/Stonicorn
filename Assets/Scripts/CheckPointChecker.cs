@@ -64,11 +64,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public void activate()
     {
-        //Make sure the ghost is there
-        if (ghost == null || ReferenceEquals(ghost, null))
-        {
-            initializeGhost();
-        }
         //Don't activate if already activated
         if (activated)
         {
@@ -225,7 +220,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     /// <returns></returns>
     public bool checkGhostActivation(Vector3 targetPos)
     {
-        return activated && ghost && ghost.GetComponent<CircleCollider2D>().bounds.Contains(targetPos);
+        return ghost.GetComponent<CircleCollider2D>().bounds.Contains(targetPos);
     }
     /// <summary>
     /// So now the player has teleported out and the checkpoint ghosts need to go away

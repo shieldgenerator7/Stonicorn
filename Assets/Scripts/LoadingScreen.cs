@@ -37,7 +37,6 @@ public class LoadingScreen : MonoBehaviour
         }
         if (image.fillAmount == 1)
         {
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName("PlayerScene"));
             SceneManager.UnloadSceneAsync("LoadingScreen");
         }
     }
@@ -46,23 +45,21 @@ public class LoadingScreen : MonoBehaviour
     static IEnumerator LoadSceneAsynchronously(string sceneName)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        operation.completed += instance.passActiveScene;
+        instance.operations.Add(operation);
 
-        if (instance)
+        float percentDone = 0;
+        while (percentDone < 1)
         {
-            instance.operations.Add(operation);
-            float percentDone = 0;
-            while (percentDone < 1)
+            float sum = 0;
+            int count = Mathf.Max(2, instance.operations.Count);
+            foreach (AsyncOperation ao in instance.operations)
             {
-                float sum = 0;
-                int count = Mathf.Max(2, instance.operations.Count);
-                foreach (AsyncOperation ao in instance.operations)
-                {
-                    sum += ao.progress;
-                }
-                percentDone = sum / count;
-                instance.targetFillAmount = percentDone;
-                yield return null;
+                sum += ao.progress;
             }
+            percentDone = sum / count;
+            instance.targetFillAmount = percentDone;
+            yield return null;
         }
     }
     public static void LoadScene(string sceneName)
@@ -72,6 +69,14 @@ public class LoadingScreen : MonoBehaviour
         if (instance)
         {
             instance.operations.Add(operation);
+        }
+    }
+    void passActiveScene(AsyncOperation ao)
+    {
+        Scene mainScene = SceneManager.GetSceneByName(sceneName);
+        if (mainScene.isLoaded)
+        {
+            SceneManager.SetActiveScene(mainScene);
         }
     }
 }
