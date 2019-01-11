@@ -17,27 +17,35 @@ public class LoadingScreen : MonoBehaviour
     private static LoadingScreen instance;
 
     //Components
-    private Image image;
+    private List<Image> images = new List<Image>();
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
-        image = GetComponent<Image>();
-        image.fillAmount = 0;
+        images.Add(GetComponent<Image>());
+        images.AddRange(GetComponentsInChildren<Image>());
+        foreach (Image image in images)
+        {
+            image.fillAmount = 0;
+        }
         //Load start scenes
         StartCoroutine(LoadSceneAsynchronously(sceneName));
     }
 
     private void Update()
     {
-        if (image.fillAmount != targetFillAmount)
+        foreach (Image image in images)
         {
-            image.fillAmount = Mathf.MoveTowards(image.fillAmount, targetFillAmount, growSpeed * Time.deltaTime);
-        }
-        if (image.fillAmount == 1)
-        {
-            SceneManager.UnloadSceneAsync("LoadingScreen");
+            if (image.fillAmount != targetFillAmount)
+            {
+                image.fillAmount = Mathf.MoveTowards(image.fillAmount, targetFillAmount, growSpeed * Time.deltaTime);
+            }
+            if (image.fillAmount == 1)
+            {
+                SceneManager.UnloadSceneAsync("LoadingScreen");
+                break;
+            }
         }
     }
 
