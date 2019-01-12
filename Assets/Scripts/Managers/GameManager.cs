@@ -58,17 +58,18 @@ public class GameManager : MonoBehaviour
         gestureManager = FindObjectOfType<GestureManager>();
         musicManager = FindObjectOfType<MusicManager>();
         chosenId = -1;
+        //If a limit has been set on the demo playtime
+        if (gamePlayTime > 0)
+        {
+            demoBuild = true;//auto enable demo build mode
+            gestureManager.tapGesture += startDemoTimer;
+        }
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
             loadFromFile();
             chosenId = rewindId = gameStates.Count - 1;
             Load(chosenId);
             LoadMemories();
-        }
-        //If a limit has been set on the demo playtime
-        if (gamePlayTime > 0)
-        {
-            gestureManager.tapGesture += startDemoTimer;
         }
 
         refreshGameObjects();
