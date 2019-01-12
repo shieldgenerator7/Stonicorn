@@ -146,7 +146,10 @@ public class ActivationTrigger : MonoBehaviour
         {
             if (!triggerRequireZoom || zoomLevelActive)
             {
-                processObjects(triggerEnterAction);
+                if (!cameraInArea() || cameraEnterAction == ActivationOptions.DO_NOTHING)
+                {
+                    processObjects(triggerEnterAction);
+                }
             }
             triggerActive = true;
         }
@@ -281,6 +284,10 @@ public class ActivationTrigger : MonoBehaviour
 
     bool cameraInArea()
     {
+        if (cameraPositionCollider == null)
+        {
+            return false;
+        }
         return cameraPositionCollider.OverlapPoint((Vector2)camController.transform.position);
     }
 }
