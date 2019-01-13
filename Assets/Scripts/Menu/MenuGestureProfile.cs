@@ -14,10 +14,18 @@ public class MenuGestureProfile : GestureProfile
     {
         GameManager.showMainMenu(true);
         camController.setRotation(player.transform.localRotation);
+
+        // Disable balistics so the camera doesn't jerk around.
+        // You could do some sort of "OnRotationFinished" event or just a timer to have this trigger a little later so the
+        // menu doesn't instantly snap into focus, if such behavior is desired.
+        camController.disableBalistics = true; 
     }
     public override void deactivate()
     {
         GameManager.showMainMenu(false);
+
+        // We can have our camera balistics again!
+        camController.disableBalistics = false;
     }
     public override void processTapGesture(Vector3 curMPWorld)
     {

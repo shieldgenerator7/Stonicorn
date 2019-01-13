@@ -15,7 +15,15 @@ public class CameraController : MonoBehaviour
     public float autoOffsetAngleThreshold = 15f;//how close two teleport directions have to be to activate auto offset
     public float maxTapDelay = 1;//the maximum amount of time (sec) between two taps that can activate auto offset
 
+    // Don't use any dynamic camera movement and just lock straight onto the target.
+    // Useful for preventing stuttering when the camera is locked onto the menu.
+    public bool disableBalistics = false; 
 
+    // offset really should return a value derived from two distinct values, Global and Local offsets.
+    // localOffset = offset relative to the player's rotation.  If the player rotates this offset rotates with them.
+    // globalOffset = offset relative to the world's rotation.  This rotates with the direction of gravity.
+    // offset = player.transform.rotation * localOffset + GetWorldRotationAsQuanternion() * globalOffset
+    // This interweaves with lots of different sections of code, however, so I will leave it up to you friend!  Good luck!
     private Vector3 offset;
     public Vector3 Offset
     {
@@ -29,6 +37,7 @@ public class CameraController : MonoBehaviour
             }
         }
     }
+
     /// <summary>
     /// Offset the camera automatically adds itself to make sure the player can see where they're going
     /// </summary>
@@ -37,11 +46,19 @@ public class CameraController : MonoBehaviour
     private float autoOffsetCancelTime = 0;//the time at which autoOffset will be removed automatically (updated after each teleport)
     private float lastTapTime = 0;//the last time a teleport was processed
     /// <summary>
+    /// Where the camera wants to be
+    /// </summary>
+    public Vector3 TargetLocation
+    {
+        get { return player.transform.position + Offset; }
+        private set { }
+    }
+    /// <summary>
     /// How far away the camera is from where it wants to be
     /// </summary>
     public Vector2 Displacement
     {
-        get { return transform.position - player.transform.position + offset; }
+        get { return transform.position - TargetLocation; }
         private set { }
     }
     private Quaternion rotation;//the rotation the camera should be rotated towards
@@ -173,25 +190,34 @@ public class CameraController : MonoBehaviour
         {
             if (!lockCamera)
             {
-                //Target
-                Vector3 target = player.transform.position + offset + (Vector3)autoOffset;
-                //Speed
-                float speed = (
-                        Vector3.Distance(transform.position, target)
-                        * cameraMoveFactor
-                        + playerRB2D.velocity.magnitude
-                    )
-                    * Time.deltaTime;
-                //Move Transform
-                transform.position = Vector3.MoveTowards(transform.position, target, speed);
-
-                if (autoOffsetCancelTime > 0)
+                if (disableBalistics)
                 {
-                    if (Time.time > autoOffsetCancelTime)
+                    // Proof of concept to show this stops the stuttering, but if global/local offsets were fixed it should be:
+                    // transform.position = TargetLocation;
+                    transform.position = player.transform.position + player.transform.rotation * offset;
+                }
+                else
+                {
+                    //Target
+                    Vector3 target = TargetLocation + (Vector3)autoOffset;
+                    //Speed
+                    float speed = (
+                            Vector3.Distance(transform.position, target)
+                            * cameraMoveFactor
+                            + playerRB2D.velocity.magnitude
+                        )
+                        * Time.deltaTime;
+                    //Move Transform
+                    transform.position = Vector3.MoveTowards(transform.position, target, speed);
+
+                    if (autoOffsetCancelTime > 0)
                     {
-                        autoOffset = Vector2.zero;
-                        previousMoveDir = Vector2.zero;
-                        autoOffsetCancelTime = 0;
+                        if (Time.time > autoOffsetCancelTime)
+                        {
+                            autoOffset = Vector2.zero;
+                            previousMoveDir = Vector2.zero;
+                            autoOffsetCancelTime = 0;
+                        }
                     }
                 }
             }
@@ -206,10 +232,17 @@ public class CameraController : MonoBehaviour
             //Rotate Transform
             if (!rotationFinished())
             {
-                float deltaTime = 3 * Time.deltaTime;
-                float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
-                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, deltaTime);
-                Offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
+                if (disableBalistics)
+                {
+                    transform.rotation = rotation;
+                }
+                else
+                {
+                    float deltaTime = 3 * Time.deltaTime;
+                    float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
+                    transform.rotation = Quaternion.Lerp(transform.rotation, rotation, deltaTime);
+                    Offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
+                }
             }
 
             //Scale Orthographic Size
@@ -378,6 +411,12 @@ public class CameraController : MonoBehaviour
     public void setRotation(Quaternion rotation)
     {
         this.rotation = rotation;
+
+        // Rotate instantly to prevent stuttering.
+        if (disableBalistics)
+        {
+            transform.rotation = rotation;
+        }
     }
     public void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
     {
