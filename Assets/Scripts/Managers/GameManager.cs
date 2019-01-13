@@ -63,10 +63,17 @@ public class GameManager : MonoBehaviour
         chosenId = -1;
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
-            loadFromFile();
-            chosenId = rewindId = gameStates.Count - 1;
-            Load(chosenId);
-            LoadMemories();
+            try
+            {
+                loadFromFile();
+                chosenId = rewindId = gameStates.Count - 1;
+                Load(chosenId);
+                LoadMemories();
+            }
+            catch // Save file is ruined
+            {
+                //ES2.Delete("merky.txt"); // Uncomment to just start over if this happens.
+            }
         }
 
         refreshGameObjects();
