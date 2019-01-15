@@ -3,7 +3,7 @@
 --- !u!129 &1
 PlayerSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 15
+  serializedVersion: 16
   productGUID: b5420e53dd798d04ea41534b1aed1234
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Fawn Dawn Studios
-  productName: Stoni
+  productName: Stonicorn
   defaultCursor: {fileID: 2800000, guid: 6b3c8e3ced24ab144b5f3787f3066035, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.09411765, g: 0.10980392, b: 0.15686275, a: 1}
@@ -86,7 +86,7 @@ PlayerSettings:
   submitAnalytics: 1
   usePlayerLog: 1
   bakeCollisionMeshes: 0
-  forceSingleInstance: 0
+  forceSingleInstance: 1
   resizableWindow: 1
   useMacAppStoreValidation: 0
   macAppStoreCategory: public.app-category.games
@@ -97,7 +97,7 @@ PlayerSettings:
   xboxEnableKinect: 0
   xboxEnableKinectAutoTracking: 0
   xboxEnableFitness: 0
-  visibleInBackground: 0
+  visibleInBackground: 1
   allowFullscreenSwitch: 1
   graphicsJobMode: 0
   fullscreenMode: 1
@@ -114,6 +114,10 @@ PlayerSettings:
   xboxOneDisableEsram: 0
   xboxOnePresentImmediateThreshold: 0
   switchQueueCommandMemory: 0
+  switchQueueControlMemory: 0
+  switchNVNShaderPoolsGranularity: 33554432
+  switchNVNDefaultPoolsGranularity: 16777216
+  switchNVNOtherPoolsGranularity: 16777216
   vulkanEnableSetSRGBWrite: 0
   m_SupportedAspectRatios:
     4:3: 1
@@ -121,14 +125,13 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.327b
+  bundleVersion: 0.328
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
   xboxOneDisableKinectGpuReservation: 0
   xboxOneEnable7thCore: 0
-  isWsaHolographicRemotingEnabled: 0
   vrSettings:
     cardboard:
       depthFormat: 0
@@ -143,10 +146,17 @@ PlayerSettings:
     hololens:
       depthFormat: 1
       depthBufferSharingEnabled: 0
+    lumin:
+      depthFormat: 0
+      frameTiming: 2
+      enableGLCache: 0
+      glCacheMaxBlobSize: 524288
+      glCacheMaxFileSize: 8388608
     oculus:
       sharedDepthBuffer: 0
       dashSupport: 0
     enable360StereoCapture: 0
+  isWsaHolographicRemotingEnabled: 0
   protectGraphicsMemory: 0
   enableFrameTimingStats: 0
   useHDRDisplay: 0
@@ -157,12 +167,12 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: FawnDawnStudios.Stonicorn.Stoni
-    Standalone: unity.shieldgenerator7.Stoni
+    Standalone: unity.fawndawnstudios.Stonicorn
     Tizen: sg7.stoned.stoned
-    iOS: sg7.stoned.stoned
+    iPhone: sg7.stoned.stoned
     tvOS: sg7.stoned.stoned
   buildNumber:
-    iOS: 0
+    iPhone: 0
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
@@ -201,6 +211,10 @@ PlayerSettings:
   iPadHighResPortraitSplashScreen: {fileID: 0}
   iPadLandscapeSplashScreen: {fileID: 0}
   iPadHighResLandscapeSplashScreen: {fileID: 0}
+  iPhone65inPortraitSplashScreen: {fileID: 0}
+  iPhone65inLandscapeSplashScreen: {fileID: 0}
+  iPhone61inPortraitSplashScreen: {fileID: 0}
+  iPhone61inLandscapeSplashScreen: {fileID: 0}
   appleTVSplashScreen: {fileID: 0}
   appleTVSplashScreen2x: {fileID: 0}
   tvOSSmallIconLayers: []
@@ -244,6 +258,7 @@ PlayerSettings:
   tvOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
   iOSRequireARKit: 0
+  iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   clonedFromGUID: 00000000000000000000000000000000
   templatePackageId: 
@@ -251,7 +266,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: 
+  AndroidKeystoreName: '{inproject}: '
   AndroidKeyaliasName: 
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1
@@ -259,6 +274,7 @@ PlayerSettings:
   AndroidEnableTango: 0
   androidEnableBanner: 1
   androidUseLowAccuracyLocation: 0
+  androidUseCustomKeystore: 0
   m_AndroidBanners:
   - width: 320
     height: 180
@@ -377,7 +393,7 @@ PlayerSettings:
     m_Enabled: 0
     m_Devices:
     - Oculus
-  - m_BuildTarget: Metro
+  - m_BuildTarget: Windows Store Apps
     m_Enabled: 0
     m_Devices: []
   - m_BuildTarget: N3DS
@@ -421,7 +437,7 @@ PlayerSettings:
   - m_BuildTarget: XboxOne
     m_Enabled: 0
     m_Devices: []
-  - m_BuildTarget: iOS
+  - m_BuildTarget: iPhone
     m_Enabled: 0
     m_Devices: []
   - m_BuildTarget: tvOS
@@ -430,6 +446,7 @@ PlayerSettings:
   m_BuildTargetEnableVuforiaSettings: []
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
+  openGLRequireES32: 0
   m_TemplateCustomTags: {}
   mobileMTRendering:
     Android: 1
@@ -565,6 +582,7 @@ PlayerSettings:
   switchAllowsRuntimeAddOnContentInstall: 0
   switchDataLossConfirmation: 0
   switchUserAccountLockEnabled: 0
+  switchSystemResourceMemory: 16777216
   switchSupportedNpadStyles: 3
   switchNativeFsCacheSize: 32
   switchIsHoldTypeHorizontal: 0
@@ -618,6 +636,7 @@ PlayerSettings:
   ps4DownloadDataSize: 0
   ps4GarlicHeapSize: 2048
   ps4ProGarlicHeapSize: 2560
+  playerPrefsMaxSize: 32768
   ps4Passcode: frAQBc8Wsa1xVPfvJcrgRYwTiizs2trQ
   ps4pnSessions: 1
   ps4pnPresence: 1
@@ -665,23 +684,26 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 0
   webGLThreadsSupport: 0
+  webGLWasmStreaming: 0
   scriptingDefineSymbols:
     2: 
   platformArchitecture:
-    iOS: 2
+    iPhone: 2
   scriptingBackend:
     Android: 0
     Standalone: 0
     WebGL: 1
     WebPlayer: 0
-    iOS: 1
+    iPhone: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild:
-    iOS: 1
+    iPhone: 1
   allowUnsafeCode: 0
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0
+  gcIncremental: 0
+  gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
@@ -712,7 +734,6 @@ PlayerSettings:
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 
-  metroCompilationOverrides: 1
   XboxOneProductId: 
   XboxOneUpdateKey: 
   XboxOneSandboxId: 
@@ -764,6 +785,7 @@ PlayerSettings:
   luminVersion:
     m_VersionCode: 1
     m_VersionName: 
+  luminPrivilege: []
   facebookSdkVersion: 7.9.1
   facebookAppId: 
   facebookCookies: 1
