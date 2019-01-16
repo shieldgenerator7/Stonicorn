@@ -78,15 +78,12 @@ public class Fader : MonoBehaviour
                     tf.position = tf.position + Utility.PerpendicularRight(tf.up).normalized * Random.Range(-variance, variance);
                 }
                 if (o is SpriteShapeRenderer)
-                {//2018-11-30: copied from above section for Ferr2DT_PathTerrain
-                    checkDestroy((Mathf.SmoothStep(startfade, endfade, t)));
+                {//2019-01-12: copied from section for SpriteRenderer
                     SpriteShapeRenderer sr = (SpriteShapeRenderer)o;
-                    Transform tf = sr.gameObject.transform;
-                    Vector2 moveDir = tf.position - GameManager.getPlayerObject().transform.position;
-                    float speed = 0.075f;
-                    tf.position += (Vector3)moveDir.normalized * speed;
-                    float variance = 0.075f;
-                    tf.position += Utility.PerpendicularRight(moveDir).normalized * Random.Range(-variance, variance);
+                    Color color = sr.color;
+                    color.a = Mathf.SmoothStep(startfade, endfade, t);
+                    sr.color = color;
+                    checkDestroy(sr.color.a);
                 }
                 if (o is CanvasRenderer)
                 {
