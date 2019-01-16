@@ -12,6 +12,8 @@ public class LoadingScreen : MonoBehaviour
     //Runtime vars
     private List<AsyncOperation> operations = new List<AsyncOperation>();
     private float targetFillAmount = 0;//the fill amount that Image.fillAmount should get to
+    private bool finishedLoading = false;
+    private bool finishedSplashScreen = false;
 
     //Singleton
     private static LoadingScreen instance;
@@ -29,23 +31,32 @@ public class LoadingScreen : MonoBehaviour
         {
             image.fillAmount = 0;
         }
+        //Set Splash Screen delegate
+        FindObjectOfType<SplashScreenUpdater>().onSplashScreenFinished += splashScreenFinished;
         //Load start scenes
         StartCoroutine(LoadSceneAsynchronously(sceneName));
     }
 
     private void Update()
     {
-        foreach (Image image in images)
+        if (!finishedLoading)
         {
-            if (image.fillAmount != targetFillAmount)
+            foreach (Image image in images)
             {
-                image.fillAmount = Mathf.MoveTowards(image.fillAmount, targetFillAmount, growSpeed * Time.deltaTime);
+                if (image.fillAmount != targetFillAmount)
+                {
+                    image.fillAmount = Mathf.MoveTowards(image.fillAmount, targetFillAmount, growSpeed * Time.deltaTime);
+                }
+                if (image.fillAmount == 1)
+                {
+                    finishedLoading = true;
+                    break;
+                }
             }
-            if (image.fillAmount == 1)
-            {
-                SceneManager.UnloadSceneAsync("LoadingScreen");
-                break;
-            }
+        }
+        if (finishedLoading && finishedSplashScreen)
+        {
+            SceneManager.UnloadSceneAsync("LoadingScreen");
         }
     }
 
@@ -86,5 +97,10 @@ public class LoadingScreen : MonoBehaviour
         {
             SceneManager.SetActiveScene(mainScene);
         }
+    }
+
+    void splashScreenFinished()
+    {
+        finishedSplashScreen = true;
     }
 }

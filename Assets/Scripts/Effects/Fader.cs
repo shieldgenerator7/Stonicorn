@@ -109,6 +109,10 @@ public class Fader : MonoBehaviour
     {
         if (currentFade == endfade)
         {
+            if(onFadeFinished != null)
+            {
+                onFadeFinished();
+            }
             if (destroyObjectOnFinish)
             {
                 GameManager.destroyObject(gameObject);
@@ -119,4 +123,8 @@ public class Fader : MonoBehaviour
             }
         }
     }
+
+    public delegate void OnFadeFinished();
+    public OnFadeFinished onFadeFinished;
+
 }

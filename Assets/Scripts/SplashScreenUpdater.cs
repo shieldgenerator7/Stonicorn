@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SplashScreenUpdater : MonoBehaviour
 {
@@ -19,12 +18,9 @@ public class SplashScreenUpdater : MonoBehaviour
     private float lastKeyFrame = 0;
     private float displayState = -1;//0 = fade in, 1 = showing, 2 = fade out
 
-    private bool levelLoaded = false;
-
     // Start is called before the first frame update
     void Start()
     {
-        SceneManager.sceneLoaded += OnLevelLoaded;
         currentSplashImage = splashImages[currentIndex];
     }
 
@@ -49,8 +45,8 @@ public class SplashScreenUpdater : MonoBehaviour
         {
             if (Time.time > lastKeyFrame + showTime)
             {
-                //If the splash image is the last one, wait for the level to load before hiding it
-                if (levelLoaded || currentIndex < splashImages.Count - 1)
+                //Start the hiding process for the current splash image
+                if (currentIndex < splashImages.Count)
                 {
                     displayState = 2;
                     lastKeyFrame = Time.time;
@@ -74,21 +70,10 @@ public class SplashScreenUpdater : MonoBehaviour
                     displayState = 3;
                     Fader f = gameObject.AddComponent<Fader>();
                     f.duration = fadeOutTime;
+                    f.onFadeFinished += onLastFadeFinished;
                 }
             }
         }
-    }
-
-    void OnLevelLoaded(Scene s, LoadSceneMode loadMode)
-    {
-        //If the loaded scene is not the player scene,
-        if (s.buildIndex != 0)
-        {
-            //level loaded condition is true
-            levelLoaded = true;
-        }
-        //Remove the listener
-        SceneManager.sceneLoaded -= OnLevelLoaded;
     }
 
     void fadeObjectIn(GameObject obj)
@@ -111,5 +96,16 @@ public class SplashScreenUpdater : MonoBehaviour
         f.destroyObjectOnFinish = true;
         f.destroyScriptOnFinish = true;
         f.duration = fadeOutTime;
+    }
+
+    public delegate void OnSplashScreenFinished();
+    public OnSplashScreenFinished onSplashScreenFinished;
+
+    void onLastFadeFinished()
+    {
+        if (onSplashScreenFinished != null)
+        {
+            onSplashScreenFinished();
+        }
     }
 }
