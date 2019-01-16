@@ -35,8 +35,8 @@ public class LoadingScreen : MonoBehaviour
         }
         //Set Splash Screen delegate
         FindObjectOfType<SplashScreenUpdater>().onSplashScreenFinished += splashScreenFinished;
-        //Load start scenes
-        StartCoroutine(LoadSceneAsynchronously(sceneName));
+        //Disable this script until splash screen finishes
+        this.enabled = false;
     }
 
     private void Update()
@@ -107,8 +107,14 @@ public class LoadingScreen : MonoBehaviour
     }
     void splashScreenFinished()
     {
-        finishedSplashScreen = true;
-        checkUnload();
+        if (!finishedSplashScreen)
+        {
+            finishedSplashScreen = true;
+            checkUnload();
+            //Load start scenes
+            StartCoroutine(LoadSceneAsynchronously(sceneName));
+            this.enabled = true;
+        }
     }
     void checkUnload()
     {
