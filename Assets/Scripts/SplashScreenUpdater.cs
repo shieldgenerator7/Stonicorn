@@ -70,6 +70,7 @@ public class SplashScreenUpdater : MonoBehaviour
                     displayState = 3;
                     Fader f = gameObject.AddComponent<Fader>();
                     f.duration = fadeOutTime;
+                    f.isEffectOnly = true;
                     f.onFadeFinished += onLastFadeFinished;
                 }
             }
@@ -85,6 +86,7 @@ public class SplashScreenUpdater : MonoBehaviour
         f.endfade = 1;
         f.destroyObjectOnFinish = false;
         f.destroyScriptOnFinish = true;
+        f.isEffectOnly = true;
         f.duration = fadeInTime;
     }
     void fadeObjectOut(GameObject obj)
@@ -95,6 +97,7 @@ public class SplashScreenUpdater : MonoBehaviour
         f.endfade = 0;
         f.destroyObjectOnFinish = true;
         f.destroyScriptOnFinish = true;
+        f.isEffectOnly = true;
         f.duration = fadeOutTime;
     }
 

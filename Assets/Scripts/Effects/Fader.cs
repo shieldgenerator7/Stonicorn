@@ -14,6 +14,7 @@ public class Fader : MonoBehaviour
     public bool destroyColliders = true;
     public bool destroyObjectOnFinish = true;
     public bool destroyScriptOnFinish = true;
+    public bool isEffectOnly = false;//the object this fader is attached to is only a special effect and not a time-bound object
 
     private ArrayList srs;
     private float startTime;
@@ -115,7 +116,14 @@ public class Fader : MonoBehaviour
             }
             if (destroyObjectOnFinish)
             {
-                GameManager.destroyObject(gameObject);
+                if (isEffectOnly)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    GameManager.destroyObject(gameObject);
+                }
             }
             else if (destroyScriptOnFinish)
             {
