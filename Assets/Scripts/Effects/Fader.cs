@@ -14,7 +14,7 @@ public class Fader : MonoBehaviour
     public bool destroyColliders = true;
     public bool destroyObjectOnFinish = true;
     public bool destroyScriptOnFinish = true;
-    public bool isEffectOnly = false;//the object this fader is attached to is only a special effect and not a time-bound object
+    public bool isEffectOnly = true;//the object this fader is attached to is only a special effect and not a time-bound object
 
     private ArrayList srs;
     private float startTime;
