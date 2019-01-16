@@ -39,24 +39,21 @@ public class LoadingScreen : MonoBehaviour
 
     private void Update()
     {
-        if (!finishedLoading)
+        foreach (Image image in images)
         {
-            foreach (Image image in images)
+            if (image.fillAmount != targetFillAmount)
             {
-                if (image.fillAmount != targetFillAmount)
-                {
-                    image.fillAmount = Mathf.MoveTowards(image.fillAmount, targetFillAmount, growSpeed * Time.deltaTime);
-                }
-                if (image.fillAmount == 1)
-                {
-                    finishedLoading = true;
-                    break;
-                }
+                image.fillAmount = Mathf.MoveTowards(image.fillAmount, targetFillAmount, growSpeed * Time.deltaTime);
             }
-        }
-        if (finishedLoading && finishedSplashScreen)
-        {
-            SceneManager.UnloadSceneAsync("LoadingScreen");
+            if (image.fillAmount == 1)
+            {
+                Fader f = transform.parent.gameObject.AddComponent<Fader>();
+                f.destroyObjectOnFinish = false;
+                f.destroyScriptOnFinish = true;
+                f.onFadeFinished += loadingFinished;
+                this.enabled = false;
+                break;
+            }
         }
     }
 
@@ -99,8 +96,21 @@ public class LoadingScreen : MonoBehaviour
         }
     }
 
+    void loadingFinished()
+    {
+        finishedLoading = true;
+        checkUnload();
+    }
     void splashScreenFinished()
     {
         finishedSplashScreen = true;
+        checkUnload();
+    }
+    void checkUnload()
+    {
+        if (finishedLoading && finishedSplashScreen)
+        {
+            SceneManager.UnloadSceneAsync("LoadingScreen");
+        }
     }
 }
