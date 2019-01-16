@@ -9,6 +9,8 @@ public class LoadingScreen : MonoBehaviour
     public string sceneName;
     public float growSpeed = 0.5f;
 
+    public Camera initialCamera;
+
     //Runtime vars
     private List<AsyncOperation> operations = new List<AsyncOperation>();
     private float targetFillAmount = 0;//the fill amount that Image.fillAmount should get to
@@ -52,6 +54,8 @@ public class LoadingScreen : MonoBehaviour
                 f.destroyScriptOnFinish = true;
                 f.onFadeFinished += loadingFinished;
                 this.enabled = false;
+                //Switch camera to main camera
+                Destroy(initialCamera.gameObject);
                 break;
             }
         }
