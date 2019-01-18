@@ -20,8 +20,16 @@ public class MenuButtonSwitch : MenuButton
     {
         base.Start();
         sr = GetComponent<SpriteRenderer>();
+        if (sr == null)
+        {
+            sr = GetComponentInChildren<SpriteRenderer>();
+        }
         if (sr)
         {
+            if (activatedSprite == null && deactivatedSprite == null)
+            {
+                useColor = true;
+            }
             if (activatedSprite == null)
             {
                 activatedSprite = sr.sprite;
