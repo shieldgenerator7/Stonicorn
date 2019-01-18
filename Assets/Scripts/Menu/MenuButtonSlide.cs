@@ -48,7 +48,7 @@ public class MenuButtonSlide : MenuButton
             //Update value it controls
             mas.valueAdjusted(this.value);
             //Update UI value text
-            valueText.text = "" + this.value;
+            valueText.text = mas.getValueLabel(this.value);
             //Update Slider Bar
             Vector3 pos = sliderBar.transform.position;
             pos = Utility.convertToRange(
@@ -80,6 +80,7 @@ public class MenuButtonSlide : MenuButton
     {
         base.Start();
         mas = GetComponent<MenuActionSlide>();
+        MaxValue = mas.getOverriddenMaxValue(MaxValue);
         sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
         sliderBarEC2D = sliderBar.GetComponent<EdgeCollider2D>();
         sliderBarWidth = (transform.TransformPoint(sliderBarEC2D.points[1]) - transform.TransformPoint(sliderBarEC2D.points[0])).magnitude;
