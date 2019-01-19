@@ -240,12 +240,7 @@ public class CustomMenu
     public static void runWindows()
     {//2018-08-10: copied from build()
         string extension = "exe";
-        string defaultPath = getDefaultBuildPath();
-        if (!System.IO.Directory.Exists(defaultPath))
-        {
-            throw new UnityException("You need to build the windows version for " + PlayerSettings.productName + " first!");
-        }
-        string buildName = defaultPath + "/" + PlayerSettings.productName + "." + extension;
+        string buildName = getBuildNamePath(extension);
         UnityEngine.Debug.Log("Launching: " + buildName);
         // Run the game (Process class from System.Diagnostics).
         Process proc = new Process();
@@ -253,8 +248,27 @@ public class CustomMenu
         proc.Start();
     }
 
+    [MenuItem("SG7/Run/Open Build Folder #w")]
+    public static void openBuildFolder()
+    {
+        string extension = "exe";
+        string buildName = getBuildNamePath(extension);
+        //Open the folder where the game is located
+        EditorUtility.RevealInFinder(buildName);
+    }
+
     public static string getDefaultBuildPath()
     {
         return System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName + "_" + PlayerSettings.bundleVersion.Replace(".", "_");
+    }
+    public static string getBuildNamePath(string extension, bool checkFolderExists = true)
+    {
+        string defaultPath = getDefaultBuildPath();
+        if (checkFolderExists && !System.IO.Directory.Exists(defaultPath))
+        {
+            throw new UnityException("You need to build the " + extension + " for " + PlayerSettings.productName + " (Version " + PlayerSettings.bundleVersion + ") first!");
+        }
+        string buildName = defaultPath + "/" + PlayerSettings.productName + "." + extension;
+        return buildName;
     }
 }
