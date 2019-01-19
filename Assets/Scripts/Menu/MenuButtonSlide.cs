@@ -60,9 +60,11 @@ public class MenuButtonSlide : MenuButton
                 );
             sliderBar.transform.position = pos;
             //Update Slider Fill
-            Vector2 size = sliderFillSR.size;
-            size.x = ((sliderBar.transform.position - sliderFill.transform.position).magnitude + sliderBarWidth) / sliderFill.transform.lossyScale.x;
-            sliderFillSR.size = size;
+            Vector2 size = sliderFill.transform.lossyScale;
+            size.x = ((sliderBar.transform.position - sliderFill.transform.position).magnitude + sliderBarWidth);
+            size.x = (size.x * sliderFill.transform.localScale.x) / sliderFill.transform.lossyScale.x;
+            size.y = sliderFill.transform.localScale.y;
+            sliderFill.transform.localScale = size;
         }
     }
 
