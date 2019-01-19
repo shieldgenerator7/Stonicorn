@@ -58,22 +58,14 @@ public class SplashScreenUpdater : MonoBehaviour
         {
             if (Time.time > lastKeyFrame + fadeOutTime)
             {
-                currentIndex++;
-                if (currentIndex < splashImages.Count)
-                {
-                    displayState = -1;
-                    lastKeyFrame = Time.time;
-                    currentSplashImage = splashImages[currentIndex];
-                }
-                else
-                {
-                    displayState = 3;
-                    Fader f = gameObject.AddComponent<Fader>();
-                    f.duration = fadeOutTime;
-                    f.isEffectOnly = true;
-                    f.onFadeFinished += onLastFadeFinished;
-                }
+                advanceToNextScreen();
             }
+        }
+        if (Input.GetKeyUp(KeyCode.Escape) || Input.GetMouseButtonUp(0)
+            || (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended))
+        {
+            Destroy(currentSplashImage);
+            advanceToNextScreen();
         }
     }
 
@@ -99,6 +91,24 @@ public class SplashScreenUpdater : MonoBehaviour
         f.destroyScriptOnFinish = true;
         f.isEffectOnly = true;
         f.duration = fadeOutTime;
+    }
+    void advanceToNextScreen()
+    {
+        currentIndex++;
+        if (currentIndex < splashImages.Count)
+        {
+            displayState = -1;
+            lastKeyFrame = Time.time;
+            currentSplashImage = splashImages[currentIndex];
+        }
+        else
+        {
+            displayState = 3;
+            Fader f = gameObject.AddComponent<Fader>();
+            f.duration = fadeOutTime;
+            f.isEffectOnly = true;
+            f.onFadeFinished += onLastFadeFinished;
+        }
     }
 
     public delegate void OnSplashScreenFinished();
