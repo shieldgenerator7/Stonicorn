@@ -13,7 +13,6 @@ public class MenuActionSlideScreenResolution : MenuActionSlide
     {
         for (int i = 0; i < Screen.resolutions.Length; i++)
         {
-            if (Screen.resolutions[i].Equals(Screen.currentResolution))
             if (Screen.resolutions[i].width >= Screen.width
                 && Screen.resolutions[i].height >= Screen.height)
             {
