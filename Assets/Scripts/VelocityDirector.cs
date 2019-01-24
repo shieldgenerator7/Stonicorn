@@ -44,16 +44,38 @@ public class VelocityDirector : MonoBehaviour
             {
                 Vector2 curpos = coll.gameObject.transform.position;//"current position"
                 //Find out which segment the object is in
-                float minSqrDistance = float.MaxValue;
-                int closestPoint = 0;
-                for (int i = 0; i < ec2d.pointCount; i++)
+                //Find out which segment the object is in
+                int closestPoint = -1;
+                int first = 0;
+                int second = ec2d.pointCount - 1;
+                while (closestPoint < 0)
                 {
-                    Vector2 point = transform.TransformPoint(ec2d.points[i]);
-                    float sqrDistance = (point - curpos).sqrMagnitude;
-                    if (sqrDistance <= minSqrDistance)
+                    Vector2 point1 = transform.TransformPoint(ec2d.points[first]);
+                    float sqrDistance1 = (point1 - curpos).sqrMagnitude;
+                    Vector2 point2 = transform.TransformPoint(ec2d.points[second]);
+                    float sqrDistance2 = (point2 - curpos).sqrMagnitude;
+                    if (second - first >= 2)
                     {
-                        minSqrDistance = sqrDistance;
-                        closestPoint = i;
+                        int middle = (first + second) / 2;
+                        if (sqrDistance1 <= sqrDistance2)
+                        {
+                            second = middle;
+                        }
+                        else
+                        {
+                            first = middle;
+                        }
+                    }
+                    else
+                    {
+                        if (sqrDistance1 <= sqrDistance2)
+                        {
+                            closestPoint = first;
+                        }
+                        else
+                        {
+                            closestPoint = second;
+                        }
                     }
                 }
                 //Find out the direction of the segment
