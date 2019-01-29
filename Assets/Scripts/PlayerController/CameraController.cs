@@ -49,7 +49,7 @@ public class CameraController : MonoBehaviour
         private set { }
     }
     private Vector3 rotationUp;//the up direction that the camera should be rotated towards
-    private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
+    private float scale = 1;//scale used to determine fieldOfView, independent of (landscape or portrait) orientation
     private float desiredScale = 0;//the value that scale should move towards
     private Camera cam;
     private Rigidbody2D playerRB2D;
@@ -80,7 +80,7 @@ public class CameraController : MonoBehaviour
                 {
                     onZoomLevelChanged(scale, scale - prevScale);
                 }
-                updateOrthographicSize();
+                updateFieldOfView();
             }
         }
     }
@@ -162,14 +162,14 @@ public class CameraController : MonoBehaviour
         {
             Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object (" + planModeCanvas.name + ") doesn't have a Canvas component!");
         }
-        scale = cam.orthographicSize;
+        scale = cam.fieldOfView;
         rotationUp = transform.up;
         //Initialize ScalePoints
-        scalePoints.Add(new ScalePoint(0.2f, false, plyrController));//Main Menu zoom level
-        scalePoints.Add(new ScalePoint(1, false, plyrController));
-        scalePoints.Add(new ScalePoint(1, true, plyrController));
-        scalePoints.Add(new ScalePoint(2, true, plyrController));
-        scalePoints.Add(new ScalePoint(4, true, plyrController));
+        scalePoints.Add(new ScalePoint(0.2f * 11, false, plyrController));//Main Menu zoom level
+        scalePoints.Add(new ScalePoint(1 * 11, false, plyrController));
+        scalePoints.Add(new ScalePoint(1 * 11, true, plyrController));
+        scalePoints.Add(new ScalePoint(2 * 11, true, plyrController));
+        scalePoints.Add(new ScalePoint(4 * 11, true, plyrController));
         //Set the initialize scale point
         scale = scalePoints[0].absoluteScalePoint();
         //Clean Delegates set up
@@ -182,7 +182,7 @@ public class CameraController : MonoBehaviour
         {
             prevScreenWidth = Screen.width;
             prevScreenHeight = Screen.height;
-            updateOrthographicSize();
+            updateFieldOfView();
         }
     }
 
@@ -426,15 +426,15 @@ public class CameraController : MonoBehaviour
     public delegate void OnZoomLevelChanged(float newZoomLevel, float delta);
     public OnZoomLevelChanged onZoomLevelChanged;
 
-    public void updateOrthographicSize()
+    public void updateFieldOfView()
     {
         if (Screen.height > Screen.width)//portrait orientation
         {
-            cam.orthographicSize = (scale * cam.pixelHeight) / cam.pixelWidth;
+            cam.fieldOfView = (scale * cam.pixelHeight) / cam.pixelWidth;
         }
         else
         {//landscape orientation
-            cam.orthographicSize = scale;
+            cam.fieldOfView = scale;
         }
     }
 

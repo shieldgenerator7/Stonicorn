@@ -54,13 +54,13 @@ public class CinematicCameraController : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.Minus))//Zoom out
             {
-                float factor = (cam.orthographicSize < 1) ? 0.1f : 1;
-                cam.orthographicSize += Time.deltaTime * factor;
+                float factor = (cam.fieldOfView < 1 * 11) ? 0.1f : 1;
+                cam.fieldOfView += Time.deltaTime * factor;
             }
             if (Input.GetKey(KeyCode.Equals))//Zoom in
             {
-                float factor = (cam.orthographicSize < 1) ? 0.1f : 1;
-                cam.orthographicSize -= Time.deltaTime * factor;
+                float factor = (cam.fieldOfView < 1 * 11) ? 0.1f : 1;
+                cam.fieldOfView -= Time.deltaTime * factor;
             }
         }
     }
