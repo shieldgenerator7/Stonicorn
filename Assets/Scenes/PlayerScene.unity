@@ -42052,6 +42052,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2052918, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 3}
+      propertyPath: orthographic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 3}
 --- !u!20 &1113871236 stripped
@@ -47338,24 +47342,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
---- !u!114 &1317851477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1317851474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: 578862de8c32ec64fa27e40ffde422fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startIsAlwaysAtOrigin: 1
-  parallaxLayers:
-  - Background
-  closeOrder: 5
-  farOrder: -350
 --- !u!4 &1317851479 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 446986, guid: 0b3255d4b4dc0a443a420e93fb27f62b,
@@ -47567,7 +47553,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:

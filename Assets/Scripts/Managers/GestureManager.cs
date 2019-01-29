@@ -233,7 +233,7 @@ public class GestureManager : SavableMonoBehaviour
                 origTime = Time.time;
                 curTime = origTime;
                 curMP2 = origMP2;
-                origMPWorld = (Vector2)cam.ScreenToWorldPoint(origMP);
+                origMPWorld = Utility.ScreenToWorldPoint(origMP);
                 break;
             case ClickState.Ended: //do the same thing you would for "in progress"
             case ClickState.InProgress:
@@ -249,7 +249,7 @@ public class GestureManager : SavableMonoBehaviour
             default:
                 throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + clickState);
         }
-        curMPWorld = (Vector2)cam.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
+        curMPWorld = Utility.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
 
 
         //
@@ -307,7 +307,7 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 if (isDrag)
                 {
-                    currentGP.processDragGesture(cam.ScreenToWorldPoint(origMP), curMPWorld);
+                    currentGP.processDragGesture(Utility.ScreenToWorldPoint(origMP), curMPWorld);
                 }
                 else if (isHoldGesture)
                 {

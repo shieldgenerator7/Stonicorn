@@ -318,7 +318,7 @@ public class CameraController : MonoBehaviour
                         );
                 }
                 //After fixing autoScreenPos, use it to update autoOffset
-                autoOffset = cam.ScreenToWorldPoint(autoScreenPos) - transform.position;
+                autoOffset = Utility.ScreenToWorldPoint(autoScreenPos) - (Vector2)transform.position;
                 autoOffsetCancelTime = Time.time + autoOffsetDuration;
             }
             else
@@ -451,7 +451,7 @@ public class CameraController : MonoBehaviour
     }
     public float distanceInWorldCoordinates(Vector2 screenPos1, Vector2 screenPos2)
     {
-        return Vector2.Distance(cam.ScreenToWorldPoint(screenPos1), cam.ScreenToWorldPoint(screenPos2));
+        return Vector2.Distance(Utility.ScreenToWorldPoint(screenPos1), Utility.ScreenToWorldPoint(screenPos2));
     }
     public float scalePointToZoomLevel(int scalePoint)
     {

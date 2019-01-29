@@ -350,4 +350,14 @@ public static class Utility
         return (value >= bound1 && value <= bound2)
             || (value >= bound2 && value <= bound1);
     }
+
+    public static Vector2 ScreenToWorldPoint(Vector3 worldPoint)
+    {
+        //2019-01-28: copied from an answer by Tomer-Barkan: https://answers.unity.com/questions/566519/camerascreentoworldpoint-in-perspective.html
+        Ray ray = Camera.main.ScreenPointToRay(worldPoint);
+        Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, 0));
+        float distance;
+        xy.Raycast(ray, out distance);
+        return ray.GetPoint(distance);
+    }
 }
