@@ -344,4 +344,10 @@ public static class Utility
         toObject.transform.rotation = fromTransform.rotation;
         toObject.transform.localScale = fromTransform.localScale;
     }
+
+    public static bool between(float value, float bound1, float bound2)
+    {
+        return (value >= bound1 && value <= bound2)
+            || (value >= bound2 && value <= bound1);
+    }
 }
