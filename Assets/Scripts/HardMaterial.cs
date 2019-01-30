@@ -18,9 +18,14 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     [SerializeField]
     private float integrity;//how intact it is. Material breaks apart when it reaches 0
     private bool alreadyBroken = false;//used to determine if pieces should spawn or not
+    [Header("Cracking Settings")]
     public GameObject crackedPrefab;//the prefab for the object broken into pieces
-    public List<GameObject> crackStages;
-    private List<SpriteRenderer> crackSprites = new List<SpriteRenderer>();
+    /// <summary>
+    /// true: the cracks are an overlay
+    /// false: the cracks replace the original sprite (original sprite must be in list)
+    /// </summary>
+    public bool crackedOverlay = true;
+    public List<SpriteRenderer> crackStages = new List<SpriteRenderer>();
     public List<AudioClip> crackSounds;
     public List<HiddenArea> secretHiders;//the hidden areas to show when cracked
 
@@ -29,10 +34,6 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
 
     void Start()
     {
-        foreach (GameObject crackStage in crackStages)
-        {
-            crackSprites.Add(crackStage.GetComponent<SpriteRenderer>());
-        }
         if (integrity == 0)
         {
             setIntegrity(maxIntegrity);
@@ -71,7 +72,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             EffectManager.collisionEffect(cp2ds[0].point, hitPercentage);
             for (int i = crackSounds.Count - 1; i >= 0; i--)
             {
-                float crackThreshold = 100 / (crackSprites.Count + 1 - i) - 20;
+                float crackThreshold = 100 / (crackSounds.Count + 1 - i) - 20;
                 if (i == 0)
                 {
                     crackThreshold = MINIMUM_CRACKSOUND_THRESHOLD;
@@ -133,19 +134,9 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
         integrity = Mathf.Clamp(newIntegrity, 0, maxIntegrity);
         if (integrity > 0)
         {
-            float baseAlpha = 1.0f - (integrity / maxIntegrity);
-            for (int i = 0; i < crackSprites.Count; i++)
-            {
-                float thresholdLower = i * 1 / (float)crackSprites.Count;
-                float alpha = 0;
-                if (baseAlpha > thresholdLower)
-                {
-                    alpha = (baseAlpha - thresholdLower) * crackSprites.Count;
-                }
-                SpriteRenderer sr = crackSprites[i];
-                Color c = sr.color;
-                sr.color = new Color(c.r, c.g, c.b, alpha);
-            }
+            //Display cracked sprites
+            updateCrackingDisplay(integrity);
+            //
             if (alreadyBroken || !gameObject.activeInHierarchy || oldIntegrity < 0)
             {
                 GameManager.saveForgottenObject(gameObject, false);
@@ -222,6 +213,44 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     public float getIntegrity()
     {
         return integrity;
+    }
+
+    private void updateCrackingDisplay(float currentIntegrity)
+    {
+        if (crackedOverlay)
+        {
+            float baseAlpha = 1.0f - (currentIntegrity / maxIntegrity);
+            for (int i = 0; i < crackStages.Count; i++)
+            {
+                float thresholdLower = i * 1 / (float)crackStages.Count;
+                float alpha = 0;
+                if (baseAlpha > thresholdLower)
+                {
+                    alpha = (baseAlpha - thresholdLower) * crackStages.Count;
+                }
+                SpriteRenderer sr = crackStages[i];
+                Color c = sr.color;
+                c.a = alpha;
+                sr.color = c;
+            }
+        }
+        else
+        {
+            float integrityPoint = 1.0f - (currentIntegrity / maxIntegrity);
+            for (int i = 0; i < crackStages.Count; i++)
+            {
+                //Find the fade amount
+                float spacing = 1 / (float)crackStages.Count;
+                float linearPoint = i * 1 / (float)crackStages.Count;
+                float linearDistance = Mathf.Abs(integrityPoint - linearPoint);
+                float alpha = Mathf.Clamp(1 - linearDistance/spacing, 0, 1);
+                //Update the SpriteRenderer alpha
+                SpriteRenderer sr = crackStages[i];
+                Color c = sr.color;
+                c.a = alpha;
+                sr.color = c;
+            }
+        }
     }
 
     /// <summary>
