@@ -136,7 +136,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
         {
             //Display cracked sprites
             updateCrackingDisplay(integrity);
-            //
+            //Forgotten Objects
             if (alreadyBroken || !gameObject.activeInHierarchy || oldIntegrity < 0)
             {
                 GameManager.saveForgottenObject(gameObject, false);
@@ -171,7 +171,12 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                         t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
                         //Sprite Renderer Copying
                         SpriteRenderer sr = t.gameObject.GetComponent<SpriteRenderer>();
-                        sr.color = origSR.color;
+                        Color color = origSR.color;
+                        if (!crackedOverlay)
+                        {
+                            color.a = 1;
+                        }
+                        sr.color = color;
                         sr.sortingLayerID = origSR.sortingLayerID;
                         sr.sortingOrder = origSR.sortingOrder;
                     }
@@ -236,15 +241,15 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
         }
         else
         {
-            float integrityPoint = 1.0f - (currentIntegrity / maxIntegrity);
+            float baseAlpha = 1.0f - (currentIntegrity / maxIntegrity);
             for (int i = 0; i < crackStages.Count; i++)
             {
-                //Find the fade amount
-                float spacing = 1 / (float)crackStages.Count;
-                float linearPoint = i * 1 / (float)crackStages.Count;
-                float linearDistance = Mathf.Abs(integrityPoint - linearPoint);
-                float alpha = Mathf.Clamp(1 - linearDistance/spacing, 0, 1);
-                //Update the SpriteRenderer alpha
+                float thresholdUpper = (i + 2) * 1 / (float)crackStages.Count;
+                float alpha = 0;
+                if (thresholdUpper >= baseAlpha)
+                {
+                    alpha = (thresholdUpper - baseAlpha) * crackStages.Count;
+                }
                 SpriteRenderer sr = crackStages[i];
                 Color c = sr.color;
                 c.a = alpha;
