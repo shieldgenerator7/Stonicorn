@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73ddb2958e9cd451c82f37c26efa5eb0, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -72,16 +72,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3286163911610860551, guid: 559a18fcb29f61d4dafa15f251c4698f,
-    type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2c941a8cb90933d4eab5781de64b91f4, type: 3}
   m_Color: {r: 0.7294118, g: 0.7294118, b: 0.7294118, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.73138, y: 0.8825747}
+  m_Size: {x: 3.6611764, y: 0.8682353}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!60 &7706170780496168624
@@ -101,8 +100,8 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.73138, y: 0.8825747}
-    newSize: {x: 3.73138, y: 0.8825747}
+    oldSize: {x: 3.6611764, y: 0.8682353}
+    newSize: {x: 3.6611764, y: 0.8682353}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -203,6 +202,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6337692980633725990, guid: 2c7ff22c50ece704a8daa219fd023c3f,
         type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: -6337692980633725990, guid: 2c7ff22c50ece704a8daa219fd023c3f,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b1ad5cf8a6633014288923157075c9dd,
+        type: 3}
+    - target: {fileID: -6337692980633725990, guid: 2c7ff22c50ece704a8daa219fd023c3f,
+        type: 3}
       propertyPath: m_Color.r
       value: 0.7294118
       objectReference: {fileID: 0}
@@ -215,6 +225,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0.7294118
+      objectReference: {fileID: 0}
+    - target: {fileID: -6337692980633725990, guid: 2c7ff22c50ece704a8daa219fd023c3f,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 3.6611764
+      objectReference: {fileID: 0}
+    - target: {fileID: -6337692980633725990, guid: 2c7ff22c50ece704a8daa219fd023c3f,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.85411763
+      objectReference: {fileID: 0}
+    - target: {fileID: -6337692980633725990, guid: 2c7ff22c50ece704a8daa219fd023c3f,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -333248778355356698, guid: 2c7ff22c50ece704a8daa219fd023c3f,
         type: 3}
@@ -300,6 +325,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -790081335244395572, guid: 2eb32d1a31b71424ebe19f28c2f6370c,
         type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: -790081335244395572, guid: 2eb32d1a31b71424ebe19f28c2f6370c,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 278dce238ac89cd49aca14a2784270d2,
+        type: 3}
+    - target: {fileID: -790081335244395572, guid: 2eb32d1a31b71424ebe19f28c2f6370c,
+        type: 3}
       propertyPath: m_Color.r
       value: 0.7294118
       objectReference: {fileID: 0}
@@ -312,6 +348,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0.7294118
+      objectReference: {fileID: 0}
+    - target: {fileID: -790081335244395572, guid: 2eb32d1a31b71424ebe19f28c2f6370c,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 3.6611764
+      objectReference: {fileID: 0}
+    - target: {fileID: -790081335244395572, guid: 2eb32d1a31b71424ebe19f28c2f6370c,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.8447059
+      objectReference: {fileID: 0}
+    - target: {fileID: -790081335244395572, guid: 2eb32d1a31b71424ebe19f28c2f6370c,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2408963949161401299, guid: 2eb32d1a31b71424ebe19f28c2f6370c,
         type: 3}
