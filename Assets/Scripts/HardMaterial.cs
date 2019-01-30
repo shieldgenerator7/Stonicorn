@@ -179,6 +179,19 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                         sr.color = color;
                         sr.sortingLayerID = origSR.sortingLayerID;
                         sr.sortingOrder = origSR.sortingOrder;
+                        //Hard Material Copying
+                        HardMaterial hm = t.gameObject.GetComponent<HardMaterial>();
+                        if (hm)
+                        {
+                            hm.material = this.material;
+                            hm.hardness = this.hardness;
+                            hm.forceThreshold = this.forceThreshold;
+                            hm.maxIntegrity = this.maxIntegrity;
+                            if (hm.integrity == 0)
+                            {
+                                hm.integrity = this.maxIntegrity / pieces.transform.childCount;
+                            }
+                        }
                     }
                     shouldRefresh = true;
                 }
