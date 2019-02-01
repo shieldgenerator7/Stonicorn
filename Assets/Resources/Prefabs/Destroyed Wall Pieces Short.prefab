@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!50 &7995445266733891645
+--- !u!50 &301
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -21,7 +21,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &1638571962522749254
+--- !u!60 &331
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,7 +63,7 @@ PolygonCollider2D:
       - {x: 0.34056234, y: -0.05630064}
       - {x: 0.30968618, y: 0.08587909}
       - {x: 0.31185293, y: 0.24724007}
---- !u!114 &8582398129991543318
+--- !u!114 &469
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   crackStages: []
   crackSounds: []
   secretHiders: []
---- !u!50 &5517659539711056862
+--- !u!50 &299
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -108,7 +108,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &205527696619974480
+--- !u!60 &329
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,7 +149,7 @@ PolygonCollider2D:
       - {x: 0.38389164, y: -0.29745883}
       - {x: 0.2693134, y: 0.1295033}
       - {x: 0.34601933, y: 0.30549818}
---- !u!114 &4436656433336933570
+--- !u!114 &463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,7 +173,7 @@ MonoBehaviour:
   crackStages: []
   crackSounds: []
   secretHiders: []
---- !u!50 &6342355882665202797
+--- !u!50 &300
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -194,7 +194,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &6718411595695839593
+--- !u!60 &335
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,7 +231,7 @@ PolygonCollider2D:
       - {x: 0.08638501, y: -0.35842425}
       - {x: 0.18845105, y: -0.38954502}
       - {x: 0.26654553, y: 0.06560845}
---- !u!114 &6066422856438159525
+--- !u!114 &464
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -255,7 +255,7 @@ MonoBehaviour:
   crackStages: []
   crackSounds: []
   secretHiders: []
---- !u!1 &8057035567152517843
+--- !u!1 &189
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,8 +263,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7768210250663785449}
-  - component: {fileID: 6798346040271832166}
+  - component: {fileID: 251}
+  - component: {fileID: 467}
   m_Layer: 0
   m_Name: Destroyed Wall Pieces Short
   m_TagString: Untagged
@@ -272,13 +272,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7768210250663785449
+--- !u!4 &251
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8057035567152517843}
+  m_GameObject: {fileID: 189}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 126.896225, y: -4.0589805, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -289,13 +289,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6798346040271832166
+--- !u!114 &467
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8057035567152517843}
+  m_GameObject: {fileID: 189}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_GeneratorAsset: {fileID: 0}
@@ -309,7 +309,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 7768210250663785449}
+    m_TransformParent: {fileID: 251}
     m_Modifications:
     - target: {fileID: -2087516434155977753, guid: 48ed6ce18daaa2f4c937633781e66721,
         type: 3}
@@ -391,7 +391,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 7768210250663785449}
+    m_TransformParent: {fileID: 251}
     m_Modifications:
     - target: {fileID: -3535668508043901616, guid: 1d533438bd95adb41b4fcae894fc2ae9,
         type: 3}
@@ -473,7 +473,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 7768210250663785449}
+    m_TransformParent: {fileID: 251}
     m_Modifications:
     - target: {fileID: -767578241262759269, guid: 30f12dcd6924b3346a7a99a3a46beb25,
         type: 3}

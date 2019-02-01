@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!50 &4452235668846801456
+--- !u!50 &298
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -21,7 +21,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &2447033130588814430
+--- !u!60 &332
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,7 +60,7 @@ PolygonCollider2D:
       - {x: 0.14056396, y: -0.4399295}
       - {x: 0.38681793, y: -0.3089707}
       - {x: 0.26887512, y: 0.13624763}
---- !u!114 &7675367706901895876
+--- !u!114 &468
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
---- !u!50 &2865923038136620395
+--- !u!50 &296
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -108,7 +108,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &3177327183163740844
+--- !u!60 &333
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,7 +152,7 @@ PolygonCollider2D:
       - {x: 0.39491272, y: -0.43197203}
       - {x: 0.54714966, y: -0.41155577}
       - {x: 0.58904266, y: 0.21902227}
---- !u!114 &2807696923379701880
+--- !u!114 &462
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,7 +179,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
---- !u!1 &3458929417476485557
+--- !u!1 &183
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,8 +187,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8453530323537857731}
-  - component: {fileID: 6083354238388678995}
+  - component: {fileID: 253}
+  - component: {fileID: 465}
   m_Layer: 0
   m_Name: Destroyed Wall Pieces
   m_TagString: Untagged
@@ -196,13 +196,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8453530323537857731
+--- !u!4 &253
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3458929417476485557}
+  m_GameObject: {fileID: 183}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 123.58, y: -3.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -214,13 +214,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6083354238388678995
+--- !u!114 &465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3458929417476485557}
+  m_GameObject: {fileID: 183}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_GeneratorAsset: {fileID: 0}
@@ -229,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabName: Destroyed Wall Pieces
   spawnTag: 
---- !u!50 &3352992379485402874
+--- !u!50 &297
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -250,7 +250,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &879724989270189487
+--- !u!60 &330
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,7 +294,7 @@ PolygonCollider2D:
       - {x: 0.40409088, y: -0.30074382}
       - {x: 0.48044586, y: -0.3312812}
       - {x: 0.602478, y: 0.33470058}
---- !u!114 &1359787065917846980
+--- !u!114 &461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -321,7 +321,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
---- !u!50 &1358667197027771994
+--- !u!50 &295
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -342,7 +342,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &6416314895410631797
+--- !u!60 &334
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -383,7 +383,7 @@ PolygonCollider2D:
       - {x: 0.28074646, y: -0.3697989}
       - {x: 0.34314728, y: -0.27431846}
       - {x: 0.35710907, y: -0.12898564}
---- !u!114 &6582126037973952777
+--- !u!114 &466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -415,7 +415,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 8453530323537857731}
+    m_TransformParent: {fileID: 253}
     m_Modifications:
     - target: {fileID: -6911500194383881829, guid: 457a742a731256849ae92b9807e6a0da,
         type: 3}
@@ -497,7 +497,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 8453530323537857731}
+    m_TransformParent: {fileID: 253}
     m_Modifications:
     - target: {fileID: -5358632588846928075, guid: f8982bfac91490648ad78c65013945f0,
         type: 3}
@@ -579,7 +579,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 8453530323537857731}
+    m_TransformParent: {fileID: 253}
     m_Modifications:
     - target: {fileID: 8132661164015043806, guid: e8dbbd2d5f78c9a408ce1d276da89e88,
         type: 3}
@@ -661,7 +661,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 8453530323537857731}
+    m_TransformParent: {fileID: 253}
     m_Modifications:
     - target: {fileID: -684792633395741568, guid: b7db7a4484dad0f4e9d6c4a767555f4a,
         type: 3}
