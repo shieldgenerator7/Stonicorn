@@ -37,7 +37,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
         if (showFX)
         {
             //Ability Indicator Animation Setup
-            if (abilityIndicatorName != null)
+            if (abilityIndicatorName != null && abilityIndicatorName != "")
             {
                 foreach (GameObject abilityIndicator in GameObject.FindGameObjectsWithTag("AbilityIndicator"))
                 {
