@@ -1,13 +1,24 @@
 fileFormatVersion: 2
 guid: 0a5cb6b1a51da97478673fcd974d1558
 ScriptedImporter:
-  fileIDToRecycleName:
-    100000: gameObject/BabelTower
-    400000: gameObject/BabelTower/Transform
-    21200000: gameObject/BabelTower/SpriteRenderer
-    21300000: sprite
-    100100000: gameObject
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: gameObject/BabelTower
+  - first:
+      4: 400000
+    second: gameObject/BabelTower/Transform
+  - first:
+      212: 21200000
+    second: gameObject/BabelTower/SpriteRenderer
+  - first:
+      213: 21300000
+    second: sprite
+  - first:
+      1001: 100100000
+    second: gameObject
   externalObjects: {}
+  serializedVersion: 2
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -21,8 +32,8 @@ ScriptedImporter:
   generatePhysicsShape: 0
   preserveViewport: 0
   advancedMode: 0
-  predefinedResolutionIndex: 1
-  targetResolution: 1080
+  predefinedResolutionIndex: 0
+  targetResolution: 2160
   resolutionMultiplier: 1
   stepDistance: 10
   samplingStepDistance: 100
@@ -52,4 +63,5 @@ ScriptedImporter:
         width: 0
         height: 0
       spriteID: a57e271d80103fb4dbca6cac0c0e2c84
+      internalID: 0
     PhysicsOutlines: []
