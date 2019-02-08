@@ -50,7 +50,12 @@ public class SnailController : MonoBehaviour
             Debug.DrawLine(transform.position, (Vector2)transform.position + floorDirection, Color.blue);
 
             Debug.DrawLine(transform.position, lastSeenFoodPosition, Color.red);
-            rollDistance += Vector2.Distance(transform.position, prevPos);
+            //If it's further from the target than it was before,
+            if ((lastSeenFoodPosition - (Vector2)transform.position).sqrMagnitude >
+                (lastSeenFoodPosition - prevPos).sqrMagnitude) {
+                //add to the total count of distance
+                rollDistance += Vector2.Distance(transform.position, prevPos);
+            }
             prevPos = transform.position;
             if (rollDistance >= rollDistanceTarget)
             {
@@ -105,7 +110,10 @@ public class SnailController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        checkHuntState();
+        if (!isScared)
+        {
+            checkHuntState();
+        }
     }
 
     /// <summary>
@@ -127,7 +135,6 @@ public class SnailController : MonoBehaviour
                 //there is food in the collider
                 lastSeenFoodPosition = rch2d.point;
                 Debug.DrawLine(transform.position, lastSeenFoodPosition, Color.red, 1);
-                rollDistanceTarget = Vector2.Distance(rch2d.point, transform.position);
                 rollDistance = 0;
                 rotateSpeed = Mathf.Abs(rotateSpeed)
                     * ((Vector3.Angle(
