@@ -7,6 +7,7 @@ public class SnailController : MonoBehaviour
     [Header("Settings")]
     public string food = "stone";
     public float moveSpeed;
+    public float jumpSpeed = 10;
     public float rotateSpeed;
     public float stickForce = 9.81f;//how much force it uses to stick to walls
     public float restickAngleAdjustment = 45;//used to keep it stuck to land around corners
@@ -71,10 +72,17 @@ public class SnailController : MonoBehaviour
                 }
             }
         }
-        animator.SetBool("scared", isScared);
         if (!isScared && somethingInTrigger)
         {
             checkHuntState();
+        }
+
+        //Unstucking
+        if (isScared && Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0))
+        {
+            rb2d.velocity = (floorRight * -Mathf.Sign(rotateSpeed) * moveSpeed)
+                + (floorDirection * jumpSpeed);
+            Debug.DrawLine(transform.position, (Vector2)transform.position + rb2d.velocity, Color.cyan, 1);
         }
     }
 
