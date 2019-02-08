@@ -17,6 +17,7 @@ public class SnailController : MonoBehaviour
     public Vector2 floorRight;//if floorDirection is Vector2.up, floorRight is Vector2.right
     private Dictionary<GameObject, ContactPoint2D[]> touchingObjects = new Dictionary<GameObject, ContactPoint2D[]>();
     public bool isScared = false;
+    public bool somethingInTrigger = false;
     public float rollDistanceTarget = 0;//how far this snail is willing to roll for the current target
     public float rollDistance = 0;//how far this snail has gone for the current target
     public Vector2 prevPos;
@@ -52,7 +53,8 @@ public class SnailController : MonoBehaviour
             Debug.DrawLine(transform.position, lastSeenFoodPosition, Color.red);
             //If it's further from the target than it was before,
             if ((lastSeenFoodPosition - (Vector2)transform.position).sqrMagnitude >
-                (lastSeenFoodPosition - prevPos).sqrMagnitude) {
+                (lastSeenFoodPosition - prevPos).sqrMagnitude)
+            {
                 //add to the total count of distance
                 rollDistance += Vector2.Distance(transform.position, prevPos);
             }
@@ -63,12 +65,17 @@ public class SnailController : MonoBehaviour
                 if (count > 0)
                 {
                     isScared = false;
+                    animator.SetBool("scared", isScared);
                     rb2d.angularVelocity = 0;
                     checkHuntState();
                 }
             }
         }
         animator.SetBool("scared", isScared);
+        if (!isScared && somethingInTrigger)
+        {
+            checkHuntState();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -110,9 +117,30 @@ public class SnailController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isScared)
+        checkSomethingInTrigger();
+        if (somethingInTrigger && !isScared)
         {
             checkHuntState();
+        }
+    }
+
+    void checkSomethingInTrigger()
+    {//2019-02-08: copied from checkHuntState()
+        somethingInTrigger = false;
+        Utility.RaycastAnswer answer = Utility.CastAnswer(stoneDetector, Vector2.zero);
+        for (int i = 0; i < answer.count; i++)
+        {
+            RaycastHit2D rch2d = answer.rch2ds[i];
+            GameObject collGO = rch2d.collider.gameObject;
+            if (collGO != this.gameObject)
+            {
+                HardMaterial hm = collGO.GetComponent<HardMaterial>();
+                if (hm && hm.material == food)
+                {
+                    somethingInTrigger = true;
+                    return;
+                }
+            }
         }
     }
 
@@ -125,25 +153,32 @@ public class SnailController : MonoBehaviour
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
-            if (rch2d.collider.gameObject == this.gameObject)
+            GameObject collGO = rch2d.collider.gameObject;
+            if (collGO == this.gameObject)
             {
                 continue;
             }
-            HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
+            HardMaterial hm = collGO.GetComponent<HardMaterial>();
             if (hm && hm.material == food)
             {
-                //there is food in the collider
-                lastSeenFoodPosition = rch2d.point;
-                Debug.DrawLine(transform.position, lastSeenFoodPosition, Color.red, 1);
-                rollDistance = 0;
-                rotateSpeed = Mathf.Abs(rotateSpeed)
-                    * ((Vector3.Angle(
-                        lastSeenFoodPosition - (Vector2)transform.position,
-                        floorRight
-                        ) < 90) ? -1 : 1);
-                prevPos = transform.position;
-                isScared = true;
-                return;
+                somethingInTrigger = true;
+                bool los = Utility.lineOfSight(this.gameObject, collGO);
+                if (los)
+                {
+                    //there is food in the collider
+                    lastSeenFoodPosition = rch2d.point;
+                    Debug.DrawLine(transform.position, lastSeenFoodPosition, Color.red, 1);
+                    //rollDistanceTarget = Vector2.Distance(rch2d.point, transform.position);
+                    rollDistance = 0;
+                    rotateSpeed = Mathf.Abs(rotateSpeed)
+                        * ((Vector3.Angle(
+                            lastSeenFoodPosition - (Vector2)transform.position,
+                            floorRight
+                            ) < 90) ? -1 : 1);
+                    prevPos = transform.position;
+                    isScared = true;
+                    return;
+                }
             }
         }
     }

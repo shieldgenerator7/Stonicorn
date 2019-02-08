@@ -143,7 +143,7 @@ public static class Utility
     /// <param name="first"></param>
     /// <param name="second"></param>
     /// <returns></returns>
-    public static bool lineOfSight(GameObject first, GameObject second)
+    public static bool lineOfSight(GameObject first, GameObject second, bool countTriggers = false)
     {
         Vector2 pos1 = first.transform.position;
         Vector2 pos2 = second.transform.position;
@@ -151,9 +151,20 @@ public static class Utility
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
-            if (rch2d.collider.gameObject != first && rch2d.collider.gameObject != second)
+
+            if (!rch2d.collider.isTrigger || countTriggers)
             {
-                return false;
+                GameObject collGO = rch2d.collider.gameObject;
+                if (collGO != first && collGO != second)
+                {
+                    if (collGO.transform.parent == null
+                        || (collGO.transform.parent.gameObject != first
+                        && collGO.transform.parent.gameObject != second))
+                    {
+                        Debug.Log("LoS check between " + first.name + " and " + second.name + " failed: " + collGO.name);
+                        return false;
+                    }
+                }
             }
         }
         return true;
