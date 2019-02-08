@@ -46,6 +46,9 @@ public class SnailController : MonoBehaviour
         }
         //Own gravity
         rb2d.AddForce(-floorDirection * rb2d.mass * stickForce);
+
+        //Hunting
+        animator.SetBool("scared", isScared);
         if (isScared)
         {
             rb2d.angularVelocity = rotateSpeed;
@@ -67,7 +70,13 @@ public class SnailController : MonoBehaviour
                 {
                     isScared = false;
                     animator.SetBool("scared", isScared);
-                    rb2d.angularVelocity = 0;
+                    //Flipping
+                    if (rb2d.angularVelocity != 0)
+                    {
+                        Vector3 flipScale = animator.transform.localScale;
+                        flipScale.x = Mathf.Sign(rb2d.angularVelocity);
+                        animator.transform.localScale = flipScale;
+                    }
                     checkHuntState();
                 }
             }
