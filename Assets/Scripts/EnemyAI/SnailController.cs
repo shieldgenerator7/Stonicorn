@@ -73,6 +73,5 @@ public class SnailController : MonoBehaviour
 
         floorDirection = newFD;
         floorRight = Utility.RotateZ(floorDirection, -90);
-        }
     }
 }
