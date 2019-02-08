@@ -72,7 +72,7 @@ public class GravityZone : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (GameManager.isRewinding())
+        if (GameManager.Rewinding)
         {
             return;//don't do anything if the time is rewinding
         }

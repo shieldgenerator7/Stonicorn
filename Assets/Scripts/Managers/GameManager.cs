@@ -231,7 +231,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isRewinding())
+        if (Rewinding)
         {
             if (Time.time > actionTime)
             {
@@ -469,13 +469,17 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public static bool isRewinding()
+    public static bool Rewinding
     {
-        if (instance == null)
+        get
         {
-            instance = FindObjectOfType<GameManager>();
+            if (instance == null)
+            {
+                instance = FindObjectOfType<GameManager>();
+            }
+            return instance.chosenId > instance.rewindId;
         }
-        return instance.chosenId > instance.rewindId;
+        private set { }
     }
     public void cancelRewind()
     {

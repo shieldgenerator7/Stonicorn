@@ -37,7 +37,11 @@ public class SnailController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (GameManager.Rewinding)
+        {
+            //don't update while game manager is rewinding
+            return;
+        }
         //Own gravity
         rb2d.AddForce(-floorDirection * rb2d.mass * stickForce);
         if (isScared)

@@ -48,7 +48,7 @@ public class SceneLoader : MonoBehaviour
                 loadLevel();
             }
         }
-        if (!GameManager.isRewinding() || firstOpenGameStateId > GameManager.getCurrentStateId())
+        if (!GameManager.Rewinding || firstOpenGameStateId > GameManager.getCurrentStateId())
         {
             if (isLoaded && !overlaps)
             {

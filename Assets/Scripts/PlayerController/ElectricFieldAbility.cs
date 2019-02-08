@@ -48,7 +48,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
     void Update()
     {
-        if (!GameManager.isRewinding())
+        if (!GameManager.Rewinding)
         {
             if (Time.time > lastDisruptTime + activationDelay)
             {
