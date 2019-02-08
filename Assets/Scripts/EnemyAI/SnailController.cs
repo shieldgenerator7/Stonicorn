@@ -113,6 +113,10 @@ public class SnailController : MonoBehaviour
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
+            if (rch2d.collider.gameObject == this.gameObject)
+            {
+                continue;
+            }
             HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
             if (hm && hm.material == food)
             {

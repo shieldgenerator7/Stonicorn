@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 2897467820420327006}
   - component: {fileID: 3668579007917424570}
+  - component: {fileID: 2897467820420327001}
   - component: {fileID: 2897467820420327000}
   - component: {fileID: 8435740046917698784}
   - component: {fileID: 3118900764096104388}
-  - component: {fileID: 2897467820420327001}
   - component: {fileID: 3318912744836079946}
   - component: {fileID: 2043419896947057584}
+  - component: {fileID: 7585513601979807100}
   m_Layer: 0
   m_Name: Snail
   m_TagString: Untagged
@@ -86,6 +87,33 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2897467820420327001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897467820420327007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 59f8986261aa7804a8841709d0433ec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  food: stone
+  moveSpeed: 0
+  rotateSpeed: 100
+  stickForce: 9.81
+  restickAngleAdjustment: 45
+  floorDirection: {x: 0, y: 0}
+  floorRight: {x: 0, y: 0}
+  isScared: 0
+  rollDistanceTarget: 0
+  rollDistance: 0
+  prevPos: {x: 0, y: 0}
+  animator: {fileID: 2897467821716145704}
+  bottomDetector: {fileID: 3118900764096104388}
+  stoneDetector: {fileID: 2043419896947057584}
 --- !u!50 &2897467820420327000
 Rigidbody2D:
   serializedVersion: 4
@@ -139,33 +167,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
   m_Radius: 0.06377256
---- !u!114 &2897467820420327001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2897467820420327007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: 59f8986261aa7804a8841709d0433ec8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  food: stone
-  moveSpeed: 0
-  rotateSpeed: 100
-  stickForce: 9.81
-  restickAngleAdjustment: 45
-  floorDirection: {x: 0, y: 0}
-  floorRight: {x: 0, y: 0}
-  isScared: 0
-  rollDistanceTarget: 0
-  rollDistance: 0
-  prevPos: {x: 0, y: 0}
-  animator: {fileID: 2897467821716145704}
-  bottomDetector: {fileID: 3118900764096104388}
-  stoneDetector: {fileID: 2043419896947057584}
 --- !u!114 &3318912744836079946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +198,33 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 10
+--- !u!114 &7585513601979807100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897467820420327007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: stone
+  hardness: 3
+  forceThreshold: 50
+  maxIntegrity: 100
+  disappearsIfNoBrokenPrefab: 1
+  integrity: 100
+  crackedPrefab: {fileID: 0}
+  crackedOverlay: 1
+  crackStages: []
+  crackSounds:
+  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  secretHiders: []
 --- !u!1 &2897467821716145710
 GameObject:
   m_ObjectHideFlags: 0
