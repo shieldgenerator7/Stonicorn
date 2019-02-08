@@ -152,12 +152,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f8986261aa7804a8841709d0433ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  food: stone
   moveSpeed: 0
   rotateSpeed: 100
   stickForce: 9.81
   restickAngleAdjustment: 45
   floorDirection: {x: 0, y: 0}
   floorRight: {x: 0, y: 0}
+  isScared: 0
+  rollDistanceTarget: 0
+  rollDistance: 0
+  prevPos: {x: 0, y: 0}
   animator: {fileID: 2897467821716145704}
   bottomDetector: {fileID: 3118900764096104388}
   stoneDetector: {fileID: 2043419896947057584}
@@ -203,6 +208,7 @@ GameObject:
   - component: {fileID: 2897467821716145705}
   - component: {fileID: 2897467821716145707}
   - component: {fileID: 2897467821716145704}
+  - component: {fileID: 4713897332517772897}
   m_Layer: 0
   m_Name: snail_body
   m_TagString: Untagged
@@ -291,3 +297,29 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &4713897332517772897
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897467821716145710}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.7913475, y: 0.23584604}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 1, y: 0}
+    oldSize: {x: 1.62, y: 1.01}
+    newSize: {x: 1.62, y: 1.01}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.3162003, y: 0.4716921}
+  m_EdgeRadius: 0
