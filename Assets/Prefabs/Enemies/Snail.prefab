@@ -100,7 +100,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 777874910ec66ff4eac8a47546d85dd9, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -151,9 +151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0
-  rotateSpeed: 0
+  rotateSpeed: 100
   stickForce: 9.81
-  acceptNewWallAngleThreshold: 170
+  restickAngleAdjustment: 45
   floorDirection: {x: 0, y: 0}
   floorRight: {x: 0, y: 0}
   animator: {fileID: 2897467821716145704}

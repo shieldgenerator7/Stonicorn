@@ -8,12 +8,13 @@ public class SnailController : MonoBehaviour
     public float moveSpeed;
     public float rotateSpeed;
     public float stickForce = 9.81f;//how much force it uses to stick to walls
-    public float acceptNewWallAngleThreshold = 170;
+    public float restickAngleAdjustment = 45;//used to keep it stuck to land around corners
 
     //Runtime Vars
     private Vector2 lastSeenStonePosition;//where stone was last seen
     public Vector2 floorDirection;//points away from the floor
     public Vector2 floorRight;//if floorDirection is Vector2.up, floorRight is Vector2.right
+    private Dictionary<GameObject, ContactPoint2D[]> touchingObjects = new Dictionary<GameObject, ContactPoint2D[]>();
 
     [Header("Components")]
     public Animator animator;
@@ -39,15 +40,39 @@ public class SnailController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Vector2 newFD = collision.contacts[0].normal;
-        float newRot = Utility.RotationZ(rb2d.velocity, newFD);
-        float curRot = Utility.RotationZ(rb2d.velocity, floorDirection);
-        if (floorDirection == Vector2.zero
-            || (rotateSpeed > 0 && newRot < curRot)
-            || (rotateSpeed < 0 && newRot > curRot))
+        updateFloorVector(collision, true);
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        updateFloorVector(collision, false);
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (touchingObjects.ContainsKey(collision.gameObject))
         {
-            floorDirection = newFD;
+            touchingObjects.Remove(collision.gameObject);
+        }
+        if (touchingObjects.Count == 0)
+        {
+            floorDirection = Utility.RotateZ(floorDirection, restickAngleAdjustment * Mathf.Sign(rotateSpeed));
             floorRight = Utility.RotateZ(floorDirection, -90);
+        }
+    }
+    void updateFloorVector(Collision2D collision, bool updateVelocity)
+    {
+        touchingObjects[collision.gameObject] = collision.contacts;
+        Vector2 newFD = Vector2.zero;
+        foreach (ContactPoint2D[] cp2ds in touchingObjects.Values)
+        {
+            foreach (ContactPoint2D cp2d in cp2ds)
+            {
+                newFD += cp2d.normal;
+            }
+        }
+        newFD.Normalize();
+
+        floorDirection = newFD;
+        floorRight = Utility.RotateZ(floorDirection, -90);
         }
     }
 }
