@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 8435740046917698784}
   - component: {fileID: 3118900764096104388}
   - component: {fileID: 2897467820420327001}
+  - component: {fileID: 3318912744836079946}
+  - component: {fileID: 2043419896947057584}
   m_Layer: 0
   m_Name: Snail
   m_TagString: Untagged
@@ -158,7 +160,38 @@ MonoBehaviour:
   floorRight: {x: 0, y: 0}
   animator: {fileID: 2897467821716145704}
   bottomDetector: {fileID: 3118900764096104388}
-  stoneDetector: {fileID: 0}
+  stoneDetector: {fileID: 2043419896947057584}
+--- !u!114 &3318912744836079946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897467820420327007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usesSideVector: 0
+  acceptsGravity: 0
+--- !u!58 &2043419896947057584
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897467820420327007}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 10
 --- !u!1 &2897467821716145710
 GameObject:
   m_ObjectHideFlags: 0
