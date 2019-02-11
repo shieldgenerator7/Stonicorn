@@ -457,7 +457,13 @@ public class GestureManager : SavableMonoBehaviour
         touchCount = 1;
         clickState = ClickState.Began;
         origMP = Input.GetTouch(tapIndex).position;
-        isCameraMovementOnly = false;
+        if (isPinchGesture)
+        {
+            isDrag = true;
+        }
+        else { 
+            isCameraMovementOnly = false;
+        }
     }
 
     /// <summary>
