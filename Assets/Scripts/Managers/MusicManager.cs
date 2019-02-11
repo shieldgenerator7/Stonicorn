@@ -66,6 +66,19 @@ public class MusicManager : MonoBehaviour
             updateVolume();
         }
     }
+    [Range(-3, 3)]
+    private float songSpeed = 1.0f;//how fast the song should play
+    public float SongSpeed
+    {
+        get { return songSpeed; }
+        set
+        {
+            songSpeed = value;
+            currentSong.pitch = songSpeed;
+        }
+    }
+    public float normalSongSpeed = 1;
+    public float rewindSongSpeed = -1.5f;
 
     // Update is called once per frame
     void Update()
@@ -107,6 +120,8 @@ public class MusicManager : MonoBehaviour
             {
                 prevSong = newSong;
             }
+            currentSong.pitch = songSpeed;
+            prevSong.pitch = songSpeed;
         }
     }
 

@@ -400,7 +400,7 @@ public class GameManager : MonoBehaviour
         {
             //After rewind is finished, refresh the game object list
             refreshGameObjects();
-            musicManager.endEventSong(timeRewindMusic);
+            musicManager.SongSpeed = musicManager.normalSongSpeed;
             //Open Scenes
             foreach (SceneLoader sl in sceneLoaders)
             {
@@ -481,7 +481,7 @@ public class GameManager : MonoBehaviour
     {
         rewindId = chosenId;
         Load(chosenId);
-        musicManager.endEventSong(timeRewindMusic);
+        musicManager.SongSpeed = musicManager.normalSongSpeed;
     }
     public static void RewindToStart()
     {
@@ -494,7 +494,7 @@ public class GameManager : MonoBehaviour
     /// <param name="gamestateId"></param>
     void Rewind(int gamestateId)
     {
-        musicManager.setEventSong(timeRewindMusic);
+        musicManager.SongSpeed = musicManager.rewindSongSpeed;
         rewindId = gamestateId;
         camCtr.recenter();
     }
