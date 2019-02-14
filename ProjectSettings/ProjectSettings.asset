@@ -275,6 +275,8 @@ PlayerSettings:
     height: 180
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
+  AndroidValidateAppBundleSize: 1
+  AndroidAppBundleSizeToValidate: 100
   resolutionDialogBanner: {fileID: 2800000, guid: ba9998477c214544cb5935924ce8304d,
     type: 3}
   m_BuildTargetIcons:
@@ -775,7 +777,7 @@ PlayerSettings:
     m_PortalFolderPath: 
   luminCert:
     m_CertPath: 
-    m_PrivateKeyPath: 
+    m_SignPackage: 1
   luminIsChannelApp: 0
   luminVersion:
     m_VersionCode: 1
