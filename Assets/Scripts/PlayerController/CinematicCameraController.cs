@@ -5,8 +5,24 @@ using UnityEngine;
 public class CinematicCameraController : MonoBehaviour
 {
     public float moveSpeed = 3;
+    public List<GameObject> objectsToHide = new List<GameObject>();
 
     private bool active = false;
+    public bool Active
+    {
+        get { return active; }
+        set
+        {
+            active = value;
+            //Other camera controller
+            camCntr.enabled = !active;
+            //Other objects
+            foreach (GameObject go in objectsToHide)
+            {
+                go.SetActive(!active);
+            }
+        }
+    }
     private Camera cam;
     private CameraController camCntr;
 
@@ -22,8 +38,7 @@ public class CinematicCameraController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            active = !active;
-            camCntr.enabled = !active;
+            Active = !Active;
         }
         if (active)
         {
