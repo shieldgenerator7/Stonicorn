@@ -80,7 +80,7 @@ public class NPCManager : MonoBehaviour
             maxTextLength = getTextLength(instance.canvas, instance.npcDialogueText, messageDimensions.x);
             if (messageDimensions.y > textHeight)
             {
-                float textWidth = getTextWidth(instance.canvas, instance.npcDialogueText, eventualMessage.Length);
+                float textWidth = getTextWidth(instance.canvas, instance.npcDialogueText, eventualMessage);
                 int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(instance.canvas, instance.npcDialogueText));
                 maxTextLength = (maxTextLength + (eventualMessage.Length / lineCount)) / 2;
                 messageDimensions = getMessageDimensions(instance.canvas, instance.npcDialogueText, eventualMessage, maxTextLength);
@@ -115,9 +115,22 @@ public class NPCManager : MonoBehaviour
         }
     }
 
-    static float getTextWidth(Canvas canvas, Text text, int length)
+    static float getTextWidth(Canvas canvas, Text text, string stringToMeasure)
     {
-        return text.fontSize * 0.5f * length * canvas.transform.localScale.x;
+        string prevString = text.text;
+        //text.text = stringToMeasure;
+        //2019-02-28: copied from an answer by pineda100: https://answers.unity.com/questions/921726/how-to-get-the-size-of-a-unityengineuitext-for-whi.html
+        TextGenerator textGen = new TextGenerator();
+        TextGenerationSettings generationSettings = text.GetGenerationSettings(text.rectTransform.rect.size);
+        float width = textGen.GetPreferredWidth(stringToMeasure, generationSettings);
+        float height = textGen.GetPreferredHeight(stringToMeasure, generationSettings);
+        Vector2 size = new Vector2(width, height);
+        size = Camera.main.ScreenToWorldPoint(size) - Camera.main.ScreenToWorldPoint(Vector2.zero);
+        size.x = Mathf.Abs(size.x);
+        size.y = Mathf.Abs(size.y);
+        text.text = prevString;
+        return size.x;
+        //return text.fontSize * 0.5f * length * canvas.transform.localScale.x;
     }
     static float getTextHeight(Canvas canvas, Text text, int lines = 1)
     {
@@ -141,15 +154,15 @@ public class NPCManager : MonoBehaviour
     static Vector2 getMessageDimensions(Canvas canvas, Text text, string message, int maxTextLength = 0)
     {
         string[] strings = splitIntoSegments(canvas, text, message, maxTextLength);
-        int foundMaxLength = 0;
+        string foundMaxString = "";
         foreach (string s in strings)
         {
-            if (s.Length > foundMaxLength)
+            if (s.Length > foundMaxString.Length)
             {
-                foundMaxLength = s.Length;
+                foundMaxString = s;
             }
         }
-        float textWidth = getTextWidth(canvas, text, foundMaxLength);
+        float textWidth = getTextWidth(canvas, text, foundMaxString);
         float textHeight = getTextHeight(canvas, text, strings.Length);
         return new Vector2(textWidth, textHeight);
     }
@@ -177,7 +190,7 @@ public class NPCManager : MonoBehaviour
 
     static string[] splitIntoSegments(Canvas canvas, Text text, string message, int maxTextLength = 0)
     {
-        float textWidth = getTextWidth(canvas, text, message.Length);
+        float textWidth = getTextWidth(canvas, text, message);
         float maxWidth = getMaxWidth(canvas, text);
         int segmentLength = message.Length;
         if (textWidth > maxWidth)
