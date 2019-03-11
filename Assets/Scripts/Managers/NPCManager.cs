@@ -117,6 +117,8 @@ public class NPCManager : MonoBehaviour
 
     static float getTextWidth(Canvas canvas, Text text, string stringToMeasure)
     {
+        return getSumOfCharacterOffsets( text, stringToMeasure ) * canvas.transform.localScale.x;
+        /*
         string prevString = text.text;
         //text.text = stringToMeasure;
         //2019-02-28: copied from an answer by pineda100: https://answers.unity.com/questions/921726/how-to-get-the-size-of-a-unityengineuitext-for-whi.html
@@ -129,8 +131,34 @@ public class NPCManager : MonoBehaviour
         size.x = Mathf.Abs(size.x);
         size.y = Mathf.Abs(size.y);
         text.text = prevString;
-        return size.x;
+        return size.x;*/
         //return text.fontSize * 0.5f * length * canvas.transform.localScale.x;
+    }
+    /// <summary>
+    /// Adds up all the character offsets for the given string using the supplied text's font settings.
+    /// Should ideally return the total width, in pixels, that the string takes up when rendered.
+    /// </summary>
+    /// <param name="text">Text object used to get font settings.</param>
+    /// <param name="textString">String from which the actual characters to measure are extracted.</param>
+    /// <returns></returns>
+    static float getSumOfCharacterOffsets(Text text, string textString)
+    {
+        int totalMaxWidthLength = 0;
+
+        for (int i = 0; i < textString.Length; i++)
+        {
+            CharacterInfo chInfo;
+            if (text.font.GetCharacterInfo(textString[i], out chInfo, text.fontSize))
+            {
+                totalMaxWidthLength += chInfo.advance;
+            }
+            else
+            {
+                // Tried to access invalid character!  Stick a warning here if you care about that.
+            }
+        }
+
+        return totalMaxWidthLength;
     }
     static float getTextHeight(Canvas canvas, Text text, int lines = 1)
     {
