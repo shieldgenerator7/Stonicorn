@@ -455,11 +455,6 @@ public class CameraController : MonoBehaviour
     }
     public float scalePointToZoomLevel(int scalePoint)
     {
-        if (scalePoint < 0 || scalePoint >= scalePoints.Count)
-        {
-            throw new System.ArgumentOutOfRangeException("scalePoint", scalePoint,
-                "scalePoint should be between " + 0 + " and " + (scalePoints.Count - 1) + ", inclusive.");
-        }
         return scalePoints[scalePoint].absoluteScalePoint();
     }
 

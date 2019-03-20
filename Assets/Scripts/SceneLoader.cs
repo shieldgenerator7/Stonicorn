@@ -9,20 +9,7 @@ public class SceneLoader : MonoBehaviour
     public string sceneName;//the index of the scene to load
     public int lastOpenGameStateId = -1;//the gamestate id in which this scene was last open in. -1 means it is not open in any of them
     public int firstOpenGameStateId = int.MaxValue;//the gamestate in which this scene was first opened (for rewind purposes)
-    private static GameObject playerObj;
-    private static GameObject explorerObj;//object that enters and exits triggers, causing scenes to load / unload
-    public static GameObject ExplorerObject
-    {
-        get { return explorerObj; }
-        set
-        {
-            explorerObj = value;
-            if (explorerObj == null)
-            {
-                explorerObj = playerObj;
-            }
-        }
-    }
+    private GameObject playerObj;
     private bool isLoaded = false;
     private Collider2D c2d;
 
@@ -35,7 +22,6 @@ public class SceneLoader : MonoBehaviour
         }
         c2d = gameObject.GetComponent<Collider2D>();
         playerObj = GameManager.getPlayerObject();
-        ExplorerObject = playerObj;
         if (SceneManager.GetSceneByName(sceneName).isLoaded)
         {
             isLoaded = true;
@@ -49,7 +35,7 @@ public class SceneLoader : MonoBehaviour
         {
             return;
         }
-        bool overlaps = c2d.OverlapPoint(ExplorerObject.transform.position);
+        bool overlaps = c2d.OverlapPoint(playerObj.transform.position);
         if (overlaps)
         {
             currentScene = this;

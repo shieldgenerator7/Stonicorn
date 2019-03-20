@@ -21,16 +21,6 @@ public class CinematicCameraController : MonoBehaviour
             {
                 go.SetActive(!active);
             }
-            //Scene Loader Explorer Object
-            if (active)
-            {
-                SceneLoader.ExplorerObject = gameObject;
-            }
-            else
-            {
-                //Reset explorer object (resets back to player)
-                SceneLoader.ExplorerObject = null;
-            }
         }
     }
     private Camera cam;

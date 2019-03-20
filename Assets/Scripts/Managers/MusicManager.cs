@@ -121,10 +121,7 @@ public class MusicManager : MonoBehaviour
                 prevSong = newSong;
             }
             currentSong.pitch = songSpeed;
-            if (prevSong != null)
-            {
-                prevSong.pitch = songSpeed;
-            }
+            prevSong.pitch = songSpeed;
         }
     }
 
