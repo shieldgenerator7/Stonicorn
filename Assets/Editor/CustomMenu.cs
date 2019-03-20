@@ -33,7 +33,7 @@ public class CustomMenu
     public static void callMerky()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag(GameManager.playerTag);
-        if (GameObject.FindObjectsOfType<RulerDisplayer>().Length > 0)
+        if (GameObject.FindObjectOfType<RulerDisplayer>())
         {
             playerObject.transform.position = RulerDisplayer.currentMousePos;
         }
@@ -224,7 +224,7 @@ public class CustomMenu
             System.IO.Directory.CreateDirectory(resourcesPath);
         }
 
-        if ( EditorUtility.DisplayDialog("Dialog Refresh", "Refresh the voice acting entries in " + dialogPath + "?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable." ) )
+        if (true || EditorUtility.DisplayDialog("Dialog Refresh", "Refresh the voice acting entries in " + dialogPath + "?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable."))
         {
             FileUtil.DeleteFileOrDirectory(dialogPath);
             FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/", dialogPath);
