@@ -60,21 +60,93 @@ public class PlayerController : MonoBehaviour
         get { return airPorts; }
         set { airPorts = Mathf.Clamp(airPorts, 0, maxAirPorts); }
     }
-    private bool grounded = true;//set in isGrounded()
-    private bool groundedAbility = false;//true if grounded exclusively to a wall; set in isGrounded()
+    private bool grounded = true;
     public bool Grounded
     {
-        get { return grounded || groundedAbility; }
+        get
+        {
+            GroundedPrev = grounded;
+            grounded = GroundedNormal || GroundedAbility;
+            return grounded;
+        }
+        set
+        {
+            GroundedPrev = grounded;
+            grounded = value;
+            if (grounded)
+            {
+                airPorts = 0;
+                if (range < baseRange)
+                {
+                    Range = baseRange;
+                }
+            }
+            else
+            {
+                if (airPorts >= maxAirPorts)
+                {
+                    if (range > exhaustRange)
+                    {
+                        Range = exhaustRange;
+                    }
+                }
+            }
+        }
     }
-    private bool groundedPreTeleport = true;//true if Merky was grounded before teleporting
-    private bool groundedAbilityPreTeleport = false;//true if grounded exclusively to a wall; set in isGrounded()
-    public bool GroundedPreTeleport
+
+    public bool groundedNormal = true;
+    public bool GroundedNormal
     {
-        get { return groundedPreTeleport || groundedAbilityPreTeleport; }
+        get
+        {
+            GroundedNormalPrev = groundedNormal;
+            groundedNormal = isGroundedInDirection(gravity.Gravity);
+            return groundedNormal;
+        }
     }
-    public bool GroundedPreTeleportAbility
+
+    private bool groundedAbility = false;//true if grounded to a wall
+    public bool GroundedAbility
     {
-        get { return groundedAbilityPreTeleport; }
+        get
+        {
+            GroundedAbilityPrev = groundedAbility;
+            groundedAbility = false;
+            if (isGroundedCheck != null)//if nothing found yet and there is an extra ground check to do
+            {
+                //Check each IsGroundedCheck delegate
+                foreach (IsGroundedCheck igc in isGroundedCheck.GetInvocationList())
+                {
+                    bool result = igc.Invoke();
+                    //If at least 1 returns true, Merky is grounded
+                    if (result == true)
+                    {
+                        groundedAbility = true;
+                        break;
+                    }
+                }
+            }
+            return groundedAbility;
+        }
+    }
+
+    private bool groundedPrev;
+    public bool GroundedPrev
+    {
+        get { return groundedPrev; }
+        private set { groundedPrev = value; }
+    }
+    private bool groundedNormalPrev;
+    public bool GroundedNormalPrev
+    {
+        get { return groundedNormalPrev; }
+        private set { groundedNormalPrev = value; }
+    }
+    private bool groundedAbilityPrev;
+    public bool GroundedAbilityPrev
+    {
+        get { return groundedAbilityPrev; }
+        private set { groundedAbilityPrev = value; }
     }
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
 
@@ -230,9 +302,9 @@ public class PlayerController : MonoBehaviour
         {
             if (shouldGrantGIT)
             {
-                checkGroundedState(false);
-                if (grounded)
+                if (Grounded)
                 {
+                    checkGroundedState();
                     shouldGrantGIT = false;
                     GravityImmune = true;
                 }
@@ -297,12 +369,9 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     private bool canTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
-        if (!isGrounded())
+        if (!Grounded)
         {
-            if (TeleportOffCooldown)
-            {
-            }
-            else
+            if (!TeleportOffCooldown)
             {
                 return false;
             }
@@ -317,11 +386,11 @@ public class PlayerController : MonoBehaviour
     private void teleport(Vector3 targetPos)
     {
         //Update mid-air cooldowns
-        if (!isGrounded())
+        if (!Grounded)
         {
             airPorts++;
         }
-        if (airPorts > maxAirPorts)
+        if (airPorts >= maxAirPorts)
         {
             //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
@@ -392,8 +461,8 @@ public class PlayerController : MonoBehaviour
         shouldGrantGIT = true;
 
         //Check grounded state
-        //have to call it again because state has changed
-        checkGroundedState(true);
+        //have to check it again because state has changed
+        checkGroundedState();
 
         //reset the ground check trigger's offset to zero,
         //so Unity knows to trigger OnTriggerEnter2D() again in certain cases
@@ -534,54 +603,16 @@ public class PlayerController : MonoBehaviour
     public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
     public OnPreTeleport onPreTeleport;
 
-    private void checkGroundedState(bool exhaust)
+    private void checkGroundedState()
     {
-        if (isGrounded())
-        {
-            airPorts = 0;
-            if (range < baseRange)
-            {
-                Range = baseRange;
-            }
-        }
-        else
-        {
-            if (exhaust && airPorts >= maxAirPorts)
-            {
-                if (range > exhaustRange)
-                {
-                    Range = exhaustRange;
-                }
-            }
-        }
+        Grounded = Grounded;        
+    }
+
+    {
 
     }
 
-    private bool isGrounded()
-    {
-        groundedPreTeleport = grounded;
-        groundedAbilityPreTeleport = groundedAbility;
-        groundedAbility = false;
-        bool isgrounded = isGrounded(gravity.Gravity);
-        if (!isgrounded && isGroundedCheck != null)//if nothing found yet and there is an extra ground check to do
-        {
-            //Check each onPreTeleport delegate
-            foreach (IsGroundedCheck igc in isGroundedCheck.GetInvocationList())
-            {
-                bool result = igc.Invoke();
-                //If at least 1 returns true, Merky is grounded
-                if (result == true)
-                {
-                    isgrounded = true;
-                    groundedAbility = true;
-                    break;
-                }
-            }
-        }
-        grounded = isgrounded;
-        return isgrounded;
-    }
-    public bool isGrounded(Vector3 direction)
+    public bool isGroundedInDirection(Vector3 direction)
     {
         int count = Utility.Cast(pc2d, direction, rch2dsGrounded, groundTestDistance, true);
         for (int i = 0; i < count; i++)
@@ -592,7 +623,6 @@ public class PlayerController : MonoBehaviour
                 GameObject ground = rch2d.collider.gameObject;
                 if (!ground.Equals(transform.gameObject))
                 {
-                    //Debug.Log("isGround: grounded on: " + ground.name);
                     return true;
                 }
             }

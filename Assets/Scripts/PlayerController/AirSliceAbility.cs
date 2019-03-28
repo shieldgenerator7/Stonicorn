@@ -25,7 +25,7 @@ public class AirSliceAbility : PlayerAbility {
 
     void sliceThings(Vector2 oldPos, Vector2 newPos)
     {
-        if (!playerController.GroundedPreTeleport)
+        if (!playerController.GroundedPrev)
         {
             bool slicedSomething = false;
             Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, (newPos - oldPos), Vector2.Distance(oldPos, newPos));

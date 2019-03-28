@@ -29,10 +29,10 @@ public class WallClimbAbility : PlayerAbility
     bool isGroundedWall()
     {
         bool isgrounded = false;
-        isgrounded = playerController.isGrounded(Utility.PerpendicularRight(-gravity.Gravity));//right side
+        isgrounded = playerController.isGroundedInDirection(Utility.PerpendicularRight(-gravity.Gravity));//right side
         if (!isgrounded)
         {
-            isgrounded = playerController.isGrounded(Utility.PerpendicularLeft(-gravity.Gravity));//left side
+            isgrounded = playerController.isGroundedInDirection(Utility.PerpendicularLeft(-gravity.Gravity));//left side
         }
         return isgrounded;
     }
@@ -49,7 +49,7 @@ public class WallClimbAbility : PlayerAbility
     /// <param name="newPos"></param>
     public void plantSticky(Vector2 oldPos, Vector2 newPos)
     {
-        if (playerController.GroundedPreTeleportAbility)
+        if (playerController.GroundedAbilityPrev)
         {
             //Look right
             Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, Utility.PerpendicularRight(-gravity.Gravity), wallDetectRange);
