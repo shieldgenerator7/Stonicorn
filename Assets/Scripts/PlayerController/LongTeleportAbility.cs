@@ -18,9 +18,9 @@ public class LongTeleportAbility : PlayerAbility {
     /// <summary>
     /// Adjusts (increases) Merky's range the further out the camera is dragged.
     /// </summary>
-    void adjustRange()
+    void adjustRange(Vector3 offset)
     {
-        playerController.Range = playerController.baseRange + ((Vector2)playerController.Cam.Offset).magnitude;
+        playerController.Range = playerController.baseRange + ((Vector2)offset).magnitude;
     }
 
     protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)

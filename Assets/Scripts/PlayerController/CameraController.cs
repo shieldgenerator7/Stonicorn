@@ -29,7 +29,7 @@ public class CameraController : MonoBehaviour
             offset = value;
             if (onOffsetChange != null)
             {
-                onOffsetChange();
+                onOffsetChange(offset);
             }
         }
     }
@@ -394,7 +394,7 @@ public class CameraController : MonoBehaviour
         return projection.magnitude > cameraOffsetGestureThreshold;
     }
 
-    public delegate void OnOffsetChange();
+    public delegate void OnOffsetChange(Vector3 offset);
     public OnOffsetChange onOffsetChange;
 
     public void setRotation(Vector3 rotationUp)

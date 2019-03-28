@@ -250,7 +250,7 @@ public class ActivationTrigger : MonoBehaviour
         }
     }
 
-    void OnCameraOffsetChanged()
+    void OnCameraOffsetChanged(Vector3 offset)
     {
         if (!cameraPositionRequireTrigger || triggerActive)
         {
