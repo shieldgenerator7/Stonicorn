@@ -314,7 +314,7 @@ public class PlayerController : MonoBehaviour
     /// Teleports, without any checking
     /// </summary>
     /// <param name="targetPos">Position to teleport to in world coordinates</param>
-    private void teleport(Vector3 targetPos)//
+    private void teleport(Vector3 targetPos)
     {
         //Update mid-air cooldowns
         if (!isGrounded())
@@ -434,60 +434,46 @@ public class PlayerController : MonoBehaviour
 
         //Determine if you can teleport to the position
         //(i.e. is it occupied or not?)
+        //If the new position is occupied,
+        if (isOccupied(newPos))
         {
-            //If the new position is occupied,
-            if (isOccupied(newPos))
+            //Try to adjust it first
+            Vector3 adjustedPos = adjustForOccupant(newPos);
+            if (!isOccupied(adjustedPos))
             {
-                //Try to adjust it first
-                Vector3 adjustedPos = adjustForOccupant(newPos);
-                if (!isOccupied(adjustedPos))
+                return adjustedPos;
+            }
+            //Search for a good landing spot
+            List<Vector3> possibleOptions = new List<Vector3>();
+            const int pointsToTry = 5;//try 5 points along the line
+            const float difference = 1.00f / pointsToTry;//how much the previous jump was different by
+            const float variance = 0.4f;//max amount to adjust angle by
+            const int anglesToTry = 7;//try 7 angles off the line
+            const float anglesDiff = variance * 2 / (anglesToTry - 1);
+            Vector2 normalizedDir = (newPos - oldPos).normalized;
+            float oldDist = Vector3.Distance(oldPos, newPos);
+            //Vary the angle
+            for (float a = -variance; a <= variance; a += anglesDiff)
+            {
+                //Angle the direction
+                Vector3 dir = Utility.RotateZ(normalizedDir, a); ;//the direction to search
+                Vector3 angledNewPos = oldPos + dir * oldDist;
+                //Backtrack from the new position
+                float distance = Vector3.Distance(oldPos, angledNewPos);
+                Vector3 norm = (angledNewPos - oldPos).normalized;
+                norm *= distance;
+                for (float percent = 1 + (difference * 2); percent >= 0; percent -= difference)
                 {
-                    return adjustedPos;
-                }
-                //Search for a good landing spot
-                List<Vector3> possibleOptions = new List<Vector3>();
-                const int pointsToTry = 5;//try 5 points along the line
-                const float difference = 1.00f / pointsToTry;//how much the previous jump was different by
-                const float variance = 0.4f;//max amount to adjust angle by
-                const int anglesToTry = 7;//try 7 angles off the line
-                const float anglesDiff = variance * 2 / (anglesToTry - 1);
-                Vector2 normalizedDir = (newPos - oldPos).normalized;
-                float oldDist = Vector3.Distance(oldPos, newPos);
-                //Vary the angle
-                for (float a = -variance; a <= variance; a += anglesDiff)
-                {
-                    //Angle the direction
-                    Vector3 dir = Utility.RotateZ(normalizedDir, a); ;//the direction to search
-                    Vector3 angledNewPos = oldPos + dir * oldDist;
-                    //Backtrack from the new position
-                    float distance = Vector3.Distance(oldPos, angledNewPos);
-                    Vector3 norm = (angledNewPos - oldPos).normalized;
-                    norm *= distance;
-                    for (float percent = 1 + (difference * 2); percent >= 0; percent -= difference)
+                    Vector3 testPos = (norm * percent) + oldPos;
+                    //If the test position is occupied,
+                    if (isOccupied(testPos))
                     {
-                        Vector3 testPos = (norm * percent) + oldPos;
-                        //If the test position is occupied,
-                        if (isOccupied(testPos))
+                        //adjust pos based on occupant
+                        testPos = adjustForOccupant(testPos);
+                        //If the test position is no longer occupied,
+                        if (!isOccupied(testPos))
                         {
-                            //adjust pos based on occupant
-                            testPos = adjustForOccupant(testPos);
-                            //If the test position is no longer occupied,
-                            if (!isOccupied(testPos))
-                            {
-                                //Possible option found
-                                possibleOptions.Add(testPos);
-                                //If percent is in range (0 - 1)
-                                //(percent > 1 would put Merky outside his teleport range)
-                                if (percent <= 1)
-                                {
-                                    //Try a new angle
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //found an open spot (tho it might not be optimal)
+                            //Possible option found
                             possibleOptions.Add(testPos);
                             //If percent is in range (0 - 1)
                             //(percent > 1 would put Merky outside his teleport range)
@@ -498,21 +484,33 @@ public class PlayerController : MonoBehaviour
                             }
                         }
                     }
-                }
-                //Choose the closest option 
-                float closestSqrDistance = (newPos - oldPos).sqrMagnitude;
-                Vector3 closestOption = oldPos;
-                foreach (Vector3 option in possibleOptions)
-                {
-                    float sqrDistance = (newPos - option).sqrMagnitude;
-                    if (sqrDistance < closestSqrDistance)
+                    else
                     {
-                        closestSqrDistance = sqrDistance;
-                        closestOption = option;
+                        //found an open spot (tho it might not be optimal)
+                        possibleOptions.Add(testPos);
+                        //If percent is in range (0 - 1)
+                        //(percent > 1 would put Merky outside his teleport range)
+                        if (percent <= 1)
+                        {
+                            //Try a new angle
+                            break;
+                        }
                     }
                 }
-                return closestOption;
             }
+            //Choose the closest option 
+            float closestSqrDistance = (newPos - oldPos).sqrMagnitude;
+            Vector3 closestOption = oldPos;
+            foreach (Vector3 option in possibleOptions)
+            {
+                float sqrDistance = (newPos - option).sqrMagnitude;
+                if (sqrDistance < closestSqrDistance)
+                {
+                    closestSqrDistance = sqrDistance;
+                    closestOption = option;
+                }
+            }
+            return closestOption;
         }
         return newPos;
     }
