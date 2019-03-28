@@ -29418,6 +29418,10 @@ MonoBehaviour:
   starSpawnDuration: 25
   abilityIndicatorName: AbilityIndicatorShieldBubble
   used: 0
+  minX: 0
+  maxX: 0
+  minY: 0
+  maxY: 0
 --- !u!4 &522853518
 Transform:
   m_ObjectHideFlags: 0
@@ -35848,19 +35852,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 548232294}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &548232296 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114698453568513706, guid: 75c62e8b48da9694d9259028d76cb1ea,
-    type: 3}
-  m_PrefabInstance: {fileID: 548232294}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: 036a66ce7eea4c54cad1ad4588ce7342, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &570105011
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66757,7 +66748,6 @@ GameObject:
   - component: {fileID: 1792176467}
   - component: {fileID: 1792176473}
   - component: {fileID: 1792176478}
-  - component: {fileID: 1792176466}
   - component: {fileID: 1792176479}
   - component: {fileID: 1792176480}
   - component: {fileID: 1792176481}
@@ -66770,33 +66760,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1792176466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114334892854798522, guid: 5913bd1e88aefff4988c7dfee6595611,
-    type: 3}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1792176465}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: e2356b527d93de14798de1ef5c9ef78a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teleportParticleEffects: {fileID: 506271484}
-  effectColor: {r: 0.31735292, g: 0.567529, b: 0.9764706, a: 1}
-  abilityIndicatorParticleEffects: {fileID: 856596822}
-  circularProgressBar: {fileID: 548232296}
-  shieldRangeIndicator: {fileID: 138864, guid: 8bc5cba583405f74fa7a24fb1a3e8fd2, type: 3}
-  shieldBubblePrefab: {fileID: 1181304595248282, guid: 67728388103716d44b748f94c401862f,
-    type: 3}
-  maxRange: 2.5
-  maxHoldTime: 1
-  spawnDemos: 0
-  shieldBubbleSound: {fileID: 8300000, guid: 7cc20f2c19ae91c4586dbb566fa52622, type: 3}
-  shieldBubbleFailSound: {fileID: 8300000, guid: ba9e8c88cd7c3cb4f9ec13caf152d128,
-    type: 3}
 --- !u!114 &1792176467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66811,10 +66774,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f16f92f62c03f9d49ae9349cf322432d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportParticleEffects: {fileID: 217562832}
   effectColor: {r: 1, g: 0.4821931, b: 0.40344828, a: 1}
-  abilityIndicatorParticleEffects: {fileID: 1950273296}
-  circularProgressBar: {fileID: 548232296}
+  abilityIndicatorParticleController: {fileID: 1950273300}
+  effectParticleController: {fileID: 217562836}
   forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 3}
   explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 3}
   afterWindPrefab: {fileID: 1706305049858728, guid: 5d5f3c3ecac31234687d4055a32ad921,
@@ -67038,10 +67000,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3980e2864f72af245abafc8456ae413b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportParticleEffects: {fileID: 1675184543}
   effectColor: {r: 0.32941177, g: 0.70980394, b: 0.28627452, a: 0.05882353}
-  abilityIndicatorParticleEffects: {fileID: 1121559818}
-  circularProgressBar: {fileID: 0}
+  abilityIndicatorParticleController: {fileID: 1121559822}
+  effectParticleController: {fileID: 1675184547}
   wallDetectRange: 1
   wallClimbSound: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
   stickyPadPrefab: {fileID: 1097801133131608, guid: 19e25460a3d23d54da8b46ccd9b9225d,
@@ -67105,10 +67066,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133a0fa65996aab42b3cedf42663522e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportParticleEffects: {fileID: 489995996}
   effectColor: {r: 1, g: 1, b: 1, a: 1}
-  abilityIndicatorParticleEffects: {fileID: 0}
-  circularProgressBar: {fileID: 548232296}
+  abilityIndicatorParticleController: {fileID: 198174140}
+  effectParticleController: {fileID: 0}
   futureProjection: {fileID: 531202031}
   teleportPreviewPointer: {fileID: 1385001677}
   maxRange: 2.5
@@ -67126,10 +67086,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 670c03aa95d882441947eec5e28c0854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportParticleEffects: {fileID: 506271484}
   effectColor: {r: 0.31764707, g: 0.5686275, b: 0.9764706, a: 1}
-  abilityIndicatorParticleEffects: {fileID: 856596822}
-  circularProgressBar: {fileID: 0}
+  abilityIndicatorParticleController: {fileID: 303568582}
+  effectParticleController: {fileID: 0}
   electricFieldPrefab: {fileID: 1181304595248282, guid: 25877458e6750fe4588a4006a6457d5d,
     type: 3}
   maxRange: 2.5
@@ -67153,10 +67112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d918f1c25ebee8a47a7dfe60967db1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportParticleEffects: {fileID: 56125263}
   effectColor: {r: 0.99158216, g: 1, b: 0.3897059, a: 1}
-  abilityIndicatorParticleEffects: {fileID: 1444506599}
-  circularProgressBar: {fileID: 0}
+  abilityIndicatorParticleController: {fileID: 1444506601}
+  effectParticleController: {fileID: 56125267}
 --- !u!114 &1792176480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67170,10 +67128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88db6bedd5001924db272ba11bdcf23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportParticleEffects: {fileID: 1849301997}
   effectColor: {r: 1, g: 0.654902, b: 0.17254902, a: 1}
-  abilityIndicatorParticleEffects: {fileID: 1400941276}
-  circularProgressBar: {fileID: 0}
+  abilityIndicatorParticleController: {fileID: 1400941278}
+  effectParticleController: {fileID: 1849302001}
   sliceDamage: 100
   streak: {fileID: 133468, guid: a76ac723dbf060e4fae65f29bcb058d9, type: 3}
 --- !u!114 &1792176481
@@ -67189,10 +67146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269fed651aae3aa46b098c87eef62b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportParticleEffects: {fileID: 1671629933}
   effectColor: {r: 0.654902, g: 0.17254902, b: 0.9411765, a: 0.05882353}
-  abilityIndicatorParticleEffects: {fileID: 2033161040}
-  circularProgressBar: {fileID: 0}
+  abilityIndicatorParticleController: {fileID: 2033161042}
+  effectParticleController: {fileID: 1671629937}
 --- !u!1 &1809435737
 GameObject:
   m_ObjectHideFlags: 0

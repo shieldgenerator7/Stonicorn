@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour
     private TeleportAbility tpa;
     private ForceTeleportAbility fta;
     private WallClimbAbility wca;
-    private ShieldBubbleAbility sba;
+    private ElectricFieldAbility efa;
 
     // Use this for initialization
     private void Start()
@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour
         tpa = GetComponent<TeleportAbility>();
         fta = GetComponent<ForceTeleportAbility>();
         wca = GetComponent<WallClimbAbility>();
-        sba = GetComponent<ShieldBubbleAbility>();
+        efa = GetComponent<ElectricFieldAbility>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
         teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
         onPreTeleport += canTeleport;
@@ -849,7 +849,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             if (fta.enabled) { fta.dropHoldGesture(); }
-            if (sba.enabled) { sba.dropHoldGesture(); }
+            if (efa.enabled) { efa.dropHoldGesture(); }
             tpa.processHoldGesture(gpos, reducedHoldTime, finished);
             if (finished)
             {
@@ -861,7 +861,7 @@ public class PlayerController : MonoBehaviour
     {
         tpa.dropHoldGesture();
         if (fta.enabled) { fta.dropHoldGesture(); }
-        if (sba.enabled) { sba.dropHoldGesture(); }
+        if (efa.enabled) { efa.dropHoldGesture(); }
     }
 }
 

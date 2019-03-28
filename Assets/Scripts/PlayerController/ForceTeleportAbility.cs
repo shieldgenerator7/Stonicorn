@@ -26,20 +26,14 @@ public class ForceTeleportAbility : PlayerAbility
 
     private float lastTeleportTime;
     public AudioClip forceTeleportSound;
-    private Rigidbody2D rb2d;
 
     protected override void init()
     {
         base.init();
         if (playerController)
         {
-            //if (r2bd == null) is a workaround for a bug that calls the Start() method twice
-            if (rb2d == null)
-            {
-                playerController.onPreTeleport += charge;
-                playerController.onTeleport += giveSpeedBoost;
-                rb2d = GetComponent<Rigidbody2D>();
-            }
+            playerController.onPreTeleport += charge;
+            playerController.onTeleport += giveSpeedBoost;
         }
     }
     public override void OnDisable()
@@ -162,7 +156,7 @@ public class ForceTeleportAbility : PlayerAbility
             SoundManager.playSound(forceTeleportSound, pos);
             Destroy(frii);
             frii = null;
-            particleController.activateTeleportParticleSystem(false);
+            effectParticleController.activateTeleportParticleSystem(false);
             //EffectManager.clearForceWaveShadows();
         }
         else
@@ -176,7 +170,7 @@ public class ForceTeleportAbility : PlayerAbility
             frii.transform.position = (Vector2)pos;
             friu.setRange(range);
             //Particle effects
-            particleController.activateTeleportParticleSystem(true, effectColor, pos, range);
+            effectParticleController.activateTeleportParticleSystem(true, effectColor, pos, range);
             //Force Wave Shadows
             //Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
             //for (int i = 0; i < hitColliders.Length; i++)
@@ -207,7 +201,7 @@ public class ForceTeleportAbility : PlayerAbility
             Destroy(frii);
             frii = null;
         }
-        particleController.activateTeleportParticleSystem(false);
+        effectParticleController.activateTeleportParticleSystem(false);
         //EffectManager.clearForceWaveShadows();
     }
 

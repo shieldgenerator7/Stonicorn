@@ -23,30 +23,29 @@ public class TesterShortcuts : MonoBehaviour
             {
                 activateAllCheckpoints();
             }
-            bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                toggleAbility(1, shift);
+                toggleAbility(1);
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                toggleAbility(2, shift);
+                toggleAbility(2);
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                toggleAbility(3, shift);
+                toggleAbility(3);
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                toggleAbility(4, shift);
+                toggleAbility(4);
             }
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
-                toggleAbility(5, shift);
+                toggleAbility(5);
             }
             if (Input.GetKeyDown(KeyCode.Alpha6))
             {
-                toggleAbility(6, shift);
+                toggleAbility(6);
             }
         }
     }
@@ -57,11 +56,11 @@ public class TesterShortcuts : MonoBehaviour
             cpc.activate();
         }
     }
-    public static void toggleAbility(int abilityIndex, bool shift)
+    public static void toggleAbility(int abilityIndex)
     {
-        enableAbility(abilityIndex, !abilityEnabled(abilityIndex, shift), shift);
+        enableAbility(abilityIndex, !abilityEnabled(abilityIndex));
     }
-    public static void enableAbility(int abilityIndex, bool enable, bool shift)
+    public static void enableAbility(int abilityIndex, bool enable)
     {
         GameObject playerObject = GameManager.getPlayerObject();
         switch (abilityIndex)
@@ -75,16 +74,8 @@ public class TesterShortcuts : MonoBehaviour
                 wca.enabled = enable;
                 break;
             case 3:
-                if (shift)
-                {
-                    ShieldBubbleAbility sba = playerObject.GetComponent<ShieldBubbleAbility>();
-                    sba.enabled = enable;
-                }
-                else
-                {
-                    ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
-                    efa.enabled = enable;
-                }
+                ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
+                efa.enabled = enable;
                 break;
             case 4:
                 SwapAbility sa = playerObject.GetComponent<SwapAbility>();
@@ -100,7 +91,7 @@ public class TesterShortcuts : MonoBehaviour
                 break;
         }
     }
-    public static bool abilityEnabled(int abilityIndex, bool shift)
+    public static bool abilityEnabled(int abilityIndex)
     {
         GameObject playerObject = GameManager.getPlayerObject();
         switch (abilityIndex)
@@ -112,16 +103,8 @@ public class TesterShortcuts : MonoBehaviour
                 WallClimbAbility wca = playerObject.GetComponent<WallClimbAbility>();
                 return wca.enabled;
             case 3:
-                if (shift)
-                {
-                    ShieldBubbleAbility sba = playerObject.GetComponent<ShieldBubbleAbility>();
-                    return sba.enabled;
-                }
-                else
-                {
-                    ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
-                    return efa.enabled;
-                }
+                ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
+                return efa.enabled;
             case 4:
                 SwapAbility sa = playerObject.GetComponent<SwapAbility>();
                 return sa.enabled;
@@ -151,7 +134,7 @@ public class TesterShortcuts : MonoBehaviour
     {
         if ((int)cheat <= 6)
         {
-            enableAbility((int)cheat, activate, false);
+            enableAbility((int)cheat, activate);
         }
         else if (cheat == Cheat.ACTIVATE_ALL_CHECKPOINTS)
         {
@@ -166,7 +149,7 @@ public class TesterShortcuts : MonoBehaviour
     {
         if ((int)cheat <= 6)
         {
-            return abilityEnabled((int)cheat, false);
+            return abilityEnabled((int)cheat);
         }
         else if (cheat == Cheat.ACTIVATE_ALL_CHECKPOINTS)
         {

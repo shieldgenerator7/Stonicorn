@@ -92,14 +92,10 @@ public class SavableObject
                 return typeof(AfterWind);
             case "StickyPadChecker":
                 return typeof(StickyPadChecker);
-            case "ShieldBubbleController":
-                return typeof(ShieldBubbleController);
             case "ElectricFieldController":
                 return typeof(ElectricFieldController);
             case "PowerConduit":
                 return typeof(PowerConduit);
-            case "ExplosionOrbController":
-                return typeof(ExplosionOrbController);
             case "HardMaterial":
                 return typeof(HardMaterial);
             case "CrackedPiece":
