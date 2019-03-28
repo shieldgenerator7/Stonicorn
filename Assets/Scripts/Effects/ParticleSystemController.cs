@@ -16,6 +16,14 @@ public class ParticleSystemController : MonoBehaviour {
         teleportParticles = GetComponent<ParticleSystem>();
         activateTeleportParticleSystem(false);
     }
+    private void Start()
+    {
+        if (dependsOnTeleportRange)
+        {
+            GameManager.getPlayerObject().GetComponent<PlayerController>()
+                .onRangeChanged += setOuterRange;
+        }
+    }
 
     private void OnEnable()
     {
@@ -32,10 +40,6 @@ public class ParticleSystemController : MonoBehaviour {
         activated = active;
         if (active)
         {
-            if (!teleportParticles)
-            {
-                Debug.LogError("GameObject: " + gameObject.name);
-            }
             teleportParticles.Play();
         }
         else
