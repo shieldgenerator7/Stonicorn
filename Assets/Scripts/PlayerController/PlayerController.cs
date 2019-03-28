@@ -251,16 +251,6 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Whether or not Merky is moving
-    /// Does not consider rotation
-    /// </summary>
-    /// <returns></returns>
-    bool isMoving()
-    {
-        return rb2d.velocity.magnitude >= 0.1f;
-    }
-
-    /// <summary>
     /// Rotates Merky to the next default rotation clockwise
     /// </summary>
     private void rotate()
@@ -553,10 +543,6 @@ public class PlayerController : MonoBehaviour
     {
         groundedPreTeleport = grounded;
         groundedAbilityPreTeleport = groundedAbility;
-        //if (gravity.Gravity == Vector2.zero)
-        //{
-        //    return true;
-        //}
         groundedAbility = false;
         bool isgrounded = isGrounded(gravity.Gravity);
         if (!isgrounded && isGroundedCheck != null)//if nothing found yet and there is an extra ground check to do
@@ -651,7 +637,7 @@ public class PlayerController : MonoBehaviour
             0,
             true);
         coll.offset = savedOffset;
-    
+
         //Go through the found objects and see if any actually occupy the space
         for (int i = 0; i < answerIsOccupied.count; i++)
         {
