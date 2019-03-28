@@ -11,17 +11,17 @@ public class PlayerController : MonoBehaviour
     public int maxAirPorts = 0;
     public float exhaustCoolDownTime = 0.5f;//the cool down time (sec) for teleporting while exhausted
     [Range(0, 1)]
-    public float gravityImmuneTimeAmount = 0.2f;//amount of time (sec) Merky is immune to gravity after landing
+    public float gravityImmuneDuration = 0.2f;//amount of time (sec) Merky is immune to gravity after landing
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
     public float groundTestDistance = 0.25f;//how far from Merky the ground test should go
 
     //
     //Timer Processing Vars
     //
-    private float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
-    private float lastAutoTeleportTime = 0f;//the last time that Merky auto teleported using the hold gesture
+    private float gravityImmuneStartTime;//when Merky last became immune to gravity
+    private float lastAutoTeleportTime;//the last time that Merky auto teleported using the hold gesture
 
-    private float teleportTime = 0f;//the earliest time that Merky can teleport
+    private float teleportTime;//the earliest time that Merky can teleport
     /// <summary>
     /// Returns whether the teleport ability is off cooldown
     /// True: teleport is able to be used
@@ -157,25 +157,21 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        checkGravityImmunity();
+        checkGravityImmunity(false);
         updateTriggerPC2D();
     }
-    private void OnTriggerEnter2D(Collider2D coll)
+    private void OnTriggerEnter2D(Collider2D coll2D)
     {
-        checkGroundedState(false);
-        if (shouldGrantGIT && grounded)//first grounded frame after teleport
+        if (!coll2D.isTrigger)
         {
-            shouldGrantGIT = false;
-            grantGravityImmunity();
+            checkGravityImmunity(true);//first grounded frame after teleport
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        checkGroundedState(false);
-        if (shouldGrantGIT && grounded)//first grounded frame after teleport
+        if (!collision.collider.isTrigger)
         {
-            shouldGrantGIT = false;
-            grantGravityImmunity();
+            checkGravityImmunity(true);//first grounded frame after teleport
         }
     }
 
@@ -194,27 +190,58 @@ public class PlayerController : MonoBehaviour
         triggerPC2D.offset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
     }
 
-    void grantGravityImmunity()
+    public bool GravityImmune
     {
-        gravityImmuneTime = Time.time + gravityImmuneTimeAmount;
-        savedVelocity = rb2d.velocity;
-        savedAngularVelocity = rb2d.angularVelocity;
-        gravity.AcceptsGravity = false;
-        rb2d.velocity = new Vector3(0, 0);
-        rb2d.angularVelocity = 0f;
+        get { return gravityImmuneStartTime > 0; }
+        set
+        {
+            bool grantGravityImmunity = value;
+            if (grantGravityImmunity)
+            {
+                gravityImmuneStartTime = Time.time;
+                gravity.AcceptsGravity = false;
+                savedVelocity = rb2d.velocity;
+                rb2d.velocity = Vector2.zero;
+                savedAngularVelocity = rb2d.angularVelocity;
+                rb2d.angularVelocity = 0;
+            }
+            else
+            {
+                gravityImmuneStartTime = 0;
+                gravity.AcceptsGravity = true;
+                rb2d.velocity = savedVelocity;
+                savedVelocity = Vector2.zero;
+                rb2d.angularVelocity = savedAngularVelocity;
+                savedAngularVelocity = 0;
+            }
+        }
     }
     /// <summary>
     /// Updates gravity immunity
     /// </summary>
-    void checkGravityImmunity()
+    void checkGravityImmunity(bool checkToTurnOn)
     {
-        if (Time.time >= gravityImmuneTime
-            && gravityImmuneTime > 0)
+        if (checkToTurnOn)
         {
-            gravityImmuneTime = 0;
-            gravity.AcceptsGravity = true;
-            rb2d.velocity = savedVelocity;
-            rb2d.angularVelocity = savedAngularVelocity;
+            if (shouldGrantGIT)
+            {
+                checkGroundedState(false);
+                if (grounded)
+                {
+                    shouldGrantGIT = false;
+                    GravityImmune = true;
+                }
+            }
+        }
+        else
+        {
+            if (GravityImmune)
+            {
+                if (Time.time >= gravityImmuneStartTime + gravityImmuneDuration)
+                {
+                    GravityImmune = false;
+                }
+            }
         }
     }
 
