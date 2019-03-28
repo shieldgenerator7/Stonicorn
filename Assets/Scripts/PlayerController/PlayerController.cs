@@ -414,22 +414,21 @@ public class PlayerController : MonoBehaviour
     {
         //TSFS: Teleport Spot Finding System
         Vector3 newPos = targetPos;
-        //Determine if new position is in range
         Vector3 oldPos = transform.position;
-        if ((newPos - transform.position).sqrMagnitude <= range * range
-            || (GestureManager.CHEATS_ALLOWED && gm.cheatsEnabled))//allow unlimited range while cheat is active
+        //If new position is not in range,
+        if ((newPos - transform.position).sqrMagnitude > range * range)
         {
-        }
-        else
-        {
+            //Shorten it to be within range
             newPos = ((newPos - oldPos).normalized * range) + oldPos;
         }
 
-        //Determine if you can even teleport to the position (i.e. is it occupied or not?)
+        //Determine if you can teleport to the position
+        //(i.e. is it occupied or not?)
         {
-            if (isOccupied(newPos))//test the current newPos first
+            //If the new position is occupied,
+            if (isOccupied(newPos))
             {
-                //Try to adjust first
+                //Try to adjust it first
                 Vector3 adjustedPos = adjustForOccupant(newPos);
                 if (!isOccupied(adjustedPos))
                 {
@@ -438,34 +437,40 @@ public class PlayerController : MonoBehaviour
                 //Search for a good landing spot
                 List<Vector3> possibleOptions = new List<Vector3>();
                 const int pointsToTry = 5;//try 5 points along the line
-                const float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
+                const float difference = 1.00f / pointsToTry;//how much the previous jump was different by
                 const float variance = 0.4f;//max amount to adjust angle by
                 const int anglesToTry = 7;//try 7 angles off the line
                 const float anglesDiff = variance * 2 / (anglesToTry - 1);
+                Vector2 normalizedDir = (newPos - oldPos).normalized;
+                float oldDist = Vector3.Distance(oldPos, newPos);
                 //Vary the angle
                 for (float a = -variance; a <= variance; a += anglesDiff)
                 {
-                    Vector3 dir = (newPos - oldPos).normalized;//the direction
-                    dir = Utility.RotateZ(dir, a);
-                    float oldDist = Vector3.Distance(oldPos, newPos);
-                    Vector3 angledNewPos = oldPos + dir * oldDist;//ANGLED
-                    //Backtrack
+                    //Angle the direction
+                    Vector3 dir = Utility.RotateZ(normalizedDir, a); ;//the direction to search
+                    Vector3 angledNewPos = oldPos + dir * oldDist;
+                    //Backtrack from the new position
                     float distance = Vector3.Distance(oldPos, angledNewPos);
-                    float percent = 1.00f - (difference * 2);//to start it off slightly further away
                     Vector3 norm = (angledNewPos - oldPos).normalized;
-                    while (percent >= 0)
+                    norm *= distance;
+                    for (float percent = 1 + (difference * 2); percent >= 0; percent -= difference)
                     {
-                        percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
-                        Vector3 testPos = (norm * distance * percent) + oldPos;
+                        Vector3 testPos = (norm * percent) + oldPos;
+                        //If the test position is occupied,
                         if (isOccupied(testPos))
                         {
                             //adjust pos based on occupant
                             testPos = adjustForOccupant(testPos);
+                            //If the test position is no longer occupied,
                             if (!isOccupied(testPos))
                             {
+                                //Possible option found
                                 possibleOptions.Add(testPos);
-                                if (percent <= 1)//make sure you at least try the standard position
+                                //If percent is in range (0 - 1)
+                                //(percent > 1 would put Merky outside his teleport range)
+                                if (percent <= 1)
                                 {
+                                    //Try a new angle
                                     break;
                                 }
                             }
@@ -474,8 +479,11 @@ public class PlayerController : MonoBehaviour
                         {
                             //found an open spot (tho it might not be optimal)
                             possibleOptions.Add(testPos);
-                            if (percent <= 1)//make sure you at least try the standard position
+                            //If percent is in range (0 - 1)
+                            //(percent > 1 would put Merky outside his teleport range)
+                            if (percent <= 1)
                             {
+                                //Try a new angle
                                 break;
                             }
                         }
