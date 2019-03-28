@@ -713,35 +713,52 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Adjusts the given Vector3 to avoid collision with the objects that it collides with
     /// </summary>
-    /// <param name="pos">The Vector3 to adjust</param>
+    /// <param name="testPos">The Vector3 to adjust</param>
     /// <returns>The Vector3, adjusted to avoid collision with objects it collides with</returns>
-    public Vector3 adjustForOccupant(Vector3 pos)
+    private Vector3 adjustForOccupant(Vector3 testPos)
     {
-        Vector3 moveDir = new Vector3(0, 0, 0);//the direction to move the pos so that it is valid
+        Vector3 moveDir = Vector3.zero;//the direction to move the testPos
+        //Find the objects that it would collide with
+        Vector3 testOffset = testPos - transform.position;
+        testOffset = transform.InverseTransformDirection(testOffset);
         Vector3 savedOffset = pc2d.offset;
-        Vector3 offset = pos - transform.position;
-        float angle = transform.localEulerAngles.z;
-        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-        pc2d.offset = rOffset;
+        pc2d.offset = testOffset;
         int count = Utility.Cast(pc2d, Vector2.zero, rchdsAdjustForOccupant, 0, true);
         pc2d.offset = savedOffset;
+        //Adjust the move direction for each found object that it collides with
         for (int i = 0; i < count; i++)
         {
             RaycastHit2D rh2d = rchdsAdjustForOccupant[i];
             GameObject go = rh2d.collider.gameObject;
-            if (!rh2d.collider.isTrigger)
+            //If the game object is not this game object,
+            if (go != transform.gameObject)
             {
-                if (go != transform.gameObject)
+                //And if the game object is not a trigger,
+                if (!rh2d.collider.isTrigger)
                 {
-                    Vector3 closPos = rh2d.point;
-                    Vector3 dir = pos - closPos;
-                    Vector3 size = pc2d.bounds.extents;
-                    float d2 = (size.magnitude) - Vector3.Distance(pos, closPos);
-                    moveDir += dir.normalized * d2;
+                    //Figure out in which direction to move and how far
+                    Vector3 outDir = testPos - (Vector3)rh2d.point;
+                    //(half width is only an estimate of the dist from the sprite center to its edge)
+                    float adjustDistance = halfWidth - rh2d.distance;
+                    //If the distance to move is invalid,
+                    if (adjustDistance < 0)
+                    {
+                        //Use a different estimate of sprite width
+                        adjustDistance = pc2d.bounds.extents.magnitude - rh2d.distance;
+                    }
+                    //If the sprite is mostly contained within the found object,
+                    if (rh2d.collider.OverlapPoint(testPos))
+                    {
+                        //Reverse the direction and increase the dist
+                        outDir *= -1;
+                        adjustDistance += halfWidth;
+                    }
+                    //Add the calculated direction and magnitude to the running total
+                    moveDir += outDir.normalized * adjustDistance;
                 }
             }
         }
-        return pos + moveDir;//not adjusted because there's nothing to adjust for
+        return testPos + moveDir;
     }
 
     /// <summary>
