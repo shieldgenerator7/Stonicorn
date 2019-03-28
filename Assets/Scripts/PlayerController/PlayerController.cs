@@ -105,11 +105,11 @@ public class PlayerController : MonoBehaviour
     public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
     public Collider2D groundedTrigger;//the collider that is used to check if Merky is grounded
 
-    private CameraController mainCamCtr;//the camera controller for the main camera
+    private CameraController mainCameraController;//the camera controller for the main camera
     public CameraController Cam
     {
-        get { return mainCamCtr; }
-        private set { mainCamCtr = value; }
+        get { return mainCameraController; }
+        private set { mainCameraController = value; }
     }
     private GestureManager gm;
     private HardMaterial hm;
@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
         gravity = GetComponent<GravityAccepter>();
-        mainCamCtr = Camera.main.GetComponent<CameraController>();
+        Cam = Camera.main.GetComponent<CameraController>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         hm = GetComponent<HardMaterial>();
         hm.shattered += shattered;
@@ -800,7 +800,7 @@ public class PlayerController : MonoBehaviour
                 onPreTeleport(prevPos, newPos, newPos);
             }
             teleport(newPos);
-            mainCamCtr.recenter();
+            Cam.recenter();
             cpc.trigger();
             GameManager.Save();
         }
@@ -811,7 +811,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
         float reducedHoldTime = holdTime - gm.getHoldThreshold();
-        if (!mainCamCtr.offsetOffPlayer())
+        if (!Cam.offsetOffPlayer())
         {
             if (Time.time > lastAutoTeleportTime + autoTeleportDelay)
             {
