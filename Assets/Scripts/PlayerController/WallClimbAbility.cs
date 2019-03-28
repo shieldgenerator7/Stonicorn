@@ -39,8 +39,7 @@ public class WallClimbAbility : PlayerAbility
 
     public void playWallClimbEffects(Vector2 pos)
     {
-        particleSystem.transform.position = pos;
-        particleSystem.Play();
+        playEffect(pos);
     }
 
     /// <summary>

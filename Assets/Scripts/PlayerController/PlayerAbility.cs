@@ -1,65 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerAbility : MonoBehaviour {
-
-    GameObject player;
-    protected PlayerController playerController;
-    public GameObject teleportParticleEffects;
-    protected ParticleSystemController particleController;
-    protected new ParticleSystem particleSystem;
+public class PlayerAbility : MonoBehaviour
+{
     public Color effectColor;//the color used for the particle system upon activation
 
-    public GameObject abilityIndicatorParticleEffects;
-    public ProgressBarCircular circularProgressBar;
+    public ParticleSystemController abilityIndicatorParticleController;
+    public ParticleSystemController effectParticleController;
+    private ParticleSystem effectParticleSystem;
+
+    protected PlayerController playerController;
+    protected Rigidbody2D rb2d;
 
     // Use this for initialization
-    protected virtual void init () {
-        player = gameObject;
-        playerController = player.GetComponent<PlayerController>();
-        particleController = teleportParticleEffects.GetComponent<ParticleSystemController>();
-        particleSystem = teleportParticleEffects.GetComponent<ParticleSystem>();
-        if (abilityIndicatorParticleEffects != null)
-        {
-            abilityIndicatorParticleEffects.GetComponent<ParticleSystemController>().activate(true);
-        }
+    protected virtual void init()
+    {
+        playerController = GetComponent<PlayerController>();
+        rb2d = GetComponent<Rigidbody2D>();
+        effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
+        abilityIndicatorParticleController.activate(true);
     }
     public virtual void OnDisable()
     {
-        if (abilityIndicatorParticleEffects != null)
-        {
-            abilityIndicatorParticleEffects.GetComponent<ParticleSystemController>().activate(false);
-        }
+        abilityIndicatorParticleController.activate(false);
     }
     public void OnEnable()
     {
         init();
     }
 
-    public bool effectsGroundCheck()
-    {
-        return false;
-    }
-
-    public bool effectsAirPorts()
-    {
-        return false;
-    }
-
-    public bool takesGesture()
-    {
-        return false;
-    }
-
-    public bool takesHoldGesture()
-    {
-        return true;
-    }
-
-    public virtual void processHoldGesture(Vector2 pos, float holdTime, bool finished)
-    {
-
-    }
+    public virtual void processHoldGesture(Vector2 pos, float holdTime, bool finished) { }
 
     /// <summary>
     /// Returns whether or not this ability has its hold gesture activated
@@ -67,9 +37,35 @@ public class PlayerAbility : MonoBehaviour {
     /// <returns></returns>
     public virtual bool isHoldingGesture()
     {
-        return particleSystem.isPlaying;
+        return effectParticleSystem.isPlaying;
     }
 
     public virtual void dropHoldGesture() { }
+
+
+
+    protected void playEffect(Vector2 playPos)
+    {
+        playEffect(effectParticleSystem.transform.position, true);
+    }
+
+    protected void playEffect(bool play = true)
+    {
+        playEffect(effectParticleSystem.transform.position, play);
+    }
+
+    protected void playEffect(Vector2 playPos, bool play = true)
+    {
+        effectParticleSystem.transform.position = playPos;
+        if (play)
+        {
+            effectParticleSystem.Play();
+        }
+        else
+        {
+            effectParticleSystem.Pause();
+            effectParticleSystem.Clear();
+        }
+    }
 
 }
