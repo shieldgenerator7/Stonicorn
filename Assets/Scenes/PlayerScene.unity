@@ -41828,7 +41828,7 @@ PrefabInstance:
       objectReference: {fileID: 964666489}
     - target: {fileID: 2052918, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 3}
       propertyPath: orthographic
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 3}
@@ -66847,7 +66847,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdae502dd894ed4fb9a1c7edf39b7b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 3
   baseRange: 3
   exhaustRange: 1
   maxAirPorts: 0
@@ -66855,10 +66854,7 @@ MonoBehaviour:
   gravityImmuneTimeAmount: 0.2
   autoTeleportDelay: 0.1
   groundTestDistance: 0.25
-  teleportTime: 0
-  teleportRangeParticalObject: {fileID: 198174136}
-  wallJumpAbilityIndicator: {fileID: 1121559818}
-  airPorts: 0
+  teleportRangeParticalController: {fileID: 198174140}
   teleportSound: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
   scoutColliderMin: {fileID: 530089677}
   scoutColliderMax: {fileID: 1809435738}

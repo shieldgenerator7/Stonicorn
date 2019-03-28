@@ -46,7 +46,7 @@ public class AirSliceAbility : PlayerAbility {
             if (slicedSomething)
             {
                 //if the player slices something, allow them to teleport once more in the air
-                playerController.airPorts--;
+                playerController.AirPortsUsed--;
             }
             showStreak(oldPos, newPos);
         }

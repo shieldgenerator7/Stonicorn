@@ -115,7 +115,7 @@ public class SwapAbility : PlayerAbility
             {
                 playerController.Range = playerController.baseRange;
             }
-            playerController.airPorts = 0;
+            playerController.AirPortsUsed = 0;
         }
     }
 

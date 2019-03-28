@@ -3,33 +3,63 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //
     //Settings
-    [SerializeField] private float range = 3;
-    public float Range
-    {
-        get { return range; }
-        set { setRange(value); }
-    }
+    //
     public float baseRange = 3;
     public float exhaustRange = 1;
     public int maxAirPorts = 0;
-    public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
+    public float exhaustCoolDownTime = 0.5f;//the cool down time (sec) for teleporting while exhausted
     [Range(0, 1)]
-    public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
+    public float gravityImmuneTimeAmount = 0.2f;//amount of time (sec) Merky is immune to gravity after landing
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
     public float groundTestDistance = 0.25f;//how far from Merky the ground test should go
 
-    //Processing
-    public float teleportTime = 0f;//the earliest time that Merky can teleport
+    //
+    //Timer Processing Vars
+    //
     private float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
     private float lastAutoTeleportTime = 0f;//the last time that Merky auto teleported using the hold gesture
 
+    private float teleportTime = 0f;//the earliest time that Merky can teleport
+    /// <summary>
+    /// Returns whether the teleport ability is off cooldown
+    /// True: teleport is able to be used
+    /// False: teleport is still on cooldown and can't be used
+    /// </summary>
+    public bool TeleportOffCooldown
+    {
+        get { return Time.time >= teleportTime; }
+    }
 
-    public GameObject teleportRangeParticalObject;
-    private ParticleSystemController teleportRangeParticalController;
-    public GameObject wallJumpAbilityIndicator;
+    //
+    // State vars
+    //
+    private float range = 3;
+    public float Range
+    {
+        get { return range; }
+        set
+        {
+            range = Mathf.Max(value, 0);
+            if (onRangeChanged != null)
+            {
+                onRangeChanged(range);
+            }
+        }
+    }
+    public delegate void OnRangeChanged(float range);
+    public OnRangeChanged onRangeChanged;
 
-    public int airPorts = 0;
+    //
+    //Grounded state variables
+    //
+    private int airPorts = 0;//"air teleports": how many airports merky has used since touching the ground
+    public int AirPortsUsed
+    {
+        get { return airPorts; }
+        set { airPorts = Mathf.Clamp(airPorts, 0, maxAirPorts); }
+    }
     private bool grounded = true;//set in isGrounded()
     private bool groundedAbility = false;//true if grounded exclusively to a wall; set in isGrounded()
     public bool Grounded
@@ -47,6 +77,10 @@ public class PlayerController : MonoBehaviour
         get { return groundedAbilityPreTeleport; }
     }
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
+
+    //
+    // Components
+    //
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
     private PolygonCollider2D triggerPC2D;//used to determine when Merky is near ground
@@ -65,6 +99,7 @@ public class PlayerController : MonoBehaviour
         = new Utility.RaycastAnswer(new RaycastHit2D[Utility.MAX_HIT_COUNT], 0);
     private RaycastHit2D[] rchdsAdjustForOccupant = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for finding Merky a new landing spot
 
+    public ParticleSystemController teleportRangeParticalController;
     public AudioClip teleportSound;
     public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
     public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
@@ -99,10 +134,9 @@ public class PlayerController : MonoBehaviour
         wca = GetComponent<WallClimbAbility>();
         sba = GetComponent<ShieldBubbleAbility>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
-        teleportRangeParticalController = teleportRangeParticalObject.GetComponent<ParticleSystemController>();
         teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
         onPreTeleport += canTeleport;
-        setRange(baseRange);
+        Range = baseRange;
         //Check grounded collider
         if (groundedTrigger == null)
         {
@@ -243,7 +277,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isGrounded())
         {
-            if (Time.time >= teleportTime)
+            if (TeleportOffCooldown)
             {
             }
             else
@@ -452,24 +486,6 @@ public class PlayerController : MonoBehaviour
     public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
     public OnPreTeleport onPreTeleport;
 
-    private void setRange(float newRange)
-    {
-        range = newRange;
-        TeleportRangeIndicatorUpdater tri = GetComponentInChildren<TeleportRangeIndicatorUpdater>();
-        if (tri != null)
-        {
-            tri.updateRange();
-        }
-        ParticleSystemController[] pscs = GetComponentsInChildren<ParticleSystemController>();
-        foreach (ParticleSystemController psc in pscs)
-        {
-            if (psc.dependsOnTeleportRange)
-            {
-                psc.setOuterRange(newRange);
-            }
-        }
-    }
-
     void checkGroundedState(bool exhaust)
     {
         if (isGrounded())
@@ -477,7 +493,7 @@ public class PlayerController : MonoBehaviour
             airPorts = 0;
             if (range < baseRange)
             {
-                setRange(baseRange);
+                Range = baseRange;
             }
         }
         else
@@ -486,7 +502,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (range > exhaustRange)
                 {
-                    setRange(exhaustRange);
+                    Range = exhaustRange;
                 }
             }
         }
