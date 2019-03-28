@@ -8,6 +8,7 @@ public class PlayerAbility : MonoBehaviour
     public ParticleSystemController abilityIndicatorParticleController;
     public ParticleSystemController effectParticleController;
     private ParticleSystem effectParticleSystem;
+    public bool addsOnTeleportEffect = true;
 
     protected PlayerController playerController;
     protected Rigidbody2D rb2d;
@@ -20,6 +21,10 @@ public class PlayerAbility : MonoBehaviour
         if (effectParticleController)
         {
             effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
+            if (addsOnTeleportEffect)
+            {
+                playerController.onShowTeleportEffect += showTeleportEffect;
+            }
         }
         else
         {
@@ -29,6 +34,10 @@ public class PlayerAbility : MonoBehaviour
     }
     public virtual void OnDisable()
     {
+        if (addsOnTeleportEffect)
+        {
+            playerController.onShowTeleportEffect -= showTeleportEffect;
+        }
         abilityIndicatorParticleController.activate(false);
     }
     public void OnEnable()
@@ -53,7 +62,7 @@ public class PlayerAbility : MonoBehaviour
 
     protected void playEffect(Vector2 playPos)
     {
-        playEffect(effectParticleSystem.transform.position, true);
+        playEffect(playPos, true);
     }
 
     protected void playEffect(bool play = true)
@@ -61,7 +70,7 @@ public class PlayerAbility : MonoBehaviour
         playEffect(effectParticleSystem.transform.position, play);
     }
 
-    protected void playEffect(Vector2 playPos, bool play = true)
+    protected void playEffect(Vector2 playPos, bool play)
     {
         effectParticleSystem.transform.position = playPos;
         if (play)
@@ -73,6 +82,11 @@ public class PlayerAbility : MonoBehaviour
             effectParticleSystem.Pause();
             effectParticleSystem.Clear();
         }
+    }
+
+    protected virtual void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
+    {
+        playEffect(oldPos);
     }
 
 }

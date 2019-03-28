@@ -584,16 +584,17 @@ public class PlayerController : MonoBehaviour
         return newPos;
     }
 
-    private void showTeleportEffect(Vector3 oldp, Vector3 newp)
+    private void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
-        EffectManager.showTeleportStar(oldp);
-        //Check for wall jump
-        if (wca.enabled && groundedAbility)
+        EffectManager.showTeleportStar(oldPos);
+        //Process on show teleport effect delegates
+        if (onShowTeleportEffect != null)
         {
-            //Play jump effect in addition to teleport star
-            wca.playWallClimbEffects(oldp);
+            onShowTeleportEffect(oldPos, newPos);
         }
     }
+    public delegate void OnShowTeleportEffect(Vector2 oldPos, Vector2 newPos);
+    public OnShowTeleportEffect onShowTeleportEffect;
 
 
     public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
@@ -605,7 +606,7 @@ public class PlayerController : MonoBehaviour
 
     private void checkGroundedState()
     {
-        Grounded = Grounded;        
+        Grounded = Grounded;
     }
 
     public bool isGroundedInDirection(Vector3 direction)

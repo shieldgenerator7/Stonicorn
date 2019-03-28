@@ -12,6 +12,8 @@ public class SwapAbility : PlayerAbility
         get { return swappableObjects; }
     }
 
+    private bool swappedSomething = false;
+
     /// <summary>
     /// Used for determining if the swapped object's landing spot is occupied
     /// </summary>
@@ -89,7 +91,7 @@ public class SwapAbility : PlayerAbility
 
     void swapObjects(Vector2 oldPos, Vector2 newPos)
     {
-        bool swappedSomething = false;
+        swappedSomething = false;
         foreach (GameObject go in swappableObjects)
         {
             //Clear connections
@@ -156,5 +158,14 @@ public class SwapAbility : PlayerAbility
             }
         }
         return gos;
+    }
+
+    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
+    {
+        if (swappedSomething)
+        {
+            swappedSomething = false;
+            base.showTeleportEffect(oldPos, newPos);
+        }
     }
 }

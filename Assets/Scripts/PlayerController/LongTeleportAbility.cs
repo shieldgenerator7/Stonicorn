@@ -23,4 +23,12 @@ public class LongTeleportAbility : PlayerAbility {
         playerController.Range = playerController.baseRange + ((Vector2)playerController.Cam.Offset).magnitude;
     }
 
+    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
+    {
+        if (playerController.Range > playerController.baseRange)
+        {
+            base.showTeleportEffect(oldPos, newPos);
+        }
+    }
+
 }

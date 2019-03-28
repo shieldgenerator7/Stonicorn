@@ -37,9 +37,12 @@ public class WallClimbAbility : PlayerAbility
         return isgrounded;
     }
 
-    public void playWallClimbEffects(Vector2 pos)
+    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
-        playEffect(pos);
+        if (playerController.GroundedAbilityPrev)
+        {
+            base.showTeleportEffect(oldPos, newPos);
+        }
     }
 
     /// <summary>
@@ -81,16 +84,18 @@ public class WallClimbAbility : PlayerAbility
     void spawnSticky(Vector2 stickyPos)
     {
         bool tooClose = false;
-        foreach(StickyPadChecker spc in GameObject.FindObjectsOfType<StickyPadChecker>()){
+        foreach (StickyPadChecker spc in GameObject.FindObjectsOfType<StickyPadChecker>())
+        {
             SpriteRenderer spcSR = spc.GetComponent<SpriteRenderer>();
-            float minDim = Mathf.Min(spcSR.size.x, spcSR.size.y)/2;
+            float minDim = Mathf.Min(spcSR.size.x, spcSR.size.y) / 2;
             if (((Vector2)spc.transform.position - stickyPos).sqrMagnitude < minDim * minDim)
             {
                 tooClose = true;
                 break;
             }
         }
-        if (!tooClose) {
+        if (!tooClose)
+        {
             GameObject stickyPad = Utility.Instantiate(stickyPadPrefab);
             stickyPad.GetComponent<StickyPadChecker>().init(gravity.Gravity);
             stickyPad.transform.position = stickyPos;
