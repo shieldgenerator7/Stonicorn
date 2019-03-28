@@ -5,6 +5,7 @@ using UnityEngine;
 public class AirSliceAbility : PlayerAbility {
 
     public float sliceDamage = 100f;//how much force damage to do to objects that get cut
+    public int maxAirPortsGrant = 2;
     public GameObject streakPrefab;
 
     private SwapAbility swapAbility;
@@ -12,14 +13,14 @@ public class AirSliceAbility : PlayerAbility {
 	// Use this for initialization
 	protected override void init () {
         base.init();
-        playerController.maxAirPorts++;
+        playerController.maxAirPorts += maxAirPortsGrant;
         playerController.onTeleport += sliceThings;
         swapAbility = GetComponent<SwapAbility>();
 	}
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.maxAirPorts--;
+        playerController.maxAirPorts -= maxAirPortsGrant;
         playerController.onTeleport -= sliceThings;
     }
 
