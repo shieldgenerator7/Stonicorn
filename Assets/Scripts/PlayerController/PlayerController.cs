@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
     private ShieldBubbleAbility sba;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         checkGravityImmunity(false);
         updateTriggerPC2D();
@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void updateTriggerPC2D()
+    private void updateTriggerPC2D()
     {
         if (triggerPC2D == null)
         {
@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Updates gravity immunity
     /// </summary>
-    void checkGravityImmunity(bool checkToTurnOn)
+    private void checkGravityImmunity(bool checkToTurnOn)
     {
         if (checkToTurnOn)
         {
@@ -263,7 +263,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Rotates Merky to the next default rotation clockwise
     /// </summary>
-    void rotate()
+    private void rotate()
     {
         float newAngle = getNextRotation(transform.localEulerAngles.z);
         transform.localEulerAngles = new Vector3(0, 0, newAngle);
@@ -507,7 +507,7 @@ public class PlayerController : MonoBehaviour
         return newPos;
     }
 
-    void showTeleportEffect(Vector3 oldp, Vector3 newp)
+    private void showTeleportEffect(Vector3 oldp, Vector3 newp)
     {
         EffectManager.showTeleportStar(oldp);
         //Check for wall jump
@@ -526,7 +526,7 @@ public class PlayerController : MonoBehaviour
     public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
     public OnPreTeleport onPreTeleport;
 
-    void checkGroundedState(bool exhaust)
+    private void checkGroundedState(bool exhaust)
     {
         if (isGrounded())
         {
@@ -549,7 +549,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    bool isGrounded()
+    private bool isGrounded()
     {
         groundedPreTeleport = grounded;
         groundedAbilityPreTeleport = groundedAbility;
@@ -871,7 +871,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    public void dropHoldGesture()
+    private void dropHoldGesture()
     {
         tpa.dropHoldGesture();
         if (fta.enabled) { fta.dropHoldGesture(); }
