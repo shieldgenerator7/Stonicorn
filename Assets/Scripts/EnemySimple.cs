@@ -67,7 +67,7 @@ public class EnemySimple : MonoBehaviour
                 fearParticles.Stop();
             }
         }
-        if (rb2d.velocity.magnitude < 0.1f)
+        if (!rb2d.isMoving())
         {
             hm.addIntegrity(healsPerSecond * Time.deltaTime);
             if (hm.getIntegrity() == hm.maxIntegrity)

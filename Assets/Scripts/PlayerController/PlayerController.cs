@@ -353,7 +353,8 @@ public class PlayerController : MonoBehaviour
         //Health Regen
         hm.addIntegrity(Vector2.Distance(oldPos, newPos));
         //Momentum Dampening
-        if (!Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0))//if Merky is moving
+        //If Merky is moving,
+        if (rb2d.isMoving())
         {
             Vector3 direction = newPos - oldPos;
             float newX = rb2d.velocity.x;//the new x velocity

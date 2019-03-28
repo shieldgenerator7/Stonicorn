@@ -344,4 +344,9 @@ public static class Utility
         toObject.transform.rotation = fromTransform.rotation;
         toObject.transform.localScale = fromTransform.localScale;
     }
+
+    public static bool isMoving(this Rigidbody2D rb2d)
+    {
+        return !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
+    }
 }
