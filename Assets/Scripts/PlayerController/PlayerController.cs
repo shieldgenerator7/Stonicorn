@@ -313,9 +313,8 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Teleports, without any checking
     /// </summary>
-    /// <param name="targetPos">Place to teleport to in world coordinations</param>
-    /// <param name="playSound">Whether or not to play a sound</param>
-    private void teleport(Vector3 targetPos, bool playSound = true)//
+    /// <param name="targetPos">Position to teleport to in world coordinates</param>
+    private void teleport(Vector3 targetPos)//
     {
         //Update mid-air cooldowns
         if (!isGrounded())
@@ -324,69 +323,89 @@ public class PlayerController : MonoBehaviour
         }
         if (airPorts > maxAirPorts)
         {
+            //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
             float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -gravity.Gravity.normalized);
             teleportTime = Time.time + exhaustCoolDownTime * upAmount;
         }
 
-        //Get new position
-        Vector3 newPos = targetPos;
-        //Actually Teleport
+        //Store old and new positions
         Vector3 oldPos = transform.position;
+        Vector3 newPos = targetPos;
+
+        //Actually Teleport
         transform.position = newPos;
 
         //Show effect
         showTeleportEffect(oldPos, newPos);
+
         //Play Sound
-        if (playSound)
+        if (groundedAbility && wca.enabled)
         {
-            if (groundedAbility && wca.enabled)
-            {
-                SoundManager.playSound(wca.wallClimbSound, oldPos);
-            }
-            else
-            {
-                SoundManager.playSound(teleportSound, oldPos);
-            }
+            SoundManager.playSound(wca.wallClimbSound, oldPos);
+        }
+        else
+        {
+            SoundManager.playSound(teleportSound, oldPos);
         }
 
         //Health Regen
         hm.addIntegrity(Vector2.Distance(oldPos, newPos));
+
         //Momentum Dampening
         //If Merky is moving,
         if (rb2d.isMoving())
         {
+            //Reduce momentum that is going in opposite direction
             Vector3 direction = newPos - oldPos;
-            float newX = rb2d.velocity.x;//the new x velocity
+            float newX = rb2d.velocity.x;//the new velocity x
             float newY = rb2d.velocity.y;
+            //If velocity x is moving opposite of the teleport direction x,
             if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(direction.x))
             {
+                //Add teleport direction x to velocity x
                 newX = rb2d.velocity.x + direction.x;
+                //If the addition brought velocity x past 0,
                 if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(newX))
-                {//keep from exploiting boost in opposite direction
+                {
+                    //keep from exploiting boost in opposite direction
                     newX = 0;
                 }
             }
+            //If velocity y is moving opposite of the teleport direction y,
             if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(direction.y))
             {
+                //Add teleport direction y to velocity y
                 newY = rb2d.velocity.y + direction.y;
+                //If the addition brought velocity y past 0,
                 if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(newY))
-                {//keep from exploiting boost in opposite direction
+                {
+                    //keep from exploiting boost in opposite direction
                     newY = 0;
                 }
             }
+            //Update velocity
             rb2d.velocity = new Vector2(newX, newY);
         }
+
         //Gravity Immunity
         shouldGrantGIT = true;
-        checkGroundedState(true);//have to call it again because state has changed
-        triggerPC2D.offset = Vector2.zero;//reset the ground check trigger's offset to zero so Unity can know to trigger OnTriggerEnter2D() again in certain cases
+
+        //Check grounded state
+        //have to call it again because state has changed
+        checkGroundedState(true);
+
+        //reset the ground check trigger's offset to zero,
+        //so Unity knows to trigger OnTriggerEnter2D() again in certain cases
+        triggerPC2D.offset = Vector2.zero;
+
         //On Teleport Effects
         if (onTeleport != null)
         {
             onTeleport(oldPos, newPos);
         }
-        //Disable sticky pads stuck to Merky
+
+        //Detach Merky from sticky pads stuck to him
         foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
         {
             if (fj2d.connectedBody == rb2d)
