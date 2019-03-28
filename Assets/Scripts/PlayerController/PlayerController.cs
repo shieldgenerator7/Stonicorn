@@ -602,68 +602,78 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Determines whether the given position is occupied or not
     /// </summary>
-    /// <param name="pos"></param>
-    /// <returns></returns>
-    public bool isOccupied(Vector3 pos)
+    /// <param name="testPos">The position to test</param>
+    /// <returns>True if there is something in the space, False if the space is clear</returns>
+    private bool isOccupied(Vector3 testPos)
     {
         bool occupied = false;
-        //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);        
-        Vector3 offset = pos - transform.position;
-        float angle = transform.localEulerAngles.z;
-        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-        //Test with max scout collider
+        Vector3 testOffset = testPos - transform.position;
+        testOffset = transform.InverseTransformDirection(testOffset);
+        //If there's a max scout collider,
         if (scoutColliderMax)
         {
-            Vector3 savedOffset = scoutColliderMax.offset;
-            scoutColliderMax.offset = rOffset;
-            answerIsOccupied.count = Utility.Cast(scoutColliderMax, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
-            occupied = isOccupied(answerIsOccupied, pos);
-            scoutColliderMax.offset = savedOffset;
+            //Test with max scout collider
+            occupied = isOccupiedImpl(scoutColliderMax, testOffset, testPos);
         }
         else
         {
-            //assume the space is occupied so that it processes with the other colliders
+            //Else, assume the space is occupied so that it processes with the other colliders
             occupied = true;
         }
-        //Test with min scout collider
+        //If the max scout collider is occupied,
         if (occupied)
         {
-            Vector3 savedOffset = scoutColliderMin.offset;
-            scoutColliderMin.offset = rOffset;
-            answerIsOccupied.count = Utility.Cast(scoutColliderMin, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
-            occupied = isOccupied(answerIsOccupied, pos);
-            scoutColliderMin.offset = savedOffset;
-
-            //Test with actual collider
+            //There's something in or around merky, so
+            //Test with min scout collider
+            occupied = isOccupiedImpl(scoutColliderMin, testOffset, testPos);
+            //If the min scout collider is not occupied,
             if (!occupied)
             {
-                savedOffset = pc2d.offset;
-                pc2d.offset = rOffset;
-                answerIsOccupied.count = Utility.Cast(pc2d, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
-                occupied = isOccupied(answerIsOccupied, pos);
-                pc2d.offset = savedOffset;
+                //There's a possibility the space is clear
+                //Test with actual collider
+                occupied = isOccupiedImpl(pc2d, testOffset, testPos);
             }
         }
         return occupied;
     }
-    bool isOccupied(Utility.RaycastAnswer answer, Vector3 triedPos)
+    /// <summary>
+    /// isOccupied Step 2. Only meant to be called by isOccupied(Vector3).
+    /// </summary>
+    private bool isOccupiedImpl(Collider2D coll, Vector3 testOffset, Vector3 testPos)
     {
-        for (int i = 0; i < answer.count; i++)
+        //Find out what objects could be occupying the space
+        Vector3 savedOffset = coll.offset;
+        coll.offset = testOffset;
+        answerIsOccupied.count = Utility.Cast(
+            coll,
+            Vector2.zero,
+            answerIsOccupied.rch2ds,
+            0,
+            true);
+        coll.offset = savedOffset;
+    
+        //Go through the found objects and see if any actually occupy the space
+        for (int i = 0; i < answerIsOccupied.count; i++)
         {
-            RaycastHit2D rh2d = answer.rch2ds[i];
+            RaycastHit2D rh2d = answerIsOccupied.rch2ds[i];
             GameObject go = rh2d.collider.gameObject;
-            if (!rh2d.collider.isTrigger)
+            //If the object is not this gameobject,
+            if (go != gameObject)
             {
-                if (go != gameObject)
+                //And if the object is not a trigger,
+                if (!rh2d.collider.isTrigger)
                 {
+                    //It's occupied!
+                    //unless...
+                    //If there are possible exceptions,
+                    //(such as if Switch Teleport is active)
                     if (isOccupiedException != null)
                     {
-                        //Check each isOccupiedCatch delegate
-                        //2018-02-18: copied from processTapGesture(.)
+                        //Check each isOccupiedCatch delegate for an exception
                         foreach (IsOccupiedException ioc in isOccupiedException.GetInvocationList())
                         {
                             //Make it do what it needs to do, then return the result
-                            bool result = ioc.Invoke(rh2d.collider, triedPos);
+                            bool result = ioc.Invoke(rh2d.collider, testPos);
                             //If at least 1 returns true, it's considered not occupied
                             if (result == true)
                             {
@@ -671,19 +681,29 @@ public class PlayerController : MonoBehaviour
                             }
                         }
                     }
-                    //Debug.Log("Occupying object: " + go.name);
+                    //Nope, no exceptions, so
+                    //Yep, it's occupied by an object
                     return true;
                 }
-
-            }
-            if (go.tag == "NonTeleportableArea" || (go.transform.parent != null && go.transform.parent.gameObject.tag == "NonTeleportableArea"))
-            {
-                if (go.GetComponent<SecretAreaTrigger>() == null)
+                //Else if it is a trigger,
+                else
                 {
-                    return true;//yep, it's occupied by a hidden area
+                    //And if it's a hidden area,
+                    if (go.CompareTag("NonTeleportableArea")
+                        || (go.transform.parent != null && go.transform.parent.gameObject.CompareTag("NonTeleportableArea")))
+                    {
+                        //And if it's not a trigger that reveals said hidden area,
+                        if (go.GetComponent<SecretAreaTrigger>() == null)
+                        {
+                            //Yep, it's occupied by a hidden area
+                            return true;
+                        }
+                    }
                 }
             }
         }
+        //There were no occupying objects or hidden areas, so
+        //Nope, it's not occupied
         return false;
     }
 
