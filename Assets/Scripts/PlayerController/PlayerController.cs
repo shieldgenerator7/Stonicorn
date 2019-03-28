@@ -608,10 +608,6 @@ public class PlayerController : MonoBehaviour
         Grounded = Grounded;        
     }
 
-    {
-
-    }
-
     public bool isGroundedInDirection(Vector3 direction)
     {
         int count = Utility.Cast(pc2d, direction, rch2dsGrounded, groundTestDistance, true);

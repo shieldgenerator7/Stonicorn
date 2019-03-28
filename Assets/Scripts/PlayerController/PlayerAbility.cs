@@ -17,7 +17,14 @@ public class PlayerAbility : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         rb2d = GetComponent<Rigidbody2D>();
-        effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
+        if (effectParticleController)
+        {
+            effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerAbility (" + this.GetType() + ") on " + name + " does not have a particle effect! effectParticleController: " + effectParticleController);
+        }
         abilityIndicatorParticleController.activate(true);
     }
     public virtual void OnDisable()

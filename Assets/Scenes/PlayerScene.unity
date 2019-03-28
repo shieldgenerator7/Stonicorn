@@ -29382,86 +29382,6 @@ Transform:
   m_Father: {fileID: 675152029}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &522853516
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 522853518}
-  - component: {fileID: 522853519}
-  - component: {fileID: 522853517}
-  m_Layer: 0
-  m_Name: Shield Bubble Ability Granter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &522853517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 522853516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: 45022f75ecda600409d4dd63d09daca9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 3}
-  starAmount: 25
-  starSpawnDuration: 25
-  abilityIndicatorName: AbilityIndicatorShieldBubble
-  used: 0
-  minX: 0
-  maxX: 0
-  minY: 0
-  maxY: 0
---- !u!4 &522853518
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 522853516}
-  m_LocalRotation: {x: -0, y: -0, z: 0.8677352, w: -0.4970269}
-  m_LocalPosition: {x: 436.1, y: -149.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1374834921}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
---- !u!61 &522853519
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 522853516}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.87949944, y: 0.65281653}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 43.31925, y: 6.9389834}
-  m_EdgeRadius: 0
 --- !u!1 &530089676
 GameObject:
   m_ObjectHideFlags: 0
@@ -41764,7 +41684,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1374834921}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1001 &1113871235
 PrefabInstance:
@@ -47217,7 +47137,6 @@ Transform:
   m_Children:
   - {fileID: 1076381732}
   - {fileID: 1769676883}
-  - {fileID: 522853518}
   - {fileID: 1104946125}
   m_Father: {fileID: 0}
   m_RootOrder: 15
@@ -66816,6 +66735,7 @@ MonoBehaviour:
   gravityImmuneDuration: 0.2
   autoTeleportDelay: 0.1
   groundTestDistance: 0.25
+  groundedNormal: 1
   teleportRangeParticalController: {fileID: 198174140}
   teleportSound: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
   scoutColliderMin: {fileID: 530089677}
