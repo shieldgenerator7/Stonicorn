@@ -329,7 +329,7 @@ public class GestureManager : SavableMonoBehaviour
                     tapCount++;
                     adjustHoldThreshold(holdTime, false);
                     bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
-                    if (plrController.getIsInCheckPoint())
+                    if (plrController.InCheckPoint)
                     {
                         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
                         {

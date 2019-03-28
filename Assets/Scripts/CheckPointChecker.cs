@@ -35,7 +35,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
     }
     void initializeGhost()
-    {        
+    {
         ghost = (GameObject)Instantiate(ghostPrefab);
         UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(ghost, gameObject.scene);
         ghost.SetActive(false);
@@ -125,7 +125,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         activate();
         ghost.SetActive(false);
-        plyrController.setIsInCheckPoint(true);
+        plyrController.InCheckPoint = true;
         foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
         {
             if (cpc != this)
@@ -148,7 +148,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         if (current == this.gameObject)
         {
-            plyrController.setIsInCheckPoint(false);
+            plyrController.InCheckPoint = false;
             activate();
             clearPostTeleport(true);
             current = null;

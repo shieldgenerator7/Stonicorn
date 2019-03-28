@@ -90,6 +90,11 @@ public class PlayerController : MonoBehaviour
     private float halfWidth = 0;//half of Merky's sprite width
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
+    public bool InCheckPoint
+    {
+        get { return inCheckPoint; }
+        set { inCheckPoint = value; }
+    }
     private float[] rotations = new float[] { 285, 155, 90, 0 };
     private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for determining if Merky is grounded
     /// <summary>
@@ -729,15 +734,6 @@ public class PlayerController : MonoBehaviour
     public bool isIntact()
     {
         return hm.isIntact();
-    }
-
-    public void setIsInCheckPoint(bool iicp)
-    {
-        inCheckPoint = iicp;
-    }
-    public bool getIsInCheckPoint()
-    {
-        return inCheckPoint;
     }
 
     /// <summary>
