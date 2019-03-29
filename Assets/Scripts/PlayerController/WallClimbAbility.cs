@@ -7,7 +7,6 @@ public class WallClimbAbility : PlayerAbility
     [Header("Settings")]
     public float wallDetectRange = 1.0f;//how far from the center of the old position it should look for a wall
     [Header("Necessary Input")]
-    public AudioClip wallClimbSound;
     public GameObject stickyPadPrefab;
 
     private GravityAccepter gravity;
@@ -42,6 +41,14 @@ public class WallClimbAbility : PlayerAbility
         if (playerController.GroundedAbilityPrev)
         {
             base.showTeleportEffect(oldPos, newPos);
+        }
+    }
+
+    protected override void playTeleportSound(Vector2 oldPos, Vector2 newPos)
+    {
+        if (playerController.GroundedAbilityPrev)
+        {
+            base.playTeleportSound(oldPos, newPos);
         }
     }
 

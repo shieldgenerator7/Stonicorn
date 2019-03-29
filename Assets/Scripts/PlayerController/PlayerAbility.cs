@@ -8,7 +8,9 @@ public class PlayerAbility : MonoBehaviour
     public ParticleSystemController abilityIndicatorParticleController;
     public ParticleSystemController effectParticleController;
     private ParticleSystem effectParticleSystem;
-    public bool addsOnTeleportEffect = true;
+    public bool addsOnTeleportVisualEffect = true;
+    public AudioClip soundEffect;
+    public bool addsOnTeleportSoundEffect = true;
 
     protected PlayerController playerController;
     protected Rigidbody2D rb2d;
@@ -21,7 +23,7 @@ public class PlayerAbility : MonoBehaviour
         if (effectParticleController)
         {
             effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
-            if (addsOnTeleportEffect)
+            if (addsOnTeleportVisualEffect)
             {
                 playerController.onShowTeleportEffect += showTeleportEffect;
             }
@@ -30,13 +32,24 @@ public class PlayerAbility : MonoBehaviour
         {
             Debug.LogWarning("PlayerAbility (" + this.GetType() + ") on " + name + " does not have a particle effect! effectParticleController: " + effectParticleController);
         }
+        if (soundEffect)
+        {
+            if (addsOnTeleportSoundEffect)
+            {
+                playerController.onPlayTeleportSound += playTeleportSound;
+            }
+        }
         abilityIndicatorParticleController.activate(true);
     }
     public virtual void OnDisable()
     {
-        if (addsOnTeleportEffect)
+        if (addsOnTeleportVisualEffect)
         {
             playerController.onShowTeleportEffect -= showTeleportEffect;
+        }
+        if (addsOnTeleportSoundEffect)
+        {
+            playerController.onPlayTeleportSound -= playTeleportSound;
         }
         abilityIndicatorParticleController.activate(false);
     }
@@ -87,6 +100,11 @@ public class PlayerAbility : MonoBehaviour
     protected virtual void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
         playEffect(oldPos);
+    }
+
+    protected virtual void playTeleportSound(Vector2 oldPos, Vector2 newPos)
+    {
+        SoundManager.playSound(soundEffect, oldPos);
     }
 
 }

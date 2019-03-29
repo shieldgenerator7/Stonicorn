@@ -409,14 +409,7 @@ public class PlayerController : MonoBehaviour
         showTeleportEffect(oldPos, newPos);
 
         //Play Sound
-        if (groundedAbility && wca.enabled)
-        {
-            SoundManager.playSound(wca.wallClimbSound, oldPos);
-        }
-        else
-        {
-            SoundManager.playSound(teleportSound, oldPos);
-        }
+        playTeleportSound(oldPos, newPos);
 
         //Health Regen
         hm.addIntegrity(Vector2.Distance(oldPos, newPos));
@@ -593,8 +586,17 @@ public class PlayerController : MonoBehaviour
             onShowTeleportEffect(oldPos, newPos);
         }
     }
-    public delegate void OnShowTeleportEffect(Vector2 oldPos, Vector2 newPos);
-    public OnShowTeleportEffect onShowTeleportEffect;
+    public OnTeleport onShowTeleportEffect;
+
+    private void playTeleportSound(Vector2 oldPos, Vector2 newPos)
+    {
+        if (onPlayTeleportSound != null)
+        {
+            onPlayTeleportSound(oldPos, newPos);
+        }
+        SoundManager.playSound(teleportSound, oldPos);
+    }
+    public OnTeleport onPlayTeleportSound;
 
 
     public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);

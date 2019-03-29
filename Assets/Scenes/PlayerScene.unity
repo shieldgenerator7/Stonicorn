@@ -61994,7 +61994,9 @@ MonoBehaviour:
   effectColor: {r: 1, g: 0.4821931, b: 0.40344828, a: 1}
   abilityIndicatorParticleController: {fileID: 1950273300}
   effectParticleController: {fileID: 217562836}
-  addsOnTeleportEffect: 0
+  addsOnTeleportVisualEffect: 1
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
   forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 3}
   explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 3}
   afterWindPrefab: {fileID: 1706305049858728, guid: 5d5f3c3ecac31234687d4055a32ad921,
@@ -62222,9 +62224,10 @@ MonoBehaviour:
   effectColor: {r: 0.32941177, g: 0.70980394, b: 0.28627452, a: 0.05882353}
   abilityIndicatorParticleController: {fileID: 1121559822}
   effectParticleController: {fileID: 1675184547}
-  addsOnTeleportEffect: 1
+  addsOnTeleportVisualEffect: 1
+  soundEffect: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
+  addsOnTeleportSoundEffect: 1
   wallDetectRange: 1
-  wallClimbSound: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
   stickyPadPrefab: {fileID: 1097801133131608, guid: 19e25460a3d23d54da8b46ccd9b9225d,
     type: 3}
 --- !u!114 &1792176474
@@ -62289,7 +62292,9 @@ MonoBehaviour:
   effectColor: {r: 1, g: 1, b: 1, a: 1}
   abilityIndicatorParticleController: {fileID: 198174140}
   effectParticleController: {fileID: 0}
-  addsOnTeleportEffect: 1
+  addsOnTeleportVisualEffect: 1
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
   futureProjection: {fileID: 531202031}
   teleportPreviewPointer: {fileID: 1385001677}
   maxRange: 2.5
@@ -62310,7 +62315,9 @@ MonoBehaviour:
   effectColor: {r: 0.31764707, g: 0.5686275, b: 0.9764706, a: 1}
   abilityIndicatorParticleController: {fileID: 303568582}
   effectParticleController: {fileID: 0}
-  addsOnTeleportEffect: 0
+  addsOnTeleportVisualEffect: 1
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
   electricFieldPrefab: {fileID: 1181304595248282, guid: 25877458e6750fe4588a4006a6457d5d,
     type: 3}
   maxRange: 2.5
@@ -62337,7 +62344,9 @@ MonoBehaviour:
   effectColor: {r: 0.99158216, g: 1, b: 0.3897059, a: 1}
   abilityIndicatorParticleController: {fileID: 1444506601}
   effectParticleController: {fileID: 657988665}
-  addsOnTeleportEffect: 1
+  addsOnTeleportVisualEffect: 1
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
 --- !u!114 &1792176480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62354,7 +62363,9 @@ MonoBehaviour:
   effectColor: {r: 1, g: 0.654902, b: 0.17254902, a: 1}
   abilityIndicatorParticleController: {fileID: 1400941278}
   effectParticleController: {fileID: 1554604545}
-  addsOnTeleportEffect: 1
+  addsOnTeleportVisualEffect: 1
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
   sliceDamage: 100
   maxAirPortsGrant: 2
   streakPrefab: {fileID: 0}
@@ -62374,7 +62385,9 @@ MonoBehaviour:
   effectColor: {r: 0.654902, g: 0.17254902, b: 0.9411765, a: 0.05882353}
   abilityIndicatorParticleController: {fileID: 2033161042}
   effectParticleController: {fileID: 1467328613}
-  addsOnTeleportEffect: 1
+  addsOnTeleportVisualEffect: 1
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
 --- !u!1 &1809435737
 GameObject:
   m_ObjectHideFlags: 0
