@@ -166,7 +166,6 @@ public class PlayerController : MonoBehaviour
     //
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
-    private PolygonCollider2D triggerPC2D;//used to determine when Merky is near ground
     private GravityAccepter gravity;
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
@@ -187,11 +186,11 @@ public class PlayerController : MonoBehaviour
         = new Utility.RaycastAnswer(new RaycastHit2D[Utility.MAX_HIT_COUNT], 0);
     private RaycastHit2D[] rchdsAdjustForOccupant = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for finding Merky a new landing spot
 
+    private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
     public ParticleSystemController teleportRangeParticalController;
     public AudioClip teleportSound;
     public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
     public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
-    public Collider2D groundedTrigger;//the collider that is used to check if Merky is grounded
 
     private CameraController mainCameraController;//the camera controller for the main camera
     public CameraController Cam
@@ -244,28 +243,13 @@ public class PlayerController : MonoBehaviour
         teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
         onPreTeleport += canTeleport;
         Range = baseRange;
-        //Check grounded collider
-        if (groundedTrigger == null)
-        {
-            //Use triggerPC2D
-            updateTriggerPC2D();
-            groundedTrigger = triggerPC2D;
-            //If it's still null, then throw an exception
-            if (groundedTrigger == null)
-            {
-                throw new UnityException("Player object " + name + "'s groundedTrigger is " + groundedTrigger + "!");
-            }
-        }
-        else if (!groundedTrigger.isTrigger)
-        {
-            throw new UnityException("Player object " + name + "'s groundedTrigger must have isTrigger = TRUE!");
-        }
+        updateGroundTrigger();
     }
 
     private void FixedUpdate()
     {
         checkGravityImmunity(false);
-        updateTriggerPC2D();
+        updateGroundTrigger();
     }
     private void OnTriggerEnter2D(Collider2D coll2D)
     {
@@ -282,19 +266,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void updateTriggerPC2D()
+    private void updateGroundTrigger()
     {
-        if (triggerPC2D == null)
+        if (groundedTrigger == null)
         {
             //PC2D ground trigger
-            triggerPC2D = gameObject.AddComponent<PolygonCollider2D>();
-            triggerPC2D.points = pc2d.points;
-            triggerPC2D.isTrigger = true;
+            groundedTrigger = gameObject.AddComponent<PolygonCollider2D>();
+            groundedTrigger.points = pc2d.points;
+            groundedTrigger.isTrigger = true;
         }
         //Move triggerPC2D to its new position based on the current gravity
         Vector3 offset = gravity.Gravity.normalized * groundTestDistance;
-        float angle = transform.localEulerAngles.z;
-        triggerPC2D.offset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
+        groundedTrigger.offset = transform.InverseTransformDirection(offset);
     }
 
     public bool GravityImmune
@@ -489,7 +472,7 @@ public class PlayerController : MonoBehaviour
 
         //reset the ground check trigger's offset to zero,
         //so Unity knows to trigger OnTriggerEnter2D() again in certain cases
-        triggerPC2D.offset = Vector2.zero;
+        groundedTrigger.offset = Vector2.zero;
 
         //On Teleport Effects
         if (onTeleport != null)
