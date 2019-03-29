@@ -834,15 +834,15 @@ public class PlayerController : MonoBehaviour
         return (pos - transform.position).sqrMagnitude < halfWidth * halfWidth;
     }
 
-    public void processTapGesture(Vector3 gpos)
+    public void processTapGesture(Vector3 tapPos)
     {
-        if (gestureOnPlayer(gpos))
+        if (gestureOnPlayer(tapPos))
         {
             //Rotate player 90 degrees
             rotate();
         }
         Vector3 prevPos = transform.position;
-        Vector3 newPos = findTeleportablePosition(gpos);
+        Vector3 newPos = findTeleportablePosition(tapPos);
         bool continueTeleport = true;
         if (onPreTeleport != null)
         {
@@ -850,7 +850,7 @@ public class PlayerController : MonoBehaviour
             foreach (OnPreTeleport opt in onPreTeleport.GetInvocationList())
             {
                 //Make it do what it needs to do, then return the result
-                bool result = opt.Invoke(prevPos, newPos, gpos);
+                bool result = opt.Invoke(prevPos, newPos, tapPos);
                 //If at least 1 returns false, don't teleport
                 if (result == false)
                 {
@@ -875,13 +875,13 @@ public class PlayerController : MonoBehaviour
         CheckPointChecker cpc = checkPoint.GetComponent<CheckPointChecker>();
         if (cpc != null)
         {
-            Vector2 prevPos = transform.position;
+            Vector2 oldPos = transform.position;
             Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
             Vector3 newPos = checkPoint.transform.position + offset;
             if (onPreTeleport != null)
             {
                 //Pass in newPos for both here because player teleported exactly where they intended to
-                onPreTeleport(prevPos, newPos, newPos);
+                onPreTeleport(oldPos, newPos, newPos);
             }
             teleport(newPos);
             Cam.recenter();
@@ -891,7 +891,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
+    public void processHoldGesture(Vector3 holdPos, float holdTime, bool finished)
     {
         float reducedHoldTime = holdTime - gestureManager.HoldThreshold;
         //If the camera is centered on the player,
@@ -903,7 +903,7 @@ public class PlayerController : MonoBehaviour
             {
                 //Teleport
                 lastAutoTeleportTime = Time.time;
-                processTapGesture(gpos);
+                processTapGesture(holdPos);
             }
         }
         //Else if the player is on the edge of the screen,
@@ -917,10 +917,14 @@ public class PlayerController : MonoBehaviour
                 //Erase any visual effects of the other abilities
                 dropHoldGesture();
             }
-            tpa.processHoldGesture(gpos, reducedHoldTime, finished);
+            //Show the teleport preview effect
+            tpa.processHoldGesture(holdPos, reducedHoldTime, finished);
+            //If this is the last frame of the hold gesture,
             if (finished)
             {
-                processTapGesture(gpos);
+                //Teleport to the location
+                processTapGesture(holdPos);
+                //Erase the teleport preview effects
                 tpa.dropHoldGesture();
             }
         }
