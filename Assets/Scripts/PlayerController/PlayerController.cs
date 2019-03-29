@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     //
     //Settings
     //
+    [Header("Settings")]
     public float baseRange = 3;
     public float exhaustRange = 1;
     public int maxAirPorts = 0;
@@ -113,7 +114,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public bool groundedNormal = true;
+    private bool groundedNormal = true;
     public bool GroundedNormal
     {
         get
@@ -177,7 +178,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
 
-    
+
     //
     // Method-specific variables
     //
@@ -198,11 +199,12 @@ public class PlayerController : MonoBehaviour
     //
     // Components
     //
+    [Header("Components")]
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
     private GravityAccepter gravity;
-    
+
     public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
     public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
 
