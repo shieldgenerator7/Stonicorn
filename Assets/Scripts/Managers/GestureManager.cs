@@ -461,7 +461,8 @@ public class GestureManager : SavableMonoBehaviour
         {
             isDrag = true;
         }
-        else { 
+        else
+        {
             isCameraMovementOnly = false;
         }
     }
@@ -497,9 +498,12 @@ public class GestureManager : SavableMonoBehaviour
     /// Returns the absolute hold threshold, including its scale
     /// </summary>
     /// <returns></returns>
-    public float getHoldThreshold()
+    public float HoldThreshold
     {
-        return holdThreshold * holdThresholdScale;
+        get
+        {
+            return holdThreshold * holdThresholdScale;
+        }
     }
     /// <summary>
     /// Switches the gesture profile to the profile with the given name

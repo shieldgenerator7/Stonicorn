@@ -188,13 +188,26 @@ public class PlayerController : MonoBehaviour
         get { return mainCameraController; }
         private set { mainCameraController = value; }
     }
-    private GestureManager gm;
+    private GestureManager gestureManager;
     private HardMaterial hm;
 
     private TeleportAbility tpa;
-    private ForceTeleportAbility fta;
-    private WallClimbAbility wca;
-    private ElectricFieldAbility efa;
+
+    public List<PlayerAbility> ActiveAbilities
+    {
+        get
+        {
+            List<PlayerAbility> activeAbilities = new List<PlayerAbility>();
+            foreach (PlayerAbility ability in GetComponents<PlayerAbility>())
+            {
+                if (ability.enabled)
+                {
+                    activeAbilities.Add(ability);
+                }
+            }
+            return activeAbilities;
+        }
+    }
 
     // Use this for initialization
     private void Start()
@@ -203,13 +216,10 @@ public class PlayerController : MonoBehaviour
         pc2d = GetComponent<PolygonCollider2D>();
         gravity = GetComponent<GravityAccepter>();
         Cam = Camera.main.GetComponent<CameraController>();
-        gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
+        gestureManager = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         hm = GetComponent<HardMaterial>();
         hm.shattered += shattered;
         tpa = GetComponent<TeleportAbility>();
-        fta = GetComponent<ForceTeleportAbility>();
-        wca = GetComponent<WallClimbAbility>();
-        efa = GetComponent<ElectricFieldAbility>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
         teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
         onPreTeleport += canTeleport;
@@ -799,7 +809,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void shattered()
     {
-        gm.switchGestureProfile("Rewind");
+        gestureManager.switchGestureProfile("Rewind");
         GameManager.playerShattered();
         GameStatistics.incrementCounter("deathCount");
         if (GameStatistics.counter("deathCount") == 1)
@@ -883,32 +893,44 @@ public class PlayerController : MonoBehaviour
 
     public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
     {
-        Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
-        float reducedHoldTime = holdTime - gm.getHoldThreshold();
+        float reducedHoldTime = holdTime - gestureManager.HoldThreshold;
+        //If the camera is centered on the player,
         if (!Cam.offsetOffPlayer())
         {
+            //Rapidly auto-teleport
+            //If enough time has passed since the last auto-teleport,
             if (Time.time > lastAutoTeleportTime + autoTeleportDelay)
             {
+                //Teleport
                 lastAutoTeleportTime = Time.time;
                 processTapGesture(gpos);
             }
         }
+        //Else if the player is on the edge of the screen,
         else
         {
-            if (fta.enabled) { fta.dropHoldGesture(); }
-            if (efa.enabled) { efa.dropHoldGesture(); }
+            //Show a teleport preview
+
+            //If this is the first counted frame of the hold gesture,
+            if (reducedHoldTime < Time.deltaTime)
+            {
+                //Erase any visual effects of the other abilities
+                dropHoldGesture();
+            }
             tpa.processHoldGesture(gpos, reducedHoldTime, finished);
             if (finished)
             {
                 processTapGesture(gpos);
+                tpa.dropHoldGesture();
             }
         }
     }
     private void dropHoldGesture()
     {
-        tpa.dropHoldGesture();
-        if (fta.enabled) { fta.dropHoldGesture(); }
-        if (efa.enabled) { efa.dropHoldGesture(); }
+        foreach (PlayerAbility ability in ActiveAbilities)
+        {
+            ability.dropHoldGesture();
+        }
     }
 }
 
