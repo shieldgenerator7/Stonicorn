@@ -66,7 +66,15 @@ public class PlayerController : MonoBehaviour
         get
         {
             GroundedPrev = grounded;
-            grounded = GroundedNormal || GroundedAbility;
+            grounded = GroundedNormal;
+            if (grounded) {
+                GroundedAbilityPrev = groundedAbility;
+                groundedAbility = false;
+            }
+            else
+            {
+                grounded = GroundedAbility;
+            }
             return grounded;
         }
         set
