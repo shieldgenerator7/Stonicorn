@@ -196,7 +196,14 @@ public class PlayerController : MonoBehaviour
     private CameraController mainCameraController;//the camera controller for the main camera
     public CameraController Cam
     {
-        get { return mainCameraController; }
+        get
+        {
+            if (mainCameraController == null)
+            {
+                mainCameraController = Camera.main.GetComponent<CameraController>();
+            }
+            return mainCameraController;
+        }
         private set { mainCameraController = value; }
     }
     private GestureManager gestureManager;
@@ -226,7 +233,6 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
         gravity = GetComponent<GravityAccepter>();
-        Cam = Camera.main.GetComponent<CameraController>();
         gestureManager = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         hm = GetComponent<HardMaterial>();
         hm.shattered += shattered;
