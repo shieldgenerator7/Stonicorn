@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
     private GravityAccepter gravity;
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
-    private float halfWidth = 0;//half of Merky's sprite width
+    private float halfWidth;//half of Merky's sprite width
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
     public bool InCheckPoint
@@ -231,7 +231,10 @@ public class PlayerController : MonoBehaviour
         hm = GetComponent<HardMaterial>();
         hm.shattered += shattered;
         tpa = GetComponent<TeleportAbility>();
-        halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
+        //Estimate the halfWidth
+        Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
+        halfWidth = (extents.x + extents.y) / 2;
+        //
         teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
         onPreTeleport += canTeleport;
         Range = baseRange;
