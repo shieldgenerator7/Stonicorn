@@ -202,9 +202,7 @@ public class PlayerController : MonoBehaviour
     private PolygonCollider2D pc2d;
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
     private GravityAccepter gravity;
-
-    public ParticleSystemController teleportRangeParticalController;
-    public AudioClip teleportSound;
+    
     public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
     public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
 
@@ -256,7 +254,6 @@ public class PlayerController : MonoBehaviour
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
         halfWidth = (extents.x + extents.y) / 2;
         //
-        teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
         onPreTeleport += canTeleport;
         Range = baseRange;
         updateGroundTrigger();
@@ -625,7 +622,10 @@ public class PlayerController : MonoBehaviour
         {
             onPlayTeleportSound(oldPos, newPos);
         }
-        SoundManager.playSound(teleportSound, oldPos);
+        else
+        {
+            throw new UnityException("No delegates added for playing sound! PlayerController: " + name);
+        }
     }
     public OnTeleport onPlayTeleportSound;
 

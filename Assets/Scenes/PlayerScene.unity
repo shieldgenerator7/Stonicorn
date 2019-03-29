@@ -62037,11 +62037,8 @@ MonoBehaviour:
   autoTeleportDelay: 0.1
   groundTestDistance: 0.25
   groundedNormal: 1
-  teleportRangeParticalController: {fileID: 198174140}
-  teleportSound: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
   scoutColliderMin: {fileID: 530089677}
   scoutColliderMax: {fileID: 1809435738}
-  groundedTrigger: {fileID: 0}
 --- !u!60 &1792176469
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -62293,8 +62290,8 @@ MonoBehaviour:
   abilityIndicatorParticleController: {fileID: 198174140}
   effectParticleController: {fileID: 0}
   addsOnTeleportVisualEffect: 1
-  soundEffect: {fileID: 0}
-  addsOnTeleportSoundEffect: 0
+  soundEffect: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
+  addsOnTeleportSoundEffect: 1
   futureProjection: {fileID: 531202031}
   teleportPreviewPointer: {fileID: 1385001677}
 --- !u!114 &1792176478
