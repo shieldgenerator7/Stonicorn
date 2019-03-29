@@ -51,6 +51,13 @@ public class PlayerController : MonoBehaviour
     public delegate void OnRangeChanged(float range);
     public OnRangeChanged onRangeChanged;
 
+    private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
+    public bool InCheckPoint
+    {
+        get { return inCheckPoint; }
+        set { inCheckPoint = value; }
+    }
+
     //
     //Grounded state variables
     //
@@ -67,13 +74,16 @@ public class PlayerController : MonoBehaviour
         {
             GroundedPrev = grounded;
             grounded = GroundedNormal;
+            //If it's grounded normally,
             if (grounded)
             {
+                //It's not going to even check the abilities
                 GroundedAbilityPrev = groundedAbility;
                 groundedAbility = false;
             }
             else
             {
+                //Else, check the abilities
                 grounded = GroundedAbility;
             }
             return grounded;
@@ -159,25 +169,18 @@ public class PlayerController : MonoBehaviour
         get { return groundedAbilityPrev; }
         private set { groundedAbilityPrev = value; }
     }
-    private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
 
     //
-    // Components
+    // Gravity Immunity Variables
     //
-    private Rigidbody2D rb2d;
-    private PolygonCollider2D pc2d;
-    private GravityAccepter gravity;
+    private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
-    private float halfWidth;//half of Merky's sprite width
 
-    private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
-    public bool InCheckPoint
-    {
-        get { return inCheckPoint; }
-        set { inCheckPoint = value; }
-    }
-    private float[] rotations = new float[] { 285, 155, 90, 0 };
+    
+    //
+    // Method-specific variables
+    //
     private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for determining if Merky is grounded
     /// <summary>
     /// Used for determining if Merky's landing spot is taken
@@ -186,7 +189,20 @@ public class PlayerController : MonoBehaviour
         = new Utility.RaycastAnswer(new RaycastHit2D[Utility.MAX_HIT_COUNT], 0);
     private RaycastHit2D[] rchdsAdjustForOccupant = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for finding Merky a new landing spot
 
+    //
+    // (Runtime) Constants
+    //
+    private float[] rotations = new float[] { 285, 155, 90, 0 };
+    private float halfWidth;//half of Merky's sprite width
+
+    //
+    // Components
+    //
+    private Rigidbody2D rb2d;
+    private PolygonCollider2D pc2d;
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
+    private GravityAccepter gravity;
+
     public ParticleSystemController teleportRangeParticalController;
     public AudioClip teleportSound;
     public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
