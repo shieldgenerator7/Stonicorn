@@ -200,13 +200,13 @@ public class PlayerController : MonoBehaviour
     // Components
     //
     [Header("Components")]
+    public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
+
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
     private GravityAccepter gravity;
-
-    public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
-    public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
 
     private CameraController mainCameraController;//the camera controller for the main camera
     public CameraController Cam
