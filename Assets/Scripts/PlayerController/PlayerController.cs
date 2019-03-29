@@ -67,7 +67,8 @@ public class PlayerController : MonoBehaviour
         {
             GroundedPrev = grounded;
             grounded = GroundedNormal;
-            if (grounded) {
+            if (grounded)
+            {
                 GroundedAbilityPrev = groundedAbility;
                 groundedAbility = false;
             }
@@ -137,6 +138,8 @@ public class PlayerController : MonoBehaviour
             return groundedAbility;
         }
     }
+    public delegate bool IsGroundedCheck();
+    public IsGroundedCheck isGroundedCheck;
 
     private bool groundedPrev;
     public bool GroundedPrev
@@ -494,6 +497,8 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
+    public OnTeleport onTeleport;
 
     /// <summary>
     /// Finds the teleportable position closest to the given targetPos
@@ -616,14 +621,6 @@ public class PlayerController : MonoBehaviour
     }
     public OnTeleport onPlayTeleportSound;
 
-
-    public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
-    public OnTeleport onTeleport;
-
-    //Used when you also need to know where the user clicked
-    public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
-    public OnPreTeleport onPreTeleport;
-
     private void checkGroundedState()
     {
         Grounded = Grounded;
@@ -646,9 +643,6 @@ public class PlayerController : MonoBehaviour
         }
         return false;
     }
-
-    public delegate bool IsGroundedCheck();
-    public IsGroundedCheck isGroundedCheck;
 
     /// <summary>
     /// Determines whether the given position is occupied or not
@@ -757,7 +751,6 @@ public class PlayerController : MonoBehaviour
         //Nope, it's not occupied
         return false;
     }
-
     public delegate bool IsOccupiedException(Collider2D coll, Vector3 testPos);
     public IsOccupiedException isOccupiedException;
 
@@ -878,6 +871,10 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    //Used when you also need to know where the user clicked, and may need to stop the teleport
+    public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
+    public OnPreTeleport onPreTeleport;
+
     public void processTapGesture(GameObject checkPoint)
     {
         CheckPointChecker cpc = checkPoint.GetComponent<CheckPointChecker>();
