@@ -24,11 +24,11 @@ public class PlayerController : MonoBehaviour
 
     private float teleportTime;//the earliest time that Merky can teleport
     /// <summary>
-    /// Returns whether the teleport ability is off cooldown
+    /// Returns whether the teleport ability is ready
     /// True: teleport is able to be used
     /// False: teleport is still on cooldown and can't be used
     /// </summary>
-    public bool TeleportOffCooldown
+    public bool TeleportReady
     {
         get { return Time.time >= teleportTime; }
     }
@@ -387,7 +387,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!Grounded)
         {
-            if (!TeleportOffCooldown)
+            if (!TeleportReady)
             {
                 return false;
             }

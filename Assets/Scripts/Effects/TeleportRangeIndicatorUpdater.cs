@@ -26,7 +26,7 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
     
     public void updateRange()
     {
-        if (controller.TeleportOffCooldown)
+        if (controller.TeleportReady)
         {
             sr.enabled = true;
         }
