@@ -5,7 +5,7 @@ public class RewindGestureProfile : GestureProfile
 {
     public override void activate()
     {
-        GameManager.showPlayerGhosts();
+        gm.showPlayerGhosts();
     }
     public override void deactivate()
     {

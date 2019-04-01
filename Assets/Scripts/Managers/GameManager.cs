@@ -27,14 +27,25 @@ public class GameManager : MonoBehaviour
     private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
 
     private static GameManager instance;
+    public static GameManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<GameManager>();
+            }
+            return instance;
+        }
+    }
     private static PlayerController playerController;
     public static string playerTag = "Player";
     private CameraController camCtr;
     private GestureManager gestureManager;
     public static GestureManager GestureManager
     {
-        get { return instance.gestureManager; }
-        private set { instance.gestureManager = value; }
+        get { return Instance.gestureManager; }
+        private set { Instance.gestureManager = value; }
     }
     private MusicManager musicManager;
     private float actionTime = 0;//used to determine how often to rewind
@@ -85,7 +96,7 @@ public class GameManager : MonoBehaviour
         if (savePrevGame)
         {
             Save();
-            instance.saveToFile();
+            Instance.saveToFile();
         }
         //Unload all scenes and reload PlayerScene
         instance = null;
@@ -111,7 +122,7 @@ public class GameManager : MonoBehaviour
         {
             resetGameTimer = 0;
         }
-        instance.showEndDemoScreen(false);
+        Instance.showEndDemoScreen(false);
     }
     public static float getGameDemoLength()
     {
@@ -146,7 +157,7 @@ public class GameManager : MonoBehaviour
 
     public static void addObject(GameObject go)
     {
-        instance.gameObjects.Add(go);
+        Instance.gameObjects.Add(go);
     }
     public void addAll(List<GameObject> list)
     {
@@ -170,14 +181,14 @@ public class GameManager : MonoBehaviour
     /// <param name="go"></param>
     private static void removeObject(GameObject go)
     {
-        instance.gameObjects.Remove(go);
-        instance.forgottenObjects.Remove(go);
+        Instance.gameObjects.Remove(go);
+        Instance.forgottenObjects.Remove(go);
         if (go && go.transform.childCount > 0)
         {
             foreach (Transform t in go.transform)
             {
-                instance.gameObjects.Remove(t.gameObject);
-                instance.forgottenObjects.Remove(t.gameObject);
+                Instance.gameObjects.Remove(t.gameObject);
+                Instance.forgottenObjects.Remove(t.gameObject);
             }
         }
     }
@@ -185,11 +196,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (instance == null)
-        {
-            //2018-06-04: band aid code
-            instance = this;
-        }
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
@@ -260,7 +266,7 @@ public class GameManager : MonoBehaviour
         openScenes.Remove(s.name);
         loadedSceneCount--;
     }
-    public static void refresh() { instance.refreshGameObjects(); }
+    public static void refresh() { Instance.refreshGameObjects(); }
     public void refreshGameObjects()
     {
         gameObjects = new List<GameObject>();
@@ -288,7 +294,7 @@ public class GameManager : MonoBehaviour
         {
             //load state if found, save state if not foud
             bool foundMO = false;
-            foreach (MemoryObject mo in instance.memories)
+            foreach (MemoryObject mo in Instance.memories)
             {
                 if (mo.isFor(mmb))
                 {
@@ -299,32 +305,32 @@ public class GameManager : MonoBehaviour
             }
             if (!foundMO)
             {
-                instance.memories.Add(mmb.getMemoryObject());
+                Instance.memories.Add(mmb.getMemoryObject());
             }
         }
     }
     public static void Save()
     {
-        instance.gameStates.Add(new GameState(instance.gameObjects));
-        instance.chosenId++;
-        instance.rewindId++;
+        Instance.gameStates.Add(new GameState(Instance.gameObjects));
+        Instance.chosenId++;
+        Instance.rewindId++;
         //Open Scenes
-        foreach (SceneLoader sl in instance.sceneLoaders)
+        foreach (SceneLoader sl in Instance.sceneLoaders)
         {
-            if (instance.openScenes.Contains(sl.sceneName))
+            if (Instance.openScenes.Contains(sl.sceneName))
             {
-                if (sl.firstOpenGameStateId > instance.chosenId)
+                if (sl.firstOpenGameStateId > Instance.chosenId)
                 {
-                    sl.firstOpenGameStateId = instance.chosenId;
+                    sl.firstOpenGameStateId = Instance.chosenId;
                 }
-                sl.lastOpenGameStateId = instance.chosenId;
+                sl.lastOpenGameStateId = Instance.chosenId;
             }
         }
     }
     public static void saveMemory(MemoryMonoBehaviour mmb)
     {//2016-11-23: CODE HAZARD: mixture of static and non-static methods, will cause error if there are ever more than 1 instance of GameManager
         bool foundMO = false;
-        foreach (MemoryObject mo in instance.memories)
+        foreach (MemoryObject mo in Instance.memories)
         {
             if (mo.isFor(mmb))
             {
@@ -335,14 +341,14 @@ public class GameManager : MonoBehaviour
         }
         if (!foundMO)
         {
-            instance.memories.Add(mmb.getMemoryObject());
+            Instance.memories.Add(mmb.getMemoryObject());
         }
     }
     public static void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
     {
-        if (!instance.activeCheckPoints.Contains(cpc))
+        if (!Instance.activeCheckPoints.Contains(cpc))
         {
-            instance.activeCheckPoints.Add(cpc);
+            Instance.activeCheckPoints.Add(cpc);
         }
     }
     /// <summary>
@@ -353,22 +359,22 @@ public class GameManager : MonoBehaviour
     {
         if (forget)
         {
-            instance.forgottenObjects.Add(obj);
+            Instance.forgottenObjects.Add(obj);
             obj.SetActive(false);
         }
         else
         {
-            instance.forgottenObjects.Remove(obj);
+            Instance.forgottenObjects.Remove(obj);
             obj.SetActive(true);
         }
     }
     public static List<GameObject> getForgottenObjects()
     {
-        return instance.forgottenObjects;
+        return Instance.forgottenObjects;
     }
     public static void LoadState()
     {
-        instance.Load(instance.chosenId);
+        Instance.Load(Instance.chosenId);
     }
     private void Load(int gamestateId)
     {
@@ -472,11 +478,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<GameManager>();
-            }
-            return instance.chosenId > instance.rewindId;
+            return Instance.chosenId > Instance.rewindId;
         }
     }
     public void cancelRewind()
@@ -487,7 +489,7 @@ public class GameManager : MonoBehaviour
     }
     public static void RewindToStart()
     {
-        instance.Rewind(0);
+        Instance.Rewind(0);
     }
     /// <summary>
     /// Sets into motion the rewind state.
@@ -547,18 +549,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
     void OnApplicationQuit()
     {
         Save();
@@ -567,7 +557,7 @@ public class GameManager : MonoBehaviour
 
     public static List<CheckPointChecker> getActiveCheckPoints()
     {
-        return instance.activeCheckPoints;
+        return Instance.activeCheckPoints;
     }
 
     public static PlayerController Player
@@ -585,7 +575,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return instance.chosenId;
+            return Instance.chosenId;
         }
     }
 
@@ -605,17 +595,17 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static void playerShattered()
     {
-        instance.respawnTime = Time.time + instance.respawnDelay;
+        Instance.respawnTime = Time.time + Instance.respawnDelay;
     }
 
-    public static void showPlayerGhosts()
+    public void showPlayerGhosts()
     {
         bool intact = Player.HardMaterial.isIntact();
-        foreach (GameState gs in instance.gameStates)
+        foreach (GameState gs in gameStates)
         {
-            if (intact || gs.id != instance.chosenId)
+            if (intact || gs.id != chosenId)
             {//don't include last game state if merky is shattered
-                gs.showRepresentation(instance.chosenId);
+                gs.showRepresentation(chosenId);
             }
         }
     }
@@ -624,7 +614,7 @@ public class GameManager : MonoBehaviour
         bool intact = Player.HardMaterial.isIntact();
         foreach (GameState gs in gameStates)
         {
-            if (intact || gs.id != instance.chosenId)
+            if (intact || gs.id != chosenId)
             {//don't include last game state if merky is shattered
                 gs.hideRepresentation();
             }
@@ -639,7 +629,7 @@ public class GameManager : MonoBehaviour
     {
         float closestDistance = float.MaxValue;
         GameObject closestObject = null;
-        foreach (GameState gs in instance.gameStates)
+        foreach (GameState gs in Instance.gameStates)
         {
             Vector2 gsPos = gs.Representation.transform.position;
             float gsDistance = Vector2.Distance(gsPos, pos);
@@ -651,9 +641,12 @@ public class GameManager : MonoBehaviour
         }
         return closestObject;
     }
-    public static GameObject getPlayerGhostPrefab()
+    public static GameObject PlayerGhostPrefab
     {
-        return instance.playerGhost;
+        get
+        {
+            return Instance.playerGhost;
+        }
     }
 
     public static void showMainMenu(bool show)
@@ -764,7 +757,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public static Vector2 getLatestSafeRewindGhostPosition()
     {
-        return instance.gameStates[instance.chosenId - 1].merky.position;
+        return Instance.gameStates[Instance.chosenId - 1].merky.position;
     }
 }
 

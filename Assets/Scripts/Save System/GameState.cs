@@ -17,7 +17,7 @@ public class GameState
         {
             if (representation == null)
             {
-                representation = GameObject.Instantiate(GameManager.getPlayerGhostPrefab());
+                representation = GameObject.Instantiate(GameManager.PlayerGhostPrefab);
                 representation.transform.position = merky.position;
                 representation.transform.localScale = merky.localScale;
                 representation.transform.rotation = merky.rotation;
