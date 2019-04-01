@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
-    public int chosenId = 0;
+    private int chosenId = 0;
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
     public AudioSource timeRewindMusic;//the music to play while time rewinds
     private int rewindId = 0;//the id to eventually load back to
