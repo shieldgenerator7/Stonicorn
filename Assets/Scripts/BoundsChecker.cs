@@ -30,7 +30,7 @@ public class BoundsChecker : MonoBehaviour
         if (enabled)
         {
             GameObject collGO = coll.gameObject;
-            if (rewindTimeForPlayer && collGO.CompareTag(GameManager.playerTag))
+            if (rewindTimeForPlayer && GameManager.isPlayer(collGO))
             {
                 GameManager.RewindToStart();
             }

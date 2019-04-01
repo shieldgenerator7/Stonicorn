@@ -39,7 +39,7 @@ public class CheckPointActivator : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == GameManager.playerTag)
+        if (GameManager.isPlayer(coll.gameObject))
         {
             transform.parent.GetComponent<CheckPointChecker>().activate();
         }

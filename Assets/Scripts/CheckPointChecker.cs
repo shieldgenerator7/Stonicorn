@@ -45,7 +45,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     //When a player touches this checkpoint, activate it
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == GameManager.playerTag)
+        if (GameManager.isPlayer(coll.gameObject))
         {
             activate();
         }
@@ -56,7 +56,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     */
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.CompareTag(GameManager.playerTag))
+        if (GameManager.isPlayer(coll.gameObject))
         {
             trigger();
         }

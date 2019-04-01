@@ -18,7 +18,7 @@ public class MusicZone : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.CompareTag(GameManager.playerTag))
+        if (GameManager.isPlayer(coll.gameObject))
         {
             musicManager.setCurrentSong(music);
         }

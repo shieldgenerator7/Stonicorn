@@ -4,7 +4,6 @@ using System.Collections;
 public class GestureProfile
 {
 
-    protected GameObject player;
     protected PlayerController plrController;
     protected Rigidbody2D rb2dPlayer;
     protected Camera cam;
@@ -14,9 +13,8 @@ public class GestureProfile
 
     public GestureProfile()
     {
-        player = GameObject.FindGameObjectWithTag(GameManager.playerTag);
-        plrController = player.GetComponent<PlayerController>();
-        rb2dPlayer = player.GetComponent<Rigidbody2D>();
+        plrController = GameManager.Player;
+        rb2dPlayer = plrController.GetComponent<Rigidbody2D>();
         cam = Camera.main;
         camController = cam.GetComponent<CameraController>();
         gm = GameObject.FindObjectOfType<GameManager>();

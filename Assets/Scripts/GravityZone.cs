@@ -29,7 +29,7 @@ public class GravityZone : MonoBehaviour
                 if (!tenants.Contains(rb2d))
                 {
                     tenants.Add(rb2d);
-                    if (coll.gameObject == GameManager.Player)
+                    if (GameManager.isPlayer(coll.gameObject))
                     {
                         playerIsTenant = true;
                     }
@@ -45,7 +45,7 @@ public class GravityZone : MonoBehaviour
             if (rb2d != null)
             {
                 tenants.Remove(coll.gameObject.GetComponent<Rigidbody2D>());
-                if (coll.gameObject == GameManager.Player)
+                if (GameManager.isPlayer(coll.gameObject))
                 {
                     playerIsTenant = false;
                 }

@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
         }
     }
     private static PlayerController playerController;
-    public static string playerTag = "Player";
     private CameraController camCtr;
     private GestureManager gestureManager;
     public static GestureManager GestureManager
@@ -565,10 +564,14 @@ public class GameManager : MonoBehaviour
         {
             if (playerController == null)
             {
-                playerController = GameObject.FindGameObjectWithTag(playerTag).GetComponent<PlayerController>();
+                playerController = FindObjectOfType<PlayerController>();
             }
             return playerController;
         }
+    }
+    public static bool isPlayer(GameObject go)
+    {
+        return go == Player.gameObject;
     }
     public static int CurrentStateId
     {
