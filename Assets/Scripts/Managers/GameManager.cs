@@ -244,26 +244,34 @@ public class GameManager : MonoBehaviour
         }
         if (GameDemoLength > 0)
         {
-            if (resetGameTimer > 0 && Time.time >= resetGameTimer)
+            float timeLeft = 0;
+            if (resetGameTimer > 0)
             {
-                showEndDemoScreen(true);
-                txtDemoTimer.text = "0";
-                //+10 for buffer period where input doesn't interrupt it
-                if (Time.time >= resetGameTimer + 10)
+                if (Time.time >= resetGameTimer)
                 {
-                    if (Input.GetMouseButton(0)
-                        || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-                        )
+                    showEndDemoScreen(true);
+                    //+10 for buffer period where input doesn't interrupt it
+                    if (Time.time >= resetGameTimer + 10)
                     {
-                        Instance.showEndDemoScreen(false);
-                        resetGame();
+                        if (Input.GetMouseButton(0)
+                            || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+                            )
+                        {
+                            Instance.showEndDemoScreen(false);
+                            resetGame();
+                        }
                     }
+                }
+                else
+                {
+                    timeLeft = resetGameTimer - Time.time;
                 }
             }
             else
             {
-                txtDemoTimer.text = string.Format("{0:0.00}", (resetGameTimer - Time.time));
+                timeLeft = GameDemoLength;
             }
+            txtDemoTimer.text = string.Format("{0:0.00}", timeLeft);
         }
     }
 
