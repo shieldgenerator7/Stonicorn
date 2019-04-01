@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     private float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
     [SerializeField]
     private float rewindDelay = 0.05f;//how much to delay each rewind transition by
+    [SerializeField]
+    private float restartDemoDelay = 10;//how many seconds before the game can reset after the demo ends
     [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
     [SerializeField]
@@ -250,13 +252,15 @@ public class GameManager : MonoBehaviour
                 if (Time.time >= resetGameTimer)
                 {
                     showEndDemoScreen(true);
-                    //+10 for buffer period where input doesn't interrupt it
-                    if (Time.time >= resetGameTimer + 10)
+                    //If the buffer period has ended,
+                    if (Time.time >= resetGameTimer + restartDemoDelay)
                     {
+                        //And user has given input,
                         if (Input.GetMouseButton(0)
                             || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
                             )
                         {
+                            //Reset game
                             Instance.showEndDemoScreen(false);
                             resetGame();
                         }
