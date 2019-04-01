@@ -32,13 +32,13 @@ public class GameManager : MonoBehaviour
     //
     private int rewindId = 0;//the id to eventually load back to
     private int chosenId = 0;
+    private float lastRewindTime = 0;//used to determine how often to rewind
     private float respawnTime = 0;//the earliest time Merky can rewind after shattering
     private int loadedSceneCount = 0;
     private string unloadedScene = null;
     private static float resetGameTimer = 0.0f;//the time that the game will reset at
     private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
-    private float actionTime = 0;//used to determine how often to rewind
-
+    
     //
     // Runtime Lists
     //
@@ -279,9 +279,9 @@ public class GameManager : MonoBehaviour
     {
         if (Rewinding)
         {
-            if (Time.time > actionTime)
+            if (Time.time > lastRewindTime)
             {
-                actionTime = Time.time + rewindDelay;
+                lastRewindTime = Time.time + rewindDelay;
                 Load(chosenId - 1);
             }
         }
