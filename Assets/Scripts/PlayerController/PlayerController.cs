@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
     private float savedAngularVelocity;
 
     //
-    // (Runtime) Constants
+    // Runtime Constants
     //
     private float[] rotations = new float[] { 285, 155, 90, 0 };
     private float halfWidth;//half of Merky's sprite width
@@ -210,7 +210,18 @@ public class PlayerController : MonoBehaviour
         private set { mainCameraController = value; }
     }
     private GestureManager gestureManager;
-    private HardMaterial hm;
+    private HardMaterial hardMaterial;
+    public HardMaterial HardMaterial
+    {
+        get
+        {
+            if (hardMaterial == null)
+            {
+                hardMaterial = GetComponent<HardMaterial>();
+            }
+            return hardMaterial;
+        }
+    }
 
     private TeleportAbility tpa;
 
@@ -237,8 +248,7 @@ public class PlayerController : MonoBehaviour
         pc2d = GetComponent<PolygonCollider2D>();
         gravity = GetComponent<GravityAccepter>();
         gestureManager = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
-        hm = GetComponent<HardMaterial>();
-        hm.shattered += shattered;
+        HardMaterial.shattered += shattered;
         tpa = GetComponent<TeleportAbility>();
         //Estimate the halfWidth
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
@@ -428,7 +438,7 @@ public class PlayerController : MonoBehaviour
         playTeleportSound(oldPos, newPos);
 
         //Health Regen
-        hm.addIntegrity(Vector2.Distance(oldPos, newPos));
+        HardMaterial.addIntegrity(Vector2.Distance(oldPos, newPos));
 
         //Momentum Dampening
         //If Merky is moving,
@@ -802,23 +812,24 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Delegate method called when hm's integrity reaches 0
+    /// Delegate method called when HardMaterial's integrity reaches 0
     /// </summary>
     private void shattered()
     {
+        //Put the gesture manager in rewind mode
         gestureManager.switchGestureProfile("Rewind");
+        //Let the game manager know the player died
         GameManager.playerShattered();
+        //Increment death counter
         GameStatistics.incrementCounter("deathCount");
+        //If this is the first death,
         if (GameStatistics.counter("deathCount") == 1)
         {
+            //Highlight the past preview that makes the most sense to rewind to
             Vector2 lsrgp = GameManager.getLatestSafeRewindGhostPosition();
             transform.position = ((Vector2)transform.position + lsrgp) / 2;
             EffectManager.highlightTapArea(lsrgp);
         }
-    }
-    public bool isIntact()
-    {
-        return hm.isIntact();
     }
 
     /// <summary>
