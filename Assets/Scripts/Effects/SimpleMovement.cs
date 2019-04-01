@@ -85,7 +85,6 @@ public class SimpleMovement : MonoBehaviour
 
     public void setMovement(Vector2 start, Vector2 dir, float minDist = 0, float maxDist = 1, bool keepPercent = true, bool updateSpeed = false)
     {
-        Debug.Log("start: " + start + ", dir: " + dir + ", direction: " + direction);
         if (!updateSpeed)
         {
             //Make sure direction is valid
@@ -125,7 +124,6 @@ public class SimpleMovement : MonoBehaviour
         {
             speed = (endPosition - startPosition).magnitude / duration;
         }
-        Debug.Log("startpos: " + startPosition + ", endpos: " + endPosition + ", speed: " + speed + ", duration: " + duration);
     }
 
     public void setMovementEnd(Vector2 end, Vector2 dir)
