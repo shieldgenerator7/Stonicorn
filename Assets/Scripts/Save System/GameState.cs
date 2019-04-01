@@ -17,14 +17,13 @@ public class GameState
         {
             if (representation == null)
             {
-                representation = GameObject.Instantiate(GameManager.PlayerGhostPrefab);
+                representation = GameObject.Instantiate(GameManager.Instance.playerGhostPrefab);
                 representation.transform.position = merky.position;
                 representation.transform.localScale = merky.localScale;
                 representation.transform.rotation = merky.rotation;
             }
             return representation;
         }
-        private set { }
     }
 
     //Instantiation

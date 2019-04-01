@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
     public int chosenId = 0;
-    public GameObject playerGhost;//this is to show Merky in the past (prefab)
+    public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
     public AudioSource timeRewindMusic;//the music to play while time rewinds
     private int rewindId = 0;//the id to eventually load back to
     private float respawnTime = 0;//the earliest time Merky can rewind after shattering
@@ -639,13 +639,6 @@ public class GameManager : MonoBehaviour
             }
         }
         return closestObject;
-    }
-    public static GameObject PlayerGhostPrefab
-    {
-        get
-        {
-            return Instance.playerGhost;
-        }
     }
 
     public static void showMainMenu(bool show)
