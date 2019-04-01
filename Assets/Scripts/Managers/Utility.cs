@@ -326,7 +326,16 @@ public static class Utility
         }
         return count;
     }
-    public static RaycastAnswer CastAnswer(Collider2D coll2d, Vector2 direction, float distance = 0, bool ignoreSiblingColliders = true)
+    /// <summary>
+    /// Returns a count and a list of colliders that collide with the given coll2d.
+    /// NOTE: NOT thread safe
+    /// </summary>
+    /// <param name="coll2d"></param>
+    /// <param name="direction"></param>
+    /// <param name="distance"></param>
+    /// <param name="ignoreSiblingColliders"></param>
+    /// <returns></returns>
+    public static RaycastAnswer CastAnswer(this Collider2D coll2d, Vector2 direction, float distance = 0, bool ignoreSiblingColliders = true)
     {
         int count = 0;
         count = coll2d.Cast(direction, rch2dsNonAlloc, distance, ignoreSiblingColliders);

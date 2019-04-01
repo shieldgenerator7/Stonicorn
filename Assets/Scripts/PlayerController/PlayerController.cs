@@ -178,18 +178,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
 
-
-    //
-    // Method-specific variables
-    //
-    private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for determining if Merky is grounded
-    /// <summary>
-    /// Used for determining if Merky's landing spot is taken
-    /// </summary>
-    private Utility.RaycastAnswer answerIsOccupied
-        = new Utility.RaycastAnswer(new RaycastHit2D[Utility.MAX_HIT_COUNT], 0);
-    private RaycastHit2D[] rchdsAdjustForOccupant = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for finding Merky a new landing spot
-
     //
     // (Runtime) Constants
     //
@@ -638,10 +626,11 @@ public class PlayerController : MonoBehaviour
 
     public bool isGroundedInDirection(Vector3 direction)
     {
-        int count = Utility.Cast(pc2d, direction, rch2dsGrounded, groundTestDistance, true);
-        for (int i = 0; i < count; i++)
+        Utility.RaycastAnswer answer;
+        answer = pc2d.CastAnswer(direction, groundTestDistance, true);
+        for (int i = 0; i < answer.count; i++)
         {
-            RaycastHit2D rch2d = rch2dsGrounded[i];
+            RaycastHit2D rch2d = answer.rch2ds[i];
             if (!rch2d.collider.isTrigger)
             {
                 GameObject ground = rch2d.collider.gameObject;
@@ -699,18 +688,14 @@ public class PlayerController : MonoBehaviour
         //Find out what objects could be occupying the space
         Vector3 savedOffset = coll.offset;
         coll.offset = testOffset;
-        answerIsOccupied.count = Utility.Cast(
-            coll,
-            Vector2.zero,
-            answerIsOccupied.rch2ds,
-            0,
-            true);
+        Utility.RaycastAnswer answer;
+        answer = coll.CastAnswer(Vector2.zero, 0, true);
         coll.offset = savedOffset;
 
         //Go through the found objects and see if any actually occupy the space
-        for (int i = 0; i < answerIsOccupied.count; i++)
+        for (int i = 0; i < answer.count; i++)
         {
-            RaycastHit2D rh2d = answerIsOccupied.rch2ds[i];
+            RaycastHit2D rh2d = answer.rch2ds[i];
             GameObject go = rh2d.collider.gameObject;
             //If the object is not this gameobject,
             if (go != gameObject)
@@ -777,12 +762,13 @@ public class PlayerController : MonoBehaviour
         testOffset = transform.InverseTransformDirection(testOffset);
         Vector3 savedOffset = pc2d.offset;
         pc2d.offset = testOffset;
-        int count = Utility.Cast(pc2d, Vector2.zero, rchdsAdjustForOccupant, 0, true);
+        Utility.RaycastAnswer answer;
+        answer = pc2d.CastAnswer(Vector2.zero, 0, true);
         pc2d.offset = savedOffset;
         //Adjust the move direction for each found object that it collides with
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < answer.count; i++)
         {
-            RaycastHit2D rh2d = rchdsAdjustForOccupant[i];
+            RaycastHit2D rh2d = answer.rch2ds[i];
             GameObject go = rh2d.collider.gameObject;
             //If the game object is not this game object,
             if (go != transform.gameObject)
