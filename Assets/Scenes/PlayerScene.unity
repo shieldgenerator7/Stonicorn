@@ -317,14 +317,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16f178c2a67a674a90713d2858d7da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  demoBuild: 0
   respawnDelay: 1
   rewindDelay: 0.05
-  restartDemoDelay: 10
   playerGhostPrefab: {fileID: 1000011127396842, guid: 9606e6e6819228048814d508f93b193e,
     type: 3}
-  endDemoScreen: {fileID: 2034127421}
-  txtDemoTimer: {fileID: 825789732}
   sceneLoaders:
   - {fileID: 1216784142}
   - {fileID: 2099265650}
@@ -333,6 +329,10 @@ MonoBehaviour:
   - {fileID: 133642598}
   - {fileID: 838574609}
   - {fileID: 1603800214}
+  demoBuild: 0
+  restartDemoDelay: 10
+  txtDemoTimer: {fileID: 825789732}
+  endDemoScreen: {fileID: 2034127421}
 --- !u!4 &94021248
 Transform:
   m_ObjectHideFlags: 0

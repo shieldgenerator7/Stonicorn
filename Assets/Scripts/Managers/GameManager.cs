@@ -13,21 +13,24 @@ public class GameManager : MonoBehaviour
     //
     [Header("Settings")]
     [SerializeField]
-    private bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
-    [SerializeField]
     private float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
     [SerializeField]
     private float rewindDelay = 0.05f;//how much to delay each rewind transition by
-    [SerializeField]
-    private float restartDemoDelay = 10;//how many seconds before the game can reset after the demo ends
+    
     [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
     [SerializeField]
-    private GameObject endDemoScreen;//the picture to show the player after the game resets
+    private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
+
+    [Header("Demo Mode")]
+    [SerializeField]
+    private bool demoBuild = false;//true to not load on open or save with date/timestamp in filename
+    [SerializeField]
+    private float restartDemoDelay = 10;//how many seconds before the game can reset after the demo ends
     [SerializeField]
     private Text txtDemoTimer;//the text that shows much time is left in the demo
     [SerializeField]
-    private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
+    private GameObject endDemoScreen;//the picture to show the player after the game resets
 
     //
     // Runtime variables
