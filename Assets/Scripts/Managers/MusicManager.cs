@@ -74,7 +74,10 @@ public class MusicManager : MonoBehaviour
         set
         {
             songSpeed = value;
-            currentSong.pitch = songSpeed;
+            if (currentSong)
+            {
+                currentSong.pitch = songSpeed;
+            }
         }
     }
     public float normalSongSpeed = 1;
