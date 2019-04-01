@@ -30,15 +30,15 @@ public class GameManager : MonoBehaviour
     //
     // Runtime variables
     //
-    private int rewindId = 0;//the id to eventually load back to
-    private int chosenId = 0;
-    private float lastRewindTime = 0;//used to determine how often to rewind
-    private float respawnTime = 0;//the earliest time Merky can rewind after shattering
-    private int loadedSceneCount = 0;
+    private int rewindId;//the id to eventually load back to
+    private int chosenId;
+    private float lastRewindTime;//used to determine how often to rewind
+    private float respawnTime;//the earliest time Merky can rewind after shattering
+    private int loadedSceneCount;
     private string unloadedScene = null;
-    private static float resetGameTimer = 0.0f;//the time that the game will reset at
-    private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
-    
+    private static float resetGameTimer;//the time that the game will reset at
+    private static float gamePlayTime;//how long the game can be played for, 0 for indefinitely
+
     //
     // Runtime Lists
     //
@@ -112,10 +112,10 @@ public class GameManager : MonoBehaviour
         musicManager = FindObjectOfType<MusicManager>();
         chosenId = -1;
         //If a limit has been set on the demo playtime
-        if (gamePlayTime > 0)
+        if (GameDemoLength > 0)
         {
             demoBuild = true;//auto enable demo build mode
-            gestureManager.tapGesture += startDemoTimer;
+            GestureManager.tapGesture += startDemoTimer;
             txtDemoTimer.transform.parent.gameObject.SetActive(true);
         }
         if (!demoBuild && ES2.Exists("merky.txt"))
@@ -147,36 +147,23 @@ public class GameManager : MonoBehaviour
         GameState.nextid = 0;
         SceneManager.LoadScene(0);
     }
-    /// <summary>
-    /// Schedules the game reset in the future
-    /// </summary>
-    /// <param name="timeUntilReset">How many seconds until the reset should occur</param>
-    public static void setResetTimer(float timeUntilReset)
+    public static float GameDemoLength
     {
-        if (timeUntilReset < 0)
+        get
         {
-            timeUntilReset = 0;
+            return gamePlayTime;
         }
-        gamePlayTime = timeUntilReset;
-        if (gamePlayTime != 0)
+        set
         {
-            resetGameTimer = gamePlayTime + Time.time;
-        }
-        else
-        {
+            gamePlayTime = Mathf.Max(value, 0);
             resetGameTimer = 0;
         }
-        Instance.showEndDemoScreen(false);
-    }
-    public static float getGameDemoLength()
-    {
-        return gamePlayTime;
     }
     void startDemoTimer()
     {
-        if (camCtr.ZoomLevel != camCtr.scalePointToZoomLevel((int)CameraController.CameraScalePoints.MENU))
+        if (camCtr.ZoomLevel > camCtr.scalePointToZoomLevel((int)CameraController.CameraScalePoints.PORTRAIT))
         {
-            resetGameTimer = gamePlayTime + Time.time;
+            resetGameTimer = GameDemoLength + Time.time;
             gestureManager.tapGesture -= startDemoTimer;
         }
     }
@@ -255,17 +242,22 @@ public class GameManager : MonoBehaviour
         {
             Save();
         }
-        if (gamePlayTime > 0)
+        if (GameDemoLength > 0)
         {
-            if (Time.time >= resetGameTimer)
+            if (resetGameTimer > 0 && Time.time >= resetGameTimer)
             {
                 showEndDemoScreen(true);
                 txtDemoTimer.text = "0";
-                if ((Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
-                    && Time.time >= resetGameTimer + 10)//+10 for buffer period where input doesn't interrupt it
+                //+10 for buffer period where input doesn't interrupt it
+                if (Time.time >= resetGameTimer + 10)
                 {
-                    setResetTimer(gamePlayTime);
-                    resetGame();
+                    if (Input.GetMouseButton(0)
+                        || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+                        )
+                    {
+                        Instance.showEndDemoScreen(false);
+                        resetGame();
+                    }
                 }
             }
             else

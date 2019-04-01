@@ -6,11 +6,11 @@ public class MenuActionSlideDemoLength : MenuActionSlide
 {
     public override void valueAdjusted(float value)
     {
-       GameManager.setResetTimer(value * 60);
+        GameManager.GameDemoLength = value * 60;
     }
 
     public override float getCurrentValue()
     {
-        return GameManager.getGameDemoLength() / 60;
+        return GameManager.GameDemoLength / 60;
     }
 }
