@@ -14,7 +14,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
     private GameObject ghost;
     public CheckPointGhostMover cpGhostMover;
     public GameObject ghostPrefab;
-    private GameObject player;
     private PlayerController plyrController;
     private static Camera checkpointCamera;
 
@@ -22,8 +21,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     void Start()
     {
         initializeGhost();
-        player = GameManager.getPlayerObject();
-        plyrController = player.GetComponent<PlayerController>();
+        plyrController = GameManager.Player;
         if (checkpointCamera == null)
         {
             GameObject cpBgCamera = GameObject.Find("CP BG Camera");

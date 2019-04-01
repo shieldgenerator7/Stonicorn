@@ -42,7 +42,7 @@ public class EnemySimple : MonoBehaviour
         groundCollider = GetComponent<BoxCollider2D>();
         gravity = GetComponent<GravityAccepter>();
         direction = Utility.PerpendicularLeft(transform.up).normalized;
-        player = GameManager.getPlayerObject();
+        player = GameManager.Player.gameObject;
         direction = transform.right;
     }
 

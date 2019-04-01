@@ -62,7 +62,7 @@ public class TesterShortcuts : MonoBehaviour
     }
     public static void enableAbility(int abilityIndex, bool enable)
     {
-        GameObject playerObject = GameManager.getPlayerObject();
+        GameObject playerObject = GameManager.Player.gameObject;
         switch (abilityIndex)
         {
             case 1:
@@ -93,7 +93,7 @@ public class TesterShortcuts : MonoBehaviour
     }
     public static bool abilityEnabled(int abilityIndex)
     {
-        GameObject playerObject = GameManager.getPlayerObject();
+        GameObject playerObject = GameManager.Player.gameObject;
         switch (abilityIndex)
         {
             case 1:

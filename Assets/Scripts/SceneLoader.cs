@@ -34,7 +34,7 @@ public class SceneLoader : MonoBehaviour
             return;
         }
         c2d = gameObject.GetComponent<Collider2D>();
-        playerObj = GameManager.getPlayerObject();
+        playerObj = GameManager.Player.gameObject;
         ExplorerObject = playerObj;
         if (SceneManager.GetSceneByName(sceneName).isLoaded)
         {
@@ -62,7 +62,7 @@ public class SceneLoader : MonoBehaviour
                 loadLevel();
             }
         }
-        if (!GameManager.isRewinding() || firstOpenGameStateId > GameManager.getCurrentStateId())
+        if (!GameManager.isRewinding() || firstOpenGameStateId > GameManager.CurrentStateId)
         {
             if (isLoaded && !overlaps)
             {

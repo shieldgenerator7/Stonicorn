@@ -30,7 +30,7 @@ public class NPCController : SavableMonoBehaviour
     protected virtual void Start()
     {
         source = GetComponent<AudioSource>();
-        playerObject = GameManager.getPlayerObject();
+        playerObject = GameManager.Player.gameObject;
         if (source == null)
         {
             source = GetComponent<AudioSource>();

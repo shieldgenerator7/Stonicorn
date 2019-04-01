@@ -26,7 +26,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!used && coll.gameObject.Equals(GameManager.getPlayerObject()))
+        if (!used && coll.gameObject.Equals(GameManager.Player.gameObject))
         {
             activate(true);
         }

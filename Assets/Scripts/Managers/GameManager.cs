@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
 
     private static GameManager instance;
-    private static GameObject playerObject;//the player object
+    private static PlayerController playerController;
     public static string playerTag = "Player";
     private CameraController camCtr;
     private GestureManager gestureManager;
@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        playerObject = GameObject.FindGameObjectWithTag(playerTag);
         camCtr = FindObjectOfType<CameraController>();
         camCtr.pinPoint();
         camCtr.recenter();
@@ -568,17 +567,23 @@ public class GameManager : MonoBehaviour
         return instance.activeCheckPoints;
     }
 
-    public static GameObject getPlayerObject()
+    public static PlayerController Player
     {
-        if (playerObject == null)
+        get
         {
-            playerObject = GameObject.FindGameObjectWithTag(playerTag);
+            if (playerController == null)
+            {
+                playerController = GameObject.FindGameObjectWithTag(playerTag).GetComponent<PlayerController>();
+            }
+            return playerController;
         }
-        return playerObject;
     }
-    public static int getCurrentStateId()
+    public static int CurrentStateId
     {
-        return instance.chosenId;
+        get
+        {
+            return instance.chosenId;
+        }
     }
 
     /// <summary>
@@ -588,8 +593,8 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public static bool isInTeleportRange(GameObject other)
     {
-        float range = playerObject.GetComponent<PlayerController>().Range;
-        return (other.transform.position - playerObject.transform.position).sqrMagnitude <= range * range;
+        float range = Player.Range;
+        return (other.transform.position - Player.transform.position).sqrMagnitude <= range * range;
     }
 
     /// <summary>
@@ -602,9 +607,10 @@ public class GameManager : MonoBehaviour
 
     public static void showPlayerGhosts()
     {
+        bool intact = Player.HardMaterial.isIntact();
         foreach (GameState gs in instance.gameStates)
         {
-            if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            if (intact || gs.id != instance.chosenId)
             {//don't include last game state if merky is shattered
                 gs.showRepresentation(instance.chosenId);
             }
@@ -612,9 +618,10 @@ public class GameManager : MonoBehaviour
     }
     public void hidePlayerGhosts()
     {
+        bool intact = Player.HardMaterial.isIntact();
         foreach (GameState gs in gameStates)
         {
-            if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            if (intact || gs.id != instance.chosenId)
             {//don't include last game state if merky is shattered
                 gs.hideRepresentation();
             }
@@ -668,11 +675,12 @@ public class GameManager : MonoBehaviour
         }
         GameState final = null;
         GameState prevFinal = null;
+        bool intact = Player.HardMaterial.isIntact();
         //Sprite detection pass
         foreach (GameState gs in gameStates)
         {
             //don't include last game state if merky is shattered
-            if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            if (intact || gs.id != chosenId)
             {
                 //Check sprite overlap
                 if (gs.checkRepresentation(curMPWorld))
@@ -691,7 +699,7 @@ public class GameManager : MonoBehaviour
             foreach (GameState gs in gameStates)
             {
                 //don't include last game state if merky is shattered
-                if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+                if (intact || gs.id != chosenId)
                 {
                     //Check collider overlap
                     if (gs.checkRepresentation(curMPWorld, false))
@@ -724,7 +732,7 @@ public class GameManager : MonoBehaviour
                 Rewind(final.id);
             }
         }
-        else if (!playerObject.GetComponent<PlayerController>().isIntact())
+        else if (!intact)
         {
             Rewind(chosenId - 1);//go back to the latest safe past merky
         }

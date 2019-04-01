@@ -28,7 +28,7 @@ public class RewindGestureProfile : GestureProfile
         camController.ZoomLevel = zoomLevel;
         //GestureProfile switcher
         if (zoomLevel <= camController.scalePointToZoomLevel((int)CameraController.CameraScalePoints.TIMEREWIND - 1)
-            && plrController.isIntact())
+            && plrController.HardMaterial.isIntact())
         {
             gestureManager.switchGestureProfile("Main");
         }

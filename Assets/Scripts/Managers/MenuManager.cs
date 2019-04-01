@@ -20,7 +20,7 @@ public class MenuManager : MonoBehaviour
                 frames.Add(mf);
             }
         }
-        GameObject player = GameManager.getPlayerObject();
+        GameObject player = GameManager.Player.gameObject;
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
         startFrame.frameCamera();
@@ -29,7 +29,7 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-        cam.setRotation(GameManager.getPlayerObject().transform.up);
+        cam.setRotation(GameManager.Player.transform.up);
     }
 
     public void processTapGesture(Vector3 pos)

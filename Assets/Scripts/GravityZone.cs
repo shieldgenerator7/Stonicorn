@@ -29,7 +29,7 @@ public class GravityZone : MonoBehaviour
                 if (!tenants.Contains(rb2d))
                 {
                     tenants.Add(rb2d);
-                    if (coll.gameObject == GameManager.getPlayerObject())
+                    if (coll.gameObject == GameManager.Player)
                     {
                         playerIsTenant = true;
                     }
@@ -45,7 +45,7 @@ public class GravityZone : MonoBehaviour
             if (rb2d != null)
             {
                 tenants.Remove(coll.gameObject.GetComponent<Rigidbody2D>());
-                if (coll.gameObject == GameManager.getPlayerObject())
+                if (coll.gameObject == GameManager.Player)
                 {
                     playerIsTenant = false;
                 }
@@ -62,7 +62,7 @@ public class GravityZone : MonoBehaviour
             Vector3 transformUp = transform.up;
             if (radialGravity)
             {
-                transformUp = GameManager.getPlayerObject().transform.position - transform.position;
+                transformUp = GameManager.Player.transform.position - transform.position;
             }
             if (Camera.main.transform.up != transformUp)
             {
