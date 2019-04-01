@@ -51,7 +51,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (GameManager.isRewinding())
+        if (GameManager.Rewinding)
         {
             return;//don't process collisions while rewinding
         }
@@ -145,7 +145,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
         else if (oldIntegrity > 0 || gameObject.activeInHierarchy)
         {
             bool shouldRefresh = false;
-            if (!alreadyBroken && !GameManager.isRewinding())
+            if (!alreadyBroken && !GameManager.Rewinding)
             {
                 if (crackedPrefab != null)
                 {
@@ -214,7 +214,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                 GameManager.saveForgottenObject(gameObject);
                 shouldRefresh = true;
             }
-            if (!GameManager.isRewinding())
+            if (!GameManager.Rewinding)
             {
                 if (shouldRefresh)
                 {

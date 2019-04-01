@@ -110,7 +110,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         //If this checkpoint is already the current one,
         if (current == this.gameObject
             //or GameManager is rewinding time,
-            || GameManager.isRewinding())
+            || GameManager.Rewinding)
         {
             //don't trigger it
             return;
