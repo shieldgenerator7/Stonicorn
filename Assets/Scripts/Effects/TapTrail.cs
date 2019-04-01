@@ -9,7 +9,7 @@ public class TapTrail : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (GameManager.isPlayer(collider.gameObject))
+        if (collider.gameObject.isPlayer())
         {
             if (nextTapStone != null)
             {

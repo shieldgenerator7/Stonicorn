@@ -569,10 +569,7 @@ public class GameManager : MonoBehaviour
             return playerController;
         }
     }
-    public static bool isPlayer(GameObject go)
-    {
-        return go == Player.gameObject;
-    }
+    
     public static int CurrentStateId
     {
         get

@@ -17,7 +17,7 @@ public class SecretAreaTrigger : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!coll.isTrigger && GameManager.isPlayer(coll.gameObject))
+        if (!coll.isTrigger && coll.gameObject.isPlayer())
         {
             if (secretHider != null && !ReferenceEquals(secretHider, null))
             {

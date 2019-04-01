@@ -71,14 +71,14 @@ public class NPCPrincessController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (GameManager.isPlayer(coll.gameObject))
+        if (coll.gameObject.isPlayer())
         {
             hasTriggered = true;
         }
     }
     void OnTriggerExit2D(Collider2D coll)
     {
-        if (GameManager.isPlayer(coll.gameObject))
+        if (coll.gameObject.isPlayer())
         {
             hasTriggered = false;
             ability.dropHoldGesture();

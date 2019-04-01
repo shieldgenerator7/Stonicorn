@@ -358,4 +358,8 @@ public static class Utility
     {
         return !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
     }
+    public static bool isPlayer(this GameObject go)
+    {
+        return go == GameManager.Player.gameObject;
+    }
 }

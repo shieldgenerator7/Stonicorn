@@ -12,7 +12,7 @@ public class LanternActivator : MemoryMonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (GameManager.isPlayer(coll.gameObject))
+        if (coll.gameObject.isPlayer())
         {
             lightTorch();
         }
