@@ -38,7 +38,7 @@ public class CheckPointGhostMover : MonoBehaviour
 
     public void showRelativeTo(GameObject currentCP)
     {
-        this.epicenter = GameManager.Player.transform.position;
+        this.epicenter = Managers.Player.transform.position;
         //Activate Object
         enabled = true;
         gameObject.SetActive(true);

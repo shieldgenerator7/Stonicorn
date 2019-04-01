@@ -207,20 +207,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private CameraController mainCameraController;//the camera controller for the main camera
-    public CameraController Cam
-    {
-        get
-        {
-            if (mainCameraController == null)
-            {
-                mainCameraController = Camera.main.GetComponent<CameraController>();
-            }
-            return mainCameraController;
-        }
-        private set { mainCameraController = value; }
-    }
-    private GestureManager gestureManager;
+
     private HardMaterial hardMaterial;
     public HardMaterial HardMaterial
     {
@@ -257,7 +244,6 @@ public class PlayerController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
-        gestureManager = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         HardMaterial.shattered += shattered;
         tpa = GetComponent<TeleportAbility>();
         //Estimate the halfWidth
@@ -827,7 +813,7 @@ public class PlayerController : MonoBehaviour
     private void shattered()
     {
         //Put the gesture manager in rewind mode
-        gestureManager.switchGestureProfile("Rewind");
+        Managers.Gesture.switchGestureProfile("Rewind");
         //Let the game manager know the player died
         GameManager.playerShattered();
         //Increment death counter
@@ -906,7 +892,7 @@ public class PlayerController : MonoBehaviour
                 onPreTeleport(oldPos, newPos, newPos);
             }
             teleport(newPos);
-            Cam.recenter();
+            Managers.Camera.recenter();
             cpc.trigger();
             GameManager.Save();
         }
@@ -915,9 +901,9 @@ public class PlayerController : MonoBehaviour
 
     public void processHoldGesture(Vector3 holdPos, float holdTime, bool finished)
     {
-        float reducedHoldTime = holdTime - gestureManager.HoldThreshold;
+        float reducedHoldTime = holdTime - Managers.Gesture.HoldThreshold;
         //If the camera is centered on the player,
-        if (!Cam.offsetOffPlayer())
+        if (!Managers.Camera.offsetOffPlayer())
         {
             //Rapidly auto-teleport
             //If enough time has passed since the last auto-teleport,

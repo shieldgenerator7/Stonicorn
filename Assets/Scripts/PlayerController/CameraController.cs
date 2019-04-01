@@ -53,7 +53,6 @@ public class CameraController : MonoBehaviour
     private float desiredScale = 0;//the value that scale should move towards
     private Camera cam;
     private Rigidbody2D playerRB2D;
-    private GestureManager gm;
     private PlayerController plyrController;
 
     private bool lockCamera = false;//keep the camera from moving
@@ -155,7 +154,6 @@ public class CameraController : MonoBehaviour
         pinPoint();
         cam = GetComponent<Camera>();
         playerRB2D = player.GetComponent<Rigidbody2D>();
-        gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         plyrController = player.GetComponent<PlayerController>();
         plyrController.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)
@@ -189,7 +187,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame, after all other objects have moved that frame
     void LateUpdate()
     {
-        if (!gm.cameraDragInProgress)
+        if (!Managers.Gesture.cameraDragInProgress)
         {
             if (!lockCamera)
             {

@@ -23,7 +23,7 @@ public class GestureProfile
 
     public GestureProfile()
     {
-        plrController = GameManager.Player;
+        plrController = Managers.Player;
         rb2dPlayer = plrController.GetComponent<Rigidbody2D>();
         gameManager = GameObject.FindObjectOfType<GameManager>();
         gestureManager = GameObject.FindObjectOfType<GestureManager>();

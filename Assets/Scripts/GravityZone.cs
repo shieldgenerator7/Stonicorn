@@ -62,11 +62,11 @@ public class GravityZone : MonoBehaviour
             Vector3 transformUp = transform.up;
             if (radialGravity)
             {
-                transformUp = GameManager.Player.transform.position - transform.position;
+                transformUp = Managers.Player.transform.position - transform.position;
             }
-            if (Camera.main.transform.up != transformUp)
+            if (Managers.Camera.transform.up != transformUp)
             {
-                Camera.main.GetComponent<CameraController>().setRotation(transformUp);
+                Managers.Camera.setRotation(transformUp);
             }
         }
     }

@@ -7,6 +7,6 @@ public class MilestoneActivatorAirport : MilestoneActivator
 
     public override void activateEffect()
     {
-        GameManager.Player.maxAirPorts += incrementAmount;
+        Managers.Player.maxAirPorts += incrementAmount;
     }
 }

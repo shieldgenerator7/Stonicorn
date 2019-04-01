@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     private float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
     [SerializeField]
     private float rewindDelay = 0.05f;//how much to delay each rewind transition by
-    
+
     [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
     [SerializeField]
@@ -60,38 +60,6 @@ public class GameManager : MonoBehaviour
     private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
 
     //
-    // Components
-    //
-    private CameraController camCtr;
-    private MusicManager musicManager;
-
-    private PlayerController playerController;
-    public static PlayerController Player
-    {
-        get
-        {
-            if (Instance.playerController == null)
-            {
-                Instance.playerController = FindObjectOfType<PlayerController>();
-            }
-            return Instance.playerController;
-        }
-    }
-
-    private GestureManager gestureManager;
-    public static GestureManager GestureManager
-    {
-        get
-        {
-            if (Instance.gestureManager == null)
-            {
-                Instance.gestureManager = FindObjectOfType<GestureManager>();
-            }
-            return Instance.gestureManager;
-        }
-    }
-
-    //
     // Singleton
     //
     private static GameManager instance;
@@ -110,17 +78,16 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        camCtr = FindObjectOfType<CameraController>();
+        CameraController camCtr = Managers.Camera;
         camCtr.pinPoint();
         camCtr.recenter();
         camCtr.refocus();
-        musicManager = FindObjectOfType<MusicManager>();
         chosenId = -1;
         //If a limit has been set on the demo playtime
         if (GameDemoLength > 0)
         {
             demoBuild = true;//auto enable demo build mode
-            GestureManager.tapGesture += startDemoTimer;
+            Managers.Gesture.tapGesture += startDemoTimer;
             txtDemoTimer.transform.parent.gameObject.SetActive(true);
         }
         if (!demoBuild && ES2.Exists("merky.txt"))
@@ -166,10 +133,10 @@ public class GameManager : MonoBehaviour
     }
     void startDemoTimer()
     {
-        if (camCtr.ZoomLevel > camCtr.scalePointToZoomLevel((int)CameraController.CameraScalePoints.PORTRAIT))
+        if (Managers.Camera.ZoomLevel > Managers.Camera.scalePointToZoomLevel((int)CameraController.CameraScalePoints.PORTRAIT))
         {
             resetGameTimer = GameDemoLength + Time.time;
-            gestureManager.tapGesture -= startDemoTimer;
+            Managers.Gesture.tapGesture -= startDemoTimer;
         }
     }
 
@@ -453,7 +420,7 @@ public class GameManager : MonoBehaviour
         {
             //After rewind is finished, refresh the game object list
             refreshGameObjects();
-            musicManager.SongSpeed = musicManager.normalSongSpeed;
+            Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
             //Open Scenes
             foreach (SceneLoader sl in sceneLoaders)
             {
@@ -480,8 +447,8 @@ public class GameManager : MonoBehaviour
         }
         GameState.nextid = gamestateId + 1;
         //Recenter the camera
-        camCtr.recenter();
-        camCtr.refocus();
+        Managers.Camera.recenter();
+        Managers.Camera.refocus();
     }
     public void LoadObjectsFromScene(Scene s)
     {
@@ -533,7 +500,7 @@ public class GameManager : MonoBehaviour
     {
         rewindId = chosenId;
         Load(chosenId);
-        musicManager.SongSpeed = musicManager.normalSongSpeed;
+        Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
     }
     public static void RewindToStart()
     {
@@ -546,9 +513,9 @@ public class GameManager : MonoBehaviour
     /// <param name="gamestateId"></param>
     void Rewind(int gamestateId)
     {
-        musicManager.SongSpeed = musicManager.rewindSongSpeed;
+        Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
         rewindId = gamestateId;
-        camCtr.recenter();
+        Managers.Camera.recenter();
     }
     void LoadMemories()
     {
@@ -623,8 +590,8 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public static bool isInTeleportRange(GameObject other)
     {
-        float range = Player.Range;
-        return (other.transform.position - Player.transform.position).sqrMagnitude <= range * range;
+        float range = Managers.Player.Range;
+        return (other.transform.position - Managers.Player.transform.position).sqrMagnitude <= range * range;
     }
 
     /// <summary>
@@ -637,7 +604,7 @@ public class GameManager : MonoBehaviour
 
     public void showPlayerGhosts()
     {
-        bool intact = Player.HardMaterial.isIntact();
+        bool intact = Managers.Player.HardMaterial.isIntact();
         foreach (GameState gs in gameStates)
         {
             if (intact || gs.id != chosenId)
@@ -648,7 +615,7 @@ public class GameManager : MonoBehaviour
     }
     public void hidePlayerGhosts()
     {
-        bool intact = Player.HardMaterial.isIntact();
+        bool intact = Managers.Player.HardMaterial.isIntact();
         foreach (GameState gs in gameStates)
         {
             if (intact || gs.id != chosenId)
@@ -701,7 +668,7 @@ public class GameManager : MonoBehaviour
         }
         GameState final = null;
         GameState prevFinal = null;
-        bool intact = Player.HardMaterial.isIntact();
+        bool intact = Managers.Player.HardMaterial.isIntact();
         //Sprite detection pass
         foreach (GameState gs in gameStates)
         {
@@ -768,9 +735,9 @@ public class GameManager : MonoBehaviour
         }
 
         //leave this zoom level even if no past merky was chosen
-        float defaultZoomLevel = camCtr.scalePointToZoomLevel((int)CameraController.CameraScalePoints.DEFAULT);
-        camCtr.ZoomLevel = defaultZoomLevel;
-        gestureManager.switchGestureProfile("Main");
+        float defaultZoomLevel = Managers.Camera.scalePointToZoomLevel((int)CameraController.CameraScalePoints.DEFAULT);
+        Managers.Camera.ZoomLevel = defaultZoomLevel;
+        Managers.Gesture.switchGestureProfile("Main");
 
         if (gameManagerTapProcessed != null)
         {

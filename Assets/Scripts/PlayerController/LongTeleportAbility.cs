@@ -7,12 +7,12 @@ public class LongTeleportAbility : PlayerAbility {
     protected override void init()
     {
         base.init();
-        playerController.Cam.onOffsetChange += adjustRange;
+        Managers.Camera.onOffsetChange += adjustRange;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.Cam.onOffsetChange -= adjustRange;
+        Managers.Camera.onOffsetChange -= adjustRange;
     }
 
     /// <summary>

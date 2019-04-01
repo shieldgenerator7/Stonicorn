@@ -360,6 +360,6 @@ public static class Utility
     }
     public static bool isPlayer(this GameObject go)
     {
-        return go == GameManager.Player.gameObject;
+        return go == Managers.Player.gameObject;
     }
 }

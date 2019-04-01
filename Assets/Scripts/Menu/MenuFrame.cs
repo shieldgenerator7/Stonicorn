@@ -50,7 +50,7 @@ public class MenuFrame : MonoBehaviour
         Vector3 offset = camcon.Offset;
         camcon.Offset =
             transform.position
-            - GameManager.Player.transform.position
+            - Managers.Player.transform.position
             + new Vector3(0, 0, offset.z);
     }
 
