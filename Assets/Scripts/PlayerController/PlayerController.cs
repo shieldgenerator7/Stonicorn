@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
         get
         {
             GroundedNormalPrev = groundedNormal;
-            groundedNormal = isGroundedInDirection(gravity.Gravity);
+            groundedNormal = isGroundedInDirection(Gravity.Gravity);
             return groundedNormal;
         }
     }
@@ -195,6 +195,17 @@ public class PlayerController : MonoBehaviour
     private PolygonCollider2D pc2d;
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
     private GravityAccepter gravity;
+    public GravityAccepter Gravity
+    {
+        get
+        {
+            if (gravity == null)
+            {
+                gravity = GetComponent<GravityAccepter>();
+            }
+            return gravity;
+        }
+    }
 
     private CameraController mainCameraController;//the camera controller for the main camera
     public CameraController Cam
@@ -246,7 +257,6 @@ public class PlayerController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
-        gravity = GetComponent<GravityAccepter>();
         gestureManager = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         HardMaterial.shattered += shattered;
         tpa = GetComponent<TeleportAbility>();
@@ -289,7 +299,7 @@ public class PlayerController : MonoBehaviour
             groundedTrigger.isTrigger = true;
         }
         //Move triggerPC2D to its new position based on the current gravity
-        Vector3 offset = gravity.Gravity.normalized * groundTestDistance;
+        Vector3 offset = Gravity.Gravity.normalized * groundTestDistance;
         groundedTrigger.offset = transform.InverseTransformDirection(offset);
     }
 
@@ -302,7 +312,7 @@ public class PlayerController : MonoBehaviour
             if (grantGravityImmunity)
             {
                 gravityImmuneStartTime = Time.time;
-                gravity.AcceptsGravity = false;
+                Gravity.AcceptsGravity = false;
                 savedVelocity = rb2d.velocity;
                 rb2d.velocity = Vector2.zero;
                 savedAngularVelocity = rb2d.angularVelocity;
@@ -311,7 +321,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 gravityImmuneStartTime = 0;
-                gravity.AcceptsGravity = true;
+                Gravity.AcceptsGravity = true;
                 rb2d.velocity = savedVelocity;
                 savedVelocity = Vector2.zero;
                 rb2d.angularVelocity = savedAngularVelocity;
@@ -360,7 +370,7 @@ public class PlayerController : MonoBehaviour
     {
         int closestRotationIndex = 0;
         //Figure out current rotation
-        float gravityRot = Utility.RotationZ(gravity.Gravity, Vector3.down);
+        float gravityRot = Utility.RotationZ(Gravity.Gravity, Vector3.down);
         float currentRotation = angleZ - gravityRot;
         currentRotation = Utility.loopValue(currentRotation, 0, 360);
         //Figure out which default rotation is closest
@@ -420,7 +430,7 @@ public class PlayerController : MonoBehaviour
         {
             //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
-            float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -gravity.Gravity.normalized);
+            float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -Gravity.Gravity.normalized);
             teleportTime = Time.time + exhaustCoolDownTime * upAmount;
         }
 

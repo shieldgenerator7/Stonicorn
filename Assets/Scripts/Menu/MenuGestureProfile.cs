@@ -13,11 +13,12 @@ public class MenuGestureProfile : GestureProfile
     public override void activate()
     {
         GameManager.showMainMenu(true);
-        camController.setRotation(plrController.transform.up);
+        Cam.setRotation(plrController.transform.up);
     }
     public override void deactivate()
     {
         GameManager.showMainMenu(false);
+        Cam.setRotation(-plrController.Gravity.Gravity);
     }
     public override void processTapGesture(Vector3 curMPWorld)
     {
@@ -48,9 +49,9 @@ public class MenuGestureProfile : GestureProfile
     }
     public override void processZoomLevelChange(float zoomLevel)
     {
-        camController.ZoomLevel = zoomLevel;
+        Cam.ZoomLevel = zoomLevel;
         //GestureProfile switcher
-        if (zoomLevel > camController.scalePointToZoomLevel(1))
+        if (zoomLevel > Cam.scalePointToZoomLevel(1))
         {
             gestureManager.switchGestureProfile("Main");
         }

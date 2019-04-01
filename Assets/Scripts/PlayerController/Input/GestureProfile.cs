@@ -6,18 +6,26 @@ public class GestureProfile
 
     protected PlayerController plrController;
     protected Rigidbody2D rb2dPlayer;
-    protected Camera cam;
-    protected CameraController camController;
-    protected GameManager gm;
+    private CameraController cameraController;
+    protected CameraController Cam
+    {
+        get
+        {
+            if (cameraController == null)
+            {
+                cameraController = Camera.main.GetComponent<CameraController>();
+            }
+            return cameraController;
+        }
+    }
+    protected GameManager gameManager;
     protected GestureManager gestureManager;
 
     public GestureProfile()
     {
         plrController = GameManager.Player;
         rb2dPlayer = plrController.GetComponent<Rigidbody2D>();
-        cam = Camera.main;
-        camController = cam.GetComponent<CameraController>();
-        gm = GameObject.FindObjectOfType<GameManager>();
+        gameManager = GameObject.FindObjectOfType<GameManager>();
         gestureManager = GameObject.FindObjectOfType<GestureManager>();
     }
     /// <summary>
@@ -37,7 +45,7 @@ public class GestureProfile
     {
         if (GameManager.Rewinding)
         {
-            gm.cancelRewind();
+            gameManager.cancelRewind();
         }
         else
         {
@@ -50,16 +58,16 @@ public class GestureProfile
     }
     public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
     {
-        camController.processDragGesture(origMPWorld, newMPWorld);
+        Cam.processDragGesture(origMPWorld, newMPWorld);
     }
     public virtual void processZoomLevelChange(float zoomLevel)
     {
         //GestureProfile switcher
-        if (zoomLevel > camController.scalePointToZoomLevel((int)CameraController.CameraScalePoints.TIMEREWIND - 1))
+        if (zoomLevel > Cam.scalePointToZoomLevel((int)CameraController.CameraScalePoints.TIMEREWIND - 1))
         {
             gestureManager.switchGestureProfile("Rewind");
         }
-        if (zoomLevel < camController.scalePointToZoomLevel(1))
+        if (zoomLevel < Cam.scalePointToZoomLevel(1))
         {
             gestureManager.switchGestureProfile("Menu");
         }
