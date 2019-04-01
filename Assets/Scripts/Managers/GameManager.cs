@@ -8,24 +8,87 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
-    private int chosenId = 0;
+    //
+    // Settings
+    //
+    [Header("Settings")]
+    [SerializeField]
+    private bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
+    [SerializeField]
+    private float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
+    [SerializeField]
+    private float rewindDelay = 0.05f;//how much to delay each rewind transition by
+    [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
-    public AudioSource timeRewindMusic;//the music to play while time rewinds
-    private int rewindId = 0;//the id to eventually load back to
-    private float respawnTime = 0;//the earliest time Merky can rewind after shattering
-    public float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
-    private List<GameState> gameStates = new List<GameState>();
+    [SerializeField]
+    private GameObject endDemoScreen;//the picture to show the player after the game resets
+    [SerializeField]
+    private Text txtDemoTimer;//the text that shows much time is left in the demo
     [SerializeField]
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
+
+    //
+    // Runtime variables
+    //
+    private int rewindId = 0;//the id to eventually load back to
+    private int chosenId = 0;
+    private float respawnTime = 0;//the earliest time Merky can rewind after shattering
+    private int loadedSceneCount = 0;
+    private string unloadedScene = null;
+    private static float resetGameTimer = 0.0f;//the time that the game will reset at
+    private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
+    private float actionTime = 0;//used to determine how often to rewind
+
+    //
+    // Runtime Lists
+    //
+    //Game States
+    private List<GameState> gameStates = new List<GameState>();
     private List<GameObject> gameObjects = new List<GameObject>();
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
+    //Scene Loading
     private List<string> openScenes = new List<string>();//the list of names of the scenes that are open
+    private List<string> newlyLoadedScenes = new List<string>();
     //Memories
     private List<MemoryObject> memories = new List<MemoryObject>();
     //Checkpoints
     private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
 
+    //
+    // Components
+    //
+    private CameraController camCtr;
+    private MusicManager musicManager;
+
+    private PlayerController playerController;
+    public static PlayerController Player
+    {
+        get
+        {
+            if (Instance.playerController == null)
+            {
+                Instance.playerController = FindObjectOfType<PlayerController>();
+            }
+            return Instance.playerController;
+        }
+    }
+
+    private GestureManager gestureManager;
+    public static GestureManager GestureManager
+    {
+        get
+        {
+            if (Instance.gestureManager == null)
+            {
+                Instance.gestureManager = FindObjectOfType<GestureManager>();
+            }
+            return Instance.gestureManager;
+        }
+    }
+
+    //
+    // Singleton
+    //
     private static GameManager instance;
     public static GameManager Instance
     {
@@ -38,25 +101,6 @@ public class GameManager : MonoBehaviour
             return instance;
         }
     }
-    private static PlayerController playerController;
-    private CameraController camCtr;
-    private GestureManager gestureManager;
-    public static GestureManager GestureManager
-    {
-        get { return Instance.gestureManager; }
-        private set { Instance.gestureManager = value; }
-    }
-    private MusicManager musicManager;
-    private float actionTime = 0;//used to determine how often to rewind
-    private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
-    private List<string> newlyLoadedScenes = new List<string>();
-    private int loadedSceneCount = 0;
-    private string unloadedScene = null;
-    private static float resetGameTimer = 0.0f;//the time that the game will reset at
-    private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
-    public GameObject endDemoScreen;//the picture to show the player after the game resets
-    public Text txtDemoTimer;//the text that shows much time is left in the demo
-
 
     // Use this for initialization
     void Start()
@@ -65,7 +109,6 @@ public class GameManager : MonoBehaviour
         camCtr.pinPoint();
         camCtr.recenter();
         camCtr.refocus();
-        gestureManager = FindObjectOfType<GestureManager>();
         musicManager = FindObjectOfType<MusicManager>();
         chosenId = -1;
         //If a limit has been set on the demo playtime
@@ -227,7 +270,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                txtDemoTimer.text = string.Format("{0:0.00}",(resetGameTimer - Time.time));
+                txtDemoTimer.text = string.Format("{0:0.00}", (resetGameTimer - Time.time));
             }
         }
     }
@@ -558,18 +601,6 @@ public class GameManager : MonoBehaviour
         return Instance.activeCheckPoints;
     }
 
-    public static PlayerController Player
-    {
-        get
-        {
-            if (playerController == null)
-            {
-                playerController = FindObjectOfType<PlayerController>();
-            }
-            return playerController;
-        }
-    }
-    
     public static int CurrentStateId
     {
         get
