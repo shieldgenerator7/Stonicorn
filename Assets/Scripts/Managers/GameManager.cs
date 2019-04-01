@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     private static float resetGameTimer = 0.0f;//the time that the game will reset at
     private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
     public GameObject endDemoScreen;//the picture to show the player after the game resets
+    public Text txtDemoTimer;//the text that shows much time is left in the demo
 
 
     // Use this for initialization
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
         {
             demoBuild = true;//auto enable demo build mode
             gestureManager.tapGesture += startDemoTimer;
+            txtDemoTimer.transform.parent.gameObject.SetActive(true);
         }
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
@@ -147,14 +149,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnGUI()
-    {
-        if (Time.time < resetGameTimer)
-        {
-            GUI.Label(Camera.main.pixelRect, "Time left: " + (resetGameTimer - Time.time));
-        }
-    }
-
     public static void addObject(GameObject go)
     {
         Instance.gameObjects.Add(go);
@@ -224,12 +218,17 @@ public class GameManager : MonoBehaviour
             if (Time.time >= resetGameTimer)
             {
                 showEndDemoScreen(true);
+                txtDemoTimer.text = "0";
                 if ((Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
                     && Time.time >= resetGameTimer + 10)//+10 for buffer period where input doesn't interrupt it
                 {
                     setResetTimer(gamePlayTime);
                     resetGame();
                 }
+            }
+            else
+            {
+                txtDemoTimer.text = string.Format("{0:0.00}",(resetGameTimer - Time.time));
             }
         }
     }
