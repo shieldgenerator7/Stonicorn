@@ -171,14 +171,23 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                         t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
                         //Sprite Renderer Copying
                         SpriteRenderer sr = t.gameObject.GetComponent<SpriteRenderer>();
-                        Color color = origSR.color;
-                        if (!crackedOverlay)
+                        try
                         {
-                            color.a = 1;
+                            Color color = origSR.color;
+                            if (!crackedOverlay)
+                            {
+                                color.a = 1;
+                            }
+                            sr.color = color;
+                            sr.sortingLayerID = origSR.sortingLayerID;
+                            sr.sortingOrder = origSR.sortingOrder;
                         }
-                        sr.color = color;
-                        sr.sortingLayerID = origSR.sortingLayerID;
-                        sr.sortingOrder = origSR.sortingOrder;
+                        catch (MissingComponentException mce)
+                        {
+                            throw new MissingComponentException(
+                                "HardMaterial ("+gameObject.name+") broken prefab piece ("+t.gameObject.name+") is missing a SpriteRenderer: sr: "+sr,
+                                mce);
+                        }
                         //Hard Material Copying
                         HardMaterial hm = t.gameObject.GetComponent<HardMaterial>();
                         if (hm)
