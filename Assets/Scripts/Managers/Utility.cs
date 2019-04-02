@@ -64,7 +64,7 @@ public static class Utility
     }
     public static float distanceToObject(this Vector2 position, GameObject obj)
     {
-        Vector2 center = getCollectiveColliderCenter(obj);
+        Vector2 center = obj.getCollectiveColliderCenter();
         Vector2 dir = (center - position).normalized;
         RaycastAnswer answer = Utility.RaycastAll(position, dir, (center - position).magnitude);
         for (int i = 0; i < answer.count; i++)
@@ -128,14 +128,18 @@ public static class Utility
     }
     #endregion
 
+    #region GameObject Extension Methods
+
+    public static bool isPlayer(this GameObject go)
     {
+        return go == Managers.Player.gameObject;
     }
     /// <summary>
     /// Sums the centers of all non-trigger colliders
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static Vector2 getCollectiveColliderCenter(GameObject obj)
+    public static Vector2 getCollectiveColliderCenter(this GameObject obj)
     {
         int count = 0;
         Vector2 sum = Vector2.zero;
@@ -169,7 +173,7 @@ public static class Utility
     /// <param name="first"></param>
     /// <param name="second"></param>
     /// <returns></returns>
-    public static bool lineOfSight(GameObject first, GameObject second)
+    public static bool lineOfSight(this GameObject first, GameObject second)
     {
         Vector2 pos1 = first.transform.position;
         Vector2 pos2 = second.transform.position;
@@ -184,6 +188,8 @@ public static class Utility
         }
         return true;
     }
+    #endregion
+
     /// <summary>
     /// Loops the value around until it falls in the range of [min, max]
     /// </summary>
@@ -378,9 +384,5 @@ public static class Utility
         toObject.transform.position = fromTransform.position;
         toObject.transform.rotation = fromTransform.rotation;
         toObject.transform.localScale = fromTransform.localScale;
-    }
-    public static bool isPlayer(this GameObject go)
-    {
-        return go == Managers.Player.gameObject;
     }
 }

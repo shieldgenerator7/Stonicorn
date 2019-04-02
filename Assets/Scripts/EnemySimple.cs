@@ -51,7 +51,7 @@ public class EnemySimple : MonoBehaviour
         losToPlayer = false;
         if ((player.transform.position - transform.position).sqrMagnitude <= sightRange * sightRange)
         {
-            losToPlayer = Utility.lineOfSight(gameObject, player);
+            losToPlayer = gameObject.lineOfSight(player);
         }
         if (losToPlayer)
         {
@@ -213,7 +213,8 @@ public class EnemySimple : MonoBehaviour
         Vector2 offset = transform.up.normalized * senseVerticalOffset;
         Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);
         Utility.RaycastAnswer answer = Utility.RaycastAll((Vector2)transform.position + offset + ahead, length, distance);
-        for (int i = 0; i < answer.count; i++){
+        for (int i = 0; i < answer.count; i++)
+        {
             RaycastHit2D rch2d = answer.rch2ds[i];
             if (!rch2d.collider.isTrigger)
             {

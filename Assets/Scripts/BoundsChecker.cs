@@ -13,7 +13,7 @@ public class BoundsChecker : MonoBehaviour
     {
         if (resetPoint == Vector3.zero)
         {
-            resetPoint = Utility.getCollectiveColliderCenter(gameObject);
+            resetPoint = gameObject.getCollectiveColliderCenter();
         }
         //Error checking
         foreach (Collider2D coll2d in GetComponents<Collider2D>())
