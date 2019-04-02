@@ -18,14 +18,17 @@ public class PlayerAbility : MonoBehaviour
     // Use this for initialization
     protected virtual void init()
     {
-        playerController = GetComponent<PlayerController>();
         rb2d = GetComponent<Rigidbody2D>();
+        playerController = GetComponent<PlayerController>();
         if (effectParticleController)
         {
             effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
             if (addsOnTeleportVisualEffect)
             {
-                playerController.onShowTeleportEffect += showTeleportEffect;
+                if (playerController)
+                {
+                    playerController.onShowTeleportEffect += showTeleportEffect;
+                }
             }
         }
         else
@@ -36,20 +39,26 @@ public class PlayerAbility : MonoBehaviour
         {
             if (addsOnTeleportSoundEffect)
             {
-                playerController.onPlayTeleportSound += playTeleportSound;
+                if (playerController)
+                {
+                    playerController.onPlayTeleportSound += playTeleportSound;
+                }
             }
         }
         abilityIndicatorParticleController.activate(true);
     }
     public virtual void OnDisable()
     {
-        if (addsOnTeleportVisualEffect)
+        if (playerController)
         {
-            playerController.onShowTeleportEffect -= showTeleportEffect;
-        }
-        if (addsOnTeleportSoundEffect)
-        {
-            playerController.onPlayTeleportSound -= playTeleportSound;
+            if (addsOnTeleportVisualEffect)
+            {
+                playerController.onShowTeleportEffect -= showTeleportEffect;
+            }
+            if (addsOnTeleportSoundEffect)
+            {
+                playerController.onPlayTeleportSound -= playTeleportSound;
+            }
         }
         abilityIndicatorParticleController.activate(false);
     }
