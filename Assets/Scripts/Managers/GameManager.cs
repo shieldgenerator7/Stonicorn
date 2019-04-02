@@ -678,27 +678,37 @@ public class GameManager : MonoBehaviour
             }
         }
         //Process tapped game state
+        //If a previous merky was selected,
         if (final != null)
         {
+            //If the tapped one is already the current one,
             if (final.id == chosenId)
             {
+                //And if the current one overlaps a previous one,
                 if (prevFinal != null)
-                {//if the current one overlaps a previous one, choose the previous one
+                {
+                    //Choose the previous one
                     Rewind(prevFinal.id);
                 }
                 else
                 {
+                    //Else, Reload the current one
                     Load(final.id);
                 }
             }
+            //Else if a past one was tapped,
             else
             {
+                //Rewind back to it
                 Rewind(final.id);
             }
         }
+        //Else if merky is dead,
         else if (!intact)
         {
-            Rewind(chosenId - 1);//go back to the latest safe past merky
+            //go back to the latest safe past merky
+            //-1 to prevent trap saves
+            Rewind(chosenId - 1);
         }
         if (GameStatistics.counter("deathCount") == 1)
         {
