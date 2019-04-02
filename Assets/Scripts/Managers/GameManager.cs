@@ -375,14 +375,14 @@ public class GameManager : MonoBehaviour
         for (int i = gameObjects.Count - 1; i > 0; i--)
         {
             GameObject go = gameObjects[i];
-            //If the game object is not in the game state,
-            if (!gameStates[gamestateId].hasGameObject(go))
+            foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
             {
-                foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
+                //If the game object was spawned during run time
+                //(versus pre-placed at edit time)
+                if (smb.isSpawnedObject())
                 {
-                    //And if the game object was spawned during run time
-                    //(versus pre-placed at edit time)
-                    if (smb.isSpawnedObject())
+                    //And if the game object is not in the game state,
+                    if (!gameStates[gamestateId].hasGameObject(go))
                     {
                         //remove it from game objects list
                         destroyObject(go);
@@ -416,15 +416,15 @@ public class GameManager : MonoBehaviour
                     sl.lastOpenGameStateId = -1;
                 }
             }
+            //Destroy game states in game-state-future
+            for (int i = gameStates.Count - 1; i > gamestateId; i--)
+            {
+                Destroy(gameStates[i].Representation);
+                gameStates.RemoveAt(i);
+            }
+            //Update the next game state id
+            GameState.nextid = gamestateId + 1;
         }
-        //Destroy game states in game-state-future
-        for (int i = gameStates.Count - 1; i > gamestateId; i--)
-        {
-            Destroy(gameStates[i].Representation);
-            gameStates.RemoveAt(i);
-        }
-        //Update the next game state id
-        GameState.nextid = gamestateId + 1;
         //Recenter the camera
         Managers.Camera.recenter();
         Managers.Camera.refocus();
@@ -476,10 +476,7 @@ public class GameManager : MonoBehaviour
     }
     public bool Rewinding
     {
-        get
-        {
-            return chosenId > rewindId;
-        }
+        get { return chosenId > rewindId; }
     }
     public void cancelRewind()
     {

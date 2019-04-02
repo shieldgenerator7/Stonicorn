@@ -96,51 +96,13 @@ public class ObjectState
             if (scene.IsValid() && scene.isLoaded)
             {
                 //First Pass: get GO from GameManager list
-                foreach (GameObject gmGO in GameManager.GameObjects)
-                {
-                    if (gmGO.name == objectName)
-                    {
-                        this.go = gmGO;
-                        break;
-                    }
-                }
-                //Second Pass: get GO by searching all the scene objects
+                go = searchList(GameManager.GameObjects);
+                //Second Pass: get GO from GameManager Forgotten Object list
                 if (go == null)
                 {
-                    foreach (GameObject sceneGo in scene.GetRootGameObjects())
-                    {
-                        if (sceneGo.name == objectName)
-                        {
-                            this.go = sceneGo;
-                            break;
-                        }
-                        else
-                        {
-                            foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
-                            {
-                                GameObject childGo = childTransform.gameObject;
-                                if (childGo.name == objectName)
-                                {
-                                    this.go = childGo;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    go = searchList(Managers.Game.ForgottenObjects);
                 }
-                //Third Pass: get GO from GameManager Forgotten Object list
-                if (go == null)
-                {
-                    foreach (GameObject dgo in Managers.Game.ForgottenObjects)
-                    {
-                        if (dgo != null && dgo.name == objectName && dgo.scene.name == sceneName)
-                        {
-                            go = dgo;
-                            break;
-                        }
-                    }
-                }
-                //Not found, try spawning it, if applicable
+                //Third Pass: try spawning it, if applicable
                 if (go == null || ReferenceEquals(go, null))
                 {
                     foreach (SavableObject so in soList)
@@ -172,12 +134,50 @@ public class ObjectState
                         }
                     }
                 }
+                //Fourth Pass: get GO by searching all the scene objects
+                if (go == null)
+                {
+                    foreach (GameObject sceneGo in scene.GetRootGameObjects())
+                    {
+                        if (sceneGo.name == objectName)
+                        {
+                            this.go = sceneGo;
+                            break;
+                        }
+                        else
+                        {
+                            foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
+                            {
+                                GameObject childGo = childTransform.gameObject;
+                                if (childGo.name == objectName)
+                                {
+                                    this.go = childGo;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
+            //Else if the scene is not loaded,
             else
             {
+                //Don't find the object
                 go = null;
             }
         }
         return go;
+    }
+
+    GameObject searchList(List<GameObject> list)
+    {
+        foreach (GameObject lgo in list)
+        {
+            if (lgo != null && lgo.name == objectName && lgo.scene.name == sceneName)
+            {
+                return lgo;
+            }
+        }
+        return null;
     }
 }
