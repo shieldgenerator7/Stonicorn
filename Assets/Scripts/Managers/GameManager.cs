@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     //
     [Header("Settings")]
     [SerializeField]
-    private float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
+    private float inputOffDuration = 1.0f;//how long Merky must wait before rewinding after shattering
     [SerializeField]
     private float rewindDelay = 0.05f;//how much to delay each rewind transition by
 
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     private int rewindId;//the id to eventually load back to
     private int chosenId;
     private float lastRewindTime;//used to determine how often to rewind
-    private float respawnTime;//the earliest time Merky can rewind after shattering
+    private float inputOffStartTime;//the earliest time Merky can rewind after shattering
     private int loadedSceneCount;
     private string unloadedScene = null;
     private float resetGameTimer;//the time that the game will reset at
@@ -567,11 +567,23 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when Merky gets shattered
+    /// Used primarily for managing the delay between the player dying and respawning
     /// </summary>
-    public void playerShattered()
+    public bool AcceptsInputNow
     {
-        respawnTime = Time.time + respawnDelay;
+        get { return Time.time > inputOffStartTime + inputOffDuration; }
+        set
+        {
+            bool acceptsNow = value;
+            if (acceptsNow)
+            {
+                inputOffStartTime = 0;
+            }
+            else
+            {
+                inputOffStartTime = Time.time;
+            }
+        }
     }
 
     public void showPlayerGhosts()
@@ -579,21 +591,19 @@ public class GameManager : MonoBehaviour
         bool intact = Managers.Player.HardMaterial.isIntact();
         foreach (GameState gs in gameStates)
         {
+            //Don't include last game state if merky is shattered
             if (intact || gs.id != chosenId)
-            {//don't include last game state if merky is shattered
+            {
+                //Otherwise, show the game state's representation
                 gs.showRepresentation(chosenId);
             }
         }
     }
     public void hidePlayerGhosts()
     {
-        bool intact = Managers.Player.HardMaterial.isIntact();
         foreach (GameState gs in gameStates)
         {
-            if (intact || gs.id != chosenId)
-            {//don't include last game state if merky is shattered
-                gs.hideRepresentation();
-            }
+            gs.hideRepresentation();
         }
     }
     /// <summary>
@@ -621,9 +631,10 @@ public class GameManager : MonoBehaviour
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
-        if (respawnTime > Time.time)
+        //If respawn timer is not over,
+        if (!AcceptsInputNow)
         {
-            //If respawn timer is not over, don't do anything
+            //don't do anything
             return;
         }
         GameState final = null;

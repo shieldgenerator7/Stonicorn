@@ -814,8 +814,8 @@ public class PlayerController : MonoBehaviour
     {
         //Put the gesture manager in rewind mode
         Managers.Gesture.switchGestureProfile("Rewind");
-        //Let the game manager know the player died
-        Managers.Game.playerShattered();
+        //Reset GameManager respawn time
+        Managers.Game.AcceptsInputNow = false;
         //Increment death counter
         GameStatistics.incrementCounter("deathCount");
         //If this is the first death,
