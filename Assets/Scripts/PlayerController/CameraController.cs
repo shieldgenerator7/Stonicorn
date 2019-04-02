@@ -147,7 +147,6 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        pinPoint();
         cam = GetComponent<Camera>();
         playerRB2D = Managers.Player.GetComponent<Rigidbody2D>();
         Managers.Player.onTeleport += checkForAutoMovement;
@@ -167,6 +166,10 @@ public class CameraController : MonoBehaviour
         scale = scalePoints[0].absoluteScalePoint();
         //Clean Delegates set up
         SceneManager.sceneUnloaded += cleanDelegates;
+        //Position initialization
+        pinPoint();
+        recenter();
+        refocus();
     }
 
     void Update()

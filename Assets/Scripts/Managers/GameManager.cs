@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float inputOffDuration = 1.0f;//how long Merky must wait before rewinding after shattering
     [SerializeField]
-    private float rewindDelay = 0.05f;//how much to delay each rewind transition by
+    private float rewindDelay = 0.05f;//the delay between rewind transitions
 
     [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
@@ -37,8 +37,8 @@ public class GameManager : MonoBehaviour
     //
     private int rewindId;//the id to eventually load back to
     private int chosenId;
-    private float lastRewindTime;//used to determine how often to rewind
-    private float inputOffStartTime;//the earliest time Merky can rewind after shattering
+    private float lastRewindTime;//the last time the game rewound
+    private float inputOffStartTime;//the start time when input was turned off
     private int loadedSceneCount;
     private string unloadedScene = null;
     private float resetGameTimer;//the time that the game will reset at
@@ -62,10 +62,6 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        CameraController camCtr = Managers.Camera;
-        camCtr.pinPoint();
-        camCtr.recenter();
-        camCtr.refocus();
         chosenId = -1;
         //If a limit has been set on the demo playtime
         if (GameDemoLength > 0)
