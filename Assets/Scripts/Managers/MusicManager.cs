@@ -156,15 +156,23 @@ public class MusicManager : MonoBehaviour
     /// Sets it quieter than usual if true, regular volume if false
     /// </summary>
     /// <param name="quiet"></param>
-    public void setQuiet(bool quiet)
+    public bool Quiet
     {
-        if (quiet)
+        get
         {
-            VolumeScaling = quietVolumeScaling;
+            return VolumeScaling == quietVolumeScaling;
         }
-        else
+        set
         {
-            VolumeScaling = 1.0f;
+            bool quiet = value;
+            if (quiet)
+            {
+                VolumeScaling = quietVolumeScaling;
+            }
+            else
+            {
+                VolumeScaling = 1.0f;
+            }
         }
     }
 

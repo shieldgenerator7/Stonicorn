@@ -13,7 +13,7 @@ public class NPCManager : MonoBehaviour
     public GameObject npcQuoteBox;
     public GameObject npcQuoteBoxTail;
     public CameraController.CameraScalePoints baseCameraScalePoint;//the scale point at which the NPC quote box should be full screen
-    
+
     // Use this for initialization
     void Start()
     {
@@ -84,14 +84,14 @@ public class NPCManager : MonoBehaviour
             if (lastTalkingNPC != npc)
             {
                 lastTalkingNPC = npc;
-                Managers.Music.setQuiet(true);
+                Managers.Music.Quiet = true;
             }
         }
         else
         {
             if (npc == lastTalkingNPC)
             {
-                Managers.Music.setQuiet(false);
+                Managers.Music.Quiet = false;
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
             }
         }
