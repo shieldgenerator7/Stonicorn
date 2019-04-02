@@ -550,18 +550,12 @@ public class GameManager : MonoBehaviour
 
     public List<CheckPointChecker> ActiveCheckPoints
     {
-        get
-        {
-            return activeCheckPoints;
-        }
+        get { return activeCheckPoints; }
     }
 
     public int CurrentStateId
     {
-        get
-        {
-            return chosenId;
-        }
+        get { return chosenId; }
     }
 
     /// <summary>
