@@ -79,13 +79,14 @@ public static class Utility
     }
     #endregion
 
+    #region Rigidbody2D Extension Methods
 
     /**
     * 2016-03-25: copied from "2D Explosion Force" Asset: https://www.assetstore.unity3d.com/en/#!/content/24077
     * 2016-03-29: moved here from PlayerController
     * 2017-03-09: moved here from ForceTeleportAbility
     */
-    public static void AddExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius)
+    public static void AddExplosionForce(this Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius)
     {
         var dir = (body.transform.position - expPosition);
         float calc = 1 - (dir.magnitude / expRadius);
@@ -121,6 +122,12 @@ public static class Utility
         force = Mathf.Min(force, maxForce);
         body.AddForce(dir * force);
     }
+    public static bool isMoving(this Rigidbody2D rb2d)
+    {
+        return !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
+    }
+    #endregion
+
     {
     }
     /// <summary>
@@ -371,11 +378,6 @@ public static class Utility
         toObject.transform.position = fromTransform.position;
         toObject.transform.rotation = fromTransform.rotation;
         toObject.transform.localScale = fromTransform.localScale;
-    }
-
-    public static bool isMoving(this Rigidbody2D rb2d)
-    {
-        return !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
     }
     public static bool isPlayer(this GameObject go)
     {

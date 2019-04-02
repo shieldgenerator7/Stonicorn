@@ -144,7 +144,7 @@ public class ForceTeleportAbility : PlayerAbility
                 Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
                 if (orb2d != null)
                 {
-                    Utility.AddWeightedExplosionForce(orb2d, forceAmount, pos, range, maxForce);
+                    orb2d.AddWeightedExplosionForce(forceAmount, pos, range, maxForce);
                 }
                 foreach (Blastable b in hitColliders[i].gameObject.GetComponents<Blastable>())
                 {
