@@ -20,11 +20,11 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
 
     public virtual void trigger()
     {
-        var camCtr = Camera.main.GetComponent<CameraController>();
+        CameraController camCtr = Managers.Camera;
         camCtr.ZoomLevel = camCtr.scalePointToZoomLevel(scalePoint);//zoom out
         if (scalePoint == (int)CameraController.CameraScalePoints.TIMEREWIND)
         {
-            FindObjectOfType<GestureManager>().switchGestureProfile("Rewind");
+            Managers.Gesture.switchGestureProfile("Rewind");
         }
         if (triggersOnce)
         {

@@ -57,6 +57,6 @@ public class MenuManager : MonoBehaviour
 
     public static bool isMenuOpen()
     {
-        return FindObjectOfType<MenuManager>() != null;
+        return Managers.Menu != null;
     }
 }

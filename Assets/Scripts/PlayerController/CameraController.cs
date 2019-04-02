@@ -4,9 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject player;
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
-    public GameObject planModeCanvas;//the canvas that has the UI for plan mode
     public float cameraOffsetGestureThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
     public float screenEdgeThreshold = 0.9f;//the percentage of half the screen that is in the middle, the rest is the edge
     public float autoOffsetScreenEdgeThreshold = 0.7f;//same as screenEdgeThreshold, but used for the purposes of autoOffset
@@ -14,6 +12,7 @@ public class CameraController : MonoBehaviour
     public float autoOffsetDuration = 1;//how long autoOffset lasts after the latest teleport
     public float autoOffsetAngleThreshold = 15f;//how close two teleport directions have to be to activate auto offset
     public float maxTapDelay = 1;//the maximum amount of time (sec) between two taps that can activate auto offset
+    public GameObject planModeCanvas;//the canvas that has the UI for plan mode
 
 
     private Vector3 offset;
@@ -45,7 +44,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public Vector2 Displacement
     {
-        get { return transform.position - player.transform.position + offset; }
+        get { return transform.position - Managers.Player.transform.position + offset; }
         private set { }
     }
     private Vector3 rotationUp;//the up direction that the camera should be rotated towards
@@ -53,7 +52,6 @@ public class CameraController : MonoBehaviour
     private float desiredScale = 0;//the value that scale should move towards
     private Camera cam;
     private Rigidbody2D playerRB2D;
-    private PlayerController plyrController;
 
     private bool lockCamera = false;//keep the camera from moving
     [Tooltip("Runtime Var, Doesn't do anything from editor")]
@@ -121,18 +119,16 @@ public class CameraController : MonoBehaviour
     {
         private float scalePoint;
         private bool relative;//true if relative to player's range, false if absolute
-        private PlayerController plyrController;
-        public ScalePoint(float scale, bool relative, PlayerController plyrController)
+        public ScalePoint(float scale, bool relative)
         {
             scalePoint = scale;
             this.relative = relative;
-            this.plyrController = plyrController;
         }
         public float absoluteScalePoint()
         {
             if (relative)
             {
-                return scalePoint * plyrController.baseRange;
+                return scalePoint * Managers.Player.baseRange;
             }
             return scalePoint;
         }
@@ -153,9 +149,8 @@ public class CameraController : MonoBehaviour
     {
         pinPoint();
         cam = GetComponent<Camera>();
-        playerRB2D = player.GetComponent<Rigidbody2D>();
-        plyrController = player.GetComponent<PlayerController>();
-        plyrController.onTeleport += checkForAutoMovement;
+        playerRB2D = Managers.Player.GetComponent<Rigidbody2D>();
+        Managers.Player.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)
         {
             Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object (" + planModeCanvas.name + ") doesn't have a Canvas component!");
@@ -163,11 +158,11 @@ public class CameraController : MonoBehaviour
         scale = cam.orthographicSize;
         rotationUp = transform.up;
         //Initialize ScalePoints
-        scalePoints.Add(new ScalePoint(0.2f, false, plyrController));//Main Menu zoom level
-        scalePoints.Add(new ScalePoint(1, false, plyrController));
-        scalePoints.Add(new ScalePoint(1, true, plyrController));
-        scalePoints.Add(new ScalePoint(2, true, plyrController));
-        scalePoints.Add(new ScalePoint(4, true, plyrController));
+        scalePoints.Add(new ScalePoint(0.2f, false));//Main Menu zoom level
+        scalePoints.Add(new ScalePoint(1, false));
+        scalePoints.Add(new ScalePoint(1, true));
+        scalePoints.Add(new ScalePoint(2, true));
+        scalePoints.Add(new ScalePoint(4, true));
         //Set the initialize scale point
         scale = scalePoints[0].absoluteScalePoint();
         //Clean Delegates set up
@@ -192,7 +187,7 @@ public class CameraController : MonoBehaviour
             if (!lockCamera)
             {
                 //Target
-                Vector3 target = player.transform.position + offset + (Vector3)autoOffset;
+                Vector3 target = Managers.Player.transform.position + offset + (Vector3)autoOffset;
                 //Speed
                 float speed = (
                         Vector3.Distance(transform.position, target)
@@ -215,7 +210,7 @@ public class CameraController : MonoBehaviour
             }
             else
             {
-                if (!inView(player.transform.position))
+                if (!inView(Managers.Player.transform.position))
                 {
                     recenter();
                 }
@@ -341,7 +336,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void pinPoint()
     {
-        Offset = transform.position - player.transform.position;
+        Offset = transform.position - Managers.Player.transform.position;
         if (offsetOffPlayer())
         {
             lockCamera = true;
@@ -370,7 +365,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void refocus()
     {
-        transform.position = player.transform.position + offset;
+        transform.position = Managers.Player.transform.position + offset;
     }
 
     /// <summary>
@@ -403,8 +398,9 @@ public class CameraController : MonoBehaviour
     {
         //Check to make sure Merky doesn't get dragged off camera
         Vector3 delta = origMPWorld - newMPWorld;
-        Vector3 newPos = player.transform.position + originalCameraPosition + delta;
-        Vector3 playerUIpos = cam.WorldToViewportPoint(player.transform.position + (new Vector3(cam.transform.position.x, cam.transform.position.y) - newPos));
+        Vector3 playerPos = Managers.Player.transform.position;
+        Vector3 newPos = playerPos + originalCameraPosition + delta;
+        Vector3 playerUIpos = cam.WorldToViewportPoint(playerPos + (new Vector3(cam.transform.position.x, cam.transform.position.y) - newPos));
         if (playerUIpos.x >= 0 && playerUIpos.x <= 1 && playerUIpos.y >= 0 && playerUIpos.y <= 1)
         {
             //Move the camera

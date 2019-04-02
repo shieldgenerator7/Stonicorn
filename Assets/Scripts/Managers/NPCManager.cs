@@ -15,27 +15,22 @@ public class NPCManager : MonoBehaviour
     public CameraController.CameraScalePoints baseCameraScalePoint;//the scale point at which the NPC quote box should be full screen
 
     private static NPCManager instance;
-    private static MusicManager musicManager;
 
     // Use this for initialization
     void Start()
     {
         //instance
-        if (instance == null)
+        if (instance != null)
         {
-            instance = this;
-
-            npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
-            musicManager = FindObjectOfType<MusicManager>();
-            if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
-            {
-                instance.canvas.gameObject.SetActive(false);
-                instance.enabled = false;
-            }
+            Destroy(instance);
         }
-        else
+        instance = this;
+
+        npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
+        if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
         {
-            Destroy(this);
+            instance.canvas.gameObject.SetActive(false);
+            instance.enabled = false;
         }
     }
 
@@ -43,12 +38,12 @@ public class NPCManager : MonoBehaviour
     void Update()
     {
         Camera cam = Camera.main;
-        CameraController camCtr = FindObjectOfType<CameraController>();
+        CameraController camCtr = Managers.Camera;
         RectTransform canTrans = ((RectTransform)canvas.transform);
         canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth);
         canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight);
         Vector2 size = cam.ScreenToWorldPoint(new Vector2(cam.pixelWidth, cam.pixelHeight)) - cam.ScreenToWorldPoint(Vector2.zero);
-        size *= (camCtr.scalePointToZoomLevel((int)baseCameraScalePoint)/camCtr.ZoomLevel);
+        size *= (camCtr.scalePointToZoomLevel((int)baseCameraScalePoint) / camCtr.ZoomLevel);
         float newDim = Mathf.Max(Mathf.Abs(size.x) / canTrans.rect.width, Mathf.Abs(size.y) / canTrans.rect.height);
         Vector3 newSize = new Vector3(newDim, newDim, 1);
         canvas.transform.localScale = newSize;
@@ -102,14 +97,14 @@ public class NPCManager : MonoBehaviour
             if (lastTalkingNPC != npc)
             {
                 lastTalkingNPC = npc;
-                musicManager.setQuiet(true);
+                Managers.Music.setQuiet(true);
             }
         }
         else
         {
             if (npc == lastTalkingNPC)
             {
-                musicManager.setQuiet(false);
+                Managers.Music.setQuiet(false);
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
             }
         }
@@ -117,7 +112,7 @@ public class NPCManager : MonoBehaviour
 
     static float getTextWidth(Canvas canvas, Text text, string stringToMeasure)
     {
-        return getSumOfCharacterOffsets( text, stringToMeasure ) * canvas.transform.localScale.x;
+        return getSumOfCharacterOffsets(text, stringToMeasure) * canvas.transform.localScale.x;
         /*
         string prevString = text.text;
         //text.text = stringToMeasure;

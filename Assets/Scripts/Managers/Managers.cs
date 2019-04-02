@@ -106,6 +106,20 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Menu Manager
+    private MenuManager menuManager;
+    public static MenuManager Menu
+    {
+        get
+        {
+            if (instance.menuManager == null || ReferenceEquals(instance.menuManager, null))
+            {
+                instance.menuManager = FindObjectOfType<MenuManager>();
+            }
+            return instance.menuManager;
+        }
+    }
+
     //
     // Controllers
     //
