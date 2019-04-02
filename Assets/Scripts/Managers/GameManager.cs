@@ -214,9 +214,9 @@ public class GameManager : MonoBehaviour
     {
         if (Rewinding)
         {
-            if (Time.time > lastRewindTime)
+            if (Time.time > lastRewindTime + rewindDelay)
             {
-                lastRewindTime = Time.time + rewindDelay;
+                lastRewindTime = Time.time;
                 Load(chosenId - 1);
             }
         }
@@ -372,7 +372,7 @@ public class GameManager : MonoBehaviour
         //Update chosenId to game-state-now
         chosenId = gamestateId;
         //Destroy objects not spawned yet in the new selected state
-        for (int i = gameObjects.Count - 1; i > 0; i--)
+        for (int i = gameObjects.Count - 1; i >= 0; i--)
         {
             GameObject go = gameObjects[i];
             foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
@@ -424,6 +424,8 @@ public class GameManager : MonoBehaviour
             }
             //Update the next game state id
             GameState.nextid = gamestateId + 1;
+            //Re-enable physics because the rewind is over
+            Physics2D.autoSimulation = true;
         }
     }
     public void LoadObjectsFromScene(Scene s)
@@ -495,6 +497,8 @@ public class GameManager : MonoBehaviour
         Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
         rewindId = gamestateId;
         Managers.Camera.recenter();
+        //Disable physics while rewinding
+        Physics2D.autoSimulation = false;
     }
     void LoadMemories()
     {

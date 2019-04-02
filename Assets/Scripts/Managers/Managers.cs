@@ -166,7 +166,9 @@ public class Managers : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
-            Destroy(instance.gameObject);
+            GameObject otherGO = instance.gameObject;
+            Destroy(instance);
+            Destroy(otherGO);
         }
         instance = this;
     }
