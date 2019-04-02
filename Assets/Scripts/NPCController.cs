@@ -6,14 +6,27 @@ using UnityEngine;
 
 public class NPCController : SavableMonoBehaviour
 {
-    AudioSource source;
+    private AudioSource audioSource;
+    AudioSource Source
+    {
+        get
+        {
+            if (audioSource == null)
+            {
+                audioSource = GetComponent<AudioSource>();
+                if (audioSource == null)
+                {
+                    audioSource = gameObject.AddComponent<AudioSource>();
+                }
+            }
+            return audioSource;
+        }
+    }
 
     public string lineFileName;//the file that has the list of voice lines in it
     public List<NPCVoiceLine> voiceLines;
 
     public float interruptDistance = 10.0f;//if Merky goes further than this distance, the NPC stops talking
-
-    private GameObject playerObject;
 
     //State
     /// <summary>
@@ -29,16 +42,6 @@ public class NPCController : SavableMonoBehaviour
     // Use this for initialization
     protected virtual void Start()
     {
-        source = GetComponent<AudioSource>();
-        playerObject = Managers.Player.gameObject;
-        if (source == null)
-        {
-            source = GetComponent<AudioSource>();
-            if (source == null)
-            {
-                source = gameObject.AddComponent<AudioSource>();
-            }
-        }
         //Read in the NPC's lines
         if (voiceLines == null)
         {
@@ -69,12 +72,12 @@ public class NPCController : SavableMonoBehaviour
                 {
                     TextAsset internalFile = Resources.Load<TextAsset>("Dialogue/" + lineFileName.Split('.')[0]);
 
-                    Debug.Assert(internalFile != null, "Could not load fallback NPC text script assumed to be located at Dialogue/" + lineFileName + "!" );
+                    Debug.Assert(internalFile != null, "Could not load fallback NPC text script assumed to be located at Dialogue/" + lineFileName + "!");
 
                     fileLines = new List<string>(internalFile.ToString().Split('\n'));
                 }
 
-                foreach ( string line in fileLines )
+                foreach (string line in fileLines)
                 {
                     if (line.StartsWith(":"))
                     {
@@ -151,7 +154,7 @@ public class NPCController : SavableMonoBehaviour
     {
         return new SavableObject(this,
             "currentVoiceLineIndex", currentVoiceLineIndex,
-            "playBackTime", source.time,
+            "playBackTime", Source.time,
             "lastPlayedCheckPointLineIndex", lastPlayedCheckPointLineIndex);
     }
     public override void acceptSavableObject(SavableObject savObj)
@@ -165,11 +168,11 @@ public class NPCController : SavableMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        source.transform.position = transform.position;
+        Source.transform.position = transform.position;
         //Debug.Log("Number things found: " + thingsFound);
         if (canGreet())
         {
-            if (!source.isPlaying)
+            if (!Source.isPlaying)
             {
                 int mrvli = getMostRelevantVoiceLineIndex();
                 if (mrvli >= 0)
@@ -189,13 +192,13 @@ public class NPCController : SavableMonoBehaviour
         {
             if (shouldStop())
             {
-                source.Stop();
+                Source.Stop();
             }
         }
-        if (source.isPlaying)
+        if (Source.isPlaying)
         {
-            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time);
-            string voicelinetextWhole = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time, true);
+            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time);
+            string voicelinetextWhole = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time, true);
             NPCManager.speakNPC(gameObject, true, voicelinetext, voicelinetextWhole);
         }
         else if (currentVoiceLineIndex >= 0)
@@ -220,12 +223,13 @@ public class NPCController : SavableMonoBehaviour
     /// <returns></returns>
     protected virtual bool canGreet()
     {
-        float distance = Vector3.Distance(playerObject.transform.position, transform.position);
+        Vector3 playerPos = Managers.Player.transform.position;
+        float distance = Vector3.Distance(playerPos, transform.position);
         if (distance > 5)
         {
             return false;
         }
-        Utility.RaycastAnswer answer = Utility.RaycastAll(transform.position, playerObject.transform.position - transform.position, distance);
+        Utility.RaycastAnswer answer = Utility.RaycastAll(transform.position, playerPos - transform.position, distance);
         int thingsFound = answer.count;
         //If only 2 things, there's nothing in between
         if (thingsFound > 2)
@@ -235,7 +239,7 @@ public class NPCController : SavableMonoBehaviour
                 RaycastHit2D rch2d = answer.rch2ds[i];
                 //If the thing in between is just a trigger, don't worry about it
                 if (!rch2d.collider.isTrigger
-                    && rch2d.collider.gameObject != playerObject
+                    && !rch2d.collider.gameObject.isPlayer()
                     && rch2d.collider.gameObject != gameObject)
                 {
                     return false;
@@ -252,7 +256,7 @@ public class NPCController : SavableMonoBehaviour
         {
             return false;
         }
-        return Vector3.Distance(playerObject.transform.position, transform.position) > interruptDistance;
+        return Vector3.Distance(Managers.Player.transform.position, transform.position) > interruptDistance;
     }
 
     public NPCVoiceLine getMostRelevantVoiceLine()
@@ -297,11 +301,11 @@ public class NPCController : SavableMonoBehaviour
         if (index >= 0 && index < voiceLines.Count)
         {
             currentVoiceLineIndex = index;
-            source.clip = voiceLines[index].voiceLine;
-            source.time = timePos;
-            if (!source.isPlaying)
+            Source.clip = voiceLines[index].voiceLine;
+            Source.time = timePos;
+            if (!Source.isPlaying)
             {
-                source.Play();
+                Source.Play();
             }
         }
         else
@@ -310,9 +314,9 @@ public class NPCController : SavableMonoBehaviour
             {
                 Debug.LogError(gameObject.name + ".setVoiceLine: invalid index: " + index);
             }
-            if (source != null && source.isPlaying)
+            if (Source != null && Source.isPlaying)
             {
-                source.Stop();
+                Source.Stop();
             }
         }
     }
@@ -325,7 +329,7 @@ public class NPCController : SavableMonoBehaviour
     public void setTriggerVoiceLine(NPCVoiceLine npcvl)
     {
         int index = voiceLines.IndexOf(npcvl);
-        if (currentVoiceLineIndex != index || !source.isPlaying)
+        if (currentVoiceLineIndex != index || !Source.isPlaying)
         {
             setVoiceLine(index);
         }
