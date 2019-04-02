@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
     private int chosenId;
     private float lastRewindTime;//the last time the game rewound
     private float inputOffStartTime;//the start time when input was turned off
-    private int loadedSceneCount;
     private string unloadedScene = null;
     private float resetGameTimer;//the time that the game will reset at
     private static float gamePlayTime;//how long the game can be played for, 0 for indefinitely
@@ -53,7 +52,6 @@ public class GameManager : MonoBehaviour
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
     //Scene Loading
     private List<string> openScenes = new List<string>();//the list of names of the scenes that are open
-    private List<string> newlyLoadedScenes = new List<string>();
     //Memories
     private List<MemoryObject> memories = new List<MemoryObject>();
     //Checkpoints
@@ -173,25 +171,6 @@ public class GameManager : MonoBehaviour
         {
             sl.check();
         }
-        if (newlyLoadedScenes.Count > 0)
-        {
-            refreshGameObjects();
-            foreach (string s in newlyLoadedScenes)
-            {
-                LoadObjectsFromScene(SceneManager.GetSceneByName(s));
-                loadedSceneCount++;
-            }
-            newlyLoadedScenes.Clear();
-        }
-        if (unloadedScene != null)
-        {
-            refreshGameObjects();
-            unloadedScene = null;
-        }
-        if (gameStates.Count == 0 && loadedSceneCount > 0)
-        {
-            Save();
-        }
         if (GameDemoLength > 0)
         {
             float timeLeft = 0;
@@ -242,22 +221,26 @@ public class GameManager : MonoBehaviour
     void sceneLoaded(Scene s, LoadSceneMode m)
     {
         refreshGameObjects();
-        newlyLoadedScenes.Add(s.name);
+        LoadObjectsFromScene(s);
         openScenes.Add(s.name);
+        //If the game has just begun,
+        if (gameStates.Count == 0)
+        {
+            //Create the initial save state
+            Save();
+        }
     }
     void sceneUnloaded(Scene s)
     {
         foreach (GameObject fgo in forgottenObjects)
         {
-            if (fgo != null && fgo.scene == s)
+            if (fgo.scene == s)
             {
                 forgottenObjects.Remove(fgo);
             }
         }
         refreshGameObjects();
-        unloadedScene = s.name;
         openScenes.Remove(s.name);
-        loadedSceneCount--;
     }
     public static void refresh() { Managers.Game.refreshGameObjects(); }
     public void refreshGameObjects()
@@ -275,11 +258,11 @@ public class GameManager : MonoBehaviour
             }
         }
         //Forgotten Objects
-        foreach (GameObject dgo in forgottenObjects)
+        foreach (GameObject fgo in forgottenObjects)
         {
-            if (dgo != null)
+            if (fgo != null)
             {
-                gameObjects.Add(dgo);
+                gameObjects.Add(fgo);
             }
         }
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
@@ -349,6 +332,10 @@ public class GameManager : MonoBehaviour
     /// <param name="obj"></param>
     public void saveForgottenObject(GameObject obj, bool forget = true)
     {
+        if (obj == null)
+        {
+            throw new System.ArgumentNullException("GameManager.saveForgottenObject() cannot accept null for obj! obj: " + obj);
+        }
         if (forget)
         {
             forgottenObjects.Add(obj);
@@ -370,57 +357,67 @@ public class GameManager : MonoBehaviour
     public void Load(int gamestateId)
     {
         //Destroy objects not spawned yet in the new selected state
-        //chosenId is the previous current gamestate, which is in the future compared to gamestateId
+        //chosenId is the previous current gamestate, which is in game-state-future
         for (int i = gameObjects.Count - 1; i > 0; i--)
         {
             GameObject go = gameObjects[i];
+            //If the game object is not in the game state,
             if (!gameStates[gamestateId].hasGameObject(go))
             {
-                if (go == null)
-                {
-                    destroyObject(go);
-                    continue;
-                }
                 foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
                 {
+                    //And if the game object was spawned during run time
+                    //(versus pre-placed at edit time)
                     if (smb.isSpawnedObject())
                     {
-                        destroyObject(go);//remove it from game objects list
+                        //remove it from game objects list
+                        destroyObject(go);
                     }
                 }
             }
         }
-        //
+        //Update chosenId to game-state-now
         chosenId = gamestateId;
+        //If the rewind is finished,
         if (chosenId == rewindId)
         {
-            //After rewind is finished, refresh the game object list
+            //Refresh the game object list
             refreshGameObjects();
+            //Put the music back to normal
             Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
-            //Open Scenes
+            //Update Scene tracking variables
             foreach (SceneLoader sl in sceneLoaders)
             {
+                //If the scene was last opened after game-state-now,
                 if (sl.lastOpenGameStateId > chosenId)
                 {
+                    //it is now last opened game-state-now
                     sl.lastOpenGameStateId = chosenId;
                 }
+                //if the scene was first opened after game-state-now,
                 if (sl.firstOpenGameStateId > chosenId)
                 {
+                    //it is now never opened
                     sl.firstOpenGameStateId = int.MaxValue;
                     sl.lastOpenGameStateId = -1;
                 }
             }
         }
+        //Actually load the game state
         gameStates[gamestateId].load();
+        //If the rewind is finished,
         if (chosenId <= rewindId)
         {
-            refreshGameObjects();//a second time, just to be sure
+            //refresh a second time, just to be sure
+            refreshGameObjects();
         }
+        //Destroy game states in game-state-future
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
         {
             Destroy(gameStates[i].Representation);
             gameStates.RemoveAt(i);
         }
+        //Update the next game state id
         GameState.nextid = gamestateId + 1;
         //Recenter the camera
         Managers.Camera.recenter();
@@ -449,7 +446,7 @@ public class GameManager : MonoBehaviour
         //Load Each Object
         foreach (GameObject go in gameObjects)
         {
-            if (go.scene.Equals(s))
+            if (go.scene == s)
             {
                 for (int stateid = lastStateSeen; stateid >= 0; stateid--)
                 {

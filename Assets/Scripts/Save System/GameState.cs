@@ -62,7 +62,7 @@ public class GameState
     {
         foreach (ObjectState os in states)
         {
-            if (os.sceneName.Equals(go.scene.name) && os.objectName.Equals(go.name))
+            if (os.sceneName == go.scene.name && os.objectName == go.name)
             {
                 os.loadState();
                 return true;
@@ -91,7 +91,7 @@ public class GameState
     {
         if (go == null)
         {
-            return false;
+            throw new System.ArgumentNullException("GameState.hasGameObject() cannot accept null for go! go: " + go);
         }
         foreach (ObjectState os in states)
         {
