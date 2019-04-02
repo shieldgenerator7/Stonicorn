@@ -32,7 +32,7 @@ public class BoundsChecker : MonoBehaviour
             GameObject collGO = coll.gameObject;
             if (rewindTimeForPlayer && collGO.isPlayer())
             {
-                GameManager.RewindToStart();
+                Managers.Game.RewindToStart();
             }
             else if (loopSpace)
             {

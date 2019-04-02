@@ -17,7 +17,7 @@ public class TesterShortcuts : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                GameManager.resetGame();
+                Managers.Game.resetGame();
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -142,7 +142,7 @@ public class TesterShortcuts : MonoBehaviour
         }
         else if (cheat == Cheat.RESET_GAME)
         {
-            GameManager.resetGame();
+            Managers.Game.resetGame();
         }
     }
     public static bool cheatActive(Cheat cheat)

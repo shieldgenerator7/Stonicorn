@@ -51,7 +51,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
         }
         used = true;
         activateEffect();
-        GameManager.saveMemory(this);
+        Managers.Game.saveMemory(this);
         Destroy(this);//makes sure it can only be used once
     }
 

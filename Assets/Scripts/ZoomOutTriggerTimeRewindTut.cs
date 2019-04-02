@@ -10,14 +10,14 @@ public class ZoomOutTriggerTimeRewindTut : ZoomOutTrigger {
     {
         base.trigger();
         //Highlight past merky closest to the targetPoint
-        GameObject targetObject = GameManager.getClosestPlayerGhost(targetPoint);
+        GameObject targetObject = Managers.Game.getClosestPlayerGhost(targetPoint);
         EffectManager.highlightTapArea(targetObject.transform.position);
-        GameManager.gameManagerTapProcessed += resetEffects;
+        Managers.Game.tapProcessed += resetEffects;
     }
 
     public void resetEffects(Vector2 pos)
     {
         EffectManager.highlightTapArea(Vector2.zero, false);
-        GameManager.gameManagerTapProcessed -= resetEffects;
+        Managers.Game.tapProcessed -= resetEffects;
     }
 }

@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     private float respawnTime;//the earliest time Merky can rewind after shattering
     private int loadedSceneCount;
     private string unloadedScene = null;
-    private static float resetGameTimer;//the time that the game will reset at
+    private float resetGameTimer;//the time that the game will reset at
     private static float gamePlayTime;//how long the game can be played for, 0 for indefinitely
 
     //
@@ -58,22 +58,6 @@ public class GameManager : MonoBehaviour
     private List<MemoryObject> memories = new List<MemoryObject>();
     //Checkpoints
     private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
-
-    //
-    // Singleton
-    //
-    private static GameManager instance;
-    public static GameManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<GameManager>();
-            }
-            return instance;
-        }
-    }
 
     // Use this for initialization
     void Start()
@@ -106,16 +90,15 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Resets the game back to the very beginning
     /// </summary>
-    public static void resetGame(bool savePrevGame = true)
+    public void resetGame(bool savePrevGame = true)
     {
         //Save previous game
         if (savePrevGame)
         {
             Save();
-            Instance.saveToFile();
+            saveToFile();
         }
         //Unload all scenes and reload PlayerScene
-        instance = null;
         GameState.nextid = 0;
         SceneManager.LoadScene(0);
     }
@@ -128,7 +111,6 @@ public class GameManager : MonoBehaviour
         set
         {
             gamePlayTime = Mathf.Max(value, 0);
-            resetGameTimer = 0;
         }
     }
     void startDemoTimer()
@@ -152,7 +134,7 @@ public class GameManager : MonoBehaviour
 
     public static void addObject(GameObject go)
     {
-        Instance.gameObjects.Add(go);
+        Managers.Game.gameObjects.Add(go);
     }
     public void addAll(List<GameObject> list)
     {
@@ -167,23 +149,23 @@ public class GameManager : MonoBehaviour
     /// <param name="go"></param>
     public static void destroyObject(GameObject go)
     {
-        removeObject(go);
+        Managers.Game.removeObject(go);
         Destroy(go);
     }
     /// <summary>
     /// Removes the given GameObject from the gameObjects list
     /// </summary>
     /// <param name="go"></param>
-    private static void removeObject(GameObject go)
+    private void removeObject(GameObject go)
     {
-        Instance.gameObjects.Remove(go);
-        Instance.forgottenObjects.Remove(go);
+        gameObjects.Remove(go);
+        forgottenObjects.Remove(go);
         if (go && go.transform.childCount > 0)
         {
             foreach (Transform t in go.transform)
             {
-                Instance.gameObjects.Remove(t.gameObject);
-                Instance.forgottenObjects.Remove(t.gameObject);
+                gameObjects.Remove(t.gameObject);
+                forgottenObjects.Remove(t.gameObject);
             }
         }
     }
@@ -231,7 +213,7 @@ public class GameManager : MonoBehaviour
                             )
                         {
                             //Reset game
-                            Instance.showEndDemoScreen(false);
+                            showEndDemoScreen(false);
                             resetGame();
                         }
                     }
@@ -281,7 +263,7 @@ public class GameManager : MonoBehaviour
         openScenes.Remove(s.name);
         loadedSceneCount--;
     }
-    public static void refresh() { Instance.refreshGameObjects(); }
+    public static void refresh() { Managers.Game.refreshGameObjects(); }
     public void refreshGameObjects()
     {
         gameObjects = new List<GameObject>();
@@ -289,7 +271,6 @@ public class GameManager : MonoBehaviour
         {
             gameObjects.Add(rb.gameObject);
         }
-        //Debug.Log("GM Collider List: " + gravityColliderList.Count);
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
         {
             if (!gameObjects.Contains(smb.gameObject))
@@ -309,7 +290,7 @@ public class GameManager : MonoBehaviour
         {
             //load state if found, save state if not foud
             bool foundMO = false;
-            foreach (MemoryObject mo in Instance.memories)
+            foreach (MemoryObject mo in memories)
             {
                 if (mo.isFor(mmb))
                 {
@@ -320,78 +301,77 @@ public class GameManager : MonoBehaviour
             }
             if (!foundMO)
             {
-                Instance.memories.Add(mmb.getMemoryObject());
+                memories.Add(mmb.getMemoryObject());
             }
         }
     }
-    public static void Save()
+    public void Save()
     {
-        Instance.gameStates.Add(new GameState(Instance.gameObjects));
-        Instance.chosenId++;
-        Instance.rewindId++;
+        gameStates.Add(new GameState(gameObjects));
+        chosenId++;
+        rewindId++;
         //Open Scenes
-        foreach (SceneLoader sl in Instance.sceneLoaders)
+        foreach (SceneLoader sl in sceneLoaders)
         {
-            if (Instance.openScenes.Contains(sl.sceneName))
+            if (openScenes.Contains(sl.sceneName))
             {
-                if (sl.firstOpenGameStateId > Instance.chosenId)
+                if (sl.firstOpenGameStateId > chosenId)
                 {
-                    sl.firstOpenGameStateId = Instance.chosenId;
+                    sl.firstOpenGameStateId = chosenId;
                 }
-                sl.lastOpenGameStateId = Instance.chosenId;
+                sl.lastOpenGameStateId = chosenId;
             }
         }
     }
-    public static void saveMemory(MemoryMonoBehaviour mmb)
-    {//2016-11-23: CODE HAZARD: mixture of static and non-static methods, will cause error if there are ever more than 1 instance of GameManager
+    public void saveMemory(MemoryMonoBehaviour mmb)
+    {
         bool foundMO = false;
-        foreach (MemoryObject mo in Instance.memories)
+        foreach (MemoryObject mo in memories)
         {
             if (mo.isFor(mmb))
             {
                 foundMO = true;
-                mo.found = mmb.getMemoryObject().found;//2017-04-11: TODO: refactor this so it's more flexible
+                mo.found = mmb.getMemoryObject().found;
                 break;
             }
         }
         if (!foundMO)
         {
-            Instance.memories.Add(mmb.getMemoryObject());
+            memories.Add(mmb.getMemoryObject());
         }
     }
-    public static void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
+    public void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
     {
-        if (!Instance.activeCheckPoints.Contains(cpc))
+        if (!activeCheckPoints.Contains(cpc))
         {
-            Instance.activeCheckPoints.Add(cpc);
+            activeCheckPoints.Add(cpc);
         }
     }
     /// <summary>
     /// Stores the given object before it gets set inactive
     /// </summary>
     /// <param name="obj"></param>
-    public static void saveForgottenObject(GameObject obj, bool forget = true)
+    public void saveForgottenObject(GameObject obj, bool forget = true)
     {
         if (forget)
         {
-            Instance.forgottenObjects.Add(obj);
+            forgottenObjects.Add(obj);
             obj.SetActive(false);
         }
         else
         {
-            Instance.forgottenObjects.Remove(obj);
+            forgottenObjects.Remove(obj);
             obj.SetActive(true);
         }
     }
-    public static List<GameObject> getForgottenObjects()
+    public List<GameObject> ForgottenObjects
     {
-        return Instance.forgottenObjects;
+        get
+        {
+            return forgottenObjects;
+        }
     }
-    public static void LoadState()
-    {
-        Instance.Load(Instance.chosenId);
-    }
-    private void Load(int gamestateId)
+    public void Load(int gamestateId)
     {
         //Destroy objects not spawned yet in the new selected state
         //chosenId is the previous current gamestate, which is in the future compared to gamestateId
@@ -489,11 +469,11 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public static bool Rewinding
+    public bool Rewinding
     {
         get
         {
-            return Instance.chosenId > Instance.rewindId;
+            return chosenId > rewindId;
         }
     }
     public void cancelRewind()
@@ -502,9 +482,9 @@ public class GameManager : MonoBehaviour
         Load(chosenId);
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
     }
-    public static void RewindToStart()
+    public void RewindToStart()
     {
-        Instance.Rewind(0);
+        Rewind(0);
     }
     /// <summary>
     /// Sets into motion the rewind state.
@@ -570,36 +550,28 @@ public class GameManager : MonoBehaviour
         saveToFile();
     }
 
-    public static List<CheckPointChecker> getActiveCheckPoints()
-    {
-        return Instance.activeCheckPoints;
-    }
-
-    public static int CurrentStateId
+    public List<CheckPointChecker> ActiveCheckPoints
     {
         get
         {
-            return Instance.chosenId;
+            return activeCheckPoints;
         }
     }
 
-    /// <summary>
-    /// Returns true if the given GameObject is touching Merky's teleport range
-    /// </summary>
-    /// <param name="other"></param>
-    /// <returns></returns>
-    public static bool isInTeleportRange(GameObject other)
+    public int CurrentStateId
     {
-        float range = Managers.Player.Range;
-        return (other.transform.position - Managers.Player.transform.position).sqrMagnitude <= range * range;
+        get
+        {
+            return chosenId;
+        }
     }
 
     /// <summary>
     /// Called when Merky gets shattered
     /// </summary>
-    public static void playerShattered()
+    public void playerShattered()
     {
-        Instance.respawnTime = Time.time + Instance.respawnDelay;
+        respawnTime = Time.time + respawnDelay;
     }
 
     public void showPlayerGhosts()
@@ -629,11 +601,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="pos"></param>
     /// <returns></returns>
-    public static GameObject getClosestPlayerGhost(Vector2 pos)
+    public GameObject getClosestPlayerGhost(Vector2 pos)
     {
         float closestDistance = float.MaxValue;
         GameObject closestObject = null;
-        foreach (GameState gs in Instance.gameStates)
+        foreach (GameState gs in gameStates)
         {
             Vector2 gsPos = gs.Representation.transform.position;
             float gsDistance = Vector2.Distance(gsPos, pos);
@@ -644,18 +616,6 @@ public class GameManager : MonoBehaviour
             }
         }
         return closestObject;
-    }
-
-    public static void showMainMenu(bool show)
-    {
-        if (show)
-        {
-            LoadingScreen.LoadScene("MainMenu");
-        }
-        else
-        {
-            SceneManager.UnloadSceneAsync("MainMenu");
-        }
     }
 
     public void processTapGesture(Vector3 curMPWorld)
@@ -739,22 +699,22 @@ public class GameManager : MonoBehaviour
         Managers.Camera.ZoomLevel = defaultZoomLevel;
         Managers.Gesture.switchGestureProfile("Main");
 
-        if (gameManagerTapProcessed != null)
+        if (tapProcessed != null)
         {
-            gameManagerTapProcessed(curMPWorld);
+            tapProcessed(curMPWorld);
         }
     }
-    public static GameManagerTapProcessed gameManagerTapProcessed;
-    public delegate void GameManagerTapProcessed(Vector2 curMPWorld);
+    public delegate void TapProcessed(Vector2 curMPWorld);
+    public TapProcessed tapProcessed;
 
     /// <summary>
     /// Used specifically to highlight last saved Merky after the first death
     /// for tutorial purposes
     /// </summary>
     /// <returns></returns>
-    public static Vector2 getLatestSafeRewindGhostPosition()
+    public Vector2 getLatestSafeRewindGhostPosition()
     {
-        return Instance.gameStates[Instance.chosenId - 1].merky.position;
+        return gameStates[chosenId - 1].merky.position;
     }
 }
 

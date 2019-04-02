@@ -427,7 +427,7 @@ public class GestureManager : SavableMonoBehaviour
         //
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (MenuManager.isMenuOpen())
+            if (MenuManager.Open)
             {
                 camController.ZoomScalePoint = CameraController.CameraScalePoints.RANGE;
             }

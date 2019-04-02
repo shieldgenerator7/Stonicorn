@@ -117,7 +117,7 @@ public class ObjectState
                 }
                 if (go == null)
                 {
-                    foreach (GameObject dgo in GameManager.getForgottenObjects())
+                    foreach (GameObject dgo in Managers.Game.ForgottenObjects)
                     {
                         if (dgo != null && dgo.name == objectName && dgo.scene.name == sceneName)
                         {

@@ -57,7 +57,7 @@ public class GravityZone : MonoBehaviour
         //Check to see if the camera rotation needs updated
         if (mainGravityZone
             && playerIsTenant
-            && !MenuManager.isMenuOpen())
+            && !MenuManager.Open)
         {
             Vector3 transformUp = transform.up;
             if (radialGravity)
@@ -72,7 +72,7 @@ public class GravityZone : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (GameManager.Rewinding)
+        if (Managers.Game.Rewinding)
         {
             return;//don't do anything if the time is rewinding
         }

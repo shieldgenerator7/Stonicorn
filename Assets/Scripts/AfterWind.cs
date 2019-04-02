@@ -55,7 +55,7 @@ public class AfterWind : SavableMonoBehaviour
 
     void FixedUpdate()
     {
-        if (GameManager.Rewinding)
+        if (Managers.Game.Rewinding)
         {
             return;//don't do anything if it is rewinding
         }

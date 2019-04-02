@@ -62,9 +62,9 @@ public class SceneLoader : MonoBehaviour
                 loadLevel();
             }
         }
-        if (!GameManager.Rewinding || firstOpenGameStateId > GameManager.CurrentStateId)
+        if (isLoaded && !overlaps)
         {
-            if (isLoaded && !overlaps)
+            if (!Managers.Game.Rewinding || firstOpenGameStateId > Managers.Game.CurrentStateId)
             {
                 isLoaded = false;
                 unloadLevel();

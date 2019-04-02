@@ -70,10 +70,10 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         //Not already activated, go ahead and activate
         activated = true;
-        GameManager.saveMemory(this);
-        GameManager.saveCheckPoint(this);
+        Managers.Game.saveMemory(this);
+        Managers.Game.saveCheckPoint(this);
         //if there's two or more active checkpoints
-        List<CheckPointChecker> activeCPCs = GameManager.getActiveCheckPoints();
+        List<CheckPointChecker> activeCPCs = Managers.Game.ActiveCheckPoints;
         if (activeCPCs.Count > 1)
         {
             //Start the particles
@@ -110,7 +110,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         //If this checkpoint is already the current one,
         if (current == this.gameObject
             //or GameManager is rewinding time,
-            || GameManager.Rewinding)
+            || Managers.Game.Rewinding)
         {
             //don't trigger it
             return;
@@ -124,7 +124,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         activate();
         ghost.SetActive(false);
         plyrController.InCheckPoint = true;
-        foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
+        foreach (CheckPointChecker cpc in Managers.Game.ActiveCheckPoints)
         {
             if (cpc != this)
             {
@@ -134,7 +134,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public static void readjustCheckPointGhosts(Vector2 epicenter)
     {
-        foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
+        foreach (CheckPointChecker cpc in Managers.Game.ActiveCheckPoints)
         {
             if (cpc.gameObject != current)
             {

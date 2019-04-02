@@ -12,7 +12,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.isPlayer() && !GameManager.Rewinding)
+        if (coll.gameObject.isPlayer() && !Managers.Game.Rewinding)
         {
             trigger();
         }
@@ -29,7 +29,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
         if (triggersOnce)
         {
             triggered = true;
-            GameManager.saveMemory(this);
+            Managers.Game.saveMemory(this);
             Destroy(gameObject);
         }
     }
@@ -45,7 +45,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
             if (triggersOnce)
             {
                 triggered = true;
-                GameManager.saveMemory(this);
+                Managers.Game.saveMemory(this);
                 Destroy(gameObject);
             }
         }

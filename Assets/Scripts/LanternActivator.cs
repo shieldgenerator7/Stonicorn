@@ -33,7 +33,7 @@ public class LanternActivator : MemoryMonoBehaviour {
         {
             SoundManager.playSound(lightSound, transform.position);
         }
-        GameManager.saveMemory(this);
+        Managers.Game.saveMemory(this);
         Destroy(this);//delete this script
     }
 

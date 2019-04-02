@@ -815,14 +815,14 @@ public class PlayerController : MonoBehaviour
         //Put the gesture manager in rewind mode
         Managers.Gesture.switchGestureProfile("Rewind");
         //Let the game manager know the player died
-        GameManager.playerShattered();
+        Managers.Game.playerShattered();
         //Increment death counter
         GameStatistics.incrementCounter("deathCount");
         //If this is the first death,
         if (GameStatistics.counter("deathCount") == 1)
         {
             //Highlight the past preview that makes the most sense to rewind to
-            Vector2 lsrgp = GameManager.getLatestSafeRewindGhostPosition();
+            Vector2 lsrgp = Managers.Game.getLatestSafeRewindGhostPosition();
             transform.position = ((Vector2)transform.position + lsrgp) / 2;
             EffectManager.highlightTapArea(lsrgp);
         }
@@ -866,7 +866,7 @@ public class PlayerController : MonoBehaviour
         if (continueTeleport)
         {
             teleport(newPos);
-            GameManager.Save();
+            Managers.Game.Save();
             //Reposition checkpoint previews
             if (inCheckPoint)
             {
@@ -894,7 +894,7 @@ public class PlayerController : MonoBehaviour
             teleport(newPos);
             Managers.Camera.recenter();
             cpc.trigger();
-            GameManager.Save();
+            Managers.Game.Save();
         }
     }
 

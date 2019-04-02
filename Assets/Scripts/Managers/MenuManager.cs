@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class MenuManager : MonoBehaviour
     public MenuFrame startFrame;
 
     public List<MenuFrame> frames = new List<MenuFrame>();
-    
+
     private void Start()
     {
         foreach (MenuFrame mf in FindObjectsOfType<MenuFrame>())
@@ -55,8 +56,23 @@ public class MenuManager : MonoBehaviour
         return false;
     }
 
-    public static bool isMenuOpen()
+    public static bool Open
     {
-        return Managers.Menu != null;
+        get
+        {
+            return Managers.Menu != null;
+        }
+        set
+        {
+            bool show = value;
+            if (show)
+            {
+                LoadingScreen.LoadScene("MainMenu");
+            }
+            else
+            {
+                SceneManager.UnloadSceneAsync("MainMenu");
+            }
+        }
     }
 }

@@ -6,6 +6,6 @@ public class MenuActionButtonResetGame : MenuActionButton
 {
     public override void activate()
     {
-        GameManager.resetGame(true);
+        Managers.Game.resetGame(true);
     }
 }
