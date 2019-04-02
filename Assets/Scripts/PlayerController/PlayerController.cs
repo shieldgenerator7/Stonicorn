@@ -506,13 +506,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="targetPos"></param>
     /// <returns>targetPos if it is teleportable, else the closest teleportable position to it</returns>
-    public Vector3 findTeleportablePosition(Vector3 targetPos)
+    public Vector3 findTeleportablePosition(Vector2 targetPos)
     {
         //TSFS: Teleport Spot Finding System
-        Vector3 newPos = targetPos;
-        Vector3 oldPos = transform.position;
+        Vector2 newPos = targetPos;
+        Vector2 oldPos = transform.position;
         //If new position is not in range,
-        if ((newPos - transform.position).sqrMagnitude > range * range)
+        if ((newPos - (Vector2)transform.position).sqrMagnitude > range * range)
         {
             //Shorten it to be within range
             newPos = ((newPos - oldPos).normalized * range) + oldPos;
@@ -524,7 +524,7 @@ public class PlayerController : MonoBehaviour
         if (isOccupied(newPos))
         {
             //Try to adjust it first
-            Vector3 adjustedPos = adjustForOccupant(newPos);
+            Vector2 adjustedPos = adjustForOccupant(newPos);
             if (!isOccupied(adjustedPos))
             {
                 return adjustedPos;
@@ -537,20 +537,20 @@ public class PlayerController : MonoBehaviour
             const int anglesToTry = 7;//try 7 angles off the line
             const float anglesDiff = variance * 2 / (anglesToTry - 1);
             Vector2 normalizedDir = (newPos - oldPos).normalized;
-            float oldDist = Vector3.Distance(oldPos, newPos);
+            float oldDist = Vector2.Distance(oldPos, newPos);
             //Vary the angle
             for (float a = -variance; a <= variance; a += anglesDiff)
             {
                 //Angle the direction
-                Vector3 dir = Utility.RotateZ(normalizedDir, a); ;//the direction to search
-                Vector3 angledNewPos = oldPos + dir * oldDist;
+                Vector2 dir = normalizedDir.RotateZ(a); ;//the direction to search
+                Vector2 angledNewPos = oldPos + dir * oldDist;
                 //Backtrack from the new position
-                float distance = Vector3.Distance(oldPos, angledNewPos);
-                Vector3 norm = (angledNewPos - oldPos).normalized;
+                float distance = Vector2.Distance(oldPos, angledNewPos);
+                Vector2 norm = (angledNewPos - oldPos).normalized;
                 norm *= distance;
                 for (float percent = 1 + (difference * 2); percent >= 0; percent -= difference)
                 {
-                    Vector3 testPos = (norm * percent) + oldPos;
+                    Vector2 testPos = (norm * percent) + oldPos;
                     //If the test position is occupied,
                     if (isOccupied(testPos))
                     {
@@ -586,8 +586,8 @@ public class PlayerController : MonoBehaviour
             }
             //Choose the closest option 
             float closestSqrDistance = (newPos - oldPos).sqrMagnitude;
-            Vector3 closestOption = oldPos;
-            foreach (Vector3 option in possibleOptions)
+            Vector2 closestOption = oldPos;
+            foreach (Vector2 option in possibleOptions)
             {
                 float sqrDistance = (newPos - option).sqrMagnitude;
                 if (sqrDistance < closestSqrDistance)

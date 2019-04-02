@@ -115,7 +115,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     }
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {
-        return Utility.distanceToObject(explosionPos, gameObject);
+        return explosionPos.distanceToObject(gameObject);
     }
 
     public bool isIntact()

@@ -6,13 +6,16 @@ public static class Utility
 {
     public const int MAX_HIT_COUNT = 70;
 
+
+    #region Vector3 Extension Methods
+
     /// <summary>
     /// Returns the given vector rotated by the given angle
     /// 2017-02-21: copied from a post by wpennypacker: https://forum.unity3d.com/threads/vector-rotation.33215/
     /// </summary>
     /// <param name="v"></param>
     /// <param name="angle"></param>
-    public static Vector3 RotateZ(Vector3 v, float angle)
+    public static Vector2 RotateZ(this Vector2 v, float angle)
     {
         float sin = Mathf.Sin(angle);
         float cos = Mathf.Cos(angle);
@@ -22,13 +25,17 @@ public static class Utility
 
         return new Vector3(tx, ty);
     }
+    public static Vector3 RotateZ(this Vector3 v, float angle)
+    {
+        return ((Vector2)v).RotateZ(angle);
+    }
     /// <summary>
     /// Returns the angle of the given vector
     /// 2017-04-18: copied from an answer by Sigil: http://webcache.googleusercontent.com/search?q=cache:http://answers.unity3d.com/questions/162177/vector2angles-direction.html&num=1&strip=1&vwsrc=0
     /// </summary>
     /// <param name="v"></param>
     /// <param name="angle"></param>
-    public static float RotationZ(Vector3 v1, Vector3 v2)
+    public static float RotationZ(this Vector3 v1, Vector3 v2)
     {
         float angle = Vector2.Angle(v1, v2);
         Vector3 cross = Vector3.Cross(v1, v2);
@@ -39,14 +46,39 @@ public static class Utility
         return angle;
     }
 
-    public static Vector3 PerpendicularRight(Vector3 v)
+    public static Vector2 PerpendicularRight(this Vector2 v)
     {
-        return RotateZ(v, -Mathf.PI / 2);
+        return v.RotateZ(-Mathf.PI / 2);
     }
-    public static Vector3 PerpendicularLeft(Vector3 v)
+    public static Vector3 PerpendicularRight(this Vector3 v)
     {
-        return RotateZ(v, Mathf.PI / 2);
+        return ((Vector2)v).PerpendicularRight();
     }
+    public static Vector2 PerpendicularLeft(this Vector2 v)
+    {
+        return v.RotateZ(Mathf.PI / 2);
+    }
+    public static Vector3 PerpendicularLeft(this Vector3 v)
+    {
+        return ((Vector2)v).PerpendicularLeft();
+    }
+    public static float distanceToObject(this Vector2 position, GameObject obj)
+    {
+        Vector2 center = getCollectiveColliderCenter(obj);
+        Vector2 dir = (center - position).normalized;
+        RaycastAnswer answer = Utility.RaycastAll(position, dir, (center - position).magnitude);
+        for (int i = 0; i < answer.count; i++)
+        {
+            RaycastHit2D rch2d = answer.rch2ds[i];
+            if (rch2d.collider.gameObject == obj)
+            {
+                return rch2d.distance;
+            }
+        }
+        throw new UnityException("Object " + obj + "'s raycast not found! This should not be possible!");
+    }
+    #endregion
+
 
     /**
     * 2016-03-25: copied from "2D Explosion Force" Asset: https://www.assetstore.unity3d.com/en/#!/content/24077
@@ -72,10 +104,10 @@ public static class Utility
     /// <param name="expPosition"></param>
     /// <param name="expRadius"></param>
     /// <param name="maxForce">The maximum amount of force that can be applied</param>
-    public static void AddWeightedExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius, float maxForce)
+    public static void AddWeightedExplosionForce(this Rigidbody2D body, float expForce, Vector2 expPosition, float expRadius, float maxForce)
     {
-        Vector2 dir = (body.transform.position - expPosition).normalized;
-        float distanceToEdge = expRadius - distanceToObject(expPosition, body.gameObject);
+        Vector2 dir = ((Vector2)body.transform.position - expPosition).normalized;
+        float distanceToEdge = expRadius - expPosition.distanceToObject(body.gameObject);
         if (distanceToEdge < 0)
         {
             distanceToEdge = 0;
@@ -89,20 +121,7 @@ public static class Utility
         force = Mathf.Min(force, maxForce);
         body.AddForce(dir * force);
     }
-    public static float distanceToObject(Vector2 position, GameObject obj)
     {
-        Vector2 center = getCollectiveColliderCenter(obj);
-        Vector2 dir = (center - position).normalized;
-        RaycastAnswer answer = Utility.RaycastAll(position, dir, (center - position).magnitude);
-        for (int i = 0; i < answer.count; i++)
-        {
-            RaycastHit2D rch2d = answer.rch2ds[i];
-            if (rch2d.collider.gameObject == obj)
-            {
-                return rch2d.distance;
-            }
-        }
-        throw new UnityException("Object " + obj + "'s raycast not found! This should not be possible!");
     }
     /// <summary>
     /// Sums the centers of all non-trigger colliders

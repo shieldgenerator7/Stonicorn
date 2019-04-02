@@ -144,6 +144,6 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
     }
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {
-        return Utility.distanceToObject(explosionPos, gameObject);
+        return explosionPos.distanceToObject(gameObject);
     }
 }

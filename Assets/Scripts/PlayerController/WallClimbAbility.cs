@@ -28,13 +28,13 @@ public class WallClimbAbility : PlayerAbility
         Vector2 gravity = playerController.Gravity.Gravity;
         //Test right side
         isgrounded = playerController.isGroundedInDirection(
-            Utility.PerpendicularRight(-gravity)
+            -gravity.PerpendicularRight()
             );
         if (!isgrounded)
         {
             //Test left side
             isgrounded = playerController.isGroundedInDirection(
-                Utility.PerpendicularLeft(-gravity)
+                -gravity.PerpendicularLeft()
                 );
         }
         return isgrounded;
@@ -67,9 +67,9 @@ public class WallClimbAbility : PlayerAbility
         {
             Vector2 gravity = playerController.Gravity.Gravity;
             //Look right
-            plantStickyInDirection(oldPos, Utility.PerpendicularRight(-gravity));
+            plantStickyInDirection(oldPos, -gravity.PerpendicularRight());
             //Look left
-            plantStickyInDirection(oldPos, Utility.PerpendicularLeft(-gravity));
+            plantStickyInDirection(oldPos, -gravity.PerpendicularLeft());
         }
     }
     void plantStickyInDirection(Vector2 pos, Vector2 dir)
