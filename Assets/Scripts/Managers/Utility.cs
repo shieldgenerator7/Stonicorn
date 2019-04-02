@@ -77,6 +77,14 @@ public static class Utility
         }
         throw new UnityException("Object " + obj + "'s raycast not found! This should not be possible!");
     }
+    public static bool inRange(this Vector2 v1, Vector2 v2, float range)
+    {
+        return (v1 - v2).sqrMagnitude <= range * range;
+    }
+    public static bool inRange(this Vector3 v1, Vector3 v2, float range)
+    {
+        return (v1 - v2).sqrMagnitude <= range * range;
+    }
     #endregion
 
     #region Rigidbody2D Extension Methods

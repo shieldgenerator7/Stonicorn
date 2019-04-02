@@ -833,9 +833,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name=""></param>
     /// <returns></returns>
-    public bool gestureOnPlayer(Vector3 pos)
+    public bool gestureOnPlayer(Vector2 pos)
     {
-        return (pos - transform.position).sqrMagnitude < halfWidth * halfWidth;
+        return pos.inRange(transform.position, halfWidth);
     }
 
     public void processTapGesture(Vector3 tapPos)

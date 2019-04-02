@@ -49,7 +49,7 @@ public class EnemySimple : MonoBehaviour
     private void Update()
     {
         losToPlayer = false;
-        if ((player.transform.position - transform.position).sqrMagnitude <= sightRange * sightRange)
+        if (player.transform.position.inRange(transform.position, sightRange))
         {
             losToPlayer = gameObject.lineOfSight(player);
         }

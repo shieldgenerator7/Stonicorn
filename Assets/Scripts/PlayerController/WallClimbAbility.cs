@@ -92,7 +92,7 @@ public class WallClimbAbility : PlayerAbility
         {
             SpriteRenderer spcSR = spc.GetComponent<SpriteRenderer>();
             float minDim = Mathf.Min(spcSR.size.x, spcSR.size.y) / 2;
-            if (((Vector2)spc.transform.position - stickyPos).sqrMagnitude < minDim * minDim)
+            if (stickyPos.inRange(spc.transform.position, minDim))
             {
                 tooClose = true;
                 break;

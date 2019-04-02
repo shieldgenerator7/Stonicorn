@@ -27,7 +27,7 @@ public class CheckPointGhostMover : MonoBehaviour
 
     //Going home
     private bool goingHome = false;//true when about to be hidden
-    
+
     private SpriteRenderer sr;
 
     // Use this for initialization
@@ -102,7 +102,8 @@ public class CheckPointGhostMover : MonoBehaviour
             moveOutSpeed += moveOutAccel * accelDir;
             transform.position = targetPos + (adjustDir * adjustDistanceOut);
             if (Mathf.Sign(relativeSigns.x) != Mathf.Sign(targetPos.x - transform.position.x)
-                || Mathf.Sign(relativeSigns.y) != Mathf.Sign(targetPos.y - transform.position.y)){
+                || Mathf.Sign(relativeSigns.y) != Mathf.Sign(targetPos.y - transform.position.y))
+            {
                 outOfLine = false;
             }
             return;
@@ -190,6 +191,6 @@ public class CheckPointGhostMover : MonoBehaviour
     {
         return sr.bounds.Intersects(otherBounds)
         //because they're circles, using the extents gives us how far apart (at minimum) they're supposed to be 
-        && (sr.bounds.center - otherBounds.center).sqrMagnitude <= Mathf.Pow(spriteRadius + otherRadius, 2);
+        && sr.bounds.center.inRange(otherBounds.center, spriteRadius + otherRadius);
     }
 }
