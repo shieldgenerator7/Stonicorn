@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
     public float autoOffsetAngleThreshold = 15f;//how close two teleport directions have to be to activate auto offset
     public float maxTapDelay = 1;//the maximum amount of time (sec) between two taps that can activate auto offset
     public GameObject planModeCanvas;//the canvas that has the UI for plan mode
+    public float defaultOffsetZ = -10;
 
 
     private Vector3 offset;
@@ -24,6 +25,12 @@ public class CameraController : MonoBehaviour
             if (value.z == 0)
             {
                 value.z = offset.z;
+                //If the z offset is still 0,
+                if (value.z == 0)
+                {
+                    //Use the default value
+                    value.z = defaultOffsetZ;
+                }
             }
             offset = value;
             if (onOffsetChange != null)
@@ -359,7 +366,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void recenter()
     {
-        Offset = new Vector3(0, 0, offset.z);
+        Offset = Vector3.zero;
         lockCamera = false;
         planModeCanvas.SetActive(false);
     }
