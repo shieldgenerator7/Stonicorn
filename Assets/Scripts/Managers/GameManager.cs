@@ -691,7 +691,7 @@ public class GameManager : MonoBehaviour
         }
         if (GameStatistics.counter("deathCount") == 1)
         {
-            EffectManager.highlightTapArea(Vector2.zero, false);
+            Managers.Effect.highlightTapArea(Vector2.zero, false);
         }
 
         //leave this zoom level even if no past merky was chosen

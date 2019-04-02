@@ -24,14 +24,11 @@ public class GameStatistics : SavableMonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if (instance == null)
+        if (instance != null)
         {
-            instance = this;
+            Destroy(instance);
         }
-        else
-        {
-            Destroy(this);
-        }
+        instance = this;
     }
 
     public override SavableObject getSavableObject()
@@ -40,7 +37,7 @@ public class GameStatistics : SavableMonoBehaviour
     }
     public override void acceptSavableObject(SavableObject savObj)
     {
-        stats["deathCount"] = Mathf.Max(stats["deathCount"],(int)savObj.data["deathCount"]);
+        stats["deathCount"] = Mathf.Max(stats["deathCount"], (int)savObj.data["deathCount"]);
     }
 
     public static void incrementCounter(string counterName)

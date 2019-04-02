@@ -603,7 +603,7 @@ public class PlayerController : MonoBehaviour
 
     private void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
-        EffectManager.showTeleportStar(oldPos);
+        Managers.Effect.showTeleportStar(oldPos);
         //Process on show teleport effect delegates
         if (onShowTeleportEffect != null)
         {
@@ -824,7 +824,7 @@ public class PlayerController : MonoBehaviour
             //Highlight the past preview that makes the most sense to rewind to
             Vector2 lsrgp = Managers.Game.getLatestSafeRewindGhostPosition();
             transform.position = ((Vector2)transform.position + lsrgp) / 2;
-            EffectManager.highlightTapArea(lsrgp);
+            Managers.Effect.highlightTapArea(lsrgp);
         }
     }
 

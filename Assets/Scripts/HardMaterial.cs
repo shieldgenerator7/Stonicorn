@@ -69,7 +69,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             }
             //Play Crack Sound
             float hitPercentage = hitHardness * 100 / maxIntegrity;
-            EffectManager.collisionEffect(cp2ds[0].point, hitPercentage);
+            Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
             for (int i = crackSounds.Count - 1; i >= 0; i--)
             {
                 float crackThreshold = 100 / (crackSounds.Count + 1 - i) - 20;
@@ -93,7 +93,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                 float force = rb2d.velocity.magnitude * rb2d.mass;
                 float damage = checkForce(force);
                 float hitPercentage = damage * 100 / maxIntegrity;
-                EffectManager.collisionEffect(cp2ds[0].point, hitPercentage);
+                Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
             }
         }
     }

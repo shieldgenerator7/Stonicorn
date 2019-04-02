@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectManager : MonoBehaviour {
+public class EffectManager : MonoBehaviour
+{
 
     //Effects
     [Header("Teleport Star Effect")]
@@ -21,27 +22,13 @@ public class EffectManager : MonoBehaviour {
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
     private Dictionary<GameObject, GameObject> forceWaveShadows = new Dictionary<GameObject, GameObject>();
 
-    private static EffectManager instance;
-    private static CameraController cmactr;
-
-    // Use this for initialization
-    void Start() {
-        if (instance == null)
-        {
-            instance = this;
-            cmactr = Camera.main.GetComponent<CameraController>();
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
     void Update()
     {
-        for (int i = 0; i < teleportStarList.Count; i++){
+        for (int i = 0; i < teleportStarList.Count; i++)
+        {
             if (teleportStarList[i].TurnedOn)
             {
-            teleportStarList[i].updateStar();
+                teleportStarList[i].updateStar();
             }
         }
     }
@@ -50,11 +37,11 @@ public class EffectManager : MonoBehaviour {
     /// 2017-10-31: copied from PlayerController.showTeleportStar()
     /// </summary>
     /// <param name="pos"></param>
-    public static void showTeleportStar(Vector3 pos)
+    public void showTeleportStar(Vector3 pos)
     {
         TeleportStarUpdater chosenTSU = null;
         //Find existing particle system
-        foreach (TeleportStarUpdater tsu in instance.teleportStarList)
+        foreach (TeleportStarUpdater tsu in teleportStarList)
         {
             if (tsu != null && !tsu.TurnedOn)
             {
@@ -65,13 +52,13 @@ public class EffectManager : MonoBehaviour {
         //Else make a new one
         if (chosenTSU == null)
         {
-            GameObject newTS = GameObject.Instantiate(instance.teleportStarPrefab);
-            newTS.transform.parent = instance.transform;
+            GameObject newTS = GameObject.Instantiate(teleportStarPrefab);
+            newTS.transform.parent = transform;
             TeleportStarUpdater newTSU = newTS.GetComponent<TeleportStarUpdater>();
             newTSU.init();
-            newTSU.duration = instance.teleportStarDuration;
-            newTSU.baseColor = instance.teleportStarColor;
-            instance.teleportStarList.Add(newTSU);
+            newTSU.duration = teleportStarDuration;
+            newTSU.baseColor = teleportStarColor;
+            teleportStarList.Add(newTSU);
             chosenTSU = newTSU;
         }
         //Set values
@@ -84,15 +71,15 @@ public class EffectManager : MonoBehaviour {
     /// </summary>
     /// <param name="position">Position of collision</param>
     /// <param name="damagePercent">How much percent of total HP of damage was inflicted, between 0 and 100</param>
-    public static void collisionEffect(Vector2 position, float damagePercent = 100.0f)
+    public void collisionEffect(Vector2 position, float damagePercent = 100.0f)
     {
-        if (!cmactr.inView(position))
+        if (!Managers.Camera.inView(position))
         {
             return;//don't display effect if it's not going to show
         }
         ParticleSystem chosenPS = null;
         //Find existing particle system
-        foreach (ParticleSystem ps in instance.collisionEffectList)
+        foreach (ParticleSystem ps in collisionEffectList)
         {
             if (!ps.isPlaying)
             {
@@ -103,24 +90,24 @@ public class EffectManager : MonoBehaviour {
         //Else make a new one
         if (chosenPS == null)
         {
-            GameObject ce = GameObject.Instantiate(instance.collisionEffectPrefab);
-            ce.transform.parent = instance.transform;
+            GameObject ce = GameObject.Instantiate(collisionEffectPrefab);
+            ce.transform.parent = transform;
             ParticleSystem ceps = ce.GetComponent<ParticleSystem>();
-            instance.collisionEffectList.Add(ceps);
+            collisionEffectList.Add(ceps);
             chosenPS = ceps;
         }
         //Start Speed
         {
             ParticleSystem.MainModule psmm = chosenPS.main;
             ParticleSystem.MinMaxCurve psmmc = psmm.startSpeed;
-            float speed = (damagePercent * instance.particleStartSpeed) / 100;
+            float speed = (damagePercent * particleStartSpeed) / 100;
             speed = Mathf.Max(speed, 0.5f);//make speed at least 1.0f
             psmmc.constant = speed;
             psmm.startSpeed = psmmc;
         }
         //Particle Amount
         {
-            int amountOfParticles = (int)((damagePercent * instance.particleAmount) / 100);
+            int amountOfParticles = (int)((damagePercent * particleAmount) / 100);
             amountOfParticles = Mathf.Max(amountOfParticles, 3);//make speed at least 1.0f
             ParticleSystem.Burst[] bursts = new ParticleSystem.Burst[1]
             {
@@ -133,38 +120,38 @@ public class EffectManager : MonoBehaviour {
         chosenPS.Play();
     }
 
-    public static void highlightTapArea(Vector2 pos, bool play = true)
+    public void highlightTapArea(Vector2 pos, bool play = true)
     {
         if (play)
         {
-            instance.tapTargetHighlight.transform.position = pos;
-            instance.tapTargetHighlight.Play();
+            tapTargetHighlight.transform.position = pos;
+            tapTargetHighlight.Play();
         }
         else
         {
-            instance.tapTargetHighlight.Stop();
+            tapTargetHighlight.Stop();
         }
     }
-    
+
     /// <summary>
     /// Shows a force wave shadow for the given projectile from the given center
     /// </summary>
     /// <param name="center">The center of the force wave</param>
     /// <param name="range">The range of the force wave</param>
     /// <param name="projectile">The projectile about to be forced away</param>
-    public static void showForceWaveShadows(Vector2 center, float range, GameObject projectile)
+    public void showForceWaveShadows(Vector2 center, float range, GameObject projectile)
     {
         GameObject forceWaveShadow;
-        if (instance.forceWaveShadows.ContainsKey(projectile))
+        if (forceWaveShadows.ContainsKey(projectile))
         {
-            forceWaveShadow = instance.forceWaveShadows[projectile];
+            forceWaveShadow = forceWaveShadows[projectile];
         }
         else
         {
             forceWaveShadow = new GameObject();
             forceWaveShadow.name = "ForceWaveShadow of " + projectile.name;
             forceWaveShadow.AddComponent<SpriteRenderer>();
-            instance.forceWaveShadows.Add(projectile, forceWaveShadow);
+            forceWaveShadows.Add(projectile, forceWaveShadow);
             SpriteRenderer sr = forceWaveShadow.GetComponent<SpriteRenderer>();
             SpriteRenderer psr = projectile.GetComponent<SpriteRenderer>();
             sr.sprite = psr.sprite;
@@ -173,19 +160,19 @@ public class EffectManager : MonoBehaviour {
         Vector2 ppos = (Vector2)projectile.transform.position;
         Vector2 dir = ppos - center;
         float magnitude = Mathf.Max(0, range - dir.magnitude);
-        forceWaveShadow.transform.position = ppos + magnitude*dir.normalized;
+        forceWaveShadow.transform.position = ppos + magnitude * dir.normalized;
         forceWaveShadow.transform.rotation = projectile.transform.rotation;
         forceWaveShadow.transform.localScale = projectile.transform.localScale;
     }
     /// <summary>
     /// Deletes all currently existing force wave shadows
     /// </summary>
-    public static void clearForceWaveShadows()
+    public void clearForceWaveShadows()
     {
-        foreach (GameObject shadow in instance.forceWaveShadows.Values)
+        foreach (GameObject shadow in forceWaveShadows.Values)
         {
             Destroy(shadow);
         }
-        instance.forceWaveShadows.Clear();
+        forceWaveShadows.Clear();
     }
 }

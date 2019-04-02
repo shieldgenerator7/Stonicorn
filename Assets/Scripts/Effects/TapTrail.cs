@@ -13,11 +13,11 @@ public class TapTrail : MonoBehaviour {
         {
             if (nextTapStone != null)
             {
-                EffectManager.highlightTapArea(nextTapStone.transform.position);
+                Managers.Effect.highlightTapArea(nextTapStone.transform.position);
             }
             else
             {
-                EffectManager.highlightTapArea(Vector2.zero, false);
+                Managers.Effect.highlightTapArea(Vector2.zero, false);
             }
         }
     }
