@@ -132,7 +132,7 @@ public class ActivationTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
+        if (!forPlayerOnly || coll.gameObject.isPlayer())
         {
             if (!triggerRequireZoom || zoomLevelActive)
             {
@@ -146,7 +146,7 @@ public class ActivationTrigger : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D coll)
     {
-        if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
+        if (!forPlayerOnly || coll.gameObject.isPlayer())
         {
             if (!triggerRequireZoom || zoomLevelActive)
             {
