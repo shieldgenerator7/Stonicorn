@@ -220,7 +220,9 @@ public class GameManager : MonoBehaviour
 
     void sceneLoaded(Scene s, LoadSceneMode m)
     {
+        Debug.Log("sceneLoaded: " + s.name + ", old object count: " + gameObjects.Count);
         refreshGameObjects();
+        Debug.Log("sceneLoaded: " + s.name + ", new object count: " + gameObjects.Count);
         LoadObjectsFromScene(s);
         openScenes.Add(s.name);
         //If the game has just begun,
@@ -232,14 +234,17 @@ public class GameManager : MonoBehaviour
     }
     void sceneUnloaded(Scene s)
     {
-        foreach (GameObject fgo in forgottenObjects)
+        for (int i = forgottenObjects.Count - 1; i >= 0; i--)
         {
-            if (fgo.scene == s)
+            GameObject fgo = forgottenObjects[i];
+            if (fgo == null || fgo.scene == s)
             {
-                forgottenObjects.Remove(fgo);
+                forgottenObjects.RemoveAt(i);
             }
         }
+        Debug.Log("sceneUnloaded: " + s.name + ", old object count: " + gameObjects.Count);
         refreshGameObjects();
+        Debug.Log("sceneUnloaded: " + s.name + ", new object count: " + gameObjects.Count);
         openScenes.Remove(s.name);
     }
     public static void refresh() { Managers.Game.refreshGameObjects(); }
@@ -435,6 +440,7 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
+        Debug.Log("LOFS: Scene " + s.name + ": last state seen: " + lastStateSeen);
         if (lastStateSeen < 0)
         {
             return;
@@ -443,15 +449,19 @@ public class GameManager : MonoBehaviour
         {
             lastStateSeen = chosenId;
         }
+        int newObjectsFound = 0;
+        int objectsLoaded = 0;
         //Load Each Object
         foreach (GameObject go in gameObjects)
         {
             if (go.scene == s)
             {
+                newObjectsFound++;
                 for (int stateid = lastStateSeen; stateid >= 0; stateid--)
                 {
                     if (gameStates[stateid].loadObject(go))
                     {
+                        objectsLoaded++;
                         break;
                     }
                     else
@@ -461,6 +471,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        Debug.Log("LOFS: Scene " + s.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
     }
     public bool Rewinding
     {
