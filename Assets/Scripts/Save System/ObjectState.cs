@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class ObjectState
 {
-
     //Transform
     public Vector3 position;//2017-10-10: actually stores the localPosition
     public Vector3 localScale;
@@ -96,7 +95,14 @@ public class ObjectState
             if (scene.IsValid() && scene.isLoaded)
             {
                 //First Pass: get GO from GameManager list
-                go = searchList(GameManager.GameObjects);
+                if (GameManager.GameObjects.ContainsKey(objectName))
+                {
+                    GameObject dictGO = GameManager.GameObjects[objectName];
+                    if (dictGO.name == objectName && dictGO.scene.name == sceneName)
+                    {
+                        go = dictGO;
+                    }
+                }
                 //Second Pass: get GO from GameManager Forgotten Object list
                 if (go == null)
                 {
@@ -118,10 +124,13 @@ public class ObjectState
                             }
                             foreach (Transform t in spawned.transform)
                             {
-                                if (t.gameObject.name == this.objectName)
+                                if (t.gameObject.isSavable())
                                 {
-                                    go = t.gameObject;
-                                    break;
+                                    GameManager.addObject(t.gameObject);
+                                    if (t.gameObject.name == this.objectName)
+                                    {
+                                        go = t.gameObject;
+                                    }
                                 }
                             }
                             if (go == null)

@@ -32,19 +32,15 @@ public class GameState
         id = nextid;
         nextid++;
     }
-    public GameState(List<GameObject> list) : this()
+    public GameState(ICollection<GameObject> list) : this()
     {
         //Object States
         foreach (GameObject go in list)
         {
-            if (go == null)
-            {
-                continue;
-            }
             ObjectState os = new ObjectState(go);
             os.saveState();
             states.Add(os);
-            if (go.name.Equals("merky"))
+            if (go.name == "merky")
             {
                 merky = os;
             }

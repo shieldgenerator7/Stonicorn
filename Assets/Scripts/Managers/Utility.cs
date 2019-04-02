@@ -142,6 +142,16 @@ public static class Utility
     {
         return go == Managers.Player.gameObject;
     }
+
+    /// <summary>
+    /// Returns true if the game object has state to save
+    /// </summary>
+    /// <param name="go"></param>
+    /// <returns></returns>
+    public static bool isSavable(this GameObject go)
+    {
+        return go.GetComponent<Rigidbody2D>() || go.GetComponent<SavableMonoBehaviour>();
+    }
     /// <summary>
     /// Sums the centers of all non-trigger colliders
     /// </summary>

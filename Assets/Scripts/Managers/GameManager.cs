@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     //
     //Game States
     private List<GameState> gameStates = new List<GameState>();
-    private List<GameObject> gameObjects = new List<GameObject>();
+    private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
     //Scene Loading
     private List<string> openScenes = new List<string>();//the list of names of the scenes that are open
@@ -132,14 +132,37 @@ public class GameManager : MonoBehaviour
 
     public static void addObject(GameObject go)
     {
-        Managers.Game.gameObjects.Add(go);
+        Managers.Game.addObjectImpl(go);
     }
     public void addAll(List<GameObject> list)
     {
         foreach (GameObject go in list)
         {
-            gameObjects.Add(go);
+            addObjectImpl(go);
         }
+    }
+    private void addObjectImpl(GameObject go)
+    {
+        //Error checking
+
+        //If the game object's name is already in the dictionary...
+        if (gameObjects.ContainsKey(go.name))
+        {
+            throw new System.ArgumentException(
+                  "GameObject (" + go.name + ") is already inside the gameObjects dictionary! "
+                  + "Check for 2 or more objects with the same name. scene: " + go.scene.name
+                  );
+        }
+        //If the game object doesn't have any state to save...
+        if (!go.isSavable())
+        {
+            throw new System.ArgumentException(
+                "GameObject (" + go.name + ") doesn't have any state to save! "
+                + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour. scene: " + go.scene.name
+                );
+        }
+        //Else if all good, add the object
+        gameObjects.Add(go.name, go);
     }
     /// <summary>
     /// Destroys the given GameObject and updates lists
@@ -156,13 +179,13 @@ public class GameManager : MonoBehaviour
     /// <param name="go"></param>
     private void removeObject(GameObject go)
     {
-        gameObjects.Remove(go);
+        gameObjects.Remove(go.name);
         forgottenObjects.Remove(go);
         if (go && go.transform.childCount > 0)
         {
             foreach (Transform t in go.transform)
             {
-                gameObjects.Remove(t.gameObject);
+                gameObjects.Remove(t.gameObject.name);
                 forgottenObjects.Remove(t.gameObject);
             }
         }
@@ -208,10 +231,6 @@ public class GameManager : MonoBehaviour
             }
             txtDemoTimer.text = string.Format("{0:0.00}", timeLeft);
         }
-    }
-
-    private void FixedUpdate()
-    {
         if (Rewinding)
         {
             if (Time.time > lastRewindTime + rewindDelay)
@@ -257,16 +276,16 @@ public class GameManager : MonoBehaviour
     public static void refresh() { Managers.Game.refreshGameObjects(); }
     public void refreshGameObjects()
     {
-        gameObjects = new List<GameObject>();
+        gameObjects = new Dictionary<string, GameObject>();
         foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
         {
-            gameObjects.Add(rb.gameObject);
+            addObjectImpl(rb.gameObject);
         }
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
         {
-            if (!gameObjects.Contains(smb.gameObject))
+            if (!gameObjects.ContainsValue(smb.gameObject))
             {
-                gameObjects.Add(smb.gameObject);
+                addObjectImpl(smb.gameObject);
             }
         }
         //Forgotten Objects
@@ -274,7 +293,7 @@ public class GameManager : MonoBehaviour
         {
             if (fgo != null)
             {
-                gameObjects.Add(fgo);
+                addObjectImpl(fgo);
             }
         }
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
@@ -298,7 +317,7 @@ public class GameManager : MonoBehaviour
     }
     public void Save()
     {
-        gameStates.Add(new GameState(gameObjects));
+        gameStates.Add(new GameState(gameObjects.Values));
         chosenId++;
         rewindId++;
         //Open Scenes
@@ -359,7 +378,7 @@ public class GameManager : MonoBehaviour
             obj.SetActive(true);
         }
     }
-    public static List<GameObject> GameObjects
+    public static Dictionary<string, GameObject> GameObjects
     {
         get { return Managers.Game.gameObjects; }
     }
@@ -372,9 +391,9 @@ public class GameManager : MonoBehaviour
         //Update chosenId to game-state-now
         chosenId = gamestateId;
         //Destroy objects not spawned yet in the new selected state
-        for (int i = gameObjects.Count - 1; i >= 0; i--)
+        List<GameObject> destroyObjectList = new List<GameObject>();
+        foreach (GameObject go in gameObjects.Values)
         {
-            GameObject go = gameObjects[i];
             foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
             {
                 //If the game object was spawned during run time
@@ -385,10 +404,17 @@ public class GameManager : MonoBehaviour
                     if (!gameStates[gamestateId].hasGameObject(go))
                     {
                         //remove it from game objects list
-                        destroyObject(go);
+                        //by saving it to the list of gmae objects to be destroyed
+                        destroyObjectList.Add(go);
                     }
                 }
             }
+        }
+        //Actually destroy the objects that need destroyed
+        for (int i = destroyObjectList.Count - 1; i >= 0; i--)
+        {
+            //This is to get around the problem of deleting objects from a list that you're iterating over
+            destroyObject(destroyObjectList[i]);
         }
         //Actually load the game state
         gameStates[gamestateId].load();
@@ -452,7 +478,7 @@ public class GameManager : MonoBehaviour
         int newObjectsFound = 0;
         int objectsLoaded = 0;
         //Load Each Object
-        foreach (GameObject go in gameObjects)
+        foreach (GameObject go in gameObjects.Values)
         {
             if (go.scene == s)
             {
