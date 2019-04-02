@@ -352,17 +352,19 @@ public class GameManager : MonoBehaviour
             obj.SetActive(true);
         }
     }
+    public static List<GameObject> GameObjects
+    {
+        get { return Managers.Game.gameObjects; }
+    }
     public List<GameObject> ForgottenObjects
     {
-        get
-        {
-            return forgottenObjects;
-        }
+        get { return forgottenObjects; }
     }
     public void Load(int gamestateId)
     {
+        //Update chosenId to game-state-now
+        chosenId = gamestateId;
         //Destroy objects not spawned yet in the new selected state
-        //chosenId is the previous current gamestate, which is in game-state-future
         for (int i = gameObjects.Count - 1; i > 0; i--)
         {
             GameObject go = gameObjects[i];
@@ -381,8 +383,8 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        //Update chosenId to game-state-now
-        chosenId = gamestateId;
+        //Actually load the game state
+        gameStates[gamestateId].load();
         //If the rewind is finished,
         if (chosenId == rewindId)
         {
@@ -407,14 +409,6 @@ public class GameManager : MonoBehaviour
                     sl.lastOpenGameStateId = -1;
                 }
             }
-        }
-        //Actually load the game state
-        gameStates[gamestateId].load();
-        //If the rewind is finished,
-        if (chosenId <= rewindId)
-        {
-            //refresh a second time, just to be sure
-            refreshGameObjects();
         }
         //Destroy game states in game-state-future
         for (int i = gameStates.Count - 1; i > gamestateId; i--)

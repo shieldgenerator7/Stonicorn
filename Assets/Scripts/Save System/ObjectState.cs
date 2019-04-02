@@ -95,26 +95,40 @@ public class ObjectState
             Scene scene = SceneManager.GetSceneByName(sceneName);
             if (scene.IsValid() && scene.isLoaded)
             {
-                foreach (GameObject sceneGo in scene.GetRootGameObjects())
+                //First Pass: get GO from GameManager list
+                foreach (GameObject gmGO in GameManager.GameObjects)
                 {
-                    if (sceneGo.name.Equals(objectName))
+                    if (gmGO.name == objectName)
                     {
-                        this.go = sceneGo;
+                        this.go = gmGO;
                         break;
                     }
-                    else
+                }
+                //Second Pass: get GO by searching all the scene objects
+                if (go == null)
+                {
+                    foreach (GameObject sceneGo in scene.GetRootGameObjects())
                     {
-                        foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
+                        if (sceneGo.name == objectName)
                         {
-                            GameObject childGo = childTransform.gameObject;
-                            if (childGo.name.Equals(objectName))
+                            this.go = sceneGo;
+                            break;
+                        }
+                        else
+                        {
+                            foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
                             {
-                                this.go = childGo;
-                                break;
+                                GameObject childGo = childTransform.gameObject;
+                                if (childGo.name == objectName)
+                                {
+                                    this.go = childGo;
+                                    break;
+                                }
                             }
                         }
                     }
                 }
+                //Third Pass: get GO from GameManager Forgotten Object list
                 if (go == null)
                 {
                     foreach (GameObject dgo in Managers.Game.ForgottenObjects)
@@ -126,14 +140,15 @@ public class ObjectState
                         }
                     }
                 }
-                //if not found, do stuff
+                //Not found, try spawning it, if applicable
                 if (go == null || ReferenceEquals(go, null))
                 {
-                    //if is spawned object, make it
                     foreach (SavableObject so in soList)
                     {
+                        //If it is a spawned object
                         if (so.isSpawnedObject)
                         {
+                            //Make it
                             GameObject spawned = so.spawnObject();
                             if (spawned.scene.name != sceneName)
                             {
