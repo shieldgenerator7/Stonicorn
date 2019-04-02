@@ -45,6 +45,12 @@ public class Managers : MonoBehaviour
             if (instance.npcManager == null)
             {
                 instance.npcManager = FindObjectOfType<NPCManager>();
+                //If the NPCManager is still not found,
+                if (instance.npcManager == null)
+                {
+                    //Get it from this gameobject 
+                    instance.npcManager = instance.GetComponent<NPCManager>();
+                }
             }
             return instance.npcManager;
         }

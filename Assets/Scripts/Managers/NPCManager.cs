@@ -13,25 +13,11 @@ public class NPCManager : MonoBehaviour
     public GameObject npcQuoteBox;
     public GameObject npcQuoteBoxTail;
     public CameraController.CameraScalePoints baseCameraScalePoint;//the scale point at which the NPC quote box should be full screen
-
-    private static NPCManager instance;
-
+    
     // Use this for initialization
     void Start()
     {
-        //instance
-        if (instance != null)
-        {
-            Destroy(instance);
-        }
-        instance = this;
-
         npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
-        if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
-        {
-            instance.canvas.gameObject.SetActive(false);
-            instance.enabled = false;
-        }
     }
 
     // Update is called once per frame
@@ -40,15 +26,15 @@ public class NPCManager : MonoBehaviour
         Camera cam = Camera.main;
         CameraController camCtr = Managers.Camera;
         RectTransform canTrans = ((RectTransform)canvas.transform);
-        canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth);
-        canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight);
+        canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cam.pixelWidth);
+        canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cam.pixelHeight);
         Vector2 size = cam.ScreenToWorldPoint(new Vector2(cam.pixelWidth, cam.pixelHeight)) - cam.ScreenToWorldPoint(Vector2.zero);
         size *= (camCtr.scalePointToZoomLevel((int)baseCameraScalePoint) / camCtr.ZoomLevel);
         float newDim = Mathf.Max(Mathf.Abs(size.x) / canTrans.rect.width, Mathf.Abs(size.y) / canTrans.rect.height);
         Vector3 newSize = new Vector3(newDim, newDim, 1);
         canvas.transform.localScale = newSize;
-        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth * 3 / 4);
-        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight * 3 / 4);
+        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cam.pixelWidth * 3 / 4);
+        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cam.pixelHeight * 3 / 4);
         canvas.transform.rotation = cam.transform.rotation;
         npcQuoteBox.transform.rotation = canvas.transform.rotation;
     }
@@ -60,6 +46,7 @@ public class NPCManager : MonoBehaviour
     /// <param name="talking">Whether to activate or deactivate the visual effects</param>
     public static void speakNPC(GameObject npc, bool talking, string message, string eventualMessage)
     {
+        NPCManager instance = Managers.NPC;
         instance.canvas.gameObject.SetActive(talking);
         instance.npcQuoteBox.SetActive(talking);
         instance.npcDialogueText.text = message;
