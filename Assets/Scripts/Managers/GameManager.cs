@@ -227,13 +227,16 @@ public class GameManager : MonoBehaviour
         Debug.Log("sceneLoaded: " + s.name + ", old object count: " + gameObjects.Count);
         refreshGameObjects();
         Debug.Log("sceneLoaded: " + s.name + ", new object count: " + gameObjects.Count);
-        LoadObjectsFromScene(s);
         openScenes.Add(s.name);
-        //If the game has just begun,
-        if (gameStates.Count == 0)
+        if (!Rewinding)
         {
-            //Create the initial save state
-            Save();
+            LoadObjectsFromScene(s);
+            //If the game has just begun,
+            if (gameStates.Count == 0)
+            {
+                //Create the initial save state
+                Save();
+            }
         }
     }
     void sceneUnloaded(Scene s)
