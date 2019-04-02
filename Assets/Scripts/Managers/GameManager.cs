@@ -425,9 +425,6 @@ public class GameManager : MonoBehaviour
             //Update the next game state id
             GameState.nextid = gamestateId + 1;
         }
-        //Recenter the camera
-        Managers.Camera.recenter();
-        Managers.Camera.refocus();
     }
     public void LoadObjectsFromScene(Scene s)
     {

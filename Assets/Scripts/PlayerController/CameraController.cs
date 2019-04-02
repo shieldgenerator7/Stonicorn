@@ -192,6 +192,19 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame, after all other objects have moved that frame
     void LateUpdate()
     {
+        //If time is rewinding,
+        if (Managers.Game.Rewinding)
+        {
+            //Recenter the camera
+            recenter();
+            refocus();
+            //Rotate Transform
+            if (!RotationFinished)
+            {
+                transform.up = rotationUp;
+            }
+            return;
+        }
         if (!Managers.Gesture.cameraDragInProgress)
         {
             if (!lockCamera)
@@ -227,13 +240,10 @@ public class CameraController : MonoBehaviour
             }
 
             //Rotate Transform
-            if (!rotationFinished())
+            if (!RotationFinished)
             {
                 float deltaTime = 3 * Time.deltaTime;
-                //    float angle = Utility.RotationZ(transform.up, rotationUp) * deltaTime;
-                //    Offset = Utility.RotateZ(offset, angle);
                 transform.up = Vector3.Lerp(transform.up, rotationUp, deltaTime);
-
             }
 
             //Scale Orthographic Size
@@ -258,9 +268,9 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    public bool rotationFinished()
+    public bool RotationFinished
     {
-        return transform.up == rotationUp;
+        get { return transform.up == rotationUp; }
     }
 
     /// <summary>
