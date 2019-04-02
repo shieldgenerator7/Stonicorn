@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private bool demoBuild = false;//true to not load on open or save with date/timestamp in filename
     [SerializeField]
+    private bool saveWithTimeStamp = false;//true to save with date/timestamp in filename, even when not in demo build
+    [SerializeField]
     private float restartDemoDelay = 10;//how many seconds before the game can reset after the demo ends
     [SerializeField]
     private Text txtDemoTimer;//the text that shows much time is left in the demo
@@ -67,6 +69,10 @@ public class GameManager : MonoBehaviour
             demoBuild = true;//auto enable demo build mode
             Managers.Gesture.tapGesture += startDemoTimer;
             txtDemoTimer.transform.parent.gameObject.SetActive(true);
+        }
+        if (demoBuild)
+        {
+            saveWithTimeStamp = true;
         }
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
@@ -544,7 +550,7 @@ public class GameManager : MonoBehaviour
     public void saveToFile()
     {
         string fileName = "merky";
-        if (demoBuild)
+        if (saveWithTimeStamp)
         {
             System.DateTime now = System.DateTime.Now;
             fileName += "-" + now.Ticks;
