@@ -92,6 +92,10 @@ public class GameManager : MonoBehaviour
             Save();
             saveToFile();
         }
+        //Empty object lists
+        gameObjects.Clear();
+        memories.Clear();
+        activeCheckPoints.Clear();
         //Unload all scenes and reload PlayerScene
         GameState.nextid = 0;
         SceneManager.LoadScene(0);
