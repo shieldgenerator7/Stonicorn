@@ -164,7 +164,7 @@ public class Managers : MonoBehaviour
     private static Managers instance;
     private void Awake()
     {
-        if (instance != null)
+        if (instance != null && instance != this)
         {
             Destroy(instance.gameObject);
         }
