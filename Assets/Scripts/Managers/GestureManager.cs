@@ -36,8 +36,6 @@ public class GestureManager : SavableMonoBehaviour
     private float holdTime = 0f;//how long the gesture has been held for
     private enum ClickState { Began, InProgress, Ended, None };
     private ClickState clickState = ClickState.None;
-    //
-    public int tapCount = 0;//how many taps have ever been made, including tap+holds that were sent back as taps
     //Flags
     public bool cameraDragInProgress = false;
     private bool isDrag = false;
@@ -75,14 +73,12 @@ public class GestureManager : SavableMonoBehaviour
     public override SavableObject getSavableObject()
     {
         return new SavableObject(this,
-            "holdThresholdScale", holdThresholdScale,
-            "tapCount", tapCount
+            "holdThresholdScale", holdThresholdScale
             );
     }
     public override void acceptSavableObject(SavableObject savObj)
     {
         holdThresholdScale = (float)savObj.data["holdThresholdScale"];
-        tapCount = (int)savObj.data["tapCount"];
     }
 
     // Update is called once per frame
@@ -319,7 +315,7 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 else if (isTapGesture)
                 {
-                    tapCount++;
+                    GameStatistics.incrementCounter("Tap");
                     adjustHoldThreshold(holdTime, false);
                     bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
                     if (Managers.Player.InCheckPoint)
@@ -479,8 +475,9 @@ public class GestureManager : SavableMonoBehaviour
     {
         if (incrementTapCount)
         {
-            tapCount++;
+            GameStatistics.incrementCounter("Tap");
         }
+        int tapCount = GameStatistics.counter("Tap");
         holdThresholdScale = (holdThresholdScale * (tapCount - 1) + (holdTime / holdThreshold)) / tapCount;
         if (holdThresholdScale < 1)
         {

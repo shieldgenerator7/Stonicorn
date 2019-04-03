@@ -744,7 +744,7 @@ public class GameManager : MonoBehaviour
             //-1 to prevent trap saves
             Rewind(chosenId - 1);
         }
-        if (GameStatistics.counter("deathCount") == 1)
+        if (GameStatistics.counter("Death") == 1)
         {
             Managers.Effect.highlightTapArea(Vector2.zero, false);
         }

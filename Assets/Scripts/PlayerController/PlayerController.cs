@@ -821,9 +821,9 @@ public class PlayerController : MonoBehaviour
         //Reset GameManager respawn time
         Managers.Game.AcceptsInputNow = false;
         //Increment death counter
-        GameStatistics.incrementCounter("deathCount");
+        GameStatistics.incrementCounter("Death");
         //If this is the first death,
-        if (GameStatistics.counter("deathCount") == 1)
+        if (GameStatistics.counter("Death") == 1)
         {
             //Highlight the past preview that makes the most sense to rewind to
             Vector2 lsrgp = Managers.Game.getLatestSafeRewindGhostPosition();
