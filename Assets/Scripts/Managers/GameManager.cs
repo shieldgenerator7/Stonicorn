@@ -151,6 +151,11 @@ public class GameManager : MonoBehaviour
     {
         //Error checking
 
+        //If go is null
+        if (go == null)
+        {
+            throw new System.ArgumentNullException("GameObject (" + go + ") cannot be null!");
+        }
         //If the game object's name is already in the dictionary...
         if (gameObjects.ContainsKey(go.getKey()))
         {
@@ -332,6 +337,7 @@ public class GameManager : MonoBehaviour
     }
     public void Save()
     {
+        cleanObjects();
         gameStates.Add(new GameState(gameObjects.Values));
         chosenId++;
         rewindId++;
@@ -391,6 +397,23 @@ public class GameManager : MonoBehaviour
         {
             forgottenObjects.Remove(obj);
             obj.SetActive(true);
+        }
+    }
+    private void cleanObjects()
+    {
+        string cleanedKeys = "";
+        List<string> keys = new List<string>(gameObjects.Keys);
+        foreach (string key in keys)
+        {
+            if (gameObjects[key] == null)
+            {
+                cleanedKeys += key + ", ";
+                gameObjects.Remove(key);
+            }
+        }
+        if (cleanedKeys != "")
+        {
+            Debug.Log("Cleaned: " + cleanedKeys);
         }
     }
     public List<GameObject> ForgottenObjects
