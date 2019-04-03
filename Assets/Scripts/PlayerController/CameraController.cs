@@ -199,7 +199,8 @@ public class CameraController : MonoBehaviour
             recenter();
             refocus();
             //Rotate Transform
-            transform.up = Managers.Player.transform.up;
+            rotationUp = transform.up.RotateZ(-Time.deltaTime);
+            transform.up = rotationUp;
             return;
         }
         if (!Managers.Gesture.cameraDragInProgress)
