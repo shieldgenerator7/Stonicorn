@@ -257,8 +257,8 @@ public class ActivationTrigger : MonoBehaviour
                 if (cameraSnapAnchor != null)
                 {
                     Vector3 newCamPos = cameraSnapAnchor.transform.position;
-                    newCamPos.z = Managers.Camera.transform.position.z;
-                    Managers.Camera.transform.position = newCamPos;
+                    newCamPos.z = Camera.main.transform.position.z;
+                    Camera.main.transform.position = newCamPos;
                 }
             }
             else
@@ -278,6 +278,6 @@ public class ActivationTrigger : MonoBehaviour
         {
             return false;
         }
-        return cameraPositionCollider.OverlapPoint(Managers.Camera.transform.position);
+        return cameraPositionCollider.OverlapPoint(Camera.main.transform.position);
     }
 }

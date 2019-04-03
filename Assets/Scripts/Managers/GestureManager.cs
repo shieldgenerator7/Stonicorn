@@ -303,7 +303,7 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 if (isDrag)
                 {
-                    currentGP.processDragGesture(Managers.Camera.Camera.ScreenToWorldPoint(origMP), curMPWorld);
+                    currentGP.processDragGesture(Camera.main.ScreenToWorldPoint(origMP), curMPWorld);
                 }
                 else if (isHoldGesture)
                 {
