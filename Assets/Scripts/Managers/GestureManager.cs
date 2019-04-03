@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class GestureManager : SavableMonoBehaviour
 {
-    private Rigidbody2D rb2dPlayer;
-
     //Settings
     public float dragThreshold = 50;//how far from the original mouse position the current position has to be to count as a drag
     public float playerSpeedThreshold = 1;//the maximum speed a player can be going and still be able to do a drag gesture
@@ -61,8 +59,6 @@ public class GestureManager : SavableMonoBehaviour
     // Use this for initialization
     void Start()
     {
-        rb2dPlayer = Managers.Player.GetComponent<Rigidbody2D>();
-
         gestureProfiles.Add("Menu", new MenuGestureProfile());
         gestureProfiles.Add("Main", new GestureProfile());
         gestureProfiles.Add("Rewind", new RewindGestureProfile());
@@ -283,7 +279,7 @@ public class GestureManager : SavableMonoBehaviour
             else if (clickState == ClickState.InProgress)
             {
                 if (maxMouseMovement > dragThreshold
-                    && rb2dPlayer.velocity.sqrMagnitude <= playerSpeedThreshold * playerSpeedThreshold)
+                    && Managers.Player.Speed <= playerSpeedThreshold)
                 {
                     if (!isHoldGesture && !isPinchGesture)
                     {

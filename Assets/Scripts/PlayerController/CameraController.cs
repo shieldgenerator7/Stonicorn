@@ -69,7 +69,6 @@ public class CameraController : MonoBehaviour
             return camera;
         }
     }
-    private Rigidbody2D playerRB2D;
 
     private bool lockCamera = false;//keep the camera from moving
     [Tooltip("Runtime Var, Doesn't do anything from editor")]
@@ -162,7 +161,6 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        playerRB2D = Managers.Player.GetComponent<Rigidbody2D>();
         Managers.Player.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)
         {
@@ -209,7 +207,7 @@ public class CameraController : MonoBehaviour
                 float speed = (
                         Vector3.Distance(transform.position, target)
                         * cameraMoveFactor
-                        + playerRB2D.velocity.magnitude
+                        + Managers.Player.Speed
                     )
                     * Time.deltaTime;
                 //Move Transform

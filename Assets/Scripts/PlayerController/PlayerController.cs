@@ -191,9 +191,13 @@ public class PlayerController : MonoBehaviour
     public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
     public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
 
-    private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
+    private Rigidbody2D rb2d;
+    public float Speed
+    {
+        get { return rb2d.velocity.magnitude; }
+    }
     private GravityAccepter gravity;
     public GravityAccepter Gravity
     {
