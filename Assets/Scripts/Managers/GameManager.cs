@@ -152,23 +152,32 @@ public class GameManager : MonoBehaviour
         //Error checking
 
         //If the game object's name is already in the dictionary...
-        if (gameObjects.ContainsKey(go.name))
+        if (gameObjects.ContainsKey(go.getKey()))
         {
             throw new System.ArgumentException(
-                  "GameObject (" + go.name + ") is already inside the gameObjects dictionary! "
-                  + "Check for 2 or more objects with the same name. scene: " + go.scene.name
+                  "GameObject (" + go.scene.name + " | " + go.name + ") is already inside the gameObjects dictionary! "
+                  + "Check for 2 or more objects with the same name."
                   );
         }
         //If the game object doesn't have any state to save...
         if (!go.isSavable())
         {
             throw new System.ArgumentException(
-                "GameObject (" + go.name + ") doesn't have any state to save! "
-                + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour. scene: " + go.scene.name
+                "GameObject (" + go.scene.name + " | " + go.name + ") doesn't have any state to save! "
+                + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
                 );
         }
         //Else if all good, add the object
-        gameObjects.Add(go.name, go);
+        gameObjects.Add(go.getKey(), go);
+    }
+    public static GameObject getObject(string sceneName, string objectName)
+    {
+        string key = Utility.getKey(sceneName, objectName);
+        if (Managers.Game.gameObjects.ContainsKey(key))
+        {
+            return Managers.Game.gameObjects[key];
+        }
+        return null;
     }
     /// <summary>
     /// Destroys the given GameObject and updates lists
@@ -185,13 +194,13 @@ public class GameManager : MonoBehaviour
     /// <param name="go"></param>
     private void removeObject(GameObject go)
     {
-        gameObjects.Remove(go.name);
+        gameObjects.Remove(go.getKey());
         forgottenObjects.Remove(go);
         if (go && go.transform.childCount > 0)
         {
             foreach (Transform t in go.transform)
             {
-                gameObjects.Remove(t.gameObject.name);
+                gameObjects.Remove(t.gameObject.getKey());
                 forgottenObjects.Remove(t.gameObject);
             }
         }
@@ -383,10 +392,6 @@ public class GameManager : MonoBehaviour
             forgottenObjects.Remove(obj);
             obj.SetActive(true);
         }
-    }
-    public static Dictionary<string, GameObject> GameObjects
-    {
-        get { return Managers.Game.gameObjects; }
     }
     public List<GameObject> ForgottenObjects
     {

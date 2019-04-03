@@ -95,14 +95,7 @@ public class ObjectState
             if (scene.IsValid() && scene.isLoaded)
             {
                 //First Pass: get GO from GameManager list
-                if (GameManager.GameObjects.ContainsKey(objectName))
-                {
-                    GameObject dictGO = GameManager.GameObjects[objectName];
-                    if (dictGO.name == objectName && dictGO.scene.name == sceneName)
-                    {
-                        go = dictGO;
-                    }
-                }
+                go = GameManager.getObject(sceneName, objectName);
                 //Second Pass: get GO from GameManager Forgotten Object list
                 if (go == null)
                 {

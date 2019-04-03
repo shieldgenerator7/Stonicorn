@@ -153,6 +153,19 @@ public static class Utility
         return go.GetComponent<Rigidbody2D>() || go.GetComponent<SavableMonoBehaviour>();
     }
     /// <summary>
+    /// Returns the unique inter-scene identifier for the object
+    /// </summary>
+    /// <param name="go"></param>
+    /// <returns></returns>
+    public static string getKey(this GameObject go)
+    {
+        return getKey(go.scene.name, go.name);
+    }
+    public static string getKey(string sceneName, string objectName)
+    {
+        return sceneName + "|" + objectName;
+    }
+    /// <summary>
     /// Sums the centers of all non-trigger colliders
     /// </summary>
     /// <param name="obj"></param>
