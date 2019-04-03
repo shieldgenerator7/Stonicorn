@@ -31,7 +31,6 @@ public class EnemySimple : MonoBehaviour
     private HardMaterial hm;
     private BoxCollider2D groundCollider;//collider used to see if the enemy is touching the ground
     private GravityAccepter gravity;
-    private GameObject player;
 
     // Use this for initialization
     void Start()
@@ -42,16 +41,15 @@ public class EnemySimple : MonoBehaviour
         groundCollider = GetComponent<BoxCollider2D>();
         gravity = GetComponent<GravityAccepter>();
         direction = Utility.PerpendicularLeft(transform.up).normalized;
-        player = Managers.Player.gameObject;
         direction = transform.right;
     }
 
     private void Update()
     {
         losToPlayer = false;
-        if (player.transform.position.inRange(transform.position, sightRange))
+        if (Managers.Player.transform.position.inRange(transform.position, sightRange))
         {
-            losToPlayer = gameObject.lineOfSight(player);
+            losToPlayer = gameObject.lineOfSight(Managers.Player.gameObject);
         }
         if (losToPlayer)
         {
