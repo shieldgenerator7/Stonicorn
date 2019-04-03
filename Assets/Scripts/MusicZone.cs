@@ -18,7 +18,12 @@ public class MusicZone : MonoBehaviour
     {
         if (coll.gameObject.isPlayer())
         {
-            Managers.Music.setCurrentSong(music);
+            playTrack();
         }
+    }
+
+    public void playTrack()
+    {
+        Managers.Music.setCurrentSong(music);
     }
 }

@@ -462,7 +462,7 @@ public class GameManager : MonoBehaviour
             //Update the next game state id
             GameState.nextid = gamestateId + 1;
             //Re-enable physics because the rewind is over
-            Physics2D.autoSimulation = true;
+            Managers.Physics2DSurrogate.enabled = false;
         }
     }
     public void LoadObjectsFromScene(Scene s)
@@ -535,7 +535,7 @@ public class GameManager : MonoBehaviour
         rewindId = gamestateId;
         Managers.Camera.recenter();
         //Disable physics while rewinding
-        Physics2D.autoSimulation = false;
+        Managers.Physics2DSurrogate.enabled = true;
     }
     void LoadMemories()
     {

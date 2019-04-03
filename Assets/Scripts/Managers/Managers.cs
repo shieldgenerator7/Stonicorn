@@ -70,6 +70,26 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Physics 2D Surrogate
+    private Physics2DSurrogate physics2DSurrogate;
+    public static Physics2DSurrogate Physics2DSurrogate
+    {
+        get
+        {
+            if (instance.physics2DSurrogate == null)
+            {
+                instance.physics2DSurrogate = FindObjectOfType<Physics2DSurrogate>();
+                //If the Physics2DSurrogate is still not found,
+                if (instance.physics2DSurrogate == null)
+                {
+                    //Get it from this gameobject 
+                    instance.physics2DSurrogate = instance.GetComponent<Physics2DSurrogate>();
+                }
+            }
+            return instance.physics2DSurrogate;
+        }
+    }
+
     //Music Manager
     private MusicManager musicManager;
     public static MusicManager Music

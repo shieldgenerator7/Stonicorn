@@ -192,17 +192,6 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame, after all other objects have moved that frame
     void LateUpdate()
     {
-        //If time is rewinding,
-        if (Managers.Game.Rewinding)
-        {
-            //Recenter the camera
-            recenter();
-            refocus();
-            //Rotate Transform
-            rotationUp = transform.up.RotateZ(-Time.deltaTime);
-            transform.up = rotationUp;
-            return;
-        }
         if (!Managers.Gesture.cameraDragInProgress)
         {
             if (!lockCamera)
