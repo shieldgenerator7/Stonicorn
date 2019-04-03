@@ -58,10 +58,7 @@ public class MenuManager : MonoBehaviour
 
     public static bool Open
     {
-        get
-        {
-            return Managers.Menu != null;
-        }
+        get { return Managers.Menu != null; }
         set
         {
             bool show = value;

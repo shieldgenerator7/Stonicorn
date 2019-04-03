@@ -33,13 +33,4 @@ public class MenuGestureProfile : GestureProfile
             base.processDragGesture(origMPWorld, newMPWorld);
         }
     }
-    public override void processZoomLevelChange(float zoomLevel)
-    {
-        Managers.Camera.ZoomLevel = zoomLevel;
-        //GestureProfile switcher
-        if (zoomLevel > Managers.Camera.scalePointToZoomLevel(1))
-        {
-            Managers.Gesture.switchGestureProfile("Main");
-        }
-    }
 }

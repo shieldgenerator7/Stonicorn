@@ -57,7 +57,18 @@ public class CameraController : MonoBehaviour
     private Vector3 rotationUp;//the up direction that the camera should be rotated towards
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
     private float desiredScale = 0;//the value that scale should move towards
-    private Camera cam;
+    private new Camera camera;
+    public Camera Camera
+    {
+        get
+        {
+            if (camera == null)
+            {
+                camera = GetComponent<Camera>();
+            }
+            return camera;
+        }
+    }
     private Rigidbody2D playerRB2D;
 
     private bool lockCamera = false;//keep the camera from moving
@@ -90,10 +101,7 @@ public class CameraController : MonoBehaviour
     }
     public CameraScalePoints ZoomScalePoint
     {
-        set
-        {
-            ZoomLevel = scalePoints[(int)value].absoluteScalePoint();
-        }
+        set { ZoomLevel = scalePoints[(int)value].absoluteScalePoint(); }
     }
     /// <summary>
     /// Set this to make the scale smoothly move to the new value
@@ -154,14 +162,13 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        cam = GetComponent<Camera>();
         playerRB2D = Managers.Player.GetComponent<Rigidbody2D>();
         Managers.Player.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)
         {
             Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object (" + planModeCanvas.name + ") doesn't have a Canvas component!");
         }
-        scale = cam.orthographicSize;
+        scale = Camera.orthographicSize;
         rotationUp = transform.up;
         //Initialize ScalePoints
         scalePoints.Add(new ScalePoint(0.2f, false));//Main Menu zoom level
@@ -268,8 +275,8 @@ public class CameraController : MonoBehaviour
     public void checkForAutoMovement(Vector2 oldPos, Vector2 newPos)
     {
         //If the player is near the edge of the screen upon teleporting, recenter the screen
-        Vector2 screenPos = cam.WorldToScreenPoint(newPos);
-        Vector2 oldScreenPos = cam.WorldToScreenPoint(oldPos);
+        Vector2 screenPos = Camera.WorldToScreenPoint(newPos);
+        Vector2 oldScreenPos = Camera.WorldToScreenPoint(oldPos);
         Vector2 centerScreen = new Vector2(Screen.width, Screen.height) / 2;
         Vector2 threshold = getPlayableScreenSize(screenEdgeThreshold);
         //if merky is now on edge of screen
@@ -299,7 +306,7 @@ public class CameraController : MonoBehaviour
                 //Update the auto offset                
                 autoOffset += newBuffer;
                 //Cap the auto offset
-                Vector2 autoScreenPos = cam.WorldToScreenPoint(autoOffset + (Vector2)transform.position);
+                Vector2 autoScreenPos = Camera.WorldToScreenPoint(autoOffset + (Vector2)transform.position);
                 Vector2 playableAutoOffsetSize = getPlayableScreenSize(autoOffsetScreenEdgeThreshold);
                 //If the auto offset is outside the threshold,
                 if (Mathf.Abs(autoScreenPos.x - centerScreen.x) > playableAutoOffsetSize.x)
@@ -318,7 +325,7 @@ public class CameraController : MonoBehaviour
                         );
                 }
                 //After fixing autoScreenPos, use it to update autoOffset
-                autoOffset = cam.ScreenToWorldPoint(autoScreenPos) - transform.position;
+                autoOffset = Camera.ScreenToWorldPoint(autoScreenPos) - transform.position;
                 autoOffsetCancelTime = Time.time + autoOffsetDuration;
             }
             else
@@ -401,14 +408,27 @@ public class CameraController : MonoBehaviour
     {
         this.rotationUp = rotationUp;
     }
-    public void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
+    public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld)
     {
-        //Check to make sure Merky doesn't get dragged off camera
-        Vector3 delta = origMPWorld - newMPWorld;
-        Vector3 playerPos = Managers.Player.transform.position;
-        Vector3 newPos = playerPos + originalCameraPosition + delta;
-        Vector3 playerUIpos = cam.WorldToViewportPoint(playerPos + (new Vector3(cam.transform.position.x, cam.transform.position.y) - newPos));
-        if (playerUIpos.x >= 0 && playerUIpos.x <= 1 && playerUIpos.y >= 0 && playerUIpos.y <= 1)
+        bool canMove = false;
+        Vector2 delta = origMPWorld - newMPWorld;
+        Vector2 playerPos = Managers.Player.transform.position;
+        Vector3 newPos = playerPos + (Vector2)originalCameraPosition + delta;
+        //If the camera is not zoomed into the menu,
+        if (ZoomLevel > toZoomLevel(CameraScalePoints.MENU))
+        {
+            //Check to make sure Merky doesn't get dragged off camera
+            Vector2 playerUIpos = Camera.WorldToViewportPoint(playerPos + (Vector2)Camera.transform.position - (Vector2)newPos);
+            if (playerUIpos.x >= 0 && playerUIpos.x <= 1 && playerUIpos.y >= 0 && playerUIpos.y <= 1)
+            {
+                canMove = true;
+            }
+        }
+        else
+        {
+            canMove = true;
+        }
+        if (canMove)
         {
             //Move the camera
             newPos.z = Offset.z;
@@ -431,11 +451,11 @@ public class CameraController : MonoBehaviour
     {
         if (Screen.height > Screen.width)//portrait orientation
         {
-            cam.orthographicSize = (scale * cam.pixelHeight) / cam.pixelWidth;
+            Camera.orthographicSize = (scale * Camera.pixelHeight) / Camera.pixelWidth;
         }
         else
         {//landscape orientation
-            cam.orthographicSize = scale;
+            Camera.orthographicSize = scale;
         }
     }
 
@@ -447,14 +467,18 @@ public class CameraController : MonoBehaviour
     public bool inView(Vector2 position)
     {
         //2017-10-31: copied from an answer by Taylor-Libonati: http://answers.unity3d.com/questions/720447/if-game-object-is-in-cameras-field-of-view.html
-        Vector3 screenPoint = cam.WorldToViewportPoint(position);
+        Vector3 screenPoint = Camera.WorldToViewportPoint(position);
         return screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
     }
     public float distanceInWorldCoordinates(Vector2 screenPos1, Vector2 screenPos2)
     {
-        return Vector2.Distance(cam.ScreenToWorldPoint(screenPos1), cam.ScreenToWorldPoint(screenPos2));
+        return Vector2.Distance(Camera.ScreenToWorldPoint(screenPos1), Camera.ScreenToWorldPoint(screenPos2));
     }
-    public float scalePointToZoomLevel(int scalePoint)
+    public float toZoomLevel(CameraScalePoints csp)
+    {
+        return scalePointToZoomLevel((int)csp);
+    }
+    private float scalePointToZoomLevel(int scalePoint)
     {
         if (scalePoint < 0 || scalePoint >= scalePoints.Count)
         {

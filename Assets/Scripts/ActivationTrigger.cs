@@ -188,8 +188,8 @@ public class ActivationTrigger : MonoBehaviour
 
     bool scalePointInRange(float zoomLevel)
     {
-        float minZoom = (minZoomScalePoint < 0) ? -1 : Managers.Camera.scalePointToZoomLevel((int)minZoomScalePoint);
-        float maxZoom = (maxZoomScalePoint < 0) ? -1 : Managers.Camera.scalePointToZoomLevel((int)maxZoomScalePoint);
+        float minZoom = (minZoomScalePoint < 0) ? -1 : Managers.Camera.toZoomLevel(minZoomScalePoint);
+        float maxZoom = (maxZoomScalePoint < 0) ? -1 : Managers.Camera.toZoomLevel(maxZoomScalePoint);
         return (
                 minZoomScalePoint < 0
                 || (minZoomClusivity == ClusivityOption.INCLUSIVE &&

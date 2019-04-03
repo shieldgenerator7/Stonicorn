@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
     }
     void startDemoTimer()
     {
-        if (Managers.Camera.ZoomLevel > Managers.Camera.scalePointToZoomLevel((int)CameraController.CameraScalePoints.PORTRAIT))
+        if (Managers.Camera.ZoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.PORTRAIT))
         {
             resetGameTimer = GameDemoLength + Time.time;
             Managers.Gesture.tapGesture -= startDemoTimer;
@@ -750,7 +750,7 @@ public class GameManager : MonoBehaviour
         }
 
         //leave this zoom level even if no past merky was chosen
-        float defaultZoomLevel = Managers.Camera.scalePointToZoomLevel((int)CameraController.CameraScalePoints.DEFAULT);
+        float defaultZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
         Managers.Camera.ZoomLevel = defaultZoomLevel;
         Managers.Gesture.switchGestureProfile("Main");
 

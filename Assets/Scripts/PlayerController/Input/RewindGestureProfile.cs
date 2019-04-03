@@ -23,14 +23,4 @@ public class RewindGestureProfile : GestureProfile
             Managers.Gesture.adjustHoldThreshold(holdTime);
         }
     }
-    public override void processZoomLevelChange(float zoomLevel)
-    {
-        Managers.Camera.ZoomLevel = zoomLevel;
-        //GestureProfile switcher
-        if (zoomLevel <= Managers.Camera.scalePointToZoomLevel((int)CameraController.CameraScalePoints.TIMEREWIND - 1)
-            && Managers.Player.HardMaterial.isIntact())
-        {
-            Managers.Gesture.switchGestureProfile("Main");
-        }
-    }
 }

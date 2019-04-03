@@ -35,16 +35,21 @@ public class GestureProfile
     {
         Managers.Camera.processDragGesture(origMPWorld, newMPWorld);
     }
-    public virtual void processZoomLevelChange(float zoomLevel)
+    public void processZoomLevelChange(float zoomLevel)
     {
         //GestureProfile switcher
-        if (zoomLevel > Managers.Camera.scalePointToZoomLevel((int)CameraController.CameraScalePoints.TIMEREWIND - 1))
+        if (zoomLevel < Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU + 1))
+        {
+            Managers.Gesture.switchGestureProfile("Menu");
+        }
+        else if (!Managers.Player.HardMaterial.isIntact()
+            || zoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND - 1))
         {
             Managers.Gesture.switchGestureProfile("Rewind");
         }
-        if (zoomLevel < Managers.Camera.scalePointToZoomLevel(1))
+        else
         {
-            Managers.Gesture.switchGestureProfile("Menu");
+            Managers.Gesture.switchGestureProfile("Main");
         }
     }
 }

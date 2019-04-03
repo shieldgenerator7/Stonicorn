@@ -4,12 +4,7 @@ using System.Collections.Generic;
 
 public class GestureManager : SavableMonoBehaviour
 {
-
-    public GameObject player;
-    private PlayerController plrController;
     private Rigidbody2D rb2dPlayer;
-    public Camera cam;
-    private CameraController camController;
 
     //Settings
     public float dragThreshold = 50;//how far from the original mouse position the current position has to be to count as a drag
@@ -66,16 +61,17 @@ public class GestureManager : SavableMonoBehaviour
     // Use this for initialization
     void Start()
     {
-        plrController = player.GetComponent<PlayerController>();
-        rb2dPlayer = player.GetComponent<Rigidbody2D>();
-        camController = cam.GetComponent<CameraController>();
-        camController.onZoomLevelChanged += processZoomLevelChange;
+        rb2dPlayer = Managers.Player.GetComponent<Rigidbody2D>();
 
         gestureProfiles.Add("Menu", new MenuGestureProfile());
         gestureProfiles.Add("Main", new GestureProfile());
         gestureProfiles.Add("Rewind", new RewindGestureProfile());
-        currentGP = gestureProfiles["Menu"];
-        currentGP.activate();
+        switchGestureProfile("Menu");
+
+        Managers.Camera.onZoomLevelChanged += processZoomLevelChange;
+        Managers.Camera.ZoomLevel =
+            Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU);
+
 
         Input.simulateMouseWithTouches = false;
     }
@@ -169,7 +165,7 @@ public class GestureManager : SavableMonoBehaviour
                     touchCount = 2;
                     clickState = ClickState.Began;
                     origMP2 = Input.GetTouch(1).position;
-                    origOrthoSize = camController.ZoomLevel;
+                    origOrthoSize = Managers.Camera.ZoomLevel;
                     //Update origMP
                     origMP = Input.GetTouch(0).position;
                 }
@@ -229,11 +225,11 @@ public class GestureManager : SavableMonoBehaviour
             case ClickState.Began:
                 curMP = origMP;
                 maxMouseMovement = 0;
-                camController.originalCameraPosition = cam.transform.position - player.transform.position;
+                Managers.Camera.originalCameraPosition = Managers.Camera.transform.position - Managers.Player.transform.position;
                 origTime = Time.time;
                 curTime = origTime;
                 curMP2 = origMP2;
-                origMPWorld = (Vector2)cam.ScreenToWorldPoint(origMP);
+                origMPWorld = Camera.main.ScreenToWorldPoint(origMP);
                 break;
             case ClickState.Ended: //do the same thing you would for "in progress"
             case ClickState.InProgress:
@@ -249,7 +245,7 @@ public class GestureManager : SavableMonoBehaviour
             default:
                 throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + clickState);
         }
-        curMPWorld = (Vector2)cam.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
+        curMPWorld = Camera.main.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
 
 
         //
@@ -307,7 +303,7 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 if (isDrag)
                 {
-                    currentGP.processDragGesture(cam.ScreenToWorldPoint(origMP), curMPWorld);
+                    currentGP.processDragGesture(Managers.Camera.Camera.ScreenToWorldPoint(origMP), curMPWorld);
                 }
                 else if (isHoldGesture)
                 {
@@ -318,7 +314,7 @@ public class GestureManager : SavableMonoBehaviour
             {
                 if (isDrag)
                 {
-                    camController.pinPoint();
+                    Managers.Camera.pinPoint();
                 }
                 else if (isHoldGesture)
                 {
@@ -329,7 +325,7 @@ public class GestureManager : SavableMonoBehaviour
                     tapCount++;
                     adjustHoldThreshold(holdTime, false);
                     bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
-                    if (plrController.InCheckPoint)
+                    if (Managers.Player.InCheckPoint)
                     {
                         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
                         {
@@ -385,11 +381,11 @@ public class GestureManager : SavableMonoBehaviour
                 //
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    camController.ZoomLevel = camController.ZoomLevel + 1;
+                    Managers.Camera.ZoomLevel++;
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    camController.ZoomLevel = camController.ZoomLevel - 1;
+                    Managers.Camera.ZoomLevel--;
                 }
                 //
                 //Pinch Touch Zoom
@@ -408,17 +404,17 @@ public class GestureManager : SavableMonoBehaviour
                     Vector2 touchOnePrevPos = origMP2;
 
                     // Find the magnitude of the vector (the distance) between the touches in each frame.
-                    float prevTouchDeltaMag = camController.distanceInWorldCoordinates(touchZeroPrevPos, touchOnePrevPos);
-                    float touchDeltaMag = camController.distanceInWorldCoordinates(touchZero.position, touchOne.position);
+                    float prevTouchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZeroPrevPos, touchOnePrevPos);
+                    float touchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZero.position, touchOne.position);
 
                     float newZoomLevel = origOrthoSize * prevTouchDeltaMag / touchDeltaMag;
 
-                    camController.ZoomLevel = newZoomLevel;
+                    Managers.Camera.ZoomLevel = newZoomLevel;
                 }
             }
             else if (clickState == ClickState.Ended)
             {
-                origOrthoSize = camController.ZoomLevel;
+                origOrthoSize = Managers.Camera.ZoomLevel;
             }
         }
 
@@ -429,11 +425,11 @@ public class GestureManager : SavableMonoBehaviour
         {
             if (MenuManager.Open)
             {
-                camController.ZoomScalePoint = CameraController.CameraScalePoints.RANGE;
+                Managers.Camera.ZoomScalePoint = CameraController.CameraScalePoints.RANGE;
             }
             else
             {
-                camController.ZoomScalePoint = CameraController.CameraScalePoints.MENU;
+                Managers.Camera.ZoomScalePoint = CameraController.CameraScalePoints.MENU;
             }
         }
         //
@@ -511,12 +507,20 @@ public class GestureManager : SavableMonoBehaviour
     /// <param name="gpName">The name of the GestureProfile</param>
     public void switchGestureProfile(string gpName)
     {
-        //Deactivate current
-        currentGP.deactivate();
-        //Switch from current to new
-        currentGP = gestureProfiles[gpName];
-        //Activate new
-        currentGP.activate();
+        GestureProfile newGP = gestureProfiles[gpName];
+        //If the gesture profile is not already active,
+        if (newGP != currentGP)
+        {
+            //Deactivate current
+            if (currentGP != null)
+            {
+                currentGP.deactivate();
+            }
+            //Switch from current to new
+            currentGP = newGP;
+            //Activate new
+            currentGP.activate();
+        }
     }
 
     public void processZoomLevelChange(float newZoomLevel, float delta)
