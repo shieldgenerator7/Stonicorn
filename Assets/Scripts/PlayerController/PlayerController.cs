@@ -882,24 +882,20 @@ public class PlayerController : MonoBehaviour
     public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
     public OnPreTeleport onPreTeleport;
 
-    public void processTapGesture(GameObject checkPoint)
+    public void processTapGesture(CheckPointChecker checkPoint)
     {
-        CheckPointChecker cpc = checkPoint.GetComponent<CheckPointChecker>();
-        if (cpc != null)
+        Vector2 oldPos = transform.position;
+        Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
+        Vector3 newPos = checkPoint.transform.position + offset;
+        if (onPreTeleport != null)
         {
-            Vector2 oldPos = transform.position;
-            Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
-            Vector3 newPos = checkPoint.transform.position + offset;
-            if (onPreTeleport != null)
-            {
-                //Pass in newPos for both here because player teleported exactly where they intended to
-                onPreTeleport(oldPos, newPos, newPos);
-            }
-            teleport(newPos);
-            Managers.Camera.recenter();
-            cpc.trigger();
-            Managers.Game.Save();
+            //Pass in newPos for both here because player teleported exactly where they intended to
+            onPreTeleport(oldPos, newPos, newPos);
         }
+        teleport(newPos);
+        Managers.Camera.recenter();
+        checkPoint.trigger();
+        Managers.Game.Save();
     }
 
 

@@ -108,9 +108,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public void trigger()
     {
         //If this checkpoint is already the current one,
-        if (current == this.gameObject
-            //or GameManager is rewinding time,
-            || Managers.Game.Rewinding)
+        if (current == this.gameObject)
         {
             //don't trigger it
             return;
@@ -217,9 +215,9 @@ public class CheckPointChecker : MemoryMonoBehaviour
     /// </summary>
     /// <param name="targetPos"></param>
     /// <returns></returns>
-    public bool checkGhostActivation(Vector3 targetPos)
+    public bool checkGhostActivation(Vector2 targetPos)
     {
-        return ghost.GetComponent<CircleCollider2D>().bounds.Contains(targetPos);
+        return ghost.GetComponent<Collider2D>().OverlapPoint(targetPos);
     }
     /// <summary>
     /// So now the player has teleported out and the checkpoint ghosts need to go away

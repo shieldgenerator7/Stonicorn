@@ -320,12 +320,12 @@ public class GestureManager : SavableMonoBehaviour
                     bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
                     if (Managers.Player.InCheckPoint)
                     {
-                        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+                        foreach (CheckPointChecker cpc in FindObjectsOfType<CheckPointChecker>())
                         {
-                            if (go.GetComponent<CheckPointChecker>().checkGhostActivation(curMPWorld))
+                            if (cpc.checkGhostActivation(curMPWorld))
                             {
                                 checkPointPort = true;
-                                currentGP.processTapGesture(go);
+                                currentGP.processTapGesture(cpc);
                                 if (tapGesture != null)
                                 {
                                     tapGesture();

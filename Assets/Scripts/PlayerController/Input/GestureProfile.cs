@@ -12,9 +12,9 @@ public class GestureProfile
     /// </summary>
     public virtual void deactivate() { }
 
-    public virtual void processTapGesture(GameObject go)
+    public void processTapGesture(CheckPointChecker cpc)
     {
-        Managers.Player.processTapGesture(go);
+        Managers.Player.processTapGesture(cpc);
     }
     public virtual void processTapGesture(Vector3 curMPWorld)
     {
