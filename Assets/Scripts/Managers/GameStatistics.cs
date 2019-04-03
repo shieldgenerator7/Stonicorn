@@ -9,14 +9,25 @@ public class GameStatistics : SavableMonoBehaviour
         { "Tap", 0},//how many times the player has tapped
         { "Hold", 0},//how many times the player has done the hold gesture
         { "Drag", 0},//how many times the player has done the drag gesture
+        { "Pinch", 0},//how many times the player has done the pinch gesture (including mouse wheel)
 
         { "Teleport", 0},//how many times the player has teleported
-        { "ForceCharge", 0},//how many times the player has used the force charge ability
+        { "ForceChargeBoost", 0},//how many times the player has boosted with the force charge ability
+        { "ForceChargeWake", 0},//how many wakes the player has made
+        { "ForceChargeBlast", 0},//how many times the player has blasted with the force charge ability
+        { "Swap", 0},//how many times the player has swapped during a teleport
+        { "SwapObject", 0},//how many objects the player has swapped with
         { "WallClimb", 0},//how many times the player has teleported off a wall
-        { "ElectricField", 0},//how many times the player has used the shield bubble ability
+        { "WallClimbSticky", 0},//how many sticky pads the player has made
+        { "ElectricField", 0},//how many times the player has activated the electric field ability
+        { "ElectricFieldField", 0},//how many electric fields the player has created
+        { "AirSlice", 0},//how many times the player has teleported in the air with the air slice ability
+        { "AirSliceObject", 0},//how many objects the player has sliced
+        { "LongTeleport", 0},//how many times the player has teleported with an extended range
 
         { "Death", 0},//how many times the player has died
-        { "Rewind", 0}//how many times the player used the rewind ability
+        { "Rewind", 0},//how many times the rewind ability has been activated
+        { "RewindPlayer", 0}//how many times the player used the rewind ability
     };
 
     private static GameStatistics instance;

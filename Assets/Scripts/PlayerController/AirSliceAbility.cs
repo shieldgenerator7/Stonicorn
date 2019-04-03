@@ -28,6 +28,9 @@ public class AirSliceAbility : PlayerAbility {
     {
         if (!playerController.GroundedPrev)
         {
+            //Update Stats
+            GameStatistics.addOne("AirSlice");
+            //Check if sliced something
             bool slicedSomething = false;
             Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, (newPos - oldPos), Vector2.Distance(oldPos, newPos));
             for (int i = 0; i < answer.count; i++)
@@ -41,6 +44,7 @@ public class AirSliceAbility : PlayerAbility {
                     {
                         hm.addIntegrity(-sliceDamage);
                         slicedSomething = true;
+                        GameStatistics.addOne("AirSliceObject");
                     }
                 }
             }

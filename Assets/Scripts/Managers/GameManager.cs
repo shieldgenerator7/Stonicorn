@@ -559,6 +559,8 @@ public class GameManager : MonoBehaviour
         Managers.Camera.recenter();
         //Disable physics while rewinding
         Managers.Physics2DSurrogate.enabled = true;
+        //Update Stats
+        GameStatistics.addOne("Rewind");
     }
     void LoadMemories()
     {
@@ -759,6 +761,8 @@ public class GameManager : MonoBehaviour
                 //Rewind back to it
                 Rewind(final.id);
             }
+            //Update Stats
+            GameStatistics.addOne("RewindPlayer");
         }
         //Else if merky is dead,
         else if (!intact)
@@ -766,6 +770,8 @@ public class GameManager : MonoBehaviour
             //go back to the latest safe past merky
             //-1 to prevent trap saves
             Rewind(chosenId - 1);
+            //Update Stats
+            GameStatistics.addOne("RewindPlayer");
         }
         if (GameStatistics.get("Death") == 1)
         {

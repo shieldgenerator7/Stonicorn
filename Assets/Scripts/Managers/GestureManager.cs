@@ -307,6 +307,9 @@ public class GestureManager : SavableMonoBehaviour
             {
                 if (isDrag)
                 {
+                    //Update Stats
+                    GameStatistics.addOne("Drag");
+                    //Process Drag Gesture
                     Managers.Camera.pinPoint();
                 }
                 else if (isHoldGesture)
@@ -315,7 +318,9 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 else if (isTapGesture)
                 {
+                    //Update Stats
                     GameStatistics.addOne("Tap");
+                    //Process Tap Gesture
                     adjustHoldThreshold(holdTime, false);
                     bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
                     if (Managers.Player.InCheckPoint)
@@ -407,6 +412,9 @@ public class GestureManager : SavableMonoBehaviour
             }
             else if (clickState == ClickState.Ended)
             {
+                //Update Stats
+                GameStatistics.addOne("Pinch");
+                //Process Pinch Gesture
                 origOrthoSize = Managers.Camera.ZoomLevel;
             }
         }

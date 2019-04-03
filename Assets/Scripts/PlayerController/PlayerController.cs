@@ -431,6 +431,9 @@ public class PlayerController : MonoBehaviour
         //Actually Teleport
         transform.position = newPos;
 
+        //Update Stats
+        GameStatistics.addOne("Teleport");
+
         //Show effect
         showTeleportEffect(oldPos, newPos);
 

@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LongTeleportAbility : PlayerAbility {
+public class LongTeleportAbility : PlayerAbility
+{
 
     protected override void init()
     {
         base.init();
         Managers.Camera.onOffsetChange += adjustRange;
+        Managers.Player.onTeleport += longTeleport;
     }
     public override void OnDisable()
     {
         base.OnDisable();
         Managers.Camera.onOffsetChange -= adjustRange;
+        Managers.Player.onTeleport -= longTeleport;
     }
 
     /// <summary>
@@ -31,4 +34,12 @@ public class LongTeleportAbility : PlayerAbility {
         }
     }
 
+    void longTeleport(Vector2 oldPos, Vector2 newPos)
+    {
+        if (playerController.Range > playerController.baseRange)
+        {
+            //Update Stats
+            GameStatistics.addOne("LongTeleport");
+        }
+    }
 }

@@ -80,6 +80,8 @@ public class ForceTeleportAbility : PlayerAbility
                 AfterWind aw = afterWind.GetComponent<AfterWind>();
                 aw.windVector = force;
                 aw.fadeOutDuration = minWindDuration + ((maxWindDuration - minWindDuration) * currentCharge / maxCharge);
+                //Update Stats
+                GameStatistics.addOne("ForceChargeWake");
             }
             else
             {
@@ -94,6 +96,8 @@ public class ForceTeleportAbility : PlayerAbility
                         orb2d.AddForce(force * wakelessSpeedBoostMultiplier);
                     }
                 }
+                //Update Stats
+                GameStatistics.addOne("ForceChargeBoost");
             }
         }
     }
@@ -138,6 +142,7 @@ public class ForceTeleportAbility : PlayerAbility
         float range = getRangeFromCharge(holdTime);
         if (finished)
         {
+            //Make the blast
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
             for (int i = 0; i < hitColliders.Length; i++)
             {
@@ -158,6 +163,8 @@ public class ForceTeleportAbility : PlayerAbility
             frii = null;
             effectParticleController.activateTeleportParticleSystem(false);
             //EffectManager.clearForceWaveShadows();
+            //Update Stats
+            GameStatistics.addOne("ForceChargeBlast");
         }
         else
         {

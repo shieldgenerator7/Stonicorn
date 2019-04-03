@@ -65,6 +65,9 @@ public class WallClimbAbility : PlayerAbility
     {
         if (playerController.GroundedAbilityPrev)
         {
+            //Update Stats
+            GameStatistics.addOne("WallClimb");
+            //Get the gravity direction
             Vector2 gravity = playerController.Gravity.Gravity;
             //Look right
             plantStickyInDirection(oldPos, -gravity.PerpendicularRight());
@@ -103,6 +106,8 @@ public class WallClimbAbility : PlayerAbility
             GameObject stickyPad = Utility.Instantiate(stickyPadPrefab);
             stickyPad.GetComponent<StickyPadChecker>().init(playerController.Gravity.Gravity);
             stickyPad.transform.position = stickyPos;
+            //Update Stats
+            GameStatistics.addOne("WallClimbSticky");
         }
     }
 }

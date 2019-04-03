@@ -110,6 +110,8 @@ public class SwapAbility : PlayerAbility
             Vector2 swapPos = (Vector2)gameObject.transform.position - newPos + oldPos;
             go.transform.position = swapPos;
             swappedSomething = true;
+            //Update Stats
+            GameStatistics.addOne("SwapObject");
         }
         if (swappedSomething)
         {
@@ -118,6 +120,8 @@ public class SwapAbility : PlayerAbility
                 playerController.Range = playerController.baseRange;
             }
             playerController.AirPortsUsed = 0;
+            //Update Stats
+            GameStatistics.addOne("Swap");
         }
     }
 
