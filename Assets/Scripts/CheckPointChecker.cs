@@ -14,14 +14,12 @@ public class CheckPointChecker : MemoryMonoBehaviour
     private GameObject ghost;
     public CheckPointGhostMover cpGhostMover;
     public GameObject ghostPrefab;
-    private PlayerController plyrController;
     private static Camera checkpointCamera;
 
     // Use this for initialization
     void Start()
     {
         initializeGhost();
-        plyrController = Managers.Player;
         if (checkpointCamera == null)
         {
             GameObject cpBgCamera = GameObject.Find("CP BG Camera");
@@ -121,7 +119,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         activate();
         ghost.SetActive(false);
-        plyrController.InCheckPoint = true;
+        Managers.Player.InCheckPoint = true;
         foreach (CheckPointChecker cpc in Managers.Game.ActiveCheckPoints)
         {
             if (cpc != this)
@@ -144,7 +142,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         if (current == this.gameObject)
         {
-            plyrController.InCheckPoint = false;
+            Managers.Player.InCheckPoint = false;
             activate();
             clearPostTeleport(true);
             current = null;
