@@ -424,6 +424,7 @@ public class GameManager : MonoBehaviour
     {
         //Update chosenId to game-state-now
         chosenId = gamestateId;
+        cleanObjects();
         //Destroy objects not spawned yet in the new selected state
         List<GameObject> destroyObjectList = new List<GameObject>();
         foreach (GameObject go in gameObjects.Values)
