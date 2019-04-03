@@ -13,7 +13,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.isPlayer() && !Managers.Game.Rewinding)
+        if (coll.gameObject.isPlayer())
         {
             trigger();
         }

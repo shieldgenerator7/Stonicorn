@@ -44,17 +44,8 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
         }
     }
 
-    //void Update()
-    //{
-    //    setIntegrity(integrity);
-    //}
-
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (Managers.Game.Rewinding)
-        {
-            return;//don't process collisions while rewinding
-        }
         ContactPoint2D[] cp2ds = new ContactPoint2D[1];
         coll.GetContacts(cp2ds);
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
@@ -185,7 +176,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                         catch (MissingComponentException mce)
                         {
                             throw new MissingComponentException(
-                                "HardMaterial ("+gameObject.name+") broken prefab piece ("+t.gameObject.name+") is missing a SpriteRenderer: sr: "+sr,
+                                "HardMaterial (" + gameObject.name + ") broken prefab piece (" + t.gameObject.name + ") is missing a SpriteRenderer: sr: " + sr,
                                 mce);
                         }
                         //Hard Material Copying

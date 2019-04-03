@@ -72,10 +72,6 @@ public class GravityZone : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (Managers.Game.Rewinding)
-        {
-            return;//don't do anything if the time is rewinding
-        }
         bool cleanNeeded = false;
         foreach (Rigidbody2D rb2d in tenants)
         {
