@@ -47,13 +47,6 @@ public class GestureManager : SavableMonoBehaviour
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
     private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.NONE;
-    //Cheats
-    public const bool CHEATS_ALLOWED = true;//whether or not cheats are allowed (turned off for final version)
-    private int cheatTaps = 0;//how many taps have been put in for the cheat
-    private float cheatTapsTime = 0f;//the time at which the cheat taps will expire
-    private int cheatTapsThreshold = 3;//how many taps it takes to activate cheats
-    public bool cheatsEnabled = false;//whether or not the cheats are enabled
-
 
     // Use this for initialization
     void Start()
@@ -261,17 +254,6 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 isHoldGesture = false;
                 isPinchGesture = touchCount == 2;
-                if (CHEATS_ALLOWED && curMP.x < 20 && curMP.y < 20)
-                {
-                    cheatTaps++;
-                    cheatTapsTime = Time.time + 1;//give one more second to enter taps
-                    if (cheatTaps >= cheatTapsThreshold)
-                    {
-                        cheatsEnabled = !cheatsEnabled;
-                        cheatTaps = 0;
-                        cheatTapsTime = 0;
-                    }
-                }
             }
             else if (clickState == ClickState.InProgress)
             {
@@ -432,14 +414,6 @@ public class GestureManager : SavableMonoBehaviour
             {
                 Managers.Camera.ZoomScalePoint = CameraController.CameraScalePoints.MENU;
             }
-        }
-        //
-        //Cheats
-        //
-        if (cheatTapsTime <= Time.time)
-        {
-            //Reset cheat taps
-            cheatTaps = 0;
         }
     }
 
