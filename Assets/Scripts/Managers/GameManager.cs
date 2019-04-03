@@ -477,17 +477,17 @@ public class GameManager : MonoBehaviour
                     sl.lastOpenGameStateId = -1;
                 }
             }
-            //Destroy game states in game-state-future
-            for (int i = gameStates.Count - 1; i > gamestateId; i--)
-            {
-                Destroy(gameStates[i].Representation);
-                gameStates.RemoveAt(i);
-            }
-            //Update the next game state id
-            GameState.nextid = gamestateId + 1;
             //Re-enable physics because the rewind is over
             Managers.Physics2DSurrogate.enabled = false;
         }
+        //Destroy game states in game-state-future
+        for (int i = gameStates.Count - 1; i > gamestateId; i--)
+        {
+            Destroy(gameStates[i].Representation);
+            gameStates.RemoveAt(i);
+        }
+        //Update the next game state id
+        GameState.nextid = gamestateId + 1;
     }
     public void LoadObjectsFromScene(Scene s)
     {
