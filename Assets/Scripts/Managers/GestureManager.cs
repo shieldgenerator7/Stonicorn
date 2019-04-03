@@ -315,7 +315,7 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 else if (isTapGesture)
                 {
-                    GameStatistics.incrementCounter("Tap");
+                    GameStatistics.addOne("Tap");
                     adjustHoldThreshold(holdTime, false);
                     bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
                     if (Managers.Player.InCheckPoint)
@@ -475,9 +475,9 @@ public class GestureManager : SavableMonoBehaviour
     {
         if (incrementTapCount)
         {
-            GameStatistics.incrementCounter("Tap");
+            GameStatistics.addOne("Tap");
         }
-        int tapCount = GameStatistics.counter("Tap");
+        int tapCount = GameStatistics.get("Tap");
         holdThresholdScale = (holdThresholdScale * (tapCount - 1) + (holdTime / holdThreshold)) / tapCount;
         if (holdThresholdScale < 1)
         {

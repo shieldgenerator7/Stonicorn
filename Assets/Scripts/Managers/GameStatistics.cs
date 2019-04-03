@@ -51,12 +51,13 @@ public class GameStatistics : SavableMonoBehaviour
         printStats();
     }
 
-    public static void incrementCounter(string counterName)
+    public static void addOne(string counterName)
     {
         checkStatName(counterName);
         instance.stats[counterName]++;
     }
-    public static int counter(string counterName)
+
+    public static int get(string counterName)
     {
         checkStatName(counterName);
         return instance.stats[counterName];
