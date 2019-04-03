@@ -40,16 +40,16 @@ public class GestureProfile
         //GestureProfile switcher
         if (zoomLevel < Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU + 1))
         {
-            Managers.Gesture.switchGestureProfile("Menu");
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MENU);
         }
         else if (!Managers.Player.HardMaterial.isIntact()
             || zoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND - 1))
         {
-            Managers.Gesture.switchGestureProfile("Rewind");
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
         }
         else
         {
-            Managers.Gesture.switchGestureProfile("Main");
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
         }
     }
 }

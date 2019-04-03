@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZoomOutTrigger : MemoryMonoBehaviour {
+public class ZoomOutTrigger : MemoryMonoBehaviour
+{
 
     //Settings
     public CameraController.CameraScalePoints scalePoint = CameraController.CameraScalePoints.DEFAULT;
@@ -24,7 +25,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
         camCtr.ZoomLevel = camCtr.toZoomLevel(scalePoint);//zoom out
         if (scalePoint == CameraController.CameraScalePoints.TIMEREWIND)
         {
-            Managers.Gesture.switchGestureProfile("Rewind");
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
         }
         if (triggersOnce)
         {

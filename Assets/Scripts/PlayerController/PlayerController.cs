@@ -817,7 +817,7 @@ public class PlayerController : MonoBehaviour
     private void shattered()
     {
         //Put the gesture manager in rewind mode
-        Managers.Gesture.switchGestureProfile("Rewind");
+        Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
         //Reset GameManager respawn time
         Managers.Game.AcceptsInputNow = false;
         //Increment death counter

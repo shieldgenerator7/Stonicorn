@@ -11,8 +11,9 @@ public class GestureManager : SavableMonoBehaviour
     public float orthoZoomSpeed = 0.5f;
 
     //Gesture Profiles
+    public enum GestureProfileType { MENU, MAIN, REWIND };
     private GestureProfile currentGP;//the current gesture profile
-    private Dictionary<string, GestureProfile> gestureProfiles = new Dictionary<string, GestureProfile>();//dict of valid gesture profiles
+    private Dictionary<GestureProfileType, GestureProfile> gestureProfiles = new Dictionary<GestureProfileType, GestureProfile>();//dict of valid gesture profiles
 
     //Gesture Event Methods
     public TapGesture tapGesture;
@@ -59,10 +60,10 @@ public class GestureManager : SavableMonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gestureProfiles.Add("Menu", new MenuGestureProfile());
-        gestureProfiles.Add("Main", new GestureProfile());
-        gestureProfiles.Add("Rewind", new RewindGestureProfile());
-        switchGestureProfile("Menu");
+        gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
+        gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());
+        gestureProfiles.Add(GestureProfileType.REWIND, new RewindGestureProfile());
+        switchGestureProfile(GestureProfileType.MENU);
 
         Managers.Camera.onZoomLevelChanged += processZoomLevelChange;
         Managers.Camera.ZoomLevel =
@@ -501,9 +502,9 @@ public class GestureManager : SavableMonoBehaviour
     /// Switches the gesture profile to the profile with the given name
     /// </summary>
     /// <param name="gpName">The name of the GestureProfile</param>
-    public void switchGestureProfile(string gpName)
+    public void switchGestureProfile(GestureProfileType gpt)
     {
-        GestureProfile newGP = gestureProfiles[gpName];
+        GestureProfile newGP = gestureProfiles[gpt];
         //If the gesture profile is not already active,
         if (newGP != currentGP)
         {

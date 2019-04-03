@@ -752,7 +752,7 @@ public class GameManager : MonoBehaviour
         //leave this zoom level even if no past merky was chosen
         float defaultZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
         Managers.Camera.ZoomLevel = defaultZoomLevel;
-        Managers.Gesture.switchGestureProfile("Main");
+        Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
 
         if (tapProcessed != null)
         {
