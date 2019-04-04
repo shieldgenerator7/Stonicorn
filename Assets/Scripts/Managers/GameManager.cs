@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     //Scene Loading
     private List<string> openScenes = new List<string>();//the list of names of the scenes that are open
     //Memories
-    private List<MemoryObject> memories = new List<MemoryObject>();
+    private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();
     //Checkpoints
     private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
 
@@ -316,22 +316,21 @@ public class GameManager : MonoBehaviour
                 addObjectImpl(fgo);
             }
         }
+        //Memories
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
-            //load state if found, save state if not foud
-            bool foundMO = false;
-            foreach (MemoryObject mo in memories)
+            string key = mmb.gameObject.getKey();
+            //If the memory has already been stored,
+            if (memories.ContainsKey(key))
             {
-                if (mo.isFor(mmb))
-                {
-                    foundMO = true;
-                    mmb.acceptMemoryObject(mo);
-                    break;
-                }
+                //Load the memory
+                mmb.acceptMemoryObject(memories[key]);
             }
-            if (!foundMO)
+            //Else
+            else
             {
-                memories.Add(mmb.getMemoryObject());
+                //Save the memory
+                memories.Add(key, mmb.getMemoryObject());
             }
         }
     }
@@ -356,19 +355,19 @@ public class GameManager : MonoBehaviour
     }
     public void saveMemory(MemoryMonoBehaviour mmb)
     {
-        bool foundMO = false;
-        foreach (MemoryObject mo in memories)
+        string key = mmb.gameObject.getKey();
+        MemoryObject mo = mmb.getMemoryObject();
+        //If the memory is already stored,
+        if (memories.ContainsKey(key))
         {
-            if (mo.isFor(mmb))
-            {
-                foundMO = true;
-                mo.found = mmb.getMemoryObject().found;
-                break;
-            }
+            //Update it
+            memories[key] = mo;
         }
-        if (!foundMO)
+        //Else
+        else
         {
-            memories.Add(mmb.getMemoryObject());
+            //Add it
+            memories.Add(key, mo);
         }
     }
     public void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
@@ -565,16 +564,12 @@ public class GameManager : MonoBehaviour
     }
     void LoadMemories()
     {
-        foreach (MemoryObject mo in memories)
+        foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
-            GameObject go = mo.findGameObject();
-            if (go != null)
+            string key = mmb.gameObject.getKey();
+            if (memories.ContainsKey(key))
             {
-                MemoryMonoBehaviour mmb = go.GetComponent<MemoryMonoBehaviour>();
-                if (mo.isFor(mmb))
-                {
-                    mmb.acceptMemoryObject(mo);
-                }
+                mmb.acceptMemoryObject(memories[key]);
             }
         }
     }
@@ -593,7 +588,7 @@ public class GameManager : MonoBehaviour
     }
     public void loadFromFile()
     {
-        memories = ES2.LoadList<MemoryObject>("merky.txt?tag=memories");
+        memories = ES2.LoadDictionary<string, MemoryObject>("merky.txt?tag=memories");
         gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
         //Scenes
         List<SceneLoader> rsls = ES2.LoadList<SceneLoader>("merky.txt?tag=scenes");
