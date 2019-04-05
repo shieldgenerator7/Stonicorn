@@ -226,8 +226,9 @@ public class GameManager : MonoBehaviour
         //Else if all good, add the object
         gameObjects.Add(key, go);
     }
+
     /// <summary>
-    /// Retrieves the GameObject from the gameObjects list by the given scene and object names
+    /// Retrieves the GameObject from the gameObjects list with the given scene and object names
     /// </summary>
     /// <param name="sceneName">The scene name of the object</param>
     /// <param name="objectName">The name of the object</param>
@@ -244,6 +245,7 @@ public class GameManager : MonoBehaviour
         //Otherwise, sorry, you're out of luck
         return null;
     }
+
     /// <summary>
     /// Destroys the given GameObject and updates lists
     /// </summary>
@@ -299,6 +301,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Cleaned: " + cleanedKeys);
         }
     }
+
     /// <summary>
     /// Update the list of GameObjects with state to save
     /// </summary>
@@ -345,6 +348,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     /// <summary>
     /// Stores the given object before it gets set inactive
     /// </summary>
@@ -397,7 +401,6 @@ public class GameManager : MonoBehaviour
             memories.Add(key, mo);
         }
     }
-
     /// <summary>
     /// Restore all saved memories of game objects that have a memory saved
     /// </summary>
@@ -416,7 +419,7 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
-    
+
     #region Time Management
     /// <summary>
     /// Saves the current game state
@@ -447,7 +450,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     /// <summary>
     /// Load the game state with the given id
     /// </summary>
@@ -524,6 +526,32 @@ public class GameManager : MonoBehaviour
             Managers.Physics2DSurrogate.enabled = false;
         }
     }
+
+    /// <summary>
+    /// Sets into motion the rewind state.
+    /// Update carries out the motions of calling Load()
+    /// </summary>
+    /// <param name="gamestateId">The game state id to rewind to</param>
+    void Rewind(int gamestateId)
+    {
+        //Set the music speed to rewind
+        Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
+        //Set the game state tracker vars
+        rewindId = gamestateId;
+        //Recenter the camera on Merky
+        Managers.Camera.recenter();
+        //Disable physics while rewinding
+        Managers.Physics2DSurrogate.enabled = true;
+        //Update Stats
+        GameStatistics.addOne("Rewind");
+    }
+    /// <summary>
+    /// Rewind the game all the way to the beginning
+    /// </summary>
+    public void RewindToStart()
+    {
+        Rewind(0);
+    }
     /// <summary>
     /// True if time is rewinding
     /// </summary>
@@ -542,31 +570,6 @@ public class GameManager : MonoBehaviour
         Load(chosenId);
         //Set the music back to normal
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
-    }
-    /// <summary>
-    /// Rewind the game all the way to the beginning
-    /// </summary>
-    public void RewindToStart()
-    {
-        Rewind(0);
-    }
-    /// <summary>
-    /// Sets into motion the rewind state.
-    /// Update carries out the motions of calling Load()
-    /// </summary>
-    /// <param name="gamestateId">The game state id to rewind to</param>
-    void Rewind(int gamestateId)
-    {
-        //Set the music speed to rewind
-        Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
-        //Set the game state tracker vars
-        rewindId = gamestateId;
-        //Recenter the camera on Merky
-        Managers.Camera.recenter();
-        //Disable physics while rewinding
-        Managers.Physics2DSurrogate.enabled = true;
-        //Update Stats
-        GameStatistics.addOne("Rewind");
     }
     #endregion
 
@@ -610,6 +613,7 @@ public class GameManager : MonoBehaviour
         //Remove the scene from the list of open scenes
         openScenes.Remove(scene);
     }
+
     /// <summary>
     /// Restores the objects in the scene to their previous state before the scene was unloaded
     /// </summary>
@@ -671,7 +675,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
     }
     #endregion
-    
+
     #region File Management
     /// <summary>
     /// Saves the memories, game states, and scene cache to a save file
@@ -930,7 +934,7 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
-    
+
     //Sent to all GameObjects before the application is quit
     //Auto-save on exit
     void OnApplicationQuit()
