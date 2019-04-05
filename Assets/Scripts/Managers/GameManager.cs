@@ -373,7 +373,6 @@ public class GameManager : MonoBehaviour
         //Remove the scene from the list of open scenes
         openScenes.Remove(scene);
     }
-    public static void refresh() { Managers.Game.refreshGameObjects(); }
     /// <summary>
     /// Update the list of GameObjects with state to save
     /// </summary>

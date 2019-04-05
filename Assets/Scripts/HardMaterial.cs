@@ -218,7 +218,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             {
                 if (shouldRefresh)
                 {
-                    GameManager.refresh();
+                    Managers.Game.refreshGameObjects();
                 }
                 if (shattered != null)
                 {
