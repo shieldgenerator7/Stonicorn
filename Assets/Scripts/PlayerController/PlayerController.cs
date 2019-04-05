@@ -355,32 +355,34 @@ public class PlayerController : MonoBehaviour
         float newAngle = getNextRotation(transform.localEulerAngles.z);
         transform.localEulerAngles = new Vector3(0, 0, newAngle);
     }
+    /// <summary>
+    /// Returns the next default rotation clockwise to the given angle
+    /// </summary>
+    /// <param name="angleZ">The angle to get the next angle from</param>
+    /// <returns>The next default rotation clockwise to the given angle</returns>
     public float getNextRotation(float angleZ)
     {
-        int closestRotationIndex = 0;
-        //Figure out current rotation
+        //Convert given angle to current gravity space
         float gravityRot = Utility.RotationZ(Gravity.Gravity, Vector3.down);
-        float currentRotation = angleZ - gravityRot;
-        currentRotation = Utility.loopValue(currentRotation, 0, 360);
-        //Figure out which default rotation is closest
+        float givenRotation = angleZ - gravityRot;
+        givenRotation = Utility.loopValue(givenRotation, 0, 360);
+        //Figure out which default rotation is closest to given
+        int givenRotationIndex = 0;
         float closest = 360;
         for (int i = 0; i < rotations.Length; i++)
         {
             float rotation = rotations[i];
-            float diff = Mathf.Abs(rotation - currentRotation);
-            diff = Mathf.Min(diff, Mathf.Abs(rotation - (currentRotation - 360)));
+            float diff = Mathf.Abs(rotation - givenRotation);
+            diff = Mathf.Min(diff, Mathf.Abs(rotation - (givenRotation - 360)));
             if (diff < closest)
             {
                 closest = diff;
-                closestRotationIndex = i;
+                givenRotationIndex = i;
             }
         }
-        int newRotationIndex = closestRotationIndex + 1;
-        if (newRotationIndex >= rotations.Length)
-        {
-            newRotationIndex = 0;
-        }
-        //Set rotation
+        //Find the next default rotation
+        int newRotationIndex = (givenRotationIndex + 1) % rotations.Length;
+        //Convert rotation back to global space
         float angle = rotations[newRotationIndex] + gravityRot;
         angle = Utility.loopValue(angle, 0, 360);
         return angle;
