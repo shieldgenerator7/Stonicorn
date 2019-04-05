@@ -413,10 +413,13 @@ public class PlayerController : MonoBehaviour
     private void teleport(Vector3 targetPos)
     {
         //Update mid-air cooldowns
+        //If Merky is in the air,
         if (!Grounded)
         {
+            //Use up an air teleport
             AirPortsUsed++;
         }
+        //If all the air teleports are used up,
         if (AirPortsUsed >= maxAirPorts)
         {
             //Put the teleport ability on cooldown, longer if teleporting up
@@ -461,7 +464,7 @@ public class PlayerController : MonoBehaviour
                 //If the addition brought velocity x past 0,
                 if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(newX))
                 {
-                    //keep from exploiting boost in opposite direction
+                    //Keep from exploiting boost in opposite direction
                     newX = 0;
                 }
             }
@@ -473,7 +476,7 @@ public class PlayerController : MonoBehaviour
                 //If the addition brought velocity y past 0,
                 if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(newY))
                 {
-                    //keep from exploiting boost in opposite direction
+                    //Keep from exploiting boost in opposite direction
                     newY = 0;
                 }
             }
@@ -513,7 +516,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Finds the teleportable position closest to the given targetPos
     /// </summary>
-    /// <param name="targetPos"></param>
+    /// <param name="targetPos">The ideal position to teleport to</param>
     /// <returns>targetPos if it is teleportable, else the closest teleportable position to it</returns>
     public Vector3 findTeleportablePosition(Vector2 targetPos)
     {
@@ -563,14 +566,14 @@ public class PlayerController : MonoBehaviour
                     //If the test position is occupied,
                     if (isOccupied(testPos))
                     {
-                        //adjust pos based on occupant
+                        //Adjust position based on occupant
                         testPos = adjustForOccupant(testPos);
                         //If the test position is no longer occupied,
                         if (!isOccupied(testPos))
                         {
                             //Possible option found
                             possibleOptions.Add(testPos);
-                            //If percent is in range (0 - 1)
+                            //If percent distance is in range (0 - 1),
                             //(percent > 1 would put Merky outside his teleport range)
                             if (percent <= 1)
                             {
@@ -581,9 +584,9 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        //found an open spot (tho it might not be optimal)
+                        //Possible option found
                         possibleOptions.Add(testPos);
-                        //If percent is in range (0 - 1)
+                        //If percent distance is in range (0 - 1),
                         //(percent > 1 would put Merky outside his teleport range)
                         if (percent <= 1)
                         {
@@ -610,6 +613,11 @@ public class PlayerController : MonoBehaviour
         return newPos;
     }
 
+    /// <summary>
+    /// Shows a visual teleport effect at the given locations
+    /// </summary>
+    /// <param name="oldPos">The pre-teleport position</param>
+    /// <param name="newPos">The post-teleport position</param>
     private void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
         Managers.Effect.showTeleportStar(oldPos);
@@ -621,6 +629,14 @@ public class PlayerController : MonoBehaviour
     }
     public OnTeleport onShowTeleportEffect;
 
+    /// <summary>
+    /// Plays a teleport sound at the previous position
+    /// </summary>
+    /// <remarks>
+    /// It assumes that there's at least 1 delegate in onPlayTeleportSound
+    /// </remarks>
+    /// <param name="oldPos">The pre-teleport position</param>
+    /// <param name="newPos">The post-teleport position</param>
     private void playTeleportSound(Vector2 oldPos, Vector2 newPos)
     {
         if (onPlayTeleportSound != null)
@@ -634,20 +650,37 @@ public class PlayerController : MonoBehaviour
     }
     public OnTeleport onPlayTeleportSound;
 
+    /// <summary>
+    /// Updates variables depending on whether or not Merky is grounded.
+    /// Not done in the Grounded property because
+    /// sometimes you want to know the grounded state
+    /// without changing the rest of Merky's state
+    /// </summary>
     private void updateGroundedState()
     {
+        //If Merky is grounded,
         if (Grounded)
         {
+            //Refresh air teleports
             AirPortsUsed = 0;
+            //Refresh teleport range
+            //Check to see if it's less than base range,
+            //because we don't want to remove any granted bonus range
+            //(such as the one Long Teleport grants)
             if (range < baseRange)
             {
                 Range = baseRange;
             }
+            //Refresh teleport exhaust cooldowns
+            TeleportReady = true;
         }
+        //Else if Merky is in the air,
         else
         {
+            //And if Merky has no more air teleports,
             if (AirPortsUsed >= maxAirPorts)
             {
+                //Decrease the teleport range
                 if (range > exhaustRange)
                 {
                     Range = exhaustRange;
@@ -656,22 +689,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns true if there is ground in the given direction relative to Merky
+    /// </summary>
+    /// <param name="direction">The direction to check for ground in</param>
+    /// <returns>True if there is ground in the given direction</returns>
     public bool isGroundedInDirection(Vector3 direction)
     {
+        //Find objects in the given direction
         Utility.RaycastAnswer answer;
         answer = pc2d.CastAnswer(direction, groundTestDistance, true);
+        //Process the found objects
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
+            //If the object is a solid object,
             if (!rch2d.collider.isTrigger)
             {
-                GameObject ground = rch2d.collider.gameObject;
-                if (!ground.Equals(transform.gameObject))
-                {
-                    return true;
-                }
+                //There is ground in the given direction
+                return true;
             }
         }
+        //Else, There is no ground in the given direction
         return false;
     }
 
@@ -679,7 +718,7 @@ public class PlayerController : MonoBehaviour
     /// Determines whether the given position is occupied or not
     /// </summary>
     /// <param name="testPos">The position to test</param>
-    /// <returns>True if there is something in the space, False if the space is clear</returns>
+    /// <returns>True if something (besides Merky) is in the space, False if the space is clear</returns>
     private bool isOccupied(Vector3 testPos)
     {
         bool occupied = false;
@@ -789,7 +828,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 adjustForOccupant(Vector3 testPos)
     {
         Vector3 moveDir = Vector3.zero;//the direction to move the testPos
-        //Find the objects that it would collide with
+                                       //Find the objects that it would collide with
         Vector3 testOffset = testPos - transform.position;
         testOffset = transform.InverseTransformDirection(testOffset);
         Vector3 savedOffset = pc2d.offset;
