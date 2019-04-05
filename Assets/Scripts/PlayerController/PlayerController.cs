@@ -1,15 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls Merky's teleport ability and other abilities
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     //
     //Settings
     //
     [Header("Settings")]
-    public float baseRange = 3;
-    public float exhaustRange = 1;
-    public int maxAirPorts = 0;
+    public float baseRange = 3;//the range after touching the ground
+    public float exhaustRange = 1;//the range after teleporting into the air (and being exhausted)
+    public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
     public float exhaustCoolDownTime = 0.5f;//the cool down time (sec) for teleporting while exhausted
     [Range(0, 1)]
     public float gravityImmuneDuration = 0.2f;//amount of time (sec) Merky is immune to gravity after landing
@@ -36,13 +39,16 @@ public class PlayerController : MonoBehaviour
     //
     // State vars
     //
-    private float range = 3;
+    private float range = 3;//how far Merky can currently teleport
     public float Range
     {
         get { return range; }
         set
         {
+            //Range cannot be zero
+            //But it can be greater than base range
             range = Mathf.Max(value, 0);
+            //Call range changed delegates
             if (onRangeChanged != null)
             {
                 onRangeChanged(range);
@@ -51,6 +57,13 @@ public class PlayerController : MonoBehaviour
     }
     public delegate void OnRangeChanged(float range);
     public OnRangeChanged onRangeChanged;
+
+    private int airPorts = 0;//"air teleports": how many airports Merky has used since touching the ground
+    public int AirPortsUsed
+    {
+        get { return airPorts; }
+        set { airPorts = Mathf.Clamp(airPorts, 0, maxAirPorts); }
+    }
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
     public bool InCheckPoint
@@ -62,13 +75,7 @@ public class PlayerController : MonoBehaviour
     //
     //Grounded state variables
     //
-    private int airPorts = 0;//"air teleports": how many airports merky has used since touching the ground
-    public int AirPortsUsed
-    {
-        get { return airPorts; }
-        set { airPorts = Mathf.Clamp(airPorts, 0, maxAirPorts); }
-    }
-    private bool grounded = true;
+    private bool grounded = true;//true if grounded at all
     public bool Grounded
     {
         get
@@ -114,7 +121,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool groundedNormal = true;
+    private bool groundedNormal = true;//true if grounded to the direction of gravity
     public bool GroundedNormal
     {
         get
@@ -132,15 +139,16 @@ public class PlayerController : MonoBehaviour
         {
             GroundedAbilityPrev = groundedAbility;
             groundedAbility = false;
-            if (isGroundedCheck != null)//if nothing found yet and there is an extra ground check to do
+            //Check isGroundedCheck delegates
+            if (isGroundedCheck != null)
             {
-                //Check each IsGroundedCheck delegate
                 foreach (IsGroundedCheck igc in isGroundedCheck.GetInvocationList())
                 {
                     bool result = igc.Invoke();
-                    //If at least 1 returns true, Merky is grounded
+                    //If at least 1 returns true,
                     if (result == true)
                     {
+                        //Merky is grounded
                         groundedAbility = true;
                         break;
                     }
@@ -188,8 +196,8 @@ public class PlayerController : MonoBehaviour
     // Components
     //
     [Header("Components")]
-    public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
-    public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMin;//small collider used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMax;//big collider used to scout the level for teleportable spots
 
     private PolygonCollider2D pc2d;
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
