@@ -732,6 +732,15 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    //Sent to all GameObjects before the application is quit
+    //Auto-save on exit
+    void OnApplicationQuit()
+    {
+        //Save the game state and then
+        Save();
+        //Save the game to file
+        saveToFile();
+    }
     #endregion
 
     #region Player Ghosts
@@ -934,16 +943,6 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
-
-    //Sent to all GameObjects before the application is quit
-    //Auto-save on exit
-    void OnApplicationQuit()
-    {
-        //Save the game state and then
-        Save();
-        //Save the game to file
-        saveToFile();
-    }
 
     #region Demo Mode Methods
     /// <summary>
