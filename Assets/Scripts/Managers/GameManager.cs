@@ -82,6 +82,8 @@ public class GameManager : MonoBehaviour
             //Save its future files with a time stamp
             saveWithTimeStamp = true;
         }
+        //Update the list of objects that have state to save
+        refreshGameObjects();
         //If it's not in demo mode, and its save file exists,
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
@@ -94,77 +96,77 @@ public class GameManager : MonoBehaviour
             //Load the memories
             LoadMemories();
         }
-        //Update the list of objects that have state to save
-        refreshGameObjects();
         //Register scene loading delegates
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
     }
 
-    /// <summary>
-    /// Resets the game back to the very beginning
-    /// Basically starts a new game
-    /// </summary>
-    public void resetGame(bool savePrevGame = true)
+    // Update is called once per frame
+    void Update()
     {
-        //Save previous game
-        if (savePrevGame)
+        //Check all the scene loaders
+        //to see if their scene needs loaded or unloaded
+        //(done this way because standard trigger methods in Unity
+        //don't always play nice with teleporting characters)
+        foreach (SceneLoader sl in sceneLoaders)
         {
-            Save();
-            saveToFile();
+            sl.check();
         }
-        //Empty object lists
-        gameObjects.Clear();
-        forgottenObjects.Clear();
-        memories.Clear();
-        //Reset game state nextid static variable
-        GameState.nextid = 0;
-        //Unload all scenes and reload PlayerScene
-        SceneManager.LoadScene(0);
+        //If the time is rewinding,
+        if (Rewinding)
+        {
+            //And it's time to rewind the next step,
+            if (Time.time > lastRewindTime + rewindDelay)
+            {
+                //Rewind to the next previous game state
+                lastRewindTime = Time.time;
+                Load(chosenId - 1);
+            }
+        }
+        //If in demo mode,
+        if (GameDemoLength > 0)
+        {
+            float timeLeft = 0;
+            //And the timer has started,
+            if (resetGameTimer > 0)
+            {
+                //If the timer has stopped,
+                if (Time.time >= resetGameTimer)
+                {
+                    //Show the end demo screen
+                    showEndDemoScreen(true);
+                    //If the ignore-input buffer period has ended,
+                    if (Time.time >= resetGameTimer + restartDemoDelay)
+                    {
+                        //And user has given input,
+                        if (Input.GetMouseButton(0)
+                            || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+                            )
+                        {
+                            //Reset game
+                            showEndDemoScreen(false);
+                            resetGame();
+                        }
+                    }
+                }
+                //Else if the timer is ticking,
+                else
+                {
+                    //Show the time remaining
+                    timeLeft = resetGameTimer - Time.time;
+                }
+            }
+            //Else if the timer has not started,
+            else
+            {
+                //Show the max play time of the demo
+                timeLeft = GameDemoLength;
+            }
+            //Update the timer on screen
+            txtDemoTimer.text = string.Format("{0:0.00}", timeLeft);
+        }
     }
 
-    /// <summary>
-    /// How long the demo lasts, in seconds
-    /// 0 to have no time limit
-    /// </summary>
-    public static float GameDemoLength
-    {
-        get { return gamePlayTime; }
-        set { gamePlayTime = Mathf.Max(value, 0); }
-    }
-
-    /// <summary>
-    /// Start the demo timer
-    /// </summary>
-    void startDemoTimer()
-    {
-        //If the menu is not open,
-        if (Managers.Camera.ZoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.PORTRAIT))
-        {
-            //Start the timer
-            resetGameTimer = GameDemoLength + Time.time;
-            //Unregister this delegate
-            Managers.Gesture.tapGesture -= startDemoTimer;
-        }
-    }
-
-    /// <summary>
-    /// Shows the "Thanks for Playing" screen when the demo timer stops
-    /// </summary>
-    /// <param name="show">True to show the screen, false to hide it</param>
-    private void showEndDemoScreen(bool show)
-    {
-        //Update the screen's active state
-        endDemoScreen.SetActive(show);
-        //If it should be shown,
-        if (show)
-        {
-            //Also update its position and rotation
-            //to keep it in front of the camera
-            endDemoScreen.transform.position = (Vector2)Camera.main.transform.position;
-            endDemoScreen.transform.localRotation = Camera.main.transform.localRotation;
-        }
-    }
 
     /// <summary>
     /// Adds an object to list of objects that have state to save
@@ -272,72 +274,32 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Remove null objects from the gameObjects list
+    /// </summary>
+    private void cleanObjects()
     {
-        //Check all the scene loaders
-        //to see if their scene needs loaded or unloaded
-        //(done this way because standard trigger methods in Unity
-        //don't always play nice with teleporting characters)
-        foreach (SceneLoader sl in sceneLoaders)
+        string cleanedKeys = "";
+        //Copy the game object keys
+        List<string> keys = new List<string>(gameObjects.Keys);
+        //Loop over copy list
+        foreach (string key in keys)
         {
-            sl.check();
+            //If the key's value is null,
+            if (gameObjects[key] == null)
+            {
+                //Clean the key out
+                cleanedKeys += key + ", ";
+                gameObjects.Remove(key);
+            }
         }
-        //If in demo mode,
-        if (GameDemoLength > 0)
+        //Write out to the console which keys were cleaned
+        if (cleanedKeys != "")
         {
-            float timeLeft = 0;
-            //And the timer has started,
-            if (resetGameTimer > 0)
-            {
-                //If the timer has stopped,
-                if (Time.time >= resetGameTimer)
-                {
-                    //Show the end demo screen
-                    showEndDemoScreen(true);
-                    //If the ignore-input buffer period has ended,
-                    if (Time.time >= resetGameTimer + restartDemoDelay)
-                    {
-                        //And user has given input,
-                        if (Input.GetMouseButton(0)
-                            || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-                            )
-                        {
-                            //Reset game
-                            showEndDemoScreen(false);
-                            resetGame();
-                        }
-                    }
-                }
-                //Else if the timer is ticking,
-                else
-                {
-                    //Show the time remaining
-                    timeLeft = resetGameTimer - Time.time;
-                }
-            }
-            //Else if the timer has not started,
-            else
-            {
-                //Show the max play time of the demo
-                timeLeft = GameDemoLength;
-            }
-            //Update the timer on screen
-            txtDemoTimer.text = string.Format("{0:0.00}", timeLeft);
-        }
-        //If the time is rewinding,
-        if (Rewinding)
-        {
-            //And it's time to rewind the next step,
-            if (Time.time > lastRewindTime + rewindDelay)
-            {
-                //Rewind to the next previous game state
-                lastRewindTime = Time.time;
-                Load(chosenId - 1);
-            }
+            Debug.Log("Cleaned: " + cleanedKeys);
         }
     }
+
 
     void sceneLoaded(Scene scene, LoadSceneMode m)
     {
@@ -502,35 +464,6 @@ public class GameManager : MonoBehaviour
             //And set it active again
             obj.SetActive(true);
         }
-    }
-    /// <summary>
-    /// Remove null objects from the gameObjects list
-    /// </summary>
-    private void cleanObjects()
-    {
-        string cleanedKeys = "";
-        //Copy the game object keys
-        List<string> keys = new List<string>(gameObjects.Keys);
-        //Loop over copy list
-        foreach (string key in keys)
-        {
-            //If the key's value is null,
-            if (gameObjects[key] == null)
-            {
-                //Clean the key out
-                cleanedKeys += key + ", ";
-                gameObjects.Remove(key);
-            }
-        }
-        //Write out to the console which keys were cleaned
-        if (cleanedKeys != "")
-        {
-            Debug.Log("Cleaned: " + cleanedKeys);
-        }
-    }
-    public List<GameObject> ForgottenObjects
-    {
-        get { return forgottenObjects; }
     }
     /// <summary>
     /// Load the game state with the given id
@@ -785,16 +718,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //Sent to all GameObjects before the application is quit
-    //Auto-save on exit
-    void OnApplicationQuit()
-    {
-        //Save the game state and then
-        Save();
-        //Save the game to file
-        saveToFile();
-    }
-
     /// <summary>
     /// Used primarily for managing the delay between the player dying and respawning
     /// </summary>
@@ -992,6 +915,84 @@ public class GameManager : MonoBehaviour
     {
         return gameStates[chosenId - 1].merky.position;
     }
+
+    //Sent to all GameObjects before the application is quit
+    //Auto-save on exit
+    void OnApplicationQuit()
+    {
+        //Save the game state and then
+        Save();
+        //Save the game to file
+        saveToFile();
+    }
+
+    #region Demo Mode Methods
+    /// <summary>
+    /// Resets the game back to the very beginning
+    /// Basically starts a new game
+    /// </summary>
+    public void resetGame(bool savePrevGame = true)
+    {
+        //Save previous game
+        if (savePrevGame)
+        {
+            Save();
+            saveToFile();
+        }
+        //Empty object lists
+        gameObjects.Clear();
+        forgottenObjects.Clear();
+        memories.Clear();
+        //Reset game state nextid static variable
+        GameState.nextid = 0;
+        //Unload all scenes and reload PlayerScene
+        SceneManager.LoadScene(0);
+    }
+
+    /// <summary>
+    /// How long the demo lasts, in seconds
+    /// 0 to have no time limit
+    /// </summary>
+    public static float GameDemoLength
+    {
+        get { return gamePlayTime; }
+        set { gamePlayTime = Mathf.Max(value, 0); }
+    }
+
+    /// <summary>
+    /// Start the demo timer
+    /// </summary>
+    void startDemoTimer()
+    {
+        //If the menu is not open,
+        if (Managers.Camera.ZoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.PORTRAIT))
+        {
+            //Start the timer
+            resetGameTimer = GameDemoLength + Time.time;
+            //Unregister this delegate
+            Managers.Gesture.tapGesture -= startDemoTimer;
+        }
+    }
+
+    /// <summary>
+    /// Shows the "Thanks for Playing" screen when the demo timer stops
+    /// </summary>
+    /// <param name="show">True to show the screen, false to hide it</param>
+    private void showEndDemoScreen(bool show)
+    {
+        //Update the screen's active state
+        endDemoScreen.SetActive(show);
+        //If it should be shown,
+        if (show)
+        {
+            //Also update its position and rotation
+            //to keep it in front of the camera
+            endDemoScreen.transform.position = (Vector2)Camera.main.transform.position;
+            endDemoScreen.transform.localRotation = Camera.main.transform.localRotation;
+        }
+    }
+    #endregion
+
 }
 
 
