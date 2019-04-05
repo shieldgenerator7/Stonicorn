@@ -448,6 +448,14 @@ public class PlayerController : MonoBehaviour
         //Health Regen
         HardMaterial.addIntegrity(Vector2.Distance(oldPos, newPos));
 
+
+        //Gravity Immunity
+        //Turn off gravity immunity if it was on
+        GravityImmune = false;
+        //When Merky touches ground next,
+        //he should get gravity immunity
+        shouldGrantGIT = true;
+
         //Momentum Dampening
         //If Merky is moving,
         if (rb2d.isMoving())
@@ -483,9 +491,6 @@ public class PlayerController : MonoBehaviour
             //Update velocity
             rb2d.velocity = new Vector2(newX, newY);
         }
-
-        //Gravity Immunity
-        shouldGrantGIT = true;
 
         //Check grounded state
         //have to check it again because state has changed
