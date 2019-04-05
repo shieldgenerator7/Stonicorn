@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     // Runtime variables
     //
     private int rewindId;//the id to eventually load back to
-    private int chosenId;
+    private int chosenId;//the id of the current game state
     private float lastRewindTime;//the last time the game rewound
     private float inputOffStartTime;//the start time when input was turned off
     private float resetGameTimer;//the time that the game will reset at
@@ -45,46 +45,60 @@ public class GameManager : MonoBehaviour
     // Runtime Lists
     //
     //Game States
-    private List<GameState> gameStates = new List<GameState>();
-    private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();
-    private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
+    private List<GameState> gameStates = new List<GameState>();//basically a timeline
+    private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();//list of current objects that have state to save
+    private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable, but still have state to save
     //Scene Loading
-    private List<Scene> openScenes = new List<Scene>();//the list of names of the scenes that are open
+    private List<Scene> openScenes = new List<Scene>();//the list of the scenes that are open
     //Memories
-    private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();
+    private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
     //Checkpoints
-    private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
+    private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();//list of checkpoints that have been activated
 
     // Use this for initialization
     void Start()
     {
+        //Initialize the current game state id
+        //There are possibly none, so the default "current" is -1
         chosenId = -1;
-        //If a limit has been set on the demo playtime
+        //If a limit has been set on the demo playtime,
         if (GameDemoLength > 0)
         {
-            demoBuild = true;//auto enable demo build mode
+            //Auto-enable demo mode
+            demoBuild = true;
+            //Tell the gesture manager to start the timer when the player taps in game
             Managers.Gesture.tapGesture += startDemoTimer;
+            //Show the timer
             txtDemoTimer.transform.parent.gameObject.SetActive(true);
         }
+        //If in demo mode,
         if (demoBuild)
         {
+            //Save its future files with a time stamp
             saveWithTimeStamp = true;
         }
+        //If it's not in demo mode, and its save file exists,
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
+            //Load the save file
             loadFromFile();
+            //Update the game state id trackers
             chosenId = rewindId = gameStates.Count - 1;
+            //Load the most recent game state
             Load(chosenId);
+            //Load the memories
             LoadMemories();
         }
-
+        //Update the list of objects that have state to save
         refreshGameObjects();
+        //Register scene loading delegates
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
     }
 
     /// <summary>
     /// Resets the game back to the very beginning
+    /// Basically starts a new game
     /// </summary>
     public void resetGame(bool savePrevGame = true)
     {
@@ -98,44 +112,67 @@ public class GameManager : MonoBehaviour
         gameObjects.Clear();
         memories.Clear();
         activeCheckPoints.Clear();
-        //Unload all scenes and reload PlayerScene
+        //Reset game state nextid static variable
         GameState.nextid = 0;
+        //Unload all scenes and reload PlayerScene
         SceneManager.LoadScene(0);
     }
+
+    /// <summary>
+    /// How long the demo lasts, in seconds
+    /// 0 to have no time limit
+    /// </summary>
     public static float GameDemoLength
     {
-        get
-        {
-            return gamePlayTime;
-        }
-        set
-        {
-            gamePlayTime = Mathf.Max(value, 0);
-        }
+        get { return gamePlayTime; }
+        set { gamePlayTime = Mathf.Max(value, 0); }
     }
+
+    /// <summary>
+    /// Start the demo timer
+    /// </summary>
     void startDemoTimer()
     {
+        //If the menu is not open,
         if (Managers.Camera.ZoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.PORTRAIT))
         {
+            //Start the timer
             resetGameTimer = GameDemoLength + Time.time;
+            //Unregister this delegate
             Managers.Gesture.tapGesture -= startDemoTimer;
         }
     }
 
+    /// <summary>
+    /// Shows the "Thanks for Playing" screen when the demo timer stops
+    /// </summary>
+    /// <param name="show">True to show the screen, false to hide it</param>
     private void showEndDemoScreen(bool show)
     {
+        //Update the screen's active state
         endDemoScreen.SetActive(show);
+        //If it should be shown,
         if (show)
         {
+            //Also update its position and rotation
+            //to keep it in front of the camera
             endDemoScreen.transform.position = (Vector2)Camera.main.transform.position;
             endDemoScreen.transform.localRotation = Camera.main.transform.localRotation;
         }
     }
 
+    /// <summary>
+    /// Adds an object to list of objects that have state to save
+    /// </summary>
+    /// <param name="go">The GameObject to add to the list</param>
     public static void addObject(GameObject go)
     {
         Managers.Game.addObjectImpl(go);
     }
+    /// <summary>
+    /// Adds all the given objects that have state to save
+    /// </summary>
+    /// <param name="list">List of GameObjects to add</param>
     public void addAll(List<GameObject> list)
     {
         foreach (GameObject go in list)
@@ -143,20 +180,31 @@ public class GameManager : MonoBehaviour
             addObjectImpl(go);
         }
     }
+    /// <summary>
+    /// Adds an object to the list, if it passes all tests
+    /// </summary>
+    /// <param name="go">The GameObject to add to the list</param>
     private void addObjectImpl(GameObject go)
     {
+        //
         //Error checking
-
+        //
+        
         //If go is null
         if (go == null)
         {
             throw new System.ArgumentNullException("GameObject (" + go + ") cannot be null!");
         }
+
+        //getKey() returns a string containing
+        //the object's name and scene name
+        string key = go.getKey();
+
         //If the game object's name is already in the dictionary...
-        if (gameObjects.ContainsKey(go.getKey()))
+        if (gameObjects.ContainsKey(key))
         {
             throw new System.ArgumentException(
-                  "GameObject (" + go.scene.name + " | " + go.name + ") is already inside the gameObjects dictionary! "
+                  "GameObject (" + key + ") is already inside the gameObjects dictionary! "
                   + "Check for 2 or more objects with the same name."
                   );
         }
@@ -164,26 +212,35 @@ public class GameManager : MonoBehaviour
         if (!go.isSavable())
         {
             throw new System.ArgumentException(
-                "GameObject (" + go.scene.name + " | " + go.name + ") doesn't have any state to save! "
+                "GameObject (" + key + ") doesn't have any state to save! "
                 + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
                 );
         }
         //Else if all good, add the object
-        gameObjects.Add(go.getKey(), go);
+        gameObjects.Add(key, go);
     }
+    /// <summary>
+    /// Retrieves the GameObject from the gameObjects list by the given scene and object names
+    /// </summary>
+    /// <param name="sceneName">The scene name of the object</param>
+    /// <param name="objectName">The name of the object</param>
+    /// <returns></returns>
     public static GameObject getObject(string sceneName, string objectName)
     {
         string key = Utility.getKey(sceneName, objectName);
+        //If the gameObjects list has the game object,
         if (Managers.Game.gameObjects.ContainsKey(key))
         {
+            //Return it
             return Managers.Game.gameObjects[key];
         }
+        //Otherwise, sorry, you're out of luck
         return null;
     }
     /// <summary>
     /// Destroys the given GameObject and updates lists
     /// </summary>
-    /// <param name="go"></param>
+    /// <param name="go">The GameObject to destroy</param>
     public static void destroyObject(GameObject go)
     {
         Managers.Game.removeObject(go);
@@ -192,16 +249,20 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Removes the given GameObject from the gameObjects list
     /// </summary>
-    /// <param name="go"></param>
+    /// <param name="go">The GameObject to remove from the list</param>
     private void removeObject(GameObject go)
     {
         gameObjects.Remove(go.getKey());
         forgottenObjects.Remove(go);
+        //If go is not null and has children,
         if (go && go.transform.childCount > 0)
         {
+            //For each of its children,
             foreach (Transform t in go.transform)
             {
+                //Remove it from the gameObjects list
                 gameObjects.Remove(t.gameObject.getKey());
+                //And from the forgotten objects list
                 forgottenObjects.Remove(t.gameObject);
             }
         }
@@ -210,19 +271,27 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Check all the scene loaders
+        //to see if their scene needs loaded or unloaded
+        //(done this way because standard trigger methods in Unity
+        //don't always play nice with teleporting characters)
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
         }
+        //If in demo mode,
         if (GameDemoLength > 0)
         {
             float timeLeft = 0;
+            //And the timer has started,
             if (resetGameTimer > 0)
             {
+                //If the timer has stopped,
                 if (Time.time >= resetGameTimer)
                 {
+                    //Show the end demo screen
                     showEndDemoScreen(true);
-                    //If the buffer period has ended,
+                    //If the ignore-input buffer period has ended,
                     if (Time.time >= resetGameTimer + restartDemoDelay)
                     {
                         //And user has given input,
@@ -236,21 +305,29 @@ public class GameManager : MonoBehaviour
                         }
                     }
                 }
+                //Else if the timer is ticking,
                 else
                 {
+                    //Show the time remaining
                     timeLeft = resetGameTimer - Time.time;
                 }
             }
+            //Else if the timer has not started,
             else
             {
+                //Show the max play time of the demo
                 timeLeft = GameDemoLength;
             }
+            //Update the timer on screen
             txtDemoTimer.text = string.Format("{0:0.00}", timeLeft);
         }
+        //If the time is rewinding,
         if (Rewinding)
         {
+            //And it's time to rewind the next step,
             if (Time.time > lastRewindTime + rewindDelay)
             {
+                //Rewind to the next previous game state
                 lastRewindTime = Time.time;
                 Load(chosenId - 1);
             }
@@ -259,12 +336,16 @@ public class GameManager : MonoBehaviour
 
     void sceneLoaded(Scene scene, LoadSceneMode m)
     {
+        //Update the list of objects with state to save
         Debug.Log("sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
         refreshGameObjects();
         Debug.Log("sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        //Add the given scene to list of open scenes
         openScenes.Add(scene);
+        //If time is moving forward,
         if (!Rewinding)
         {
+            //Load the previous state of the objects in the scene
             LoadObjectsFromScene(scene);
             //If the game has just begun,
             if (gameStates.Count == 0)
@@ -276,6 +357,7 @@ public class GameManager : MonoBehaviour
     }
     void sceneUnloaded(Scene scene)
     {
+        //Remove the given scene's objects from the forgotten objects list
         for (int i = forgottenObjects.Count - 1; i >= 0; i--)
         {
             GameObject fgo = forgottenObjects[i];
@@ -284,19 +366,27 @@ public class GameManager : MonoBehaviour
                 forgottenObjects.RemoveAt(i);
             }
         }
+        //Update the list of game objects to save
         Debug.Log("sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
         refreshGameObjects();
         Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        //Remove the scene from the list of open scenes
         openScenes.Remove(scene);
     }
     public static void refresh() { Managers.Game.refreshGameObjects(); }
+    /// <summary>
+    /// Update the list of GameObjects with state to save
+    /// </summary>
     public void refreshGameObjects()
     {
+        //Make a new dictionary for the list
         gameObjects = new Dictionary<string, GameObject>();
+        //Add objects that can move
         foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
         {
             addObjectImpl(rb.gameObject);
         }
+        //Add objects that have other variables that can get rewound
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
         {
             if (!gameObjects.ContainsValue(smb.gameObject))
@@ -330,25 +420,39 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Saves the current game state
+    /// </summary>
     public void Save()
     {
+        //Remove any null objects from the list
         cleanObjects();
+        //Create a new game state
         gameStates.Add(new GameState(gameObjects.Values));
+        //Update game state id variables
         chosenId++;
         rewindId++;
         //Open Scenes
         foreach (SceneLoader sl in sceneLoaders)
         {
+            //If the scene loader's scene is open,
             if (openScenes.Contains(sl.Scene))
             {
+                //And it hasn't been open in any previous game state,
                 if (sl.firstOpenGameStateId > chosenId)
                 {
+                    //It's first opened in this game state
                     sl.firstOpenGameStateId = chosenId;
                 }
+                //It's also last opened in this game state
                 sl.lastOpenGameStateId = chosenId;
             }
         }
     }
+    /// <summary>
+    /// Saves the memory to the memory list
+    /// </summary>
+    /// <param name="mmb"></param>
     public void saveMemory(MemoryMonoBehaviour mmb)
     {
         string key = mmb.gameObject.getKey();
@@ -366,10 +470,18 @@ public class GameManager : MonoBehaviour
             memories.Add(key, mo);
         }
     }
-    public void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
+    /// <summary>
+    /// Saves the check point to the active check point list
+    /// Check points' active state needs to be checked more often,
+    /// so it's stored in a list easier to iterate through than the memory list
+    /// </summary>
+    /// <param name="cpc"></param>
+    public void saveCheckPoint(CheckPointChecker cpc)
     {
+        //If the list doesn't already contain the checkpoint,
         if (!activeCheckPoints.Contains(cpc))
         {
+            //Add the checkpoint
             activeCheckPoints.Add(cpc);
         }
     }
