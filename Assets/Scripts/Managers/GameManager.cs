@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    #region GameObject List Management
     /// <summary>
     /// Adds an object to list of objects that have state to save
     /// </summary>
@@ -299,47 +299,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Cleaned: " + cleanedKeys);
         }
     }
-
-
-    void sceneLoaded(Scene scene, LoadSceneMode m)
-    {
-        //Update the list of objects with state to save
-        Debug.Log("sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
-        refreshGameObjects();
-        Debug.Log("sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
-        //Add the given scene to list of open scenes
-        openScenes.Add(scene);
-        //If time is moving forward,
-        if (!Rewinding)
-        {
-            //Load the previous state of the objects in the scene
-            LoadObjectsFromScene(scene);
-            //If the game has just begun,
-            if (gameStates.Count == 0)
-            {
-                //Create the initial save state
-                Save();
-            }
-        }
-    }
-    void sceneUnloaded(Scene scene)
-    {
-        //Remove the given scene's objects from the forgotten objects list
-        for (int i = forgottenObjects.Count - 1; i >= 0; i--)
-        {
-            GameObject fgo = forgottenObjects[i];
-            if (fgo == null || fgo.scene == scene)
-            {
-                forgottenObjects.RemoveAt(i);
-            }
-        }
-        //Update the list of game objects to save
-        Debug.Log("sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
-        refreshGameObjects();
-        Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
-        //Remove the scene from the list of open scenes
-        openScenes.Remove(scene);
-    }
     /// <summary>
     /// Update the list of GameObjects with state to save
     /// </summary>
@@ -387,6 +346,79 @@ public class GameManager : MonoBehaviour
         }
     }
     /// <summary>
+    /// Stores the given object before it gets set inactive
+    /// </summary>
+    /// <param name="obj"></param>
+    public void saveForgottenObject(GameObject obj, bool forget = true)
+    {
+        //Error checking
+        if (obj == null)
+        {
+            throw new System.ArgumentNullException("GameManager.saveForgottenObject() cannot accept null for obj! obj: " + obj);
+        }
+        //If it's about to be set inactive,
+        if (forget)
+        {
+            //Add it to the list,
+            forgottenObjects.Add(obj);
+            //And set it inactive
+            obj.SetActive(false);
+        }
+        //Else,
+        else
+        {
+            //Remove it from the list,
+            forgottenObjects.Remove(obj);
+            //And set it active again
+            obj.SetActive(true);
+        }
+    }
+    #endregion
+
+    #region Memory List Management
+    /// <summary>
+    /// Saves the memory to the memory list
+    /// </summary>
+    /// <param name="mmb"></param>
+    public void saveMemory(MemoryMonoBehaviour mmb)
+    {
+        string key = mmb.gameObject.getKey();
+        MemoryObject mo = mmb.getMemoryObject();
+        //If the memory is already stored,
+        if (memories.ContainsKey(key))
+        {
+            //Update it
+            memories[key] = mo;
+        }
+        //Else
+        else
+        {
+            //Add it
+            memories.Add(key, mo);
+        }
+    }
+
+    /// <summary>
+    /// Restore all saved memories of game objects that have a memory saved
+    /// </summary>
+    void LoadMemories()
+    {
+        //Find all the game objects that can have memories
+        foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
+        {
+            string key = mmb.gameObject.getKey();
+            //If there's a memory saved for this object,
+            if (memories.ContainsKey(key))
+            {
+                //Tell that object what it is
+                mmb.acceptMemoryObject(memories[key]);
+            }
+        }
+    }
+    #endregion
+    
+    #region Time Management
+    /// <summary>
     /// Saves the current game state
     /// </summary>
     public void Save()
@@ -415,56 +447,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    /// <summary>
-    /// Saves the memory to the memory list
-    /// </summary>
-    /// <param name="mmb"></param>
-    public void saveMemory(MemoryMonoBehaviour mmb)
-    {
-        string key = mmb.gameObject.getKey();
-        MemoryObject mo = mmb.getMemoryObject();
-        //If the memory is already stored,
-        if (memories.ContainsKey(key))
-        {
-            //Update it
-            memories[key] = mo;
-        }
-        //Else
-        else
-        {
-            //Add it
-            memories.Add(key, mo);
-        }
-    }
 
-    /// <summary>
-    /// Stores the given object before it gets set inactive
-    /// </summary>
-    /// <param name="obj"></param>
-    public void saveForgottenObject(GameObject obj, bool forget = true)
-    {
-        //Error checking
-        if (obj == null)
-        {
-            throw new System.ArgumentNullException("GameManager.saveForgottenObject() cannot accept null for obj! obj: " + obj);
-        }
-        //If it's about to be set inactive,
-        if (forget)
-        {
-            //Add it to the list,
-            forgottenObjects.Add(obj);
-            //And set it inactive
-            obj.SetActive(false);
-        }
-        //Else,
-        else
-        {
-            //Remove it from the list,
-            forgottenObjects.Remove(obj);
-            //And set it active again
-            obj.SetActive(true);
-        }
-    }
     /// <summary>
     /// Load the game state with the given id
     /// </summary>
@@ -542,6 +525,92 @@ public class GameManager : MonoBehaviour
         }
     }
     /// <summary>
+    /// True if time is rewinding
+    /// </summary>
+    public bool Rewinding
+    {
+        get { return chosenId > rewindId; }
+    }
+    /// <summary>
+    /// Ends the rewind at the current game state
+    /// </summary>
+    public void cancelRewind()
+    {
+        //Set the game state id tracker vars
+        rewindId = chosenId;
+        //Load the current game state
+        Load(chosenId);
+        //Set the music back to normal
+        Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
+    }
+    /// <summary>
+    /// Rewind the game all the way to the beginning
+    /// </summary>
+    public void RewindToStart()
+    {
+        Rewind(0);
+    }
+    /// <summary>
+    /// Sets into motion the rewind state.
+    /// Update carries out the motions of calling Load()
+    /// </summary>
+    /// <param name="gamestateId">The game state id to rewind to</param>
+    void Rewind(int gamestateId)
+    {
+        //Set the music speed to rewind
+        Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
+        //Set the game state tracker vars
+        rewindId = gamestateId;
+        //Recenter the camera on Merky
+        Managers.Camera.recenter();
+        //Disable physics while rewinding
+        Managers.Physics2DSurrogate.enabled = true;
+        //Update Stats
+        GameStatistics.addOne("Rewind");
+    }
+    #endregion
+
+    #region Space Management
+    void sceneLoaded(Scene scene, LoadSceneMode m)
+    {
+        //Update the list of objects with state to save
+        Debug.Log("sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
+        refreshGameObjects();
+        Debug.Log("sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        //Add the given scene to list of open scenes
+        openScenes.Add(scene);
+        //If time is moving forward,
+        if (!Rewinding)
+        {
+            //Load the previous state of the objects in the scene
+            LoadObjectsFromScene(scene);
+            //If the game has just begun,
+            if (gameStates.Count == 0)
+            {
+                //Create the initial save state
+                Save();
+            }
+        }
+    }
+    void sceneUnloaded(Scene scene)
+    {
+        //Remove the given scene's objects from the forgotten objects list
+        for (int i = forgottenObjects.Count - 1; i >= 0; i--)
+        {
+            GameObject fgo = forgottenObjects[i];
+            if (fgo == null || fgo.scene == scene)
+            {
+                forgottenObjects.RemoveAt(i);
+            }
+        }
+        //Update the list of game objects to save
+        Debug.Log("sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
+        refreshGameObjects();
+        Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        //Remove the scene from the list of open scenes
+        openScenes.Remove(scene);
+    }
+    /// <summary>
     /// Restores the objects in the scene to their previous state before the scene was unloaded
     /// </summary>
     /// <param name="scene">The scene whose objects need their state stored</param>
@@ -601,67 +670,9 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
     }
-    /// <summary>
-    /// True if time is rewinding
-    /// </summary>
-    public bool Rewinding
-    {
-        get { return chosenId > rewindId; }
-    }
-    /// <summary>
-    /// Ends the rewind at the current game state
-    /// </summary>
-    public void cancelRewind()
-    {
-        //Set the game state id tracker vars
-        rewindId = chosenId;
-        //Load the current game state
-        Load(chosenId);
-        //Set the music back to normal
-        Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
-    }
-    /// <summary>
-    /// Rewind the game all the way to the beginning
-    /// </summary>
-    public void RewindToStart()
-    {
-        Rewind(0);
-    }
-    /// <summary>
-    /// Sets into motion the rewind state.
-    /// Update carries out the motions of calling Load()
-    /// </summary>
-    /// <param name="gamestateId">The game state id to rewind to</param>
-    void Rewind(int gamestateId)
-    {
-        //Set the music speed to rewind
-        Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
-        //Set the game state tracker vars
-        rewindId = gamestateId;
-        //Recenter the camera on Merky
-        Managers.Camera.recenter();
-        //Disable physics while rewinding
-        Managers.Physics2DSurrogate.enabled = true;
-        //Update Stats
-        GameStatistics.addOne("Rewind");
-    }
-    /// <summary>
-    /// Remind all the game objects that have a memory saved
-    /// </summary>
-    void LoadMemories()
-    {
-        //Find all the game objects that can have memories
-        foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
-        {
-            string key = mmb.gameObject.getKey();
-            //If there's a memory saved for this object,
-            if (memories.ContainsKey(key))
-            {
-                //Tell that object what it is
-                mmb.acceptMemoryObject(memories[key]);
-            }
-        }
-    }
+    #endregion
+    
+    #region File Management
     /// <summary>
     /// Saves the memories, game states, and scene cache to a save file
     /// </summary>
@@ -717,27 +728,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    #endregion
 
-    /// <summary>
-    /// Used primarily for managing the delay between the player dying and respawning
-    /// </summary>
-    public bool AcceptsInputNow
-    {
-        get { return Time.time > inputOffStartTime + inputOffDuration; }
-        set
-        {
-            bool acceptsNow = value;
-            if (acceptsNow)
-            {
-                inputOffStartTime = 0;
-            }
-            else
-            {
-                inputOffStartTime = Time.time;
-            }
-        }
-    }
-
+    #region Player Ghosts
     /// <summary>
     /// Shows the game state representations
     /// </summary>
@@ -790,7 +783,18 @@ public class GameManager : MonoBehaviour
         }
         return closestObject;
     }
+    /// <summary>
+    /// Used specifically to highlight last saved Merky after the first death
+    /// for tutorial purposes
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 getLatestSafeRewindGhostPosition()
+    {
+        return gameStates[chosenId - 1].merky.position;
+    }
+    #endregion
 
+    #region Input Processing
     /// <summary>
     /// Processes the tap gesture at the given position
     /// </summary>
@@ -907,15 +911,26 @@ public class GameManager : MonoBehaviour
     public TapProcessed tapProcessed;
 
     /// <summary>
-    /// Used specifically to highlight last saved Merky after the first death
-    /// for tutorial purposes
+    /// Used primarily for managing the delay between the player dying and respawning
     /// </summary>
-    /// <returns></returns>
-    public Vector2 getLatestSafeRewindGhostPosition()
+    public bool AcceptsInputNow
     {
-        return gameStates[chosenId - 1].merky.position;
+        get { return Time.time > inputOffStartTime + inputOffDuration; }
+        set
+        {
+            bool acceptsNow = value;
+            if (acceptsNow)
+            {
+                inputOffStartTime = 0;
+            }
+            else
+            {
+                inputOffStartTime = Time.time;
+            }
+        }
     }
-
+    #endregion
+    
     //Sent to all GameObjects before the application is quit
     //Auto-save on exit
     void OnApplicationQuit()
