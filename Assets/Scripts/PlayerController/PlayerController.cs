@@ -13,10 +13,13 @@ public class PlayerController : MonoBehaviour
     public float baseRange = 3;//the range after touching the ground
     public float exhaustRange = 1;//the range after teleporting into the air (and being exhausted)
     public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
+    [Range(0, 1)]
     public float baseExhaustCoolDownTime = 0.5f;//the base cool down time (sec) for teleporting while exhausted
     [Range(0, 1)]
     public float gravityImmuneDuration = 0.2f;//amount of time (sec) Merky is immune to gravity after landing
+    [Range(0, 0.5f)]
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
+    [Range(0, 0.5f)]
     public float groundTestDistance = 0.25f;//how far from Merky the ground test should go
 
     //
