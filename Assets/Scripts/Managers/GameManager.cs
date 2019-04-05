@@ -38,7 +38,6 @@ public class GameManager : MonoBehaviour
     private int chosenId;
     private float lastRewindTime;//the last time the game rewound
     private float inputOffStartTime;//the start time when input was turned off
-    private string unloadedScene = null;
     private float resetGameTimer;//the time that the game will reset at
     private static float gamePlayTime;//how long the game can be played for, 0 for indefinitely
 
@@ -50,7 +49,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
     //Scene Loading
-    private List<string> openScenes = new List<string>();//the list of names of the scenes that are open
+    private List<Scene> openScenes = new List<Scene>();//the list of names of the scenes that are open
     //Memories
     private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();
     //Checkpoints
@@ -258,15 +257,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void sceneLoaded(Scene s, LoadSceneMode m)
+    void sceneLoaded(Scene scene, LoadSceneMode m)
     {
-        Debug.Log("sceneLoaded: " + s.name + ", old object count: " + gameObjects.Count);
+        Debug.Log("sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
         refreshGameObjects();
-        Debug.Log("sceneLoaded: " + s.name + ", new object count: " + gameObjects.Count);
-        openScenes.Add(s.name);
+        Debug.Log("sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        openScenes.Add(scene);
         if (!Rewinding)
         {
-            LoadObjectsFromScene(s);
+            LoadObjectsFromScene(scene);
             //If the game has just begun,
             if (gameStates.Count == 0)
             {
@@ -275,20 +274,20 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void sceneUnloaded(Scene s)
+    void sceneUnloaded(Scene scene)
     {
         for (int i = forgottenObjects.Count - 1; i >= 0; i--)
         {
             GameObject fgo = forgottenObjects[i];
-            if (fgo == null || fgo.scene == s)
+            if (fgo == null || fgo.scene == scene)
             {
                 forgottenObjects.RemoveAt(i);
             }
         }
-        Debug.Log("sceneUnloaded: " + s.name + ", old object count: " + gameObjects.Count);
+        Debug.Log("sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
         refreshGameObjects();
-        Debug.Log("sceneUnloaded: " + s.name + ", new object count: " + gameObjects.Count);
-        openScenes.Remove(s.name);
+        Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        openScenes.Remove(scene);
     }
     public static void refresh() { Managers.Game.refreshGameObjects(); }
     public void refreshGameObjects()
@@ -340,7 +339,7 @@ public class GameManager : MonoBehaviour
         //Open Scenes
         foreach (SceneLoader sl in sceneLoaders)
         {
-            if (openScenes.Contains(sl.sceneName))
+            if (openScenes.Contains(sl.Scene))
             {
                 if (sl.firstOpenGameStateId > chosenId)
                 {

@@ -6,7 +6,19 @@ public class SceneLoader : MonoBehaviour
 {
     private static SceneLoader currentScene;//the scene that Merky is currently in
 
-    public string sceneName;//the index of the scene to load
+    public string sceneName;//the name of the scene to load
+    private Scene scene;
+    public Scene Scene
+    {
+        get
+        {
+            if (scene == null)
+            {
+                scene = SceneManager.GetSceneByName(sceneName);
+            }
+            return scene;
+        }
+    }
     public int lastOpenGameStateId = -1;//the gamestate id in which this scene was last open in. -1 means it is not open in any of them
     public int firstOpenGameStateId = int.MaxValue;//the gamestate in which this scene was first opened (for rewind purposes)
     private static GameObject explorerObj;//object that enters and exits triggers, causing scenes to load / unload
