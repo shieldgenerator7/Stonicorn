@@ -432,8 +432,12 @@ public class PlayerController : MonoBehaviour
 
 
         //Gravity Immunity
-        //Turn off gravity immunity if it was on
-        GravityImmune = false;
+        //If gravity immune,
+        if (GravityImmune)
+        {
+            //Turn it off
+            GravityImmune = false;
+        }
         //When Merky touches ground next,
         //he should get gravity immunity
         shouldGrantGIT = true;
