@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// GameManager in charge of Time and Space
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     //
@@ -52,7 +55,7 @@ public class GameManager : MonoBehaviour
     private List<Scene> openScenes = new List<Scene>();//the list of the scenes that are open
     //Memories
     private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
-    
+
     // Use this for initialization
     void Start()
     {
@@ -187,7 +190,7 @@ public class GameManager : MonoBehaviour
         //
         //Error checking
         //
-        
+
         //If go is null
         if (go == null)
         {
@@ -474,33 +477,48 @@ public class GameManager : MonoBehaviour
     /// <param name="obj"></param>
     public void saveForgottenObject(GameObject obj, bool forget = true)
     {
+        //Error checking
         if (obj == null)
         {
             throw new System.ArgumentNullException("GameManager.saveForgottenObject() cannot accept null for obj! obj: " + obj);
         }
+        //If it's about to be set inactive,
         if (forget)
         {
+            //Add it to the list,
             forgottenObjects.Add(obj);
+            //And set it inactive
             obj.SetActive(false);
         }
+        //Else,
         else
         {
+            //Remove it from the list,
             forgottenObjects.Remove(obj);
+            //And set it active again
             obj.SetActive(true);
         }
     }
+    /// <summary>
+    /// Remove null objects from the gameObjects list
+    /// </summary>
     private void cleanObjects()
     {
         string cleanedKeys = "";
+        //Copy the game object keys
         List<string> keys = new List<string>(gameObjects.Keys);
+        //Loop over copy list
         foreach (string key in keys)
         {
+            //If the key's value is null,
             if (gameObjects[key] == null)
             {
+                //Clean the key out
                 cleanedKeys += key + ", ";
                 gameObjects.Remove(key);
             }
         }
+        //Write out to the console which keys were cleaned
         if (cleanedKeys != "")
         {
             Debug.Log("Cleaned: " + cleanedKeys);
@@ -510,10 +528,15 @@ public class GameManager : MonoBehaviour
     {
         get { return forgottenObjects; }
     }
+    /// <summary>
+    /// Load the game state with the given id
+    /// </summary>
+    /// <param name="gamestateId">The ID of the game state to load</param>
     public void Load(int gamestateId)
     {
         //Update chosenId to game-state-now
         chosenId = gamestateId;
+        //Remove null objects from the list
         cleanObjects();
         //Destroy objects not spawned yet in the new selected state
         List<GameObject> destroyObjectList = new List<GameObject>();
@@ -529,7 +552,7 @@ public class GameManager : MonoBehaviour
                     if (!gameStates[gamestateId].hasGameObject(go))
                     {
                         //remove it from game objects list
-                        //by saving it to the list of gmae objects to be destroyed
+                        //by adding it to the list of game objects to be destroyed
                         destroyObjectList.Add(go);
                     }
                 }
@@ -538,11 +561,21 @@ public class GameManager : MonoBehaviour
         //Actually destroy the objects that need destroyed
         for (int i = destroyObjectList.Count - 1; i >= 0; i--)
         {
-            //This is to get around the problem of deleting objects from a list that you're iterating over
+            //Work around to avoid deleting objects from a list that's being iterated over
             destroyObject(destroyObjectList[i]);
         }
         //Actually load the game state
         gameStates[gamestateId].load();
+
+        //Destroy game states in game-state-future
+        for (int i = gameStates.Count - 1; i > gamestateId; i--)
+        {
+            Destroy(gameStates[i].Representation);
+            gameStates.RemoveAt(i);
+        }
+        //Update the next game state id
+        GameState.nextid = gamestateId + 1;
+
         //If the rewind is finished,
         if (chosenId == rewindId)
         {
@@ -570,34 +603,35 @@ public class GameManager : MonoBehaviour
             //Re-enable physics because the rewind is over
             Managers.Physics2DSurrogate.enabled = false;
         }
-        //Destroy game states in game-state-future
-        for (int i = gameStates.Count - 1; i > gamestateId; i--)
-        {
-            Destroy(gameStates[i].Representation);
-            gameStates.RemoveAt(i);
-        }
-        //Update the next game state id
-        GameState.nextid = gamestateId + 1;
     }
-    public void LoadObjectsFromScene(Scene s)
+    /// <summary>
+    /// Restores the objects in the scene to their previous state before the scene was unloaded
+    /// </summary>
+    /// <param name="scene">The scene whose objects need their state stored</param>
+    public void LoadObjectsFromScene(Scene scene)
     {
         //Find the last state that this scene was saved in
         int lastStateSeen = -1;
         foreach (SceneLoader sl in sceneLoaders)
         {
-            if (s.name == sl.sceneName)
+            if (scene == sl.Scene)
             {
                 lastStateSeen = sl.lastOpenGameStateId;
                 break;
             }
         }
-        Debug.Log("LOFS: Scene " + s.name + ": last state seen: " + lastStateSeen);
+        Debug.Log("LOFS: Scene " + scene.name + ": last state seen: " + lastStateSeen);
+        //If the scene was never seen,
         if (lastStateSeen < 0)
         {
+            //Don't restore its objects' states,
+            //because there's nothing to restore
             return;
         }
+        //If the scene was last seen after gamestate-now,
         if (lastStateSeen > chosenId)
         {
+            //The scene is now last seen gamestate-now
             lastStateSeen = chosenId;
         }
         int newObjectsFound = 0;
@@ -605,100 +639,155 @@ public class GameManager : MonoBehaviour
         //Load Each Object
         foreach (GameObject go in gameObjects.Values)
         {
-            if (go.scene == s)
+            //If the game object is in the given scene,
+            if (go.scene == scene)
             {
                 newObjectsFound++;
+                //Search through the game states to see when it was last saved
                 for (int stateid = lastStateSeen; stateid >= 0; stateid--)
                 {
+                    //If the game object was last saved in this game state,
                     if (gameStates[stateid].loadObject(go))
                     {
+                        //Great! It's loaded,
+                        //Let's move onto the next object
                         objectsLoaded++;
                         break;
                     }
+                    //Else,
                     else
                     {
-                        //continue until you find the game state that has the most recent information about this object
+                        //Continue until you find the game state that has the most recent information about this object
                     }
                 }
             }
         }
-        Debug.Log("LOFS: Scene " + s.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
+        Debug.Log("LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
     }
+    /// <summary>
+    /// True if time is rewinding
+    /// </summary>
     public bool Rewinding
     {
         get { return chosenId > rewindId; }
     }
+    /// <summary>
+    /// Ends the rewind at the current game state
+    /// </summary>
     public void cancelRewind()
     {
+        //Set the game state id tracker vars
         rewindId = chosenId;
+        //Load the current game state
         Load(chosenId);
+        //Set the music back to normal
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
     }
+    /// <summary>
+    /// Rewind the game all the way to the beginning
+    /// </summary>
     public void RewindToStart()
     {
         Rewind(0);
     }
     /// <summary>
     /// Sets into motion the rewind state.
-    /// FixedUpdate carries out the motions of calling Load()
+    /// Update carries out the motions of calling Load()
     /// </summary>
-    /// <param name="gamestateId"></param>
+    /// <param name="gamestateId">The game state id to rewind to</param>
     void Rewind(int gamestateId)
     {
+        //Set the music speed to rewind
         Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
+        //Set the game state tracker vars
         rewindId = gamestateId;
+        //Recenter the camera on Merky
         Managers.Camera.recenter();
         //Disable physics while rewinding
         Managers.Physics2DSurrogate.enabled = true;
         //Update Stats
         GameStatistics.addOne("Rewind");
     }
+    /// <summary>
+    /// Remind all the game objects that have a memory saved
+    /// </summary>
     void LoadMemories()
     {
+        //Find all the game objects that can have memories
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
             string key = mmb.gameObject.getKey();
+            //If there's a memory saved for this object,
             if (memories.ContainsKey(key))
             {
+                //Tell that object what it is
                 mmb.acceptMemoryObject(memories[key]);
             }
         }
     }
+    /// <summary>
+    /// Saves the memories, game states, and scene cache to a save file
+    /// </summary>
     public void saveToFile()
     {
+        //Set the base filename
         string fileName = "merky";
+        //If saving with time stamp,
         if (saveWithTimeStamp)
         {
+            //Add the time stamp to the filename
             System.DateTime now = System.DateTime.Now;
             fileName += "-" + now.Ticks;
         }
+        //Add an extension to the filename
         fileName += ".txt";
+        //Save memories
         ES2.Save(memories, fileName + "?tag=memories");
+        //Save game states
         ES2.Save(gameStates, fileName + "?tag=states");
+        //Save scene cache
         ES2.Save(sceneLoaders, fileName + "?tag=scenes");
     }
+    /// <summary>
+    /// Loads the game from the save file
+    /// It assumes the file already exists
+    /// </summary>
     public void loadFromFile()
     {
+        //Load memories
         memories = ES2.LoadDictionary<string, MemoryObject>("merky.txt?tag=memories");
+        //Load game states
         gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
         //Scenes
         List<SceneLoader> rsls = ES2.LoadList<SceneLoader>("merky.txt?tag=scenes");
-        foreach (SceneLoader sl in sceneLoaders)//all scene loaders
+        //Loop through all scene loaders in the game
+        foreach (SceneLoader sl in sceneLoaders)
         {
-            foreach (SceneLoader rsl in rsls)//read in scene loaders
+            //Loop through the scene loaders read in from the file
+            foreach (SceneLoader rsl in rsls)
             {
+                //If the scene in the game and the read in one match,
                 if (rsl != null && sl.sceneName == rsl.sceneName && rsl != sl)
                 {
+                    //Restore the scene loader
                     sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
+                    //Destroy the read in scene loader,
                     Destroy(rsl);
+                    //And immediately exit its loop
+                    //to avoid ConcurrentModificationException
                     break;
                 }
             }
         }
     }
+
+    //Sent to all GameObjects before the application is quit
+    //Auto-save on exit
     void OnApplicationQuit()
     {
+        //Save the game state and then
         Save();
+        //Save the game to file
         saveToFile();
     }
     
@@ -750,8 +839,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Returns the player ghost that is closest to the given position
     /// </summary>
-    /// <param name="pos"></param>
-    /// <returns></returns>
+    /// <param name="pos">The ideal position of the closest ghost</param>
+    /// <returns>The player ghost that is closest to the given position</returns>
     public GameObject getClosestPlayerGhost(Vector2 pos)
     {
         float closestDistance = float.MaxValue;
@@ -769,6 +858,10 @@ public class GameManager : MonoBehaviour
         return closestObject;
     }
 
+    /// <summary>
+    /// Processes the tap gesture at the given position
+    /// </summary>
+    /// <param name="curMPWorld">The position of the tap in world coordinates</param>
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
@@ -790,9 +883,12 @@ public class GameManager : MonoBehaviour
                 //Check sprite overlap
                 if (gs.checkRepresentation(curMPWorld))
                 {
+                    //If this game state is more recent than the current picked one,
                     if (final == null || gs.id > final.id)//assuming the later ones have higher id values
                     {
+                        //Set the current picked one to the previously picked one
                         prevFinal = final;//keep the second-to-latest one
+                        //Set this game state to the current picked one
                         final = gs;//keep the latest one
                     }
                 }
@@ -809,9 +905,12 @@ public class GameManager : MonoBehaviour
                     //Check collider overlap
                     if (gs.checkRepresentation(curMPWorld, false))
                     {
+                        //If this game state is more recent than the current picked one,
                         if (final == null || gs.id > final.id)//assuming the later ones have higher id values
                         {
+                            //Set the current picked one to the previously picked one
                             prevFinal = final;//keep the second-to-latest one
+                            //Set this game state to the current picked one
                             final = gs;//keep the latest one
                         }
                     }
@@ -819,7 +918,7 @@ public class GameManager : MonoBehaviour
             }
         }
         //Process tapped game state
-        //If a previous merky was selected,
+        //If a past merky was indeed selected,
         if (final != null)
         {
             //If the tapped one is already the current one,
@@ -846,10 +945,10 @@ public class GameManager : MonoBehaviour
             //Update Stats
             GameStatistics.addOne("RewindPlayer");
         }
-        //Else if merky is dead,
+        //Else if none were selected, and merky is dead,
         else if (!intact)
         {
-            //go back to the latest safe past merky
+            //Go back to the latest safe past merky
             //-1 to prevent trap saves
             Rewind(chosenId - 1);
             //Update Stats
@@ -860,11 +959,12 @@ public class GameManager : MonoBehaviour
             Managers.Effect.highlightTapArea(Vector2.zero, false);
         }
 
-        //leave this zoom level even if no past merky was chosen
+        //Leave this zoom level even if no past merky was chosen
         float defaultZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
         Managers.Camera.ZoomLevel = defaultZoomLevel;
         Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
 
+        //Process tapProcessed delegates
         if (tapProcessed != null)
         {
             tapProcessed(curMPWorld);
