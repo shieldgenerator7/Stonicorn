@@ -153,18 +153,21 @@ public class PlayerController : MonoBehaviour
     public delegate bool IsGroundedCheck();
     public IsGroundedCheck isGroundedCheck;
 
+    //Grounded Previously
     private bool groundedPrev;
     public bool GroundedPrev
     {
         get { return groundedPrev; }
         private set { groundedPrev = value; }
     }
+    //Grounded Previously in gravity direction
     private bool groundedNormalPrev;
     public bool GroundedNormalPrev
     {
         get { return groundedNormalPrev; }
         private set { groundedNormalPrev = value; }
     }
+    //Grounded Previously by an ability
     private bool groundedAbilityPrev;
     public bool GroundedAbilityPrev
     {
@@ -182,15 +185,15 @@ public class PlayerController : MonoBehaviour
     //
     // Runtime Constants
     //
-    private float[] rotations = new float[] { 285, 155, 90, 0 };
+    private float[] rotations = new float[] { 285, 155, 90, 0 };//the default rotations for Merky
     private float halfWidth;//half of Merky's sprite width
 
     //
     // Components
     //
     [Header("Components")]
-    public BoxCollider2D scoutColliderMin;//small collider used to scout the level for teleportable spots
-    public BoxCollider2D scoutColliderMax;//big collider used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMin;//small collider (inside Merky) used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMax;//big collider (outside Merky) used to scout the level for teleportable spots
 
     private PolygonCollider2D pc2d;
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
@@ -212,7 +215,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     private HardMaterial hardMaterial;
     public HardMaterial HardMaterial
     {
@@ -228,6 +230,9 @@ public class PlayerController : MonoBehaviour
 
     private TeleportAbility tpa;
 
+    /// <summary>
+    /// Returns a list of active abilities
+    /// </summary>
     public List<PlayerAbility> ActiveAbilities
     {
         get
@@ -247,22 +252,36 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        //Retrieve components
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
-        HardMaterial.shattered += shattered;
         tpa = GetComponent<TeleportAbility>();
+        //Register the on death delegate
+        HardMaterial.shattered += shattered;
         //Estimate the halfWidth
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
         halfWidth = (extents.x + extents.y) / 2;
+        //Initialize the range
         Range = baseRange;
+        //Initialize the ground trigger
         updateGroundTrigger();
     }
 
+    /// <summary>
+    /// Called once per physics update
+    /// </summary>
     private void FixedUpdate()
     {
+        //Check to see if gravity immunity has expired
         checkGravityImmunity(false);
+        //Put the ground trigger in its proper spot
         updateGroundTrigger();
     }
+
+    /// <summary>
+    /// Updates Merky's range when his ground trigger hits ground
+    /// </summary>
+    /// <param name="coll2D"></param>
     private void OnTriggerEnter2D(Collider2D coll2D)
     {
         if (!coll2D.isTrigger)
@@ -270,6 +289,11 @@ public class PlayerController : MonoBehaviour
             checkGravityImmunity(true);//first grounded frame after teleport
         }
     }
+
+    /// <summary>
+    /// Updates Merky's range when he hits ground
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.collider.isTrigger)
@@ -278,20 +302,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the position of the copycat collider that hits the ground before Merky does
+    /// This is done to refresh Merky's range slightly before
+    /// he actually hits the ground
+    /// </summary>
     private void updateGroundTrigger()
     {
+        //If ground trigger is not present,
         if (groundedTrigger == null)
         {
-            //PC2D ground trigger
+            //Make a new ground trigger collider
+            //by copying Merky's collider
             groundedTrigger = gameObject.AddComponent<PolygonCollider2D>();
             groundedTrigger.points = pc2d.points;
             groundedTrigger.isTrigger = true;
         }
-        //Move triggerPC2D to its new position based on the current gravity
+        //Move ground trigger to its new position based on the current gravity
         Vector3 offset = Gravity.Gravity.normalized * groundTestDistance;
         groundedTrigger.offset = transform.InverseTransformDirection(offset);
     }
 
+    /// <summary>
+    /// True if Merky doesn't get affected by gravity, false if otherwise
+    /// Note that Merky can still be affected by other sources of force while gravity immune
+    /// </summary>
     public bool GravityImmune
     {
         get { return gravityImmuneStartTime > 0; }
@@ -301,46 +336,66 @@ public class PlayerController : MonoBehaviour
             if (grantGravityImmunity)
             {
                 gravityImmuneStartTime = Time.time;
+                //Turn off Merky's gravity
                 Gravity.AcceptsGravity = false;
+                //Store velocity for later
                 savedVelocity = rb2d.velocity;
+                //Freeze velocity
                 rb2d.velocity = Vector2.zero;
+                //Store angular velocity for later
                 savedAngularVelocity = rb2d.angularVelocity;
+                //Freeze angular velocity
                 rb2d.angularVelocity = 0;
             }
             else
             {
                 gravityImmuneStartTime = 0;
+                //Turn on Merky's gravity
                 Gravity.AcceptsGravity = true;
+                //Restore saved velocity
                 rb2d.velocity = savedVelocity;
                 savedVelocity = Vector2.zero;
+                //Restore saved angular velocity
                 rb2d.angularVelocity = savedAngularVelocity;
                 savedAngularVelocity = 0;
             }
         }
     }
     /// <summary>
-    /// Updates gravity immunity
+    /// Turns gravity immunity on or off, if conditions are right
     /// </summary>
+    /// <param name="checkToTurnOn">Whether to check if should be turned on</param>
     private void checkGravityImmunity(bool checkToTurnOn)
     {
+        //If the caller wants it turned on,
         if (checkToTurnOn)
         {
+            //And gravity immunity should be granted,
+            //(such as the first grounded frame after a teleport)
             if (shouldGrantGIT)
             {
+                //And Merky is grounded,
                 if (Grounded)
                 {
+                    //Updated grounded state
                     updateGroundedState();
+                    //Turn off shuoldGrantGIT
                     shouldGrantGIT = false;
+                    //Grant gravity immunity
                     GravityImmune = true;
                 }
             }
         }
+        //Else if the caller wants it turned off,
         else
         {
+            //And it's currently on,
             if (GravityImmune)
             {
+                //And the gravity immune time has expired,
                 if (Time.time >= gravityImmuneStartTime + gravityImmuneDuration)
                 {
+                    //Turn off gravity immunity
                     GravityImmune = false;
                 }
             }
@@ -818,8 +873,7 @@ public class PlayerController : MonoBehaviour
     /// <returns>The Vector3, adjusted to avoid collision with objects it collides with</returns>
     private Vector3 adjustForOccupant(Vector3 testPos)
     {
-        Vector3 moveDir = Vector3.zero;//the direction to move the testPos
-                                       //Find the objects that it would collide with
+        //Find the objects that it would collide with
         Vector3 testOffset = testPos - transform.position;
         testOffset = transform.InverseTransformDirection(testOffset);
         Vector3 savedOffset = pc2d.offset;
@@ -828,6 +882,7 @@ public class PlayerController : MonoBehaviour
         answer = pc2d.CastAnswer(Vector2.zero, 0, true);
         pc2d.offset = savedOffset;
         //Adjust the move direction for each found object that it collides with
+        Vector3 moveDir = Vector3.zero;//the direction to move the testPos
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rh2d = answer.rch2ds[i];
@@ -894,65 +949,102 @@ public class PlayerController : MonoBehaviour
         return pos.inRange(transform.position, halfWidth);
     }
 
+    /// <summary>
+    /// Process the tap gesture at the given position
+    /// </summary>
+    /// <param name="tapPos">The position to teleport to</param>
     public void processTapGesture(Vector3 tapPos)
     {
+        //If the player tapped on Merky,
         if (gestureOnPlayer(tapPos))
         {
-            //Rotate player 90 degrees
+            //Rotate player ~90 degrees
             rotate();
         }
-        Vector3 prevPos = transform.position;
+        //Get pre-teleport position
+        Vector3 oldPos = transform.position;
+        //Get post-teleport position
         Vector3 newPos = findTeleportablePosition(tapPos);
+        //Check to make sure teleport is not on cooldown
         bool continueTeleport = TeleportReady;
+        //If teleport is not on cooldown and it could get canceled,
         if (continueTeleport && onPreTeleport != null)
         {
             //Check each onPreTeleport delegate
             foreach (OnPreTeleport opt in onPreTeleport.GetInvocationList())
             {
                 //Make it do what it needs to do, then return the result
-                bool result = opt.Invoke(prevPos, newPos, tapPos);
-                //If at least 1 returns false, don't teleport
+                bool result = opt.Invoke(oldPos, newPos, tapPos);
+                //If at least 1 returns false,
                 if (result == false)
                 {
+                    //Don't teleport
                     continueTeleport = false;
                     break;
                 }
             }
         }
+        //If teleport is not on cooldown and is not canceled,
         if (continueTeleport)
         {
+            //Teleport
             teleport(newPos);
+            //Save the game state
             Managers.Game.Save();
-            //Reposition checkpoint previews
+            //If Merky is in a checkpoint,
             if (inCheckPoint)
             {
+                //Reposition checkpoint previews
                 CheckPointChecker.readjustCheckPointGhosts(transform.position);
             }
         }
     }
-    //Used when you also need to know where the user clicked, and may need to stop the teleport
+    //Used when you need to know where the user clicked, and may need to stop the teleport
     public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
     public OnPreTeleport onPreTeleport;
 
+    /// <summary>
+    /// Processes the tap gesture on the given checkpoint
+    /// </summary>
+    /// <param name="checkPoint">The checkpoint to teleport to</param>
     public void processTapGesture(CheckPointChecker checkPoint)
     {
+        //Get pre-teleport position
         Vector2 oldPos = transform.position;
+        //Get relative position inside of previous checkpoint
         Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
+        //Get post-teleport position inside of new checkpoint
         Vector3 newPos = checkPoint.transform.position + offset;
+        //If pre-processing needs done before teleporting,
         if (onPreTeleport != null)
         {
+            //Pre-process onPreTeleport delegates
             //Pass in newPos for both here because player teleported exactly where they intended to
             onPreTeleport(oldPos, newPos, newPos);
         }
+        //Teleport
         teleport(newPos);
+        //Move the camera to Merky's center
         Managers.Camera.recenter();
+        //Activate the new checkpoint
         checkPoint.trigger();
+        //Save the game state
         Managers.Game.Save();
+        //NOTE: processTapGesture(Vector3) is NOT called here,
+        //because that method cancels the teleport
+        //depending on the return value from onPreTeleport(),
+        //whereas here, we don't want the teleport canceled
     }
 
-
+    /// <summary>
+    /// Process a hold gesture
+    /// </summary>
+    /// <param name="holdPos">The current hold position</param>
+    /// <param name="holdTime">The current hold duration</param>
+    /// <param name="finished">True if this is the last frame of the hold gesture</param>
     public void processHoldGesture(Vector3 holdPos, float holdTime, bool finished)
     {
+        //Get the actionable current duration of the hold gesture
         float reducedHoldTime = holdTime - Managers.Gesture.HoldThreshold;
         //If the camera is centered on the player,
         if (!Managers.Camera.offsetOffPlayer())
@@ -982,13 +1074,16 @@ public class PlayerController : MonoBehaviour
             //If this is the last frame of the hold gesture,
             if (finished)
             {
-                //Teleport to the location
+                //Finally teleport to the location
                 processTapGesture(holdPos);
                 //Erase the teleport preview effects
                 tpa.dropHoldGesture();
             }
         }
     }
+    /// <summary>
+    /// Erase any visual effects of active abilities
+    /// </summary>
     private void dropHoldGesture()
     {
         foreach (PlayerAbility ability in ActiveAbilities)
