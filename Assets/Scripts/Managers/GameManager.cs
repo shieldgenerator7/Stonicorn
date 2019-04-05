@@ -51,6 +51,10 @@ public class GameManager : MonoBehaviour
     private List<GameState> gameStates = new List<GameState>();//basically a timeline
     private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();//list of current objects that have state to save
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable, but still have state to save
+    public List<GameObject> ForgottenObjects
+    {
+        get { return forgottenObjects; }
+    }
     //Scene Loading
     private List<Scene> openScenes = new List<Scene>();//the list of the scenes that are open
     //Memories
@@ -789,11 +793,6 @@ public class GameManager : MonoBehaviour
         Save();
         //Save the game to file
         saveToFile();
-    }
-    
-    public int CurrentStateId
-    {
-        get { return chosenId; }
     }
 
     /// <summary>
