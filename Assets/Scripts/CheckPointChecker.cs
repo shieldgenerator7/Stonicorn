@@ -69,9 +69,9 @@ public class CheckPointChecker : MemoryMonoBehaviour
         //Not already activated, go ahead and activate
         activated = true;
         Managers.Game.saveMemory(this);
-        Managers.Game.saveCheckPoint(this);
+        Managers.saveCheckPoint(this);
         //if there's two or more active checkpoints
-        List<CheckPointChecker> activeCPCs = Managers.Game.ActiveCheckPoints;
+        List<CheckPointChecker> activeCPCs = Managers.ActiveCheckPoints;
         if (activeCPCs.Count > 1)
         {
             //Start the particles
@@ -120,7 +120,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         activate();
         ghost.SetActive(false);
         Managers.Player.InCheckPoint = true;
-        foreach (CheckPointChecker cpc in Managers.Game.ActiveCheckPoints)
+        foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
         {
             if (cpc != this)
             {
@@ -130,7 +130,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public static void readjustCheckPointGhosts(Vector2 epicenter)
     {
-        foreach (CheckPointChecker cpc in Managers.Game.ActiveCheckPoints)
+        foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
         {
             if (cpc.gameObject != current)
             {

@@ -163,7 +163,7 @@ public class CheckPointGhostMover : MonoBehaviour
     /// <returns></returns>
     public bool overlapAny()
     {
-        foreach (CheckPointChecker cpc in Managers.Game.ActiveCheckPoints)
+        foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
         {
             if (cpc != parentCPC)
             {

@@ -52,9 +52,7 @@ public class GameManager : MonoBehaviour
     private List<Scene> openScenes = new List<Scene>();//the list of the scenes that are open
     //Memories
     private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
-    //Checkpoints
-    private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();//list of checkpoints that have been activated
-
+    
     // Use this for initialization
     void Start()
     {
@@ -110,8 +108,8 @@ public class GameManager : MonoBehaviour
         }
         //Empty object lists
         gameObjects.Clear();
+        forgottenObjects.Clear();
         memories.Clear();
-        activeCheckPoints.Clear();
         //Reset game state nextid static variable
         GameState.nextid = 0;
         //Unload all scenes and reload PlayerScene
@@ -469,21 +467,7 @@ public class GameManager : MonoBehaviour
             memories.Add(key, mo);
         }
     }
-    /// <summary>
-    /// Saves the check point to the active check point list
-    /// Check points' active state needs to be checked more often,
-    /// so it's stored in a list easier to iterate through than the memory list
-    /// </summary>
-    /// <param name="cpc"></param>
-    public void saveCheckPoint(CheckPointChecker cpc)
-    {
-        //If the list doesn't already contain the checkpoint,
-        if (!activeCheckPoints.Contains(cpc))
-        {
-            //Add the checkpoint
-            activeCheckPoints.Add(cpc);
-        }
-    }
+
     /// <summary>
     /// Stores the given object before it gets set inactive
     /// </summary>
@@ -717,12 +701,7 @@ public class GameManager : MonoBehaviour
         Save();
         saveToFile();
     }
-
-    public List<CheckPointChecker> ActiveCheckPoints
-    {
-        get { return activeCheckPoints; }
-    }
-
+    
     public int CurrentStateId
     {
         get { return chosenId; }

@@ -179,6 +179,30 @@ public class Managers : MonoBehaviour
     }
 
     //
+    // Lists
+    //
+
+    //Checkpoints
+    private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
+    public static List<CheckPointChecker> ActiveCheckPoints
+    {
+        get { return instance.activeCheckPoints; }
+    }
+    /// <summary>
+    /// Saves the check point to the active check point list
+    /// </summary>
+    /// <param name="cpc"></param>
+    public static void saveCheckPoint(CheckPointChecker cpc)
+    {
+        //If the list doesn't already contain the checkpoint,
+        if (!ActiveCheckPoints.Contains(cpc))
+        {
+            //Add the checkpoint
+            ActiveCheckPoints.Add(cpc);
+        }
+    }
+
+    //
     // Singleton
     //
     private static Managers instance;
