@@ -96,29 +96,6 @@ public class PlayerController : MonoBehaviour
             }
             return grounded;
         }
-        set
-        {
-            GroundedPrev = grounded;
-            grounded = value;
-            if (grounded)
-            {
-                airPorts = 0;
-                if (range < baseRange)
-                {
-                    Range = baseRange;
-                }
-            }
-            else
-            {
-                if (airPorts >= maxAirPorts)
-                {
-                    if (range > exhaustRange)
-                    {
-                        Range = exhaustRange;
-                    }
-                }
-            }
-        }
     }
 
     private bool groundedNormal = true;//true if grounded to the direction of gravity
@@ -338,7 +315,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (Grounded)
                 {
-                    checkGroundedState();
+                    updateGroundedState();
                     shouldGrantGIT = false;
                     GravityImmune = true;
                 }
@@ -492,7 +469,7 @@ public class PlayerController : MonoBehaviour
 
         //Check grounded state
         //have to check it again because state has changed
-        checkGroundedState();
+        updateGroundedState();
 
         //reset the ground check trigger's offset to zero,
         //so Unity knows to trigger OnTriggerEnter2D() again in certain cases
@@ -640,9 +617,26 @@ public class PlayerController : MonoBehaviour
     }
     public OnTeleport onPlayTeleportSound;
 
-    private void checkGroundedState()
+    private void updateGroundedState()
     {
-        Grounded = Grounded;
+        if (Grounded)
+        {
+            airPorts = 0;
+            if (range < baseRange)
+            {
+                Range = baseRange;
+            }
+        }
+        else
+        {
+            if (airPorts >= maxAirPorts)
+            {
+                if (range > exhaustRange)
+                {
+                    Range = exhaustRange;
+                }
+            }
+        }
     }
 
     public bool isGroundedInDirection(Vector3 direction)
