@@ -254,8 +254,6 @@ public class PlayerController : MonoBehaviour
         //Estimate the halfWidth
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
         halfWidth = (extents.x + extents.y) / 2;
-        //
-        onPreTeleport += canTeleport;
         Range = baseRange;
         updateGroundTrigger();
     }
@@ -386,24 +384,6 @@ public class PlayerController : MonoBehaviour
         float angle = rotations[newRotationIndex] + gravityRot;
         angle = Utility.loopValue(angle, 0, 360);
         return angle;
-    }
-    /// <summary>
-    /// Checks to make sure teleport is not on cooldown
-    /// </summary>
-    /// <param name="oldPos"></param>
-    /// <param name="newPOs"></param>
-    /// <param name="triedPos"></param>
-    /// <returns></returns>
-    private bool canTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
-    {
-        if (!Grounded)
-        {
-            if (!TeleportReady)
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     /// <summary>
@@ -917,8 +897,8 @@ public class PlayerController : MonoBehaviour
         }
         Vector3 prevPos = transform.position;
         Vector3 newPos = findTeleportablePosition(tapPos);
-        bool continueTeleport = true;
-        if (onPreTeleport != null)
+        bool continueTeleport = TeleportReady;
+        if (continueTeleport && onPreTeleport != null)
         {
             //Check each onPreTeleport delegate
             foreach (OnPreTeleport opt in onPreTeleport.GetInvocationList())
