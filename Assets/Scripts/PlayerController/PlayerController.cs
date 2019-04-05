@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
     public int AirPortsUsed
     {
         get { return airPorts; }
-        set { airPorts = Mathf.Clamp(airPorts, 0, maxAirPorts); }
+        set { airPorts = Mathf.Clamp(value, 0, maxAirPorts); }
     }
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
@@ -399,9 +399,9 @@ public class PlayerController : MonoBehaviour
         //Update mid-air cooldowns
         if (!Grounded)
         {
-            airPorts++;
+            AirPortsUsed++;
         }
-        if (airPorts >= maxAirPorts)
+        if (AirPortsUsed >= maxAirPorts)
         {
             //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
@@ -621,7 +621,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Grounded)
         {
-            airPorts = 0;
+            AirPortsUsed = 0;
             if (range < baseRange)
             {
                 Range = baseRange;
@@ -629,7 +629,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (airPorts >= maxAirPorts)
+            if (AirPortsUsed >= maxAirPorts)
             {
                 if (range > exhaustRange)
                 {
