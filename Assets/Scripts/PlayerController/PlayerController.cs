@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float baseRange = 3;//the range after touching the ground
     public float exhaustRange = 1;//the range after teleporting into the air (and being exhausted)
     public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
-    public float exhaustCoolDownTime = 0.5f;//the cool down time (sec) for teleporting while exhausted
+    public float baseExhaustCoolDownTime = 0.5f;//the base cool down time (sec) for teleporting while exhausted
     [Range(0, 1)]
     public float gravityImmuneDuration = 0.2f;//amount of time (sec) Merky is immune to gravity after landing
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     private float gravityImmuneStartTime;//when Merky last became immune to gravity
     private float lastAutoTeleportTime;//the last time that Merky auto teleported using the hold gesture
 
-    private float teleportTime;//the earliest time that Merky can teleport
+    private float exhaustCoolDownTime;//the current cool down time (sec) for teleporting while exhausted
+    private float teleportTime;//the earliest time that Merky can teleport. To be set only in TeleportReady
     /// <summary>
     /// Returns whether the teleport ability is ready
     /// True: teleport is able to be used
@@ -34,6 +35,18 @@ public class PlayerController : MonoBehaviour
     public bool TeleportReady
     {
         get { return Time.time >= teleportTime; }
+        set
+        {
+            bool teleportReady = value;
+            if (teleportReady)
+            {
+                teleportTime = 0;
+            }
+            else
+            {
+                teleportTime = Time.time + exhaustCoolDownTime;
+            }
+        }
     }
 
     //
@@ -406,7 +419,8 @@ public class PlayerController : MonoBehaviour
             //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
             float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -Gravity.Gravity.normalized);
-            teleportTime = Time.time + exhaustCoolDownTime * upAmount;
+            exhaustCoolDownTime = baseExhaustCoolDownTime * upAmount;
+            TeleportReady = false;
         }
 
         //Store old and new positions
