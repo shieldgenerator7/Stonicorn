@@ -816,24 +816,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void showPlayerGhosts()
+    /// <summary>
+    /// Shows the game state representations
+    /// </summary>
+    public void showPlayerGhosts(bool show)
     {
-        bool intact = Managers.Player.HardMaterial.isIntact();
-        foreach (GameState gs in gameStates)
+        //If the game state representations should be shown,
+        if (show)
         {
-            //Don't include last game state if merky is shattered
-            if (intact || gs.id != chosenId)
+            bool intact = Managers.Player.HardMaterial.isIntact();
+            //Loop through all game states
+            foreach (GameState gs in gameStates)
             {
-                //Otherwise, show the game state's representation
-                gs.showRepresentation(chosenId);
+                //Don't include last game state if merky is shattered
+                if (intact || gs.id != chosenId)
+                {
+                    //Otherwise, show the game state's representation
+                    gs.showRepresentation(chosenId);
+                }
             }
         }
-    }
-    public void hidePlayerGhosts()
-    {
-        foreach (GameState gs in gameStates)
+        //Else, they should be hidden
+        else
         {
-            gs.hideRepresentation();
+            //Loop through all game states
+            foreach (GameState gs in gameStates)
+            {
+                //And hide their representations
+                gs.hideRepresentation();
+            }
         }
     }
     /// <summary>

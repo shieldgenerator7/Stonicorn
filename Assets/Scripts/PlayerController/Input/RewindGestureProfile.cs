@@ -5,11 +5,11 @@ public class RewindGestureProfile : GestureProfile
 {
     public override void activate()
     {
-        Managers.Game.showPlayerGhosts();
+        Managers.Game.showPlayerGhosts(true);
     }
     public override void deactivate()
     {
-        Managers.Game.hidePlayerGhosts();
+        Managers.Game.showPlayerGhosts(false);
     }
     public override void processTapGesture(Vector3 curMPWorld)
     {
