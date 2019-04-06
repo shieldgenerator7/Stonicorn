@@ -74,15 +74,16 @@ public class ForceBoostAbility : PlayerAbility
         //Else
         else
         {
+            float speed = playerController.Speed;
             //Divert Merky's course
             //If should rotate "left"
             if (Vector2.SignedAngle(-rb2d.velocity, surfaceNormal) < 0)
             {
-                rb2d.velocity = surfaceNormal.normalized.PerpendicularRight() * rb2d.velocity.magnitude;
+                rb2d.velocity = surfaceNormal.normalized.PerpendicularRight() * speed;
             }
             else
             {
-                rb2d.velocity = surfaceNormal.normalized.PerpendicularLeft() * rb2d.velocity.magnitude;
+                rb2d.velocity = surfaceNormal.normalized.PerpendicularLeft() * speed;
             }
         }
     }
