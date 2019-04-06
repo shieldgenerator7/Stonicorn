@@ -4,7 +4,6 @@ public class ForceBoostAbility : PlayerAbility
 {//2019-04-06: copied from ForceTeleportAbility
     public GameObject forceRangeIndicator;//prefab
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
-    //private GameObject frii;//"force range indicator instance"
     public GameObject explosionEffect;
     public GameObject afterWindPrefab;//the prefab for the temporary windzone this ability creates
 
@@ -14,12 +13,13 @@ public class ForceBoostAbility : PlayerAbility
     public float maxSpeedBoost = 2;//how much force to give Merky when teleporting in a direction
     public float wakelessSpeedBoostMultiplier = 3;//how much to multiply the speed boost by when there's no wake
 
-    public float currentCharge = 0;//how much charge it has
+    public float Charge
+    {
+        get { return playerController.Speed; }
+    }
     public float chargeIncrement = 0.1f;//how much to increment the charge by each teleport
     public float maxCharge = 1;//the maximum amount of charge possible
-    public float minChargeDecayDelay = 0.25f;//how much time (sec) of idleness before the charge starts decreasing
-    public float maxChargeDecayDelay = 2.0f;
-    public float chargeDecayRate = 0.4f;//how much charge decays per sec of idleness (after chargeDecayDelay)
+
     public float minWindDuration = 0.3f;
     public float maxWindDuration = 0.5f;
 
@@ -47,28 +47,22 @@ public class ForceBoostAbility : PlayerAbility
 
     private void Update()
     {
-        if (currentCharge > 0)
+        if (Charge > 0)
         {
-            processHoldGesture(transform.position, currentCharge, false);
-            if (Time.time > lastTeleportTime + minChargeDecayDelay
-                && Time.time > lastTeleportTime + minChargeDecayDelay + ((maxChargeDecayDelay - minChargeDecayDelay) * currentCharge / maxCharge))
-            {
-                currentCharge -= chargeDecayRate * Time.deltaTime;
-                if (currentCharge < 0)
-                {
-                    currentCharge = 0;
-                    dropHoldGesture();
-                }
-            }
+            processHoldGesture(transform.position, Charge, false);
+        }
+        if (Charge <= 0)
+        {
+            dropHoldGesture();
         }
     }
 
     public void giveSpeedBoost(Vector2 oldPos, Vector2 newPos)
     {
-        if (currentCharge > chargeIncrement)
+        if (Charge > 0)
         {
             float magnitude = (newPos - oldPos).magnitude;
-            Vector2 force = (newPos - oldPos) * maxSpeedBoost * (currentCharge - chargeIncrement) * magnitude / playerController.baseRange;
+            Vector2 force = (newPos - oldPos) * maxSpeedBoost * (Charge) * magnitude / playerController.baseRange;
             //If the player uses Long Teleport, make a wake
             if (magnitude > playerController.baseRange + 0.5f)
             {
@@ -78,7 +72,7 @@ public class ForceBoostAbility : PlayerAbility
                 afterWind.transform.localScale = new Vector3(1, magnitude, 1);
                 AfterWind aw = afterWind.GetComponent<AfterWind>();
                 aw.windVector = force;
-                aw.fadeOutDuration = minWindDuration + ((maxWindDuration - minWindDuration) * currentCharge / maxCharge);
+                aw.fadeOutDuration = minWindDuration + ((maxWindDuration - minWindDuration) * Charge / maxCharge);
                 //Update Stats
                 GameStatistics.addOne("ForceChargeWake");
             }
@@ -104,22 +98,18 @@ public class ForceBoostAbility : PlayerAbility
     public void charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
         Vector2 explodePos = triedPos;
-        float range = getRangeFromCharge(currentCharge);
+        float range = getRangeFromCharge(Charge);
         //If touch position is outside visible blast range, charge;
         if ((triedPos - oldPos).sqrMagnitude > range * range)
         {
-            if (Mathf.Approximately(currentCharge, 0))
+            if (Mathf.Approximately(Charge, 0))
             {
                 //The first teleport will only make the charge increase a small amount, no matter how far it was
-                currentCharge += chargeIncrement;
+                rb2d.AddForce((newPos - oldPos) * chargeIncrement);
             }
             else
             {
-                currentCharge += chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange;
-            }
-            if (currentCharge > maxCharge)
-            {
-                currentCharge = maxCharge;
+                rb2d.AddForce((newPos - oldPos) * chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange);
             }
             lastTeleportTime = Time.time;
             //return true;
@@ -127,8 +117,7 @@ public class ForceBoostAbility : PlayerAbility
         //...else blast
         else
         {
-            processHoldGesture(explodePos, Mathf.Max(currentCharge, chargeIncrement), true);
-            currentCharge = 0;
+            processHoldGesture(explodePos, Mathf.Max(Charge, chargeIncrement), true);
             dropHoldGesture();
             //return false;
         }
