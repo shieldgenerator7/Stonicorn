@@ -15,8 +15,13 @@ public class ForceBoostAbility : PlayerAbility
 
     public float Charge
     {
-        get { return playerController.Speed; }
+        get {
+            float charge = playerController.Speed * chargeClutch;
+            charge = Mathf.Clamp(charge, 0, maxCharge);
+            return charge;
+        }
     }
+    public float chargeClutch = 0.2f;//what percentage of the speed converts to charge
     public float chargeIncrement = 0.1f;//how much to increment the charge by each teleport
     public float maxCharge = 1;//the maximum amount of charge possible
 
