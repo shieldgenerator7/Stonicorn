@@ -177,17 +177,6 @@ public class GameManager : MonoBehaviour
         Managers.Game.addObjectImpl(go);
     }
     /// <summary>
-    /// Adds all the given objects that have state to save
-    /// </summary>
-    /// <param name="list">List of GameObjects to add</param>
-    public void addAll(List<GameObject> list)
-    {
-        foreach (GameObject go in list)
-        {
-            addObjectImpl(go);
-        }
-    }
-    /// <summary>
     /// Adds an object to the list, if it passes all tests
     /// </summary>
     /// <param name="go">The GameObject to add to the list</param>
