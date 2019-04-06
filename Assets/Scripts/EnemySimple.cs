@@ -31,7 +31,6 @@ public class EnemySimple : MonoBehaviour
     private HardMaterial hm;
     private BoxCollider2D groundCollider;//collider used to see if the enemy is touching the ground
     private GravityAccepter gravity;
-    private GameObject player;
 
     // Use this for initialization
     void Start()
@@ -42,16 +41,15 @@ public class EnemySimple : MonoBehaviour
         groundCollider = GetComponent<BoxCollider2D>();
         gravity = GetComponent<GravityAccepter>();
         direction = Utility.PerpendicularLeft(transform.up).normalized;
-        player = GameManager.getPlayerObject();
         direction = transform.right;
     }
 
     private void Update()
     {
         losToPlayer = false;
-        if ((player.transform.position - transform.position).sqrMagnitude <= sightRange * sightRange)
+        if (Managers.Player.transform.position.inRange(transform.position, sightRange))
         {
-            losToPlayer = Utility.lineOfSight(gameObject, player);
+            losToPlayer = gameObject.lineOfSight(Managers.Player.gameObject);
         }
         if (losToPlayer)
         {
@@ -67,7 +65,7 @@ public class EnemySimple : MonoBehaviour
                 fearParticles.Stop();
             }
         }
-        if (rb2d.velocity.magnitude < 0.1f)
+        if (!rb2d.isMoving())
         {
             hm.addIntegrity(healsPerSecond * Time.deltaTime);
             if (hm.getIntegrity() == hm.maxIntegrity)
@@ -213,7 +211,8 @@ public class EnemySimple : MonoBehaviour
         Vector2 offset = transform.up.normalized * senseVerticalOffset;
         Debug.DrawLine((Vector2)transform.position + offset + ahead, (Vector2)transform.position + offset + senseDir, Color.green);
         Utility.RaycastAnswer answer = Utility.RaycastAll((Vector2)transform.position + offset + ahead, length, distance);
-        for (int i = 0; i < answer.count; i++){
+        for (int i = 0; i < answer.count; i++)
+        {
             RaycastHit2D rch2d = answer.rch2ds[i];
             if (!rch2d.collider.isTrigger)
             {

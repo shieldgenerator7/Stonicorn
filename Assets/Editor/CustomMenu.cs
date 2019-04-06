@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class CustomMenu
 {
-    [MenuItem("SG7/Editor/Change HideableArea to NonTeleportableArea")]
+    [MenuItem("SG7/Editor/Refactor/Change HideableArea to NonTeleportableArea")]
     public static void changeTag()
     {
         for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -32,7 +32,7 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Call Merky %#`")]
     public static void callMerky()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag(GameManager.playerTag);
+        GameObject playerObject = Managers.Player.gameObject;
         if (GameObject.FindObjectOfType<RulerDisplayer>())
         {
             playerObject.transform.position = RulerDisplayer.currentMousePos;
@@ -135,36 +135,7 @@ public class CustomMenu
             }
         }
     }
-
-    [MenuItem("SG7/Runtime/Save Game State %e")]
-    public static void saveGameState()
-    {
-        UnityEngine.Debug.Log("SAVED");
-        GameManager.Save();
-    }
-
-    [MenuItem("SG7/Runtime/Load Game State %#e")]
-    public static void loadGameState()
-    {
-        UnityEngine.Debug.Log("LOADED");
-        GameManager.LoadState();
-    }
-
-    [MenuItem("SG7/Runtime/Reload Game %#r")]
-    public static void reloadGame()
-    {
-        GameManager.resetGame();
-    }
-
-    [MenuItem("SG7/Runtime/Activate All Checkpoints &c")]
-    public static void activateAllCheckpoints()
-    {
-        foreach (CheckPointChecker cpc in GameObject.FindObjectsOfType<CheckPointChecker>())
-        {
-            cpc.activate();
-        }
-    }
-
+    
     [MenuItem("SG7/Build/Build Windows %w")]
     public static void buildWindows()
     {

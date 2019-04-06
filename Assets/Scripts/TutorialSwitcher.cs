@@ -10,7 +10,7 @@ public class TutorialSwitcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.GestureManager.onInputDeviceSwitched += updateLastUsedInputDevice;
+        Managers.Gesture.onInputDeviceSwitched += updateLastUsedInputDevice;
         if (inputDevice == InputDeviceMethod.NONE)
         {
             throw new UnityException("TutorialSwitcher (" + name + ") has invalid InputDeviceMethod: " + inputDevice+"!");

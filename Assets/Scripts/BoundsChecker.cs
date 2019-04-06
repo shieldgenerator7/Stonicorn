@@ -13,7 +13,7 @@ public class BoundsChecker : MonoBehaviour
     {
         if (resetPoint == Vector3.zero)
         {
-            resetPoint = Utility.getCollectiveColliderCenter(gameObject);
+            resetPoint = gameObject.getCollectiveColliderCenter();
         }
         //Error checking
         foreach (Collider2D coll2d in GetComponents<Collider2D>())
@@ -30,9 +30,9 @@ public class BoundsChecker : MonoBehaviour
         if (enabled)
         {
             GameObject collGO = coll.gameObject;
-            if (rewindTimeForPlayer && collGO.CompareTag(GameManager.playerTag))
+            if (rewindTimeForPlayer && collGO.isPlayer())
             {
-                GameManager.RewindToStart();
+                Managers.Game.RewindToStart();
             }
             else if (loopSpace)
             {

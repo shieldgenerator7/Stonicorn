@@ -17,14 +17,13 @@ public class GameState
         {
             if (representation == null)
             {
-                representation = GameObject.Instantiate(GameManager.getPlayerGhostPrefab());
+                representation = GameObject.Instantiate(Managers.Game.playerGhostPrefab);
                 representation.transform.position = merky.position;
                 representation.transform.localScale = merky.localScale;
                 representation.transform.rotation = merky.rotation;
             }
             return representation;
         }
-        private set { }
     }
 
     //Instantiation
@@ -33,19 +32,15 @@ public class GameState
         id = nextid;
         nextid++;
     }
-    public GameState(List<GameObject> list) : this()
+    public GameState(ICollection<GameObject> list) : this()
     {
         //Object States
         foreach (GameObject go in list)
         {
-            if (go == null)
-            {
-                continue;
-            }
             ObjectState os = new ObjectState(go);
             os.saveState();
             states.Add(os);
-            if (go.name.Equals("merky"))
+            if (go.name == "merky")
             {
                 merky = os;
             }
@@ -63,7 +58,7 @@ public class GameState
     {
         foreach (ObjectState os in states)
         {
-            if (os.sceneName.Equals(go.scene.name) && os.objectName.Equals(go.name))
+            if (os.sceneName == go.scene.name && os.objectName == go.name)
             {
                 os.loadState();
                 return true;
@@ -92,7 +87,7 @@ public class GameState
     {
         if (go == null)
         {
-            return false;
+            throw new System.ArgumentNullException("GameState.hasGameObject() cannot accept null for go! go: " + go);
         }
         foreach (ObjectState os in states)
         {

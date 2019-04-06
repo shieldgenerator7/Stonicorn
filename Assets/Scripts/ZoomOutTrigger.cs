@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZoomOutTrigger : MemoryMonoBehaviour {
+public class ZoomOutTrigger : MemoryMonoBehaviour
+{
 
     //Settings
-    public int scalePoint = (int)CameraController.CameraScalePoints.DEFAULT;
+    public CameraController.CameraScalePoints scalePoint = CameraController.CameraScalePoints.DEFAULT;
     public bool triggersOnce = true;//true if it only triggers once
     //State
     public bool triggered = false;//whether or this has zoomed out the camera
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == GameManager.playerTag && !GameManager.isRewinding())
+        if (coll.gameObject.isPlayer())
         {
             trigger();
         }
@@ -20,16 +21,16 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
 
     public virtual void trigger()
     {
-        var camCtr = Camera.main.GetComponent<CameraController>();
-        camCtr.ZoomLevel = camCtr.scalePointToZoomLevel(scalePoint);//zoom out
-        if (scalePoint == (int)CameraController.CameraScalePoints.TIMEREWIND)
+        CameraController camCtr = Managers.Camera;
+        camCtr.ZoomLevel = camCtr.toZoomLevel(scalePoint);//zoom out
+        if (scalePoint == CameraController.CameraScalePoints.TIMEREWIND)
         {
-            FindObjectOfType<GestureManager>().switchGestureProfile("Rewind");
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
         }
         if (triggersOnce)
         {
             triggered = true;
-            GameManager.saveMemory(this);
+            Managers.Game.saveMemory(this);
             Destroy(gameObject);
         }
     }
@@ -45,7 +46,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
             if (triggersOnce)
             {
                 triggered = true;
-                GameManager.saveMemory(this);
+                Managers.Game.saveMemory(this);
                 Destroy(gameObject);
             }
         }

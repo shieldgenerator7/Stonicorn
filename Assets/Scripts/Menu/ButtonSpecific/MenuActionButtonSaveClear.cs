@@ -9,6 +9,6 @@ public class MenuActionButtonSaveClear : MenuActionButton
         if (ES2.Exists("merky.txt")){
             ES2.Delete("merky.txt");
         }
-        GameManager.resetGame(false);
+        Managers.Game.resetGame(false);
     }
 }

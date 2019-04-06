@@ -5,32 +5,22 @@ public class RewindGestureProfile : GestureProfile
 {
     public override void activate()
     {
-        GameManager.showPlayerGhosts();
+        Managers.Game.showPlayerGhosts(true);
     }
     public override void deactivate()
     {
-        gm.hidePlayerGhosts();
+        Managers.Game.showPlayerGhosts(false);
     }
     public override void processTapGesture(Vector3 curMPWorld)
     {
-        gm.processTapGesture(curMPWorld);
+        Managers.Game.processTapGesture(curMPWorld);
     }
     public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {
         if (finished)
         {
-            gm.processTapGesture(curMPWorld);
-            GameObject.FindObjectOfType<GestureManager>().adjustHoldThreshold(holdTime);
-        }
-    }
-    public override void processZoomLevelChange(float zoomLevel)
-    {
-        camController.ZoomLevel = zoomLevel;
-        //GestureProfile switcher
-        if (zoomLevel <= camController.scalePointToZoomLevel((int)CameraController.CameraScalePoints.TIMEREWIND - 1)
-            && plrController.isIntact())
-        {
-            gestureManager.switchGestureProfile("Main");
+            Managers.Game.processTapGesture(curMPWorld);
+            Managers.Gesture.adjustHoldThreshold(holdTime);
         }
     }
 }

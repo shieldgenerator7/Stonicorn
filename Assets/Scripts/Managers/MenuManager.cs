@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -8,8 +9,6 @@ public class MenuManager : MonoBehaviour
     public MenuFrame startFrame;
 
     public List<MenuFrame> frames = new List<MenuFrame>();
-
-    private CameraController cam;
 
     private void Start()
     {
@@ -20,16 +19,15 @@ public class MenuManager : MonoBehaviour
                 frames.Add(mf);
             }
         }
-        GameObject player = GameManager.getPlayerObject();
+        GameObject player = Managers.Player.gameObject;
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
         startFrame.frameCamera();
-        cam = FindObjectOfType<CameraController>();
     }
 
     private void Update()
     {
-        cam.setRotation(GameManager.getPlayerObject().transform.up);
+        Managers.Camera.setRotation(Managers.Player.transform.up);
     }
 
     public void processTapGesture(Vector3 pos)
@@ -58,8 +56,20 @@ public class MenuManager : MonoBehaviour
         return false;
     }
 
-    public static bool isMenuOpen()
+    public static bool Open
     {
-        return FindObjectOfType<MenuManager>() != null;
+        get { return Managers.Menu != null; }
+        set
+        {
+            bool show = value;
+            if (show)
+            {
+                LoadingScreen.LoadScene("MainMenu");
+            }
+            else
+            {
+                SceneManager.UnloadSceneAsync("MainMenu");
+            }
+        }
     }
 }

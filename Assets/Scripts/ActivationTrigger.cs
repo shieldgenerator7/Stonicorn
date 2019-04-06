@@ -80,11 +80,6 @@ public class ActivationTrigger : MonoBehaviour
     private bool cameraPositionActive = false;
     private static Dictionary<string, bool> tutorialTriggerStates = new Dictionary<string, bool>();
 
-    //
-    // Components
-    //
-    private CameraController camController;
-
     private void Start()
     {
         //Trigger name set up
@@ -101,18 +96,13 @@ public class ActivationTrigger : MonoBehaviour
             || zoomLevelExitAction != ActivationOptions.DO_NOTHING
             || triggerRequireZoom)
         {
-            camController = FindObjectOfType<CameraController>();
-            camController.onZoomLevelChanged += OnCameraZoomLevelChanged;
-            zoomLevelActive = scalePointInRange(camController.ZoomLevel);
+            Managers.Camera.onZoomLevelChanged += OnCameraZoomLevelChanged;
+            zoomLevelActive = scalePointInRange(Managers.Camera.ZoomLevel);
         }
         //Camera position trigger set up
         if (cameraPositionCollider != null)
         {
-            if (camController == null)
-            {
-                camController = FindObjectOfType<CameraController>();
-            }
-            camController.onOffsetChange += OnCameraOffsetChanged;
+            Managers.Camera.onOffsetChange += OnCameraOffsetChanged;
             cameraPositionActive = cameraInArea();
         }
         //Error checking
@@ -142,7 +132,7 @@ public class ActivationTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
+        if (!forPlayerOnly || coll.gameObject.isPlayer())
         {
             if (!triggerRequireZoom || zoomLevelActive)
             {
@@ -156,7 +146,7 @@ public class ActivationTrigger : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D coll)
     {
-        if (!forPlayerOnly || coll.gameObject.CompareTag("Player"))
+        if (!forPlayerOnly || coll.gameObject.isPlayer())
         {
             if (!triggerRequireZoom || zoomLevelActive)
             {
@@ -198,8 +188,8 @@ public class ActivationTrigger : MonoBehaviour
 
     bool scalePointInRange(float zoomLevel)
     {
-        float minZoom = (minZoomScalePoint < 0) ? -1 : camController.scalePointToZoomLevel((int)minZoomScalePoint);
-        float maxZoom = (maxZoomScalePoint < 0) ? -1 : camController.scalePointToZoomLevel((int)maxZoomScalePoint);
+        float minZoom = (minZoomScalePoint < 0) ? -1 : Managers.Camera.toZoomLevel(minZoomScalePoint);
+        float maxZoom = (maxZoomScalePoint < 0) ? -1 : Managers.Camera.toZoomLevel(maxZoomScalePoint);
         return (
                 minZoomScalePoint < 0
                 || (minZoomClusivity == ClusivityOption.INCLUSIVE &&
@@ -250,7 +240,7 @@ public class ActivationTrigger : MonoBehaviour
         }
     }
 
-    void OnCameraOffsetChanged()
+    void OnCameraOffsetChanged(Vector3 offset)
     {
         if (!cameraPositionRequireTrigger || triggerActive)
         {
@@ -267,8 +257,8 @@ public class ActivationTrigger : MonoBehaviour
                 if (cameraSnapAnchor != null)
                 {
                     Vector3 newCamPos = cameraSnapAnchor.transform.position;
-                    newCamPos.z = camController.transform.position.z;
-                    camController.transform.position = newCamPos;
+                    newCamPos.z = Camera.main.transform.position.z;
+                    Camera.main.transform.position = newCamPos;
                 }
             }
             else
@@ -288,6 +278,6 @@ public class ActivationTrigger : MonoBehaviour
         {
             return false;
         }
-        return cameraPositionCollider.OverlapPoint((Vector2)camController.transform.position);
+        return cameraPositionCollider.OverlapPoint(Camera.main.transform.position);
     }
 }

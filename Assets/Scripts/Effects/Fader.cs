@@ -76,7 +76,7 @@ public class Fader : MonoBehaviour
                     checkDestroy(sr.vertexColor.a);
                     Transform tf = sr.gameObject.transform;
                     float variance = 0.075f;
-                    tf.position = tf.position + Utility.PerpendicularRight(tf.up).normalized * Random.Range(-variance, variance);
+                    tf.position = tf.position + tf.up.PerpendicularRight().normalized * Random.Range(-variance, variance);
                 }
                 if (o is SpriteShapeRenderer)
                 {//2019-01-12: copied from section for SpriteRenderer

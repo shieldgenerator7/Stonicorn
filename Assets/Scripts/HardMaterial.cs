@@ -44,17 +44,8 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
         }
     }
 
-    //void Update()
-    //{
-    //    setIntegrity(integrity);
-    //}
-
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (GameManager.isRewinding())
-        {
-            return;//don't process collisions while rewinding
-        }
         ContactPoint2D[] cp2ds = new ContactPoint2D[1];
         coll.GetContacts(cp2ds);
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
@@ -69,7 +60,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             }
             //Play Crack Sound
             float hitPercentage = hitHardness * 100 / maxIntegrity;
-            EffectManager.collisionEffect(cp2ds[0].point, hitPercentage);
+            Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
             for (int i = crackSounds.Count - 1; i >= 0; i--)
             {
                 float crackThreshold = 100 / (crackSounds.Count + 1 - i) - 20;
@@ -93,7 +84,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                 float force = rb2d.velocity.magnitude * rb2d.mass;
                 float damage = checkForce(force);
                 float hitPercentage = damage * 100 / maxIntegrity;
-                EffectManager.collisionEffect(cp2ds[0].point, hitPercentage);
+                Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
             }
         }
     }
@@ -115,7 +106,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     }
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {
-        return Utility.distanceToObject(explosionPos, gameObject);
+        return explosionPos.distanceToObject(gameObject);
     }
 
     public bool isIntact()
@@ -139,13 +130,13 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             //Forgotten Objects
             if (alreadyBroken || !gameObject.activeInHierarchy || oldIntegrity < 0)
             {
-                GameManager.saveForgottenObject(gameObject, false);
+                Managers.Game.saveForgottenObject(gameObject, false);
             }
         }
         else if (oldIntegrity > 0 || gameObject.activeInHierarchy)
         {
             bool shouldRefresh = false;
-            if (!alreadyBroken && !GameManager.isRewinding())
+            if (!alreadyBroken && !Managers.Game.Rewinding)
             {
                 if (crackedPrefab != null)
                 {
@@ -171,14 +162,23 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                         t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
                         //Sprite Renderer Copying
                         SpriteRenderer sr = t.gameObject.GetComponent<SpriteRenderer>();
-                        Color color = origSR.color;
-                        if (!crackedOverlay)
+                        try
                         {
-                            color.a = 1;
+                            Color color = origSR.color;
+                            if (!crackedOverlay)
+                            {
+                                color.a = 1;
+                            }
+                            sr.color = color;
+                            sr.sortingLayerID = origSR.sortingLayerID;
+                            sr.sortingOrder = origSR.sortingOrder;
                         }
-                        sr.color = color;
-                        sr.sortingLayerID = origSR.sortingLayerID;
-                        sr.sortingOrder = origSR.sortingOrder;
+                        catch (MissingComponentException mce)
+                        {
+                            throw new MissingComponentException(
+                                "HardMaterial (" + gameObject.name + ") broken prefab piece (" + t.gameObject.name + ") is missing a SpriteRenderer: sr: " + sr,
+                                mce);
+                        }
                         //Hard Material Copying
                         HardMaterial hm = t.gameObject.GetComponent<HardMaterial>();
                         if (hm)
@@ -211,14 +211,14 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             }
             if (crackedPrefab != null || disappearsIfNoBrokenPrefab)
             {
-                GameManager.saveForgottenObject(gameObject);
+                Managers.Game.saveForgottenObject(gameObject);
                 shouldRefresh = true;
             }
-            if (!GameManager.isRewinding())
+            if (!Managers.Game.Rewinding)
             {
                 if (shouldRefresh)
                 {
-                    GameManager.refresh();
+                    Managers.Game.refreshGameObjects();
                 }
                 if (shattered != null)
                 {

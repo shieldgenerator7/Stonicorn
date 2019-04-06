@@ -14,9 +14,9 @@ public class SavableObject
     public bool isSpawnedObject;//whether this SO's game object was spawned during run time
     public bool isSpawnedScript;//whether this SO's script was attached to its game object during run time
     public string scriptType;//the type of script that saved this SavableObject
-    public string prefabName="";//if isSpawnedObject, what the prefab name is. Prefab must be in the Resources folder
+    public string prefabName = "";//if isSpawnedObject, what the prefab name is. Prefab must be in the Resources folder
     public string spawnTag = "";//if isSpawnedObject, the unique tag applied to it to give it a unique name
-    
+
     public SavableObject() { }
 
     /// <summary>
@@ -30,7 +30,7 @@ public class SavableObject
         this.scriptType = smb.GetType().Name;
         if (pairs.Length % 2 != 0)
         {
-            throw new UnityException("Pairs has an odd amount of parameters! pairs.Length: "+pairs.Length);
+            throw new UnityException("Pairs has an odd amount of parameters! pairs.Length: " + pairs.Length);
         }
         for (int i = 0; i < pairs.Length; i += 2)
         {
@@ -56,7 +56,7 @@ public class SavableObject
     /// <returns></returns>
     public GameObject spawnObject()
     {
-        GameObject prefab = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/"+prefabName));
+        GameObject prefab = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/" + prefabName));
         if (spawnTag != null && spawnTag != "")
         {
             prefab.name += spawnTag;
@@ -86,20 +86,14 @@ public class SavableObject
         {
             case "GestureManager":
                 return typeof(GestureManager);
-            case "Rigidbody2DLock":
-                return typeof(Rigidbody2DLock);
             case "AfterWind":
                 return typeof(AfterWind);
             case "StickyPadChecker":
                 return typeof(StickyPadChecker);
-            case "ShieldBubbleController":
-                return typeof(ShieldBubbleController);
             case "ElectricFieldController":
                 return typeof(ElectricFieldController);
             case "PowerConduit":
                 return typeof(PowerConduit);
-            case "ExplosionOrbController":
-                return typeof(ExplosionOrbController);
             case "HardMaterial":
                 return typeof(HardMaterial);
             case "CrackedPiece":
@@ -115,7 +109,11 @@ public class SavableObject
             case "GameStatistics":
                 return typeof(GameStatistics);
             default:
-                throw new KeyNotFoundException("The type name \"" + typeName + "\" was not found. It might not be a SavableMonoBehaviour or might not exist.");
+                throw new KeyNotFoundException(
+                    "The type name \"" + typeName + "\" was not found. "
+                    + "It might not be a SavableMonoBehaviour or might not exist. "
+                    + "You might have to add it to this list."
+                    );
         }
     }
 

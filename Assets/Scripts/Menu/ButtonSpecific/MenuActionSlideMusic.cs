@@ -6,11 +6,11 @@ public class MenuActionSlideMusic : MenuActionSlide
 {
     public override void valueAdjusted(float value)
     {
-        FindObjectOfType<MusicManager>().Volume = value;
+        Managers.Music.Volume = value;
     }
 
     public override float getCurrentValue()
     {
-        return FindObjectOfType<MusicManager>().Volume;
+        return Managers.Music.Volume;
     }
 }

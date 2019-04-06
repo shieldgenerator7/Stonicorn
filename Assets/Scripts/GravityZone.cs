@@ -29,7 +29,7 @@ public class GravityZone : MonoBehaviour
                 if (!tenants.Contains(rb2d))
                 {
                     tenants.Add(rb2d);
-                    if (coll.gameObject == GameManager.getPlayerObject())
+                    if (coll.gameObject.isPlayer())
                     {
                         playerIsTenant = true;
                     }
@@ -45,7 +45,7 @@ public class GravityZone : MonoBehaviour
             if (rb2d != null)
             {
                 tenants.Remove(coll.gameObject.GetComponent<Rigidbody2D>());
-                if (coll.gameObject == GameManager.getPlayerObject())
+                if (coll.gameObject.isPlayer())
                 {
                     playerIsTenant = false;
                 }
@@ -57,25 +57,21 @@ public class GravityZone : MonoBehaviour
         //Check to see if the camera rotation needs updated
         if (mainGravityZone
             && playerIsTenant
-            && !MenuManager.isMenuOpen())
+            && !MenuManager.Open)
         {
             Vector3 transformUp = transform.up;
             if (radialGravity)
             {
-                transformUp = GameManager.getPlayerObject().transform.position - transform.position;
+                transformUp = Managers.Player.transform.position - transform.position;
             }
-            if (Camera.main.transform.up != transformUp)
+            if (Managers.Camera.transform.up != transformUp)
             {
-                Camera.main.GetComponent<CameraController>().setRotation(transformUp);
+                Managers.Camera.setRotation(transformUp);
             }
         }
     }
     void FixedUpdate()
     {
-        if (GameManager.isRewinding())
-        {
-            return;//don't do anything if the time is rewinding
-        }
         bool cleanNeeded = false;
         foreach (Rigidbody2D rb2d in tenants)
         {

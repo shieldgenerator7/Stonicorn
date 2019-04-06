@@ -48,7 +48,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
     void Update()
     {
-        if (!GameManager.isRewinding())
+        if (!Managers.Game.Rewinding)
         {
             if (Time.time > lastDisruptTime + activationDelay)
             {
@@ -63,6 +63,11 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
     public void processWaitGesture(float waitTime)
     {
+        if (waitTime <= Time.deltaTime)
+        {
+            //Update Stats
+            GameStatistics.addOne("ElectricField");
+        }
         if (currentElectricField == null)
         {
             //Find one that he's currently in
@@ -87,6 +92,8 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
                 cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
                 cEFController.maxForceResistance = maxForceResistance;
                 newlyCreatedEF = true;
+                //Update Stats
+                GameStatistics.addOne("ElectricFieldField");
             }
         }
         if (newlyCreatedEF)
@@ -144,6 +151,6 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
     }
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {
-        return Utility.distanceToObject(explosionPos, gameObject);
+        return explosionPos.distanceToObject(gameObject);
     }
 }
