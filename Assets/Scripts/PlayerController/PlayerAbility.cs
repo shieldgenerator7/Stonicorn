@@ -33,7 +33,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("PlayerAbility (" + this.GetType() + ") on " + name + " does not have a particle effect! effectParticleController: " + effectParticleController);
+            Debug.LogWarning("PlayerAbility (" + this.GetType() + ") on " + gameObject.getKey() + " does not have a particle effect! effectParticleController: " + effectParticleController);
         }
         if (soundEffect)
         {
@@ -44,6 +44,12 @@ public class PlayerAbility : MonoBehaviour
                     playerController.onPlayTeleportSound += playTeleportSound;
                 }
             }
+        }
+        if (!abilityIndicatorParticleController)
+        {
+            throw new System.NullReferenceException(
+                "PlayerAbility (" + this.GetType() + ") on " + gameObject.getKey()
+                + " does not have a abilityIndicatorParticleController! abilityIndicatorParticleController: " + abilityIndicatorParticleController);
         }
         abilityIndicatorParticleController.activate(true);
     }
