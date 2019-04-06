@@ -32329,7 +32329,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: 4a2c20f1d5a0a704c84da17386adc689, type: 3}
+  m_Script: {fileID: 11500000, guid: bf9fee4b5bb0f1a4eb9e8405bde62bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 3}
@@ -62208,7 +62208,7 @@ GameObject:
   - component: {fileID: 1792176469}
   - component: {fileID: 1792176468}
   - component: {fileID: 1792176476}
-  - component: {fileID: 1792176467}
+  - component: {fileID: 1792176466}
   - component: {fileID: 1792176473}
   - component: {fileID: 1792176478}
   - component: {fileID: 1792176479}
@@ -62223,21 +62223,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1792176467
+--- !u!114 &1792176466
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 11407370, guid: 5913bd1e88aefff4988c7dfee6595611,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792176465}
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: f16f92f62c03f9d49ae9349cf322432d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f780fae2196b574fac53818cb106dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectColor: {r: 1, g: 0.4821931, b: 0.40344828, a: 1}
+  effectColor: {r: 1, g: 0.48235294, b: 0.40392157, a: 0}
   abilityIndicatorParticleController: {fileID: 1950273300}
   effectParticleController: {fileID: 217562836}
   addsOnTeleportVisualEffect: 1
@@ -62252,12 +62251,8 @@ MonoBehaviour:
   maxRange: 2.5
   maxSpeedBoost: 200
   wakelessSpeedBoostMultiplier: 3
-  currentCharge: 0
   chargeIncrement: 0.1
   maxCharge: 1
-  minChargeDecayDelay: 0.1
-  maxChargeDecayDelay: 2
-  chargeDecayRate: 0.4
   minWindDuration: 0.3
   maxWindDuration: 0.5
   forceTeleportSound: {fileID: 8300000, guid: 64801fca428cf394fa91e011dab21557, type: 3}
