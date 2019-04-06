@@ -102,7 +102,7 @@ public class ForceTeleportAbility : PlayerAbility
         }
     }
 
-    public bool charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
+    public void charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
         Vector2 explodePos = triedPos;
         float range = getRangeFromCharge(currentCharge);
@@ -123,7 +123,7 @@ public class ForceTeleportAbility : PlayerAbility
                 currentCharge = maxCharge;
             }
             lastTeleportTime = Time.time;
-            return true;
+            //return true;
         }
         //...else blast
         else
@@ -131,7 +131,7 @@ public class ForceTeleportAbility : PlayerAbility
             processHoldGesture(explodePos, Mathf.Max(currentCharge, chargeIncrement), true);
             currentCharge = 0;
             dropHoldGesture();
-            return false;
+            //return false;
         }
     }
 

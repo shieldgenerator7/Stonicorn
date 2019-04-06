@@ -125,10 +125,9 @@ public class SwapAbility : PlayerAbility
         }
     }
 
-    private bool refreshSwappableObjectList(Vector2 oldPos, Vector2 newPos, Vector2 triesPos)
+    private void refreshSwappableObjectList(Vector2 oldPos, Vector2 newPos, Vector2 triesPos)
     {
         swappableObjects = getSwappableObjects(newPos, oldPos);
-        return true;
     }
 
     List<GameObject> getSwappableObjects(Vector3 pos, Vector3 origPos)
