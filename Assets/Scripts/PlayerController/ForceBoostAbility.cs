@@ -15,7 +15,8 @@ public class ForceBoostAbility : PlayerAbility
 
     public float Charge
     {
-        get {
+        get
+        {
             float charge = playerController.Speed * chargeClutch;
             charge = Mathf.Clamp(charge, 0, maxCharge);
             return charge;
@@ -59,6 +60,30 @@ public class ForceBoostAbility : PlayerAbility
         if (Charge <= 0)
         {
             dropHoldGesture();
+        }
+    }
+    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //If collision is head on,
+        Vector2 surfaceNormal = collision.GetContact(0).normal;
+        float angle = Utility.RotationZ(-rb2d.velocity, surfaceNormal);
+        if (angle < 45)
+        {
+        }
+        //Else
+        else
+        {
+            //Divert Merky's course
+            //If should rotate "left"
+            if (Vector2.SignedAngle(-rb2d.velocity, surfaceNormal) < 0)
+            {
+                rb2d.velocity = surfaceNormal.normalized.PerpendicularRight() * rb2d.velocity.magnitude;
+            }
+            else
+            {
+                rb2d.velocity = surfaceNormal.normalized.PerpendicularLeft() * rb2d.velocity.magnitude;
+            }
         }
     }
 
@@ -110,11 +135,11 @@ public class ForceBoostAbility : PlayerAbility
             if (Mathf.Approximately(Charge, 0))
             {
                 //The first teleport will only make the charge increase a small amount, no matter how far it was
-                rb2d.AddForce((newPos - oldPos) * chargeIncrement);
+                rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement);
             }
             else
             {
-                rb2d.AddForce((newPos - oldPos) * chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange);
+                rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange);
             }
             lastTeleportTime = Time.time;
             //return true;
