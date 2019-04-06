@@ -12,7 +12,7 @@ public class NPCPrincessController : MonoBehaviour
     float startHoldTime = 0;
     float soonestNextHold = 0;
 
-    private ForceTeleportAbility fta;
+    private ForceBoostAbility fta;
     private ElectricFieldAbility efa;
     private PlayerAbility ability;
 
@@ -21,7 +21,7 @@ public class NPCPrincessController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        fta = GetComponent<ForceTeleportAbility>();
+        fta = GetComponent<ForceBoostAbility>();
         if (fta)
         {
             maxHoldTime = fta.maxCharge;
