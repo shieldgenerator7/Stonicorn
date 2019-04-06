@@ -200,7 +200,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2d;
     public float Speed
     {
-        get { return rb2d.velocity.magnitude; }
+        get {
+            float speed = rb2d.velocity.magnitude;
+            if (speed == 0)
+            {
+                speed = savedVelocity.magnitude;
+            }
+            return speed;
+        }
     }
     private GravityAccepter gravity;
     public GravityAccepter Gravity
