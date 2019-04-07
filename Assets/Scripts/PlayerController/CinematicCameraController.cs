@@ -116,6 +116,13 @@ public class CinematicCameraController : MonoBehaviour
             {
                 Managers.Player.transform.position = (Vector2)transform.position;
             }
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                foreach (HiddenArea ha in FindObjectsOfType<HiddenArea>())
+                {
+                    Destroy(ha.gameObject);
+                }
+            }
         }
     }
 }
