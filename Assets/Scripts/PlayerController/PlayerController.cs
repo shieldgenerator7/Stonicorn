@@ -209,6 +209,18 @@ public class PlayerController : MonoBehaviour
             return speed;
         }
     }
+    public Vector2 Velocity
+    {
+        get
+        {
+            Vector2 velocity = rb2d.velocity;
+            if (velocity.magnitude == 0)
+            {
+                velocity = savedVelocity;
+            }
+            return velocity;
+        }
+    }
     private GravityAccepter gravity;
     public GravityAccepter Gravity
     {

@@ -62,14 +62,32 @@ public class ForceBoostAbility : PlayerAbility
             dropHoldGesture();
         }
     }
-    
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //If collision is head on,
+        Vector2 velocity = playerController.Velocity;
         Vector2 surfaceNormal = collision.GetContact(0).normal;
-        float angle = Utility.RotationZ(-rb2d.velocity, surfaceNormal);
+        float angle = Utility.RotationZ(-velocity, surfaceNormal);
         if (angle < 45)
         {
+            //Explode     
+            Vector2 explodePos;
+            //If object is breakable or movable,
+            if (collision.gameObject.isSavable())
+            {
+                //explode behind Merky
+                explodePos = (Vector2)transform.position - (velocity.normalized * 0.01f);
+            }
+            //Else
+            else
+            {
+                //explode in front of Merky  
+                explodePos = (Vector2)transform.position - (Vector2.Reflect(velocity, surfaceNormal).normalized * 0.01f);
+            }
+            Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
+            processHoldGesture(explodePos, Mathf.Max(Charge, chargeIncrement), true);
+            dropHoldGesture();
         }
         //Else
         else
@@ -77,7 +95,7 @@ public class ForceBoostAbility : PlayerAbility
             float speed = playerController.Speed;
             //Divert Merky's course
             //If should rotate "left"
-            if (Vector2.SignedAngle(-rb2d.velocity, surfaceNormal) < 0)
+            if (Vector2.SignedAngle(-velocity, surfaceNormal) < 0)
             {
                 rb2d.velocity = surfaceNormal.normalized.PerpendicularRight() * speed;
             }
@@ -128,30 +146,17 @@ public class ForceBoostAbility : PlayerAbility
 
     public void charge(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
-        Vector2 explodePos = triedPos;
         float range = getRangeFromCharge(Charge);
-        //If touch position is outside visible blast range, charge;
-        if ((triedPos - oldPos).sqrMagnitude > range * range)
+        if (Mathf.Approximately(Charge, 0))
         {
-            if (Mathf.Approximately(Charge, 0))
-            {
-                //The first teleport will only make the charge increase a small amount, no matter how far it was
-                rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement);
-            }
-            else
-            {
-                rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange);
-            }
-            lastTeleportTime = Time.time;
-            //return true;
+            //The first teleport will only make the charge increase a small amount, no matter how far it was
+            rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement);
         }
-        //...else blast
         else
         {
-            processHoldGesture(explodePos, Mathf.Max(Charge, chargeIncrement), true);
-            dropHoldGesture();
-            //return false;
+            rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange);
         }
+        lastTeleportTime = Time.time;
     }
 
 
@@ -178,8 +183,7 @@ public class ForceBoostAbility : PlayerAbility
             }
             showExplosionEffect(pos, range * 2);
             SoundManager.playSound(forceTeleportSound, pos);
-            Destroy(friu.gameObject);
-            effectParticleController.activateTeleportParticleSystem(false);
+            dropHoldGesture();
             //Update Stats
             GameStatistics.addOne("ForceChargeBlast");
         }
@@ -213,6 +217,7 @@ public class ForceBoostAbility : PlayerAbility
         if (friu != null)
         {
             Destroy(friu.gameObject);
+            friu = null;
         }
         effectParticleController.activateTeleportParticleSystem(false);
     }
