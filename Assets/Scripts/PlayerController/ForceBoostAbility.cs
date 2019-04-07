@@ -51,8 +51,14 @@ public class ForceBoostAbility : PlayerAbility
         }
     }
 
+    private float maxSpeedAttained = 0;
     private void Update()
     {
+        if (Mathf.Floor(playerController.Speed) > maxSpeedAttained)
+        {
+            maxSpeedAttained = Mathf.Floor(playerController.Speed);
+            Debug.Log("Player Speed: " + maxSpeedAttained);
+        }
         if (Charge > 0)
         {
             processHoldGesture(transform.position, Charge, false);
@@ -86,6 +92,8 @@ public class ForceBoostAbility : PlayerAbility
                 explodePos = (Vector2)transform.position - (Vector2.Reflect(velocity, surfaceNormal).normalized * 0.01f);
             }
             Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
+            Debug.DrawLine(explodePos, explodePos + (dir * 2), Color.white, 2);
+            Debug.Log("Exploding: charge: " + Mathf.Floor(Charge)+", rb2d.vel: "+velocity.magnitude);
             processHoldGesture(explodePos, Mathf.Max(Charge, chargeIncrement), true);
             dropHoldGesture();
         }
@@ -103,6 +111,8 @@ public class ForceBoostAbility : PlayerAbility
             {
                 rb2d.velocity = surfaceNormal.normalized.PerpendicularLeft() * speed;
             }
+            ////Add a bit of force to make up for friction
+            //rb2d.AddForce(rb2d.velocity.normalized * chargeIncrement);
         }
     }
 
@@ -152,7 +162,7 @@ public class ForceBoostAbility : PlayerAbility
             //The first teleport will only make the charge increase a small amount, no matter how far it was
             rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement);
         }
-        else
+        else 
         {
             rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange);
         }
