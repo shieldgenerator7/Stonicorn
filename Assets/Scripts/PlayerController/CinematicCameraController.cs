@@ -33,6 +33,9 @@ public class CinematicCameraController : MonoBehaviour
             }
         }
     }
+
+    private Vector2 targetUp;//used to smoothly rotate the camera between gravity zones
+
     private Camera cam;
     private CameraController camCntr;
 
@@ -86,6 +89,27 @@ public class CinematicCameraController : MonoBehaviour
             {
                 float factor = (cam.orthographicSize < 1) ? 0.1f : 1;
                 cam.orthographicSize -= Time.deltaTime * factor;
+            }
+
+            //Rotation
+            foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
+            {
+                if (gz.mainGravityZone && gz.GetComponent<Collider2D>().OverlapPoint(transform.position))
+                {
+                    if (gz.radialGravity)
+                    {
+                        targetUp = (transform.position - gz.transform.position).normalized;
+                    }
+                    else
+                    {
+                        targetUp = gz.transform.up;
+                    }
+                    break;
+                }
+            }
+            if ((Vector2)transform.up != targetUp)
+            {
+                transform.up = Vector2.Lerp(transform.up, targetUp, Time.deltaTime);
             }
         }
     }
