@@ -111,6 +111,11 @@ public class CinematicCameraController : MonoBehaviour
             {
                 transform.up = Vector2.Lerp(transform.up, targetUp, Time.deltaTime);
             }
+            //Cheats
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                Managers.Player.transform.position = (Vector2)transform.position;
+            }
         }
     }
 }
