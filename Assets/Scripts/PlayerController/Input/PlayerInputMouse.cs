@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerInputMouse : PlayerInput
 {
+    float scrollWheelAxis;
+    float prevScrollWheelAxis;
+
     public override InputData getInput()
     {
         inputState = InputState.None;
@@ -34,6 +37,26 @@ public class PlayerInputMouse : PlayerInput
             isDrag = false;
             isPinchGesture = false;
             isCameraMovementOnly = false;
+        }
+        prevScrollWheelAxis = scrollWheelAxis;
+        scrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
+        if (scrollWheelAxis != 0)
+        {
+            if (prevScrollWheelAxis == 0)
+            {
+                inputState = InputState.Begin;
+            }
+            else
+            {
+                inputState = InputState.Hold;
+            }
+        }
+        else
+        {
+            if (prevScrollWheelAxis != 0)
+            {
+                inputState = InputState.End;
+            }
         }
 
 
@@ -72,21 +95,19 @@ public class PlayerInputMouse : PlayerInput
         //
         InputData inputData = new InputData(origMP, curMP, inputState, holdTime, 1);
 
-        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        //
+        //Zoom Processing
+        //Mouse Scrolling Zoom
+        //
+        if (scrollWheelAxis != 0)
         {
-            //
-            //Zoom Processing
-            //
-            //
-            //Mouse Scrolling Zoom
-            //
-            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            if (scrollWheelAxis < 0)
             {
-                Managers.Camera.ZoomLevel++;
+                inputData.zoomMultiplier = 3 / 4;
             }
-            else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            else if (scrollWheelAxis > 0)
             {
-                Managers.Camera.ZoomLevel--;
+                inputData.zoomMultiplier = 4 / 3;
             }
         }
 

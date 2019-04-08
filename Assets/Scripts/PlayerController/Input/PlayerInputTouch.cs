@@ -56,7 +56,6 @@ public class PlayerInputTouch : PlayerInput
                     touchCount = 2;
                     inputState = InputState.Begin;
                     origMP2 = Input.GetTouch(1).position;
-                    origOrthoSize = Managers.Camera.ZoomLevel;
                     //Update origMP
                     origMP = Input.GetTouch(0).position;
                 }
@@ -113,7 +112,7 @@ public class PlayerInputTouch : PlayerInput
             default:
                 throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + inputState);
         }
-        curMPWorld = Camera.main.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
+        curMPWorld = (Vector2)Camera.main.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
 
 
         //
@@ -121,49 +120,28 @@ public class PlayerInputTouch : PlayerInput
         //
         InputData inputData = new InputData(origMP, curMP, inputState, holdTime, 1);
 
-        if (isPinchGesture)
-        {//touchCount == 0 || touchCount >= 2
-            if (inputState == InputState.Begin)
-            {
-            }
-            else if (inputState == InputState.Hold)
-            {
-                //
-                //Zoom Processing
-                //
-                
-                //
-                //Pinch Touch Zoom
-                //2015-12-31 (1:23am): copied from https://unity3d.com/learn/tutorials/modules/beginner/platform-specific/pinch-zoom
-                //
+        //
+        //Zoom Processing
+        //Pinch Touch Zoom
+        //2015-12-31 (1:23am): copied from https://unity3d.com/learn/tutorials/modules/beginner/platform-specific/pinch-zoom
+        //
 
-                // If there are two touches on the device...
-                if (touchCount == 2)
-                {
-                    // Store both touches.
-                    Touch touchZero = Input.GetTouch(0);
-                    Touch touchOne = Input.GetTouch(1);
+        // If there are two touches on the device...
+        if (Input.touchCount == 2)
+        {
+            // Store both touches.
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
 
-                    // Find the position in the previous frame of each touch.
-                    Vector2 touchZeroPrevPos = origMP;
-                    Vector2 touchOnePrevPos = origMP2;
+            // Find the position in the previous frame of each touch.
+            Vector2 touchZeroPrevPos = origMP;
+            Vector2 touchOnePrevPos = origMP2;
 
-                    // Find the magnitude of the vector (the distance) between the touches in each frame.
-                    float prevTouchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZeroPrevPos, touchOnePrevPos);
-                    float touchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZero.position, touchOne.position);
+            // Find the magnitude of the vector (the distance) between the touches in each frame.
+            float prevTouchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZeroPrevPos, touchOnePrevPos);
+            float touchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZero.position, touchOne.position);
 
-                    float newZoomLevel = origOrthoSize * prevTouchDeltaMag / touchDeltaMag;
-
-                    Managers.Camera.ZoomLevel = newZoomLevel;
-                }
-            }
-            else if (inputState == InputState.End)
-            {
-                //Update Stats
-                GameStatistics.addOne("Pinch");
-                //Process Pinch Gesture
-                origOrthoSize = Managers.Camera.ZoomLevel;
-            }
+            inputData.zoomMultiplier = prevTouchDeltaMag / touchDeltaMag;
         }
 
         return inputData;

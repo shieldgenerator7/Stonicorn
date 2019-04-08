@@ -13,7 +13,6 @@ public abstract class PlayerInput
     public Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
     public Vector3 origMPWorld;//"original mouse position world" - the original mouse coordinate in the world
     public float origTime = 0f;//"original time": the clock time at the last mouse down (or tap down) event
-    public float origOrthoSize = 1f;//"original orthographic size"
     //Current Positions
     public Vector3 curMP;//"current mouse position"
     public Vector3 curMPWorld;//"current mouse position world" - the mouse coordinates in the world
@@ -69,5 +68,5 @@ public abstract class PlayerInput
         }
     }
 
-    public abstract InputData getInput();    
+    public abstract InputData getInput();
 }

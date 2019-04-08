@@ -71,7 +71,8 @@ public class CameraController : MonoBehaviour, InputProcessor
     }
 
     private bool lockCamera = false;//keep the camera from moving
-    private Vector3 originalCameraPosition;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
+    private Vector3 originalCameraPosition;//"original camera position": the camera offset (relative to the player) at the beginning of the current gesture
+    private float originalCameraScale;//"original camera scale": the camera scale at the beginning of the current gesture
 
     private int prevScreenWidth;
     private int prevScreenHeight;
@@ -440,6 +441,17 @@ public class CameraController : MonoBehaviour, InputProcessor
             }
         }
     }
+    public virtual void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
+    {
+        if (state == PlayerInput.InputState.Begin)
+        {
+            originalCameraScale = ZoomLevel;
+        }
+        else
+        {
+            ZoomLevel = originalCameraScale * zoomMultiplier;
+        }
+    }
 
     public virtual void processTapGesture(Vector2 tapPos)
     {
@@ -449,10 +461,7 @@ public class CameraController : MonoBehaviour, InputProcessor
     {
         throw new System.NotImplementedException("" + GetType() + ".processHoldGesture() (from interface InputProcessor) not implemented!");
     }
-    public virtual void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
-    {
-        throw new System.NotImplementedException("" + GetType() + ".processZoomGesture() (from interface InputProcessor) not implemented!");
-    }
+
 
 
     /// <summary>

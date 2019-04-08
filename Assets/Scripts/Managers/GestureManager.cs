@@ -27,11 +27,11 @@ public class GestureManager : MonoBehaviour
     public bool isDrag = false;
     public bool isTapGesture = true;
     public bool isHoldGesture = false;
-    public bool isPinchGesture = false;
+    public bool isZoomGesture = false;
     public bool isCameraMovementOnly = false;//true to make only the camera move until the gesture is over
 
-    public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
-    public const float holdTimeScaleRecip = 1 / holdTimeScale;
+    private const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
+    private const float holdTimeScaleRecip = 1 / holdTimeScale;
     private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.NONE;
 
     // Use this for initialization
@@ -102,6 +102,13 @@ public class GestureManager : MonoBehaviour
                 break;
             }
         }
+        if (inputData == null)
+        {
+            foreach (PlayerInput input in playerInput)
+            {
+                Debug.Log("/!\\ inputData: " + inputData + " (probably null), input.gI().inputState: " + input.getInput().inputState);
+            }
+        }
         if (inputData.inputState == PlayerInput.InputState.None)
         {
             return;
@@ -109,9 +116,11 @@ public class GestureManager : MonoBehaviour
 
         if (inputData.inputState == PlayerInput.InputState.Begin)
         {
-            //Set all flags = true
+            //Set all flags = false
             cameraDragInProgress = false;
             isDrag = false;
+            isHoldGesture = false;
+            isZoomGesture = false;
             if (!isCameraMovementOnly)
             {
                 isTapGesture = true;
@@ -120,29 +129,43 @@ public class GestureManager : MonoBehaviour
             {
                 isTapGesture = false;
             }
-            isHoldGesture = false;
         }
         else if (inputData.inputState == PlayerInput.InputState.Hold)
         {
-            if (inputData.PositionDelta > dragThreshold
-                && Managers.Player.Speed <= playerSpeedThreshold)
+            //Gesture type scouting
+            if (!isHoldGesture && !isDrag)
             {
-                if (!isHoldGesture && !isPinchGesture)
+                if (inputData.zoomMultiplier != 1)
                 {
+                    isZoomGesture = true;
+                    currentGP.processZoomGesture(inputData.zoomMultiplier, PlayerInput.InputState.Begin);
                     isTapGesture = false;
+                    isHoldGesture = false;
+                    isDrag = false;
+                }
+            }
+            if (!isHoldGesture && !isZoomGesture)
+            {
+                if (inputData.PositionDelta > dragThreshold
+                && Managers.Player.Speed <= playerSpeedThreshold)
+                {
                     isDrag = true;
+                    currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, PlayerInput.InputState.Begin);
+                    isTapGesture = false;
                     cameraDragInProgress = true;
                 }
             }
-            if (inputData.holdTime > holdThreshold)
+            if (!isDrag && !isZoomGesture && !isCameraMovementOnly)
             {
-                if (!isDrag && !isPinchGesture && !isCameraMovementOnly)
+                if (inputData.holdTime > holdThreshold)
                 {
-                    isTapGesture = false;
                     isHoldGesture = true;
+                    currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, PlayerInput.InputState.Begin);
+                    isTapGesture = false;
                     Time.timeScale = GestureManager.holdTimeScale;
                 }
             }
+            //Gesture Type Processing
             if (isDrag)
             {
                 currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, inputData.inputState);
@@ -150,6 +173,10 @@ public class GestureManager : MonoBehaviour
             else if (isHoldGesture)
             {
                 currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, inputData.inputState);
+            }
+            else if (isZoomGesture)
+            {
+                currentGP.processZoomGesture(inputData.zoomMultiplier, inputData.inputState);
             }
         }
         else if (inputData.inputState == PlayerInput.InputState.End)
@@ -164,6 +191,7 @@ public class GestureManager : MonoBehaviour
             else if (isHoldGesture)
             {
                 currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, inputData.inputState);
+                GameStatistics.addOne("Hold");
             }
             else if (isTapGesture)
             {
@@ -182,7 +210,7 @@ public class GestureManager : MonoBehaviour
             isDrag = false;
             isTapGesture = false;
             isHoldGesture = false;
-            isPinchGesture = false;
+            isZoomGesture = false;
             isCameraMovementOnly = false;
             Time.timeScale = 1;
         }
@@ -190,20 +218,6 @@ public class GestureManager : MonoBehaviour
         {
             throw new System.Exception("Input State of wrong type, or type not processed! (Input Processing) inputState: " + inputData.inputState);
         }
-        if (inputData.zoomMultiplier != 1)
-        {
-            if (inputData.inputState == PlayerInput.InputState.Begin)
-            {
-            }
-            else if (inputData.inputState == PlayerInput.InputState.Hold)
-            {
-                currentGP.processZoomGesture(inputData.zoomMultiplier, inputData.inputState);
-            }
-            else if (inputData.inputState == PlayerInput.InputState.End)
-            {
-            }
-        }
-
 
         //
         //Opening Main Menu

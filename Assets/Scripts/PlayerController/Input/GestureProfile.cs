@@ -33,8 +33,7 @@ public class GestureProfile: InputProcessor
     }
     public void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
     {
-        //TODO: Make the camera process it with a processZoomGesture() method
-        Managers.Camera.ZoomLevel *= zoomMultiplier;
+        Managers.Camera.processZoomGesture(zoomMultiplier, state);
     }
     public void onZoomLevelChange(float zoomLevel)
     {
