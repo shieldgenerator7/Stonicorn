@@ -804,12 +804,23 @@ public class GameManager : MonoBehaviour, InputProcessor
     public void processTapGesture(Vector2 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
+
         //If respawn timer is not over,
         if (!AcceptsInputNow)
         {
             //don't do anything
             return;
         }
+
+        //Check for player in check point
+        CheckPointChecker cpc = CheckPointChecker.getSelectedCheckPointGhost(curMPWorld);
+        if (cpc)
+        {
+            Managers.Player.processTapGesture(curMPWorld, cpc);
+            return;
+        }
+
+        //Check for tapping on past merky
         GameState final = null;
         GameState prevFinal = null;
         bool intact = Managers.Player.HardMaterial.isIntact();

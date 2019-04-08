@@ -11,11 +11,7 @@ public class GestureProfile: InputProcessor
     /// Called when the GestureManager switches off this profile to a different one
     /// </summary>
     public virtual void deactivate() { }
-
-    public void processTapGesture(CheckPointChecker cpc)
-    {
-        Managers.Player.processTapGesture(cpc);
-    }
+    
     public virtual void processTapGesture(Vector2 curMPWorld)
     {
         if (Managers.Game.Rewinding)

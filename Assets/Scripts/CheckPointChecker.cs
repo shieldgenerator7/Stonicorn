@@ -209,11 +209,33 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
     }
     /// <summary>
+    /// Finds the CheckPoint selected by the target position, if any
+    /// </summary>
+    /// <param name="targetPos"></param>
+    /// <returns></returns>
+    public static CheckPointChecker getSelectedCheckPointGhost(Vector2 targetPos)
+    {
+        //If the player is not in a checkpoint,
+        if (!Managers.Player.InCheckPoint)
+        {
+            //Don't select any checkpoint
+            return null;
+        }
+        foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
+        {
+            if (cpc.checkGhostActivation(targetPos))
+            {
+                return cpc;
+            }
+        }
+        return null;
+    }
+    /// <summary>
     /// Checks to see if this checkpoint's ghost contains the targetPos
     /// </summary>
     /// <param name="targetPos"></param>
     /// <returns></returns>
-    public bool checkGhostActivation(Vector2 targetPos)
+    private bool checkGhostActivation(Vector2 targetPos)
     {
         return ghost.GetComponent<Collider2D>().OverlapPoint(targetPos);
     }

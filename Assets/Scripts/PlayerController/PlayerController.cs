@@ -200,7 +200,8 @@ public class PlayerController : MonoBehaviour, InputProcessor
     private Rigidbody2D rb2d;
     public float Speed
     {
-        get {
+        get
+        {
             float speed = rb2d.velocity.magnitude;
             if (speed == 0)
             {
@@ -583,13 +584,13 @@ public class PlayerController : MonoBehaviour, InputProcessor
     /// </summary>
     /// <param name="targetPos">The ideal position to teleport to</param>
     /// <returns>targetPos if it is teleportable, else the closest teleportable position to it</returns>
-    public Vector3 findTeleportablePosition(Vector2 targetPos)
+    public Vector3 findTeleportablePosition(Vector2 targetPos, bool testRange = true)
     {
         //TSFS: Teleport Spot Finding System
         Vector2 newPos = targetPos;
         Vector2 oldPos = transform.position;
         //If new position is not in range,
-        if ((newPos - (Vector2)transform.position).sqrMagnitude > range * range)
+        if (testRange && !newPos.inRange(transform.position, range))
         {
             //Shorten it to be within range
             newPos = ((newPos - oldPos).normalized * range) + oldPos;
@@ -974,28 +975,59 @@ public class PlayerController : MonoBehaviour, InputProcessor
     /// <param name="tapPos">The position to teleport to</param>
     public void processTapGesture(Vector2 tapPos)
     {
+        processTapGesture(tapPos, null);
+    }
+    public void processTapGesture(Vector2 tapPos, CheckPointChecker checkPoint)
+    {
+        //If teleport is on cooldown,
+        if (!TeleportReady)
+        {
+            //Don't do anything
+            return;
+        }
         //If the player tapped on Merky,
         if (gestureOnPlayer(tapPos))
         {
             //Rotate player ~90 degrees
             rotate();
         }
+        //If we dont already know we're teleporting to another checkpoint,
+        if (!checkPoint)
+        {
+            //Check to see if we're teleporting to another checkpoint
+            checkPoint = CheckPointChecker.getSelectedCheckPointGhost(tapPos);
+        }
+        //If teleporting to another checkpoint,
+        if (checkPoint)
+        {
+            //Get relative position inside of previous checkpoint
+            Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
+            //Get post-teleport position inside of new checkpoint
+            tapPos = checkPoint.transform.position + offset;
+        }
         //Get pre-teleport position
         Vector3 oldPos = transform.position;
         //Get post-teleport position
-        Vector3 newPos = findTeleportablePosition(tapPos);
-        //If teleport is not on cooldown,
-        if (TeleportReady)
+        Vector3 newPos = findTeleportablePosition(tapPos, !checkPoint);
+        //Process onPreTeleport delegates
+        if (onPreTeleport != null)
         {
-            //Process onPreTeleport delegates
-            if (onPreTeleport != null)
-            {
-                onPreTeleport(oldPos, newPos, tapPos);
-            }
-            //Teleport
-            teleport(newPos);
-            //Save the game state
-            Managers.Game.Save();
+            onPreTeleport(oldPos, newPos, tapPos);
+        }
+        //Teleport
+        teleport(newPos);
+        //Save the game state
+        Managers.Game.Save();
+        //If Merky is teleporting to a checkpoint,
+        if (checkPoint)
+        {
+            //Move the camera to Merky's center
+            Managers.Camera.recenter();
+            //Activate the new checkpoint
+            checkPoint.trigger();
+        }
+        else
+        {
             //If Merky is in a checkpoint,
             if (inCheckPoint)
             {
@@ -1007,39 +1039,6 @@ public class PlayerController : MonoBehaviour, InputProcessor
     //Used when you also need to know where the player tapped
     public delegate void OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
     public OnPreTeleport onPreTeleport;
-
-    /// <summary>
-    /// Processes the tap gesture on the given checkpoint
-    /// </summary>
-    /// <param name="checkPoint">The checkpoint to teleport to</param>
-    public void processTapGesture(CheckPointChecker checkPoint)
-    {
-        //Get pre-teleport position
-        Vector2 oldPos = transform.position;
-        //Get relative position inside of previous checkpoint
-        Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
-        //Get post-teleport position inside of new checkpoint
-        Vector3 newPos = checkPoint.transform.position + offset;
-        //If pre-processing needs done before teleporting,
-        if (onPreTeleport != null)
-        {
-            //Pre-process onPreTeleport delegates
-            //Pass in newPos for both here because player teleported exactly where they intended to
-            onPreTeleport(oldPos, newPos, newPos);
-        }
-        //Teleport
-        teleport(newPos);
-        //Move the camera to Merky's center
-        Managers.Camera.recenter();
-        //Activate the new checkpoint
-        checkPoint.trigger();
-        //Save the game state
-        Managers.Game.Save();
-        //NOTE: processTapGesture(Vector3) is NOT called here,
-        //because that method cancels the teleport
-        //depending on the return value from onPreTeleport(),
-        //whereas here, we don't want the teleport canceled
-    }
 
     /// <summary>
     /// Process a hold gesture

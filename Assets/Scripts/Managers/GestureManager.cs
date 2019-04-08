@@ -169,31 +169,11 @@ public class GestureManager : MonoBehaviour
             {
                 //Update Stats
                 GameStatistics.addOne("Tap");
-                //Process Tap Gesture
-                bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
-                if (Managers.Player.InCheckPoint)
+                //Process Tap Gesture                
+                currentGP.processTapGesture(inputData.NewWorldPos);
+                if (tapGesture != null)
                 {
-                    foreach (CheckPointChecker cpc in GameObject.FindObjectsOfType<CheckPointChecker>())
-                    {
-                        if (cpc.checkGhostActivation(inputData.NewWorldPos))
-                        {
-                            checkPointPort = true;
-                            currentGP.processTapGesture(cpc);
-                            if (tapGesture != null)
-                            {
-                                tapGesture();
-                            }
-                            break;
-                        }
-                    }
-                }
-                if (!checkPointPort)
-                {
-                    currentGP.processTapGesture(inputData.NewWorldPos);
-                    if (tapGesture != null)
-                    {
-                        tapGesture();
-                    }
+                    tapGesture();
                 }
             }
 
