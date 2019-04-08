@@ -71,8 +71,7 @@ public class CameraController : MonoBehaviour, InputProcessor
     }
 
     private bool lockCamera = false;//keep the camera from moving
-    [Tooltip("Runtime Var, Doesn't do anything from editor")]
-    public Vector3 originalCameraPosition;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
+    private Vector3 originalCameraPosition;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
 
     private int prevScreenWidth;
     private int prevScreenHeight;
@@ -408,30 +407,37 @@ public class CameraController : MonoBehaviour, InputProcessor
     }
     public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, PlayerInput.InputState state)
     {
-        bool canMove = false;
-        Vector2 delta = origMPWorld - newMPWorld;
-        Vector2 playerPos = Managers.Player.transform.position;
-        Vector3 newPos = playerPos + (Vector2)originalCameraPosition + delta;
-        //If the camera is not zoomed into the menu,
-        if (ZoomLevel > toZoomLevel(CameraScalePoints.MENU))
+        if (state == PlayerInput.InputState.Begin)
         {
-            //Check to make sure Merky doesn't get dragged off camera
-            Vector2 playerUIpos = Cam.WorldToViewportPoint(playerPos + (Vector2)Cam.transform.position - (Vector2)newPos);
-            if (playerUIpos.x >= 0 && playerUIpos.x <= 1 && playerUIpos.y >= 0 && playerUIpos.y <= 1)
-            {
-                canMove = true;
-            }
+            originalCameraPosition = origMPWorld;
         }
         else
         {
-            canMove = true;
-        }
-        if (canMove)
-        {
-            //Move the camera
-            newPos.z = Offset.z;
-            transform.position = newPos;
-            pinPoint();
+            bool canMove = false;
+            Vector2 delta = origMPWorld - newMPWorld;
+            Vector2 playerPos = Managers.Player.transform.position;
+            Vector3 newPos = playerPos + (Vector2)originalCameraPosition + delta;
+            //If the camera is not zoomed into the menu,
+            if (ZoomLevel > toZoomLevel(CameraScalePoints.MENU))
+            {
+                //Check to make sure Merky doesn't get dragged off camera
+                Vector2 playerUIpos = Cam.WorldToViewportPoint(playerPos + (Vector2)Cam.transform.position - (Vector2)newPos);
+                if (playerUIpos.x >= 0 && playerUIpos.x <= 1 && playerUIpos.y >= 0 && playerUIpos.y <= 1)
+                {
+                    canMove = true;
+                }
+            }
+            else
+            {
+                canMove = true;
+            }
+            if (canMove)
+            {
+                //Move the camera
+                newPos.z = Offset.z;
+                transform.position = newPos;
+                pinPoint();
+            }
         }
     }
 

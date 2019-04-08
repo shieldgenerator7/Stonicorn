@@ -46,7 +46,6 @@ public class PlayerInputMouse : PlayerInput
             case InputState.Begin:
                 curMP = origMP;
                 maxMouseMovement = 0;
-                Managers.Camera.originalCameraPosition = Managers.Camera.transform.position - Managers.Player.transform.position;
                 origTime = Time.time;
                 curTime = origTime;
                 origMPWorld = Camera.main.ScreenToWorldPoint(origMP);
