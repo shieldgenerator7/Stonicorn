@@ -10,7 +10,7 @@ public class TeleportAbility : PlayerAbility
     public GameObject futureProjection;//the object that is used to show a preview of the landing spot
     public GameObject teleportPreviewPointer;//the object that visually points at the future projection
 
-    public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
+    public void showPreview(Vector2 pos)
     {
         //Show a preview of where Merky will teleport
         Vector2 futurePos = playerController.findTeleportablePosition(pos);
@@ -31,7 +31,7 @@ public class TeleportAbility : PlayerAbility
         }
     }
 
-    public override void dropHoldGesture()
+    public override void endEffects()
     {
         futureProjection.SetActive(false);
         teleportPreviewPointer.SetActive(false);

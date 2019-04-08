@@ -61,11 +61,11 @@ public class ForceBoostAbility : PlayerAbility
         }
         if (Charge > 0)
         {
-            processHoldGesture(transform.position, Charge, false);
+            showChargeEffect(transform.position, Charge, false);
         }
         if (Charge <= 0)
         {
-            dropHoldGesture();
+            endEffects();
         }
     }
 
@@ -94,8 +94,8 @@ public class ForceBoostAbility : PlayerAbility
             Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
             Debug.DrawLine(explodePos, explodePos + (dir * 2), Color.white, 2);
             Debug.Log("Exploding: charge: " + Mathf.Floor(Charge)+", rb2d.vel: "+velocity.magnitude);
-            processHoldGesture(explodePos, Mathf.Max(Charge, chargeIncrement), true);
-            dropHoldGesture();
+            showChargeEffect(explodePos, Mathf.Max(Charge, chargeIncrement), true);
+            endEffects();
         }
         //Else
         else
@@ -171,7 +171,7 @@ public class ForceBoostAbility : PlayerAbility
 
 
 
-    public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
+    private void showChargeEffect(Vector2 pos, float holdTime, bool finished)
     {
         float range = getRangeFromCharge(holdTime);
         if (finished)
@@ -193,7 +193,7 @@ public class ForceBoostAbility : PlayerAbility
             }
             showExplosionEffect(pos, range * 2);
             SoundManager.playSound(forceTeleportSound, pos);
-            dropHoldGesture();
+            endEffects();
             //Update Stats
             GameStatistics.addOne("ForceChargeBlast");
         }
@@ -222,7 +222,7 @@ public class ForceBoostAbility : PlayerAbility
         return range;
     }
 
-    public override void dropHoldGesture()
+    public override void endEffects()
     {
         if (friu != null)
         {

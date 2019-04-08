@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Controls Merky's teleport ability and other abilities
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, InputProcessor
 {
     //
     //Settings
@@ -972,7 +972,7 @@ public class PlayerController : MonoBehaviour
     /// Process the tap gesture at the given position
     /// </summary>
     /// <param name="tapPos">The position to teleport to</param>
-    public void processTapGesture(Vector3 tapPos)
+    public void processTapGesture(Vector2 tapPos)
     {
         //If the player tapped on Merky,
         if (gestureOnPlayer(tapPos))
@@ -1047,7 +1047,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="holdPos">The current hold position</param>
     /// <param name="holdTime">The current hold duration</param>
     /// <param name="finished">True if this is the last frame of the hold gesture</param>
-    public void processHoldGesture(Vector3 holdPos, float holdTime, bool finished)
+    public void processHoldGesture(Vector2 holdPos, float holdTime, PlayerInput.InputState state)
     {
         //Get the actionable current duration of the hold gesture
         float reducedHoldTime = holdTime - Managers.Gesture.HoldThreshold;
@@ -1075,14 +1075,14 @@ public class PlayerController : MonoBehaviour
                 dropHoldGesture();
             }
             //Show the teleport preview effect
-            tpa.processHoldGesture(holdPos, reducedHoldTime, finished);
+            tpa.showPreview(holdPos);
             //If this is the last frame of the hold gesture,
-            if (finished)
+            if (state == PlayerInput.InputState.End)
             {
                 //Finally teleport to the location
                 processTapGesture(holdPos);
                 //Erase the teleport preview effects
-                tpa.dropHoldGesture();
+                tpa.endEffects();
             }
         }
     }
@@ -1093,8 +1093,18 @@ public class PlayerController : MonoBehaviour
     {
         foreach (PlayerAbility ability in ActiveAbilities)
         {
-            ability.dropHoldGesture();
+            ability.endEffects();
         }
+    }
+
+    public virtual void processDragGesture(Vector2 oldPos, Vector2 newPos, PlayerInput.InputState state)
+    {
+        throw new System.NotImplementedException("" + GetType() + ".processDragGesture() (from interface InputProcessor) not implemented!");
+    }
+
+    public virtual void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
+    {
+        throw new System.NotImplementedException("" + GetType() + ".processZoomGesture() (from interface InputProcessor) not implemented!");
     }
 }
 

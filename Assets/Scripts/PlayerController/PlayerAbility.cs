@@ -72,19 +72,8 @@ public class PlayerAbility : MonoBehaviour
     {
         init();
     }
-
-    public virtual void processHoldGesture(Vector2 pos, float holdTime, bool finished) { }
-
-    /// <summary>
-    /// Returns whether or not this ability has its hold gesture activated
-    /// </summary>
-    /// <returns></returns>
-    public virtual bool isHoldingGesture()
-    {
-        return effectParticleSystem.isPlaying;
-    }
-
-    public virtual void dropHoldGesture() { }
+    
+    public virtual void endEffects() { }
 
 
 
