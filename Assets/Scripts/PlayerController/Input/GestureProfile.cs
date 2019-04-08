@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GestureProfile
+public class GestureProfile: InputProcessor
 {
     /// <summary>
     /// Called when this profile is set to the current one
@@ -16,7 +16,7 @@ public class GestureProfile
     {
         Managers.Player.processTapGesture(cpc);
     }
-    public virtual void processTapGesture(Vector3 curMPWorld)
+    public virtual void processTapGesture(Vector2 curMPWorld)
     {
         if (Managers.Game.Rewinding)
         {
@@ -27,15 +27,15 @@ public class GestureProfile
             Managers.Player.processTapGesture(curMPWorld);
         }
     }
-    public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
+    public virtual void processHoldGesture(Vector2 curMPWorld, float holdTime, PlayerInput.InputState state)
     {
-        Managers.Player.processHoldGesture(curMPWorld, holdTime, finished);
+        Managers.Player.processHoldGesture(curMPWorld, holdTime, state);
     }
-    public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
+    public virtual void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, PlayerInput.InputState state)
     {
-        Managers.Camera.processDragGesture(origMPWorld, newMPWorld);
+        Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
     }
-    public void processZoomGesture(float zoomMultiplier)
+    public void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
     {
         //TODO: Make the camera process it with a processZoomGesture() method
         Managers.Camera.ZoomLevel *= zoomMultiplier;

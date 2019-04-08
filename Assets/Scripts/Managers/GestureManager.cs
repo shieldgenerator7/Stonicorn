@@ -45,7 +45,7 @@ public class GestureManager : MonoBehaviour
         gestureProfiles.Add(GestureProfileType.REWIND, new RewindGestureProfile());
         switchGestureProfile(GestureProfileType.MENU);
 
-        Managers.Camera.onZoomLevelChanged += processZoomLevelChange;
+        Managers.Camera.onZoomLevelChanged += onZoomLevelChange;
         Managers.Camera.ZoomLevel =
             Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU);
 
@@ -124,8 +124,8 @@ public class GestureManager : MonoBehaviour
         }
         else if (inputData.inputState == PlayerInput.InputState.Hold)
         {
-            if (inputData.PositionDelta > Managers.Gesture.dragThreshold
-                && Managers.Player.Speed <= Managers.Gesture.playerSpeedThreshold)
+            if (inputData.PositionDelta > dragThreshold
+                && Managers.Player.Speed <= playerSpeedThreshold)
             {
                 if (!isHoldGesture && !isPinchGesture)
                 {
@@ -134,7 +134,7 @@ public class GestureManager : MonoBehaviour
                     cameraDragInProgress = true;
                 }
             }
-            if (inputData.holdTime > Managers.Gesture.holdThreshold)
+            if (inputData.holdTime > holdThreshold)
             {
                 if (!isDrag && !isPinchGesture && !isCameraMovementOnly)
                 {
@@ -145,11 +145,11 @@ public class GestureManager : MonoBehaviour
             }
             if (isDrag)
             {
-                Managers.Gesture.currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos);
+                currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, inputData.inputState);
             }
             else if (isHoldGesture)
             {
-                Managers.Gesture.currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, false);
+                currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, inputData.inputState);
             }
         }
         else if (inputData.inputState == PlayerInput.InputState.End)
@@ -163,7 +163,7 @@ public class GestureManager : MonoBehaviour
             }
             else if (isHoldGesture)
             {
-                Managers.Gesture.currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, true);
+                currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, inputData.inputState);
             }
             else if (isTapGesture)
             {
@@ -178,10 +178,10 @@ public class GestureManager : MonoBehaviour
                         if (cpc.checkGhostActivation(inputData.NewWorldPos))
                         {
                             checkPointPort = true;
-                            Managers.Gesture.currentGP.processTapGesture(cpc);
-                            if (Managers.Gesture.tapGesture != null)
+                            currentGP.processTapGesture(cpc);
+                            if (tapGesture != null)
                             {
-                                Managers.Gesture.tapGesture();
+                                tapGesture();
                             }
                             break;
                         }
@@ -189,10 +189,10 @@ public class GestureManager : MonoBehaviour
                 }
                 if (!checkPointPort)
                 {
-                    Managers.Gesture.currentGP.processTapGesture(inputData.NewWorldPos);
-                    if (Managers.Gesture.tapGesture != null)
+                    currentGP.processTapGesture(inputData.NewWorldPos);
+                    if (tapGesture != null)
                     {
-                        Managers.Gesture.tapGesture();
+                        tapGesture();
                     }
                 }
             }
@@ -217,7 +217,7 @@ public class GestureManager : MonoBehaviour
             }
             else if (inputData.inputState == PlayerInput.InputState.Hold)
             {
-                currentGP.processZoomGesture(inputData.zoomMultiplier);
+                currentGP.processZoomGesture(inputData.zoomMultiplier, inputData.inputState);
             }
             else if (inputData.inputState == PlayerInput.InputState.End)
             {
@@ -272,7 +272,7 @@ public class GestureManager : MonoBehaviour
         }
     }
 
-    public void processZoomLevelChange(float newZoomLevel, float delta)
+    public void onZoomLevelChange(float newZoomLevel, float delta)
     {
         currentGP.onZoomLevelChange(newZoomLevel);
     }

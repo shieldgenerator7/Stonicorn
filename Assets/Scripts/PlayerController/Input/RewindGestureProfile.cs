@@ -11,13 +11,13 @@ public class RewindGestureProfile : GestureProfile
     {
         Managers.Game.showPlayerGhosts(false);
     }
-    public override void processTapGesture(Vector3 curMPWorld)
+    public override void processTapGesture(Vector2 curMPWorld)
     {
         Managers.Game.processTapGesture(curMPWorld);
     }
-    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
+    public override void processHoldGesture(Vector2 curMPWorld, float holdTime, PlayerInput.InputState state)
     {
-        if (finished)
+        if (state == PlayerInput.InputState.End)
         {
             Managers.Game.processTapGesture(curMPWorld);
         }

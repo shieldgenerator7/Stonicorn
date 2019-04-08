@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CameraController : MonoBehaviour
+public class CameraController : MonoBehaviour, InputProcessor
 {
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
     public float cameraOffsetGestureThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
@@ -406,7 +406,7 @@ public class CameraController : MonoBehaviour
     {
         this.rotationUp = rotationUp;
     }
-    public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld)
+    public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, PlayerInput.InputState state)
     {
         bool canMove = false;
         Vector2 delta = origMPWorld - newMPWorld;
@@ -435,6 +435,18 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    public virtual void processTapGesture(Vector2 tapPos)
+    {
+        throw new System.NotImplementedException("" + GetType() + ".processTapGesture() (from interface InputProcessor) not implemented!");
+    }
+    public virtual void processHoldGesture(Vector2 holdPos, float holdTime, PlayerInput.InputState state)
+    {
+        throw new System.NotImplementedException("" + GetType() + ".processHoldGesture() (from interface InputProcessor) not implemented!");
+    }
+    public virtual void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
+    {
+        throw new System.NotImplementedException("" + GetType() + ".processZoomGesture() (from interface InputProcessor) not implemented!");
+    }
 
 
     /// <summary>

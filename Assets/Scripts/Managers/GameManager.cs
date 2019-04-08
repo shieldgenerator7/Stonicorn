@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// GameManager in charge of Time and Space
 /// </summary>
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, InputProcessor
 {
     //
     // Settings
@@ -801,7 +801,7 @@ public class GameManager : MonoBehaviour
     /// Processes the tap gesture at the given position
     /// </summary>
     /// <param name="curMPWorld">The position of the tap in world coordinates</param>
-    public void processTapGesture(Vector3 curMPWorld)
+    public void processTapGesture(Vector2 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
         //If respawn timer is not over,
@@ -911,6 +911,20 @@ public class GameManager : MonoBehaviour
     }
     public delegate void TapProcessed(Vector2 curMPWorld);
     public TapProcessed tapProcessed;
+    
+    public virtual void processHoldGesture(Vector2 holdPos, float holdTime, PlayerInput.InputState state)
+    {
+        throw new System.NotImplementedException("" + GetType() + ".processHoldGesture() (from interface InputProcessor) not implemented!");
+    }
+    public virtual void processDragGesture(Vector2 oldPos, Vector2 newPos, PlayerInput.InputState state)
+    {
+        throw new System.NotImplementedException("" + GetType() + ".processDragGesture() (from interface InputProcessor) not implemented!");
+    }
+    public virtual void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
+    {
+        throw new System.NotImplementedException("" + GetType() + ".processZoomGesture() (from interface InputProcessor) not implemented!");
+    }
+
 
     /// <summary>
     /// Used primarily for managing the delay between the player dying and respawning

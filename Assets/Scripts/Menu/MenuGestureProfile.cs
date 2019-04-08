@@ -14,22 +14,22 @@ public class MenuGestureProfile : GestureProfile
         MenuManager.Open = false;
         Managers.Camera.setRotation(-Managers.Player.Gravity.Gravity);
     }
-    public override void processTapGesture(Vector3 curMPWorld)
+    public override void processTapGesture(Vector2 curMPWorld)
     {
         Managers.Menu.processTapGesture(curMPWorld);
     }
-    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
+    public override void processHoldGesture(Vector2 curMPWorld, float holdTime, PlayerInput.InputState state)
     {
-        if (finished)
+        if (state == PlayerInput.InputState.End)
         {
             processTapGesture(curMPWorld);
         }
     }
-    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
+    public override void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, PlayerInput.InputState state)
     {
         if (!Managers.Menu.processDragGesture(origMPWorld, newMPWorld))
         {
-            base.processDragGesture(origMPWorld, newMPWorld);
+            base.processDragGesture(origMPWorld, newMPWorld, state);
         }
     }
 }
