@@ -197,7 +197,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame, after all other objects have moved that frame
     void LateUpdate()
     {
-        if (!Managers.Gesture.playerInput.cameraDragInProgress)
+        if (!Managers.Gesture.cameraDragInProgress)
         {
             if (!lockCamera)
             {

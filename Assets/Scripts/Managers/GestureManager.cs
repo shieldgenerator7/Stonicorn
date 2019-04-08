@@ -20,7 +20,7 @@ public class GestureManager : MonoBehaviour
     public OnInputDeviceSwitched onInputDeviceSwitched;
 
     //Player Input Data
-    public PlayerInput playerInput;
+    public List<PlayerInput> playerInput = new List<PlayerInput>();
 
     //Flags
     public bool cameraDragInProgress = false;
@@ -37,7 +37,8 @@ public class GestureManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        playerInput = new PlayerInputMouse();
+        playerInput.Add(new PlayerInputMouse());
+        playerInput.Add(new PlayerInputTouch());
 
         gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
         gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());
@@ -92,7 +93,19 @@ public class GestureManager : MonoBehaviour
 
 
 
-        PlayerInput.InputData inputData = playerInput.getInput();
+        PlayerInput.InputData inputData = null;
+        foreach (PlayerInput input in playerInput)
+        {
+            inputData = input.getInput();
+            if (inputData.inputState != PlayerInput.InputState.None)
+            {
+                break;
+            }
+        }
+        if (inputData.inputState == PlayerInput.InputState.None)
+        {
+            return;
+        }
 
         if (inputData.inputState == PlayerInput.InputState.Begin)
         {
