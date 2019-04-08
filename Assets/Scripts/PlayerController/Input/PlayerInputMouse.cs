@@ -27,11 +27,6 @@ public class PlayerInputMouse : PlayerInput
         {
             inputState = InputState.End;
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") != 0)
-        {
-            isPinchGesture = true;
-            inputState = InputState.Hold;
-        }
         else if (!Input.GetMouseButton(0))
         {
             inputState = InputState.None;
@@ -78,34 +73,21 @@ public class PlayerInputMouse : PlayerInput
         //
         InputData inputData = new InputData(origMP, curMP, inputState, holdTime, 1);
 
-        if (isPinchGesture)
-        {//touchCount == 0 || touchCount >= 2
-            if (inputState == InputState.Begin)
+        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        {
+            //
+            //Zoom Processing
+            //
+            //
+            //Mouse Scrolling Zoom
+            //
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
+                Managers.Camera.ZoomLevel++;
             }
-            else if (inputState == InputState.Hold)
+            else if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
-                //
-                //Zoom Processing
-                //
-                //
-                //Mouse Scrolling Zoom
-                //
-                if (Input.GetAxis("Mouse ScrollWheel") < 0)
-                {
-                    Managers.Camera.ZoomLevel++;
-                }
-                else if (Input.GetAxis("Mouse ScrollWheel") > 0)
-                {
-                    Managers.Camera.ZoomLevel--;
-                }
-            }
-            else if (inputState == InputState.End)
-            {
-                //Update Stats
-                GameStatistics.addOne("Pinch");
-                //Process Pinch Gesture
-                origOrthoSize = Managers.Camera.ZoomLevel;
+                Managers.Camera.ZoomLevel--;
             }
         }
 
