@@ -20,7 +20,6 @@ public class RewindGestureProfile : GestureProfile
         if (finished)
         {
             Managers.Game.processTapGesture(curMPWorld);
-            Managers.Gesture.adjustHoldThreshold(holdTime);
         }
     }
 }

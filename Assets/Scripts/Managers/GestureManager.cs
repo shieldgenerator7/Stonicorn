@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GestureManager : SavableMonoBehaviour
+public class GestureManager : MonoBehaviour
 {
     //Settings
     public float dragThreshold = 50;//how far from the original mouse position the current position has to be to count as a drag
@@ -45,7 +45,6 @@ public class GestureManager : SavableMonoBehaviour
     private bool isCameraMovementOnly = false;//true to make only the camera move until the gesture is over
     public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
-    public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
     private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.NONE;
 
     // Use this for initialization
@@ -62,16 +61,6 @@ public class GestureManager : SavableMonoBehaviour
 
 
         Input.simulateMouseWithTouches = false;
-    }
-    public override SavableObject getSavableObject()
-    {
-        return new SavableObject(this,
-            "holdThresholdScale", holdThresholdScale
-            );
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        holdThresholdScale = (float)savObj.data["holdThresholdScale"];
     }
 
     // Update is called once per frame
@@ -267,7 +256,7 @@ public class GestureManager : SavableMonoBehaviour
                         cameraDragInProgress = true;
                     }
                 }
-                if (holdTime > holdThreshold * holdThresholdScale)
+                if (holdTime > holdThreshold)
                 {
                     if (!isDrag && !isPinchGesture && !isCameraMovementOnly)
                     {
@@ -303,7 +292,6 @@ public class GestureManager : SavableMonoBehaviour
                     //Update Stats
                     GameStatistics.addOne("Tap");
                     //Process Tap Gesture
-                    adjustHoldThreshold(holdTime, false);
                     bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
                     if (Managers.Player.InCheckPoint)
                     {
@@ -439,44 +427,14 @@ public class GestureManager : SavableMonoBehaviour
     }
 
     /// <summary>
-    /// Accepts the given holdTime as not a hold but a tap and adjusts holdThresholdScale
-    /// Used by outside classes to indicate that a tap gesture was incorrectly classified as a hold gesture
-    /// </summary>
-    /// <param name="holdTime"></param>
-    public void adjustHoldThreshold(float holdTime)
-    {
-        adjustHoldThreshold(holdTime, true);
-    }
-    /// <summary>
-    /// Used by the GestureManager to adapt hold threshold even when gestures are being classified correctly
-    /// Expects tapCount to never be 0 when called directly from GestureManager
-    /// </summary>
-    /// <param name="holdTime"></param>
-    /// <param name="incrementTapCount"></param>
-    private void adjustHoldThreshold(float holdTime, bool incrementTapCount)
-    {
-        if (incrementTapCount)
-        {
-            GameStatistics.addOne("Tap");
-        }
-        int tapCount = GameStatistics.get("Tap");
-        holdThresholdScale = (holdThresholdScale * (tapCount - 1) + (holdTime / holdThreshold)) / tapCount;
-        if (holdThresholdScale < 1)
-        {
-            holdThresholdScale = 1.0f;//keep it from going lower than the default holdThreshold
-        }
-    }
-    /// <summary>
-    /// Returns the absolute hold threshold, including its scale
+    /// Returns the hold threshold
     /// </summary>
     /// <returns></returns>
     public float HoldThreshold
     {
-        get
-        {
-            return holdThreshold * holdThresholdScale;
-        }
+        get { return holdThreshold; }
     }
+
     /// <summary>
     /// Switches the gesture profile to the profile with the given name
     /// </summary>

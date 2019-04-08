@@ -23,7 +23,6 @@ public class MenuGestureProfile : GestureProfile
         if (finished)
         {
             processTapGesture(curMPWorld);
-            Managers.Gesture.adjustHoldThreshold(holdTime);
         }
     }
     public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
