@@ -12,37 +12,16 @@ public class GestureManager : MonoBehaviour
 
     //Gesture Profiles
     public enum GestureProfileType { MENU, MAIN, REWIND };
-    private GestureProfile currentGP;//the current gesture profile
+    public GestureProfile currentGP;//the current gesture profile
     private Dictionary<GestureProfileType, GestureProfile> gestureProfiles = new Dictionary<GestureProfileType, GestureProfile>();//dict of valid gesture profiles
 
     //Gesture Event Methods
     public TapGesture tapGesture;
     public OnInputDeviceSwitched onInputDeviceSwitched;
 
-    //Original Positions
-    private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
-    private Vector3 origMP2;//second orginal "mouse position" for second touch
-    private Vector3 origMPWorld;//"original mouse position world" - the original mouse coordinate in the world
-    private float origTime = 0f;//"original time": the clock time at the last mouse down (or tap down) event
-    private float origOrthoSize = 1f;//"original orthographic size"
-    //Current Positions
-    private Vector3 curMP;//"current mouse position"
-    private Vector3 curMP2;//"current mouse position" for second touch
-    private Vector3 curMPWorld;//"current mouse position world" - the mouse coordinates in the world
-    private float curTime = 0f;
-    //Stats
-    private int touchCount = 0;//how many touches to process, usually only 0 or 1, only 2 if zoom
-    private float maxMouseMovement = 0f;//how far the mouse has moved since the last mouse down (or tap down) event
-    private float holdTime = 0f;//how long the gesture has been held for
-    private enum ClickState { Began, InProgress, Ended, None };
-    private ClickState clickState = ClickState.None;
-    //Flags
-    public bool cameraDragInProgress = false;
-    private bool isDrag = false;
-    private bool isTapGesture = true;
-    private bool isHoldGesture = false;
-    private bool isPinchGesture = false;
-    private bool isCameraMovementOnly = false;//true to make only the camera move until the gesture is over
+    //Player Input Data
+    public PlayerInput playerInput;
+
     public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.NONE;
@@ -50,6 +29,8 @@ public class GestureManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        playerInput = new PlayerInputMouse();
+
         gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
         gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());
         gestureProfiles.Add(GestureProfileType.REWIND, new RewindGestureProfile());
@@ -100,294 +81,12 @@ public class GestureManager : MonoBehaviour
         {
             dragThreshold = newDT;
         }
-        //
-        //Input scouting
-        //
-        if (Input.touchCount > 2)
-        {
-            touchCount = 0;
-        }
-        else if (Input.touchCount >= 1)
-        {
-            {
-                if (Input.GetTouch(0).phase == TouchPhase.Began)
-                {
-                    beginSingleTapGesture();
-                }
-                else if (Input.GetTouch(0).phase == TouchPhase.Ended)
-                {
-                    clickState = ClickState.Ended;
-                    if (touchCount == 2)
-                    {
-                        if (Input.GetTouch(1).phase != TouchPhase.Ended)
-                        {
-                            beginSingleTapGesture(1);
-                        }
-                    }
-                }
-                else
-                {
-                    clickState = ClickState.InProgress;
-                    curMP = Input.GetTouch(0).position;
-                }
-            }
-            if (Input.touchCount == 2)
-            {
-                if (Input.GetTouch(1).phase == TouchPhase.Began)
-                {
-                    isPinchGesture = true;
-                    isCameraMovementOnly = true;
-                    touchCount = 2;
-                    clickState = ClickState.Began;
-                    origMP2 = Input.GetTouch(1).position;
-                    origOrthoSize = Managers.Camera.ZoomLevel;
-                    //Update origMP
-                    origMP = Input.GetTouch(0).position;
-                }
-                else if (Input.GetTouch(1).phase == TouchPhase.Ended)
-                {
-                    if (Input.GetTouch(0).phase != TouchPhase.Ended)
-                    {
-                        beginSingleTapGesture();
-                    }
-                }
-                else
-                {
-                    clickState = ClickState.InProgress;
-                    curMP2 = Input.GetTouch(1).position;
-                }
-            }
-        }
-        else if (Input.GetMouseButton(0))
-        {
-            touchCount = 1;
-            if (Input.GetMouseButtonDown(0))
-            {
-                clickState = ClickState.Began;
-                origMP = Input.mousePosition;
-            }
-            else
-            {
-                clickState = ClickState.InProgress;
-                curMP = Input.mousePosition;
-            }
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            clickState = ClickState.Ended;
-        }
-        else if (Input.GetAxis("Mouse ScrollWheel") != 0)
-        {
-            isPinchGesture = true;
-            clickState = ClickState.InProgress;
-        }
-        else if (Input.touchCount == 0 && !Input.GetMouseButton(0))
-        {
-            touchCount = 0;
-            clickState = ClickState.None;
-            //
-            isDrag = false;
-            isPinchGesture = false;
-            isCameraMovementOnly = false;
-        }
-
-        //
-        //Preliminary Processing
-        //Stats are processed here
-        //
-        switch (clickState)
-        {
-            case ClickState.Began:
-                curMP = origMP;
-                maxMouseMovement = 0;
-                Managers.Camera.originalCameraPosition = Managers.Camera.transform.position - Managers.Player.transform.position;
-                origTime = Time.time;
-                curTime = origTime;
-                curMP2 = origMP2;
-                origMPWorld = Camera.main.ScreenToWorldPoint(origMP);
-                break;
-            case ClickState.Ended: //do the same thing you would for "in progress"
-            case ClickState.InProgress:
-                float mm = Vector3.Distance(curMP, origMP);
-                if (mm > maxMouseMovement)
-                {
-                    maxMouseMovement = mm;
-                }
-                curTime = Time.time;
-                holdTime = curTime - origTime;
-                break;
-            case ClickState.None: break;
-            default:
-                throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + clickState);
-        }
-        curMPWorld = Camera.main.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
 
 
-        //
-        //Input Processing
-        //
-        if (touchCount == 1)
-        {
-            if (clickState == ClickState.Began)
-            {
-                //Set all flags = true
-                cameraDragInProgress = false;
-                isDrag = false;
-                if (!isCameraMovementOnly)
-                {
-                    isTapGesture = true;
-                }
-                else
-                {
-                    isTapGesture = false;
-                }
-                isHoldGesture = false;
-                isPinchGesture = touchCount == 2;
-            }
-            else if (clickState == ClickState.InProgress)
-            {
-                if (maxMouseMovement > dragThreshold
-                    && Managers.Player.Speed <= playerSpeedThreshold)
-                {
-                    if (!isHoldGesture && !isPinchGesture)
-                    {
-                        isTapGesture = false;
-                        isDrag = true;
-                        cameraDragInProgress = true;
-                    }
-                }
-                if (holdTime > holdThreshold)
-                {
-                    if (!isDrag && !isPinchGesture && !isCameraMovementOnly)
-                    {
-                        isTapGesture = false;
-                        isHoldGesture = true;
-                        Time.timeScale = holdTimeScale;
-                    }
-                }
-                if (isDrag)
-                {
-                    currentGP.processDragGesture(Camera.main.ScreenToWorldPoint(origMP), curMPWorld);
-                }
-                else if (isHoldGesture)
-                {
-                    currentGP.processHoldGesture(curMPWorld, holdTime, false);
-                }
-            }
-            else if (clickState == ClickState.Ended)
-            {
-                if (isDrag)
-                {
-                    //Update Stats
-                    GameStatistics.addOne("Drag");
-                    //Process Drag Gesture
-                    Managers.Camera.pinPoint();
-                }
-                else if (isHoldGesture)
-                {
-                    currentGP.processHoldGesture(curMPWorld, holdTime, true);
-                }
-                else if (isTapGesture)
-                {
-                    //Update Stats
-                    GameStatistics.addOne("Tap");
-                    //Process Tap Gesture
-                    bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
-                    if (Managers.Player.InCheckPoint)
-                    {
-                        foreach (CheckPointChecker cpc in FindObjectsOfType<CheckPointChecker>())
-                        {
-                            if (cpc.checkGhostActivation(curMPWorld))
-                            {
-                                checkPointPort = true;
-                                currentGP.processTapGesture(cpc);
-                                if (tapGesture != null)
-                                {
-                                    tapGesture();
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    if (!checkPointPort)
-                    {
-                        currentGP.processTapGesture(curMPWorld);
-                        if (tapGesture != null)
-                        {
-                            tapGesture();
-                        }
-                    }
-                }
 
-                //Set all flags = false
-                cameraDragInProgress = false;
-                isDrag = false;
-                isTapGesture = false;
-                isHoldGesture = false;
-                isPinchGesture = false;
-                isCameraMovementOnly = false;
-                Time.timeScale = 1;
-            }
-            else
-            {
-                throw new System.Exception("Click State of wrong type, or type not processed! (Input Processing) clickState: " + clickState);
-            }
+        playerInput.getInput();
 
-        }
-        if (isPinchGesture)
-        {//touchCount == 0 || touchCount >= 2
-            if (clickState == ClickState.Began)
-            {
-            }
-            else if (clickState == ClickState.InProgress)
-            {
-                //
-                //Zoom Processing
-                //
-                //
-                //Mouse Scrolling Zoom
-                //
-                if (Input.GetAxis("Mouse ScrollWheel") < 0)
-                {
-                    Managers.Camera.ZoomLevel++;
-                }
-                else if (Input.GetAxis("Mouse ScrollWheel") > 0)
-                {
-                    Managers.Camera.ZoomLevel--;
-                }
-                //
-                //Pinch Touch Zoom
-                //2015-12-31 (1:23am): copied from https://unity3d.com/learn/tutorials/modules/beginner/platform-specific/pinch-zoom
-                //
-
-                // If there are two touches on the device...
-                if (touchCount == 2)
-                {
-                    // Store both touches.
-                    Touch touchZero = Input.GetTouch(0);
-                    Touch touchOne = Input.GetTouch(1);
-
-                    // Find the position in the previous frame of each touch.
-                    Vector2 touchZeroPrevPos = origMP;
-                    Vector2 touchOnePrevPos = origMP2;
-
-                    // Find the magnitude of the vector (the distance) between the touches in each frame.
-                    float prevTouchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZeroPrevPos, touchOnePrevPos);
-                    float touchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZero.position, touchOne.position);
-
-                    float newZoomLevel = origOrthoSize * prevTouchDeltaMag / touchDeltaMag;
-
-                    Managers.Camera.ZoomLevel = newZoomLevel;
-                }
-            }
-            else if (clickState == ClickState.Ended)
-            {
-                //Update Stats
-                GameStatistics.addOne("Pinch");
-                //Process Pinch Gesture
-                origOrthoSize = Managers.Camera.ZoomLevel;
-            }
-        }
+        
 
         //
         //Opening Main Menu
@@ -402,27 +101,6 @@ public class GestureManager : MonoBehaviour
             {
                 Managers.Camera.ZoomScalePoint = CameraController.CameraScalePoints.MENU;
             }
-        }
-    }
-
-    /// <summary>
-    /// Used in Update() to convey that the Input
-    /// indicates the beginning of a new single-tap gesture,
-    /// used often to transition between gestures with continuous input
-    /// </summary>
-    /// <param name="tapIndex">The index of the tap in Input.GetTouch()</param>
-    void beginSingleTapGesture(int tapIndex = 0)
-    {
-        touchCount = 1;
-        clickState = ClickState.Began;
-        origMP = Input.GetTouch(tapIndex).position;
-        if (isPinchGesture)
-        {
-            isDrag = true;
-        }
-        else
-        {
-            isCameraMovementOnly = false;
         }
     }
 
