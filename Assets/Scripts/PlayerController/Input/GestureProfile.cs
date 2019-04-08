@@ -35,7 +35,12 @@ public class GestureProfile
     {
         Managers.Camera.processDragGesture(origMPWorld, newMPWorld);
     }
-    public void processZoomLevelChange(float zoomLevel)
+    public void processZoomGesture(float zoomMultiplier)
+    {
+        //TODO: Make the camera process it with a processZoomGesture() method
+        Managers.Camera.ZoomLevel *= zoomMultiplier;
+    }
+    public void onZoomLevelChange(float zoomLevel)
     {
         //GestureProfile switcher
         if (zoomLevel < Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU + 1))

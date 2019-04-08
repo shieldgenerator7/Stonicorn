@@ -6,8 +6,8 @@ public abstract class PlayerInput
 {
     //2019-04-08: moved here from GestureManager
 
-    public enum ClickState { Began, InProgress, Ended, None };
-    public ClickState clickState = ClickState.None;
+    public enum InputState { Begin, Hold, End, None };
+    public InputState inputState = InputState.None;
 
     //Original Positions
     public Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
@@ -32,7 +32,47 @@ public abstract class PlayerInput
     public bool isPinchGesture = false;
     public bool isCameraMovementOnly = false;//true to make only the camera move until the gesture is over
 
-    public abstract PlayerInput getInput();
+    public class InputData
+    {
+        public Vector2 oldScreenPos;
+        public Vector2 newScreenPos;
+        public InputState inputState;
+        public float holdTime;
+        public float zoomMultiplier;
+
+        public InputData(Vector2 oldScreenPos, Vector2 newScreenPos, InputState inputState, float holdTime, float zoomMultiplier = 1)
+        {
+            this.oldScreenPos = oldScreenPos;
+            this.newScreenPos = newScreenPos;
+            this.inputState = inputState;
+            this.holdTime = holdTime;
+            this.zoomMultiplier = zoomMultiplier;
+        }
+
+        /// <summary>
+        /// Calculated when called, not stored
+        /// </summary>
+        public Vector2 OldWorldPos
+        {
+            get { return Camera.main.ScreenToWorldPoint(oldScreenPos); }
+        }
+        /// <summary>
+        /// Calculated when called, not stored
+        /// </summary>
+        public Vector2 NewWorldPos
+        {
+            get { return Camera.main.ScreenToWorldPoint(newScreenPos); }
+        }
+        /// <summary>
+        /// The distance between the oldScreenPos and the newScreenPos
+        /// </summary>
+        public float PositionDelta
+        {
+            get { return Vector2.Distance(oldScreenPos, newScreenPos); }
+        }
+    }
+
+    public abstract InputData getInput();
 
     /// <summary>
     /// Used in Update() to convey that the Input
@@ -44,7 +84,7 @@ public abstract class PlayerInput
     protected void beginSingleTapGesture(int tapIndex = 0)
     {
         touchCount = 1;
-        clickState = ClickState.Began;
+        inputState = InputState.Begin;
         origMP = Input.GetTouch(tapIndex).position;
         if (isPinchGesture)
         {

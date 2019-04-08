@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInputMouse : PlayerInput
 {
-    public override PlayerInput getInput()
+    public override InputData getInput()
     {
         //
         //Input scouting
@@ -22,7 +22,7 @@ public class PlayerInputMouse : PlayerInput
                 }
                 else if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
-                    clickState = ClickState.Ended;
+                    inputState = InputState.End;
                     if (touchCount == 2)
                     {
                         if (Input.GetTouch(1).phase != TouchPhase.Ended)
@@ -33,7 +33,7 @@ public class PlayerInputMouse : PlayerInput
                 }
                 else
                 {
-                    clickState = ClickState.InProgress;
+                    inputState = InputState.Hold;
                     curMP = Input.GetTouch(0).position;
                 }
             }
@@ -44,7 +44,7 @@ public class PlayerInputMouse : PlayerInput
                     isPinchGesture = true;
                     isCameraMovementOnly = true;
                     touchCount = 2;
-                    clickState = ClickState.Began;
+                    inputState = InputState.Begin;
                     origMP2 = Input.GetTouch(1).position;
                     origOrthoSize = Managers.Camera.ZoomLevel;
                     //Update origMP
@@ -59,7 +59,7 @@ public class PlayerInputMouse : PlayerInput
                 }
                 else
                 {
-                    clickState = ClickState.InProgress;
+                    inputState = InputState.Hold;
                     curMP2 = Input.GetTouch(1).position;
                 }
             }
@@ -69,28 +69,28 @@ public class PlayerInputMouse : PlayerInput
             touchCount = 1;
             if (Input.GetMouseButtonDown(0))
             {
-                clickState = ClickState.Began;
+                inputState = InputState.Begin;
                 origMP = Input.mousePosition;
             }
             else
             {
-                clickState = ClickState.InProgress;
+                inputState = InputState.Hold;
                 curMP = Input.mousePosition;
             }
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            clickState = ClickState.Ended;
+            inputState = InputState.End;
         }
         else if (Input.GetAxis("Mouse ScrollWheel") != 0)
         {
             isPinchGesture = true;
-            clickState = ClickState.InProgress;
+            inputState = InputState.Hold;
         }
         else if (Input.touchCount == 0 && !Input.GetMouseButton(0))
         {
             touchCount = 0;
-            clickState = ClickState.None;
+            inputState = InputState.None;
             //
             isDrag = false;
             isPinchGesture = false;
@@ -102,9 +102,9 @@ public class PlayerInputMouse : PlayerInput
         //Preliminary Processing
         //Stats are processed here
         //
-        switch (clickState)
+        switch (inputState)
         {
-            case ClickState.Began:
+            case InputState.Begin:
                 curMP = origMP;
                 maxMouseMovement = 0;
                 Managers.Camera.originalCameraPosition = Managers.Camera.transform.position - Managers.Player.transform.position;
@@ -113,8 +113,8 @@ public class PlayerInputMouse : PlayerInput
                 curMP2 = origMP2;
                 origMPWorld = Camera.main.ScreenToWorldPoint(origMP);
                 break;
-            case ClickState.Ended: //do the same thing you would for "in progress"
-            case ClickState.InProgress:
+            case InputState.End: //do the same thing you would for "in progress"
+            case InputState.Hold:
                 float mm = Vector3.Distance(curMP, origMP);
                 if (mm > maxMouseMovement)
                 {
@@ -123,9 +123,9 @@ public class PlayerInputMouse : PlayerInput
                 curTime = Time.time;
                 holdTime = curTime - origTime;
                 break;
-            case ClickState.None: break;
+            case InputState.None: break;
             default:
-                throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + clickState);
+                throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + inputState);
         }
         curMPWorld = Camera.main.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
 
@@ -133,120 +133,14 @@ public class PlayerInputMouse : PlayerInput
         //
         //Input Processing
         //
-        if (touchCount == 1)
-        {
-            if (clickState == ClickState.Began)
-            {
-                //Set all flags = true
-                cameraDragInProgress = false;
-                isDrag = false;
-                if (!isCameraMovementOnly)
-                {
-                    isTapGesture = true;
-                }
-                else
-                {
-                    isTapGesture = false;
-                }
-                isHoldGesture = false;
-                isPinchGesture = touchCount == 2;
-            }
-            else if (clickState == ClickState.InProgress)
-            {
-                if (maxMouseMovement > Managers.Gesture.dragThreshold
-                    && Managers.Player.Speed <= Managers.Gesture.playerSpeedThreshold)
-                {
-                    if (!isHoldGesture && !isPinchGesture)
-                    {
-                        isTapGesture = false;
-                        isDrag = true;
-                        cameraDragInProgress = true;
-                    }
-                }
-                if (holdTime > Managers.Gesture.holdThreshold)
-                {
-                    if (!isDrag && !isPinchGesture && !isCameraMovementOnly)
-                    {
-                        isTapGesture = false;
-                        isHoldGesture = true;
-                        Time.timeScale = GestureManager.holdTimeScale;
-                    }
-                }
-                if (isDrag)
-                {
-                    Managers.Gesture.currentGP.processDragGesture(Camera.main.ScreenToWorldPoint(origMP), curMPWorld);
-                }
-                else if (isHoldGesture)
-                {
-                    Managers.Gesture.currentGP.processHoldGesture(curMPWorld, holdTime, false);
-                }
-            }
-            else if (clickState == ClickState.Ended)
-            {
-                if (isDrag)
-                {
-                    //Update Stats
-                    GameStatistics.addOne("Drag");
-                    //Process Drag Gesture
-                    Managers.Camera.pinPoint();
-                }
-                else if (isHoldGesture)
-                {
-                    Managers.Gesture.currentGP.processHoldGesture(curMPWorld, holdTime, true);
-                }
-                else if (isTapGesture)
-                {
-                    //Update Stats
-                    GameStatistics.addOne("Tap");
-                    //Process Tap Gesture
-                    bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
-                    if (Managers.Player.InCheckPoint)
-                    {
-                        foreach (CheckPointChecker cpc in GameObject.FindObjectsOfType<CheckPointChecker>())
-                        {
-                            if (cpc.checkGhostActivation(curMPWorld))
-                            {
-                                checkPointPort = true;
-                                Managers.Gesture.currentGP.processTapGesture(cpc);
-                                if (Managers.Gesture.tapGesture != null)
-                                {
-                                    Managers.Gesture.tapGesture();
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    if (!checkPointPort)
-                    {
-                        Managers.Gesture.currentGP.processTapGesture(curMPWorld);
-                        if (Managers.Gesture.tapGesture != null)
-                        {
-                            Managers.Gesture.tapGesture();
-                        }
-                    }
-                }
+        InputData inputData = new InputData(origMP, curMP, inputState, holdTime, 1);
 
-                //Set all flags = false
-                cameraDragInProgress = false;
-                isDrag = false;
-                isTapGesture = false;
-                isHoldGesture = false;
-                isPinchGesture = false;
-                isCameraMovementOnly = false;
-                Time.timeScale = 1;
-            }
-            else
-            {
-                throw new System.Exception("Click State of wrong type, or type not processed! (Input Processing) clickState: " + clickState);
-            }
-
-        }
         if (isPinchGesture)
         {//touchCount == 0 || touchCount >= 2
-            if (clickState == ClickState.Began)
+            if (inputState == InputState.Begin)
             {
             }
-            else if (clickState == ClickState.InProgress)
+            else if (inputState == InputState.Hold)
             {
                 //
                 //Zoom Processing
@@ -287,7 +181,7 @@ public class PlayerInputMouse : PlayerInput
                     Managers.Camera.ZoomLevel = newZoomLevel;
                 }
             }
-            else if (clickState == ClickState.Ended)
+            else if (inputState == InputState.End)
             {
                 //Update Stats
                 GameStatistics.addOne("Pinch");
@@ -296,7 +190,6 @@ public class PlayerInputMouse : PlayerInput
             }
         }
 
-
-        return this;
+        return inputData;
     }
 }

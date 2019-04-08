@@ -12,7 +12,7 @@ public class GestureManager : MonoBehaviour
 
     //Gesture Profiles
     public enum GestureProfileType { MENU, MAIN, REWIND };
-    public GestureProfile currentGP;//the current gesture profile
+    private GestureProfile currentGP;//the current gesture profile
     private Dictionary<GestureProfileType, GestureProfile> gestureProfiles = new Dictionary<GestureProfileType, GestureProfile>();//dict of valid gesture profiles
 
     //Gesture Event Methods
@@ -21,6 +21,14 @@ public class GestureManager : MonoBehaviour
 
     //Player Input Data
     public PlayerInput playerInput;
+
+    //Flags
+    public bool cameraDragInProgress = false;
+    public bool isDrag = false;
+    public bool isTapGesture = true;
+    public bool isHoldGesture = false;
+    public bool isPinchGesture = false;
+    public bool isCameraMovementOnly = false;//true to make only the camera move until the gesture is over
 
     public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
@@ -84,9 +92,125 @@ public class GestureManager : MonoBehaviour
 
 
 
-        playerInput.getInput();
+        PlayerInput.InputData inputData = playerInput.getInput();
 
-        
+        if (inputData.inputState == PlayerInput.InputState.Begin)
+        {
+            //Set all flags = true
+            cameraDragInProgress = false;
+            isDrag = false;
+            if (!isCameraMovementOnly)
+            {
+                isTapGesture = true;
+            }
+            else
+            {
+                isTapGesture = false;
+            }
+            isHoldGesture = false;
+        }
+        else if (inputData.inputState == PlayerInput.InputState.Hold)
+        {
+            if (inputData.PositionDelta > Managers.Gesture.dragThreshold
+                && Managers.Player.Speed <= Managers.Gesture.playerSpeedThreshold)
+            {
+                if (!isHoldGesture && !isPinchGesture)
+                {
+                    isTapGesture = false;
+                    isDrag = true;
+                    cameraDragInProgress = true;
+                }
+            }
+            if (inputData.holdTime > Managers.Gesture.holdThreshold)
+            {
+                if (!isDrag && !isPinchGesture && !isCameraMovementOnly)
+                {
+                    isTapGesture = false;
+                    isHoldGesture = true;
+                    Time.timeScale = GestureManager.holdTimeScale;
+                }
+            }
+            if (isDrag)
+            {
+                Managers.Gesture.currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos);
+            }
+            else if (isHoldGesture)
+            {
+                Managers.Gesture.currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, false);
+            }
+        }
+        else if (inputData.inputState == PlayerInput.InputState.End)
+        {
+            if (isDrag)
+            {
+                //Update Stats
+                GameStatistics.addOne("Drag");
+                //Process Drag Gesture
+                Managers.Camera.pinPoint();
+            }
+            else if (isHoldGesture)
+            {
+                Managers.Gesture.currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, true);
+            }
+            else if (isTapGesture)
+            {
+                //Update Stats
+                GameStatistics.addOne("Tap");
+                //Process Tap Gesture
+                bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
+                if (Managers.Player.InCheckPoint)
+                {
+                    foreach (CheckPointChecker cpc in GameObject.FindObjectsOfType<CheckPointChecker>())
+                    {
+                        if (cpc.checkGhostActivation(inputData.NewWorldPos))
+                        {
+                            checkPointPort = true;
+                            Managers.Gesture.currentGP.processTapGesture(cpc);
+                            if (Managers.Gesture.tapGesture != null)
+                            {
+                                Managers.Gesture.tapGesture();
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (!checkPointPort)
+                {
+                    Managers.Gesture.currentGP.processTapGesture(inputData.NewWorldPos);
+                    if (Managers.Gesture.tapGesture != null)
+                    {
+                        Managers.Gesture.tapGesture();
+                    }
+                }
+            }
+
+            //Set all flags = false
+            cameraDragInProgress = false;
+            isDrag = false;
+            isTapGesture = false;
+            isHoldGesture = false;
+            isPinchGesture = false;
+            isCameraMovementOnly = false;
+            Time.timeScale = 1;
+        }
+        else
+        {
+            throw new System.Exception("Input State of wrong type, or type not processed! (Input Processing) inputState: " + inputData.inputState);
+        }
+        if (inputData.zoomMultiplier != 1)
+        {
+            if (inputData.inputState == PlayerInput.InputState.Begin)
+            {
+            }
+            else if (inputData.inputState == PlayerInput.InputState.Hold)
+            {
+                currentGP.processZoomGesture(inputData.zoomMultiplier);
+            }
+            else if (inputData.inputState == PlayerInput.InputState.End)
+            {
+            }
+        }
+
 
         //
         //Opening Main Menu
@@ -137,7 +261,7 @@ public class GestureManager : MonoBehaviour
 
     public void processZoomLevelChange(float newZoomLevel, float delta)
     {
-        currentGP.processZoomLevelChange(newZoomLevel);
+        currentGP.onZoomLevelChange(newZoomLevel);
     }
 
     /// <summary>
