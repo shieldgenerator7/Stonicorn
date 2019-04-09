@@ -71,48 +71,51 @@ public class ForceBoostAbility : PlayerAbility
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //If collision is head on,
-        Vector2 velocity = playerController.Velocity;
-        Vector2 surfaceNormal = collision.GetContact(0).normal;
-        float angle = Utility.RotationZ(-velocity, surfaceNormal);
-        if (angle < 45)
+        if (enabled)
         {
-            //Explode     
-            Vector2 explodePos;
-            //If object is breakable or movable,
-            if (collision.gameObject.isSavable())
+            //If collision is head on,
+            Vector2 velocity = playerController.Velocity;
+            Vector2 surfaceNormal = collision.GetContact(0).normal;
+            float angle = Utility.RotationZ(-velocity, surfaceNormal);
+            if (angle < 45)
             {
-                //explode behind Merky
-                explodePos = (Vector2)transform.position - (velocity.normalized * 0.01f);
+                //Explode     
+                Vector2 explodePos;
+                //If object is breakable or movable,
+                if (collision.gameObject.isSavable())
+                {
+                    //explode behind Merky
+                    explodePos = (Vector2)transform.position - (velocity.normalized * 0.01f);
+                }
+                //Else
+                else
+                {
+                    //explode in front of Merky  
+                    explodePos = (Vector2)transform.position - (Vector2.Reflect(velocity, surfaceNormal).normalized * 0.01f);
+                }
+                Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
+                Debug.DrawLine(explodePos, explodePos + (dir * 2), Color.white, 2);
+                Debug.Log("Exploding: charge: " + Mathf.Floor(Charge) + ", rb2d.vel: " + velocity.magnitude);
+                showChargeEffect(explodePos, Mathf.Max(Charge, chargeIncrement), true);
+                endEffects();
             }
             //Else
             else
             {
-                //explode in front of Merky  
-                explodePos = (Vector2)transform.position - (Vector2.Reflect(velocity, surfaceNormal).normalized * 0.01f);
+                float speed = playerController.Speed;
+                //Divert Merky's course
+                //If should rotate "left"
+                if (Vector2.SignedAngle(-velocity, surfaceNormal) < 0)
+                {
+                    rb2d.velocity = surfaceNormal.normalized.PerpendicularRight() * speed;
+                }
+                else
+                {
+                    rb2d.velocity = surfaceNormal.normalized.PerpendicularLeft() * speed;
+                }
+                ////Add a bit of force to make up for friction
+                //rb2d.AddForce(rb2d.velocity.normalized * chargeIncrement);
             }
-            Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
-            Debug.DrawLine(explodePos, explodePos + (dir * 2), Color.white, 2);
-            Debug.Log("Exploding: charge: " + Mathf.Floor(Charge)+", rb2d.vel: "+velocity.magnitude);
-            showChargeEffect(explodePos, Mathf.Max(Charge, chargeIncrement), true);
-            endEffects();
-        }
-        //Else
-        else
-        {
-            float speed = playerController.Speed;
-            //Divert Merky's course
-            //If should rotate "left"
-            if (Vector2.SignedAngle(-velocity, surfaceNormal) < 0)
-            {
-                rb2d.velocity = surfaceNormal.normalized.PerpendicularRight() * speed;
-            }
-            else
-            {
-                rb2d.velocity = surfaceNormal.normalized.PerpendicularLeft() * speed;
-            }
-            ////Add a bit of force to make up for friction
-            //rb2d.AddForce(rb2d.velocity.normalized * chargeIncrement);
         }
     }
 
@@ -162,7 +165,7 @@ public class ForceBoostAbility : PlayerAbility
             //The first teleport will only make the charge increase a small amount, no matter how far it was
             rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement);
         }
-        else 
+        else
         {
             rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange);
         }
