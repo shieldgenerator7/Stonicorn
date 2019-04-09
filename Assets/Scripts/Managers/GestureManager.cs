@@ -94,11 +94,11 @@ public class GestureManager : MonoBehaviour
 
 
 
-        PlayerInput.InputData inputData = null;
+        InputData inputData = null;
         foreach (PlayerInput input in playerInput)
         {
             inputData = input.getInput();
-            if (inputData.inputState != PlayerInput.InputState.None)
+            if (inputData.inputState != InputData.InputState.None)
             {
                 break;
             }
@@ -110,12 +110,12 @@ public class GestureManager : MonoBehaviour
                 Debug.Log("/!\\ inputData: " + inputData + " (probably null), input.gI().inputState: " + input.getInput().inputState);
             }
         }
-        if (inputData.inputState == PlayerInput.InputState.None)
+        if (inputData.inputState == InputData.InputState.None)
         {
             return;
         }
 
-        if (inputData.inputState == PlayerInput.InputState.Begin)
+        if (inputData.inputState == InputData.InputState.Begin)
         {
             //Set all flags = false
             cameraDragInProgress = false;
@@ -133,11 +133,11 @@ public class GestureManager : MonoBehaviour
             if (inputData.zoomMultiplier != 1)
             {
                 isZoomGesture = true;
-                currentGP.processZoomGesture(inputData.zoomMultiplier, PlayerInput.InputState.Begin);
+                currentGP.processZoomGesture(inputData.zoomMultiplier, InputData.InputState.Begin);
                 isTapGesture = false;
             }
         }
-        else if (inputData.inputState == PlayerInput.InputState.Hold)
+        else if (inputData.inputState == InputData.InputState.Hold)
         {
             //Gesture type scouting
             if (!isHoldGesture && !isDrag && !isZoomGesture)
@@ -145,7 +145,7 @@ public class GestureManager : MonoBehaviour
                 if (inputData.zoomMultiplier != 1)
                 {
                     isZoomGesture = true;
-                    currentGP.processZoomGesture(inputData.zoomMultiplier, PlayerInput.InputState.Begin);
+                    currentGP.processZoomGesture(inputData.zoomMultiplier, InputData.InputState.Begin);
                     isTapGesture = false;
                     isHoldGesture = false;
                     isDrag = false;
@@ -156,7 +156,7 @@ public class GestureManager : MonoBehaviour
                     && Managers.Player.Speed <= playerSpeedThreshold)
                     {
                         isDrag = true;
-                        currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, PlayerInput.InputState.Begin);
+                        currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, InputData.InputState.Begin);
                         isTapGesture = false;
                         cameraDragInProgress = true;
                     }
@@ -166,7 +166,7 @@ public class GestureManager : MonoBehaviour
                     if (inputData.HoldTime > holdThreshold)
                     {
                         isHoldGesture = true;
-                        currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, PlayerInput.InputState.Begin);
+                        currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, InputData.InputState.Begin);
                         isTapGesture = false;
                         Time.timeScale = GestureManager.holdTimeScale;
                     }
@@ -186,7 +186,7 @@ public class GestureManager : MonoBehaviour
                 currentGP.processZoomGesture(inputData.zoomMultiplier, inputData.inputState);
             }
         }
-        else if (inputData.inputState == PlayerInput.InputState.End)
+        else if (inputData.inputState == InputData.InputState.End)
         {
             if (isDrag)
             {

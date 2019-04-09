@@ -23,15 +23,15 @@ public class GestureProfile: InputProcessor
             Managers.Player.processTapGesture(curMPWorld);
         }
     }
-    public virtual void processHoldGesture(Vector2 curMPWorld, float holdTime, PlayerInput.InputState state)
+    public virtual void processHoldGesture(Vector2 curMPWorld, float holdTime, InputData.InputState state)
     {
         Managers.Player.processHoldGesture(curMPWorld, holdTime, state);
     }
-    public virtual void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, PlayerInput.InputState state)
+    public virtual void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, InputData.InputState state)
     {
         Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
     }
-    public void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
+    public void processZoomGesture(float zoomMultiplier, InputData.InputState state)
     {
         Managers.Camera.processZoomGesture(zoomMultiplier, state);
     }

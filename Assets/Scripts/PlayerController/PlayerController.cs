@@ -1046,7 +1046,7 @@ public class PlayerController : MonoBehaviour, InputProcessor
     /// <param name="holdPos">The current hold position</param>
     /// <param name="holdTime">The current hold duration</param>
     /// <param name="finished">True if this is the last frame of the hold gesture</param>
-    public void processHoldGesture(Vector2 holdPos, float holdTime, PlayerInput.InputState state)
+    public void processHoldGesture(Vector2 holdPos, float holdTime, InputData.InputState state)
     {
         //Get the actionable current duration of the hold gesture
         float reducedHoldTime = holdTime - Managers.Gesture.HoldThreshold;
@@ -1076,7 +1076,7 @@ public class PlayerController : MonoBehaviour, InputProcessor
             //Show the teleport preview effect
             tpa.showPreview(holdPos);
             //If this is the last frame of the hold gesture,
-            if (state == PlayerInput.InputState.End)
+            if (state == InputData.InputState.End)
             {
                 //Finally teleport to the location
                 processTapGesture(holdPos);
@@ -1096,12 +1096,12 @@ public class PlayerController : MonoBehaviour, InputProcessor
         }
     }
 
-    public virtual void processDragGesture(Vector2 oldPos, Vector2 newPos, PlayerInput.InputState state)
+    public virtual void processDragGesture(Vector2 oldPos, Vector2 newPos, InputData.InputState state)
     {
         throw new System.NotImplementedException("" + GetType() + ".processDragGesture() (from interface InputProcessor) not implemented!");
     }
 
-    public virtual void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
+    public virtual void processZoomGesture(float zoomMultiplier, InputData.InputState state)
     {
         throw new System.NotImplementedException("" + GetType() + ".processZoomGesture() (from interface InputProcessor) not implemented!");
     }

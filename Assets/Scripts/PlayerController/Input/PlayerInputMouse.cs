@@ -9,91 +9,63 @@ public class PlayerInputMouse : PlayerInput
 
     public override InputData getInput()
     {
-        inputState = InputState.None;
+        inputData.inputState = InputData.InputState.None;
+
         //
-        //Input scouting
+        // Mouse Clicking
         //
         if (Input.GetMouseButton(0))
         {
             if (Input.GetMouseButtonDown(0))
             {
-                inputState = InputState.Begin;
-                origMP = Input.mousePosition;
+                inputData.inputState = InputData.InputState.Begin;
             }
             else
             {
-                inputState = InputState.Hold;
-                curMP = Input.mousePosition;
+                inputData.inputState = InputData.InputState.Hold;
             }
+            inputData.NewScreenPos = Input.mousePosition;
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            inputState = InputState.End;
+            inputData.inputState = InputData.InputState.End;
         }
-        else if (!Input.GetMouseButton(0))
+
+        //
+        // Scroll Wheel
+        //
+        if (inputData.inputState == InputData.InputState.None)
         {
-            inputState = InputState.None;
-        }
-        prevScrollWheelAxis = scrollWheelAxis;
-        scrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
-        if (scrollWheelAxis != 0)
-        {
-            if (prevScrollWheelAxis == 0)
+            prevScrollWheelAxis = scrollWheelAxis;
+            scrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
+            if (scrollWheelAxis != 0)
             {
-                inputState = InputState.Begin;
+                if (prevScrollWheelAxis == 0)
+                {
+                    inputData.inputState = InputData.InputState.Begin;
+                }
+                else
+                {
+                    inputData.inputState = InputData.InputState.Hold;
+                }
             }
             else
             {
-                inputState = InputState.Hold;
+                if (prevScrollWheelAxis != 0)
+                {
+                    inputData.inputState = InputData.InputState.End;
+                }
             }
-        }
-        else
-        {
-            if (prevScrollWheelAxis != 0)
+            if (scrollWheelAxis != 0)
             {
-                inputState = InputState.End;
+                inputData.zoomMultiplier = Mathf.Pow(2, Input.mouseScrollDelta.y * 2 / 3);
             }
         }
-
-
-        //
-        //Preliminary Processing
-        //Stats are processed here
-        //
-        switch (inputState)
-        {
-            case InputState.Begin:
-                curMP = origMP;
-                origTime = Time.time;
-                curTime = origTime;
-                origMPWorld = Camera.main.ScreenToWorldPoint(origMP);
-                break;
-            case InputState.End: //do the same thing you would for "in progress"
-            case InputState.Hold:
-                curTime = Time.time;
-                holdTime = curTime - origTime;
-                break;
-            case InputState.None: break;
-            default:
-                throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + inputState);
-        }
-        curMPWorld = Camera.main.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
-
 
         //
         //Input Processing
         //
-        inputData.setScreenPos(origMP, curMP);
-        inputData.setState(inputState, holdTime, 1);
-
-        //
-        //Zoom Processing
-        //Mouse Scrolling Zoom
-        //
-        if (scrollWheelAxis != 0)
-        {
-            inputData.zoomMultiplier = Mathf.Pow(2, Input.mouseScrollDelta.y * 2 / 3);
-        }
+        inputData.process();
 
         return inputData;
     }

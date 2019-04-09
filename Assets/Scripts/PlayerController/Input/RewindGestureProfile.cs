@@ -15,9 +15,9 @@ public class RewindGestureProfile : GestureProfile
     {
         Managers.Game.processTapGesture(curMPWorld);
     }
-    public override void processHoldGesture(Vector2 curMPWorld, float holdTime, PlayerInput.InputState state)
+    public override void processHoldGesture(Vector2 curMPWorld, float holdTime, InputData.InputState state)
     {
-        if (state == PlayerInput.InputState.End)
+        if (state == InputData.InputState.End)
         {
             Managers.Game.processTapGesture(curMPWorld);
         }

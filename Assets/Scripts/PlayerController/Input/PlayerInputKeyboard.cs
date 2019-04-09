@@ -10,7 +10,7 @@ public class PlayerInputKeyboard : PlayerInput
 
     public override InputData getInput()
     {
-        inputState = InputState.None;
+        inputData.inputState = InputData.InputState.None;
         //
         //Input scouting
         //
@@ -18,38 +18,36 @@ public class PlayerInputKeyboard : PlayerInput
         float vertical = Input.GetAxisRaw("Vertical");
         prevInputDirection = inputDirection;
         inputDirection = new Vector2(horizontal, vertical).normalized;
-        inputData.NewWorldPos = (Vector2)Managers.Player.transform.position + (inputDirection * Managers.Player.Range);
         if (inputDirection != Vector2.zero)
         {
             if (prevInputDirection == Vector2.zero)
             {
-                inputState = InputState.Begin;
-                inputData.OldWorldPos = inputData.NewWorldPos;
+                inputData.inputState = InputData.InputState.Begin;
             }
             else
             {
-                inputState = InputState.Hold;
+                inputData.inputState = InputData.InputState.Hold;
             }
+            inputData.NewWorldPos = (Vector2)Managers.Player.transform.position + (inputDirection * Managers.Player.Range);
         }
         else
         {
             if (prevInputDirection != Vector2.zero)
             {
-                inputState = InputState.End;
+                inputData.inputState = InputData.InputState.End;
                 inputData.NewWorldPos = (Vector2)Managers.Player.transform.position + (prevInputDirection * Managers.Player.Range);
             }
         }
 
         //
-        //Input Processing
-        //
-        inputData.setWorldPos(origMPWorld, curMPWorld);
-        inputData.setState(inputState, holdTime, 1);
-
-        //
         //Zoom Processing
         //Button Press Zoom
         //
+
+        //
+        //Input Processing
+        //
+        inputData.process();
 
         return inputData;
     }

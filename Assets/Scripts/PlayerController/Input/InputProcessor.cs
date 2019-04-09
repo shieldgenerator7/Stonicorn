@@ -6,11 +6,11 @@ public interface InputProcessor
 {
     void processTapGesture(Vector2 tapPos);
 
-    void processHoldGesture(Vector2 holdPos, float holdTime, PlayerInput.InputState state);
+    void processHoldGesture(Vector2 holdPos, float holdTime, InputData.InputState state);
 
-    void processDragGesture(Vector2 oldPos, Vector2 newPos, PlayerInput.InputState state);
+    void processDragGesture(Vector2 oldPos, Vector2 newPos, InputData.InputState state);
 
-    void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state);
+    void processZoomGesture(float zoomMultiplier, InputData.InputState state);
 
     //Defaults
     //public virtual void processTapGesture(Vector2 tapPos)

@@ -406,10 +406,10 @@ public class CameraController : MonoBehaviour, InputProcessor
     {
         this.rotationUp = rotationUp;
     }
-    public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, PlayerInput.InputState state)
+    public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, InputData.InputState state)
     {
         Vector2 playerPos = Managers.Player.transform.position;
-        if (state == PlayerInput.InputState.Begin)
+        if (state == InputData.InputState.Begin)
         {
             originalCameraPosition = transform.position - (Vector3)playerPos;
         }
@@ -441,9 +441,9 @@ public class CameraController : MonoBehaviour, InputProcessor
             }
         }
     }
-    public virtual void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
+    public virtual void processZoomGesture(float zoomMultiplier, InputData.InputState state)
     {
-        if (state == PlayerInput.InputState.Begin)
+        if (state == InputData.InputState.Begin)
         {
             originalCameraScale = ZoomLevel;
         }
@@ -457,7 +457,7 @@ public class CameraController : MonoBehaviour, InputProcessor
     {
         throw new System.NotImplementedException("" + GetType() + ".processTapGesture() (from interface InputProcessor) not implemented!");
     }
-    public virtual void processHoldGesture(Vector2 holdPos, float holdTime, PlayerInput.InputState state)
+    public virtual void processHoldGesture(Vector2 holdPos, float holdTime, InputData.InputState state)
     {
         throw new System.NotImplementedException("" + GetType() + ".processHoldGesture() (from interface InputProcessor) not implemented!");
     }

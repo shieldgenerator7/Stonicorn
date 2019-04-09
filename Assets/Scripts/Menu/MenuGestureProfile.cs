@@ -18,14 +18,14 @@ public class MenuGestureProfile : GestureProfile
     {
         Managers.Menu.processTapGesture(curMPWorld);
     }
-    public override void processHoldGesture(Vector2 curMPWorld, float holdTime, PlayerInput.InputState state)
+    public override void processHoldGesture(Vector2 curMPWorld, float holdTime, InputData.InputState state)
     {
-        if (state == PlayerInput.InputState.End)
+        if (state == InputData.InputState.End)
         {
             processTapGesture(curMPWorld);
         }
     }
-    public override void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, PlayerInput.InputState state)
+    public override void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, InputData.InputState state)
     {
         if (!Managers.Menu.processDragGesture(origMPWorld, newMPWorld))
         {

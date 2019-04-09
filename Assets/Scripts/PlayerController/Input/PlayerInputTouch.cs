@@ -15,7 +15,7 @@ public class PlayerInputTouch : PlayerInput
     /// <returns></returns>
     public override InputData getInput()
     {
-        inputState = InputState.None;
+        inputData.inputState = InputData.InputState.None;
         //
         //Input scouting
         //
@@ -32,7 +32,7 @@ public class PlayerInputTouch : PlayerInput
                 }
                 else if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
-                    inputState = InputState.End;
+                    inputData.inputState = InputData.InputState.End;
                     if (touchCount == 2)
                     {
                         if (Input.GetTouch(1).phase != TouchPhase.Ended)
@@ -43,8 +43,8 @@ public class PlayerInputTouch : PlayerInput
                 }
                 else
                 {
-                    inputState = InputState.Hold;
-                    curMP = Input.GetTouch(0).position;
+                    inputData.inputState = InputData.InputState.Hold;
+                    inputData.NewScreenPos = Input.GetTouch(0).position;
                 }
             }
             if (Input.touchCount == 2)
@@ -52,10 +52,11 @@ public class PlayerInputTouch : PlayerInput
                 if (Input.GetTouch(1).phase == TouchPhase.Began)
                 {
                     touchCount = 2;
-                    inputState = InputState.Begin;
+                    inputData.inputState = InputData.InputState.Begin;
                     origMP2 = Input.GetTouch(1).position;
+                    curMP2 = origMP2;
                     //Update origMP
-                    origMP = Input.GetTouch(0).position;
+                    inputData.NewScreenPos = Input.GetTouch(0).position;
                 }
                 else if (Input.GetTouch(1).phase == TouchPhase.Ended)
                 {
@@ -66,7 +67,7 @@ public class PlayerInputTouch : PlayerInput
                 }
                 else
                 {
-                    inputState = InputState.Hold;
+                    inputData.inputState = InputData.InputState.Hold;
                     curMP2 = Input.GetTouch(1).position;
                 }
             }
@@ -74,40 +75,8 @@ public class PlayerInputTouch : PlayerInput
         else if (Input.touchCount == 0)
         {
             touchCount = 0;
-            inputState = InputState.None;
+            inputData.inputState = InputData.InputState.None;
         }
-
-
-        //
-        //Preliminary Processing
-        //Stats are processed here
-        //
-        switch (inputState)
-        {
-            case InputState.Begin:
-                curMP = origMP;
-                origTime = Time.time;
-                curTime = origTime;
-                curMP2 = origMP2;
-                origMPWorld = Camera.main.ScreenToWorldPoint(origMP);
-                break;
-            case InputState.End: //do the same thing you would for "in progress"
-            case InputState.Hold:
-                curTime = Time.time;
-                holdTime = curTime - origTime;
-                break;
-            case InputState.None: break;
-            default:
-                throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + inputState);
-        }
-        curMPWorld = (Vector2)Camera.main.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
-
-
-        //
-        //Input Processing
-        //
-        inputData.setScreenPos(origMP, curMP);
-        inputData.setState(inputState, holdTime, 1);
 
         //
         //Zoom Processing
@@ -123,7 +92,7 @@ public class PlayerInputTouch : PlayerInput
             Touch touchOne = Input.GetTouch(1);
 
             // Find the position in the previous frame of each touch.
-            Vector2 touchZeroPrevPos = origMP;
+            Vector2 touchZeroPrevPos = inputData.OldScreenPos;
             Vector2 touchOnePrevPos = origMP2;
 
             // Find the magnitude of the vector (the distance) between the touches in each frame.
@@ -132,6 +101,11 @@ public class PlayerInputTouch : PlayerInput
 
             inputData.zoomMultiplier = prevTouchDeltaMag / touchDeltaMag;
         }
+
+        //
+        //Input Processing
+        //
+        inputData.process();
 
         return inputData;
     }
@@ -143,10 +117,10 @@ public class PlayerInputTouch : PlayerInput
     /// 2019-04-08: moved here from GestureManager
     /// </summary>
     /// <param name="tapIndex">The index of the tap in Input.GetTouch()</param>
-    protected void beginSingleTapGesture(int tapIndex = 0)
+    private void beginSingleTapGesture(int tapIndex = 0)
     {
         touchCount = 1;
-        inputState = InputState.Begin;
-        origMP = Input.GetTouch(tapIndex).position;
+        inputData.inputState = InputData.InputState.Begin;
+        inputData.NewScreenPos = Input.GetTouch(tapIndex).position;
     }
 }

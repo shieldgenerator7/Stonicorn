@@ -923,15 +923,15 @@ public class GameManager : MonoBehaviour, InputProcessor
     public delegate void TapProcessed(Vector2 curMPWorld);
     public TapProcessed tapProcessed;
     
-    public virtual void processHoldGesture(Vector2 holdPos, float holdTime, PlayerInput.InputState state)
+    public virtual void processHoldGesture(Vector2 holdPos, float holdTime, InputData.InputState state)
     {
         throw new System.NotImplementedException("" + GetType() + ".processHoldGesture() (from interface InputProcessor) not implemented!");
     }
-    public virtual void processDragGesture(Vector2 oldPos, Vector2 newPos, PlayerInput.InputState state)
+    public virtual void processDragGesture(Vector2 oldPos, Vector2 newPos, InputData.InputState state)
     {
         throw new System.NotImplementedException("" + GetType() + ".processDragGesture() (from interface InputProcessor) not implemented!");
     }
-    public virtual void processZoomGesture(float zoomMultiplier, PlayerInput.InputState state)
+    public virtual void processZoomGesture(float zoomMultiplier, InputData.InputState state)
     {
         throw new System.NotImplementedException("" + GetType() + ".processZoomGesture() (from interface InputProcessor) not implemented!");
     }
