@@ -39,6 +39,7 @@ public class GestureManager : MonoBehaviour
     {
         playerInput.Add(new PlayerInputMouse());
         playerInput.Add(new PlayerInputTouch());
+        playerInput.Add(new PlayerInputKeyboard());
 
         gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
         gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());

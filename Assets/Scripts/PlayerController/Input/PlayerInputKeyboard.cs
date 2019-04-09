@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInputMouse : PlayerInput
-{
-    float scrollWheelAxis;
-    float prevScrollWheelAxis;
+public class PlayerInputKeyboard : PlayerInput
+{//2019-04-08: copied from PlayerInputMouse
+
+    private Vector2 inputDirection = Vector2.zero;
+    private Vector2 prevInputDirection;
 
     public override InputData getInput()
     {
@@ -13,34 +14,17 @@ public class PlayerInputMouse : PlayerInput
         //
         //Input scouting
         //
-        if (Input.GetMouseButton(0))
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+        prevInputDirection = inputDirection;
+        inputDirection = new Vector2(horizontal, vertical).normalized;
+        curMP = Camera.main.WorldToScreenPoint((Vector2)Managers.Player.transform.position + (inputDirection * Managers.Player.Range));
+        if (inputDirection != Vector2.zero)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (prevInputDirection == Vector2.zero)
             {
                 inputState = InputState.Begin;
-                origMP = Input.mousePosition;
-            }
-            else
-            {
-                inputState = InputState.Hold;
-                curMP = Input.mousePosition;
-            }
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            inputState = InputState.End;
-        }
-        else if (!Input.GetMouseButton(0))
-        {
-            inputState = InputState.None;
-        }
-        prevScrollWheelAxis = scrollWheelAxis;
-        scrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
-        if (scrollWheelAxis != 0)
-        {
-            if (prevScrollWheelAxis == 0)
-            {
-                inputState = InputState.Begin;
+                origMP = curMP;
             }
             else
             {
@@ -49,7 +33,7 @@ public class PlayerInputMouse : PlayerInput
         }
         else
         {
-            if (prevScrollWheelAxis != 0)
+            if (prevInputDirection != Vector2.zero)
             {
                 inputState = InputState.End;
             }
@@ -93,13 +77,10 @@ public class PlayerInputMouse : PlayerInput
 
         //
         //Zoom Processing
-        //Mouse Scrolling Zoom
+        //Button Press Zoom
         //
-        if (scrollWheelAxis != 0)
-        {
-            inputData.zoomMultiplier = Mathf.Pow(2, Input.mouseScrollDelta.y * 2 / 3);
-        }
 
         return inputData;
     }
+
 }
