@@ -33,20 +33,19 @@ public class InputData
         this.inputState = InputState.None;
         this.zoomMultiplier = 1;
     }
-
-    public void setWorldPos(Vector2 oldWorldPos, Vector2 newWorldPos)
-    {
-        this.oldWorldPos = oldWorldPos;
-        this.newWorldPos = newWorldPos;
-    }
-    public void setScreenPos(Vector2 oldScreenPos, Vector2 newScreenPos)
-    {
-        this.OldScreenPos = oldScreenPos;
-        this.NewScreenPos = newScreenPos;
-    }
     public void process()
     {
-        NewWorldPos = NewWorldPos;//refresh the new world pos
+        if (inputState == InputState.Begin)
+        {
+            if (newWorldPos != Vector2.zero)
+            {
+                NewWorldPos = newWorldPos;
+            }
+            if (newScreenPos != Vector2.zero)
+            {
+                NewScreenPos = newScreenPos;
+            }
+        }
         updateTime();
     }
 
@@ -55,7 +54,14 @@ public class InputData
     /// </summary>
     public Vector2 OldWorldPos
     {
-        get { return oldWorldPos; }
+        get
+        {
+            if (oldWorldPos == Vector2.zero)
+            {
+                return Camera.main.ScreenToWorldPoint(oldScreenPos);
+            }
+            return oldWorldPos;
+        }
         private set { oldWorldPos = value; }
     }
     /// <summary>
@@ -63,37 +69,60 @@ public class InputData
     /// </summary>
     public Vector2 NewWorldPos
     {
-        get { return newWorldPos; }
+        get
+        {
+            if (newWorldPos == Vector2.zero)
+            {
+                return Camera.main.ScreenToWorldPoint(newScreenPos);
+            }
+            return newWorldPos;
+        }
         set
         {
             newWorldPos = value;
             if (inputState == InputState.Begin)
             {
-                OldWorldPos = newWorldPos;
+                OldWorldPos = NewWorldPos;
             }
         }
     }
     public Vector2 OldScreenPos
     {
-        get { return Camera.main.WorldToScreenPoint(this.oldWorldPos); }
-        private set { this.oldWorldPos = Camera.main.ScreenToWorldPoint(value); }
+        get
+        {
+            if (oldScreenPos == Vector2.zero)
+            {
+                return Camera.main.WorldToScreenPoint(oldWorldPos);
+            }
+            return oldScreenPos;
+        }
+        private set { oldScreenPos = value; }
     }
     public Vector2 NewScreenPos
     {
-        set { NewWorldPos = Camera.main.ScreenToWorldPoint(value); }
+        get
+        {
+            if (newScreenPos == Vector2.zero)
+            {
+                return Camera.main.WorldToScreenPoint(newWorldPos);
+            }
+            return newScreenPos;
+        }
+        set
+        {
+            newScreenPos = value;
+            if (inputState == InputState.Begin)
+            {
+                OldScreenPos = newScreenPos;
+            }
+        }
     }
     /// <summary>
     /// The distance between the oldScreenPos and the newScreenPos
     /// </summary>
     public float PositionDelta
     {
-        get
-        {
-            return Vector2.Distance(
-                Camera.main.WorldToScreenPoint(oldWorldPos),
-                Camera.main.WorldToScreenPoint(newWorldPos)
-                );
-        }
+        get { return Vector2.Distance(OldScreenPos, NewScreenPos); }
     }
 
     private void updateTime()
