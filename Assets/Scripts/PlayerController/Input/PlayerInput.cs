@@ -22,23 +22,17 @@ public abstract class PlayerInput
     }
     protected InputData inputData = new InputData();
 
-    //Original Positions
-    public Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
-    public Vector3 origMPWorld;//"original mouse position world" - the original mouse coordinate in the world
-    public float origTime = 0f;//"original time": the clock time at the last mouse down (or tap down) event
-    //Current Positions
-    public Vector3 curMP;//"current mouse position"
-    public Vector3 curMPWorld;//"current mouse position world" - the mouse coordinates in the world
-    public float curTime = 0f;
-    //Stats
-    public float holdTime = 0f;//how long the gesture has been held for    
 
     public class InputData
     {
+        //World Pos
         private Vector2 oldWorldPos;
         private Vector2 newWorldPos;
+        //Time
+        private float oldTime;
+        private float newTime;
+        //State
         public InputState inputState;
-        public float holdTime;
         public float zoomMultiplier;
 
         public InputData()
@@ -46,7 +40,6 @@ public abstract class PlayerInput
             this.oldWorldPos = Vector2.zero;
             this.newWorldPos = Vector2.zero;
             this.inputState = InputState.None;
-            this.holdTime = 0;
             this.zoomMultiplier = 1;
         }
 
@@ -59,13 +52,12 @@ public abstract class PlayerInput
         {
             this.oldWorldPos = Camera.main.ScreenToWorldPoint(oldScreenPos);
             this.newWorldPos = Camera.main.ScreenToWorldPoint(newScreenPos);
-
         }
-        public void setState(InputState inputState, float holdTime, float zoomMultiplier = 1)
+        public void setState(InputState inputState, float zoomMultiplier = 1)
         {
             this.inputState = inputState;
-            this.holdTime = holdTime;
             this.zoomMultiplier = zoomMultiplier;
+            updateTime();
         }
 
         /// <summary>
@@ -74,6 +66,7 @@ public abstract class PlayerInput
         public Vector2 OldWorldPos
         {
             get { return oldWorldPos; }
+            set { oldWorldPos = value; }
         }
         /// <summary>
         /// Calculated when called, not stored
@@ -81,6 +74,15 @@ public abstract class PlayerInput
         public Vector2 NewWorldPos
         {
             get { return newWorldPos; }
+            set { newWorldPos = value; }
+        }
+        public Vector2 OldScreenPos
+        {
+            set { this.oldWorldPos = Camera.main.ScreenToWorldPoint(value); }
+        }
+        public Vector2 NewScreenPos
+        {
+            set { this.newWorldPos = Camera.main.ScreenToWorldPoint(value); }
         }
         /// <summary>
         /// The distance between the oldScreenPos and the newScreenPos
@@ -94,6 +96,19 @@ public abstract class PlayerInput
                     Camera.main.WorldToScreenPoint(newWorldPos)
                     );
             }
+        }
+
+        private void updateTime()
+        {
+            if (inputState == InputState.Begin)
+            {
+                oldTime = Time.time;
+            }
+            newTime = Time.time;
+        }
+        public float HoldTime
+        {
+            get { return newTime - oldTime; }
         }
     }
 

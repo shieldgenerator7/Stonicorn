@@ -163,10 +163,10 @@ public class GestureManager : MonoBehaviour
                 }
                 if (!isDrag && !isZoomGesture && !isCameraMovementOnly)
                 {
-                    if (inputData.holdTime > holdThreshold)
+                    if (inputData.HoldTime > holdThreshold)
                     {
                         isHoldGesture = true;
-                        currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, PlayerInput.InputState.Begin);
+                        currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, PlayerInput.InputState.Begin);
                         isTapGesture = false;
                         Time.timeScale = GestureManager.holdTimeScale;
                     }
@@ -179,7 +179,7 @@ public class GestureManager : MonoBehaviour
             }
             else if (isHoldGesture)
             {
-                currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, inputData.inputState);
+                currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, inputData.inputState);
             }
             else if (isZoomGesture)
             {
@@ -197,7 +197,7 @@ public class GestureManager : MonoBehaviour
             }
             else if (isHoldGesture)
             {
-                currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, inputData.inputState);
+                currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, inputData.inputState);
                 GameStatistics.addOne("Hold");
             }
             else if (isTapGesture)
