@@ -20,19 +20,19 @@ public abstract class PlayerInput
     //Stats
     public float maxMouseMovement = 0f;//how far the mouse has moved since the last mouse down (or tap down) event
     public float holdTime = 0f;//how long the gesture has been held for    
-  
+
     public class InputData
     {
-        public Vector2 oldScreenPos;
-        public Vector2 newScreenPos;
+        private Vector2 oldWorldPos;
+        private Vector2 newWorldPos;
         public InputState inputState;
         public float holdTime;
         public float zoomMultiplier;
 
-        public InputData(Vector2 oldScreenPos, Vector2 newScreenPos, InputState inputState, float holdTime, float zoomMultiplier = 1)
+        public InputData(Vector2 oldWorldPos, Vector2 newWorldPos, InputState inputState, float holdTime, float zoomMultiplier = 1)
         {
-            this.oldScreenPos = oldScreenPos;
-            this.newScreenPos = newScreenPos;
+            this.oldWorldPos = oldWorldPos;
+            this.newWorldPos = newWorldPos;
             this.inputState = inputState;
             this.holdTime = holdTime;
             this.zoomMultiplier = zoomMultiplier;
@@ -43,21 +43,27 @@ public abstract class PlayerInput
         /// </summary>
         public Vector2 OldWorldPos
         {
-            get { return Camera.main.ScreenToWorldPoint(oldScreenPos); }
+            get { return oldWorldPos; }
         }
         /// <summary>
         /// Calculated when called, not stored
         /// </summary>
         public Vector2 NewWorldPos
         {
-            get { return Camera.main.ScreenToWorldPoint(newScreenPos); }
+            get { return newWorldPos; }
         }
         /// <summary>
         /// The distance between the oldScreenPos and the newScreenPos
         /// </summary>
         public float PositionDelta
         {
-            get { return Vector2.Distance(oldScreenPos, newScreenPos); }
+            get
+            {
+                return Vector2.Distance(
+                    Camera.main.WorldToScreenPoint(oldWorldPos),
+                    Camera.main.WorldToScreenPoint(newWorldPos)
+                    );
+            }
         }
     }
 
