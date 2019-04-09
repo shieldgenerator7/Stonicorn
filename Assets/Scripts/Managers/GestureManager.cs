@@ -145,7 +145,7 @@ public class GestureManager : MonoBehaviour
                 {
                     gestureType = GestureType.HOLD;
                     currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, InputData.InputState.Begin);
-                    Time.timeScale = GestureManager.holdTimeScale;
+                    Time.timeScale = holdTimeScale;
                 }
             }
             else

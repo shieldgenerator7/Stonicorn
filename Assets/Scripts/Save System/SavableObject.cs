@@ -84,8 +84,6 @@ public class SavableObject
     {
         switch (typeName)
         {
-            case "GestureManager":
-                return typeof(GestureManager);
             case "AfterWind":
                 return typeof(AfterWind);
             case "StickyPadChecker":
