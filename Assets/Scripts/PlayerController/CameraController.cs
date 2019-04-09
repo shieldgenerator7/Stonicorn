@@ -408,15 +408,15 @@ public class CameraController : MonoBehaviour, InputProcessor
     }
     public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, PlayerInput.InputState state)
     {
+        Vector2 playerPos = Managers.Player.transform.position;
         if (state == PlayerInput.InputState.Begin)
         {
-            originalCameraPosition = origMPWorld;
+            originalCameraPosition = transform.position - (Vector3)playerPos;
         }
         else
         {
             bool canMove = false;
             Vector2 delta = origMPWorld - newMPWorld;
-            Vector2 playerPos = Managers.Player.transform.position;
             Vector3 newPos = playerPos + (Vector2)originalCameraPosition + delta;
             //If the camera is not zoomed into the menu,
             if (ZoomLevel > toZoomLevel(CameraScalePoints.MENU))

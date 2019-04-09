@@ -133,7 +133,7 @@ public class GestureManager : MonoBehaviour
         else if (inputData.inputState == PlayerInput.InputState.Hold)
         {
             //Gesture type scouting
-            if (!isHoldGesture && !isDrag)
+            if (!isHoldGesture && !isDrag && !isZoomGesture)
             {
                 if (inputData.zoomMultiplier != 1)
                 {
@@ -143,26 +143,26 @@ public class GestureManager : MonoBehaviour
                     isHoldGesture = false;
                     isDrag = false;
                 }
-            }
-            if (!isHoldGesture && !isZoomGesture)
-            {
-                if (inputData.PositionDelta > dragThreshold
-                && Managers.Player.Speed <= playerSpeedThreshold)
+                if (!isZoomGesture)
                 {
-                    isDrag = true;
-                    currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, PlayerInput.InputState.Begin);
-                    isTapGesture = false;
-                    cameraDragInProgress = true;
+                    if (inputData.PositionDelta > dragThreshold
+                    && Managers.Player.Speed <= playerSpeedThreshold)
+                    {
+                        isDrag = true;
+                        currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, PlayerInput.InputState.Begin);
+                        isTapGesture = false;
+                        cameraDragInProgress = true;
+                    }
                 }
-            }
-            if (!isDrag && !isZoomGesture && !isCameraMovementOnly)
-            {
-                if (inputData.holdTime > holdThreshold)
+                if (!isDrag && !isZoomGesture && !isCameraMovementOnly)
                 {
-                    isHoldGesture = true;
-                    currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, PlayerInput.InputState.Begin);
-                    isTapGesture = false;
-                    Time.timeScale = GestureManager.holdTimeScale;
+                    if (inputData.holdTime > holdThreshold)
+                    {
+                        isHoldGesture = true;
+                        currentGP.processHoldGesture(inputData.NewWorldPos, inputData.holdTime, PlayerInput.InputState.Begin);
+                        isTapGesture = false;
+                        Time.timeScale = GestureManager.holdTimeScale;
+                    }
                 }
             }
             //Gesture Type Processing
