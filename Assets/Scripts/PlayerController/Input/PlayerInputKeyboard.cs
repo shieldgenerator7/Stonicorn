@@ -16,8 +16,8 @@ public class PlayerInputKeyboard : PlayerInput
         //
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-        prevInputDirection = inputDirection;
         //Get the input direction
+        prevInputDirection = inputDirection;
         inputDirection = new Vector2(horizontal, vertical);
         //Convert it to the player's gravity space
         inputDirection = Managers.Camera.transform.TransformDirection(inputDirection);
@@ -43,6 +43,21 @@ public class PlayerInputKeyboard : PlayerInput
             {
                 inputData.inputState = InputData.InputState.End;
                 inputData.NewWorldPos = (Vector2)Managers.Player.transform.position + (prevInputDirection * Managers.Player.Range);
+            }
+        }
+
+        //
+        // Rotation
+        //
+        if (inputData.inputState == InputData.InputState.None)
+        {
+            bool rotate = Input.GetKeyDown(KeyCode.R);
+            if (rotate)
+            {
+                inputData.inputState = InputData.InputState.Begin;
+                inputData.NewWorldPos = Managers.Player.transform.position;
+                inputData.gestureType = GestureManager.GestureType.TAP;
+                inputData.inputState = InputData.InputState.End;
             }
         }
 
