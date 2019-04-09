@@ -101,14 +101,7 @@ public class PlayerInputMouse : PlayerInput
         //
         if (scrollWheelAxis != 0)
         {
-            if (scrollWheelAxis < 0)
-            {
-                inputData.zoomMultiplier = 3 / 4;
-            }
-            else if (scrollWheelAxis > 0)
-            {
-                inputData.zoomMultiplier = 4 / 3;
-            }
+            inputData.zoomMultiplier = Mathf.Pow(2, Input.mouseScrollDelta.y * 2 / 3);
         }
 
         return inputData;

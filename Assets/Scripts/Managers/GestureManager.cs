@@ -129,6 +129,12 @@ public class GestureManager : MonoBehaviour
             {
                 isTapGesture = false;
             }
+            if (inputData.zoomMultiplier != 1)
+            {
+                isZoomGesture = true;
+                currentGP.processZoomGesture(inputData.zoomMultiplier, PlayerInput.InputState.Begin);
+                isTapGesture = false;
+            }
         }
         else if (inputData.inputState == PlayerInput.InputState.Hold)
         {
