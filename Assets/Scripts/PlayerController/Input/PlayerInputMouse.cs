@@ -58,8 +58,22 @@ public class PlayerInputMouse : PlayerInput
             }
             if (scrollWheelAxis != 0)
             {
-                inputData.zoomMultiplier = Mathf.Pow(2, Input.mouseScrollDelta.y * 2 / 3);
+                inputData.zoomMultiplier = Mathf.Pow(2, -Input.mouseScrollDelta.y * 2 / 3);
+                if (scrollWheelAxis < 0)
+                {
+                    inputData.zoomMultiplier = Mathf.Max(inputData.zoomMultiplier, 4 / 3);
+                }
+                else if (scrollWheelAxis > 0)
+                {
+                    inputData.zoomMultiplier = Mathf.Min(inputData.zoomMultiplier, 3 / 4);
+                }
             }
+        }
+        else
+        {
+            prevScrollWheelAxis = 0;
+            scrollWheelAxis = 0;
+            inputData.zoomMultiplier = 1;
         }
 
         //
