@@ -20,14 +20,7 @@ public abstract class PlayerInput
     //Stats
     public float maxMouseMovement = 0f;//how far the mouse has moved since the last mouse down (or tap down) event
     public float holdTime = 0f;//how long the gesture has been held for    
-    //Flags
-    public bool cameraDragInProgress = false;
-    public bool isDrag = false;
-    public bool isTapGesture = true;
-    public bool isHoldGesture = false;
-    public bool isPinchGesture = false;
-    public bool isCameraMovementOnly = false;//true to make only the camera move until the gesture is over
-
+  
     public class InputData
     {
         public Vector2 oldScreenPos;

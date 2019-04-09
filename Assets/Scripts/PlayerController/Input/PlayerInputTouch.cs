@@ -51,8 +51,6 @@ public class PlayerInputTouch : PlayerInput
             {
                 if (Input.GetTouch(1).phase == TouchPhase.Began)
                 {
-                    isPinchGesture = true;
-                    isCameraMovementOnly = true;
                     touchCount = 2;
                     inputState = InputState.Begin;
                     origMP2 = Input.GetTouch(1).position;
@@ -77,10 +75,6 @@ public class PlayerInputTouch : PlayerInput
         {
             touchCount = 0;
             inputState = InputState.None;
-            //
-            isDrag = false;
-            isPinchGesture = false;
-            isCameraMovementOnly = false;
         }
 
 
@@ -159,13 +153,5 @@ public class PlayerInputTouch : PlayerInput
         touchCount = 1;
         inputState = InputState.Begin;
         origMP = Input.GetTouch(tapIndex).position;
-        if (isPinchGesture)
-        {
-            isDrag = true;
-        }
-        else
-        {
-            isCameraMovementOnly = false;
-        }
     }
 }
