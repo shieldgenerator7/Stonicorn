@@ -212,6 +212,9 @@ public class GestureManager : MonoBehaviour
                 }
             }
 
+            //Clear the input data
+            inputData.clear();
+
             //Set all flags = false
             cameraDragInProgress = false;
             isDrag = false;

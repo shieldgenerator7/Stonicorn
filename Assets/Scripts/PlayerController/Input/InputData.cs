@@ -7,6 +7,9 @@ public class InputData
     //World Pos
     private Vector2 oldWorldPos;
     private Vector2 newWorldPos;
+    //Screen Pos
+    private Vector2 oldScreenPos;
+    private Vector2 newScreenPos;
     //Time
     private float oldTime;
     private float newTime;
@@ -16,8 +19,17 @@ public class InputData
 
     public InputData()
     {
+        clear();
+    }
+
+    public void clear()
+    {
         this.oldWorldPos = Vector2.zero;
         this.newWorldPos = Vector2.zero;
+        this.oldScreenPos = Vector2.zero;
+        this.newScreenPos = Vector2.zero;
+        this.oldTime = 0;
+        this.newTime = 0;
         this.inputState = InputState.None;
         this.zoomMultiplier = 1;
     }
