@@ -443,7 +443,7 @@ MonoBehaviour:
   holdThreshold: 0.2
   orthoZoomSpeed: 0.5
   cameraDragInProgress: 0
-  holdThresholdScale: 1
+  isCameraMovementOnly: 0
 --- !u!114 &94021255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62275,7 +62275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseRange: 3
   exhaustRange: 1
-  maxAirPorts: 10
+  maxAirPorts: 0
   baseExhaustCoolDownTime: 0.5
   gravityImmuneDuration: 0.2
   autoTeleportDelay: 0.1
@@ -62532,7 +62532,7 @@ MonoBehaviour:
   effectColor: {r: 1, g: 1, b: 1, a: 1}
   abilityIndicatorParticleController: {fileID: 198174140}
   effectParticleController: {fileID: 0}
-  addsOnTeleportVisualEffect: 1
+  addsOnTeleportVisualEffect: 0
   soundEffect: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
   addsOnTeleportSoundEffect: 1
   futureProjection: {fileID: 531202031}
