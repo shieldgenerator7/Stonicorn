@@ -23,6 +23,7 @@ public class PlayerInputKeyboard : PlayerInput
             if (prevInputDirection == Vector2.zero)
             {
                 inputData.inputState = InputData.InputState.Begin;
+                inputData.gestureType = GestureManager.GestureType.TAP;
             }
             else
             {

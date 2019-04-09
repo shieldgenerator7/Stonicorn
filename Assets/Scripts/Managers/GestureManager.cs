@@ -116,8 +116,9 @@ public class GestureManager : MonoBehaviour
         if (inputData.inputState == InputData.InputState.Begin)
         {
             cameraDragInProgress = false;
-            gestureType = GestureType.UNKNOWN;
-            if (inputData.zoomMultiplier != 1)
+            gestureType = inputData.gestureType;//most likely UNKNOWN
+            if (gestureType == GestureType.UNKNOWN
+                && inputData.zoomMultiplier != 1)
             {
                 gestureType = GestureType.ZOOM;
                 currentGP.processZoomGesture(inputData.zoomMultiplier, InputData.InputState.Begin);
@@ -155,6 +156,14 @@ public class GestureManager : MonoBehaviour
                     case GestureType.DRAG:
                         currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, inputData.inputState);
                         break;
+                    case GestureType.TAP:
+                        if (inputData.HoldTime > holdThreshold)
+                        {
+                            gestureType = GestureType.HOLD;
+                            currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, InputData.InputState.Begin);
+                            Time.timeScale = holdTimeScale;
+                        }
+                        goto case GestureType.HOLD;
                     case GestureType.HOLD:
                         currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, inputData.inputState);
                         break;

@@ -15,6 +15,7 @@ public class InputData
     private float newTime;
     //State
     public InputState inputState;
+    public GestureManager.GestureType gestureType;
     public float zoomMultiplier;
 
     public InputData()
@@ -31,6 +32,7 @@ public class InputData
         this.oldTime = 0;
         this.newTime = 0;
         this.inputState = InputState.None;
+        gestureType = GestureManager.GestureType.UNKNOWN;
         this.zoomMultiplier = 1;
     }
     public void process()
