@@ -18,7 +18,6 @@ public abstract class PlayerInput
     public Vector3 curMPWorld;//"current mouse position world" - the mouse coordinates in the world
     public float curTime = 0f;
     //Stats
-    public float maxMouseMovement = 0f;//how far the mouse has moved since the last mouse down (or tap down) event
     public float holdTime = 0f;//how long the gesture has been held for    
 
     public class InputData

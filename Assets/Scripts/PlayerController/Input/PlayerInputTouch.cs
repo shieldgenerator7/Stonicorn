@@ -86,7 +86,6 @@ public class PlayerInputTouch : PlayerInput
         {
             case InputState.Begin:
                 curMP = origMP;
-                maxMouseMovement = 0;
                 origTime = Time.time;
                 curTime = origTime;
                 curMP2 = origMP2;
@@ -94,11 +93,6 @@ public class PlayerInputTouch : PlayerInput
                 break;
             case InputState.End: //do the same thing you would for "in progress"
             case InputState.Hold:
-                float mm = Vector3.Distance(curMP, origMP);
-                if (mm > maxMouseMovement)
-                {
-                    maxMouseMovement = mm;
-                }
                 curTime = Time.time;
                 holdTime = curTime - origTime;
                 break;
