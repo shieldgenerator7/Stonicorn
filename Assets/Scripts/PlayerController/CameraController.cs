@@ -447,10 +447,7 @@ public class CameraController : MonoBehaviour, InputProcessor
         {
             originalCameraScale = ZoomLevel;
         }
-        else
-        {
-            ZoomLevel = originalCameraScale * zoomMultiplier;
-        }
+        ZoomLevel = originalCameraScale * zoomMultiplier;
     }
 
     public virtual void processTapGesture(Vector2 tapPos)
