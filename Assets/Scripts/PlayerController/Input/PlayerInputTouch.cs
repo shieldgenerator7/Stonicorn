@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerInputTouch : PlayerInput
 {
-    public int touchCount = 0;//how many touches to process, usually only 0 or 1, only 2 if zoom
     public Vector3 origMP2;//second orginal "mouse position" for second touch
     public Vector3 curMP2;//"current mouse position" for second touch
 
@@ -21,7 +20,6 @@ public class PlayerInputTouch : PlayerInput
         //
         if (Input.touchCount > 2)
         {
-            touchCount = 0;
         }
         else if (Input.touchCount >= 1)
         {
@@ -33,7 +31,7 @@ public class PlayerInputTouch : PlayerInput
                 else if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
                     inputData.inputState = InputData.InputState.End;
-                    if (touchCount == 2)
+                    if (Input.touchCount == 2)
                     {
                         if (Input.GetTouch(1).phase != TouchPhase.Ended)
                         {
@@ -51,7 +49,6 @@ public class PlayerInputTouch : PlayerInput
             {
                 if (Input.GetTouch(1).phase == TouchPhase.Began)
                 {
-                    touchCount = 2;
                     inputData.inputState = InputData.InputState.Begin;
                     origMP2 = Input.GetTouch(1).position;
                     curMP2 = origMP2;
@@ -74,8 +71,6 @@ public class PlayerInputTouch : PlayerInput
         }
         else if (Input.touchCount == 0)
         {
-            touchCount = 0;
-            inputData.inputState = InputData.InputState.None;
         }
 
         //
@@ -119,7 +114,6 @@ public class PlayerInputTouch : PlayerInput
     /// <param name="tapIndex">The index of the tap in Input.GetTouch()</param>
     private void beginSingleTapGesture(int tapIndex = 0)
     {
-        touchCount = 1;
         inputData.inputState = InputData.InputState.Begin;
         inputData.NewScreenPos = Input.GetTouch(tapIndex).position;
     }
