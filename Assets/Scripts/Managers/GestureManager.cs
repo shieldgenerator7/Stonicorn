@@ -24,12 +24,10 @@ public class GestureManager : MonoBehaviour
 
     //Flags
     public bool cameraDragInProgress = false;
-    public bool isDrag = false;
-    public bool isTapGesture = true;
-    public bool isHoldGesture = false;
-    public bool isZoomGesture = false;
     public bool isCameraMovementOnly = false;//true to make only the camera move until the gesture is over
-
+    public enum GestureType { TAP, HOLD, DRAG, ZOOM, UNKNOWN };
+    private GestureType gestureType = GestureType.UNKNOWN;
+    //
     private const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     private const float holdTimeScaleRecip = 1 / holdTimeScale;
     private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.NONE;
@@ -117,99 +115,82 @@ public class GestureManager : MonoBehaviour
 
         if (inputData.inputState == InputData.InputState.Begin)
         {
-            //Set all flags = false
             cameraDragInProgress = false;
-            isDrag = false;
-            isHoldGesture = false;
-            isZoomGesture = false;
-            if (!isCameraMovementOnly)
-            {
-                isTapGesture = true;
-            }
-            else
-            {
-                isTapGesture = false;
-            }
+            gestureType = GestureType.UNKNOWN;
             if (inputData.zoomMultiplier != 1)
             {
-                isZoomGesture = true;
+                gestureType = GestureType.ZOOM;
                 currentGP.processZoomGesture(inputData.zoomMultiplier, InputData.InputState.Begin);
-                isTapGesture = false;
             }
         }
         else if (inputData.inputState == InputData.InputState.Hold)
         {
             //Gesture type scouting
-            if (!isHoldGesture && !isDrag && !isZoomGesture)
+            if (gestureType == GestureType.UNKNOWN)
             {
                 if (inputData.zoomMultiplier != 1)
                 {
-                    isZoomGesture = true;
+                    gestureType = GestureType.ZOOM;
                     currentGP.processZoomGesture(inputData.zoomMultiplier, InputData.InputState.Begin);
-                    isTapGesture = false;
-                    isHoldGesture = false;
-                    isDrag = false;
                 }
-                if (!isZoomGesture)
-                {
-                    if (inputData.PositionDelta > dragThreshold
+                if (inputData.PositionDelta > dragThreshold
                     && Managers.Player.Speed <= playerSpeedThreshold)
-                    {
-                        isDrag = true;
-                        currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, InputData.InputState.Begin);
-                        isTapGesture = false;
-                        cameraDragInProgress = true;
-                    }
-                }
-                if (!isDrag && !isZoomGesture && !isCameraMovementOnly)
                 {
-                    if (inputData.HoldTime > holdThreshold)
-                    {
-                        isHoldGesture = true;
-                        currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, InputData.InputState.Begin);
-                        isTapGesture = false;
-                        Time.timeScale = GestureManager.holdTimeScale;
-                    }
+                    gestureType = GestureType.DRAG;
+                    currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, InputData.InputState.Begin);
+                    cameraDragInProgress = true;
+                }
+                if (inputData.HoldTime > holdThreshold && !isCameraMovementOnly)
+                {
+                    gestureType = GestureType.HOLD;
+                    currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, InputData.InputState.Begin);
+                    Time.timeScale = GestureManager.holdTimeScale;
                 }
             }
-            //Gesture Type Processing
-            if (isDrag)
+            else
             {
-                currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, inputData.inputState);
-            }
-            else if (isHoldGesture)
-            {
-                currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, inputData.inputState);
-            }
-            else if (isZoomGesture)
-            {
-                currentGP.processZoomGesture(inputData.zoomMultiplier, inputData.inputState);
+                //Gesture Type Processing
+                switch (gestureType)
+                {
+                    case GestureType.DRAG:
+                        currentGP.processDragGesture(inputData.OldWorldPos, inputData.NewWorldPos, inputData.inputState);
+                        break;
+                    case GestureType.HOLD:
+                        currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, inputData.inputState);
+                        break;
+                    case GestureType.ZOOM:
+                        currentGP.processZoomGesture(inputData.zoomMultiplier, inputData.inputState);
+                        break;
+                }
             }
         }
         else if (inputData.inputState == InputData.InputState.End)
         {
-            if (isDrag)
+            switch (gestureType)
             {
-                //Update Stats
-                GameStatistics.addOne("Drag");
-                //Process Drag Gesture
-                Managers.Camera.pinPoint();
-            }
-            else if (isHoldGesture)
-            {
-                currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, inputData.inputState);
-                GameStatistics.addOne("Hold");
-            }
-            else if (isTapGesture)
-            {
-                //Update Stats
-                GameStatistics.addOne("Tap");
-                //Process Tap Gesture                
-                currentGP.processTapGesture(inputData.NewWorldPos);
-                if (tapGesture != null)
-                {
-                    tapGesture();
-                }
+                case GestureType.DRAG:
+                    //Update Stats
+                    GameStatistics.addOne("Drag");
+                    //Process Drag Gesture
+                    Managers.Camera.pinPoint();
+                    break;
+                case GestureType.HOLD:
+                    currentGP.processHoldGesture(inputData.NewWorldPos, inputData.HoldTime, inputData.inputState);
+                    GameStatistics.addOne("Hold");
+                    break;
+                case GestureType.ZOOM: break;
+                case GestureType.UNKNOWN: //do nothing, proceed to TAP
+                case GestureType.TAP:
+                    //Update Stats
+                    GameStatistics.addOne("Tap");
+                    //Process Tap Gesture                
+                    currentGP.processTapGesture(inputData.NewWorldPos);
+                    if (tapGesture != null)
+                    {
+                        tapGesture();
+                    }
+                    break;
+                default: throw new System.NotSupportedException("GestureManager.gestureType is an invalid value: " + gestureType);
             }
 
             //Clear the input data
@@ -217,10 +198,6 @@ public class GestureManager : MonoBehaviour
 
             //Set all flags = false
             cameraDragInProgress = false;
-            isDrag = false;
-            isTapGesture = false;
-            isHoldGesture = false;
-            isZoomGesture = false;
             isCameraMovementOnly = false;
             Time.timeScale = 1;
         }
