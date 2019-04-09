@@ -106,13 +106,8 @@ public class PlayerInputTouch : PlayerInput
         //
         //Input Processing
         //
-        InputData inputData = new InputData(
-            Camera.main.ScreenToWorldPoint(origMP),
-            Camera.main.ScreenToWorldPoint(curMP),
-            inputState,
-            holdTime,
-            1
-            );
+        inputData.setScreenPos(origMP, curMP);
+        inputData.setState(inputState, holdTime, 1);
 
         //
         //Zoom Processing

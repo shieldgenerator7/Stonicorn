@@ -65,7 +65,8 @@ public class PlayerInputKeyboard : PlayerInput
         //
         //Input Processing
         //
-        InputData inputData = new InputData(origMPWorld, curMPWorld, inputState, holdTime, 1);
+        inputData.setWorldPos(origMPWorld, curMPWorld);
+        inputData.setState(inputState, holdTime, 1);
 
         //
         //Zoom Processing

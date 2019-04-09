@@ -7,7 +7,20 @@ public abstract class PlayerInput
     //2019-04-08: moved here from GestureManager
 
     public enum InputState { Begin, Hold, End, None };
-    public InputState inputState = InputState.None;
+    private InputState inputStateVar = InputState.None;
+    public InputState inputState
+    {
+        get { return inputStateVar; }
+        set
+        {
+            inputStateVar = value;
+            if (inputStateVar == InputState.Begin)
+            {
+                inputData = new InputData();
+            }
+        }
+    }
+    protected InputData inputData = new InputData();
 
     //Original Positions
     public Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
@@ -28,10 +41,28 @@ public abstract class PlayerInput
         public float holdTime;
         public float zoomMultiplier;
 
-        public InputData(Vector2 oldWorldPos, Vector2 newWorldPos, InputState inputState, float holdTime, float zoomMultiplier = 1)
+        public InputData()
+        {
+            this.oldWorldPos = Vector2.zero;
+            this.newWorldPos = Vector2.zero;
+            this.inputState = InputState.None;
+            this.holdTime = 0;
+            this.zoomMultiplier = 1;
+        }
+
+        public void setWorldPos(Vector2 oldWorldPos, Vector2 newWorldPos)
         {
             this.oldWorldPos = oldWorldPos;
             this.newWorldPos = newWorldPos;
+        }
+        public void setScreenPos(Vector2 oldScreenPos, Vector2 newScreenPos)
+        {
+            this.oldWorldPos = Camera.main.ScreenToWorldPoint(oldScreenPos);
+            this.newWorldPos = Camera.main.ScreenToWorldPoint(newScreenPos);
+
+        }
+        public void setState(InputState inputState, float holdTime, float zoomMultiplier = 1)
+        {
             this.inputState = inputState;
             this.holdTime = holdTime;
             this.zoomMultiplier = zoomMultiplier;
