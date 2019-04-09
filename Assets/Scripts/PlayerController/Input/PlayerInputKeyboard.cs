@@ -17,7 +17,13 @@ public class PlayerInputKeyboard : PlayerInput
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         prevInputDirection = inputDirection;
-        inputDirection = new Vector2(horizontal, vertical).normalized;
+        //Get the input direction
+        inputDirection = new Vector2(horizontal, vertical);
+        //Convert it to the player's gravity space
+        inputDirection = Managers.Camera.transform.TransformDirection(inputDirection);
+        //Normalize it
+        inputDirection.Normalize();
+        //Process it
         if (inputDirection != Vector2.zero)
         {
             if (prevInputDirection == Vector2.zero)

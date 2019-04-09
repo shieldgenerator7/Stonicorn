@@ -23,7 +23,7 @@ public static class Utility
         float tx = (cos * v.x) - (sin * v.y);
         float ty = (cos * v.y) + (sin * v.x);
 
-        return new Vector3(tx, ty);
+        return new Vector2(tx, ty);
     }
     public static Vector3 RotateZ(this Vector3 v, float angle)
     {
