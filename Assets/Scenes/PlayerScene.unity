@@ -10139,26 +10139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9107aee0ced90422da95f0b31680501f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 0d8a1048-4070-4463-b2e3-bdc946085e6e
-  saveEvent: 1
-  loadEvent: 1
-  settings:
-    _location: 0
-    path: SaveData.es3
-    encryptionType: 0
-    encryptionPassword: password
-    directory: 0
-    format: 0
-    bufferSize: 2048
-    typeChecking: 1
-    safeReflection: 1
-    memberReferenceMode: 0
-    referenceMode: 2
-    assemblyNames:
-    - Assembly-CSharp
-    - Assembly-CSharp-firstpass
-    showAdvancedSettings: 0
-  autoSaves: []
 --- !u!114 &266694466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11100,12 +11080,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8714d999c5ae749538494c1347e5a3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: 'The Easy Save 3 Manager is required in any scenes which use Easy Save,
-    and is automatically added to your scene when you enter Play mode.
-
-
-    To stop this from automatically being added to your scene, go to ''Window > Easy
-    Save 3 > Settings'' and deselect the ''Auto Add Manager to Scene'' checkbox.'
 --- !u!4 &266694468
 Transform:
   m_ObjectHideFlags: 0
@@ -16142,12 +16116,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -37
       objectReference: {fileID: 0}
-    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
-        type: 3}
-      propertyPath: ghostSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: ab87e9eaab945fa47b13b2951af951c8,
-        type: 3}
     - target: {fileID: 4506204054340992, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.555
@@ -16188,6 +16156,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 52.245003
       objectReference: {fileID: 0}
+    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
+        type: 3}
+      propertyPath: ghostSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ab87e9eaab945fa47b13b2951af951c8,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
 --- !u!4 &435479330 stripped
@@ -16419,12 +16393,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
-        type: 3}
-      propertyPath: ghostSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 6863baaf7af549f4da3c20b50e25ba52,
-        type: 3}
     - target: {fileID: 4506204054340992, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.21864271
@@ -16461,6 +16429,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -9.333
       objectReference: {fileID: 0}
+    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
+        type: 3}
+      propertyPath: ghostSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6863baaf7af549f4da3c20b50e25ba52,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
 --- !u!4 &463115630 stripped
@@ -16716,38 +16690,6 @@ PrefabInstance:
     - target: {fileID: 1000011127396842, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
-      propertyPath: m_RootOrder
-      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 212000014011088326, guid: 2cd2e83879898834a97f3b302ee30fdc,
         type: 3}
@@ -17518,6 +17460,38 @@ PrefabInstance:
         type: 3}
       propertyPath: ShapeModule.radiusThickness
       value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
@@ -39567,12 +39541,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
-        type: 3}
-      propertyPath: ghostSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: d1abe7961d932674da53d9463e9c1f1c,
-        type: 3}
     - target: {fileID: 4506204054340992, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.10418614
@@ -39613,6 +39581,12 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.33
       objectReference: {fileID: 0}
+    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
+        type: 3}
+      propertyPath: ghostSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d1abe7961d932674da53d9463e9c1f1c,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
 --- !u!4 &1202938738 stripped
@@ -65467,12 +65441,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
-        type: 3}
-      propertyPath: ghostSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 1fba4aab012fef8458f16308b26e01ba,
-        type: 3}
     - target: {fileID: 4506204054340992, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.20304944
@@ -65513,6 +65481,12 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.152
       objectReference: {fileID: 0}
+    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
+        type: 3}
+      propertyPath: ghostSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1fba4aab012fef8458f16308b26e01ba,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
 --- !u!4 &1830399812 stripped
@@ -76387,12 +76361,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
-        type: 3}
-      propertyPath: ghostSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: d94d6e14910dafb4e9235102c2ea99d9,
-        type: 3}
     - target: {fileID: 4506204054340992, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.09337995
@@ -76433,6 +76401,12 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 114806904641426842, guid: da0cfcf3eca70db419a69ba28c602bd2,
+        type: 3}
+      propertyPath: ghostSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d94d6e14910dafb4e9235102c2ea99d9,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da0cfcf3eca70db419a69ba28c602bd2, type: 3}
 --- !u!4 &2091845516 stripped

@@ -32,7 +32,7 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Call Merky %#`")]
     public static void callMerky()
     {
-        GameObject playerObject = Managers.Player.gameObject;
+        GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
         if (GameObject.FindObjectOfType<RulerDisplayer>())
         {
             playerObject.transform.position = RulerDisplayer.currentMousePos;
