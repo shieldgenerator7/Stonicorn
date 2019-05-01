@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class ObjectState
 {
-
     //Transform
     public Vector3 position;//2017-10-10: actually stores the localPosition
     public Vector3 localScale;
@@ -95,45 +94,22 @@ public class ObjectState
             Scene scene = SceneManager.GetSceneByName(sceneName);
             if (scene.IsValid() && scene.isLoaded)
             {
-                foreach (GameObject sceneGo in scene.GetRootGameObjects())
-                {
-                    if (sceneGo.name.Equals(objectName))
-                    {
-                        this.go = sceneGo;
-                        break;
-                    }
-                    else
-                    {
-                        foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
-                        {
-                            GameObject childGo = childTransform.gameObject;
-                            if (childGo.name.Equals(objectName))
-                            {
-                                this.go = childGo;
-                                break;
-                            }
-                        }
-                    }
-                }
+                //First Pass: get GO from GameManager list
+                go = GameManager.getObject(sceneName, objectName);
+                //Second Pass: get GO from GameManager Forgotten Object list
                 if (go == null)
                 {
-                    foreach (GameObject dgo in GameManager.getForgottenObjects())
-                    {
-                        if (dgo != null && dgo.name == objectName && dgo.scene.name == sceneName)
-                        {
-                            go = dgo;
-                            break;
-                        }
-                    }
+                    go = searchList(Managers.Game.ForgottenObjects);
                 }
-                //if not found, do stuff
+                //Third Pass: try spawning it, if applicable
                 if (go == null || ReferenceEquals(go, null))
                 {
-                    //if is spawned object, make it
                     foreach (SavableObject so in soList)
                     {
+                        //If it is a spawned object
                         if (so.isSpawnedObject)
                         {
+                            //Make it
                             GameObject spawned = so.spawnObject();
                             if (spawned.scene.name != sceneName)
                             {
@@ -141,10 +117,13 @@ public class ObjectState
                             }
                             foreach (Transform t in spawned.transform)
                             {
-                                if (t.gameObject.name == this.objectName)
+                                if (t.gameObject.isSavable())
                                 {
-                                    go = t.gameObject;
-                                    break;
+                                    GameManager.addObject(t.gameObject);
+                                    if (t.gameObject.name == this.objectName)
+                                    {
+                                        go = t.gameObject;
+                                    }
                                 }
                             }
                             if (go == null)
@@ -157,12 +136,50 @@ public class ObjectState
                         }
                     }
                 }
+                //Fourth Pass: get GO by searching all the scene objects
+                if (go == null)
+                {
+                    foreach (GameObject sceneGo in scene.GetRootGameObjects())
+                    {
+                        if (sceneGo.name == objectName)
+                        {
+                            this.go = sceneGo;
+                            break;
+                        }
+                        else
+                        {
+                            foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
+                            {
+                                GameObject childGo = childTransform.gameObject;
+                                if (childGo.name == objectName)
+                                {
+                                    this.go = childGo;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
+            //Else if the scene is not loaded,
             else
             {
+                //Don't find the object
                 go = null;
             }
         }
         return go;
+    }
+
+    GameObject searchList(List<GameObject> list)
+    {
+        foreach (GameObject lgo in list)
+        {
+            if (lgo != null && lgo.name == objectName && lgo.scene.name == sceneName)
+            {
+                return lgo;
+            }
+        }
+        return null;
     }
 }

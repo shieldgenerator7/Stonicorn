@@ -29,11 +29,11 @@ Transform:
   m_GameObject: {fileID: 4653168201120268908}
   m_LocalRotation: {x: -0, y: -0, z: 0.35925078, w: -0.93324107}
   m_LocalPosition: {x: 0.038, y: 0.083, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 1}
+  m_LocalScale: {x: 0.04, y: 0.04, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -42.108}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 330}
 --- !u!212 &4653168201120268945
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -59,6 +59,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -95,18 +96,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.012444973, y: 0.035924852}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.01, y: 0.95}
+    oldSize: {x: 1.51, y: 1.41}
     newSize: {x: 1.01, y: 0.95}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.01, y: 0.95}
+  m_Size: {x: 1.4274912, y: 1.2209722}
   m_EdgeRadius: 0
 --- !u!114 &4653168201120268911
 MonoBehaviour:
@@ -117,6 +118,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4653168201120268908}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 8b8bfcdf1a7df0e41a70910e6a346d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -136,6 +138,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4653168201120268908}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 2f79a92555ec57347a2a8557120dd7af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

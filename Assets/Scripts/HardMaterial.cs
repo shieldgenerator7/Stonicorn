@@ -18,9 +18,14 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     [SerializeField]
     private float integrity;//how intact it is. Material breaks apart when it reaches 0
     private bool alreadyBroken = false;//used to determine if pieces should spawn or not
+    [Header("Cracking Settings")]
     public GameObject crackedPrefab;//the prefab for the object broken into pieces
-    public List<GameObject> crackStages;
-    private List<SpriteRenderer> crackSprites = new List<SpriteRenderer>();
+    /// <summary>
+    /// true: the cracks are an overlay
+    /// false: the cracks replace the original sprite (original sprite must be in list)
+    /// </summary>
+    public bool crackedOverlay = true;
+    public List<SpriteRenderer> crackStages = new List<SpriteRenderer>();
     public List<AudioClip> crackSounds;
     public List<HiddenArea> secretHiders;//the hidden areas to show when cracked
 
@@ -29,10 +34,6 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
 
     void Start()
     {
-        foreach (GameObject crackStage in crackStages)
-        {
-            crackSprites.Add(crackStage.GetComponent<SpriteRenderer>());
-        }
         if (integrity == 0)
         {
             setIntegrity(maxIntegrity);
@@ -43,17 +44,8 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
         }
     }
 
-    //void Update()
-    //{
-    //    setIntegrity(integrity);
-    //}
-
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (GameManager.isRewinding())
-        {
-            return;//don't process collisions while rewinding
-        }
         ContactPoint2D[] cp2ds = new ContactPoint2D[1];
         coll.GetContacts(cp2ds);
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
@@ -68,10 +60,10 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             }
             //Play Crack Sound
             float hitPercentage = hitHardness * 100 / maxIntegrity;
-            EffectManager.collisionEffect(cp2ds[0].point, hitPercentage);
+            Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
             for (int i = crackSounds.Count - 1; i >= 0; i--)
             {
-                float crackThreshold = 100 / (crackSprites.Count + 1 - i) - 20;
+                float crackThreshold = 100 / (crackSounds.Count + 1 - i) - 20;
                 if (i == 0)
                 {
                     crackThreshold = MINIMUM_CRACKSOUND_THRESHOLD;
@@ -92,7 +84,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                 float force = rb2d.velocity.magnitude * rb2d.mass;
                 float damage = checkForce(force);
                 float hitPercentage = damage * 100 / maxIntegrity;
-                EffectManager.collisionEffect(cp2ds[0].point, hitPercentage);
+                Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
             }
         }
     }
@@ -114,7 +106,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     }
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {
-        return Utility.distanceToObject(explosionPos, gameObject);
+        return explosionPos.distanceToObject(gameObject);
     }
 
     public bool isIntact()
@@ -133,28 +125,18 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
         integrity = Mathf.Clamp(newIntegrity, 0, maxIntegrity);
         if (integrity > 0)
         {
-            float baseAlpha = 1.0f - (integrity / maxIntegrity);
-            for (int i = 0; i < crackSprites.Count; i++)
-            {
-                float thresholdLower = i * 1 / (float)crackSprites.Count;
-                float alpha = 0;
-                if (baseAlpha > thresholdLower)
-                {
-                    alpha = (baseAlpha - thresholdLower) * crackSprites.Count;
-                }
-                SpriteRenderer sr = crackSprites[i];
-                Color c = sr.color;
-                sr.color = new Color(c.r, c.g, c.b, alpha);
-            }
+            //Display cracked sprites
+            updateCrackingDisplay(integrity);
+            //Forgotten Objects
             if (alreadyBroken || !gameObject.activeInHierarchy || oldIntegrity < 0)
             {
-                GameManager.saveForgottenObject(gameObject, false);
+                Managers.Game.saveForgottenObject(gameObject, false);
             }
         }
         else if (oldIntegrity > 0 || gameObject.activeInHierarchy)
         {
             bool shouldRefresh = false;
-            if (!alreadyBroken && !GameManager.isRewinding())
+            if (!alreadyBroken && !Managers.Game.Rewinding)
             {
                 if (crackedPrefab != null)
                 {
@@ -180,9 +162,36 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                         t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
                         //Sprite Renderer Copying
                         SpriteRenderer sr = t.gameObject.GetComponent<SpriteRenderer>();
-                        sr.color = origSR.color;
-                        sr.sortingLayerID = origSR.sortingLayerID;
-                        sr.sortingOrder = origSR.sortingOrder;
+                        try
+                        {
+                            Color color = origSR.color;
+                            if (!crackedOverlay)
+                            {
+                                color.a = 1;
+                            }
+                            sr.color = color;
+                            sr.sortingLayerID = origSR.sortingLayerID;
+                            sr.sortingOrder = origSR.sortingOrder;
+                        }
+                        catch (MissingComponentException mce)
+                        {
+                            throw new MissingComponentException(
+                                "HardMaterial (" + gameObject.name + ") broken prefab piece (" + t.gameObject.name + ") is missing a SpriteRenderer: sr: " + sr,
+                                mce);
+                        }
+                        //Hard Material Copying
+                        HardMaterial hm = t.gameObject.GetComponent<HardMaterial>();
+                        if (hm)
+                        {
+                            hm.material = this.material;
+                            hm.hardness = this.hardness;
+                            hm.forceThreshold = this.forceThreshold;
+                            hm.maxIntegrity = this.maxIntegrity;
+                            if (hm.integrity == 0)
+                            {
+                                hm.integrity = this.maxIntegrity / pieces.transform.childCount;
+                            }
+                        }
                     }
                     shouldRefresh = true;
                 }
@@ -202,14 +211,14 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             }
             if (crackedPrefab != null || disappearsIfNoBrokenPrefab)
             {
-                GameManager.saveForgottenObject(gameObject);
+                Managers.Game.saveForgottenObject(gameObject);
                 shouldRefresh = true;
             }
-            if (!GameManager.isRewinding())
+            if (!Managers.Game.Rewinding)
             {
                 if (shouldRefresh)
                 {
-                    GameManager.refresh();
+                    Managers.Game.refreshGameObjects();
                 }
                 if (shattered != null)
                 {
@@ -222,6 +231,44 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     public float getIntegrity()
     {
         return integrity;
+    }
+
+    private void updateCrackingDisplay(float currentIntegrity)
+    {
+        if (crackedOverlay)
+        {
+            float baseAlpha = 1.0f - (currentIntegrity / maxIntegrity);
+            for (int i = 0; i < crackStages.Count; i++)
+            {
+                float thresholdLower = i * 1 / (float)crackStages.Count;
+                float alpha = 0;
+                if (baseAlpha > thresholdLower)
+                {
+                    alpha = (baseAlpha - thresholdLower) * crackStages.Count;
+                }
+                SpriteRenderer sr = crackStages[i];
+                Color c = sr.color;
+                c.a = alpha;
+                sr.color = c;
+            }
+        }
+        else
+        {
+            float baseAlpha = 1.0f - (currentIntegrity / maxIntegrity);
+            for (int i = 0; i < crackStages.Count; i++)
+            {
+                float thresholdUpper = (i + 2) * 1 / (float)crackStages.Count;
+                float alpha = 0;
+                if (thresholdUpper >= baseAlpha)
+                {
+                    alpha = (thresholdUpper - baseAlpha) * crackStages.Count;
+                }
+                SpriteRenderer sr = crackStages[i];
+                Color c = sr.color;
+                c.a = alpha;
+                sr.color = c;
+            }
+        }
     }
 
     /// <summary>

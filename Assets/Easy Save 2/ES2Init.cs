@@ -22,13 +22,14 @@ public class ES2Init : MonoBehaviour
 	public static void Init()
 	{
 		ES2TypeManager.types = new Dictionary<Type, ES2Type>();
-				ES2TypeManager.types[typeof(UnityEngine.BoneWeight)] = new ES2_BoneWeight();
+				ES2TypeManager.types[typeof(UnityEngine.Texture2D)] = new ES2_Texture2D();
+		ES2TypeManager.types[typeof(UnityEngine.BoneWeight)] = new ES2_BoneWeight();
 		ES2TypeManager.types[typeof(UnityEngine.Bounds)] = new ES2_Bounds();
 		ES2TypeManager.types[typeof(UnityEngine.Color)] = new ES2_Color();
 		ES2TypeManager.types[typeof(UnityEngine.Color32)] = new ES2_Color32();
 		ES2TypeManager.types[typeof(System.DateTime)] = new ES2_DateTime();
-		ES2TypeManager.types[typeof(ES2AutoSaveManager)] = new ES2_ES2AutoSaveManager();
 		ES2TypeManager.types[typeof(System.Enum)] = new ES2_Enum();
+		ES2TypeManager.types[typeof(ES2AutoSaveManager)] = new ES2_ES2AutoSaveManager();
 		ES2TypeManager.types[typeof(UnityEngine.Gradient)] = new ES2_Gradient();
 		ES2TypeManager.types[typeof(UnityEngine.GradientAlphaKey)] = new ES2_GradientAlphaKey();
 		ES2TypeManager.types[typeof(UnityEngine.GradientColorKey)] = new ES2_GradientColorKey();
@@ -39,7 +40,6 @@ public class ES2Init : MonoBehaviour
 		ES2TypeManager.types[typeof(UnityEngine.Rect)] = new ES2_Rect();
 		ES2TypeManager.types[typeof(UnityEngine.Sprite)] = new ES2_Sprite();
 		ES2TypeManager.types[typeof(UnityEngine.Texture)] = new ES2_Texture();
-		ES2TypeManager.types[typeof(UnityEngine.Texture2D)] = new ES2_Texture2D();
 		ES2TypeManager.types[typeof(UnityEngine.Vector2)] = new ES2_Vector2();
 		ES2TypeManager.types[typeof(UnityEngine.Vector3)] = new ES2_Vector3();
 		ES2TypeManager.types[typeof(UnityEngine.Vector4)] = new ES2_Vector4();
@@ -66,12 +66,17 @@ public class ES2Init : MonoBehaviour
 		ES2TypeManager.types[typeof(System.UInt64)] = new ES2_ulong();
 		ES2TypeManager.types[typeof(System.UInt16)] = new ES2_ushort();
 		ES2TypeManager.types[typeof(UnityEngine.AudioClip)] = new ES2_AudioClip();
+		ES2TypeManager.types[typeof(UnityEngine.GameObject)] = new ES2_GameObject();
 		ES2TypeManager.types[typeof(GameObjectId)] = new ES2UserType_GameObjectId();
 		ES2TypeManager.types[typeof(GameState)] = new ES2UserType_GameState();
 		ES2TypeManager.types[typeof(MemoryObject)] = new ES2UserType_MemoryObject();
 		ES2TypeManager.types[typeof(ObjectState)] = new ES2UserType_ObjectState();
 		ES2TypeManager.types[typeof(SavableObject)] = new ES2UserType_SavableObject();
 		ES2TypeManager.types[typeof(SceneLoader)] = new ES2UserType_SceneLoader();
+		ES2TypeManager.types[typeof(UnityEngine.CanvasRenderer)] = new ES2UserType_UnityEngineCanvasRenderer();
+		ES2TypeManager.types[typeof(UnityEngine.LineRenderer)] = new ES2UserType_UnityEngineLineRenderer();
+		ES2TypeManager.types[typeof(UnityEngine.RectTransform)] = new ES2UserType_UnityEngineRectTransform();
+		ES2TypeManager.types[typeof(UnityEngine.UI.Text)] = new ES2UserType_UnityEngineUIText();
 
 		ES2.initialised = true;
 	}

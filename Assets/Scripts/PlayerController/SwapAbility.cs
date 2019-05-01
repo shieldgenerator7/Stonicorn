@@ -12,6 +12,8 @@ public class SwapAbility : PlayerAbility
         get { return swappableObjects; }
     }
 
+    private bool swappedSomething = false;
+
     /// <summary>
     /// Used for determining if the swapped object's landing spot is occupied
     /// </summary>
@@ -89,7 +91,7 @@ public class SwapAbility : PlayerAbility
 
     void swapObjects(Vector2 oldPos, Vector2 newPos)
     {
-        bool swappedSomething = false;
+        swappedSomething = false;
         foreach (GameObject go in swappableObjects)
         {
             //Clear connections
@@ -108,6 +110,8 @@ public class SwapAbility : PlayerAbility
             Vector2 swapPos = (Vector2)gameObject.transform.position - newPos + oldPos;
             go.transform.position = swapPos;
             swappedSomething = true;
+            //Update Stats
+            GameStatistics.addOne("SwapObject");
         }
         if (swappedSomething)
         {
@@ -115,7 +119,9 @@ public class SwapAbility : PlayerAbility
             {
                 playerController.Range = playerController.baseRange;
             }
-            playerController.airPorts = 0;
+            playerController.AirPortsUsed = 0;
+            //Update Stats
+            GameStatistics.addOne("Swap");
         }
     }
 
@@ -156,5 +162,14 @@ public class SwapAbility : PlayerAbility
             }
         }
         return gos;
+    }
+
+    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
+    {
+        if (swappedSomething)
+        {
+            swappedSomething = false;
+            base.showTeleportEffect(oldPos, newPos);
+        }
     }
 }

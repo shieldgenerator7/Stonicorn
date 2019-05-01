@@ -5,8 +5,37 @@ using UnityEngine;
 public class CinematicCameraController : MonoBehaviour
 {
     public float moveSpeed = 3;
+    public List<GameObject> objectsToHide = new List<GameObject>();
 
     private bool active = false;
+    public bool Active
+    {
+        get { return active; }
+        set
+        {
+            active = value;
+            //Other camera controller
+            camCntr.enabled = !active;
+            //Other objects
+            foreach (GameObject go in objectsToHide)
+            {
+                go.SetActive(!active);
+            }
+            //Scene Loader Explorer Object
+            if (active)
+            {
+                SceneLoader.ExplorerObject = gameObject;
+            }
+            else
+            {
+                //Reset explorer object (resets back to player)
+                SceneLoader.ExplorerObject = null;
+            }
+        }
+    }
+
+    private Vector2 targetUp;//used to smoothly rotate the camera between gravity zones
+
     private Camera cam;
     private CameraController camCntr;
 
@@ -22,8 +51,7 @@ public class CinematicCameraController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            active = !active;
-            camCntr.enabled = !active;
+            Active = !Active;
         }
         if (active)
         {
@@ -61,6 +89,39 @@ public class CinematicCameraController : MonoBehaviour
             {
                 float factor = (cam.fieldOfView < 1 * 11) ? 0.1f : 1;
                 cam.fieldOfView -= Time.deltaTime * factor;
+            }
+
+            //Rotation
+            foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
+            {
+                if (gz.mainGravityZone && gz.GetComponent<Collider2D>().OverlapPoint(transform.position))
+                {
+                    if (gz.radialGravity)
+                    {
+                        targetUp = (transform.position - gz.transform.position).normalized;
+                    }
+                    else
+                    {
+                        targetUp = gz.transform.up;
+                    }
+                    break;
+                }
+            }
+            if ((Vector2)transform.up != targetUp)
+            {
+                transform.up = Vector2.Lerp(transform.up, targetUp, Time.deltaTime);
+            }
+            //Cheats
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                Managers.Player.transform.position = (Vector2)transform.position;
+            }
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                foreach (HiddenArea ha in FindObjectsOfType<HiddenArea>())
+                {
+                    Destroy(ha.gameObject);
+                }
             }
         }
     }

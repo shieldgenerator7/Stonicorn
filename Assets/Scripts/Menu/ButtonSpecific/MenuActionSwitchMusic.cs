@@ -6,12 +6,12 @@ public class MenuActionSwitchMusic : MenuActionSwitch {
 
     public override void doAction(bool active)
     {
-        FindObjectOfType<MusicManager>().Mute = !active;
+        Managers.Music.Mute = !active;
     }
 
     public override bool getActiveState()
     {
-        bool mute = FindObjectOfType<MusicManager>().Mute;
+        bool mute = Managers.Music.Mute;
         return !mute;
     }
 }

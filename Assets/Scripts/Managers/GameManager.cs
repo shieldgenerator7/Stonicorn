@@ -1,621 +1,765 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-
+/// <summary>
+/// GameManager in charge of Time and Space
+/// </summary>
 public class GameManager : MonoBehaviour
 {
-    public bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
-    public int chosenId = 0;
-    public GameObject playerGhost;//this is to show Merky in the past (prefab)
-    public AudioSource timeRewindMusic;//the music to play while time rewinds
-    private int rewindId = 0;//the id to eventually load back to
-    private float respawnTime = 0;//the earliest time Merky can rewind after shattering
-    public float respawnDelay = 1.0f;//how long Merky must wait before rewinding after shattering
-    private List<GameState> gameStates = new List<GameState>();
+    //
+    // Settings
+    //
+    [Header("Settings")]
+    [SerializeField]
+    private float inputOffDuration = 1.0f;//how long Merky must wait before rewinding after shattering
+    [SerializeField]
+    private float rewindDelay = 0.05f;//the delay between rewind transitions
+
+    [Header("Objects")]
+    public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
     [SerializeField]
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
-    private List<GameObject> gameObjects = new List<GameObject>();
-    private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable
-    private List<string> openScenes = new List<string>();//the list of names of the scenes that are open
-    //Memories
-    private List<MemoryObject> memories = new List<MemoryObject>();
-    //Checkpoints
-    private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
 
-    private static GameManager instance;
-    private static GameObject playerObject;//the player object
-    public static string playerTag = "Player";
-    private CameraController camCtr;
-    private GestureManager gestureManager;
-    public static GestureManager GestureManager
+    [Header("Demo Mode")]
+    [SerializeField]
+    private bool demoBuild = false;//true to not load on open or save with date/timestamp in filename
+    [SerializeField]
+    private bool saveWithTimeStamp = false;//true to save with date/timestamp in filename, even when not in demo build
+    [SerializeField]
+    private float restartDemoDelay = 10;//how many seconds before the game can reset after the demo ends
+    [SerializeField]
+    private Text txtDemoTimer;//the text that shows much time is left in the demo
+    [SerializeField]
+    private GameObject endDemoScreen;//the picture to show the player after the game resets
+
+    //
+    // Runtime variables
+    //
+    private int rewindId;//the id to eventually load back to
+    private int chosenId;//the id of the current game state
+    private float lastRewindTime;//the last time the game rewound
+    private float inputOffStartTime;//the start time when input was turned off
+    private float resetGameTimer;//the time that the game will reset at
+    private static float gamePlayTime;//how long the game can be played for, 0 for indefinitely
+
+    //
+    // Runtime Lists
+    //
+    //Game States
+    private List<GameState> gameStates = new List<GameState>();//basically a timeline
+    private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();//list of current objects that have state to save
+    private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable, but still have state to save
+    public List<GameObject> ForgottenObjects
     {
-        get { return instance.gestureManager; }
-        private set { instance.gestureManager = value; }
+        get { return forgottenObjects; }
     }
-    private MusicManager musicManager;
-    private float actionTime = 0;//used to determine how often to rewind
-    private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
-    private List<string> newlyLoadedScenes = new List<string>();
-    private int loadedSceneCount = 0;
-    private string unloadedScene = null;
-    private static float resetGameTimer = 0.0f;//the time that the game will reset at
-    private static float gamePlayTime = 0.0f;//how long the game can be played for, 0 for indefinitely
-    public GameObject endDemoScreen;//the picture to show the player after the game resets
-
+    //Scene Loading
+    private List<Scene> openScenes = new List<Scene>();//the list of the scenes that are open
+    //Memories
+    private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
 
     // Use this for initialization
     void Start()
     {
-        playerObject = GameObject.FindGameObjectWithTag(playerTag);
-        camCtr = FindObjectOfType<CameraController>();
-        camCtr.pinPoint();
-        camCtr.recenter();
-        camCtr.refocus();
-        gestureManager = FindObjectOfType<GestureManager>();
-        musicManager = FindObjectOfType<MusicManager>();
+        //Initialize the current game state id
+        //There are possibly none, so the default "current" is -1
         chosenId = -1;
-        //If a limit has been set on the demo playtime
-        if (gamePlayTime > 0)
+        //If a limit has been set on the demo playtime,
+        if (GameDemoLength > 0)
         {
-            demoBuild = true;//auto enable demo build mode
-            gestureManager.tapGesture += startDemoTimer;
+            //Auto-enable demo mode
+            demoBuild = true;
+            //Tell the gesture manager to start the timer when the player taps in game
+            Managers.Gesture.tapGesture += startDemoTimer;
+            //Show the timer
+            txtDemoTimer.transform.parent.gameObject.SetActive(true);
         }
+        //If in demo mode,
+        if (demoBuild)
+        {
+            //Save its future files with a time stamp
+            saveWithTimeStamp = true;
+        }
+        //Update the list of objects that have state to save
+        refreshGameObjects();
+        //If it's not in demo mode, and its save file exists,
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
+            //Load the save file
             loadFromFile();
+            //Update the game state id trackers
             chosenId = rewindId = gameStates.Count - 1;
+            //Load the most recent game state
             Load(chosenId);
+            //Load the memories
             LoadMemories();
         }
-
-        refreshGameObjects();
+        //Register scene loading delegates
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
-    }
-
-    /// <summary>
-    /// Resets the game back to the very beginning
-    /// </summary>
-    public static void resetGame(bool savePrevGame = true)
-    {
-        //Save previous game
-        if (savePrevGame)
-        {
-            Save();
-            instance.saveToFile();
-        }
-        //Unload all scenes and reload PlayerScene
-        instance = null;
-        GameState.nextid = 0;
-        SceneManager.LoadScene(0);
-    }
-    /// <summary>
-    /// Schedules the game reset in the future
-    /// </summary>
-    /// <param name="timeUntilReset">How many seconds until the reset should occur</param>
-    public static void setResetTimer(float timeUntilReset)
-    {
-        if (timeUntilReset < 0)
-        {
-            timeUntilReset = 0;
-        }
-        gamePlayTime = timeUntilReset;
-        if (gamePlayTime != 0)
-        {
-            resetGameTimer = gamePlayTime + Time.time;
-        }
-        else
-        {
-            resetGameTimer = 0;
-        }
-        instance.showEndDemoScreen(false);
-    }
-    public static float getGameDemoLength()
-    {
-        return gamePlayTime;
-    }
-    void startDemoTimer()
-    {
-        if (camCtr.ZoomLevel != camCtr.scalePointToZoomLevel((int)CameraController.CameraScalePoints.MENU))
-        {
-            resetGameTimer = gamePlayTime + Time.time;
-            gestureManager.tapGesture -= startDemoTimer;
-        }
-    }
-
-    private void showEndDemoScreen(bool show)
-    {
-        endDemoScreen.SetActive(show);
-        if (show)
-        {
-            endDemoScreen.transform.position = (Vector2)Camera.main.transform.position;
-            endDemoScreen.transform.localRotation = Camera.main.transform.localRotation;
-        }
-    }
-
-    private void OnGUI()
-    {
-        if (Time.time < resetGameTimer)
-        {
-            GUI.Label(Camera.main.pixelRect, "Time left: " + (resetGameTimer - Time.time));
-        }
-    }
-
-    public static void addObject(GameObject go)
-    {
-        instance.gameObjects.Add(go);
-    }
-    public void addAll(List<GameObject> list)
-    {
-        foreach (GameObject go in list)
-        {
-            gameObjects.Add(go);
-        }
-    }
-    /// <summary>
-    /// Destroys the given GameObject and updates lists
-    /// </summary>
-    /// <param name="go"></param>
-    public static void destroyObject(GameObject go)
-    {
-        removeObject(go);
-        Destroy(go);
-    }
-    /// <summary>
-    /// Removes the given GameObject from the gameObjects list
-    /// </summary>
-    /// <param name="go"></param>
-    private static void removeObject(GameObject go)
-    {
-        instance.gameObjects.Remove(go);
-        instance.forgottenObjects.Remove(go);
-        if (go && go.transform.childCount > 0)
-        {
-            foreach (Transform t in go.transform)
-            {
-                instance.gameObjects.Remove(t.gameObject);
-                instance.forgottenObjects.Remove(t.gameObject);
-            }
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (instance == null)
-        {
-            //2018-06-04: band aid code
-            instance = this;
-        }
+        //Check all the scene loaders
+        //to see if their scene needs loaded or unloaded
+        //(done this way because standard trigger methods in Unity
+        //don't always play nice with teleporting characters)
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
         }
-        if (newlyLoadedScenes.Count > 0)
+        //If the time is rewinding,
+        if (Rewinding)
         {
-            refreshGameObjects();
-            foreach (string s in newlyLoadedScenes)
+            //And it's time to rewind the next step,
+            if (Time.time > lastRewindTime + rewindDelay)
             {
-                LoadObjectsFromScene(SceneManager.GetSceneByName(s));
-                loadedSceneCount++;
-            }
-            newlyLoadedScenes.Clear();
-        }
-        if (unloadedScene != null)
-        {
-            refreshGameObjects();
-            unloadedScene = null;
-        }
-        if (gameStates.Count == 0 && loadedSceneCount > 0)
-        {
-            Save();
-        }
-        if (gamePlayTime > 0)
-        {
-            if (Time.time >= resetGameTimer)
-            {
-                showEndDemoScreen(true);
-                if ((Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
-                    && Time.time >= resetGameTimer + 10)//+10 for buffer period where input doesn't interrupt it
-                {
-                    setResetTimer(gamePlayTime);
-                    resetGame();
-                }
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (isRewinding())
-        {
-            if (Time.time > actionTime)
-            {
-                actionTime = Time.time + rewindDelay;
+                //Rewind to the next previous game state
+                lastRewindTime = Time.time;
                 Load(chosenId - 1);
             }
         }
+        //If in demo mode,
+        if (GameDemoLength > 0)
+        {
+            float timeLeft = 0;
+            //And the timer has started,
+            if (resetGameTimer > 0)
+            {
+                //If the timer has stopped,
+                if (Time.time >= resetGameTimer)
+                {
+                    //Show the end demo screen
+                    showEndDemoScreen(true);
+                    //If the ignore-input buffer period has ended,
+                    if (Time.time >= resetGameTimer + restartDemoDelay)
+                    {
+                        //And user has given input,
+                        if (Input.GetMouseButton(0)
+                            || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+                            )
+                        {
+                            //Reset game
+                            showEndDemoScreen(false);
+                            resetGame();
+                        }
+                    }
+                }
+                //Else if the timer is ticking,
+                else
+                {
+                    //Show the time remaining
+                    timeLeft = resetGameTimer - Time.time;
+                }
+            }
+            //Else if the timer has not started,
+            else
+            {
+                //Show the max play time of the demo
+                timeLeft = GameDemoLength;
+            }
+            //Update the timer on screen
+            txtDemoTimer.text = string.Format("{0:0.00}", timeLeft);
+        }
     }
 
-    void sceneLoaded(Scene s, LoadSceneMode m)
+    #region GameObject List Management
+    /// <summary>
+    /// Adds an object to list of objects that have state to save
+    /// </summary>
+    /// <param name="go">The GameObject to add to the list</param>
+    public static void addObject(GameObject go)
     {
-        refreshGameObjects();
-        newlyLoadedScenes.Add(s.name);
-        openScenes.Add(s.name);
+        Managers.Game.addObjectImpl(go);
     }
-    void sceneUnloaded(Scene s)
+    /// <summary>
+    /// Adds an object to the list, if it passes all tests
+    /// </summary>
+    /// <param name="go">The GameObject to add to the list</param>
+    private void addObjectImpl(GameObject go)
     {
-        foreach (GameObject fgo in forgottenObjects)
+        //
+        //Error checking
+        //
+
+        //If go is null
+        if (go == null)
         {
-            if (fgo != null && fgo.scene == s)
+            throw new System.ArgumentNullException("GameObject (" + go + ") cannot be null!");
+        }
+
+        //getKey() returns a string containing
+        //the object's name and scene name
+        string key = go.getKey();
+
+        //If the game object's name is already in the dictionary...
+        if (gameObjects.ContainsKey(key))
+        {
+            throw new System.ArgumentException(
+                  "GameObject (" + key + ") is already inside the gameObjects dictionary! "
+                  + "Check for 2 or more objects with the same name."
+                  );
+        }
+        //If the game object doesn't have any state to save...
+        if (!go.isSavable())
+        {
+            throw new System.ArgumentException(
+                "GameObject (" + key + ") doesn't have any state to save! "
+                + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
+                );
+        }
+        //Else if all good, add the object
+        gameObjects.Add(key, go);
+    }
+
+    /// <summary>
+    /// Retrieves the GameObject from the gameObjects list with the given scene and object names
+    /// </summary>
+    /// <param name="sceneName">The scene name of the object</param>
+    /// <param name="objectName">The name of the object</param>
+    /// <returns></returns>
+    public static GameObject getObject(string sceneName, string objectName)
+    {
+        string key = Utility.getKey(sceneName, objectName);
+        //If the gameObjects list has the game object,
+        if (Managers.Game.gameObjects.ContainsKey(key))
+        {
+            //Return it
+            return Managers.Game.gameObjects[key];
+        }
+        //Otherwise, sorry, you're out of luck
+        return null;
+    }
+
+    /// <summary>
+    /// Destroys the given GameObject and updates lists
+    /// </summary>
+    /// <param name="go">The GameObject to destroy</param>
+    public static void destroyObject(GameObject go)
+    {
+        Managers.Game.removeObject(go);
+        Destroy(go);
+    }
+    /// <summary>
+    /// Removes the given GameObject from the gameObjects list
+    /// </summary>
+    /// <param name="go">The GameObject to remove from the list</param>
+    private void removeObject(GameObject go)
+    {
+        gameObjects.Remove(go.getKey());
+        forgottenObjects.Remove(go);
+        //If go is not null and has children,
+        if (go && go.transform.childCount > 0)
+        {
+            //For each of its children,
+            foreach (Transform t in go.transform)
             {
-                forgottenObjects.Remove(fgo);
+                //Remove it from the gameObjects list
+                gameObjects.Remove(t.gameObject.getKey());
+                //And from the forgotten objects list
+                forgottenObjects.Remove(t.gameObject);
             }
         }
-        refreshGameObjects();
-        unloadedScene = s.name;
-        openScenes.Remove(s.name);
-        loadedSceneCount--;
     }
-    public static void refresh() { instance.refreshGameObjects(); }
+    /// <summary>
+    /// Remove null objects from the gameObjects list
+    /// </summary>
+    private void cleanObjects()
+    {
+        string cleanedKeys = "";
+        //Copy the game object keys
+        List<string> keys = new List<string>(gameObjects.Keys);
+        //Loop over copy list
+        foreach (string key in keys)
+        {
+            //If the key's value is null,
+            if (gameObjects[key] == null)
+            {
+                //Clean the key out
+                cleanedKeys += key + ", ";
+                gameObjects.Remove(key);
+            }
+        }
+        //Write out to the console which keys were cleaned
+        if (cleanedKeys != "")
+        {
+            Debug.Log("Cleaned: " + cleanedKeys);
+        }
+    }
+
+    /// <summary>
+    /// Update the list of GameObjects with state to save
+    /// </summary>
     public void refreshGameObjects()
     {
-        gameObjects = new List<GameObject>();
+        //Make a new dictionary for the list
+        gameObjects = new Dictionary<string, GameObject>();
+        //Add objects that can move
         foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
         {
-            gameObjects.Add(rb.gameObject);
+            addObjectImpl(rb.gameObject);
         }
-        //Debug.Log("GM Collider List: " + gravityColliderList.Count);
+        //Add objects that have other variables that can get rewound
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
         {
-            if (!gameObjects.Contains(smb.gameObject))
+            if (!gameObjects.ContainsValue(smb.gameObject))
             {
-                gameObjects.Add(smb.gameObject);
+                addObjectImpl(smb.gameObject);
             }
         }
         //Forgotten Objects
-        foreach (GameObject dgo in forgottenObjects)
+        foreach (GameObject fgo in forgottenObjects)
         {
-            if (dgo != null)
+            if (fgo != null)
             {
-                gameObjects.Add(dgo);
+                addObjectImpl(fgo);
             }
         }
+        //Memories
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
-            //load state if found, save state if not foud
-            bool foundMO = false;
-            foreach (MemoryObject mo in instance.memories)
+            string key = mmb.gameObject.getKey();
+            //If the memory has already been stored,
+            if (memories.ContainsKey(key))
             {
-                if (mo.isFor(mmb))
-                {
-                    foundMO = true;
-                    mmb.acceptMemoryObject(mo);
-                    break;
-                }
+                //Load the memory
+                mmb.acceptMemoryObject(memories[key]);
             }
-            if (!foundMO)
+            //Else
+            else
             {
-                instance.memories.Add(mmb.getMemoryObject());
+                //Save the memory
+                memories.Add(key, mmb.getMemoryObject());
             }
         }
     }
-    public static void Save()
-    {
-        instance.gameStates.Add(new GameState(instance.gameObjects));
-        instance.chosenId++;
-        instance.rewindId++;
-        //Open Scenes
-        foreach (SceneLoader sl in instance.sceneLoaders)
-        {
-            if (instance.openScenes.Contains(sl.sceneName))
-            {
-                if (sl.firstOpenGameStateId > instance.chosenId)
-                {
-                    sl.firstOpenGameStateId = instance.chosenId;
-                }
-                sl.lastOpenGameStateId = instance.chosenId;
-            }
-        }
-    }
-    public static void saveMemory(MemoryMonoBehaviour mmb)
-    {//2016-11-23: CODE HAZARD: mixture of static and non-static methods, will cause error if there are ever more than 1 instance of GameManager
-        bool foundMO = false;
-        foreach (MemoryObject mo in instance.memories)
-        {
-            if (mo.isFor(mmb))
-            {
-                foundMO = true;
-                mo.found = mmb.getMemoryObject().found;//2017-04-11: TODO: refactor this so it's more flexible
-                break;
-            }
-        }
-        if (!foundMO)
-        {
-            instance.memories.Add(mmb.getMemoryObject());
-        }
-    }
-    public static void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
-    {
-        if (!instance.activeCheckPoints.Contains(cpc))
-        {
-            instance.activeCheckPoints.Add(cpc);
-        }
-    }
+
     /// <summary>
     /// Stores the given object before it gets set inactive
     /// </summary>
     /// <param name="obj"></param>
-    public static void saveForgottenObject(GameObject obj, bool forget = true)
+    public void saveForgottenObject(GameObject obj, bool forget = true)
     {
+        //Error checking
+        if (obj == null)
+        {
+            throw new System.ArgumentNullException("GameManager.saveForgottenObject() cannot accept null for obj! obj: " + obj);
+        }
+        //If it's about to be set inactive,
         if (forget)
         {
-            instance.forgottenObjects.Add(obj);
+            //Add it to the list,
+            forgottenObjects.Add(obj);
+            //And set it inactive
             obj.SetActive(false);
         }
+        //Else,
         else
         {
-            instance.forgottenObjects.Remove(obj);
+            //Remove it from the list,
+            forgottenObjects.Remove(obj);
+            //And set it active again
             obj.SetActive(true);
         }
     }
-    public static List<GameObject> getForgottenObjects()
+    #endregion
+
+    #region Memory List Management
+    /// <summary>
+    /// Saves the memory to the memory list
+    /// </summary>
+    /// <param name="mmb"></param>
+    public void saveMemory(MemoryMonoBehaviour mmb)
     {
-        return instance.forgottenObjects;
-    }
-    public static void LoadState()
-    {
-        instance.Load(instance.chosenId);
-    }
-    private void Load(int gamestateId)
-    {
-        //Destroy objects not spawned yet in the new selected state
-        //chosenId is the previous current gamestate, which is in the future compared to gamestateId
-        for (int i = gameObjects.Count - 1; i > 0; i--)
+        string key = mmb.gameObject.getKey();
+        MemoryObject mo = mmb.getMemoryObject();
+        //If the memory is already stored,
+        if (memories.ContainsKey(key))
         {
-            GameObject go = gameObjects[i];
-            if (!gameStates[gamestateId].hasGameObject(go))
+            //Update it
+            memories[key] = mo;
+        }
+        //Else
+        else
+        {
+            //Add it
+            memories.Add(key, mo);
+        }
+    }
+    /// <summary>
+    /// Restore all saved memories of game objects that have a memory saved
+    /// </summary>
+    void LoadMemories()
+    {
+        //Find all the game objects that can have memories
+        foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
+        {
+            string key = mmb.gameObject.getKey();
+            //If there's a memory saved for this object,
+            if (memories.ContainsKey(key))
             {
-                if (go == null)
+                //Tell that object what it is
+                mmb.acceptMemoryObject(memories[key]);
+            }
+        }
+    }
+    #endregion
+
+    #region Time Management
+    /// <summary>
+    /// Saves the current game state
+    /// </summary>
+    public void Save()
+    {
+        //Remove any null objects from the list
+        cleanObjects();
+        //Create a new game state
+        gameStates.Add(new GameState(gameObjects.Values));
+        //Update game state id variables
+        chosenId++;
+        rewindId++;
+        //Open Scenes
+        foreach (SceneLoader sl in sceneLoaders)
+        {
+            //If the scene loader's scene is open,
+            if (openScenes.Contains(sl.Scene))
+            {
+                //And it hasn't been open in any previous game state,
+                if (sl.firstOpenGameStateId > chosenId)
                 {
-                    destroyObject(go);
-                    continue;
+                    //It's first opened in this game state
+                    sl.firstOpenGameStateId = chosenId;
                 }
-                foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
+                //It's also last opened in this game state
+                sl.lastOpenGameStateId = chosenId;
+            }
+        }
+    }
+    /// <summary>
+    /// Load the game state with the given id
+    /// </summary>
+    /// <param name="gamestateId">The ID of the game state to load</param>
+    public void Load(int gamestateId)
+    {
+        //Update chosenId to game-state-now
+        chosenId = gamestateId;
+        //Remove null objects from the list
+        cleanObjects();
+        //Destroy objects not spawned yet in the new selected state
+        List<GameObject> destroyObjectList = new List<GameObject>();
+        foreach (GameObject go in gameObjects.Values)
+        {
+            foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
+            {
+                //If the game object was spawned during run time
+                //(versus pre-placed at edit time)
+                if (smb.isSpawnedObject())
                 {
-                    if (smb.isSpawnedObject())
+                    //And if the game object is not in the game state,
+                    if (!gameStates[gamestateId].hasGameObject(go))
                     {
-                        destroyObject(go);//remove it from game objects list
+                        //remove it from game objects list
+                        //by adding it to the list of game objects to be destroyed
+                        destroyObjectList.Add(go);
                     }
                 }
             }
         }
-        //
-        chosenId = gamestateId;
-        if (chosenId == rewindId)
+        //Actually destroy the objects that need destroyed
+        for (int i = destroyObjectList.Count - 1; i >= 0; i--)
         {
-            //After rewind is finished, refresh the game object list
-            refreshGameObjects();
-            musicManager.endEventSong(timeRewindMusic);
-            //Open Scenes
-            foreach (SceneLoader sl in sceneLoaders)
-            {
-                if (sl.lastOpenGameStateId > chosenId)
-                {
-                    sl.lastOpenGameStateId = chosenId;
-                }
-                if (sl.firstOpenGameStateId > chosenId)
-                {
-                    sl.firstOpenGameStateId = int.MaxValue;
-                    sl.lastOpenGameStateId = -1;
-                }
-            }
+            //Work around to avoid deleting objects from a list that's being iterated over
+            destroyObject(destroyObjectList[i]);
         }
+        //Actually load the game state
         gameStates[gamestateId].load();
-        if (chosenId <= rewindId)
-        {
-            refreshGameObjects();//a second time, just to be sure
-        }
+
+        //Destroy game states in game-state-future
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
         {
             Destroy(gameStates[i].Representation);
             gameStates.RemoveAt(i);
         }
+        //Update the next game state id
         GameState.nextid = gamestateId + 1;
-        //Recenter the camera
-        camCtr.recenter();
-        camCtr.refocus();
+
+        //If the rewind is finished,
+        if (chosenId == rewindId)
+        {
+            //Refresh the game object list
+            refreshGameObjects();
+            //Put the music back to normal
+            Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
+            //Update Scene tracking variables
+            foreach (SceneLoader sl in sceneLoaders)
+            {
+                //If the scene was last opened after game-state-now,
+                if (sl.lastOpenGameStateId > chosenId)
+                {
+                    //it is now last opened game-state-now
+                    sl.lastOpenGameStateId = chosenId;
+                }
+                //if the scene was first opened after game-state-now,
+                if (sl.firstOpenGameStateId > chosenId)
+                {
+                    //it is now never opened
+                    sl.firstOpenGameStateId = int.MaxValue;
+                    sl.lastOpenGameStateId = -1;
+                }
+            }
+            //Re-enable physics because the rewind is over
+            Managers.Physics2DSurrogate.enabled = false;
+        }
     }
-    public void LoadObjectsFromScene(Scene s)
+
+    /// <summary>
+    /// Sets into motion the rewind state.
+    /// Update carries out the motions of calling Load()
+    /// </summary>
+    /// <param name="gamestateId">The game state id to rewind to</param>
+    void Rewind(int gamestateId)
+    {
+        //Set the music speed to rewind
+        Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
+        //Set the game state tracker vars
+        rewindId = gamestateId;
+        //Recenter the camera on Merky
+        Managers.Camera.recenter();
+        //Disable physics while rewinding
+        Managers.Physics2DSurrogate.enabled = true;
+        //Update Stats
+        GameStatistics.addOne("Rewind");
+    }
+    /// <summary>
+    /// Rewind the game all the way to the beginning
+    /// </summary>
+    public void RewindToStart()
+    {
+        Rewind(0);
+    }
+    /// <summary>
+    /// True if time is rewinding
+    /// </summary>
+    public bool Rewinding
+    {
+        get { return chosenId > rewindId; }
+    }
+    /// <summary>
+    /// Ends the rewind at the current game state
+    /// </summary>
+    public void cancelRewind()
+    {
+        //Set the game state id tracker vars
+        rewindId = chosenId;
+        //Load the current game state
+        Load(chosenId);
+        //Set the music back to normal
+        Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
+    }
+    #endregion
+
+    #region Space Management
+    void sceneLoaded(Scene scene, LoadSceneMode m)
+    {
+        //Update the list of objects with state to save
+        Debug.Log("sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
+        refreshGameObjects();
+        Debug.Log("sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        //Add the given scene to list of open scenes
+        openScenes.Add(scene);
+        //If time is moving forward,
+        if (!Rewinding)
+        {
+            //Load the previous state of the objects in the scene
+            LoadObjectsFromScene(scene);
+            //If the game has just begun,
+            if (gameStates.Count == 0)
+            {
+                //Create the initial save state
+                Save();
+            }
+        }
+    }
+    void sceneUnloaded(Scene scene)
+    {
+        //Remove the given scene's objects from the forgotten objects list
+        for (int i = forgottenObjects.Count - 1; i >= 0; i--)
+        {
+            GameObject fgo = forgottenObjects[i];
+            if (fgo == null || fgo.scene == scene)
+            {
+                forgottenObjects.RemoveAt(i);
+            }
+        }
+        //Update the list of game objects to save
+        Debug.Log("sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
+        refreshGameObjects();
+        Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        //Remove the scene from the list of open scenes
+        openScenes.Remove(scene);
+    }
+
+    /// <summary>
+    /// Restores the objects in the scene to their previous state before the scene was unloaded
+    /// </summary>
+    /// <param name="scene">The scene whose objects need their state stored</param>
+    public void LoadObjectsFromScene(Scene scene)
     {
         //Find the last state that this scene was saved in
         int lastStateSeen = -1;
         foreach (SceneLoader sl in sceneLoaders)
         {
-            if (s.name == sl.sceneName)
+            if (scene == sl.Scene)
             {
                 lastStateSeen = sl.lastOpenGameStateId;
                 break;
             }
         }
+        Debug.Log("LOFS: Scene " + scene.name + ": last state seen: " + lastStateSeen);
+        //If the scene was never seen,
         if (lastStateSeen < 0)
         {
+            //Don't restore its objects' states,
+            //because there's nothing to restore
             return;
         }
+        //If the scene was last seen after gamestate-now,
         if (lastStateSeen > chosenId)
         {
+            //The scene is now last seen gamestate-now
             lastStateSeen = chosenId;
         }
+        int newObjectsFound = 0;
+        int objectsLoaded = 0;
         //Load Each Object
-        foreach (GameObject go in gameObjects)
+        foreach (GameObject go in gameObjects.Values)
         {
-            if (go.scene.Equals(s))
+            //If the game object is in the given scene,
+            if (go.scene == scene)
             {
+                newObjectsFound++;
+                //Search through the game states to see when it was last saved
                 for (int stateid = lastStateSeen; stateid >= 0; stateid--)
                 {
+                    //If the game object was last saved in this game state,
                     if (gameStates[stateid].loadObject(go))
                     {
+                        //Great! It's loaded,
+                        //Let's move onto the next object
+                        objectsLoaded++;
                         break;
                     }
+                    //Else,
                     else
                     {
-                        //continue until you find the game state that has the most recent information about this object
+                        //Continue until you find the game state that has the most recent information about this object
                     }
                 }
             }
         }
+        Debug.Log("LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
     }
-    public static bool isRewinding()
-    {
-        if (instance == null)
-        {
-            instance = FindObjectOfType<GameManager>();
-        }
-        return instance.chosenId > instance.rewindId;
-    }
-    public void cancelRewind()
-    {
-        rewindId = chosenId;
-        Load(chosenId);
-        musicManager.endEventSong(timeRewindMusic);
-    }
-    public static void RewindToStart()
-    {
-        instance.Rewind(0);
-    }
+    #endregion
+
+    #region File Management
     /// <summary>
-    /// Sets into motion the rewind state.
-    /// FixedUpdate carries out the motions of calling Load()
+    /// Saves the memories, game states, and scene cache to a save file
     /// </summary>
-    /// <param name="gamestateId"></param>
-    void Rewind(int gamestateId)
-    {
-        musicManager.setEventSong(timeRewindMusic);
-        rewindId = gamestateId;
-        camCtr.recenter();
-    }
-    void LoadMemories()
-    {
-        foreach (MemoryObject mo in memories)
-        {
-            GameObject go = mo.findGameObject();
-            if (go != null)
-            {
-                MemoryMonoBehaviour mmb = go.GetComponent<MemoryMonoBehaviour>();
-                if (mo.isFor(mmb))
-                {
-                    mmb.acceptMemoryObject(mo);
-                }
-            }
-        }
-    }
     public void saveToFile()
     {
+        //Set the base filename
         string fileName = "merky";
-        if (demoBuild)
+        //If saving with time stamp,
+        if (saveWithTimeStamp)
         {
+            //Add the time stamp to the filename
             System.DateTime now = System.DateTime.Now;
             fileName += "-" + now.Ticks;
         }
+        //Add an extension to the filename
         fileName += ".txt";
+        //Save memories
         ES2.Save(memories, fileName + "?tag=memories");
+        //Save game states
         ES2.Save(gameStates, fileName + "?tag=states");
+        //Save scene cache
         ES2.Save(sceneLoaders, fileName + "?tag=scenes");
     }
+    /// <summary>
+    /// Loads the game from the save file
+    /// It assumes the file already exists
+    /// </summary>
     public void loadFromFile()
     {
-        memories = ES2.LoadList<MemoryObject>("merky.txt?tag=memories");
+        //Load memories
+        memories = ES2.LoadDictionary<string, MemoryObject>("merky.txt?tag=memories");
+        //Load game states
         gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
         //Scenes
         List<SceneLoader> rsls = ES2.LoadList<SceneLoader>("merky.txt?tag=scenes");
-        foreach (SceneLoader sl in sceneLoaders)//all scene loaders
+        //Loop through all scene loaders in the game
+        foreach (SceneLoader sl in sceneLoaders)
         {
-            foreach (SceneLoader rsl in rsls)//read in scene loaders
+            //Loop through the scene loaders read in from the file
+            foreach (SceneLoader rsl in rsls)
             {
+                //If the scene in the game and the read in one match,
                 if (rsl != null && sl.sceneName == rsl.sceneName && rsl != sl)
                 {
+                    //Restore the scene loader
                     sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
+                    //Destroy the read in scene loader,
                     Destroy(rsl);
+                    //And immediately exit its loop
+                    //to avoid ConcurrentModificationException
                     break;
                 }
             }
         }
     }
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
+    //Sent to all GameObjects before the application is quit
+    //Auto-save on exit
     void OnApplicationQuit()
     {
+        //Save the game state and then
         Save();
+        //Save the game to file
         saveToFile();
     }
+    #endregion
 
-    public static List<CheckPointChecker> getActiveCheckPoints()
-    {
-        return instance.activeCheckPoints;
-    }
-
-    public static GameObject getPlayerObject()
-    {
-        if (playerObject == null)
-        {
-            playerObject = GameObject.FindGameObjectWithTag(playerTag);
-        }
-        return playerObject;
-    }
-    public static int getCurrentStateId()
-    {
-        return instance.chosenId;
-    }
-
+    #region Player Ghosts
     /// <summary>
-    /// Returns true if the given GameObject is touching Merky's teleport range
+    /// Shows the game state representations
     /// </summary>
-    /// <param name="other"></param>
-    /// <returns></returns>
-    public static bool isInTeleportRange(GameObject other)
+    public void showPlayerGhosts(bool show)
     {
-        float range = playerObject.GetComponent<PlayerController>().Range;
-        return (other.transform.position - playerObject.transform.position).sqrMagnitude <= range * range;
-    }
-
-    /// <summary>
-    /// Called when Merky gets shattered
-    /// </summary>
-    public static void playerShattered()
-    {
-        instance.respawnTime = Time.time + instance.respawnDelay;
-    }
-
-    public static void showPlayerGhosts()
-    {
-        foreach (GameState gs in instance.gameStates)
+        //If the game state representations should be shown,
+        if (show)
         {
-            if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
-            {//don't include last game state if merky is shattered
-                gs.showRepresentation(instance.chosenId);
+            bool intact = Managers.Player.HardMaterial.isIntact();
+            //Loop through all game states
+            foreach (GameState gs in gameStates)
+            {
+                //Don't include last game state if merky is shattered
+                if (intact || gs.id != chosenId)
+                {
+                    //Otherwise, show the game state's representation
+                    gs.showRepresentation(chosenId);
+                }
             }
         }
-    }
-    public void hidePlayerGhosts()
-    {
-        foreach (GameState gs in gameStates)
+        //Else, they should be hidden
+        else
         {
-            if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
-            {//don't include last game state if merky is shattered
+            //Loop through all game states
+            foreach (GameState gs in gameStates)
+            {
+                //And hide their representations
                 gs.hideRepresentation();
             }
         }
@@ -623,13 +767,13 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Returns the player ghost that is closest to the given position
     /// </summary>
-    /// <param name="pos"></param>
-    /// <returns></returns>
-    public static GameObject getClosestPlayerGhost(Vector2 pos)
+    /// <param name="pos">The ideal position of the closest ghost</param>
+    /// <returns>The player ghost that is closest to the given position</returns>
+    public GameObject getClosestPlayerGhost(Vector2 pos)
     {
         float closestDistance = float.MaxValue;
         GameObject closestObject = null;
-        foreach (GameState gs in instance.gameStates)
+        foreach (GameState gs in gameStates)
         {
             Vector2 gsPos = gs.Representation.transform.position;
             float gsDistance = Vector2.Distance(gsPos, pos);
@@ -641,45 +785,49 @@ public class GameManager : MonoBehaviour
         }
         return closestObject;
     }
-    public static GameObject getPlayerGhostPrefab()
+    /// <summary>
+    /// Used specifically to highlight last saved Merky after the first death
+    /// for tutorial purposes
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 getLatestSafeRewindGhostPosition()
     {
-        return instance.playerGhost;
+        return gameStates[chosenId - 1].merky.position;
     }
+    #endregion
 
-    public static void showMainMenu(bool show)
-    {
-        if (show)
-        {
-            LoadingScreen.LoadScene("MainMenu");
-        }
-        else
-        {
-            SceneManager.UnloadSceneAsync("MainMenu");
-        }
-    }
-
+    #region Input Processing
+    /// <summary>
+    /// Processes the tap gesture at the given position
+    /// </summary>
+    /// <param name="curMPWorld">The position of the tap in world coordinates</param>
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
-        if (respawnTime > Time.time)
+        //If respawn timer is not over,
+        if (!AcceptsInputNow)
         {
-            //If respawn timer is not over, don't do anything
+            //don't do anything
             return;
         }
         GameState final = null;
         GameState prevFinal = null;
+        bool intact = Managers.Player.HardMaterial.isIntact();
         //Sprite detection pass
         foreach (GameState gs in gameStates)
         {
             //don't include last game state if merky is shattered
-            if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            if (intact || gs.id != chosenId)
             {
                 //Check sprite overlap
                 if (gs.checkRepresentation(curMPWorld))
                 {
+                    //If this game state is more recent than the current picked one,
                     if (final == null || gs.id > final.id)//assuming the later ones have higher id values
                     {
+                        //Set the current picked one to the previously picked one
                         prevFinal = final;//keep the second-to-latest one
+                        //Set this game state to the current picked one
                         final = gs;//keep the latest one
                     }
                 }
@@ -691,14 +839,17 @@ public class GameManager : MonoBehaviour
             foreach (GameState gs in gameStates)
             {
                 //don't include last game state if merky is shattered
-                if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+                if (intact || gs.id != chosenId)
                 {
                     //Check collider overlap
                     if (gs.checkRepresentation(curMPWorld, false))
                     {
+                        //If this game state is more recent than the current picked one,
                         if (final == null || gs.id > final.id)//assuming the later ones have higher id values
                         {
+                            //Set the current picked one to the previously picked one
                             prevFinal = final;//keep the second-to-latest one
+                            //Set this game state to the current picked one
                             final = gs;//keep the latest one
                         }
                     }
@@ -706,55 +857,149 @@ public class GameManager : MonoBehaviour
             }
         }
         //Process tapped game state
+        //If a past merky was indeed selected,
         if (final != null)
         {
+            //If the tapped one is already the current one,
             if (final.id == chosenId)
             {
+                //And if the current one overlaps a previous one,
                 if (prevFinal != null)
-                {//if the current one overlaps a previous one, choose the previous one
+                {
+                    //Choose the previous one
                     Rewind(prevFinal.id);
                 }
                 else
                 {
+                    //Else, Reload the current one
                     Load(final.id);
                 }
             }
+            //Else if a past one was tapped,
             else
             {
+                //Rewind back to it
                 Rewind(final.id);
             }
+            //Update Stats
+            GameStatistics.addOne("RewindPlayer");
         }
-        else if (!playerObject.GetComponent<PlayerController>().isIntact())
+        //Else if none were selected, and merky is dead,
+        else if (!intact)
         {
-            Rewind(chosenId - 1);//go back to the latest safe past merky
+            //Go back to the latest safe past merky
+            //-1 to prevent trap saves
+            Rewind(chosenId - 1);
+            //Update Stats
+            GameStatistics.addOne("RewindPlayer");
         }
-        if (GameStatistics.counter("deathCount") == 1)
+        if (GameStatistics.get("Death") == 1)
         {
-            EffectManager.highlightTapArea(Vector2.zero, false);
+            Managers.Effect.highlightTapArea(Vector2.zero, false);
         }
 
-        //leave this zoom level even if no past merky was chosen
-        float defaultZoomLevel = camCtr.scalePointToZoomLevel((int)CameraController.CameraScalePoints.DEFAULT);
-        camCtr.ZoomLevel = defaultZoomLevel;
-        gestureManager.switchGestureProfile("Main");
+        //Leave this zoom level even if no past merky was chosen
+        float defaultZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
+        Managers.Camera.ZoomLevel = defaultZoomLevel;
+        Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
 
-        if (gameManagerTapProcessed != null)
+        //Process tapProcessed delegates
+        if (tapProcessed != null)
         {
-            gameManagerTapProcessed(curMPWorld);
+            tapProcessed(curMPWorld);
         }
     }
-    public static GameManagerTapProcessed gameManagerTapProcessed;
-    public delegate void GameManagerTapProcessed(Vector2 curMPWorld);
+    public delegate void TapProcessed(Vector2 curMPWorld);
+    public TapProcessed tapProcessed;
 
     /// <summary>
-    /// Used specifically to highlight last saved Merky after the first death
-    /// for tutorial purposes
+    /// Used primarily for managing the delay between the player dying and respawning
     /// </summary>
-    /// <returns></returns>
-    public static Vector2 getLatestSafeRewindGhostPosition()
+    public bool AcceptsInputNow
     {
-        return instance.gameStates[instance.chosenId - 1].merky.position;
+        get { return Time.time > inputOffStartTime + inputOffDuration; }
+        set
+        {
+            bool acceptsNow = value;
+            if (acceptsNow)
+            {
+                inputOffStartTime = 0;
+            }
+            else
+            {
+                inputOffStartTime = Time.time;
+            }
+        }
     }
+    #endregion
+
+    #region Demo Mode Methods
+    /// <summary>
+    /// Resets the game back to the very beginning
+    /// Basically starts a new game
+    /// </summary>
+    public void resetGame(bool savePrevGame = true)
+    {
+        //Save previous game
+        if (savePrevGame)
+        {
+            Save();
+            saveToFile();
+        }
+        //Empty object lists
+        gameObjects.Clear();
+        forgottenObjects.Clear();
+        memories.Clear();
+        //Reset game state nextid static variable
+        GameState.nextid = 0;
+        //Unload all scenes and reload PlayerScene
+        SceneManager.LoadScene(0);
+    }
+
+    /// <summary>
+    /// How long the demo lasts, in seconds
+    /// 0 to have no time limit
+    /// </summary>
+    public static float GameDemoLength
+    {
+        get { return gamePlayTime; }
+        set { gamePlayTime = Mathf.Max(value, 0); }
+    }
+
+    /// <summary>
+    /// Start the demo timer
+    /// </summary>
+    void startDemoTimer()
+    {
+        //If the menu is not open,
+        if (Managers.Camera.ZoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.PORTRAIT))
+        {
+            //Start the timer
+            resetGameTimer = GameDemoLength + Time.time;
+            //Unregister this delegate
+            Managers.Gesture.tapGesture -= startDemoTimer;
+        }
+    }
+
+    /// <summary>
+    /// Shows the "Thanks for Playing" screen when the demo timer stops
+    /// </summary>
+    /// <param name="show">True to show the screen, false to hide it</param>
+    private void showEndDemoScreen(bool show)
+    {
+        //Update the screen's active state
+        endDemoScreen.SetActive(show);
+        //If it should be shown,
+        if (show)
+        {
+            //Also update its position and rotation
+            //to keep it in front of the camera
+            endDemoScreen.transform.position = (Vector2)Camera.main.transform.position;
+            endDemoScreen.transform.localRotation = Camera.main.transform.localRotation;
+        }
+    }
+    #endregion
+
 }
 
 

@@ -21,9 +21,9 @@ public class PositionSnapper : MonoBehaviour
     {
         if (snapToPlayerGhosts)
         {
-            Vector2 position = GameManager.getClosestPlayerGhost(startPosition)
+            Vector2 position = Managers.Game.getClosestPlayerGhost(startPosition)
                 .transform.position;
-            if (range < 0 || Vector2.Distance(transform.position, position) < range)
+            if (range < 0 || position.inRange(transform.position, range))
             {
                 transform.position = position + offset;
             }

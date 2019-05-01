@@ -26,7 +26,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!used && coll.gameObject.Equals(GameManager.getPlayerObject()))
+        if (!used && coll.gameObject.Equals(Managers.Player.gameObject))
         {
             activate(true);
         }
@@ -37,7 +37,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
         if (showFX)
         {
             //Ability Indicator Animation Setup
-            if (abilityIndicatorName != null)
+            if (abilityIndicatorName != null && abilityIndicatorName != "")
             {
                 foreach (GameObject abilityIndicator in GameObject.FindGameObjectsWithTag("AbilityIndicator"))
                 {
@@ -51,7 +51,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
         }
         used = true;
         activateEffect();
-        GameManager.saveMemory(this);
+        Managers.Game.saveMemory(this);
         Destroy(this);//makes sure it can only be used once
     }
 

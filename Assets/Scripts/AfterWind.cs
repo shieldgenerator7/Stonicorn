@@ -55,11 +55,6 @@ public class AfterWind : SavableMonoBehaviour
 
     void FixedUpdate()
     {
-        if (GameManager.isRewinding())
-        {
-            return;//don't do anything if it is rewinding
-        }
-
         //Decrease push force as the zone fades
         float fadeFactor = (fadeEndTime - Time.time) / fadeOutDuration;
         Vector2 pushVector = windVector * fadeFactor;
@@ -88,7 +83,7 @@ public class AfterWind : SavableMonoBehaviour
         //Fade the sprite
         Color prevColor = sr.color;
         sr.color = new Color(prevColor.r, prevColor.g, prevColor.b, Mathf.SmoothStep(0, 1, fadeFactor));
-        if (fadeFactor <= 0 || Mathf.Approximately(fadeFactor,0))
+        if (fadeFactor <= 0 || Mathf.Approximately(fadeFactor, 0))
         {
             GameManager.destroyObject(gameObject);
         }

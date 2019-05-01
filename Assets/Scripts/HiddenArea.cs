@@ -13,7 +13,7 @@ public class HiddenArea : MemoryMonoBehaviour {
 	public void nowDiscovered()
     {
         discovered = true;
-        GameManager.saveMemory(this);
+        Managers.Game.saveMemory(this);
         gameObject.AddComponent<Fader>();
     }
 	

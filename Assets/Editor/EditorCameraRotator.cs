@@ -12,7 +12,7 @@ public class EditorCameraRotator : Editor
     public void OnEnable()
     {
         ecro = (EditorCameraRotatorObject)target;
-        SceneView.onSceneGUIDelegate = rotateCamera;
+        SceneView.duringSceneGui += rotateCamera;
     }
 
     void rotateCamera(SceneView sceneview)

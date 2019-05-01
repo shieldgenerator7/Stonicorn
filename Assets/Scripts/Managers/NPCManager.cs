@@ -14,36 +14,17 @@ public class NPCManager : MonoBehaviour
     public GameObject npcQuoteBoxTail;
     public CameraController.CameraScalePoints baseCameraScalePoint;//the scale point at which the NPC quote box should be full screen
 
-    private static NPCManager instance;
-    private static MusicManager musicManager;
-
     // Use this for initialization
     void Start()
     {
-        //instance
-        if (instance == null)
-        {
-            instance = this;
-
-            npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
-            musicManager = FindObjectOfType<MusicManager>();
-            if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
-            {
-                instance.canvas.gameObject.SetActive(false);
-                instance.enabled = false;
-            }
-        }
-        else
-        {
-            Destroy(this);
-        }
+        npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
     }
 
     // Update is called once per frame
     void Update()
     {
         Camera cam = Camera.main;
-        CameraController camCtr = FindObjectOfType<CameraController>();
+        CameraController camCtr = Managers.Camera;
         RectTransform canTrans = ((RectTransform)canvas.transform);
         canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth);
         canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight);
@@ -52,8 +33,8 @@ public class NPCManager : MonoBehaviour
         float newDim = Mathf.Max(Mathf.Abs(size.x) / canTrans.rect.width, Mathf.Abs(size.y) / canTrans.rect.height);
         Vector3 newSize = new Vector3(newDim, newDim, 1);
         canvas.transform.localScale = newSize;
-        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth * 3 / 4);
-        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight * 3 / 4);
+        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cam.pixelWidth * 3 / 4);
+        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cam.pixelHeight * 3 / 4);
         canvas.transform.rotation = cam.transform.rotation;
         npcQuoteBox.transform.rotation = canvas.transform.rotation;
     }
@@ -65,6 +46,7 @@ public class NPCManager : MonoBehaviour
     /// <param name="talking">Whether to activate or deactivate the visual effects</param>
     public static void speakNPC(GameObject npc, bool talking, string message, string eventualMessage)
     {
+        NPCManager instance = Managers.NPC;
         instance.canvas.gameObject.SetActive(talking);
         instance.npcQuoteBox.SetActive(talking);
         instance.npcDialogueText.text = message;
@@ -80,7 +62,7 @@ public class NPCManager : MonoBehaviour
             maxTextLength = getTextLength(instance.canvas, instance.npcDialogueText, messageDimensions.x);
             if (messageDimensions.y > textHeight)
             {
-                float textWidth = getTextWidth(instance.canvas, instance.npcDialogueText, eventualMessage.Length);
+                float textWidth = getTextWidth(instance.canvas, instance.npcDialogueText, eventualMessage);
                 int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(instance.canvas, instance.npcDialogueText));
                 maxTextLength = (maxTextLength + (eventualMessage.Length / lineCount)) / 2;
                 messageDimensions = getMessageDimensions(instance.canvas, instance.npcDialogueText, eventualMessage, maxTextLength);
@@ -102,22 +84,63 @@ public class NPCManager : MonoBehaviour
             if (lastTalkingNPC != npc)
             {
                 lastTalkingNPC = npc;
-                musicManager.setQuiet(true);
+                Managers.Music.Quiet = true;
             }
         }
         else
         {
             if (npc == lastTalkingNPC)
             {
-                musicManager.setQuiet(false);
+                Managers.Music.Quiet = false;
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
             }
         }
     }
 
-    static float getTextWidth(Canvas canvas, Text text, int length)
+    static float getTextWidth(Canvas canvas, Text text, string stringToMeasure)
     {
-        return text.fontSize * 0.5f * length * canvas.transform.localScale.x;
+        return getSumOfCharacterOffsets(text, stringToMeasure) * canvas.transform.localScale.x;
+        /*
+        string prevString = text.text;
+        //text.text = stringToMeasure;
+        //2019-02-28: copied from an answer by pineda100: https://answers.unity.com/questions/921726/how-to-get-the-size-of-a-unityengineuitext-for-whi.html
+        TextGenerator textGen = new TextGenerator();
+        TextGenerationSettings generationSettings = text.GetGenerationSettings(text.rectTransform.rect.size);
+        float width = textGen.GetPreferredWidth(stringToMeasure, generationSettings);
+        float height = textGen.GetPreferredHeight(stringToMeasure, generationSettings);
+        Vector2 size = new Vector2(width, height);
+        size = Camera.main.ScreenToWorldPoint(size) - Camera.main.ScreenToWorldPoint(Vector2.zero);
+        size.x = Mathf.Abs(size.x);
+        size.y = Mathf.Abs(size.y);
+        text.text = prevString;
+        return size.x;*/
+        //return text.fontSize * 0.5f * length * canvas.transform.localScale.x;
+    }
+    /// <summary>
+    /// Adds up all the character offsets for the given string using the supplied text's font settings.
+    /// Should ideally return the total width, in pixels, that the string takes up when rendered.
+    /// </summary>
+    /// <param name="text">Text object used to get font settings.</param>
+    /// <param name="textString">String from which the actual characters to measure are extracted.</param>
+    /// <returns></returns>
+    static float getSumOfCharacterOffsets(Text text, string textString)
+    {
+        int totalMaxWidthLength = 0;
+
+        for (int i = 0; i < textString.Length; i++)
+        {
+            CharacterInfo chInfo;
+            if (text.font.GetCharacterInfo(textString[i], out chInfo, text.fontSize))
+            {
+                totalMaxWidthLength += chInfo.advance;
+            }
+            else
+            {
+                // Tried to access invalid character!  Stick a warning here if you care about that.
+            }
+        }
+
+        return totalMaxWidthLength;
     }
     static float getTextHeight(Canvas canvas, Text text, int lines = 1)
     {
@@ -141,15 +164,15 @@ public class NPCManager : MonoBehaviour
     static Vector2 getMessageDimensions(Canvas canvas, Text text, string message, int maxTextLength = 0)
     {
         string[] strings = splitIntoSegments(canvas, text, message, maxTextLength);
-        int foundMaxLength = 0;
+        string foundMaxString = "";
         foreach (string s in strings)
         {
-            if (s.Length > foundMaxLength)
+            if (s.Length > foundMaxString.Length)
             {
-                foundMaxLength = s.Length;
+                foundMaxString = s;
             }
         }
-        float textWidth = getTextWidth(canvas, text, foundMaxLength);
+        float textWidth = getTextWidth(canvas, text, foundMaxString);
         float textHeight = getTextHeight(canvas, text, strings.Length);
         return new Vector2(textWidth, textHeight);
     }
@@ -177,7 +200,7 @@ public class NPCManager : MonoBehaviour
 
     static string[] splitIntoSegments(Canvas canvas, Text text, string message, int maxTextLength = 0)
     {
-        float textWidth = getTextWidth(canvas, text, message.Length);
+        float textWidth = getTextWidth(canvas, text, message);
         float maxWidth = getMaxWidth(canvas, text);
         int segmentLength = message.Length;
         if (textWidth > maxWidth)

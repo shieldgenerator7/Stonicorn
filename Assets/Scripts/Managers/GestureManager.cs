@@ -4,13 +4,6 @@ using System.Collections.Generic;
 
 public class GestureManager : SavableMonoBehaviour
 {
-
-    public GameObject player;
-    private PlayerController plrController;
-    private Rigidbody2D rb2dPlayer;
-    public Camera cam;
-    private CameraController camController;
-
     //Settings
     public float dragThreshold = 50;//how far from the original mouse position the current position has to be to count as a drag
     public float playerSpeedThreshold = 1;//the maximum speed a player can be going and still be able to do a drag gesture
@@ -18,8 +11,9 @@ public class GestureManager : SavableMonoBehaviour
     public float orthoZoomSpeed = 0.5f;
 
     //Gesture Profiles
+    public enum GestureProfileType { MENU, MAIN, REWIND };
     private GestureProfile currentGP;//the current gesture profile
-    private Dictionary<string, GestureProfile> gestureProfiles = new Dictionary<string, GestureProfile>();//dict of valid gesture profiles
+    private Dictionary<GestureProfileType, GestureProfile> gestureProfiles = new Dictionary<GestureProfileType, GestureProfile>();//dict of valid gesture profiles
 
     //Gesture Event Methods
     public TapGesture tapGesture;
@@ -42,8 +36,6 @@ public class GestureManager : SavableMonoBehaviour
     private float holdTime = 0f;//how long the gesture has been held for
     private enum ClickState { Began, InProgress, Ended, None };
     private ClickState clickState = ClickState.None;
-    //
-    public int tapCount = 0;//how many taps have ever been made, including tap+holds that were sent back as taps
     //Flags
     public bool cameraDragInProgress = false;
     private bool isDrag = false;
@@ -55,41 +47,31 @@ public class GestureManager : SavableMonoBehaviour
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
     private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.NONE;
-    //Cheats
-    public const bool CHEATS_ALLOWED = true;//whether or not cheats are allowed (turned off for final version)
-    private int cheatTaps = 0;//how many taps have been put in for the cheat
-    private float cheatTapsTime = 0f;//the time at which the cheat taps will expire
-    private int cheatTapsThreshold = 3;//how many taps it takes to activate cheats
-    public bool cheatsEnabled = false;//whether or not the cheats are enabled
-
 
     // Use this for initialization
     void Start()
     {
-        plrController = player.GetComponent<PlayerController>();
-        rb2dPlayer = player.GetComponent<Rigidbody2D>();
-        camController = cam.GetComponent<CameraController>();
-        camController.onZoomLevelChanged += processZoomLevelChange;
+        gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
+        gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());
+        gestureProfiles.Add(GestureProfileType.REWIND, new RewindGestureProfile());
+        switchGestureProfile(GestureProfileType.MENU);
 
-        gestureProfiles.Add("Menu", new MenuGestureProfile());
-        gestureProfiles.Add("Main", new GestureProfile());
-        gestureProfiles.Add("Rewind", new RewindGestureProfile());
-        currentGP = gestureProfiles["Menu"];
-        currentGP.activate();
+        Managers.Camera.onZoomLevelChanged += processZoomLevelChange;
+        Managers.Camera.ZoomLevel =
+            Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU);
+
 
         Input.simulateMouseWithTouches = false;
     }
     public override SavableObject getSavableObject()
     {
         return new SavableObject(this,
-            "holdThresholdScale", holdThresholdScale,
-            "tapCount", tapCount
+            "holdThresholdScale", holdThresholdScale
             );
     }
     public override void acceptSavableObject(SavableObject savObj)
     {
         holdThresholdScale = (float)savObj.data["holdThresholdScale"];
-        tapCount = (int)savObj.data["tapCount"];
     }
 
     // Update is called once per frame
@@ -169,7 +151,7 @@ public class GestureManager : SavableMonoBehaviour
                     touchCount = 2;
                     clickState = ClickState.Began;
                     origMP2 = Input.GetTouch(1).position;
-                    origOrthoSize = camController.ZoomLevel;
+                    origOrthoSize = Managers.Camera.ZoomLevel;
                     //Update origMP
                     origMP = Input.GetTouch(0).position;
                 }
@@ -229,7 +211,7 @@ public class GestureManager : SavableMonoBehaviour
             case ClickState.Began:
                 curMP = origMP;
                 maxMouseMovement = 0;
-                camController.originalCameraPosition = cam.transform.position - player.transform.position;
+                Managers.Camera.originalCameraPosition = Managers.Camera.transform.position - Managers.Player.transform.position;
                 origTime = Time.time;
                 curTime = origTime;
                 curMP2 = origMP2;
@@ -272,22 +254,11 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 isHoldGesture = false;
                 isPinchGesture = touchCount == 2;
-                if (CHEATS_ALLOWED && curMP.x < 20 && curMP.y < 20)
-                {
-                    cheatTaps++;
-                    cheatTapsTime = Time.time + 1;//give one more second to enter taps
-                    if (cheatTaps >= cheatTapsThreshold)
-                    {
-                        cheatsEnabled = !cheatsEnabled;
-                        cheatTaps = 0;
-                        cheatTapsTime = 0;
-                    }
-                }
             }
             else if (clickState == ClickState.InProgress)
             {
                 if (maxMouseMovement > dragThreshold
-                    && rb2dPlayer.velocity.sqrMagnitude <= playerSpeedThreshold * playerSpeedThreshold)
+                    && Managers.Player.Speed <= playerSpeedThreshold)
                 {
                     if (!isHoldGesture && !isPinchGesture)
                     {
@@ -318,7 +289,10 @@ public class GestureManager : SavableMonoBehaviour
             {
                 if (isDrag)
                 {
-                    camController.pinPoint();
+                    //Update Stats
+                    GameStatistics.addOne("Drag");
+                    //Process Drag Gesture
+                    Managers.Camera.pinPoint();
                 }
                 else if (isHoldGesture)
                 {
@@ -326,17 +300,19 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 else if (isTapGesture)
                 {
-                    tapCount++;
+                    //Update Stats
+                    GameStatistics.addOne("Tap");
+                    //Process Tap Gesture
                     adjustHoldThreshold(holdTime, false);
                     bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
-                    if (plrController.getIsInCheckPoint())
+                    if (Managers.Player.InCheckPoint)
                     {
-                        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+                        foreach (CheckPointChecker cpc in FindObjectsOfType<CheckPointChecker>())
                         {
-                            if (go.GetComponent<CheckPointChecker>().checkGhostActivation(curMPWorld))
+                            if (cpc.checkGhostActivation(curMPWorld))
                             {
                                 checkPointPort = true;
-                                currentGP.processTapGesture(go);
+                                currentGP.processTapGesture(cpc);
                                 if (tapGesture != null)
                                 {
                                     tapGesture();
@@ -385,11 +361,11 @@ public class GestureManager : SavableMonoBehaviour
                 //
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    camController.ZoomLevel = camController.ZoomLevel + 1;
+                    Managers.Camera.ZoomLevel++;
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    camController.ZoomLevel = camController.ZoomLevel - 1;
+                    Managers.Camera.ZoomLevel--;
                 }
                 //
                 //Pinch Touch Zoom
@@ -408,17 +384,20 @@ public class GestureManager : SavableMonoBehaviour
                     Vector2 touchOnePrevPos = origMP2;
 
                     // Find the magnitude of the vector (the distance) between the touches in each frame.
-                    float prevTouchDeltaMag = camController.distanceInWorldCoordinates(touchZeroPrevPos, touchOnePrevPos);
-                    float touchDeltaMag = camController.distanceInWorldCoordinates(touchZero.position, touchOne.position);
+                    float prevTouchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZeroPrevPos, touchOnePrevPos);
+                    float touchDeltaMag = Managers.Camera.distanceInWorldCoordinates(touchZero.position, touchOne.position);
 
                     float newZoomLevel = origOrthoSize * prevTouchDeltaMag / touchDeltaMag;
 
-                    camController.ZoomLevel = newZoomLevel;
+                    Managers.Camera.ZoomLevel = newZoomLevel;
                 }
             }
             else if (clickState == ClickState.Ended)
             {
-                origOrthoSize = camController.ZoomLevel;
+                //Update Stats
+                GameStatistics.addOne("Pinch");
+                //Process Pinch Gesture
+                origOrthoSize = Managers.Camera.ZoomLevel;
             }
         }
 
@@ -427,22 +406,14 @@ public class GestureManager : SavableMonoBehaviour
         //
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (MenuManager.isMenuOpen())
+            if (MenuManager.Open)
             {
-                camController.ZoomScalePoint = CameraController.CameraScalePoints.RANGE;
+                Managers.Camera.ZoomScalePoint = CameraController.CameraScalePoints.RANGE;
             }
             else
             {
-                camController.ZoomScalePoint = CameraController.CameraScalePoints.MENU;
+                Managers.Camera.ZoomScalePoint = CameraController.CameraScalePoints.MENU;
             }
-        }
-        //
-        //Cheats
-        //
-        if (cheatTapsTime <= Time.time)
-        {
-            //Reset cheat taps
-            cheatTaps = 0;
         }
     }
 
@@ -457,7 +428,14 @@ public class GestureManager : SavableMonoBehaviour
         touchCount = 1;
         clickState = ClickState.Began;
         origMP = Input.GetTouch(tapIndex).position;
-        isCameraMovementOnly = false;
+        if (isPinchGesture)
+        {
+            isDrag = true;
+        }
+        else
+        {
+            isCameraMovementOnly = false;
+        }
     }
 
     /// <summary>
@@ -479,8 +457,9 @@ public class GestureManager : SavableMonoBehaviour
     {
         if (incrementTapCount)
         {
-            tapCount++;
+            GameStatistics.addOne("Tap");
         }
+        int tapCount = GameStatistics.get("Tap");
         holdThresholdScale = (holdThresholdScale * (tapCount - 1) + (holdTime / holdThreshold)) / tapCount;
         if (holdThresholdScale < 1)
         {
@@ -491,22 +470,33 @@ public class GestureManager : SavableMonoBehaviour
     /// Returns the absolute hold threshold, including its scale
     /// </summary>
     /// <returns></returns>
-    public float getHoldThreshold()
+    public float HoldThreshold
     {
-        return holdThreshold * holdThresholdScale;
+        get
+        {
+            return holdThreshold * holdThresholdScale;
+        }
     }
     /// <summary>
     /// Switches the gesture profile to the profile with the given name
     /// </summary>
     /// <param name="gpName">The name of the GestureProfile</param>
-    public void switchGestureProfile(string gpName)
+    public void switchGestureProfile(GestureProfileType gpt)
     {
-        //Deactivate current
-        currentGP.deactivate();
-        //Switch from current to new
-        currentGP = gestureProfiles[gpName];
-        //Activate new
-        currentGP.activate();
+        GestureProfile newGP = gestureProfiles[gpt];
+        //If the gesture profile is not already active,
+        if (newGP != currentGP)
+        {
+            //Deactivate current
+            if (currentGP != null)
+            {
+                currentGP.deactivate();
+            }
+            //Switch from current to new
+            currentGP = newGP;
+            //Activate new
+            currentGP.activate();
+        }
     }
 
     public void processZoomLevelChange(float newZoomLevel, float delta)

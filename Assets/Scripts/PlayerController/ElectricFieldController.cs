@@ -90,7 +90,7 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
             Rigidbody2D rb2d = hc.GetComponent<Rigidbody2D>();
             if (rb2d != null)
             {
-                if (!Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0))
+                if (rb2d.isMoving())
                 {
                     float dampening = energy * energyToSlowRatio;
                     dampening = Mathf.Max(0, dampening);

@@ -26,20 +26,14 @@ public class ForceTeleportAbility : PlayerAbility
 
     private float lastTeleportTime;
     public AudioClip forceTeleportSound;
-    private Rigidbody2D rb2d;
 
     protected override void init()
     {
         base.init();
         if (playerController)
         {
-            //if (r2bd == null) is a workaround for a bug that calls the Start() method twice
-            if (rb2d == null)
-            {
-                playerController.onPreTeleport += charge;
-                playerController.onTeleport += giveSpeedBoost;
-                rb2d = GetComponent<Rigidbody2D>();
-            }
+            playerController.onPreTeleport += charge;
+            playerController.onTeleport += giveSpeedBoost;
         }
     }
     public override void OnDisable()
@@ -86,6 +80,8 @@ public class ForceTeleportAbility : PlayerAbility
                 AfterWind aw = afterWind.GetComponent<AfterWind>();
                 aw.windVector = force;
                 aw.fadeOutDuration = minWindDuration + ((maxWindDuration - minWindDuration) * currentCharge / maxCharge);
+                //Update Stats
+                GameStatistics.addOne("ForceChargeWake");
             }
             else
             {
@@ -100,6 +96,8 @@ public class ForceTeleportAbility : PlayerAbility
                         orb2d.AddForce(force * wakelessSpeedBoostMultiplier);
                     }
                 }
+                //Update Stats
+                GameStatistics.addOne("ForceChargeBoost");
             }
         }
     }
@@ -144,13 +142,14 @@ public class ForceTeleportAbility : PlayerAbility
         float range = getRangeFromCharge(holdTime);
         if (finished)
         {
+            //Make the blast
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
                 if (orb2d != null)
                 {
-                    Utility.AddWeightedExplosionForce(orb2d, forceAmount, pos, range, maxForce);
+                    orb2d.AddWeightedExplosionForce(forceAmount, pos, range, maxForce);
                 }
                 foreach (Blastable b in hitColliders[i].gameObject.GetComponents<Blastable>())
                 {
@@ -162,8 +161,10 @@ public class ForceTeleportAbility : PlayerAbility
             SoundManager.playSound(forceTeleportSound, pos);
             Destroy(frii);
             frii = null;
-            particleController.activateTeleportParticleSystem(false);
+            effectParticleController.activateTeleportParticleSystem(false);
             //EffectManager.clearForceWaveShadows();
+            //Update Stats
+            GameStatistics.addOne("ForceChargeBlast");
         }
         else
         {
@@ -176,7 +177,7 @@ public class ForceTeleportAbility : PlayerAbility
             frii.transform.position = (Vector2)pos;
             friu.setRange(range);
             //Particle effects
-            particleController.activateTeleportParticleSystem(true, effectColor, pos, range);
+            effectParticleController.activateTeleportParticleSystem(true, effectColor, pos, range);
             //Force Wave Shadows
             //Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
             //for (int i = 0; i < hitColliders.Length; i++)
@@ -207,7 +208,7 @@ public class ForceTeleportAbility : PlayerAbility
             Destroy(frii);
             frii = null;
         }
-        particleController.activateTeleportParticleSystem(false);
+        effectParticleController.activateTeleportParticleSystem(false);
         //EffectManager.clearForceWaveShadows();
     }
 
@@ -235,72 +236,6 @@ public class ForceTeleportAbility : PlayerAbility
             }
         }
         return false;
-    }
-    /// <summary>
-    /// Returns true if the object at the location is a non-movable object
-    /// or non-teleportable zone
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <returns></returns>
-    bool isTapOnWall(Vector2 pos)
-    {
-        Collider2D[] colls = Physics2D.OverlapPointAll(pos);
-        foreach (Collider2D coll in colls)
-        {
-            if (isEffectiveWall(coll))
-            {
-                return true;
-            }
-        }
-        //else it was on a movable object, a teleportable trigger, or empty space
-        return false;
-    }
-    private Vector2 findExplodePosition(Vector2 oldPos, Vector2 triedPos, bool explodeOnClosestWall = false)
-    {
-        //Keep the explosion within double the player's teleport range
-        float maxRangeFromPlayer = playerController.Range * 2;
-        if ((triedPos - oldPos).sqrMagnitude > maxRangeFromPlayer * maxRangeFromPlayer)
-        {
-            triedPos = oldPos + (triedPos - oldPos).normalized * maxRangeFromPlayer;
-        }
-        Vector2 explodePos = triedPos;
-        //Find objects blocking line of sight to explode onto
-        if (explodeOnClosestWall)
-        {
-            Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, triedPos - oldPos, Vector2.Distance(oldPos, triedPos));
-            for (int i = 0; i < answer.count; i++)
-            {
-                RaycastHit2D rch2d = answer.rch2ds[i];
-                if (rch2d.collider.gameObject == gameObject)
-                {
-                    continue;//don't count Merky
-                }
-                if (isEffectiveWall(rch2d.collider))
-                {
-                    explodePos = rch2d.point;
-                    break;
-                }
-            }
-        }
-        if ((explodePos - triedPos).sqrMagnitude < playerController.baseRange * playerController.baseRange)
-        {
-            explodePos = triedPos;
-        }
-        return explodePos;
-    }
-    /// <summary>
-    /// Returns true if the collider is a non-movable object
-    /// or non-teleportable zone
-    /// </summary>
-    /// <param name="coll"></param>
-    /// <returns></returns>
-    bool isEffectiveWall(Collider2D coll)
-    {
-        return coll.gameObject.CompareTag("NonTeleportableArea")
-            || (coll.transform.parent != null
-                && coll.transform.parent.gameObject.CompareTag("NonTeleportableArea"))
-            || (!coll.isTrigger
-                && !coll.gameObject.GetComponentInParent<Rigidbody2D>());
     }
 
     void showExplosionEffect(Vector2 pos, float finalSize)

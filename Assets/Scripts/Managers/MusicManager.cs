@@ -66,6 +66,22 @@ public class MusicManager : MonoBehaviour
             updateVolume();
         }
     }
+    [Range(-3, 3)]
+    private float songSpeed = 1.0f;//how fast the song should play
+    public float SongSpeed
+    {
+        get { return songSpeed; }
+        set
+        {
+            songSpeed = value;
+            if (currentSong)
+            {
+                currentSong.pitch = songSpeed;
+            }
+        }
+    }
+    public float normalSongSpeed = 1;
+    public float rewindSongSpeed = -1.5f;
 
     // Update is called once per frame
     void Update()
@@ -107,6 +123,11 @@ public class MusicManager : MonoBehaviour
             {
                 prevSong = newSong;
             }
+            currentSong.pitch = songSpeed;
+            if (prevSong != null)
+            {
+                prevSong.pitch = songSpeed;
+            }
         }
     }
 
@@ -135,15 +156,23 @@ public class MusicManager : MonoBehaviour
     /// Sets it quieter than usual if true, regular volume if false
     /// </summary>
     /// <param name="quiet"></param>
-    public void setQuiet(bool quiet)
+    public bool Quiet
     {
-        if (quiet)
+        get
         {
-            VolumeScaling = quietVolumeScaling;
+            return VolumeScaling == quietVolumeScaling;
         }
-        else
+        set
         {
-            VolumeScaling = 1.0f;
+            bool quiet = value;
+            if (quiet)
+            {
+                VolumeScaling = quietVolumeScaling;
+            }
+            else
+            {
+                VolumeScaling = 1.0f;
+            }
         }
     }
 
