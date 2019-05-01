@@ -6,8 +6,6 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
     public GameObject parentObj;
 
     private PlayerController controller;
-    private float baseWidth=0;
-    private float baseHeight=0;
     private float baseRange = 2.5f;//2017-01-30: got this measurement from a test run. If the sprite size ever changes, this value will also have to change
     private float baseScale = 1;
     SpriteRenderer sr;
@@ -21,7 +19,7 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
         }
         sr = GetComponent<SpriteRenderer>();
         sr.enabled = true;
-        Debug.Log("TRIU: range: " + baseRange + ", scale: " + baseScale);
+        Debug.Log("TRIU ("+name+"): range: " + baseRange + ", scale: " + baseScale);
     }
     
     public void updateRange()
