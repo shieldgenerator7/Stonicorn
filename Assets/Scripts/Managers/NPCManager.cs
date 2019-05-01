@@ -29,7 +29,7 @@ public class NPCManager : MonoBehaviour
         canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth);
         canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight);
         Vector2 size = Utility.ScreenToWorldPoint(new Vector2(cam.pixelWidth, cam.pixelHeight)) - Utility.ScreenToWorldPoint(Vector2.zero);
-        size *= (camCtr.scalePointToZoomLevel((int)baseCameraScalePoint)/camCtr.ZoomLevel);
+        size *= (camCtr.toZoomLevel(baseCameraScalePoint) / camCtr.ZoomLevel);
         float newDim = Mathf.Max(Mathf.Abs(size.x) / canTrans.rect.width, Mathf.Abs(size.y) / canTrans.rect.height);
         Vector3 newSize = new Vector3(newDim, newDim, 1);
         canvas.transform.localScale = newSize;

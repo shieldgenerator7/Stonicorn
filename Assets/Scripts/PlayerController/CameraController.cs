@@ -159,7 +159,7 @@ public class CameraController : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         Managers.Player.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)
@@ -169,11 +169,11 @@ public class CameraController : MonoBehaviour
         scale = Cam.fieldOfView;
         rotationUp = transform.up;
         //Initialize ScalePoints
-        scalePoints.Add(new ScalePoint(0.2f * 11, false, plyrController));//Main Menu zoom level
-        scalePoints.Add(new ScalePoint(1 * 11, false, plyrController));
-        scalePoints.Add(new ScalePoint(1 * 11, true, plyrController));
-        scalePoints.Add(new ScalePoint(2 * 11, true, plyrController));
-        scalePoints.Add(new ScalePoint(4 * 11, true, plyrController));
+        scalePoints.Add(new ScalePoint(0.2f * 11, false));//Main Menu zoom level
+        scalePoints.Add(new ScalePoint(1 * 11, false));
+        scalePoints.Add(new ScalePoint(1 * 11, true));
+        scalePoints.Add(new ScalePoint(2 * 11, true));
+        scalePoints.Add(new ScalePoint(4 * 11, true));
         //Set the initialize scale point
         scale = scalePoints[0].absoluteScalePoint();
         //Clean Delegates set up
@@ -481,7 +481,7 @@ public class CameraController : MonoBehaviour
         if (scalePoint < 0 || scalePoint >= scalePoints.Count)
         {
             throw new System.ArgumentOutOfRangeException("scalePoint", scalePoint,
-                "scalePoint should be between " + 0 + " and " + (scalePoints.Count - 1) + ", inclusive.");
+                "scalePoint should be between " + 0 + " and " + (scalePoints.Count - 1) + ", inclusive. scalePoint: "+scalePoint);
         }
         return scalePoints[scalePoint].absoluteScalePoint();
     }
