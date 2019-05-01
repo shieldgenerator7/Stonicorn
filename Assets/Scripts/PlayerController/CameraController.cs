@@ -471,10 +471,10 @@ public class CameraController : MonoBehaviour
     public float distanceInWorldCoordinates(Vector2 screenPos1, Vector2 screenPos2)
     {
         return Vector2.Distance(Utility.ScreenToWorldPoint(screenPos1), Utility.ScreenToWorldPoint(screenPos2));
-}
-public float toZoomLevel(CameraScalePoints csp)
-{
-    return scalePointToZoomLevel((int)csp);
+    }
+    public float toZoomLevel(CameraScalePoints csp)
+    {
+        return scalePointToZoomLevel((int)csp);
     }
     private float scalePointToZoomLevel(int scalePoint)
     {
