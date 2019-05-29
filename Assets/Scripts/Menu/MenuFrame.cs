@@ -39,8 +39,8 @@ public class MenuFrame : MonoBehaviour
         CameraController camcon = Managers.Camera;
 
         //Set camera orthographic size
-        Vector3 camTop = cam.ViewportToWorldPoint(new Vector3(0, 1));
-        Vector3 camBot = cam.ViewportToWorldPoint(new Vector3(0, 0));
+        Vector3 camTop = cam.ViewportToWorldPoint(new Vector3(0, 1, 10));
+        Vector3 camBot = cam.ViewportToWorldPoint(new Vector3(0, 0, 10));
         float camWorldHeight = Vector3.Distance(camTop, camBot);
         float curFieldView = cam.fieldOfView;
         camcon.TargetZoomLevel = bc2d.bounds.size.y * curFieldView / camWorldHeight;
