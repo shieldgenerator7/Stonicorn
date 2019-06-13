@@ -211,7 +211,7 @@ public class CameraController : MonoBehaviour
                     )
                     * Time.deltaTime;
                 //Move Transform
-                transform.position = Vector3.MoveTowards(transform.position, target, speed);
+                transform.position = Vector3.Lerp(transform.position, target, speed);
 
                 if (autoOffsetCancelTime > 0)
                 {
@@ -248,7 +248,7 @@ public class CameraController : MonoBehaviour
                     || Mathf.Clamp(ZoomLevel, TargetZoomLevel, preTargetZoomLevel) == ZoomLevel))
                 {
                     //Move current zoom closer to target zoom
-                    ZoomLevel = Mathf.MoveTowards(ZoomLevel, TargetZoomLevel, Time.deltaTime);
+                    ZoomLevel = Mathf.Lerp(ZoomLevel, TargetZoomLevel, Time.deltaTime);
                     //Close in the zoom area where autozooming will continue
                     preTargetZoomLevel = ZoomLevel;
                 }
