@@ -13,6 +13,8 @@ public class RulerDisplayer : MonoBehaviour
     private Vector2 center;
     private Vector2 difference;
     private Vector2 direction;
+    private float magnitude;
+    private Vector2 endPos;
     private GravityZone gz = null;
 
     public SpriteRenderer sr;
@@ -32,6 +34,7 @@ public class RulerDisplayer : MonoBehaviour
         {
             transform.position = currentMousePos;
             refreshGuideLines();
+            HandleUtility.Repaint();
         }
 
         //Draw teleport range
@@ -45,15 +48,14 @@ public class RulerDisplayer : MonoBehaviour
             //draw leveler guide line
             Gizmos.DrawWireSphere(
                 center,
-                difference.magnitude
+                magnitude
                 );
             //draw vertical guide line
             Gizmos.DrawLine(
                 center,
-                (Vector2)transform.position + (direction * 10)
+                endPos
                 );
         }
-        HandleUtility.Repaint();
     }
 
     public void refreshGuideLines()
@@ -66,6 +68,8 @@ public class RulerDisplayer : MonoBehaviour
             center = gz.transform.position;
             difference = (Vector2)transform.position - center;
             direction = difference.normalized;
+            magnitude = difference.magnitude;
+            endPos = (Vector2)transform.position + (direction * 10);
             transform.up = direction;
         }
         else
