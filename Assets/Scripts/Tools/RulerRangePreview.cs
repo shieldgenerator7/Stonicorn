@@ -58,6 +58,7 @@ public class RulerRangePreview : MonoBehaviour
             transform.position = parentRuler.transform.position;
         }
         parentRuler.transform.position = transform.position;
+        parentRuler.GetComponent<RulerDisplayer>().refreshGuideLines();
     }
 }
 #endif

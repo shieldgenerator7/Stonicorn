@@ -112,4 +112,16 @@ public class GravityZone : MonoBehaviour
             }
         }
     }
+
+    public static GravityZone getGravityZone(Vector2 pos)
+    {
+        foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
+        {
+            if (gz.GetComponent<Collider2D>().OverlapPoint(pos))
+            {
+                return gz;
+            }
+        }
+        return null;
+    }
 }
