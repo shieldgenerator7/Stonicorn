@@ -366,8 +366,9 @@ PolygonCollider2D:
       - {x: 353.14056, y: -84.93689}
       - {x: 343.51196, y: -94.55498}
       - {x: 346.03485, y: -112.48413}
-      - {x: 381.9946, y: -138.1261}
-      - {x: 381.9997, y: -138.16577}
+      - {x: 374.44656, y: -130.33865}
+      - {x: 381.99805, y: -138.12909}
+      - {x: 381.10608, y: -139.09329}
       - {x: 344.46893, y: -177.12192}
       - {x: 332.3989, y: -170.63458}
       - {x: 322.00006, y: -146.85056}
@@ -786,6 +787,15 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 0
       corner: 0
+    - position: {x: 374.43307, y: -130.36008, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
     - position: {x: 381.9799, y: -138.1467, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -1163,8 +1173,8 @@ SpriteShapeRenderer:
   - {fileID: 21300012, guid: ceb54881cf998e4478f1e88fb6fe18fd, type: 3}
   - {fileID: 21300014, guid: ceb54881cf998e4478f1e88fb6fe18fd, type: 3}
   m_LocalAABB:
-    m_Center: {x: 151.59244, y: -85.01309, z: -0.005145}
-    m_Extent: {x: 230.47748, y: 92.19978, z: 0.005145}
+    m_Center: {x: 151.59244, y: -85.01309, z: -0.00515}
+    m_Extent: {x: 230.47748, y: 92.19978, z: 0.00515}
 --- !u!4 &66662010
 Transform:
   m_ObjectHideFlags: 0
