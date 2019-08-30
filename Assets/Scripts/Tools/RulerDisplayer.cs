@@ -10,12 +10,8 @@ public class RulerDisplayer : MonoBehaviour
 
     public bool active = true;//true to turn it on, false to turn it off
 
-    private Vector2 center;
-    private Vector2 difference;
-    private Vector2 direction;
-    private float magnitude;
-    private Vector2 endPos;
-    private GravityZone gz = null;
+    GuideLineData markerPos = new GuideLineData(Color.white);
+    GuideLineData cursorPos = new GuideLineData(new Color(0.75f,0.75f,0.75f));
 
     public SpriteRenderer sr;
 
@@ -33,48 +29,79 @@ public class RulerDisplayer : MonoBehaviour
         if (active)
         {
             transform.position = currentMousePos;
-            refreshGuideLines();
-            HandleUtility.Repaint();
+            markerPos.refreshGuideLines(transform.position);
+            transform.up = markerPos.direction;
         }
+        else
+        {
+            cursorPos.refreshGuideLines(currentMousePos);
+        }
+        HandleUtility.Repaint();
 
         //Draw teleport range
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, 3);
 
-        //Draw world level lines
-        Gizmos.color = Color.white;
-        if (gz)
+        if (!active)
         {
-            //draw leveler guide line
-            Gizmos.DrawWireSphere(
-                center,
-                magnitude
-                );
-            //draw vertical guide line
-            Gizmos.DrawLine(
-                center,
-                endPos
-                );
+            cursorPos.drawGuidelines();
         }
+        markerPos.drawGuidelines();
     }
 
     public void refreshGuideLines()
     {
-        //Get the gravity center
-        gz = GravityZone.getGravityZone(transform.position);
-        if (gz)
+        markerPos.refreshGuideLines(transform.position);
+        cursorPos.refreshGuideLines(currentMousePos);
+    }
+
+    class GuideLineData
+    {
+        Vector2 center;
+        Vector2 difference;
+        public Vector2 direction;
+        float magnitude;
+        Vector2 endPos;
+        GravityZone gz;
+
+        Color color = Color.white;
+
+        public GuideLineData(Color color)
         {
-            sr.color = Color.green;
-            center = gz.transform.position;
-            difference = (Vector2)transform.position - center;
-            direction = difference.normalized;
-            magnitude = difference.magnitude;
-            endPos = (Vector2)transform.position + (direction * 10);
-            transform.up = direction;
+            this.color = color;
         }
-        else
+
+        public void refreshGuideLines(Vector2 focalPoint)
         {
-            sr.color = Color.red;
+            //Get the gravity center
+            gz = GravityZone.getGravityZone(focalPoint);
+            if (gz)
+            {
+                center = gz.transform.position;
+                difference = focalPoint - center;
+                direction = difference.normalized;
+                magnitude = difference.magnitude;
+                endPos = focalPoint + (direction * 10);
+            }
+        }
+
+        public void drawGuidelines()
+        {
+            //Draw world level lines
+            Gizmos.color = color;
+            if (gz)
+            {
+                //draw leveler guide line
+                Gizmos.DrawWireSphere(
+                    center,
+                    magnitude
+                    );
+                //draw vertical guide line
+                Gizmos.DrawLine(
+                    center,
+                    endPos
+                    );
+            }
         }
     }
 }
