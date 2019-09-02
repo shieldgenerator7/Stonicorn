@@ -687,7 +687,7 @@ Transform:
   m_LocalScale: {x: 56, y: 56, z: 0.56}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &198174136
 GameObject:
@@ -22474,7 +22474,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &606554337
 PrefabInstance:
@@ -33277,7 +33277,7 @@ RectTransform:
   - {fileID: 1064657606}
   - {fileID: 825789731}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -33527,7 +33527,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1062584714
 GameObject:
@@ -33649,156 +33649,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1064657605}
   m_CullTransparentMesh: 0
---- !u!1 &1076381729
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1076381732}
-  - component: {fileID: 1076381731}
-  - component: {fileID: 1076381730}
-  m_Layer: 0
-  m_Name: Force Wave Ability Grant
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1076381730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1076381729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a2c20f1d5a0a704c84da17386adc689, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 3}
-  starAmount: 25
-  starSpawnDuration: 25
-  abilityIndicatorName: AbilityIndicatorForceWave
-  used: 0
---- !u!61 &1076381731
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1076381729}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -13.721914, y: 0.112838626}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 39.493263, y: 5.646961}
-  m_EdgeRadius: 0
---- !u!4 &1076381732
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1076381729}
-  m_LocalRotation: {x: -0, y: -0, z: -0.5917732, w: 0.8061045}
-  m_LocalPosition: {x: 271.3, y: -14.6, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1374834921}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -72.566}
---- !u!1 &1104946121
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1104946125}
-  - component: {fileID: 1104946124}
-  - component: {fileID: 1104946122}
-  m_Layer: 0
-  m_Name: Electric Field Ability Granter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1104946122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104946121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cade81a05a4df2c49bf141d46e756c32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particle: {fileID: 0}
-  starAmount: 0
-  starSpawnDuration: 0
-  abilityIndicatorName: AbilityIndicatorElectricField
-  used: 0
---- !u!61 &1104946124
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104946121}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.87949944, y: 0.65281653}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 43.31925, y: 6.9389834}
-  m_EdgeRadius: 0
---- !u!4 &1104946125
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104946121}
-  m_LocalRotation: {x: -0, y: -0, z: 0.8677352, w: -0.4970269}
-  m_LocalPosition: {x: 436.1, y: -149.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1374834921}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1001 &1113871235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39482,39 +39332,6 @@ Transform:
   m_Father: {fileID: 1792176472}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1374834920
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1374834921}
-  m_Layer: 0
-  m_Name: Ability Granters
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1374834921
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1374834920}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1076381732}
-  - {fileID: 1769676883}
-  - {fileID: 1104946125}
-  m_Father: {fileID: 0}
-  m_RootOrder: 14
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1385001677
 GameObject:
   m_ObjectHideFlags: 0
@@ -44447,7 +44264,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1427105923
 GameObject:
@@ -44510,7 +44327,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1444506599
 GameObject:
@@ -64227,81 +64044,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dependsOnTeleportRange: 0
---- !u!1 &1769676881
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1769676883}
-  - component: {fileID: 1769676884}
-  - component: {fileID: 1769676882}
-  m_Layer: 0
-  m_Name: Wall Jump Ability Granter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1769676882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1769676881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c4f0b88614a44e49842ffb44d818630, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 3}
-  starAmount: 25
-  starSpawnDuration: 25
-  abilityIndicatorName: AbilityIndicatorWallJump
-  used: 0
---- !u!4 &1769676883
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1769676881}
-  m_LocalRotation: {x: -0, y: -0, z: -0.97978544, w: 0.20005137}
-  m_LocalPosition: {x: 154.4, y: -478, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1374834921}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -156.92001}
---- !u!61 &1769676884
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1769676881}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -1.8301278, y: 0.42573935}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 5.452458, y: 19.483896}
-  m_EdgeRadius: 0
 --- !u!1 &1792176465
 GameObject:
   m_ObjectHideFlags: 0
@@ -75506,9 +75248,9 @@ MonoBehaviour:
     - {fileID: 1675184547}
     - {fileID: 1675184545}
     - {fileID: 1675184546}
-    - {fileID: 1769676881}
-    - {fileID: 1769676884}
-    - {fileID: 1769676882}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     - {fileID: 1792176465}
     - {fileID: 1792176471}
     - {fileID: 1792176470}
@@ -75650,15 +75392,15 @@ MonoBehaviour:
     - {fileID: 1064657605}
     - {fileID: 1064657608}
     - {fileID: 1064657607}
-    - {fileID: 1076381729}
-    - {fileID: 1076381732}
-    - {fileID: 1076381731}
-    - {fileID: 1076381730}
-    - {fileID: 1374834921}
-    - {fileID: 1104946121}
-    - {fileID: 1104946125}
-    - {fileID: 1104946124}
-    - {fileID: 1104946122}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     - {fileID: 1113871236}
     - {fileID: 1121559818}
     - {fileID: 1121559819}
@@ -75692,8 +75434,8 @@ MonoBehaviour:
     - {fileID: 1363863459}
     - {fileID: 1363863461}
     - {fileID: 1363863460}
-    - {fileID: 1374834920}
-    - {fileID: 1769676883}
+    - {fileID: 0}
+    - {fileID: 0}
     - {fileID: 1385001677}
     - {fileID: 1385001679}
     - {fileID: 1390228295}
@@ -76194,7 +75936,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2073885679
 PrefabInstance:
