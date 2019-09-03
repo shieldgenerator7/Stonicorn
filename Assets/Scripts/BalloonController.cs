@@ -6,7 +6,8 @@ using UnityEngine;
 public class BalloonController : SavableMonoBehaviour
 {
 
-    public float peak = 0.5f;
+    public float peakMax = 0.02f;
+    public float peakMin = -0.02f;
     public float cycleLength = 1f;
 
     private float pingpong;
@@ -22,9 +23,10 @@ public class BalloonController : SavableMonoBehaviour
 
     private void FixedUpdate()
     {
+        float peakDiff = peakMax - peakMin;
         timeElapsed += Time.fixedDeltaTime;
-        pingpong = Mathf.PingPong(timeElapsed * peak / cycleLength, peak * 2);
-        pingpong -= peak;
+        pingpong = Mathf.PingPong(timeElapsed * peakDiff / (2 * cycleLength), peakDiff);
+        pingpong += peakMin;
         ga.gravityScale = pingpong;
     }
 
