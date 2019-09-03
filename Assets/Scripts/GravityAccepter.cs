@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityAccepter : MonoBehaviour
+public class GravityAccepter : SavableMonoBehaviour
 {
     //used for objects that need to know their gravity direction
 
     //Settings
     public bool usesSideVector = false;//whether or not this use case needs to use the side vector
 
+    public float gravityScale = 1;
 
     private Vector2 gravityVector;
     public Vector2 Gravity
@@ -92,4 +93,18 @@ public class GravityAccepter : MonoBehaviour
 
     public delegate void OnGravityChanged(Vector2 newGravity);
     public OnGravityChanged onGravityChanged;
+
+    public override SavableObject getSavableObject()
+    {
+        return new SavableObject(this,
+            "acceptsGravity", AcceptsGravity,
+            "gravityScale", gravityScale
+            );
+    }
+
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        AcceptsGravity = (bool)savObj.data["acceptsGravity"];
+        gravityScale = (float)savObj.data["gravityScale"];
+    }
 }

@@ -96,8 +96,12 @@ public class SavableObject
                 return typeof(PowerConduit);
             case "HardMaterial":
                 return typeof(HardMaterial);
+            case "GravityAccepter":
+                return typeof(GravityAccepter);
             case "CrackedPiece":
                 return typeof(CrackedPiece);
+            case "BalloonController":
+                return typeof(BalloonController);
             case "NPCController":
                 return typeof(NPCController);
             case "NPCMetalController":

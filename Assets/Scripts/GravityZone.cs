@@ -91,6 +91,7 @@ public class GravityZone : MonoBehaviour
             {
                 if (ga.AcceptsGravity)
                 {
+                    vector *= ga.gravityScale;
                     rb2d.AddForce(vector);
                     //Inform the gravity accepter of the direction
                     ga.addGravity(finalGravityVector);
