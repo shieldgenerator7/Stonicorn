@@ -50,13 +50,14 @@ public class SwapAbility : PlayerAbility
         Vector3 swapPos = coll.gameObject.transform.position - testPos + origPos;
         if (coll.gameObject.GetComponent<Rigidbody2D>() != null)
         {
-            bool occupied = isOccupiedForObject(coll, swapPos);
-            if (occupied)
-            {
-                Vector2 newPos = adjustForOccupant(coll, swapPos);
-                occupied = isOccupiedForObject(coll, newPos);
-            }
-            return !occupied;
+            return true;
+            //bool occupied = isOccupiedForObject(coll, swapPos);
+            //if (occupied)
+            //{
+            //    Vector2 newPos = adjustForOccupant(coll, swapPos);
+            //    occupied = isOccupiedForObject(coll, newPos);
+            //}
+            //return !occupied;
         }
         return false;
     }
