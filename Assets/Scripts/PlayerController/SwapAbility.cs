@@ -194,6 +194,7 @@ public class SwapAbility : PlayerAbility
             {
                 playerController.Range = playerController.baseRange;
             }
+            playerController.GravityImmune = true;
             playerController.AirPortsUsed = 0;
             //Update Stats
             GameStatistics.addOne("Swap");
