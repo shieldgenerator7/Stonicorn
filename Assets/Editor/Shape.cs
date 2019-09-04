@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class Shape
 {
@@ -41,6 +42,7 @@ public class Shape
     public List<Shape> childrenShapes { get; private set; } = new List<Shape>();
 
     private PolygonCollider2D pc2d = null;
+    private SpriteShapeController ssc = null;
 
     public Shape(PolygonCollider2D pc2d)
     {
@@ -50,6 +52,17 @@ public class Shape
         this.scale = pc2d.transform.localScale;
         this.bounds = pc2d.bounds;
         this.points = new List<Vector2>(pc2d.GetPath(0));
+    }
+
+    public Shape(SpriteShapeController ssc)
+    {
+        this.ssc = ssc;
+        this.transform = ssc.transform;
+        this.position = ssc.transform.position;
+        this.scale = ssc.transform.localScale;
+        this.bounds = ssc.polygonCollider.bounds;
+        this.points = new List<Vector2>(ssc.polygonCollider.GetPath(0));
+        this.points.Reverse();
     }
 
     public void cutShape(Shape stencil, bool splitFurther = true)
@@ -247,6 +260,12 @@ public class Shape
         {
             this.pc2d.SetPath(0, LocalPoints.ToArray());
         }
+        if (this.ssc)
+        {
+            LocalPoints.Reverse();
+            this.ssc.spline.setPoints(LocalPoints);
+            LocalPoints.Reverse();
+        }
     }
 
     private void convertPathToWorldSpace()
@@ -344,4 +363,7 @@ public class Shape
 
     public static implicit operator PolygonCollider2D(Shape shape)
         => shape.pc2d;
+
+    public static implicit operator SpriteShapeController(Shape shape)
+        => shape.ssc;
 }

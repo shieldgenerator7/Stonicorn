@@ -63,7 +63,7 @@ public class TerrainConverter : MonoBehaviour
                 Ferr2DT_PathTerrain f2dtpt = go.GetComponent<Ferr2DT_PathTerrain>();
                 if (f2dtpt != null)
                 {
-                    terrainShapes.Add(convertToVectorPath(f2dtpt));
+                    terrainShapes.Add(f2dtpt.convertToVectorPath());
                 }
             }
             //Turn the vector paths into new terrains
@@ -88,26 +88,9 @@ public class TerrainConverter : MonoBehaviour
         return objects;
     }
 
-    private TerrainData convertToVectorPath(Ferr2DT_PathTerrain ferrTerrain)
-    {
-        return new TerrainData(
-            ferrTerrain.PathData.GetPoints(1).ToArray(),
-            ferrTerrain.gameObject
-            );
-    }
+    
 
-    private TerrainData convertToVectorPath(SpriteShapeController ssc)
-    {
-        Vector2[] vectorPath = new Vector2[ssc.spline.GetPointCount()];
-        for (int i = 0; i < vectorPath.Length; i++)
-        {
-            vectorPath[i] = ssc.spline.GetPosition(i);
-        }
-        return new TerrainData(
-            vectorPath,
-            ssc.gameObject
-            );
-    }
+    
 
     private GameObject convertToSpriteShapeTerrain(TerrainData terrainData)
     {
@@ -117,20 +100,7 @@ public class TerrainConverter : MonoBehaviour
         SpriteShapeController newSSC = newObject.GetComponent<SpriteShapeController>();
         //Remove existing points
         Spline spline = newSSC.spline;
-        spline.Clear();
-        if (reverseDirection)
-        {
-            Array.Reverse(terrainData.vectorPath);
-        }
-        for (int i = 0; i < terrainData.vectorPath.Length; i++)
-        {
-            Vector2 v = terrainData.vectorPath[i];
-            //Flip if necessary
-            v.x *= (flipX) ? -1 : 1;
-            v.y *= (flipY) ? -1 : 1;
-            //Insert point
-            spline.InsertPointAt(i, v);
-        }
+        spline.setPoints(terrainData, reverseDirection, flipX, flipY);
         return newObject;
     }
 }

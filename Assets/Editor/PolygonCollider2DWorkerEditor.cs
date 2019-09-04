@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.U2D;
 
 [CustomEditor(typeof(PolygonCollider2DWorker))]
 public class PolygonCollider2DWorkerEditor : Editor
@@ -35,11 +36,19 @@ public class PolygonCollider2DWorkerEditor : Editor
             pc2dwCurrent = pc2dw;
             pc2dw.cleanTargetLists();
             stencilShape = new Shape(stencil);
+            //PolygonCollider2D
             int originalCount = pc2dw.pc2dTargets.Count;
             for (int i = 0; i < originalCount; i++)
             {
                 PolygonCollider2D pc2d = (PolygonCollider2D)pc2dw.pc2dTargets[i];
                 cutCollider(new Shape(pc2d), stencilShape);
+            }
+            //SpriteShape
+            originalCount = pc2dw.spriteShapeTargets.Count;
+            for (int i = 0; i < originalCount; i++)
+            {
+                SpriteShapeController ssc = (SpriteShapeController)pc2dw.spriteShapeTargets[i];
+                cutCollider(new Shape(ssc), stencilShape);
             }
         }
     }
@@ -49,10 +58,11 @@ public class PolygonCollider2DWorkerEditor : Editor
         shape.cutShape(stencil, splitFurther);
         foreach (Shape child in shape.childrenShapes)
         {
-            if ((PolygonCollider2D)child
-                && !pc2dwCurrent.pc2dTargets.Contains(child))
+            PolygonCollider2D pc2dChild = (PolygonCollider2D)child;
+            if (pc2dChild
+                && !pc2dwCurrent.pc2dTargets.Contains(pc2dChild))
             {
-                pc2dwCurrent.pc2dTargets.Add(child);
+                pc2dwCurrent.pc2dTargets.Add(pc2dChild);
             }
         }
     }
