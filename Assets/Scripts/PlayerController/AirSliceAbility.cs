@@ -53,6 +53,10 @@ public class AirSliceAbility : PlayerAbility {
                 //if the player slices something, allow them to teleport once more in the air
                 playerController.AirPortsUsed--;
             }
+            if (playerController.AirPortsUsed <= playerController.maxAirPorts)
+            {
+                playerController.GravityImmune = true;
+            }
         }
     }
 
