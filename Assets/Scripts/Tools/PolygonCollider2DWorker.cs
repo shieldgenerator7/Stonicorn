@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 
+//2019-09-04: nicknamed "polygon cutter"
 public class PolygonCollider2DWorker : MonoBehaviour
 {
 
@@ -16,6 +17,10 @@ public class PolygonCollider2DWorker : MonoBehaviour
     }
     public void cleanTargetList(List<Behaviour> list)
     {
+        if (list == null)
+        {
+            list = new List<Behaviour>();
+        }
         int lastEmpty = -1;
         for (int i = 0; i < list.Count; i++)
         {
