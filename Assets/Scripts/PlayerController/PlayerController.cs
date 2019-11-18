@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
     public int AirPortsUsed
     {
         get { return airPorts; }
-        set { airPorts = Mathf.Clamp(value, 0, maxAirPorts); }
+        set { airPorts = Mathf.Max(0, value); }
     }
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
