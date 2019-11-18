@@ -7,12 +7,12 @@ public class MenuGestureProfile : GestureProfile
     public override void activate()
     {
         MenuManager.Open = true;
-        Managers.Camera.setRotation(Managers.Player.transform.up);
+        Managers.Camera.Up = Managers.Player.transform.up;
     }
     public override void deactivate()
     {
         MenuManager.Open = false;
-        Managers.Camera.setRotation(-Managers.Player.Gravity.Gravity);
+        Managers.Camera.Up = -Managers.Player.Gravity.Gravity;
     }
     public override void processTapGesture(Vector3 curMPWorld)
     {

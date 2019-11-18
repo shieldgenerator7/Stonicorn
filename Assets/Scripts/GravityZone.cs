@@ -66,7 +66,7 @@ public class GravityZone : MonoBehaviour
             }
             if (Managers.Camera.transform.up != transformUp)
             {
-                Managers.Camera.setRotation(transformUp);
+                Managers.Camera.Up = transformUp;
             }
         }
     }

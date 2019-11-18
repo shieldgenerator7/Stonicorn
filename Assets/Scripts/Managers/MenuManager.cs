@@ -27,7 +27,7 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-        Managers.Camera.setRotation(Managers.Player.transform.up);
+        Managers.Camera.Up = Managers.Player.transform.up;
     }
 
     public void processTapGesture(Vector3 pos)

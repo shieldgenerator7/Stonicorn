@@ -54,7 +54,23 @@ public class CameraController : MonoBehaviour
         get { return transform.position - Managers.Player.transform.position + offset; }
         private set { }
     }
-    private Vector3 rotationUp;//the up direction that the camera should be rotated towards
+
+    /// <summary>
+    /// The up direction that the camera should be rotated towards
+    /// </summary>
+    public Vector3 Up
+    {
+        get => rotationUp;
+        set
+        {
+            if (!Locked)
+            {
+                rotationUp = value;
+            }
+        }
+    }
+    private Vector3 rotationUp;
+
     private float scale = 1;//scale used to determine fieldOfView, independent of (landscape or portrait) orientation
     private float desiredScale = 0;//the value that scale should move towards
     private new Camera camera;
@@ -70,7 +86,20 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private bool lockCamera = false;//keep the camera from moving
+    /// <summary>
+    /// While true, the camera cannot move or rotate
+    /// </summary>
+    public bool Locked
+    {
+        get => lockCamera;
+        set
+        {
+            lockCamera = value;
+            planModeCanvas.SetActive(lockCamera);
+        }
+    }
+    private bool lockCamera = false;
+
     [Tooltip("Runtime Var, Doesn't do anything from editor")]
     public Vector3 originalCameraPosition;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
 
@@ -167,7 +196,7 @@ public class CameraController : MonoBehaviour
             Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object (" + planModeCanvas.name + ") doesn't have a Canvas component!");
         }
         scale = Cam.fieldOfView;
-        rotationUp = transform.up;
+        Up = transform.up;
         //Initialize ScalePoints
         scalePoints.Add(new ScalePoint(0.2f * 11, false));//Main Menu zoom level
         scalePoints.Add(new ScalePoint(1 * 11, false));
@@ -199,7 +228,7 @@ public class CameraController : MonoBehaviour
     {
         if (!Managers.Gesture.cameraDragInProgress)
         {
-            if (!lockCamera)
+            if (!Locked)
             {
                 //Target
                 Vector3 target = Managers.Player.transform.position + offset + (Vector3)autoOffset;
@@ -235,7 +264,7 @@ public class CameraController : MonoBehaviour
             if (!RotationFinished)
             {
                 float deltaTime = 3 * Time.deltaTime;
-                transform.up = Vector3.Lerp(transform.up, rotationUp, deltaTime);
+                transform.up = Vector3.Lerp(transform.up, Up, deltaTime);
             }
 
             //Scale Orthographic Size
@@ -262,7 +291,7 @@ public class CameraController : MonoBehaviour
 
     public bool RotationFinished
     {
-        get { return transform.up == rotationUp; }
+        get { return transform.up == Up; }
     }
 
     /// <summary>
@@ -293,7 +322,7 @@ public class CameraController : MonoBehaviour
         //
         // Auto Offset
         //
-        if (!lockCamera)
+        if (!Locked)
         {
             Vector2 newBuffer = (newPos - oldPos);
             //If the last teleport direction is similar enough to the most recent teleport direction
@@ -349,16 +378,7 @@ public class CameraController : MonoBehaviour
     public void pinPoint()
     {
         Offset = transform.position - Managers.Player.transform.position;
-        if (offsetOffPlayer())
-        {
-            lockCamera = true;
-            planModeCanvas.SetActive(true);
-        }
-        else
-        {
-            lockCamera = false;
-            planModeCanvas.SetActive(false);
-        }
+        Locked = offsetOffPlayer();
         autoOffset = Vector2.zero;
         previousMoveDir = Vector2.zero;
     }
@@ -369,8 +389,7 @@ public class CameraController : MonoBehaviour
     public void recenter()
     {
         Offset = Vector3.zero;
-        lockCamera = false;
-        planModeCanvas.SetActive(false);
+        Locked = false;
     }
     /// <summary>
     /// Moves the camera directly to Merky's position + offset
@@ -401,11 +420,7 @@ public class CameraController : MonoBehaviour
 
     public delegate void OnOffsetChange(Vector3 offset);
     public OnOffsetChange onOffsetChange;
-
-    public void setRotation(Vector3 rotationUp)
-    {
-        this.rotationUp = rotationUp;
-    }
+    
     public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld)
     {
         bool canMove = false;
@@ -481,7 +496,7 @@ public class CameraController : MonoBehaviour
         if (scalePoint < 0 || scalePoint >= scalePoints.Count)
         {
             throw new System.ArgumentOutOfRangeException("scalePoint", scalePoint,
-                "scalePoint should be between " + 0 + " and " + (scalePoints.Count - 1) + ", inclusive. scalePoint: "+scalePoint);
+                "scalePoint should be between " + 0 + " and " + (scalePoints.Count - 1) + ", inclusive. scalePoint: " + scalePoint);
         }
         return scalePoints[scalePoint].absoluteScalePoint();
     }
