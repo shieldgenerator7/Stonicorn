@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
     // Runtime Constants
     //
     private float[] rotations = new float[] { 285, 155, 90, 0 };//the default rotations for Merky
-    private float halfWidth;//half of Merky's sprite width
+    public float halfWidth { get; private set; }//half of Merky's sprite width
 
     //
     // Components

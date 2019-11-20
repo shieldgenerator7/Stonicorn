@@ -17,6 +17,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
     private GameObject currentElectricField;
     private ElectricFieldController cEFController;//"current Electric Field Controller"
 
+    [SerializeField]
     private float activationDelay = 2.0f;//how long it will wait, usually set to the base delay
     private float playerTeleportRangeDiff;//the difference between the player's max teleport range and this EFA's max field range (if on the player)
     private bool newlyCreatedEF = false;//true if the current electric field is one that was just created by Merky
@@ -50,8 +51,15 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
     {
         if (!Managers.Game.Rewinding)
         {
+            //Keep it from activating when Merky is moving
+            if (rb2d.velocity.magnitude > 0.1f && activationDelay >= baseActivationDelay)
+            {
+                lastDisruptTime = Time.time;
+            }
+            //If activation delay has ended,
             if (Time.time > lastDisruptTime + activationDelay)
             {
+                //Make a field
                 processWaitGesture(Time.time - (lastDisruptTime + activationDelay));
             }
         }
@@ -135,7 +143,15 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
     {
         dropWaitGesture();
         float distance = Vector3.Distance(oldPos, triedPos);
-        activationDelay = baseActivationDelay * distance / playerController.baseRange;
+        if (distance < playerController.halfWidth)
+        {
+            activationDelay = 0.1f;
+        }
+        else
+        {
+            activationDelay = baseActivationDelay;
+        }
+        //activationDelay = baseActivationDelay * distance / playerController.baseRange;
         return true;
     }
 
