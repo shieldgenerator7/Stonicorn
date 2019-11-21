@@ -258,6 +258,7 @@ public class PlayerController : MonoBehaviour
         tpa = GetComponent<TeleportAbility>();
         //Register the on death delegate
         HardMaterial.shattered += shattered;
+        HardMaterial.hardCollision += hardCollision;
         //Estimate the halfWidth
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
         halfWidth = (extents.x + extents.y) / 2;
@@ -936,6 +937,14 @@ public class PlayerController : MonoBehaviour
             Vector2 lsrgp = Managers.Game.getLatestSafeRewindGhostPosition();
             transform.position = ((Vector2)transform.position + lsrgp) / 2;
             Managers.Effect.highlightTapArea(lsrgp);
+        }
+    }
+
+    private void hardCollision(float damageToSelf, float damageToOther)
+    {
+        if (damageToSelf > 0)
+        {
+            Managers.Game.Rewind(2);
         }
     }
 

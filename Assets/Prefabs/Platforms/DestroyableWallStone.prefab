@@ -327,7 +327,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8380293484552089179}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -335,8 +334,9 @@ MonoBehaviour:
   hardness: 1
   forceThreshold: 375
   maxIntegrity: 100
-  disappearsIfNoBrokenPrefab: 1
   integrity: 0
+  dealsDamage: 0
+  disappearsIfNoBrokenPrefab: 1
   crackedPrefab: {fileID: 126, guid: 535dbb293f0cae545b25237ae5460abb, type: 3}
   crackedOverlay: 0
   crackStages:

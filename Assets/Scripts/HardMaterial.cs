@@ -13,10 +13,11 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     public float hardness = 1.0f;
     public float forceThreshold = 50.0f;//how much force it can withstand without cracking
     public float maxIntegrity = 100f;
-    public bool disappearsIfNoBrokenPrefab = true;//true = if no broken prefab is supplied, this hard material should just disappear
     [Range(0, 100)]
     [SerializeField]
     private float integrity;//how intact it is. Material breaks apart when it reaches 0
+    public bool dealsDamage = true;
+    public bool disappearsIfNoBrokenPrefab = true;//true = if no broken prefab is supplied, this hard material should just disappear
     private bool alreadyBroken = false;//used to determine if pieces should spawn or not
     [Header("Cracking Settings")]
     public GameObject crackedPrefab;//the prefab for the object broken into pieces
@@ -52,11 +53,18 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
         if (hm != null)
         {
             //Take damage
-            float hitHardness = hm.hardness / hardness * coll.relativeVelocity.magnitude;
+            float hitHardness = (hm.dealsDamage)
+                ? hm.hardness / hardness * coll.relativeVelocity.magnitude
+                : 0;
             addIntegrity(-1 * hitHardness);
+            //Calculate damage to other
+            float hitHardnessOther = (this.dealsDamage)
+                ? hardness / hm.hardness * coll.relativeVelocity.magnitude
+                : 0;
+            //Call delegates
             if (hardCollision != null)
             {
-                hardCollision(hitHardness, hardness / hm.hardness * coll.relativeVelocity.magnitude);
+                hardCollision(hitHardness, hitHardnessOther);
             }
             //Play Crack Sound
             float hitPercentage = hitHardness * 100 / maxIntegrity;

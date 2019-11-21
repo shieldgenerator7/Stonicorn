@@ -517,11 +517,20 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Rewinds back a number of states equal to count
+    /// </summary>
+    /// <param name="count">How many states to rewind. 0 doesn't rewind. 1 undoes 1 state</param>
+    public void Rewind(int count)
+    {
+        rewindId = chosenId - count;
+    }
+
+    /// <summary>
     /// Sets into motion the rewind state.
     /// Update carries out the motions of calling Load()
     /// </summary>
     /// <param name="gamestateId">The game state id to rewind to</param>
-    void Rewind(int gamestateId)
+    void RewindTo(int gamestateId)
     {
         //Set the music speed to rewind
         Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
@@ -539,7 +548,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void RewindToStart()
     {
-        Rewind(0);
+        RewindTo(0);
     }
     /// <summary>
     /// True if time is rewinding
@@ -867,7 +876,7 @@ public class GameManager : MonoBehaviour
                 if (prevFinal != null)
                 {
                     //Choose the previous one
-                    Rewind(prevFinal.id);
+                    RewindTo(prevFinal.id);
                 }
                 else
                 {
@@ -879,7 +888,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 //Rewind back to it
-                Rewind(final.id);
+                RewindTo(final.id);
             }
             //Update Stats
             GameStatistics.addOne("RewindPlayer");
@@ -889,7 +898,7 @@ public class GameManager : MonoBehaviour
         {
             //Go back to the latest safe past merky
             //-1 to prevent trap saves
-            Rewind(chosenId - 1);
+            RewindTo(chosenId - 1);
             //Update Stats
             GameStatistics.addOne("RewindPlayer");
         }
