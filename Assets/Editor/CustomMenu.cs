@@ -29,19 +29,19 @@ public class CustomMenu
         }
     }
 
-    [MenuItem("SG7/Editor/Call Merky %#`")]
+    [MenuItem("SG7/Editor/Call Merky Spawn Point %#`")]
     public static void callMerky()
     {
-        GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
+        GameObject playerSpawnObject = GameObject.FindObjectOfType<PlayerTestSpawnPoint>().gameObject;
         if (GameObject.FindObjectOfType<RulerDisplayer>())
         {
-            playerObject.transform.position = RulerDisplayer.currentMousePos;
+            playerSpawnObject.transform.position = RulerDisplayer.currentMousePos;
         }
         else
         {
-            playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+            playerSpawnObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
         }
-        Selection.activeGameObject = playerObject;
+        Selection.activeGameObject = playerSpawnObject;
     }
 
     [MenuItem("SG7/Editor/Toggle Ruler %`")]
