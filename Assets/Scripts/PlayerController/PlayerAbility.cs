@@ -5,7 +5,7 @@ public class PlayerAbility : MonoBehaviour
 {
     public Color effectColor;//the color used for the particle system upon activation
 
-    public ParticleSystemController abilityIndicatorParticleController;
+    public TeleportRangeSegment teleportRangeSegment;
     public ParticleSystemController effectParticleController;
     private ParticleSystem effectParticleSystem;
     public bool addsOnTeleportVisualEffect = true;
@@ -45,7 +45,6 @@ public class PlayerAbility : MonoBehaviour
                 }
             }
         }
-        abilityIndicatorParticleController?.activate(true);
     }
     public virtual void OnDisable()
     {
@@ -60,7 +59,6 @@ public class PlayerAbility : MonoBehaviour
                 playerController.onPlayTeleportSound -= playTeleportSound;
             }
         }
-        abilityIndicatorParticleController?.activate(false);
     }
     public void OnEnable()
     {

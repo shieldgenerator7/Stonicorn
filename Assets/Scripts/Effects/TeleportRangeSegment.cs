@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TeleportRangeSegment : MonoBehaviour
+[CreateAssetMenu(fileName = "Teleport Range Segment", menuName = "Teleport Range Segment")]
+public class TeleportRangeSegment : ScriptableObject
 {
     public int segmentIndex;
     public int segmentCount;

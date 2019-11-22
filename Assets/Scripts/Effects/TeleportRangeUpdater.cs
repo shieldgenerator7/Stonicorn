@@ -13,15 +13,10 @@ public class TeleportRangeUpdater : MonoBehaviour
     public GameObject fragmentPrefab;
 
     private List<GameObject> fragments = new List<GameObject>();
-    private List<TeleportRangeSegment> segments;
 
     // Start is called before the first frame update
     void Start()
     {
-        //Segments
-        segments = new List<TeleportRangeSegment>(
-            GetComponents<TeleportRangeSegment>()
-            );
         //Register range update delegate
         PlayerController pc = GetComponent<PlayerController>();
         if (!pc)
@@ -55,9 +50,12 @@ public class TeleportRangeUpdater : MonoBehaviour
             placer = Utility.RotateZ(placer, angleSpacing);
         }
         //Segment consulting
-        foreach (TeleportRangeSegment segment in segments)
+        foreach (PlayerAbility ability in GetComponents<PlayerAbility>())
         {
-            segment.processFragments(fragments, transform.up);
+            if (ability.enabled)
+            {
+                ability.teleportRangeSegment?.processFragments(fragments, transform.up);
+            }
         }
         //Set the transparency
         foreach (GameObject fragment in fragments)
