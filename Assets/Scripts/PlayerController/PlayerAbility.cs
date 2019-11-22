@@ -45,7 +45,7 @@ public class PlayerAbility : MonoBehaviour
                 }
             }
         }
-        abilityIndicatorParticleController.activate(true);
+        abilityIndicatorParticleController?.activate(true);
     }
     public virtual void OnDisable()
     {
@@ -60,7 +60,7 @@ public class PlayerAbility : MonoBehaviour
                 playerController.onPlayTeleportSound -= playTeleportSound;
             }
         }
-        abilityIndicatorParticleController.activate(false);
+        abilityIndicatorParticleController?.activate(false);
     }
     public void OnEnable()
     {
