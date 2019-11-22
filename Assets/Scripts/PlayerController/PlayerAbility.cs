@@ -45,6 +45,10 @@ public class PlayerAbility : MonoBehaviour
                 }
             }
         }
+        if (playerController)
+        {
+            playerController.abilityActivated(this, true);
+        }
     }
     public virtual void OnDisable()
     {
@@ -58,6 +62,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 playerController.onPlayTeleportSound -= playTeleportSound;
             }
+            playerController.abilityActivated(this, false);
         }
     }
     public void OnEnable()

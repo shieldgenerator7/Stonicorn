@@ -249,6 +249,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void abilityActivated(PlayerAbility ability, bool active)
+    {
+        onAbilityActivated?.Invoke(ability, active);
+    }
+    public delegate void OnAbilityActivated(PlayerAbility ability, bool active);
+    public OnAbilityActivated onAbilityActivated;
+
     // Use this for initialization
     private void Start()
     {

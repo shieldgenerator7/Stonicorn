@@ -24,6 +24,7 @@ public class TeleportRangeUpdater : MonoBehaviour
             pc = GetComponentInParent<PlayerController>();
         }
         pc.onRangeChanged += updateRange;
+        pc.onAbilityActivated += abilityActivated;
         updateRange(pc.Range);
     }
 
@@ -44,10 +45,22 @@ public class TeleportRangeUpdater : MonoBehaviour
             //Place the fragment in the right position and rotation
             fragment.transform.localPosition = placer;
             fragment.transform.up = fragment.transform.position - transform.position;
+            //Update colors
+            updateColors();
             //Add it to the list
             fragments.Add(fragment);
             //Update placer
             placer = Utility.RotateZ(placer, angleSpacing);
+        }
+    }
+
+    public void updateColors()
+    {
+        //Set the color to white
+        foreach (GameObject fragment in fragments)
+        {
+            //Set the fragment transparency
+            fragment.GetComponent<SpriteRenderer>().color = Color.white;
         }
         //Segment consulting
         foreach (PlayerAbility ability in GetComponents<PlayerAbility>())
@@ -66,6 +79,11 @@ public class TeleportRangeUpdater : MonoBehaviour
             color.a = transparency;
             sr.color = color;
         }
+    }
+
+    public void abilityActivated(PlayerAbility ability, bool active)
+    {
+        updateColors();
     }
 
     public void clear()
