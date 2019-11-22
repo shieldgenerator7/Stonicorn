@@ -361,11 +361,11 @@ public class GestureManager : SavableMonoBehaviour
                 //
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    Managers.Camera.ZoomLevel++;
+                    Managers.Camera.ZoomLevel *= 1.2f;
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    Managers.Camera.ZoomLevel--;
+                    Managers.Camera.ZoomLevel /= 1.2f ;
                 }
                 //
                 //Pinch Touch Zoom
