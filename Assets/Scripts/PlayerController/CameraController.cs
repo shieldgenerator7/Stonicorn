@@ -420,7 +420,7 @@ public class CameraController : MonoBehaviour
 
     public delegate void OnOffsetChange(Vector3 offset);
     public OnOffsetChange onOffsetChange;
-    
+
     public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld)
     {
         bool canMove = false;
@@ -470,6 +470,34 @@ public class CameraController : MonoBehaviour
         {//landscape orientation
             Cam.fieldOfView = scale;
         }
+    }
+    public Vector2 CamSizeWorld
+    {
+        get =>
+            new Vector2(
+                CameraWidthWorld,
+                CameraHeightWorld
+                );
+    }
+    public float CameraWidthWorld
+    {
+        get =>
+            Vector2.Distance(
+                Utility.ScreenToWorldPoint(Vector2.zero),
+                Utility.ScreenToWorldPoint(
+                    new Vector2(Cam.pixelWidth, 0)
+                )
+            );        
+    }
+    public float CameraHeightWorld
+    {
+        get =>
+            Vector2.Distance(
+                Utility.ScreenToWorldPoint(Vector2.zero),
+                Utility.ScreenToWorldPoint(
+                    new Vector2(0, Cam.pixelHeight)
+                )
+            );
     }
 
     /// <summary>
