@@ -225,6 +225,7 @@ public class NPCManager : MonoBehaviour
             {
                 sumLength = 0;
                 strings.Add(buildString);
+                buildString = "";
             }
             sumLength += split[i].Length + 1;
             buildString += " " + split[i];
