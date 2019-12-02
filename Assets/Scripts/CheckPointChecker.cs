@@ -194,7 +194,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         checkpointCamera.gameObject.SetActive(false);
         string filename = gameObject.name + ".png";
-        ES2.SaveImage(screenShot, filename);
+        ES3.SaveImage(screenShot, filename);
         return filename;
     }
 

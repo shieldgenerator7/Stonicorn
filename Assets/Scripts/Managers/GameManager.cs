@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         //Update the list of objects that have state to save
         refreshGameObjects();
         //If it's not in demo mode, and its save file exists,
-        if (!demoBuild && ES2.Exists("merky.txt"))
+        if (!demoBuild && ES3.FileExists("merky.txt"))
         {
             //Load the save file
             loadFromFile();
@@ -692,11 +692,11 @@ public class GameManager : MonoBehaviour
         //Add an extension to the filename
         fileName += ".txt";
         //Save memories
-        ES2.Save(memories, fileName + "?tag=memories");
+        ES3.Save<Dictionary<string, MemoryObject>>("memories", memories, fileName);
         //Save game states
-        ES2.Save(gameStates, fileName + "?tag=states");
+        ES3.Save<List<GameState>>("states", gameStates, fileName);
         //Save scene cache
-        ES2.Save(sceneLoaders, fileName + "?tag=scenes");
+        ES3.Save<List<SceneLoader>>("scenes", sceneLoaders, fileName);
     }
     /// <summary>
     /// Loads the game from the save file
@@ -704,12 +704,16 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void loadFromFile()
     {
+        //Set the base filename
+        string fileName = "merky";
+        //Add an extension to the filename
+        fileName += ".txt";
         //Load memories
-        memories = ES2.LoadDictionary<string, MemoryObject>("merky.txt?tag=memories");
+        memories = ES3.Load<Dictionary<string, MemoryObject>>("memories",fileName);
         //Load game states
-        gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
+        gameStates = ES3.Load<List<GameState>>("states",fileName);
         //Scenes
-        List<SceneLoader> rsls = ES2.LoadList<SceneLoader>("merky.txt?tag=scenes");
+        List<SceneLoader> rsls = ES3.Load<List<SceneLoader>>("scenes",fileName);
         //Loop through all scene loaders in the game
         foreach (SceneLoader sl in sceneLoaders)
         {

@@ -6,8 +6,8 @@ public class MenuActionButtonSaveClear : MenuActionButton
 {
     public override void activate()
     {
-        if (ES2.Exists("merky.txt")){
-            ES2.Delete("merky.txt");
+        if (ES3.FileExists("merky.txt")){
+            ES3.DeleteFile("merky.txt");
         }
         Managers.Game.resetGame(false);
     }
