@@ -743,6 +743,13 @@ public class GameManager : MonoBehaviour
         //Save the game to file
         saveToFile();
     }
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            OnApplicationQuit();
+        }
+    }
     #endregion
 
     #region Player Ghosts
