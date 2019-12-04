@@ -112,6 +112,22 @@ public class SavableObject
                 return typeof(GameEventManager);
             case "GameStatistics":
                 return typeof(GameStatistics);
+            case "PlayerAbility":
+                return typeof(PlayerAbility);
+            case "TeleportAbility":
+                return typeof(TeleportAbility);
+            case "ForceTeleportAbility":
+                return typeof(ForceTeleportAbility);
+            case "SwapAbility":
+                return typeof(SwapAbility);
+            case "WallClimbAbility":
+                return typeof(WallClimbAbility);
+            case "AirSliceAbility":
+                return typeof(AirSliceAbility);
+            case "ElectricFieldAbility":
+                return typeof(ElectricFieldAbility);
+            case "LongTeleportAbility":
+                return typeof(LongTeleportAbility);
             default:
                 throw new KeyNotFoundException(
                     "The type name \"" + typeName + "\" was not found. "

@@ -63,10 +63,6 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     }
     public override void acceptMemoryObject(MemoryObject memObj)
     {
-        if (memObj.found)
-        {
-            used = true;
-            activate(false);
-        }
+        used = memObj.found;
     }
 }

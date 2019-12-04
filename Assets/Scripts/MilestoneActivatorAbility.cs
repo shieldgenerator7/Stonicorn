@@ -6,6 +6,6 @@ public class MilestoneActivatorAbility : MilestoneActivator {
 
     public override void activateEffect()
     {
-        ((PlayerAbility)Managers.Player.GetComponent(abilityTypeName)).enabled = true;
+        ((PlayerAbility)Managers.Player.GetComponent(abilityTypeName)).Unlocked = true;
     }
 }

@@ -7,6 +7,6 @@ public class MilestoneActivatorElectricField : MilestoneActivator
 
     public override void activateEffect()
     {
-        Managers.Player.GetComponent<ElectricFieldAbility>().enabled = true;
+        Managers.Player.GetComponent<ElectricFieldAbility>().Unlocked = true;
     }
 }

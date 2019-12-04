@@ -7,6 +7,6 @@ public class MilestoneActivatorWallJump : MilestoneActivator
 
     public override void activateEffect()
     {
-        Managers.Player.GetComponent<WallClimbAbility>().enabled = true;
+        Managers.Player.GetComponent<WallClimbAbility>().Unlocked = true;
     }
 }

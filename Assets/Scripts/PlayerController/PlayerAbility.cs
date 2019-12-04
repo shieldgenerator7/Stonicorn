@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerAbility : MonoBehaviour
+public class PlayerAbility : SavableMonoBehaviour
 {
     public Color effectColor;//the color used for the particle system upon activation
 
@@ -11,6 +11,37 @@ public class PlayerAbility : MonoBehaviour
     public bool addsOnTeleportVisualEffect = true;
     public AudioClip soundEffect;
     public bool addsOnTeleportSoundEffect = true;
+
+    [Header("Savable Variables")]
+    [SerializeField]
+    private bool unlocked = false;//whether the player has it available to use
+    public bool Unlocked
+    {
+        get => unlocked;
+        set
+        {
+            unlocked = value;
+            if (unlocked)
+            {
+                Active = true;
+            }
+        }
+    }
+    [SerializeField]
+    private bool active = false;//whether the player has turned it on or off (default true after unlocked first becomes true)
+    public bool Active
+    {
+        get => active;
+        set
+        {
+            active = value;
+            if (active)
+            {
+                enabled = true;
+                init();
+            }
+        }
+    }
 
     protected PlayerController playerController;
     protected Rigidbody2D rb2d;
@@ -117,6 +148,25 @@ public class PlayerAbility : MonoBehaviour
     protected virtual void playTeleportSound(Vector2 oldPos, Vector2 newPos)
     {
         SoundManager.playSound(soundEffect, oldPos);
+    }
+
+    public override SavableObject getSavableObject()
+    {
+        return new SavableObject(this,
+            "unlocked", unlocked,
+            "active", active
+            );
+    }
+
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        unlocked = (bool)savObj.data["unlocked"];
+        active = (bool)savObj.data["active"];
+        if (unlocked && active)
+        {
+            enabled = true;
+            init();
+        }
     }
 
 }

@@ -32,16 +32,35 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Call Merky Spawn Point %#`")]
     public static void callMerky()
     {
-        GameObject playerSpawnObject = GameObject.FindObjectOfType<PlayerTestSpawnPoint>().gameObject;
-        if (GameObject.FindObjectOfType<RulerDisplayer>())
+        if (Application.isEditor && !Application.isPlaying)
         {
-            playerSpawnObject.transform.position = RulerDisplayer.currentMousePos;
+            PlayerTestSpawnPoint playerTSP = GameObject.FindObjectOfType<PlayerTestSpawnPoint>();
+            playerTSP.enabled = true;
+            GameObject playerSpawnObject = playerTSP.gameObject;
+            playerSpawnObject.SetActive(true);
+            if (GameObject.FindObjectOfType<RulerDisplayer>())
+            {
+                playerSpawnObject.transform.position = RulerDisplayer.currentMousePos;
+            }
+            else
+            {
+                playerSpawnObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+            }
+            Selection.activeGameObject = playerSpawnObject;
         }
         else
         {
-            playerSpawnObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+            GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
+            if (GameObject.FindObjectOfType<RulerDisplayer>())
+            {
+                playerObject.transform.position = RulerDisplayer.currentMousePos;
+            }
+            else
+            {
+                playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+            }
+            Selection.activeGameObject = playerObject;
         }
-        Selection.activeGameObject = playerSpawnObject;
     }
 
     [MenuItem("SG7/Editor/Toggle Ruler %`")]
