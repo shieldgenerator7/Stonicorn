@@ -34,8 +34,11 @@ public class SettingsManager : SavableMonoBehaviour
 
     public void loadSettings()
     {
-        SavableObject so = ES3.Load<SavableObject>("settings", fileName);
-        acceptSavableObject(so);
+        if (ES3.FileExists(fileName))
+        {
+            SavableObject so = ES3.Load<SavableObject>("settings", fileName);
+            acceptSavableObject(so);
+        }
     }
 
     public override SavableObject getSavableObject()
