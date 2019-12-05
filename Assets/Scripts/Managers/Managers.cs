@@ -120,6 +120,20 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Video Manager
+    private VideoManager videoManager;
+    public static VideoManager Video
+    {
+        get
+        {
+            if (instance.videoManager == null)
+            {
+                instance.videoManager = FindObjectOfType<VideoManager>();
+            }
+            return instance.videoManager;
+        }
+    }
+
     //Effect Manager
     private EffectManager effectManager;
     public static EffectManager Effect

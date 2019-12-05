@@ -7,11 +7,11 @@ public class MenuActionSlideQuality : MenuActionSlide
 
     public override void valueAdjusted(float value)
     {
-        QualitySettings.SetQualityLevel((int)value);
+        Managers.Video.Quality = (int)value;
     }
     public override float getCurrentValue()
     {
-        return QualitySettings.GetQualityLevel();
+        return Managers.Video.Quality;
     }
 
     public override float getOverriddenMaxValue(float currentMaxValue)
