@@ -57,6 +57,7 @@ public class Managers : MonoBehaviour
     }
 
     //Game Event Manager
+    //Used to store which NPC voicelines have been played
     private GameEventManager gameEventManager;
     public static GameEventManager Event
     {
@@ -71,6 +72,7 @@ public class Managers : MonoBehaviour
     }
 
     //Physics 2D Surrogate
+    //Used to enable triggers while main physics is disabled during time rewind
     private Physics2DSurrogate physics2DSurrogate;
     public static Physics2DSurrogate Physics2DSurrogate
     {
@@ -143,6 +145,20 @@ public class Managers : MonoBehaviour
                 instance.menuManager = FindObjectOfType<MenuManager>();
             }
             return instance.menuManager;
+        }
+    }
+
+    //Settings Manager
+    private SettingsManager settingsManager;
+    public static SettingsManager Settings
+    {
+        get
+        {
+            if (instance.settingsManager == null)
+            {
+                instance.settingsManager = FindObjectOfType<SettingsManager>();
+            }
+            return instance.settingsManager;
         }
     }
 

@@ -112,6 +112,8 @@ public class SavableObject
                 return typeof(GameEventManager);
             case "GameStatistics":
                 return typeof(GameStatistics);
+            case "SettingsManager":
+                return typeof(SettingsManager);
             case "PlayerAbility":
                 return typeof(PlayerAbility);
             case "TeleportAbility":

@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 94021250}
   - component: {fileID: 94021251}
   - component: {fileID: 94021256}
+  - component: {fileID: 94021257}
   - component: {fileID: 94021249}
   - component: {fileID: 94021252}
   m_Layer: 0
@@ -522,6 +523,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42fae9abee109514d8d81342db32603c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &94021257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 94021246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8160ef887efe8488e0909d4294841c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: merky_settings.txt
+  musicVolume: 1
+  musicMute: 0
+  soundVolume: 1
+  soundMute: 0
 --- !u!1 &133642597
 GameObject:
   m_ObjectHideFlags: 0
@@ -35650,6 +35668,8 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  active: 0
   forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 3}
   explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 3}
   afterWindPrefab: {fileID: 1706305049858728, guid: 5d5f3c3ecac31234687d4055a32ad921,
@@ -35867,6 +35887,8 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
   addsOnTeleportSoundEffect: 1
+  unlocked: 0
+  active: 0
   wallDetectRange: 1
   stickyPadPrefab: {fileID: 1097801133131608, guid: 19e25460a3d23d54da8b46ccd9b9225d,
     type: 3}
@@ -35934,6 +35956,8 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
   addsOnTeleportSoundEffect: 1
+  unlocked: 0
+  active: 0
   futureProjection: {fileID: 531202031}
   teleportPreviewPointer: {fileID: 1385001677}
 --- !u!114 &1792176478
@@ -35955,6 +35979,8 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 0
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  active: 0
   electricFieldPrefab: {fileID: 1181304595248282, guid: 25877458e6750fe4588a4006a6457d5d,
     type: 3}
   maxRange: 2.5
@@ -35985,6 +36011,8 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  active: 0
 --- !u!114 &1792176480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36004,6 +36032,8 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  active: 0
   sliceDamage: 100
   maxAirPortsGrant: 2
   streakPrefab: {fileID: 133468, guid: a76ac723dbf060e4fae65f29bcb058d9, type: 3}
@@ -36026,6 +36056,8 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  active: 0
 --- !u!1 &1809435737
 GameObject:
   m_ObjectHideFlags: 0

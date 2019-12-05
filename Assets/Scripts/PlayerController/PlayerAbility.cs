@@ -147,7 +147,7 @@ public class PlayerAbility : SavableMonoBehaviour
 
     protected virtual void playTeleportSound(Vector2 oldPos, Vector2 newPos)
     {
-        SoundManager.playSound(soundEffect, oldPos);
+        Managers.Sound.playSound(soundEffect, oldPos);
     }
 
     public override SavableObject getSavableObject()

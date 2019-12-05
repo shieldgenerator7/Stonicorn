@@ -697,6 +697,8 @@ public class GameManager : MonoBehaviour
         ES3.Save<List<GameState>>("states", gameStates, fileName);
         //Save scene cache
         ES3.Save<List<SceneLoader>>("scenes", sceneLoaders, fileName);
+        //Save settings
+        Managers.Settings.saveSettings();
     }
     /// <summary>
     /// Loads the game from the save file
@@ -709,11 +711,11 @@ public class GameManager : MonoBehaviour
         //Add an extension to the filename
         fileName += ".txt";
         //Load memories
-        memories = ES3.Load<Dictionary<string, MemoryObject>>("memories",fileName);
+        memories = ES3.Load<Dictionary<string, MemoryObject>>("memories", fileName);
         //Load game states
-        gameStates = ES3.Load<List<GameState>>("states",fileName);
+        gameStates = ES3.Load<List<GameState>>("states", fileName);
         //Scenes
-        List<SceneLoader> rsls = ES3.Load<List<SceneLoader>>("scenes",fileName);
+        List<SceneLoader> rsls = ES3.Load<List<SceneLoader>>("scenes", fileName);
         //Loop through all scene loaders in the game
         foreach (SceneLoader sl in sceneLoaders)
         {
@@ -733,6 +735,8 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        //Load settings
+        Managers.Settings.loadSettings();
     }
     //Sent to all GameObjects before the application is quit
     //Auto-save on exit

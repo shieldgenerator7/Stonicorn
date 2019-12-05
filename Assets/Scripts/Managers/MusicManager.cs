@@ -12,29 +12,25 @@ public class MusicManager : MonoBehaviour
     private AudioSource currentSong;//the current song that is playing
     private AudioSource prevSong;//the previous song that was playing
 
-    [Range(0.0f, 1.0f)]
-    [SerializeField]
-    private float userVolume = 1;//[0,1] the volume the user sets
     /// <summary>
     /// The user-set Volume for use by other scripts. Range: [0, 100]
     /// </summary>
     public float Volume
     {
-        get { return userVolume * 100; }
+        get { return Managers.Settings.musicVolume * 100; }
         set
         {
-            userVolume = value / 100;
+            Managers.Settings.musicVolume = value / 100;
             updateVolume();
         }
     }
-    [SerializeField]
-    private bool mute = false;
     public bool Mute
     {
-        get { return mute; }
+        get { return Managers.Settings.musicMute; }
         set
         {
-            mute = value;
+            bool mute = value;
+            Managers.Settings.musicMute = mute;
             enabled = !mute;
             if (mute)
             {
@@ -180,11 +176,11 @@ public class MusicManager : MonoBehaviour
     {
         if (currentSong)
         {
-            currentSong.volume = userVolume * fadePercent * volumeScaling;
+            currentSong.volume = Managers.Settings.musicVolume * fadePercent * volumeScaling;
         }
         if (prevSong)
         {
-            prevSong.volume = userVolume * (1 - fadePercent) * volumeScaling;
+            prevSong.volume = Managers.Settings.musicVolume * (1 - fadePercent) * volumeScaling;
         }
     }
 }
