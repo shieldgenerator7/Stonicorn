@@ -19,6 +19,7 @@ public class SettingsManager : SavableMonoBehaviour
     public int videoQuality = 0;
     [Range(0, 30)]
     public int videoResolution = 13;
+    public bool videoFullScreen = true;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +47,7 @@ public class SettingsManager : SavableMonoBehaviour
             "soundMute", soundMute,
             "videoQuality", videoQuality,
             "videoResolution", videoResolution,
+            "videoFullScreen", videoFullScreen
             );
     }
 
@@ -57,5 +59,6 @@ public class SettingsManager : SavableMonoBehaviour
         soundMute = (bool)savObj.data["soundMute"];
         videoQuality = (int)savObj.data["videoQuality"];
         videoResolution = (int)savObj.data["videoResolution"];
+        videoFullScreen = (bool)savObj.data["videoFullScreen"];
     }
 }

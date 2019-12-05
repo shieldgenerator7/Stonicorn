@@ -27,11 +27,23 @@ public class VideoManager : MonoBehaviour
         }
     }
 
+    public bool Windowed
+    {
+        get => !Managers.Settings.videoFullScreen;
+        set
+        {
+            bool full = !value;
+            Managers.Settings.videoFullScreen = full;
+            Screen.fullScreen = full;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //Set the graphics settings to the stored values
         QualityLevel = QualityLevel;
         ResolutionIndex = ResolutionIndex;
+        Windowed = Windowed;
     }
 }
