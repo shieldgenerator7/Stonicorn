@@ -15,7 +15,10 @@ public class SettingsManager : SavableMonoBehaviour
     public float soundVolume = 1;//the sound volume that the user sets
     public bool soundMute = false;
     //Video Settings
-    public int videoQuality = 0; 
+    [Range(0, 5)]
+    public int videoQuality = 0;
+    [Range(0, 30)]
+    public int videoResolution = 13;
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +44,8 @@ public class SettingsManager : SavableMonoBehaviour
             "musicMute", musicMute,
             "soundVolume", soundVolume,
             "soundMute", soundMute,
-            "videoQuality", videoQuality
+            "videoQuality", videoQuality,
+            "videoResolution", videoResolution,
             );
     }
 
@@ -52,5 +56,6 @@ public class SettingsManager : SavableMonoBehaviour
         soundVolume = (float)savObj.data["soundVolume"];
         soundMute = (bool)savObj.data["soundMute"];
         videoQuality = (int)savObj.data["videoQuality"];
+        videoResolution = (int)savObj.data["videoResolution"];
     }
 }

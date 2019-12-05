@@ -6,20 +6,11 @@ public class MenuActionSlideScreenResolution : MenuActionSlide
 {
     public override void valueAdjusted(float value)
     {
-        Resolution resolution = Screen.resolutions[(int)value];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        Managers.Video.ResolutionIndex = (int)value;
     }
     public override float getCurrentValue()
     {
-        for (int i = 0; i < Screen.resolutions.Length; i++)
-        {
-            if (Screen.resolutions[i].width >= Screen.width
-                && Screen.resolutions[i].height >= Screen.height)
-            {
-                return i;
-            }
-        }
-        return Screen.resolutions.Length - 1;
+        return Managers.Video.ResolutionIndex;
     }
 
     public override float getOverriddenMaxValue(float currentMaxValue)
