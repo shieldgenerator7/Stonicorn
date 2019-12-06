@@ -146,15 +146,19 @@ public class ForceTeleportAbility : PlayerAbility
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
             for (int i = 0; i < hitColliders.Length; i++)
             {
-                Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
+                GameObject hitGO = hitColliders[i].gameObject;
+                Rigidbody2D orb2d = hitGO.GetComponent<Rigidbody2D>();
                 if (orb2d != null)
                 {
                     orb2d.AddWeightedExplosionForce(forceAmount, pos, range, maxForce);
                 }
-                foreach (Blastable b in hitColliders[i].gameObject.GetComponents<Blastable>())
+                foreach (Blastable b in hitGO.GetComponents<Blastable>())
                 {
-                    float force = forceAmount * (range - b.getDistanceFromExplosion(pos)) / Time.fixedDeltaTime;
-                    b.checkForce(force);
+                    if (hitGO != playerController.gameObject)
+                    {
+                        float force = forceAmount * (range - b.getDistanceFromExplosion(pos)) / Time.fixedDeltaTime;
+                        b.checkForce(force);
+                    }
                 }
             }
             showExplosionEffect(pos, range * 2);
