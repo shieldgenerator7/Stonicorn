@@ -8,15 +8,22 @@ public class TeleportRangeUpdater : MonoBehaviour
     public float suggestedSpacing = 3;//radial distance between fragments, not guaranteed
     [Range(0, 1)]
     public float transparency = 1.0f;
+    public float normalLength = 0.5f;
+    public float timeLength = 0.8f;
 
     [Header("Prefabs")]
     public GameObject fragmentPrefab;
 
     private List<GameObject> fragments = new List<GameObject>();
 
+    private Timer timer;
+
     // Start is called before the first frame update
     void Start()
     {
+        //Timer
+        timer = GetComponent<Timer>();
+        timer.timeLeftChanged += updateTimer;
         //Register range update delegate
         PlayerController pc = GetComponent<PlayerController>();
         if (!pc)
@@ -52,6 +59,8 @@ public class TeleportRangeUpdater : MonoBehaviour
         }
         //Update colors
         updateColors();
+        //Update timers
+        updateTimer(timer.TimeLeft, timer.Duration);
     }
 
     public void updateColors()
@@ -77,6 +86,35 @@ public class TeleportRangeUpdater : MonoBehaviour
             Color color = sr.color;
             color.a = transparency;
             sr.color = color;
+        }
+    }
+
+    public void updateTimer(float timeLeft, float duration)
+    {
+        Vector2 upVector = transform.up;
+        float angleMin = 0;
+        float angleMax = 360 * timeLeft / duration;
+        foreach (GameObject fragment in fragments)
+        {
+            //Set the length to standard
+            Vector3 scale = fragment.transform.localScale;
+            scale.y = normalLength;
+            if (timeLeft > 0)
+            {
+                //Check to see if it's in the timer range
+                if (Utility.between(
+                    Utility.RotationZ(upVector, fragment.transform.up),
+                    angleMin,
+                    angleMax
+                    )
+                    )
+                {
+                    //If so, set the length to the time length
+                    scale.y = timeLength;
+                }
+            }
+            //Put the size back in the fragment
+            fragment.transform.localScale = scale;
         }
     }
 
