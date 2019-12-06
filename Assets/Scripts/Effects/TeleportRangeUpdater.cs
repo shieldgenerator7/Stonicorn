@@ -45,13 +45,13 @@ public class TeleportRangeUpdater : MonoBehaviour
             //Place the fragment in the right position and rotation
             fragment.transform.localPosition = placer;
             fragment.transform.up = fragment.transform.position - transform.position;
-            //Update colors
-            updateColors();
             //Add it to the list
             fragments.Add(fragment);
             //Update placer
             placer = Utility.RotateZ(placer, angleSpacing);
         }
+        //Update colors
+        updateColors();
     }
 
     public void updateColors()
@@ -59,7 +59,6 @@ public class TeleportRangeUpdater : MonoBehaviour
         //Set the color to white
         foreach (GameObject fragment in fragments)
         {
-            //Set the fragment transparency
             fragment.GetComponent<SpriteRenderer>().color = Color.white;
         }
         //Segment consulting
