@@ -8,6 +8,7 @@ using UnityEngine.UI;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    public static string message = null;//stored error message
     //
     // Settings
     //
@@ -63,107 +64,125 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //Initialize the current game state id
-        //There are possibly none, so the default "current" is -1
-        chosenId = -1;
-        //If a limit has been set on the demo playtime,
-        if (GameDemoLength > 0)
+        try
         {
-            //Auto-enable demo mode
-            demoBuild = true;
-            //Tell the gesture manager to start the timer when the player taps in game
-            Managers.Gesture.tapGesture += startDemoTimer;
-            //Show the timer
-            txtDemoTimer.transform.parent.gameObject.SetActive(true);
+            //Initialize the current game state id
+            //There are possibly none, so the default "current" is -1
+            chosenId = -1;
+            //If a limit has been set on the demo playtime,
+            if (GameDemoLength > 0)
+            {
+                //Auto-enable demo mode
+                demoBuild = true;
+                //Tell the gesture manager to start the timer when the player taps in game
+                Managers.Gesture.tapGesture += startDemoTimer;
+                //Show the timer
+                txtDemoTimer.transform.parent.gameObject.SetActive(true);
+            }
+            //If in demo mode,
+            if (demoBuild)
+            {
+                //Save its future files with a time stamp
+                saveWithTimeStamp = true;
+            }
+            //Update the list of objects that have state to save
+            refreshGameObjects();
+            //If it's not in demo mode, and its save file exists,
+            if (!demoBuild && ES3.FileExists("merky.txt"))
+            {
+                //Load the save file
+                loadFromFile();
+                //Update the game state id trackers
+                chosenId = rewindId = gameStates.Count - 1;
+                //Load the most recent game state
+                Load(chosenId);
+                //Load the memories
+                LoadMemories();
+            }
+            //Register scene loading delegates
+            SceneManager.sceneLoaded += sceneLoaded;
+            SceneManager.sceneUnloaded += sceneUnloaded;
         }
-        //If in demo mode,
-        if (demoBuild)
+        catch (System.Exception e)
         {
-            //Save its future files with a time stamp
-            saveWithTimeStamp = true;
+            message = "123456789012345678901234567890 GM.Start(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
         }
-        //Update the list of objects that have state to save
-        refreshGameObjects();
-        //If it's not in demo mode, and its save file exists,
-        if (!demoBuild && ES3.FileExists("merky.txt"))
-        {
-            //Load the save file
-            loadFromFile();
-            //Update the game state id trackers
-            chosenId = rewindId = gameStates.Count - 1;
-            //Load the most recent game state
-            Load(chosenId);
-            //Load the memories
-            LoadMemories();
-        }
-        //Register scene loading delegates
-        SceneManager.sceneLoaded += sceneLoaded;
-        SceneManager.sceneUnloaded += sceneUnloaded;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Check all the scene loaders
-        //to see if their scene needs loaded or unloaded
-        //(done this way because standard trigger methods in Unity
-        //don't always play nice with teleporting characters)
-        foreach (SceneLoader sl in sceneLoaders)
+        try
         {
-            sl.check();
-        }
-        //If the time is rewinding,
-        if (Rewinding)
-        {
-            //And it's time to rewind the next step,
-            if (Time.time > lastRewindTime + rewindDelay)
+            //Check all the scene loaders
+            //to see if their scene needs loaded or unloaded
+            //(done this way because standard trigger methods in Unity
+            //don't always play nice with teleporting characters)
+            foreach (SceneLoader sl in sceneLoaders)
             {
-                //Rewind to the next previous game state
-                lastRewindTime = Time.time;
-                Load(chosenId - 1);
+                sl.check();
             }
-        }
-        //If in demo mode,
-        if (GameDemoLength > 0)
-        {
-            float timeLeft = 0;
-            //And the timer has started,
-            if (resetGameTimer > 0)
+            //If the time is rewinding,
+            if (Rewinding)
             {
-                //If the timer has stopped,
-                if (Time.time >= resetGameTimer)
+                //And it's time to rewind the next step,
+                if (Time.time > lastRewindTime + rewindDelay)
                 {
-                    //Show the end demo screen
-                    showEndDemoScreen(true);
-                    //If the ignore-input buffer period has ended,
-                    if (Time.time >= resetGameTimer + restartDemoDelay)
+                    //Rewind to the next previous game state
+                    lastRewindTime = Time.time;
+                    Load(chosenId - 1);
+                }
+            }
+            //If in demo mode,
+            if (GameDemoLength > 0)
+            {
+                float timeLeft = 0;
+                //And the timer has started,
+                if (resetGameTimer > 0)
+                {
+                    //If the timer has stopped,
+                    if (Time.time >= resetGameTimer)
                     {
-                        //And user has given input,
-                        if (Input.GetMouseButton(0)
-                            || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-                            )
+                        //Show the end demo screen
+                        showEndDemoScreen(true);
+                        //If the ignore-input buffer period has ended,
+                        if (Time.time >= resetGameTimer + restartDemoDelay)
                         {
-                            //Reset game
-                            showEndDemoScreen(false);
-                            resetGame();
+                            //And user has given input,
+                            if (Input.GetMouseButton(0)
+                                || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+                                )
+                            {
+                                //Reset game
+                                showEndDemoScreen(false);
+                                resetGame();
+                            }
                         }
                     }
+                    //Else if the timer is ticking,
+                    else
+                    {
+                        //Show the time remaining
+                        timeLeft = resetGameTimer - Time.time;
+                    }
                 }
-                //Else if the timer is ticking,
+                //Else if the timer has not started,
                 else
                 {
-                    //Show the time remaining
-                    timeLeft = resetGameTimer - Time.time;
+                    //Show the max play time of the demo
+                    timeLeft = GameDemoLength;
                 }
+                //Update the timer on screen
+                txtDemoTimer.text = string.Format("{0:0.00}", timeLeft);
             }
-            //Else if the timer has not started,
-            else
-            {
-                //Show the max play time of the demo
-                timeLeft = GameDemoLength;
-            }
-            //Update the timer on screen
-            txtDemoTimer.text = string.Format("{0:0.00}", timeLeft);
+        }
+        catch (System.Exception e)
+        {
+            message = "123456789012345678901234567890 GM.Update(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
         }
     }
 
@@ -375,19 +394,28 @@ public class GameManager : MonoBehaviour
     /// <param name="mmb"></param>
     public void saveMemory(MemoryMonoBehaviour mmb)
     {
-        string key = mmb.gameObject.getKey();
-        MemoryObject mo = mmb.getMemoryObject();
-        //If the memory is already stored,
-        if (memories.ContainsKey(key))
+        try
         {
-            //Update it
-            memories[key] = mo;
+            string key = mmb.gameObject.getKey();
+            MemoryObject mo = mmb.getMemoryObject();
+            //If the memory is already stored,
+            if (memories.ContainsKey(key))
+            {
+                //Update it
+                memories[key] = mo;
+            }
+            //Else
+            else
+            {
+                //Add it
+                memories.Add(key, mo);
+            }
         }
-        //Else
-        else
+        catch (System.Exception e)
         {
-            //Add it
-            memories.Add(key, mo);
+            message = "123456789012345678901234567890 GM.saveMemory(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
         }
     }
     /// <summary>
@@ -395,16 +423,25 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void LoadMemories()
     {
-        //Find all the game objects that can have memories
-        foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
+        try
         {
-            string key = mmb.gameObject.getKey();
-            //If there's a memory saved for this object,
-            if (memories.ContainsKey(key))
+            //Find all the game objects that can have memories
+            foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
             {
-                //Tell that object what it is
-                mmb.acceptMemoryObject(memories[key]);
+                string key = mmb.gameObject.getKey();
+                //If there's a memory saved for this object,
+                if (memories.ContainsKey(key))
+                {
+                    //Tell that object what it is
+                    mmb.acceptMemoryObject(memories[key]);
+                }
             }
+        }
+        catch (System.Exception e)
+        {
+            message = "123456789012345678901234567890 GM.loadMemory(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
         }
     }
     #endregion
@@ -415,28 +452,37 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Save()
     {
-        //Remove any null objects from the list
-        cleanObjects();
-        //Create a new game state
-        gameStates.Add(new GameState(gameObjects.Values));
-        //Update game state id variables
-        chosenId++;
-        rewindId++;
-        //Open Scenes
-        foreach (SceneLoader sl in sceneLoaders)
+        try
         {
-            //If the scene loader's scene is open,
-            if (openScenes.Contains(sl.Scene))
+            //Remove any null objects from the list
+            cleanObjects();
+            //Create a new game state
+            gameStates.Add(new GameState(gameObjects.Values));
+            //Update game state id variables
+            chosenId++;
+            rewindId++;
+            //Open Scenes
+            foreach (SceneLoader sl in sceneLoaders)
             {
-                //And it hasn't been open in any previous game state,
-                if (sl.firstOpenGameStateId > chosenId)
+                //If the scene loader's scene is open,
+                if (openScenes.Contains(sl.Scene))
                 {
-                    //It's first opened in this game state
-                    sl.firstOpenGameStateId = chosenId;
+                    //And it hasn't been open in any previous game state,
+                    if (sl.firstOpenGameStateId > chosenId)
+                    {
+                        //It's first opened in this game state
+                        sl.firstOpenGameStateId = chosenId;
+                    }
+                    //It's also last opened in this game state
+                    sl.lastOpenGameStateId = chosenId;
                 }
-                //It's also last opened in this game state
-                sl.lastOpenGameStateId = chosenId;
             }
+        }
+        catch (System.Exception e)
+        {
+            message = "123456789012345678901234567890 GM.Save(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
         }
     }
     /// <summary>
@@ -445,74 +491,83 @@ public class GameManager : MonoBehaviour
     /// <param name="gamestateId">The ID of the game state to load</param>
     public void Load(int gamestateId)
     {
-        //Update chosenId to game-state-now
-        chosenId = gamestateId;
-        //Remove null objects from the list
-        cleanObjects();
-        //Destroy objects not spawned yet in the new selected state
-        List<GameObject> destroyObjectList = new List<GameObject>();
-        foreach (GameObject go in gameObjects.Values)
+        try
         {
-            foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
+            //Update chosenId to game-state-now
+            chosenId = gamestateId;
+            //Remove null objects from the list
+            cleanObjects();
+            //Destroy objects not spawned yet in the new selected state
+            List<GameObject> destroyObjectList = new List<GameObject>();
+            foreach (GameObject go in gameObjects.Values)
             {
-                //If the game object was spawned during run time
-                //(versus pre-placed at edit time)
-                if (smb.isSpawnedObject())
+                foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
                 {
-                    //And if the game object is not in the game state,
-                    if (!gameStates[gamestateId].hasGameObject(go))
+                    //If the game object was spawned during run time
+                    //(versus pre-placed at edit time)
+                    if (smb.isSpawnedObject())
                     {
-                        //remove it from game objects list
-                        //by adding it to the list of game objects to be destroyed
-                        destroyObjectList.Add(go);
+                        //And if the game object is not in the game state,
+                        if (!gameStates[gamestateId].hasGameObject(go))
+                        {
+                            //remove it from game objects list
+                            //by adding it to the list of game objects to be destroyed
+                            destroyObjectList.Add(go);
+                        }
                     }
                 }
             }
-        }
-        //Actually destroy the objects that need destroyed
-        for (int i = destroyObjectList.Count - 1; i >= 0; i--)
-        {
-            //Work around to avoid deleting objects from a list that's being iterated over
-            destroyObject(destroyObjectList[i]);
-        }
-        //Actually load the game state
-        gameStates[gamestateId].load();
-
-        //Destroy game states in game-state-future
-        for (int i = gameStates.Count - 1; i > gamestateId; i--)
-        {
-            Destroy(gameStates[i].Representation);
-            gameStates.RemoveAt(i);
-        }
-        //Update the next game state id
-        GameState.nextid = gamestateId + 1;
-
-        //If the rewind is finished,
-        if (chosenId == rewindId)
-        {
-            //Refresh the game object list
-            refreshGameObjects();
-            //Put the music back to normal
-            Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
-            //Update Scene tracking variables
-            foreach (SceneLoader sl in sceneLoaders)
+            //Actually destroy the objects that need destroyed
+            for (int i = destroyObjectList.Count - 1; i >= 0; i--)
             {
-                //If the scene was last opened after game-state-now,
-                if (sl.lastOpenGameStateId > chosenId)
-                {
-                    //it is now last opened game-state-now
-                    sl.lastOpenGameStateId = chosenId;
-                }
-                //if the scene was first opened after game-state-now,
-                if (sl.firstOpenGameStateId > chosenId)
-                {
-                    //it is now never opened
-                    sl.firstOpenGameStateId = int.MaxValue;
-                    sl.lastOpenGameStateId = -1;
-                }
+                //Work around to avoid deleting objects from a list that's being iterated over
+                destroyObject(destroyObjectList[i]);
             }
-            //Re-enable physics because the rewind is over
-            Managers.Physics2DSurrogate.enabled = false;
+            //Actually load the game state
+            gameStates[gamestateId].load();
+
+            //Destroy game states in game-state-future
+            for (int i = gameStates.Count - 1; i > gamestateId; i--)
+            {
+                Destroy(gameStates[i].Representation);
+                gameStates.RemoveAt(i);
+            }
+            //Update the next game state id
+            GameState.nextid = gamestateId + 1;
+
+            //If the rewind is finished,
+            if (chosenId == rewindId)
+            {
+                //Refresh the game object list
+                refreshGameObjects();
+                //Put the music back to normal
+                Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
+                //Update Scene tracking variables
+                foreach (SceneLoader sl in sceneLoaders)
+                {
+                    //If the scene was last opened after game-state-now,
+                    if (sl.lastOpenGameStateId > chosenId)
+                    {
+                        //it is now last opened game-state-now
+                        sl.lastOpenGameStateId = chosenId;
+                    }
+                    //if the scene was first opened after game-state-now,
+                    if (sl.firstOpenGameStateId > chosenId)
+                    {
+                        //it is now never opened
+                        sl.firstOpenGameStateId = int.MaxValue;
+                        sl.lastOpenGameStateId = -1;
+                    }
+                }
+                //Re-enable physics because the rewind is over
+                Managers.Physics2DSurrogate.enabled = false;
+            }
+        }
+        catch (System.Exception e)
+        {
+            message = "123456789012345678901234567890 GM.Load(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
         }
     }
 
@@ -574,42 +629,60 @@ public class GameManager : MonoBehaviour
     #region Space Management
     void sceneLoaded(Scene scene, LoadSceneMode m)
     {
-        //Update the list of objects with state to save
-        Debug.Log("sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
-        refreshGameObjects();
-        Debug.Log("sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
-        //Add the given scene to list of open scenes
-        openScenes.Add(scene);
-        //If time is moving forward,
-        if (!Rewinding)
+        try
         {
-            //Load the previous state of the objects in the scene
-            LoadObjectsFromScene(scene);
-            //If the game has just begun,
-            if (gameStates.Count == 0)
+            //Update the list of objects with state to save
+            Debug.Log("sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
+            refreshGameObjects();
+            Debug.Log("sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
+            //Add the given scene to list of open scenes
+            openScenes.Add(scene);
+            //If time is moving forward,
+            if (!Rewinding)
             {
-                //Create the initial save state
-                Save();
+                //Load the previous state of the objects in the scene
+                LoadObjectsFromScene(scene);
+                //If the game has just begun,
+                if (gameStates.Count == 0)
+                {
+                    //Create the initial save state
+                    Save();
+                }
             }
+        }
+        catch (System.Exception e)
+        {
+            message = "123456789012345678901234567890 GM.sceneLoaded(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
         }
     }
     void sceneUnloaded(Scene scene)
     {
-        //Remove the given scene's objects from the forgotten objects list
-        for (int i = forgottenObjects.Count - 1; i >= 0; i--)
+        try
         {
-            GameObject fgo = forgottenObjects[i];
-            if (fgo == null || fgo.scene == scene)
+            //Remove the given scene's objects from the forgotten objects list
+            for (int i = forgottenObjects.Count - 1; i >= 0; i--)
             {
-                forgottenObjects.RemoveAt(i);
+                GameObject fgo = forgottenObjects[i];
+                if (fgo == null || fgo.scene == scene)
+                {
+                    forgottenObjects.RemoveAt(i);
+                }
             }
+            //Update the list of game objects to save
+            Debug.Log("sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
+            refreshGameObjects();
+            Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
+            //Remove the scene from the list of open scenes
+            openScenes.Remove(scene);
         }
-        //Update the list of game objects to save
-        Debug.Log("sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
-        refreshGameObjects();
-        Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
-        //Remove the scene from the list of open scenes
-        openScenes.Remove(scene);
+        catch (System.Exception e)
+        {
+            message = "123456789012345678901234567890 GM.sceneUnloaded(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
+        }
     }
 
     /// <summary>
@@ -680,25 +753,34 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void saveToFile()
     {
-        //Set the base filename
-        string fileName = "merky";
-        //If saving with time stamp,
-        if (saveWithTimeStamp)
+        try
         {
-            //Add the time stamp to the filename
-            System.DateTime now = System.DateTime.Now;
-            fileName += "-" + now.Ticks;
+            //Set the base filename
+            string fileName = "merky";
+            //If saving with time stamp,
+            if (saveWithTimeStamp)
+            {
+                //Add the time stamp to the filename
+                System.DateTime now = System.DateTime.Now;
+                fileName += "-" + now.Ticks;
+            }
+            //Add an extension to the filename
+            fileName += ".txt";
+            //Save memories
+            ES3.Save<Dictionary<string, MemoryObject>>("memories", memories, fileName);
+            //Save game states
+            ES3.Save<List<GameState>>("states", gameStates, fileName);
+            //Save scene cache
+            ES3.Save<List<SceneLoader>>("scenes", sceneLoaders, fileName);
+            //Save settings
+            Managers.Settings.saveSettings();
         }
-        //Add an extension to the filename
-        fileName += ".txt";
-        //Save memories
-        ES3.Save<Dictionary<string, MemoryObject>>("memories", memories, fileName);
-        //Save game states
-        ES3.Save<List<GameState>>("states", gameStates, fileName);
-        //Save scene cache
-        ES3.Save<List<SceneLoader>>("scenes", sceneLoaders, fileName);
-        //Save settings
-        Managers.Settings.saveSettings();
+        catch (System.Exception e)
+        {
+            message = "123456789012345678901234567890 GM.saveToFile(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
+        }
     }
     /// <summary>
     /// Loads the game from the save file
@@ -706,37 +788,52 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void loadFromFile()
     {
-        //Set the base filename
-        string fileName = "merky";
-        //Add an extension to the filename
-        fileName += ".txt";
-        //Load memories
-        memories = ES3.Load<Dictionary<string, MemoryObject>>("memories", fileName);
-        //Load game states
-        gameStates = ES3.Load<List<GameState>>("states", fileName);
-        //Scenes
-        List<SceneLoader> rsls = ES3.Load<List<SceneLoader>>("scenes", fileName);
-        //Loop through all scene loaders in the game
-        foreach (SceneLoader sl in sceneLoaders)
+        try
         {
-            //Loop through the scene loaders read in from the file
-            foreach (SceneLoader rsl in rsls)
+            //Set the base filename
+            string fileName = "merky";
+            //Add an extension to the filename
+            fileName += ".txt";
+            //Load memories
+            memories = ES3.Load<Dictionary<string, MemoryObject>>("memories", fileName);
+            //Load game states
+            gameStates = ES3.Load<List<GameState>>("states", fileName);
+            //Scenes
+            List<SceneLoader> rsls = ES3.Load<List<SceneLoader>>("scenes", fileName);
+            //Loop through all scene loaders in the game
+            foreach (SceneLoader sl in sceneLoaders)
             {
-                //If the scene in the game and the read in one match,
-                if (rsl != null && sl.sceneName == rsl.sceneName && rsl != sl)
+                //Loop through the scene loaders read in from the file
+                foreach (SceneLoader rsl in rsls)
                 {
-                    //Restore the scene loader
-                    sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
-                    //Destroy the read in scene loader,
-                    Destroy(rsl);
-                    //And immediately exit its loop
-                    //to avoid ConcurrentModificationException
-                    break;
+                    //If the scene in the game and the read in one match,
+                    if (rsl != null && sl.sceneName == rsl.sceneName && rsl != sl)
+                    {
+                        //Restore the scene loader
+                        sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
+                        //Destroy the read in scene loader,
+                        Destroy(rsl);
+                        //And immediately exit its loop
+                        //to avoid ConcurrentModificationException
+                        break;
+                    }
                 }
             }
+            //Load settings
+            Managers.Settings.loadSettings();
+            throw new System.Exception("test exception");
         }
-        //Load settings
-        Managers.Settings.loadSettings();
+        catch (System.Exception e)
+        {
+            if (ES3.FileExists("merky.txt"))
+            {
+                ES3.DeleteFile("merky.txt");
+            }
+            Managers.Game.resetGame(false);
+            message = "123456789012345678901234567890 GM.loadFromFile(): e: " + e;
+            Debug.LogError(message);
+            Utility.onScreenErrorMessage(message);
+        }
     }
     //Sent to all GameObjects before the application is quit
     //Auto-save on exit

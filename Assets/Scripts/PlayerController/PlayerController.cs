@@ -563,6 +563,23 @@ public class PlayerController : MonoBehaviour
                 Destroy(fj2d);
             }
         }
+
+        if (GameManager.message != null && GameManager.message != "")
+        {
+            string errorMessage = "ERROR: " + GameManager.message.Substring(
+                0,
+                Mathf.Min(100, GameManager.message.Length)
+                ).Replace("\n", " ");
+            Utility.onScreenErrorMessage(errorMessage);
+            GameManager.message = GameManager.message.Substring(
+                Mathf.Min(25, GameManager.message.Length)
+                );
+        }
+        else if (GameManager.message == "")
+        {
+            Utility.onScreenErrorMessage(GameManager.message, false);
+            GameManager.message = null;
+        }
     }
     public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
     public OnTeleport onTeleport;

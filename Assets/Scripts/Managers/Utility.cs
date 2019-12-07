@@ -432,4 +432,9 @@ public static class Utility
         xy.Raycast(ray, out distance);
         return ray.GetPoint(distance);
     }
+
+    public static void onScreenErrorMessage(string message, bool show = true)
+    {
+        NPCManager.speakNPC(Managers.Player.gameObject, show, message, message);
+    }
 }
