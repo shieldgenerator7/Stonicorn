@@ -821,7 +821,6 @@ public class GameManager : MonoBehaviour
             }
             //Load settings
             Managers.Settings.loadSettings();
-            throw new System.Exception("test exception");
         }
         catch (System.Exception e)
         {
