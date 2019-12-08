@@ -99,6 +99,12 @@ public class GameManager : MonoBehaviour
                 //Load the memories
                 LoadMemories();
             }
+            //If there are no saved states,
+            if (gameStates.Count == 0)
+            {
+                //Save the first one
+                Save();
+            }
             //Register scene loading delegates
             SceneManager.sceneLoaded += sceneLoaded;
             SceneManager.sceneUnloaded += sceneUnloaded;
@@ -107,7 +113,6 @@ public class GameManager : MonoBehaviour
         {
             message = "123456789012345678901234567890 GM.Start(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
 
@@ -182,7 +187,6 @@ public class GameManager : MonoBehaviour
         {
             message = "123456789012345678901234567890 GM.Update(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
 
@@ -415,7 +419,6 @@ public class GameManager : MonoBehaviour
         {
             message = "123456789012345678901234567890 GM.saveMemory(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
     /// <summary>
@@ -441,7 +444,6 @@ public class GameManager : MonoBehaviour
         {
             message = "123456789012345678901234567890 GM.loadMemory(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
     #endregion
@@ -482,7 +484,6 @@ public class GameManager : MonoBehaviour
         {
             message = "123456789012345678901234567890 GM.Save(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
     /// <summary>
@@ -494,7 +495,7 @@ public class GameManager : MonoBehaviour
         try
         {
             //Update chosenId to game-state-now
-            chosenId = gamestateId;
+            chosenId = Utility.clamp(gamestateId, 0, gameStates.Count);
             //Remove null objects from the list
             cleanObjects();
             //Destroy objects not spawned yet in the new selected state
@@ -567,7 +568,6 @@ public class GameManager : MonoBehaviour
         {
             message = "123456789012345678901234567890 GM.Load(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
 
@@ -654,7 +654,6 @@ public class GameManager : MonoBehaviour
         {
             message = "123456789012345678901234567890 GM.sceneLoaded(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
     void sceneUnloaded(Scene scene)
@@ -681,7 +680,6 @@ public class GameManager : MonoBehaviour
         {
             message = "123456789012345678901234567890 GM.sceneUnloaded(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
 
@@ -779,7 +777,6 @@ public class GameManager : MonoBehaviour
         {
             message = "123456789012345678901234567890 GM.saveToFile(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
     /// <summary>
@@ -831,7 +828,6 @@ public class GameManager : MonoBehaviour
             Managers.Game.resetGame(false);
             message = "123456789012345678901234567890 GM.loadFromFile(): e: " + e;
             Debug.LogError(message);
-            Utility.onScreenErrorMessage(message);
         }
     }
     //Sent to all GameObjects before the application is quit
