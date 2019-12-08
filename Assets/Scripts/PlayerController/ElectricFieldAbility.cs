@@ -80,7 +80,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         {
             //Find one that he's currently in
             Collider2D coll2d = GetComponent<Collider2D>();
-            int collCount = Utility.Cast(coll2d,Vector2.zero, rch2dsWait);
+            int collCount = Utility.Cast(coll2d, Vector2.zero, rch2dsWait);
             for (int i = 0; i < collCount; i++)
             {
                 ElectricFieldController efc = rch2dsWait[i].collider.gameObject.GetComponent<ElectricFieldController>();
@@ -139,7 +139,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         newlyCreatedEF = false;
     }
 
-    public bool processTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
+    public void processTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
         dropWaitGesture();
         float distance = Vector3.Distance(oldPos, triedPos);
@@ -152,7 +152,6 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
             activationDelay = baseActivationDelay;
         }
         //activationDelay = baseActivationDelay * distance / playerController.baseRange;
-        return true;
     }
 
     public float checkForce(float force)

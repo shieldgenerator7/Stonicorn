@@ -200,7 +200,26 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2d;
     public float Speed
     {
-        get { return rb2d.velocity.magnitude; }
+        get {
+            float speed = rb2d.velocity.magnitude;
+            if (speed == 0)
+            {
+                speed = savedVelocity.magnitude;
+            }
+            return speed;
+        }
+    }
+    public Vector2 Velocity
+    {
+        get
+        {
+            Vector2 velocity = rb2d.velocity;
+            if (velocity.magnitude == 0)
+            {
+                velocity = savedVelocity;
+            }
+            return velocity;
+        }
     }
     private GravityAccepter gravity;
     public GravityAccepter Gravity
@@ -998,28 +1017,14 @@ public class PlayerController : MonoBehaviour
         Vector3 oldPos = transform.position;
         //Get post-teleport position
         Vector3 newPos = findTeleportablePosition(tapPos);
-        //Check to make sure teleport is not on cooldown
-        bool continueTeleport = TeleportReady;
-        //If teleport is not on cooldown and it could get canceled,
-        if (continueTeleport && onPreTeleport != null)
+        //If teleport is not on cooldown,
+        if (TeleportReady)
         {
-            //Check each onPreTeleport delegate
-            foreach (OnPreTeleport opt in onPreTeleport.GetInvocationList())
+            //Process onPreTeleport delegates
+            if (onPreTeleport != null)
             {
-                //Make it do what it needs to do, then return the result
-                bool result = opt.Invoke(oldPos, newPos, tapPos);
-                //If at least 1 returns false,
-                if (result == false)
-                {
-                    //Don't teleport
-                    continueTeleport = false;
-                    break;
-                }
+                onPreTeleport(oldPos, newPos, tapPos);
             }
-        }
-        //If teleport is not on cooldown and is not canceled,
-        if (continueTeleport)
-        {
             //Teleport
             teleport(newPos);
             //Save the game state
@@ -1032,8 +1037,8 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    //Used when you need to know where the user clicked, and may need to stop the teleport
-    public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
+    //Used when you also need to know where the player tapped
+    public delegate void OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
     public OnPreTeleport onPreTeleport;
 
     /// <summary>
