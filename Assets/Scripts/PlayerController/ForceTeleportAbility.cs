@@ -3,19 +3,16 @@ using System.Collections;
 
 public class ForceTeleportAbility : PlayerAbility
 {
-    public GameObject forceRangeIndicator;//prefab
-    private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
-    private GameObject frii;//"force range indicator instance"
-    public GameObject explosionEffect;
-    public GameObject afterWindPrefab;//the prefab for the temporary windzone this ability creates
+    [Header("Savable Variables")]
+    public float currentCharge = 0;//how much charge it has
 
+    [Header("Settings")]
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxForce = 1000;//the maximum amount of force applied to one object
     public float maxRange = 3;
     public float maxSpeedBoost = 2;//how much force to give Merky when teleporting in a direction
     public float wakelessSpeedBoostMultiplier = 3;//how much to multiply the speed boost by when there's no wake
 
-    public float currentCharge = 0;//how much charge it has
     public float chargeIncrement = 0.1f;//how much to increment the charge by each teleport
     public float maxCharge = 1;//the maximum amount of charge possible
     public float minChargeDecayDelay = 0.25f;//how much time (sec) of idleness before the charge starts decreasing
@@ -24,8 +21,15 @@ public class ForceTeleportAbility : PlayerAbility
     public float minWindDuration = 0.3f;
     public float maxWindDuration = 0.5f;
 
-    private float lastTeleportTime;
+    [Header("Components")]
+    public GameObject forceRangeIndicator;//prefab
+    private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
+    private GameObject frii;//"force range indicator instance"
+    public GameObject explosionEffect;
+    public GameObject afterWindPrefab;//the prefab for the temporary windzone this ability creates
     public AudioClip forceTeleportSound;
+
+    private float lastTeleportTime;
 
     protected override void init()
     {
@@ -250,5 +254,17 @@ public class ForceTeleportAbility : PlayerAbility
         newTS.GetComponent<ExplosionEffectUpdater>().position();
         newTS.GetComponent<ExplosionEffectUpdater>().init();
         newTS.GetComponent<ExplosionEffectUpdater>().turnOn(true);
+    }
+
+    public override SavableObject getSavableObject()
+    {
+        SavableObject so = base.getSavableObject();
+        so.data.Add("currentCharge", currentCharge);
+        return so;
+    }
+
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        currentCharge = (float)savObj.data["currentCharge"];
     }
 }
