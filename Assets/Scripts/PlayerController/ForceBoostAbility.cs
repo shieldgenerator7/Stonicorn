@@ -10,6 +10,7 @@ public class ForceBoostAbility : PlayerAbility
     public float maxSpeedBoost = 2;//how much force to give Merky when teleporting in a direction
     public float wakelessSpeedBoostMultiplier = 3;//how much to multiply the speed boost by when there's no wake
 
+    private float prevCharge = 0;
     public float Charge
     {
         get
@@ -57,18 +58,29 @@ public class ForceBoostAbility : PlayerAbility
     private float maxSpeedAttained = 0;
     private void Update()
     {
+        float charge = Charge;
         if (Mathf.Floor(playerController.Speed) > maxSpeedAttained)
         {
             maxSpeedAttained = Mathf.Floor(playerController.Speed);
             Debug.Log("Player Speed: " + maxSpeedAttained);
         }
-        if (Charge > 0)
+        if (charge > 0)
         {
-            processHoldGesture(transform.position, Charge, false);
+            doExplosionEffect(transform.position, charge, false);
         }
-        if (Charge <= 0)
+        if (charge <= 0)
         {
             dropHoldGesture();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        float charge = Charge;
+        charge = Mathf.Floor(charge * 100) / 100;
+        if (charge > 0)
+        {
+            prevCharge = charge;
         }
     }
 
@@ -96,8 +108,9 @@ public class ForceBoostAbility : PlayerAbility
             }
             Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
             Debug.DrawLine(explodePos, explodePos + (dir * 2), Color.white, 2);
-            Debug.Log("Exploding: charge: " + Mathf.Floor(Charge) + ", rb2d.vel: " + velocity.magnitude);
-            processHoldGesture(explodePos, Mathf.Max(Charge, chargeIncrement), true);
+            float charge = Mathf.Max(prevCharge, Charge);
+            prevCharge = 0;
+            doExplosionEffect(explodePos, Mathf.Max(charge, chargeIncrement), true);
             dropHoldGesture();
         }
         //Else
@@ -174,7 +187,7 @@ public class ForceBoostAbility : PlayerAbility
 
 
 
-    public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
+    public void doExplosionEffect(Vector2 pos, float holdTime, bool finished)
     {
         float range = getRangeFromCharge(holdTime);
         if (finished)
@@ -235,39 +248,14 @@ public class ForceBoostAbility : PlayerAbility
         effectParticleController.activateTeleportParticleSystem(false);
     }
 
-    /// <summary>
-    /// Returns whether or not an object with a Blastable or RigidBody component
-    /// is within the given range of the given position
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <param name="range"></param>
-    /// <returns></returns>
-    bool isBlastableInArea(Vector2 pos, float range)
-    {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
-        for (int i = 0; i < hitColliders.Length; i++)
-        {
-            Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
-            if (orb2d != null)
-            {
-                return true;
-            }
-            Blastable b = hitColliders[i].gameObject.GetComponent<Blastable>();
-            if (b != null)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     void showExplosionEffect(Vector2 pos, float finalSize)
     {
         GameObject newTS = (GameObject)Instantiate(explosionEffect);
-        newTS.GetComponent<ExplosionEffectUpdater>().start = pos;
-        newTS.GetComponent<ExplosionEffectUpdater>().finalSize = finalSize;
-        newTS.GetComponent<ExplosionEffectUpdater>().position();
-        newTS.GetComponent<ExplosionEffectUpdater>().init();
-        newTS.GetComponent<ExplosionEffectUpdater>().turnOn(true);
+        ExplosionEffectUpdater eeu = newTS.GetComponent<ExplosionEffectUpdater>();
+        eeu.start = pos;
+        eeu.finalSize = finalSize;
+        eeu.position();
+        eeu.init();
+        eeu.turnOn(true);
     }
 }
