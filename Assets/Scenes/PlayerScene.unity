@@ -35633,7 +35633,7 @@ GameObject:
   - component: {fileID: 1792176468}
   - component: {fileID: 1792176466}
   - component: {fileID: 1792176476}
-  - component: {fileID: 1792176467}
+  - component: {fileID: 1792176482}
   - component: {fileID: 1792176479}
   - component: {fileID: 1792176473}
   - component: {fileID: 1792176480}
@@ -35667,46 +35667,6 @@ MonoBehaviour:
   timeLength: 0.7
   fragmentPrefab: {fileID: 6491032585982812421, guid: b9c52fd9a99b951428ca8f85171044a7,
     type: 3}
---- !u!114 &1792176467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 11407370, guid: 5913bd1e88aefff4988c7dfee6595611,
-    type: 3}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1792176465}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f16f92f62c03f9d49ae9349cf322432d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectColor: {r: 1, g: 0.4821931, b: 0.40344828, a: 1}
-  teleportRangeSegment: {fileID: 11400000, guid: 0a96e2874f60cf3498b0ec0550706c39,
-    type: 2}
-  effectParticleController: {fileID: 217562836}
-  addsOnTeleportVisualEffect: 1
-  soundEffect: {fileID: 0}
-  addsOnTeleportSoundEffect: 0
-  unlocked: 0
-  active: 0
-  forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 3}
-  explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 3}
-  afterWindPrefab: {fileID: 1706305049858728, guid: 5d5f3c3ecac31234687d4055a32ad921,
-    type: 3}
-  forceAmount: 5
-  maxForce: 3700
-  maxRange: 2.5
-  maxSpeedBoost: 200
-  wakelessSpeedBoostMultiplier: 3
-  currentCharge: 0
-  chargeIncrement: 0.1
-  maxCharge: 1
-  minChargeDecayDelay: 0.1
-  maxChargeDecayDelay: 2
-  chargeDecayRate: 0.4
-  minWindDuration: 0.3
-  maxWindDuration: 0.5
-  forceTeleportSound: {fileID: 8300000, guid: 64801fca428cf394fa91e011dab21557, type: 3}
 --- !u!114 &1792176468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36090,6 +36050,42 @@ MonoBehaviour:
   addsOnTeleportSoundEffect: 0
   unlocked: 0
   active: 0
+--- !u!114 &1792176482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792176465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f780fae2196b574fac53818cb106dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectColor: {r: 1, g: 0.48235294, b: 0.40392157, a: 0}
+  teleportRangeSegment: {fileID: 11400000, guid: 0a96e2874f60cf3498b0ec0550706c39,
+    type: 2}
+  effectParticleController: {fileID: 217562836}
+  addsOnTeleportVisualEffect: 1
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  active: 0
+  forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 3}
+  explosionEffect: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 3}
+  afterWindPrefab: {fileID: 1706305049858728, guid: 5d5f3c3ecac31234687d4055a32ad921,
+    type: 3}
+  forceAmount: 5
+  maxForce: 3700
+  maxRange: 2.5
+  maxSpeedBoost: 200
+  wakelessSpeedBoostMultiplier: 3
+  chargeClutch: 0.2
+  chargeIncrement: 0.1
+  maxCharge: 1
+  minWindDuration: 0.3
+  maxWindDuration: 0.5
+  forceTeleportSound: {fileID: 8300000, guid: 64801fca428cf394fa91e011dab21557, type: 3}
 --- !u!1 &1809435737
 GameObject:
   m_ObjectHideFlags: 0
@@ -37380,7 +37376,7 @@ MonoBehaviour:
     - {fileID: 1792176469}
     - {fileID: 1792176468}
     - {fileID: 1792176476}
-    - {fileID: 1792176467}
+    - {fileID: 0}
     - {fileID: 1792176473}
     - {fileID: 1792176478}
     - {fileID: 1792176479}

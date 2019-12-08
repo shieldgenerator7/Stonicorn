@@ -2,11 +2,8 @@
 
 public class ForceBoostAbility : PlayerAbility
 {//2019-04-06: copied from ForceTeleportAbility
-    public GameObject forceRangeIndicator;//prefab
-    private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
-    public GameObject explosionEffect;
-    public GameObject afterWindPrefab;//the prefab for the temporary windzone this ability creates
 
+    [Header("Settings")]
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxForce = 1000;//the maximum amount of force applied to one object
     public float maxRange = 3;
@@ -30,6 +27,12 @@ public class ForceBoostAbility : PlayerAbility
     public float maxWindDuration = 0.5f;
 
     private float lastTeleportTime;
+
+    [Header("Components")]
+    public GameObject forceRangeIndicator;//prefab
+    private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
+    public GameObject explosionEffect;
+    public GameObject afterWindPrefab;//the prefab for the temporary windzone this ability creates
     public AudioClip forceTeleportSound;
 
     protected override void init()
@@ -93,7 +96,7 @@ public class ForceBoostAbility : PlayerAbility
             }
             Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
             Debug.DrawLine(explodePos, explodePos + (dir * 2), Color.white, 2);
-            Debug.Log("Exploding: charge: " + Mathf.Floor(Charge)+", rb2d.vel: "+velocity.magnitude);
+            Debug.Log("Exploding: charge: " + Mathf.Floor(Charge) + ", rb2d.vel: " + velocity.magnitude);
             processHoldGesture(explodePos, Mathf.Max(Charge, chargeIncrement), true);
             dropHoldGesture();
         }
@@ -162,7 +165,7 @@ public class ForceBoostAbility : PlayerAbility
             //The first teleport will only make the charge increase a small amount, no matter how far it was
             rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement);
         }
-        else 
+        else
         {
             rb2d.AddForce((newPos - oldPos).normalized * chargeIncrement * Vector2.Distance(oldPos, newPos) / playerController.baseRange);
         }
@@ -192,7 +195,7 @@ public class ForceBoostAbility : PlayerAbility
                 }
             }
             showExplosionEffect(pos, range * 2);
-            SoundManager.playSound(forceTeleportSound, pos);
+            Managers.Sound.playSound(forceTeleportSound, pos);
             dropHoldGesture();
             //Update Stats
             GameStatistics.addOne("ForceChargeBlast");
