@@ -119,12 +119,6 @@ public class GameManager : MonoBehaviour
                 //Load the memories
                 LoadMemories();
             }
-            //If there are no saved states,
-            if (gameStates.Count == 0)
-            {
-                //Save the first one
-                Save();
-            }
             //Register scene loading delegates
             SceneManager.sceneLoaded += sceneLoaded;
             SceneManager.sceneUnloaded += sceneUnloaded;
@@ -662,12 +656,13 @@ public class GameManager : MonoBehaviour
             {
                 //Load the previous state of the objects in the scene
                 LoadObjectsFromScene(scene);
-                //If the game has just begun,
-                if (gameStates.Count == 0)
-                {
-                    //Create the initial save state
-                    Save();
-                }
+            }
+            //If the game has just begun,
+            if (gameStates.Count == 0)
+            {
+                //Create the initial save state
+                Save();
+            }
             //If its a level scene,
             if (isLevelScene(scene.name))
             {
