@@ -69,6 +69,7 @@ public class SceneLoader : MonoBehaviour
             if (!SceneManager.GetSceneByName(sceneName).isLoaded)
             {
                 loadLevel();
+                Managers.Game.LoadingSceneCount++;
             }
         }
         if (isLoaded && !overlaps)

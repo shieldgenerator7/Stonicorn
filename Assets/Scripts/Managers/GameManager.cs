@@ -45,6 +45,26 @@ public class GameManager : MonoBehaviour
     private float resetGameTimer;//the time that the game will reset at
     private static float gamePlayTime;//how long the game can be played for, 0 for indefinitely
 
+    private int loadingSceneCount = 0;//how many scenes are currently loading
+    public int LoadingSceneCount
+    {
+        get => loadingSceneCount;
+        set
+        {
+            loadingSceneCount = Mathf.Max(0, value);
+            if (loadingSceneCount == 0)
+            {
+                //Resume if all scenes done loading
+                Time.timeScale = 1;
+            }
+            else
+            {
+                //Pause if at least one level scene is still loading
+                Time.timeScale = 0;
+            }
+        }
+    }
+
     //
     // Runtime Lists
     //
@@ -648,6 +668,11 @@ public class GameManager : MonoBehaviour
                     //Create the initial save state
                     Save();
                 }
+            //If its a level scene,
+            if (isLevelScene(scene.name))
+            {
+                //Update the level loading number
+                LoadingSceneCount--;
             }
         }
         catch (System.Exception e)
@@ -742,6 +767,24 @@ public class GameManager : MonoBehaviour
             }
         }
         Debug.Log("LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
+    }
+
+    /// <summary>
+    /// Returns true if the scene by the given name has a scene loader that loads it
+    /// Only true for scenes that are actually levels
+    /// </summary>
+    /// <param name="sceneName"></param>
+    /// <returns></returns>
+    private bool isLevelScene(string sceneName)
+    {
+        foreach(SceneLoader sl in sceneLoaders)
+        {
+            if (sl.sceneName == sceneName)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     #endregion
 
