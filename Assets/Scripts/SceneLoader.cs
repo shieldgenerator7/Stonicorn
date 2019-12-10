@@ -32,15 +32,35 @@ public class SceneLoader : MonoBehaviour
             }
             return explorerObj;
         }
-        set { explorerObj = value; }
+        set
+        {
+            explorerObj = value;
+            Explorer = explorerObj.GetComponent<Explorer>();
+            if (!Explorer)
+            {
+                Explorer = explorerObj.GetComponentInChildren<Explorer>();
+            }
+        }
     }
-    private bool isLoaded = false;
+    public static Explorer Explorer { get; private set; }
+    /// <summary>
+    /// True if the level is currently loaded
+    /// </summary>
+    internal bool isLoaded = false;
+    /// <summary>
+    /// True if the level is currently loaded or is currently loading
+    /// </summary>
+    private bool isLoading = false;
+    /// <summary>
+    /// True if the level is currently unloaded or is currently unloaded
+    /// </summary>
+    private bool isUnloading = false;
     private Collider2D c2d;
 
     // Use this for initialization
     void Start()
     {
-        if (gameObject.name == "Easy Save 2 Loaded Component")
+        if (gameObject.name == "Easy Save 3 Loaded Component")
         {
             return;
         }
@@ -63,27 +83,47 @@ public class SceneLoader : MonoBehaviour
         {
             currentScene = this;
         }
-        if (!isLoaded && overlaps)
+        //Unload when player leaves
+        if ((isLoaded || isLoading) && !isUnloading)
         {
-            isLoaded = true;
-            if (!SceneManager.GetSceneByName(sceneName).isLoaded)
+            bool shouldUnload =
+                (Explorer)
+                ? !Explorer.canSeeBehind(c2d)
+                : !overlaps;
+            if (shouldUnload)
             {
-                loadLevel();
-                Managers.Game.LoadingSceneCount++;
+                unloadLevel();
             }
         }
-        if (isLoaded && !overlaps)
+        //Load when player enters
+        if ((!isLoaded || isUnloading) && !isLoading)
         {
-            isLoaded = false;
-            unloadLevel();
+            bool shouldLoad =
+                (Explorer)
+                ? Explorer.canSee(c2d)
+                : overlaps;
+            if (shouldLoad)
+            {
+                loadLevel();
+            }
+        }
+        //If the player is in the level before it's done loading,
+        if (overlaps && !isLoaded)
+        {
+            //Pause the game.
+            Managers.Game.LoadingSceneCount++;
         }
     }
     void loadLevel()
     {
+        isLoading = true;
+        isUnloading = false;
         LoadingScreen.LoadScene(sceneName);
     }
     void unloadLevel()
     {
+        isLoading = false;
+        isUnloading = true;
         SceneManager.UnloadSceneAsync(sceneName);
     }
     public void unloadLevelIfLoaded()
@@ -93,6 +133,8 @@ public class SceneLoader : MonoBehaviour
             unloadLevel();
         }
     }
+
+    #region Static Helper Methods
 
     public static Scene getCurrentScene()
     {
@@ -106,4 +148,6 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.MoveGameObjectToScene(go, getCurrentScene());
     }
+
+    #endregion
 }

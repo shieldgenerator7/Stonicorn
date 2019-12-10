@@ -664,10 +664,13 @@ public class GameManager : MonoBehaviour
                 Save();
             }
             //If its a level scene,
-            if (isLevelScene(scene.name))
+            SceneLoader sceneLoader = getSceneLoaderByName(scene.name);
+            if (sceneLoader)
             {
-                //Update the level loading number
+                //Unpause the game
                 LoadingSceneCount--;
+                //Update the scene loader's variables
+                sceneLoader.isLoaded = true;
             }
         }
         catch (System.Exception e)
@@ -695,6 +698,13 @@ public class GameManager : MonoBehaviour
             Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
             //Remove the scene from the list of open scenes
             openScenes.Remove(scene);
+            //If its a level scene,
+            SceneLoader sceneLoader = getSceneLoaderByName(scene.name);
+            if (sceneLoader)
+            {
+                //Update the scene loader's variables
+                sceneLoader.isLoaded = false;
+            }
         }
         catch (System.Exception e)
         {
@@ -763,23 +773,17 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
     }
-
-    /// <summary>
-    /// Returns true if the scene by the given name has a scene loader that loads it
-    /// Only true for scenes that are actually levels
-    /// </summary>
-    /// <param name="sceneName"></param>
-    /// <returns></returns>
-    private bool isLevelScene(string sceneName)
+    
+    private SceneLoader getSceneLoaderByName(string sceneName)
     {
-        foreach(SceneLoader sl in sceneLoaders)
+        foreach (SceneLoader sl in sceneLoaders)
         {
             if (sl.sceneName == sceneName)
             {
-                return true;
+                return sl;
             }
         }
-        return false;
+        return null;
     }
     #endregion
 
