@@ -45,7 +45,7 @@ public class LoadingScreen : MonoBehaviour
         {
             if (image.fillAmount != targetFillAmount)
             {
-                image.fillAmount = Mathf.MoveTowards(image.fillAmount, targetFillAmount, growSpeed * Time.deltaTime);
+                image.fillAmount = Mathf.MoveTowards(image.fillAmount, targetFillAmount, growSpeed * Time.unscaledDeltaTime);
             }
             if (image.fillAmount == 1)
             {
