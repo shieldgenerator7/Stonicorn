@@ -86,6 +86,10 @@ public class ForceBoostAbility : PlayerAbility
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!Active)
+        {
+            return;
+        }
         //If collision is head on,
         Vector2 velocity = playerController.Velocity;
         Vector2 surfaceNormal = collision.GetContact(0).normal;
