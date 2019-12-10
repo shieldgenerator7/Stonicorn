@@ -8,44 +8,30 @@ using UnityEngine;
 /// </summary>
 public class Explorer : MonoBehaviour
 {
-    public float sightRadius = 60;
-    public float hindSightRadius = 80;
+    public float sightRadius = 30;
+    public float hindSightRadius = 50;
 
+    [SerializeField]
     private CircleCollider2D coll2d;
-    private Collider2D Collider
-    {
-        get
-        {
-            if (coll2d == null)
-            {
-                coll2d = gameObject.AddComponent<CircleCollider2D>();
-                coll2d.radius = sightRadius;
-            }
-            return coll2d;
-        }
-    }
 
+    [SerializeField]
     private CircleCollider2D behindColl2d;
-    private Collider2D BehindCollider
+
+    private void Start()
     {
-        get
-        {
-            if (behindColl2d == null)
-            {
-                behindColl2d = gameObject.AddComponent<CircleCollider2D>();
-                behindColl2d.radius = hindSightRadius;
-            }
-            return behindColl2d;
-        }
+        coll2d.radius = sightRadius;
+        coll2d.isTrigger = true;
+        behindColl2d.radius = hindSightRadius;
+        behindColl2d.isTrigger = true;
     }
 
     public bool canSee(Collider2D c2d)
     {
-        return Collider.IsTouching(c2d);
+        return coll2d.IsTouching(c2d);
     }
 
     public bool canSeeBehind(Collider2D c2d)
     {
-        return BehindCollider.IsTouching(c2d);
+        return behindColl2d.IsTouching(c2d);
     }
 }

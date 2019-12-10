@@ -28,7 +28,7 @@ public class SceneLoader : MonoBehaviour
         {
             if (explorerObj == null)
             {
-                explorerObj = Managers.Player.gameObject;
+                ExplorerObject = Managers.Player.gameObject;
             }
             return explorerObj;
         }
