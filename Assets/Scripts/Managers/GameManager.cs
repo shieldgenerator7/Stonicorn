@@ -62,21 +62,21 @@ public class GameManager : MonoBehaviour
     private float resetGameTimer;//the time that the game will reset at
     private static float gamePlayTime;//how long the game can be played for, 0 for indefinitely
 
-    private int loadingSceneCount = 0;//how many scenes are currently loading
-    public int LoadingSceneCount
+    private string pauseForLoadingSceneName = null;//the name of the scene that needs the game to pause while it's loading
+    public string PauseForLoadingSceneName
     {
-        get => loadingSceneCount;
+        get => pauseForLoadingSceneName;
         set
         {
-            loadingSceneCount = Mathf.Max(0, value);
-            if (loadingSceneCount == 0)
+            pauseForLoadingSceneName = value;
+            if (pauseForLoadingSceneName == null || pauseForLoadingSceneName == "")
             {
-                //Resume if all scenes done loading
+                //Resume if the scene is done loading
                 Time.timeScale = 1;
             }
             else
             {
-                //Pause if at least one level scene is still loading
+                //Pause if the scene is still loading
                 Time.timeScale = 0;
             }
         }
@@ -678,8 +678,11 @@ public class GameManager : MonoBehaviour
             SceneLoader sceneLoader = getSceneLoaderByName(scene.name);
             if (sceneLoader)
             {
-                //Unpause the game
-                LoadingSceneCount--;
+                if (scene.name == PauseForLoadingSceneName)
+                {
+                    //Unpause the game
+                    PauseForLoadingSceneName = null;
+                }
                 //Update the scene loader's variables
                 sceneLoader.isLoaded = true;
             }
@@ -1117,6 +1120,8 @@ public class GameManager : MonoBehaviour
         memories.Clear();
         //Reset game state nextid static variable
         GameState.nextid = 0;
+        //Unset SceneLoader static variables
+        SceneLoader.ExplorerObject = null;
         //Unload all scenes and reload PlayerScene
         SceneManager.LoadScene(0);
     }

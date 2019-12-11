@@ -35,14 +35,21 @@ public class SceneLoader : MonoBehaviour
         set
         {
             explorerObj = value;
-            Explorer = explorerObj.GetComponent<Explorer>();
-            if (!Explorer)
+            if (explorerObj)
             {
-                Explorer = explorerObj.GetComponentInChildren<Explorer>();
+                explorer = explorerObj.GetComponent<Explorer>();
+                if (!explorer)
+                {
+                    explorer = explorerObj.GetComponentInChildren<Explorer>();
+                }
+            }
+            else
+            {
+                explorer = null;
             }
         }
     }
-    public static Explorer Explorer { get; private set; }
+    private static Explorer explorer;
     /// <summary>
     /// True if the level is currently loaded
     /// </summary>
@@ -65,11 +72,7 @@ public class SceneLoader : MonoBehaviour
             return;
         }
         c2d = gameObject.GetComponent<Collider2D>();
-        if (SceneManager.GetSceneByName(sceneName).isLoaded)
-        {
-            isLoaded = true;
-        }
-        check();
+        isLoaded = SceneManager.GetSceneByName(sceneName).isLoaded;
     }
 
     public void check()
@@ -87,8 +90,8 @@ public class SceneLoader : MonoBehaviour
         if ((isLoaded || isLoading) && !isUnloading)
         {
             bool shouldUnload =
-                (Explorer)
-                ? !Explorer.canSeeBehind(c2d)
+                (explorer)
+                ? !explorer.canSeeBehind(c2d)
                 : !overlaps;
             if (shouldUnload)
             {
@@ -99,8 +102,8 @@ public class SceneLoader : MonoBehaviour
         if ((!isLoaded || isUnloading) && !isLoading)
         {
             bool shouldLoad =
-                (Explorer)
-                ? Explorer.canSee(c2d)
+                (explorer)
+                ? explorer.canSee(c2d)
                 : overlaps;
             if (shouldLoad)
             {
@@ -108,10 +111,10 @@ public class SceneLoader : MonoBehaviour
             }
         }
         //If the player is in the level before it's done loading,
-        if (overlaps && !isLoaded)
+        if (overlaps && !isLoaded && isLoading)
         {
             //Pause the game.
-            Managers.Game.LoadingSceneCount++;
+            Managers.Game.PauseForLoadingSceneName = sceneName;
         }
     }
     void loadLevel()
