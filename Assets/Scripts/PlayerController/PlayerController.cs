@@ -583,21 +583,21 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (GameManager.message != null && GameManager.message != "")
+        if (GameManager.Message != null && GameManager.Message != "")
         {
-            string errorMessage = "ERROR: " + GameManager.message.Substring(
+            string errorMessage = "ERROR: " + GameManager.Message.Substring(
                 0,
-                Mathf.Min(100, GameManager.message.Length)
+                Mathf.Min(100, GameManager.Message.Length)
                 ).Replace("\n", " ");
             Utility.onScreenErrorMessage(errorMessage);
-            GameManager.message = GameManager.message.Substring(
-                Mathf.Min(25, GameManager.message.Length)
+            GameManager.Message = GameManager.Message.Substring(
+                Mathf.Min(25, GameManager.Message.Length)
                 );
         }
-        else if (GameManager.message == "")
+        else if (GameManager.Message == "")
         {
-            Utility.onScreenErrorMessage(GameManager.message, false);
-            GameManager.message = null;
+            Utility.onScreenErrorMessage(GameManager.Message, false);
+            GameManager.Message = null;
         }
     }
     public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);

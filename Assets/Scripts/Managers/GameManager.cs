@@ -8,7 +8,24 @@ using UnityEngine.UI;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    public static string message = null;//stored error message
+    private static string message = null;//stored error message
+    public static string Message
+    {
+        get => message;
+        set => message = value;
+    }
+    public static string ErrorMessage
+    {
+        get => message;
+        set
+        {
+            message = value;
+            if (message != null && message != "")
+            {
+                Debug.LogError(message);
+            }
+        }
+    }
     //
     // Settings
     //
@@ -125,8 +142,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            message = "123456789012345678901234567890 GM.Start(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.Start(): e: " + e;
         }
     }
 
@@ -199,8 +215,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            message = "123456789012345678901234567890 GM.Update(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.Update(): e: " + e;
         }
     }
 
@@ -431,8 +446,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            message = "123456789012345678901234567890 GM.saveMemory(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.saveMemory(): e: " + e;
         }
     }
     /// <summary>
@@ -456,8 +470,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            message = "123456789012345678901234567890 GM.loadMemory(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.loadMemory(): e: " + e;
         }
     }
     #endregion
@@ -496,8 +509,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            message = "123456789012345678901234567890 GM.Save(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.Save(): e: " + e;
         }
     }
     /// <summary>
@@ -580,8 +592,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            message = "123456789012345678901234567890 GM.Load(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.Load(): e: " + e;
         }
     }
 
@@ -675,8 +686,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            message = "123456789012345678901234567890 GM.sceneLoaded(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.sceneLoaded(): e: " + e;
         }
     }
     void sceneUnloaded(Scene scene)
@@ -708,8 +718,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            message = "123456789012345678901234567890 GM.sceneUnloaded(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.sceneUnloaded(): e: " + e;
         }
     }
 
@@ -773,7 +782,7 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
     }
-    
+
     private SceneLoader getSceneLoaderByName(string sceneName)
     {
         foreach (SceneLoader sl in sceneLoaders)
@@ -817,8 +826,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            message = "123456789012345678901234567890 GM.saveToFile(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.saveToFile(): e: " + e;
         }
     }
     /// <summary>
@@ -868,8 +876,7 @@ public class GameManager : MonoBehaviour
                 ES3.DeleteFile("merky.txt");
             }
             Managers.Game.resetGame(false);
-            message = "123456789012345678901234567890 GM.loadFromFile(): e: " + e;
-            Debug.LogError(message);
+            ErrorMessage = "123456789012345678901234567890 GM.loadFromFile(): e: " + e;
         }
     }
     //Sent to all GameObjects before the application is quit

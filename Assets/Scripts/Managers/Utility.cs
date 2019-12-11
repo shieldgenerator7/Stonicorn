@@ -320,7 +320,8 @@ public static class Utility
         {
             value = min;
         }
-        if (value > max) {
+        if (value > max)
+        {
             value = max;
         }
         return value;
