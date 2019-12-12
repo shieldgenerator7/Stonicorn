@@ -39,9 +39,11 @@ public class SwapAbility : PlayerAbility
         playerController.onTeleport -= swapObjects;
     }
 
-    bool isColliderSwappable(Collider2D coll, Vector3 testPos)
+    bool isColliderSwappable(Collider2D coll, Vector3 testPos, Vector3 tapPos)
     {
-        bool swappable = isColliderSwappableImpl(coll, testPos, transform.position);
+        bool swappable = 
+            coll.OverlapPoint(tapPos)
+            && isColliderSwappableImpl(coll, testPos, transform.position);
         return swappable;
     }
 

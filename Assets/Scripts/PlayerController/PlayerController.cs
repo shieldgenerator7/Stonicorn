@@ -627,11 +627,11 @@ public class PlayerController : MonoBehaviour
         //Determine if you can teleport to the position
         //(i.e. is it occupied or not?)
         //If the new position is occupied,
-        if (isOccupied(newPos))
+        if (isOccupied(newPos, targetPos))
         {
             //Try to adjust it first
             Vector2 adjustedPos = adjustForOccupant(newPos);
-            if (!isOccupied(adjustedPos))
+            if (!isOccupied(adjustedPos, targetPos))
             {
                 return adjustedPos;
             }
@@ -658,12 +658,12 @@ public class PlayerController : MonoBehaviour
                 {
                     Vector2 testPos = (norm * percent) + oldPos;
                     //If the test position is occupied,
-                    if (isOccupied(testPos))
+                    if (isOccupied(testPos, targetPos))
                     {
                         //Adjust position based on occupant
                         testPos = adjustForOccupant(testPos);
                         //If the test position is no longer occupied,
-                        if (!isOccupied(testPos))
+                        if (!isOccupied(testPos, targetPos))
                         {
                             //Possible option found
                             possibleOptions.Add(testPos);
@@ -813,7 +813,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="testPos">The position to test</param>
     /// <returns>True if something (besides Merky) is in the space, False if the space is clear</returns>
-    private bool isOccupied(Vector3 testPos)
+    private bool isOccupied(Vector3 testPos, Vector3 tapPos)
     {
         bool occupied = false;
         Vector3 testOffset = testPos - transform.position;
@@ -822,7 +822,7 @@ public class PlayerController : MonoBehaviour
         if (scoutColliderMax)
         {
             //Test with max scout collider
-            occupied = isOccupiedImpl(scoutColliderMax, testOffset, testPos);
+            occupied = isOccupiedImpl(scoutColliderMax, testOffset, testPos, tapPos);
         }
         else
         {
@@ -834,13 +834,13 @@ public class PlayerController : MonoBehaviour
         {
             //There's something in or around merky, so
             //Test with min scout collider
-            occupied = isOccupiedImpl(scoutColliderMin, testOffset, testPos);
+            occupied = isOccupiedImpl(scoutColliderMin, testOffset, testPos, tapPos);
             //If the min scout collider is not occupied,
             if (!occupied)
             {
                 //There's a possibility the space is clear
                 //Test with actual collider
-                occupied = isOccupiedImpl(pc2d, testOffset, testPos);
+                occupied = isOccupiedImpl(pc2d, testOffset, testPos, tapPos);
             }
         }
         return occupied;
@@ -848,7 +848,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// isOccupied Step 2. Only meant to be called by isOccupied(Vector3).
     /// </summary>
-    private bool isOccupiedImpl(Collider2D coll, Vector3 testOffset, Vector3 testPos)
+    private bool isOccupiedImpl(Collider2D coll, Vector3 testOffset, Vector3 testPos, Vector3 tapPos)
     {
         //Find out what objects could be occupying the space
         Vector3 savedOffset = coll.offset;
@@ -878,7 +878,7 @@ public class PlayerController : MonoBehaviour
                         foreach (IsOccupiedException ioc in isOccupiedException.GetInvocationList())
                         {
                             //Make it do what it needs to do, then return the result
-                            bool result = ioc.Invoke(rh2d.collider, testPos);
+                            bool result = ioc.Invoke(rh2d.collider, testPos, tapPos);
                             //If at least 1 returns true, it's considered not occupied
                             if (result == true)
                             {
@@ -911,7 +911,7 @@ public class PlayerController : MonoBehaviour
         //Nope, it's not occupied
         return false;
     }
-    public delegate bool IsOccupiedException(Collider2D coll, Vector3 testPos);
+    public delegate bool IsOccupiedException(Collider2D coll, Vector3 testPos, Vector3 tapPos);
     public IsOccupiedException isOccupiedException;
 
     /// <summary>
