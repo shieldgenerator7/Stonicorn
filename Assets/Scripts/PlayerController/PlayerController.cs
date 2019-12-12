@@ -200,7 +200,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2d;
     public float Speed
     {
-        get {
+        get
+        {
             float speed = rb2d.velocity.magnitude;
             if (speed == 0)
             {
@@ -362,15 +363,18 @@ public class PlayerController : MonoBehaviour
             bool grantGravityImmunity = value;
             if (grantGravityImmunity)
             {
+                if (gravityImmuneStartTime == 0)
+                {
+                    //Turn off Merky's gravity
+                    Gravity.AcceptsGravity = false;
+                    //Store velocity for later
+                    savedVelocity = rb2d.velocity;
+                    //Store angular velocity for later
+                    savedAngularVelocity = rb2d.angularVelocity;
+                }
                 gravityImmuneStartTime = Time.time;
-                //Turn off Merky's gravity
-                Gravity.AcceptsGravity = false;
-                //Store velocity for later
-                savedVelocity = rb2d.velocity;
                 //Freeze velocity
                 rb2d.velocity = Vector2.zero;
-                //Store angular velocity for later
-                savedAngularVelocity = rb2d.angularVelocity;
                 //Freeze angular velocity
                 rb2d.angularVelocity = 0;
             }
