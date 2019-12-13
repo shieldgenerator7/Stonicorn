@@ -991,8 +991,19 @@ public class PlayerController : MonoBehaviour
     {
         if (damageToSelf > 0)
         {
-            Managers.Game.Rewind(2);
+            //Start hit timer
+            Timer.startTimer(1, hitTimerUp);
+            //Pause game
+            Time.timeScale = 0;
         }
+    }
+
+    private void hitTimerUp()
+    {
+        //Unpause game
+        Time.timeScale = 1;
+        //Rewind
+        Managers.Game.Rewind(2);
     }
 
     /// <summary>

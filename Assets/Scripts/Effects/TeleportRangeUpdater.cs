@@ -23,7 +23,7 @@ public class TeleportRangeUpdater : MonoBehaviour
     {
         //Timer
         timer = GetComponent<Timer>();
-        timer.timeLeftChanged += updateTimer;
+        timer.onTimeLeftChanged += updateTimer;
         //Register range update delegate
         PlayerController pc = GetComponent<PlayerController>();
         if (!pc)

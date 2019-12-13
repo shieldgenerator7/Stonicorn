@@ -9,6 +9,8 @@ public class Timer : MonoBehaviour
 {
     public float maxTime = 10;//in seconds, when it starts
     public const float minTime = 0;//in seconds, when it stops
+    public bool destroyOnFinish = false;
+    public bool useUnscaledTime = false;
 
     private float startTime = -1;
 
@@ -30,24 +32,35 @@ public class Timer : MonoBehaviour
             bool active = value;
             if (active)
             {
-                startTime = Time.time;
-                timeLeftChanged?.Invoke(TimeLeft, Duration);
+                startTime = CurrentTime;
+                onTimeLeftChanged?.Invoke(TimeLeft, Duration);
             }
             else
             {
                 startTime = -1;
+                if (destroyOnFinish)
+                {
+                    Destroy(this);
+                }
             }
         }
     }
 
     public float TimeLeft
     {
-        get => Mathf.Max(0, startTime + Duration - Time.time);
+        get => Mathf.Max(0, startTime + Duration - CurrentTime);
         set
         {
             float timeLeft = value;
-            startTime = Time.time - Duration + timeLeft;
+            startTime = CurrentTime - Duration + timeLeft;
         }
+    }
+
+    public float CurrentTime
+    {
+        get => (useUnscaledTime)
+            ? Time.unscaledTime
+            : Time.time;
     }
 
     // Start is called before the first frame update
@@ -62,25 +75,35 @@ public class Timer : MonoBehaviour
         if (Active)
         {
             float timeLeft = TimeLeft;
-            timeLeftChanged?.Invoke(timeLeft, Duration);
+            onTimeLeftChanged?.Invoke(timeLeft, Duration);
             if (timeLeft <= 0)
             {
-                timeFinished?.Invoke();
+                onTimeFinished?.Invoke();
                 Active = false;
             }
         }
     }
 
-    public delegate void TimeLeftChanged(float timeLeft, float duration);
-    public TimeLeftChanged timeLeftChanged;
+    public delegate void OnTimeLeftChanged(float timeLeft, float duration);
+    public OnTimeLeftChanged onTimeLeftChanged;
 
-    public delegate void TimeFinished();
-    public TimeFinished timeFinished;
+    public delegate void OnTimeFinished();
+    public OnTimeFinished onTimeFinished;
 
     public void setTimer(float seconds = 0)
     {
         seconds = (seconds > 0) ? seconds : maxTime;
         Duration = seconds;
         Active = true;
+    }
+
+    public static void startTimer(float seconds = 1, OnTimeFinished timeFinished = null)
+    {
+        GameObject go = FindObjectOfType<GameManager>().gameObject;
+        Timer timer = go.AddComponent<Timer>();
+        timer.destroyOnFinish = true;
+        timer.useUnscaledTime = true;
+        timer.onTimeFinished += timeFinished;
+        timer.setTimer(seconds);
     }
 }
