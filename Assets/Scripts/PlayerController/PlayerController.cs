@@ -21,7 +21,8 @@ public class PlayerController : MonoBehaviour
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
     [Range(0, 0.5f)]
     public float groundTestDistance = 0.25f;//how far from Merky the ground test should go
-
+    [Range(0, 3)]
+    public float hitStunDuration = 1;//how long merky freezes after getting hit before he auto-rewinds
     //
     //Timer Processing Vars
     //
@@ -992,7 +993,7 @@ public class PlayerController : MonoBehaviour
         if (damageToSelf > 0)
         {
             //Start hit timer
-            Timer.startTimer(1, hitTimerUp);
+            Timer.startTimer(hitStunDuration, hitTimerUp);
             //Highlight impact area
             Managers.Effect.showPointEffect("effect_contact", contactPoint);
             //Pause game
