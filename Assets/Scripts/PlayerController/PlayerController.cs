@@ -994,7 +994,7 @@ public class PlayerController : MonoBehaviour
             //Start hit timer
             Timer.startTimer(1, hitTimerUp);
             //Highlight impact area
-            Managers.Effect.highlightTapArea(contactPoint);
+            Managers.Effect.showPointEffect("effect_contact", contactPoint);
             //Pause game
             Time.timeScale = 0;
         }
@@ -1005,7 +1005,7 @@ public class PlayerController : MonoBehaviour
         //Unpause game
         Time.timeScale = 1;
         //Remove highlight
-        Managers.Effect.highlightTapArea(Vector2.zero, false);
+        Managers.Effect.showPointEffect("effect_contact", Vector2.zero, false);
         //Rewind
         Managers.Game.Rewind(2);
     }

@@ -133,6 +133,25 @@ public class EffectManager : MonoBehaviour
         }
     }
 
+    public void showPointEffect(string name, Vector2 pos, bool play = true)
+    {
+        GameObject effect = null;
+        foreach (Transform t in transform)
+        {
+            if (t.gameObject.name == name)
+            {
+                effect = t.gameObject;
+                break;
+            }
+        }
+        if (effect == null)
+        {
+            throw new UnityException("Effect \"" + name + "\" not found!");
+        }
+        effect.SetActive(play);
+        effect.transform.position = pos;
+    }
+
     /// <summary>
     /// Shows a force wave shadow for the given projectile from the given center
     /// </summary>
