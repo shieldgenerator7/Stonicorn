@@ -160,7 +160,7 @@ public class EnemySimple : MonoBehaviour
     /// </summary>
     /// <param name="damageToSelf"></param>
     /// <param name="damageToOther"></param>
-    void eatDamage(float damageToSelf, float damageToOther)
+    void eatDamage(float damageToSelf, float damageToOther, Vector2 contactPoint)
     {
         hm.addIntegrity(damageToOther * onDamageHealPercent);
     }

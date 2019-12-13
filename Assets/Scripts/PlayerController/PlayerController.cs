@@ -987,12 +987,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void hardCollision(float damageToSelf, float damageToOther)
+    private void hardCollision(float damageToSelf, float damageToOther, Vector2 contactPoint)
     {
         if (damageToSelf > 0)
         {
             //Start hit timer
             Timer.startTimer(1, hitTimerUp);
+            //Highlight impact area
+            Managers.Effect.highlightTapArea(contactPoint);
             //Pause game
             Time.timeScale = 0;
         }
@@ -1002,6 +1004,8 @@ public class PlayerController : MonoBehaviour
     {
         //Unpause game
         Time.timeScale = 1;
+        //Remove highlight
+        Managers.Effect.highlightTapArea(Vector2.zero, false);
         //Rewind
         Managers.Game.Rewind(2);
     }

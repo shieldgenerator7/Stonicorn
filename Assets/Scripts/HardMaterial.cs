@@ -62,10 +62,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                 ? hardness / hm.hardness * coll.relativeVelocity.magnitude
                 : 0;
             //Call delegates
-            if (hardCollision != null)
-            {
-                hardCollision(hitHardness, hitHardnessOther);
-            }
+            hardCollision?.Invoke(hitHardness, hitHardnessOther, coll.contacts[0].point);
             //Play Crack Sound
             float hitPercentage = hitHardness * 100 / maxIntegrity;
             Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
@@ -286,7 +283,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     /// <summary>
     /// Gets called when it collides with another HardMaterial
     /// </summary>
-    public delegate void HardCollision(float damageToSelf, float damageToOther);
+    public delegate void HardCollision(float damageToSelf, float damageToOther, Vector2 contactPoint);
 
     public override SavableObject getSavableObject()
     {
