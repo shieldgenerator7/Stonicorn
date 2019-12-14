@@ -238,7 +238,7 @@ public class CameraController : MonoBehaviour
                         * cameraMoveFactor
                         + Managers.Player.Speed
                     )
-                    * Time.deltaTime;
+                    * Time.unscaledDeltaTime;
                 //Move Transform
                 transform.position = Vector3.Lerp(transform.position, target, speed);
 
@@ -263,7 +263,7 @@ public class CameraController : MonoBehaviour
             //Rotate Transform
             if (!RotationFinished)
             {
-                float deltaTime = 3 * Time.deltaTime;
+                float deltaTime = 3 * Time.unscaledDeltaTime;
                 transform.up = Vector3.Lerp(transform.up, Up, deltaTime);
             }
 
@@ -277,7 +277,7 @@ public class CameraController : MonoBehaviour
                     || Mathf.Clamp(ZoomLevel, TargetZoomLevel, preTargetZoomLevel) == ZoomLevel))
                 {
                     //Move current zoom closer to target zoom
-                    ZoomLevel = Mathf.Lerp(ZoomLevel, TargetZoomLevel, Time.deltaTime);
+                    ZoomLevel = Mathf.Lerp(ZoomLevel, TargetZoomLevel, Time.unscaledDeltaTime);
                     //Close in the zoom area where autozooming will continue
                     preTargetZoomLevel = ZoomLevel;
                 }
