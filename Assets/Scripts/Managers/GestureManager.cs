@@ -43,8 +43,6 @@ public class GestureManager : SavableMonoBehaviour
     private bool isHoldGesture = false;
     private bool isPinchGesture = false;
     private bool isCameraMovementOnly = false;//true to make only the camera move until the gesture is over
-    public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
-    public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
     private InputDeviceMethod lastUsedInputDevice = InputDeviceMethod.NONE;
 
@@ -59,7 +57,6 @@ public class GestureManager : SavableMonoBehaviour
         Managers.Camera.onZoomLevelChanged += processZoomLevelChange;
         Managers.Camera.ZoomLevel =
             Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU);
-
 
         Input.simulateMouseWithTouches = false;
     }
@@ -273,7 +270,6 @@ public class GestureManager : SavableMonoBehaviour
                     {
                         isTapGesture = false;
                         isHoldGesture = true;
-                        Time.timeScale = holdTimeScale;
                     }
                 }
                 if (isDrag)
@@ -338,7 +334,6 @@ public class GestureManager : SavableMonoBehaviour
                 isHoldGesture = false;
                 isPinchGesture = false;
                 isCameraMovementOnly = false;
-                Time.timeScale = 1;
             }
             else
             {
@@ -365,7 +360,7 @@ public class GestureManager : SavableMonoBehaviour
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    Managers.Camera.ZoomLevel /= 1.2f ;
+                    Managers.Camera.ZoomLevel /= 1.2f;
                 }
                 //
                 //Pinch Touch Zoom
