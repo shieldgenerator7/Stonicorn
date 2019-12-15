@@ -30,33 +30,33 @@ public class SplashScreenUpdater : MonoBehaviour
         if (displayState == -1)
         {
             displayState = 0;
-            lastKeyFrame = Time.time;
+            lastKeyFrame = Time.unscaledTime;
             fadeObjectIn(currentSplashImage);
         }
         else if (displayState == 0)
         {
-            if (Time.time > lastKeyFrame + fadeInTime)
+            if (Time.unscaledTime > lastKeyFrame + fadeInTime)
             {
                 displayState = 1;
-                lastKeyFrame = Time.time;
+                lastKeyFrame = Time.unscaledTime;
             }
         }
         else if (displayState == 1)
         {
-            if (Time.time > lastKeyFrame + showTime)
+            if (Time.unscaledTime > lastKeyFrame + showTime)
             {
                 //Start the hiding process for the current splash image
                 if (currentIndex < splashImages.Count)
                 {
                     displayState = 2;
-                    lastKeyFrame = Time.time;
+                    lastKeyFrame = Time.unscaledTime;
                     fadeObjectOut(currentSplashImage);
                 }
             }
         }
         else if (displayState == 2)
         {
-            if (Time.time > lastKeyFrame + fadeOutTime)
+            if (Time.unscaledTime > lastKeyFrame + fadeOutTime)
             {
                 advanceToNextScreen();
             }
@@ -73,6 +73,7 @@ public class SplashScreenUpdater : MonoBehaviour
     {
         obj.SetActive(true);
         Fader f = currentSplashImage.AddComponent<Fader>();
+        f.ignorePause = true;
         f.delayTime = 0;
         f.startfade = 0;
         f.endfade = 1;
@@ -84,6 +85,7 @@ public class SplashScreenUpdater : MonoBehaviour
     void fadeObjectOut(GameObject obj)
     {
         Fader f = currentSplashImage.AddComponent<Fader>();
+        f.ignorePause = true;
         f.delayTime = 0;
         f.startfade = 1;
         f.endfade = 0;
@@ -98,13 +100,14 @@ public class SplashScreenUpdater : MonoBehaviour
         if (currentIndex < splashImages.Count)
         {
             displayState = -1;
-            lastKeyFrame = Time.time;
+            lastKeyFrame = Time.unscaledTime;
             currentSplashImage = splashImages[currentIndex];
         }
         else
         {
             displayState = 3;
             Fader f = gameObject.AddComponent<Fader>();
+            f.ignorePause = true;
             f.duration = fadeOutTime;
             f.isEffectOnly = true;
             f.onFadeFinished += onLastFadeFinished;

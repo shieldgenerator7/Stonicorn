@@ -15,6 +15,12 @@ public class Fader : MonoBehaviour
     public bool destroyObjectOnFinish = true;
     public bool destroyScriptOnFinish = true;
     public bool isEffectOnly = true;//the object this fader is attached to is only a special effect and not a time-bound object
+    public bool ignorePause = false;
+
+    private float CurrentTime
+    {
+        get => (ignorePause) ? Time.unscaledTime : Time.time;
+    }
 
     private ArrayList srs;
     private float startTime;
@@ -22,7 +28,7 @@ public class Fader : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        startTime = Time.time + delayTime;
+        startTime = CurrentTime + delayTime;
         if (duration <= 0)
         {
             duration = Mathf.Abs(startfade - endfade);
@@ -52,9 +58,9 @@ public class Fader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (startTime <= Time.time)
+        if (startTime <= CurrentTime)
         {
-            float t = (Time.time - startTime) / duration;//2016-03-17: copied from an answer by treasgu (http://answers.unity3d.com/questions/654836/unity2d-sprite-fade-in-and-out.html)
+            float t = Mathf.Min(duration,(CurrentTime - startTime) / duration);//2016-03-17: copied from an answer by treasgu (http://answers.unity3d.com/questions/654836/unity2d-sprite-fade-in-and-out.html)
             foreach (Object o in srs)
             {
                 if (!o)

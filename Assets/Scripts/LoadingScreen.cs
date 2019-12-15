@@ -50,6 +50,7 @@ public class LoadingScreen : MonoBehaviour
             if (image.fillAmount == 1)
             {
                 Fader f = transform.parent.gameObject.AddComponent<Fader>();
+                f.ignorePause = true;
                 f.destroyObjectOnFinish = false;
                 f.destroyScriptOnFinish = true;
                 f.isEffectOnly = true;
