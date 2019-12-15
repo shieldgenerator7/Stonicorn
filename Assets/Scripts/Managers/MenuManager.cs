@@ -66,7 +66,10 @@ public class MenuManager : MonoBehaviour
             {
                 LoadingScreen.LoadScene("MainMenu");
                 //Pause
-                Time.timeScale = 0;
+                if (LoadingScreen.FinishedLoading)
+                {
+                    Time.timeScale = 0;
+                }
             }
             else
             {
