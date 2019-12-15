@@ -51,20 +51,20 @@ public class PlayerAbility : SavableMonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         playerController = GetComponent<PlayerController>();
-        if (effectParticleController)
+        if (addsOnTeleportVisualEffect)
         {
-            effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
-            if (addsOnTeleportVisualEffect)
+            if (effectParticleController)
             {
+                effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
                 if (playerController)
                 {
                     playerController.onShowTeleportEffect += showTeleportEffect;
                 }
             }
-        }
-        else
-        {
-            Debug.LogWarning("PlayerAbility (" + this.GetType() + ") on " + name + " does not have a particle effect! effectParticleController: " + effectParticleController);
+            else
+            {
+                Debug.LogWarning("PlayerAbility (" + this.GetType() + ") on " + name + " does not have a particle effect! effectParticleController: " + effectParticleController);
+            }
         }
         if (soundEffect)
         {
