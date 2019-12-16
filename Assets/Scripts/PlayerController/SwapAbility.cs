@@ -29,7 +29,6 @@ public class SwapAbility : PlayerAbility
         playerController.isGroundedCheck += hasSwapped;
         playerController.findTeleportablePositionOverride += findSwapPosition;
         playerController.isOccupiedException += isColliderSwappable;
-        playerController.onPreTeleport += findSwapTarget;
         playerController.onTeleport += swapObjects;
         pc2d = GetComponent<PolygonCollider2D>();
     }
@@ -39,7 +38,6 @@ public class SwapAbility : PlayerAbility
         playerController.isGroundedCheck -= hasSwapped;
         playerController.findTeleportablePositionOverride -= findSwapPosition;
         playerController.isOccupiedException -= isColliderSwappable;
-        playerController.onPreTeleport -= findSwapTarget;
         playerController.onTeleport -= swapObjects;
     }
 
@@ -205,7 +203,7 @@ public class SwapAbility : PlayerAbility
 
     private Vector2 findSwapPosition(Vector2 targetPos)
     {
-        findSwapTarget(Vector2.zero, Vector2.zero, targetPos);
+        findSwapTarget(targetPos);
         if (swapTarget != null)
         {
             return swapTarget.transform.position;
@@ -213,7 +211,7 @@ public class SwapAbility : PlayerAbility
         return Vector2.zero;
     }
 
-    private void findSwapTarget(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
+    private void findSwapTarget(Vector2 triedPos)
     {
         swapTarget = null;
         Utility.RaycastAnswer answer = Utility.RaycastAll(triedPos, Vector2.up, 0);
