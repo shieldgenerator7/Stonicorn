@@ -26,6 +26,7 @@ public class SwapAbility : PlayerAbility
     protected override void init()
     {
         base.init();
+        playerController.isGroundedCheck += hasSwapped;
         playerController.isOccupiedException += isColliderSwappable;
         playerController.onPreTeleport += refreshSwappableObjectList;
         playerController.onTeleport += swapObjects;
@@ -34,9 +35,15 @@ public class SwapAbility : PlayerAbility
     public override void OnDisable()
     {
         base.OnDisable();
+        playerController.isGroundedCheck -= hasSwapped;
         playerController.isOccupiedException -= isColliderSwappable;
         playerController.onPreTeleport -= refreshSwappableObjectList;
         playerController.onTeleport -= swapObjects;
+    }
+
+    bool hasSwapped()
+    {
+        return swappedSomething;
     }
 
     bool isColliderSwappable(Collider2D coll, Vector3 testPos, Vector3 tapPos)
@@ -192,12 +199,6 @@ public class SwapAbility : PlayerAbility
         }
         if (swappedSomething)
         {
-            if (playerController.Range < playerController.baseRange)
-            {
-                playerController.Range = playerController.baseRange;
-            }
-            playerController.GravityImmune = true;
-            playerController.GetComponent<AirSliceAbility>().AirPortsUsed = 0;
             //Update Stats
             GameStatistics.addOne("Swap");
         }
@@ -245,7 +246,6 @@ public class SwapAbility : PlayerAbility
     {
         if (swappedSomething)
         {
-            swappedSomething = false;
             base.showTeleportEffect(oldPos, newPos);
         }
     }

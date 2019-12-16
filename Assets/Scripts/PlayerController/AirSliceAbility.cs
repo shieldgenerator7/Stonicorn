@@ -14,7 +14,7 @@ public class AirSliceAbility : PlayerAbility {
     public int AirPortsUsed
     {
         get { return airPorts; }
-        set { airPorts = Mathf.Max(0, value); }
+        private set { airPorts = Mathf.Max(0, value); }
     }
 
     private SwapAbility swapAbility;
