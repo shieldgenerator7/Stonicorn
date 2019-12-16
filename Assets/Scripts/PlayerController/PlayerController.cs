@@ -611,6 +611,21 @@ public class PlayerController : MonoBehaviour
             newPos = ((newPos - oldPos).normalized * range) + oldPos;
         }
 
+        if (findTeleportablePositionOverride != null)
+        {
+            Vector2 newPosOverride = Vector2.zero;
+            foreach (FindTeleportablePositionOverride ftpo in findTeleportablePositionOverride.GetInvocationList())
+            {
+                newPosOverride = ftpo.Invoke(newPos);
+                //The first one that returns a result
+                //that's not (0,0) is accepted
+                if (newPosOverride != Vector2.zero)
+                {
+                    return newPosOverride;
+                }
+            }
+        }
+
         //Determine if you can teleport to the position
         //(i.e. is it occupied or not?)
         //If the new position is occupied,
@@ -693,6 +708,8 @@ public class PlayerController : MonoBehaviour
         }
         return newPos;
     }
+    public delegate Vector2 FindTeleportablePositionOverride(Vector2 tapPos);
+    public FindTeleportablePositionOverride findTeleportablePositionOverride;
 
     /// <summary>
     /// Shows a visual teleport effect at the given locations
@@ -1017,18 +1034,15 @@ public class PlayerController : MonoBehaviour
             //Rotate player ~90 degrees
             rotate();
         }
-        //Get pre-teleport position
-        Vector3 oldPos = transform.position;
-        //Get post-teleport position
-        Vector3 newPos = findTeleportablePosition(tapPos);
         //If teleport is not on cooldown,
         if (TeleportReady)
         {
+            //Get pre-teleport position
+            Vector3 oldPos = transform.position;
+            //Get post-teleport position
+            Vector3 newPos = findTeleportablePosition(tapPos);
             //Process onPreTeleport delegates
-            if (onPreTeleport != null)
-            {
-                onPreTeleport(oldPos, newPos, tapPos);
-            }
+            onPreTeleport?.Invoke(oldPos, newPos, tapPos);
             //Teleport
             teleport(newPos);
             //Save the game state

@@ -27,6 +27,7 @@ public class SwapAbility : PlayerAbility
     {
         base.init();
         playerController.isGroundedCheck += hasSwapped;
+        playerController.findTeleportablePositionOverride += findSwapPosition;
         playerController.isOccupiedException += isColliderSwappable;
         playerController.onPreTeleport += findSwapTarget;
         playerController.onTeleport += swapObjects;
@@ -36,6 +37,7 @@ public class SwapAbility : PlayerAbility
     {
         base.OnDisable();
         playerController.isGroundedCheck -= hasSwapped;
+        playerController.findTeleportablePositionOverride -= findSwapPosition;
         playerController.isOccupiedException -= isColliderSwappable;
         playerController.onPreTeleport -= findSwapTarget;
         playerController.onTeleport -= swapObjects;
@@ -199,6 +201,16 @@ public class SwapAbility : PlayerAbility
             //Update Stats
             GameStatistics.addOne("Swap");
         }
+    }
+
+    private Vector2 findSwapPosition(Vector2 targetPos)
+    {
+        findSwapTarget(Vector2.zero, Vector2.zero, targetPos);
+        if (swapTarget != null)
+        {
+            return swapTarget.transform.position;
+        }
+        return Vector2.zero;
     }
 
     private void findSwapTarget(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
