@@ -127,6 +127,7 @@ public class LoadingScreen : MonoBehaviour
     {
         if (finishedLoading && finishedSplashScreen)
         {
+            instance = null;
             SceneManager.UnloadSceneAsync("LoadingScreen");
         }
     }
