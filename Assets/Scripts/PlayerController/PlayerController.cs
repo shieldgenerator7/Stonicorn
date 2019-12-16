@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     [Header("Settings")]
     public float baseRange = 3;//the range after touching the ground
     public float exhaustRange = 1;//the range after teleporting into the air (and being exhausted)
-    public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
     [Range(0, 1)]
     public float baseExhaustCoolDownTime = 0.5f;//the base cool down time (sec) for teleporting while exhausted
     [Range(0, 1)]
@@ -74,13 +73,6 @@ public class PlayerController : MonoBehaviour
     }
     public delegate void OnRangeChanged(float range);
     public OnRangeChanged onRangeChanged;
-
-    private int airPorts = 0;//"air teleports": how many airports Merky has used since touching the ground
-    public int AirPortsUsed
-    {
-        get { return airPorts; }
-        set { airPorts = Mathf.Max(0, value); }
-    }
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
     public bool InCheckPoint
@@ -481,15 +473,8 @@ public class PlayerController : MonoBehaviour
     /// <param name="targetPos">Position to teleport to in world coordinates</param>
     private void teleport(Vector3 targetPos)
     {
-        //Update mid-air cooldowns
-        //If Merky is in the air,
+        //If Merky is teleporting from the air,
         if (!Grounded)
-        {
-            //Use up an air teleport
-            AirPortsUsed++;
-        }
-        //If all the air teleports are used up,
-        if (AirPortsUsed >= maxAirPorts)
         {
             //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
@@ -588,6 +573,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //ERROR REPORTING CODE
         if (GameManager.Message != null && GameManager.Message != "")
         {
             string errorMessage = "ERROR: " + GameManager.Message.Substring(
@@ -756,8 +742,6 @@ public class PlayerController : MonoBehaviour
         //If Merky is grounded,
         if (Grounded)
         {
-            //Refresh air teleports
-            AirPortsUsed = 0;
             //Refresh teleport range
             //Check to see if it's less than base range,
             //because we don't want to remove any granted bonus range
@@ -772,17 +756,17 @@ public class PlayerController : MonoBehaviour
         //Else if Merky is in the air,
         else
         {
-            //And if Merky has no more air teleports,
-            if (AirPortsUsed >= maxAirPorts)
+            //Decrease the teleport range
+            if (range > exhaustRange)
             {
-                //Decrease the teleport range
-                if (range > exhaustRange)
-                {
-                    Range = exhaustRange;
-                }
+                Range = exhaustRange;
             }
         }
+        //Grounded delegates
+        onGroundedStateUpdated?.Invoke(grounded);
     }
+    public delegate void OnGroundedStateUpdated(bool grounded);
+    public OnGroundedStateUpdated onGroundedStateUpdated;//called when grounded becomes true
 
     /// <summary>
     /// Returns true if there is ground in the given direction relative to Merky

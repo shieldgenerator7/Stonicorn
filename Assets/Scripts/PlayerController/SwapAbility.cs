@@ -41,7 +41,7 @@ public class SwapAbility : PlayerAbility
 
     bool isColliderSwappable(Collider2D coll, Vector3 testPos, Vector3 tapPos)
     {
-        bool swappable = 
+        bool swappable =
             coll.OverlapPoint(tapPos)
             && isColliderSwappableImpl(coll, testPos, transform.position);
         return swappable;
@@ -197,7 +197,7 @@ public class SwapAbility : PlayerAbility
                 playerController.Range = playerController.baseRange;
             }
             playerController.GravityImmune = true;
-            playerController.AirPortsUsed = 0;
+            playerController.GetComponent<AirSliceAbility>().AirPortsUsed = 0;
             //Update Stats
             GameStatistics.addOne("Swap");
         }
