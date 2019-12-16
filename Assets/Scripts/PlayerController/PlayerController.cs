@@ -616,7 +616,7 @@ public class PlayerController : MonoBehaviour
             Vector2 newPosOverride = Vector2.zero;
             foreach (FindTeleportablePositionOverride ftpo in findTeleportablePositionOverride.GetInvocationList())
             {
-                newPosOverride = ftpo.Invoke(newPos);
+                newPosOverride = ftpo.Invoke(newPos, targetPos);
                 //The first one that returns a result
                 //that's not (0,0) is accepted
                 if (newPosOverride != Vector2.zero)
@@ -708,7 +708,7 @@ public class PlayerController : MonoBehaviour
         }
         return newPos;
     }
-    public delegate Vector2 FindTeleportablePositionOverride(Vector2 tapPos);
+    public delegate Vector2 FindTeleportablePositionOverride(Vector2 rangedPos, Vector2 tapPos);
     public FindTeleportablePositionOverride findTeleportablePositionOverride;
 
     /// <summary>
@@ -871,24 +871,6 @@ public class PlayerController : MonoBehaviour
                 if (!rh2d.collider.isTrigger)
                 {
                     //It's occupied!
-                    //unless...
-                    //If there are possible exceptions,
-                    //(such as if Switch Teleport is active)
-                    if (isOccupiedException != null)
-                    {
-                        //Check each isOccupiedCatch delegate for an exception
-                        foreach (IsOccupiedException ioc in isOccupiedException.GetInvocationList())
-                        {
-                            //Make it do what it needs to do, then return the result
-                            bool result = ioc.Invoke(rh2d.collider, testPos, tapPos);
-                            //If at least 1 returns true, it's considered not occupied
-                            if (result == true)
-                            {
-                                return false;//return false for "not occupied"
-                            }
-                        }
-                    }
-                    //Nope, no exceptions, so
                     //Yep, it's occupied by an object
                     return true;
                 }
@@ -913,8 +895,6 @@ public class PlayerController : MonoBehaviour
         //Nope, it's not occupied
         return false;
     }
-    public delegate bool IsOccupiedException(Collider2D coll, Vector3 testPos, Vector3 tapPos);
-    public IsOccupiedException isOccupiedException;
 
     /// <summary>
     /// Adjusts the given Vector3 to avoid collision with the objects that it collides with

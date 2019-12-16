@@ -28,7 +28,6 @@ public class SwapAbility : PlayerAbility
         base.init();
         playerController.isGroundedCheck += hasSwapped;
         playerController.findTeleportablePositionOverride += findSwapPosition;
-        playerController.isOccupiedException += isColliderSwappable;
         playerController.onTeleport += swapObjects;
         pc2d = GetComponent<PolygonCollider2D>();
     }
@@ -37,7 +36,6 @@ public class SwapAbility : PlayerAbility
         base.OnDisable();
         playerController.isGroundedCheck -= hasSwapped;
         playerController.findTeleportablePositionOverride -= findSwapPosition;
-        playerController.isOccupiedException -= isColliderSwappable;
         playerController.onTeleport -= swapObjects;
     }
 
@@ -46,17 +44,18 @@ public class SwapAbility : PlayerAbility
         return swappedSomething;
     }
 
-    bool isColliderSwappable(Collider2D coll, Vector3 testPos, Vector3 tapPos)
+    bool isColliderSwappable(Collider2D coll, Vector3 tapPos)
     {
         bool swappable =
-            coll.OverlapPoint(tapPos)
-            && isColliderSwappableImpl(coll, testPos, transform.position);
+            coll.gameObject != this.gameObject
+            && coll.OverlapPoint(tapPos)
+            && isColliderSwappableImpl(coll, tapPos);
         return swappable;
     }
 
-    bool isColliderSwappableImpl(Collider2D coll, Vector3 testPos, Vector3 origPos)
+    bool isColliderSwappableImpl(Collider2D coll, Vector3 testPos)
     {
-        Vector3 swapPos = coll.gameObject.transform.position - testPos + origPos;
+        Vector3 swapPos = transform.position;
         if (coll.gameObject.GetComponent<Rigidbody2D>() != null)
         {
             return true;
@@ -201,9 +200,9 @@ public class SwapAbility : PlayerAbility
         }
     }
 
-    private Vector2 findSwapPosition(Vector2 targetPos)
+    private Vector2 findSwapPosition(Vector2 targetPos, Vector2 tapPos)
     {
-        findSwapTarget(targetPos);
+        findSwapTarget(targetPos, tapPos);
         if (swapTarget != null)
         {
             return swapTarget.transform.position;
@@ -211,15 +210,15 @@ public class SwapAbility : PlayerAbility
         return Vector2.zero;
     }
 
-    private void findSwapTarget(Vector2 triedPos)
+    private void findSwapTarget(Vector2 targetPos, Vector2 tapPos)
     {
         swapTarget = null;
-        Utility.RaycastAnswer answer = Utility.RaycastAll(triedPos, Vector2.up, 0);
+        Utility.RaycastAnswer answer = Utility.RaycastAll(targetPos, Vector2.up, 0);
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
             GameObject rch2dGO = rch2d.collider.gameObject;
-            if (rch2d.rigidbody && rch2dGO != this.gameObject)
+            if (isColliderSwappable(rch2d.collider, tapPos))
             {
                 swapTarget = rch2dGO;
             }
