@@ -6,10 +6,10 @@ public class SwapAbility : PlayerAbility
 {
     private PolygonCollider2D pc2d;
 
-    private List<GameObject> swappableObjects = new List<GameObject>();
-    public List<GameObject> SwappableObjects
+    private GameObject swapTarget;
+    public GameObject SwapTarget
     {
-        get { return swappableObjects; }
+        get { return swapTarget; }
     }
 
     private bool swappedSomething = false;
@@ -28,7 +28,7 @@ public class SwapAbility : PlayerAbility
         base.init();
         playerController.isGroundedCheck += hasSwapped;
         playerController.isOccupiedException += isColliderSwappable;
-        playerController.onPreTeleport += refreshSwappableObjectList;
+        playerController.onPreTeleport += findSwapTarget;
         playerController.onTeleport += swapObjects;
         pc2d = GetComponent<PolygonCollider2D>();
     }
@@ -37,7 +37,7 @@ public class SwapAbility : PlayerAbility
         base.OnDisable();
         playerController.isGroundedCheck -= hasSwapped;
         playerController.isOccupiedException -= isColliderSwappable;
-        playerController.onPreTeleport -= refreshSwappableObjectList;
+        playerController.onPreTeleport -= findSwapTarget;
         playerController.onTeleport -= swapObjects;
     }
 
@@ -172,10 +172,10 @@ public class SwapAbility : PlayerAbility
     void swapObjects(Vector2 oldPos, Vector2 newPos)
     {
         swappedSomething = false;
-        foreach (GameObject go in swappableObjects)
+        if (swapTarget)
         {
             //Clear connections
-            Rigidbody2D goRB2D = go.GetComponent<Rigidbody2D>();
+            Rigidbody2D goRB2D = swapTarget.GetComponent<Rigidbody2D>();
             if (goRB2D)
             {
                 foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
@@ -192,54 +192,28 @@ public class SwapAbility : PlayerAbility
             {
                 swapPos = adjustForOccupant(gameObject.GetComponent<Collider2D>(), swapPos);
             }
-            go.transform.position = swapPos;
+            swapTarget.transform.position = swapPos;
             swappedSomething = true;
             //Update Stats
             GameStatistics.addOne("SwapObject");
-        }
-        if (swappedSomething)
-        {
             //Update Stats
             GameStatistics.addOne("Swap");
         }
     }
 
-    private void refreshSwappableObjectList(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
+    private void findSwapTarget(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
-        swappableObjects = getSwappableObjects(newPos, oldPos);
-    }
-
-    List<GameObject> getSwappableObjects(Vector3 pos, Vector3 origPos)
-    {
-        List<GameObject> gos = new List<GameObject>();
-        //2018-02-12: copied from PlayerController.isOccupied(.)       
-        Vector3 offset = pos - transform.position;
-        float angle = transform.localEulerAngles.z;
-        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-
-        //Find objects that would collide with the PolygonCollider2D
-        //if it were at this location.
-        Vector3 savedOffset = pc2d.offset;
-        pc2d.offset = rOffset;
-        int count = Utility.Cast(pc2d, Vector2.zero, rh2dsSwappable, 0, true);
-        pc2d.offset = savedOffset;
-        for (int i = 0; i < count; i++)
+        swapTarget = null;
+        Utility.RaycastAnswer answer = Utility.RaycastAll(triedPos, Vector2.up, 0);
+        for (int i = 0; i < answer.count; i++)
         {
-            RaycastHit2D rh2d = rh2dsSwappable[i];
-            GameObject go = rh2d.collider.gameObject;
-            if (!rh2d.collider.isTrigger)
+            RaycastHit2D rch2d = answer.rch2ds[i];
+            GameObject rch2dGO = rch2d.collider.gameObject;
+            if (rch2d.rigidbody && rch2dGO != this.gameObject)
             {
-                if (go != gameObject)
-                {
-                    if (isColliderSwappableImpl(rh2d.collider, pos, origPos))
-                    {
-                        gos.Add(go);
-                    }
-                }
-
+                swapTarget = rch2dGO;
             }
         }
-        return gos;
     }
 
     protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)

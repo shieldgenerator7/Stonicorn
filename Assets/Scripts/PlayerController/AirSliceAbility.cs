@@ -64,7 +64,7 @@ public class AirSliceAbility : PlayerAbility {
             {
                 RaycastHit2D rch2d = answer.rch2ds[i];
                 if (rch2d.collider.gameObject != gameObject
-                    && !swapAbility.SwappableObjects.Contains(rch2d.collider.gameObject))
+                    && rch2d.collider.gameObject != swapAbility.SwapTarget)
                 {
                     HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
                     if (hm)
