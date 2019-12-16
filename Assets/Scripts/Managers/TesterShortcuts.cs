@@ -67,27 +67,27 @@ public class TesterShortcuts : MonoBehaviour
         {
             case 1:
                 ForceBoostAbility fta = playerObject.GetComponent<ForceBoostAbility>();
-                fta.enabled = enable;
+                fta.Active = enable;
                 break;
             case 2:
                 WallClimbAbility wca = playerObject.GetComponent<WallClimbAbility>();
-                wca.enabled = enable;
+                wca.Active = enable;
                 break;
             case 3:
                 ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
-                efa.enabled = enable;
+                efa.Active = enable;
                 break;
             case 4:
                 SwapAbility sa = playerObject.GetComponent<SwapAbility>();
-                sa.enabled = enable;
+                sa.Active = enable;
                 break;
             case 5:
                 AirSliceAbility asa = playerObject.GetComponent<AirSliceAbility>();
-                asa.enabled = enable;
+                asa.Active = enable;
                 break;
             case 6:
                 LongTeleportAbility lta = playerObject.GetComponent<LongTeleportAbility>();
-                lta.enabled = enable;
+                lta.Active = enable;
                 break;
         }
     }
@@ -98,22 +98,22 @@ public class TesterShortcuts : MonoBehaviour
         {
             case 1:
                 ForceBoostAbility fta = playerObject.GetComponent<ForceBoostAbility>();
-                return fta.enabled;
+                return fta.Active;
             case 2:
                 WallClimbAbility wca = playerObject.GetComponent<WallClimbAbility>();
-                return wca.enabled;
+                return wca.Active;
             case 3:
                 ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
-                return efa.enabled;
+                return efa.Active;
             case 4:
                 SwapAbility sa = playerObject.GetComponent<SwapAbility>();
-                return sa.enabled;
+                return sa.Active;
             case 5:
                 AirSliceAbility asa = playerObject.GetComponent<AirSliceAbility>();
-                return asa.enabled;
+                return asa.Active;
             case 6:
                 LongTeleportAbility lta = playerObject.GetComponent<LongTeleportAbility>();
-                return lta.enabled;
+                return lta.Active;
             default:
                 throw new System.ArgumentException("abilityIndex is invalid!: " + abilityIndex);
         }

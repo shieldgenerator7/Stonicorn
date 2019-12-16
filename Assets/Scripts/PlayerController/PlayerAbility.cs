@@ -21,10 +21,7 @@ public class PlayerAbility : SavableMonoBehaviour
         set
         {
             unlocked = value;
-            if (unlocked)
-            {
-                Active = true;
-            }
+            Active = unlocked;
         }
     }
     [SerializeField]
@@ -39,6 +36,11 @@ public class PlayerAbility : SavableMonoBehaviour
             {
                 enabled = true;
                 init();
+            }
+            else
+            {
+                enabled = false;
+                OnDisable();
             }
         }
     }
