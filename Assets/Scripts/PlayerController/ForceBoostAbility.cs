@@ -15,7 +15,7 @@ public class ForceBoostAbility : PlayerAbility
     {
         get
         {
-            float charge = playerController.Speed * chargeClutch;
+            float charge = (playerController.Speed / maxSpeed) * maxCharge;
             charge = Mathf.Clamp(charge, 0, maxCharge);
             return charge;
         }
@@ -23,6 +23,7 @@ public class ForceBoostAbility : PlayerAbility
     public float chargeClutch = 0.2f;//what percentage of the speed converts to charge
     public float chargeIncrement = 0.1f;//how much to increment the charge by each teleport
     public float maxCharge = 1;//the maximum amount of charge possible
+    public float maxSpeed = 15;//after this is reached, charge amount per speed remains constant
 
     public float minWindDuration = 0.3f;
     public float maxWindDuration = 0.5f;
@@ -141,7 +142,7 @@ public class ForceBoostAbility : PlayerAbility
         if (Charge > 0)
         {
             float magnitude = (newPos - oldPos).magnitude;
-            Vector2 force = (newPos - oldPos) * maxSpeedBoost * (Charge) * magnitude / playerController.baseRange;
+            Vector2 force = (newPos - oldPos).normalized * maxSpeedBoost * (Charge / maxCharge) * (magnitude / playerController.baseRange);
             //If the player uses Long Teleport, make a wake
             if (magnitude > playerController.baseRange + 0.5f)
             {
@@ -165,7 +166,10 @@ public class ForceBoostAbility : PlayerAbility
                     Rigidbody2D orb2d = rch2d.collider.gameObject.GetComponent<Rigidbody2D>();
                     if (orb2d)
                     {
-                        orb2d.AddForce(force * wakelessSpeedBoostMultiplier);
+                        if (orb2d.velocity.magnitude <= maxSpeed)
+                        {
+                            orb2d.AddForce(force * wakelessSpeedBoostMultiplier);
+                        }
                     }
                 }
                 //Update Stats
