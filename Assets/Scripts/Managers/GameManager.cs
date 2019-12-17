@@ -588,6 +588,8 @@ public class GameManager : MonoBehaviour
                 }
                 //Re-enable physics because the rewind is over
                 Managers.Physics2DSurrogate.enabled = false;
+                //Grant the player gravity immunity
+                Managers.Player.GravityImmune = true;
             }
         }
         catch (System.Exception e)
