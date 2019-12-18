@@ -59,6 +59,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2364,8 +2365,61 @@ ParticleSystem:
     inWorldSpace: 0
     randomizePerFrame: 0
   ExternalForcesModule:
+    serializedVersion: 2
     enabled: 0
-    multiplier: 1
+    multiplierCurve:
+      serializedVersion: 2
+      minMaxState: 0
+      scalar: 1
+      minScalar: 1
+      maxCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      minCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
     influenceFilter: 0
     influenceMask:
       serializedVersion: 2
@@ -4714,6 +4768,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4793,6 +4848,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4848,7 +4904,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458455247043522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.265, y: -0.067, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4718072663260888}
@@ -4883,6 +4939,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4915,7 +4972,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1458455247043522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: cc4f9ea3e7281354d8c003f454577260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -4980,42 +5036,13 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0.32487488, y: -0.4456874}
-      - {x: 0.3662262, y: -0.4080745}
-      - {x: 0.37503052, y: -0.32005405}
-      - {x: 0.4336319, y: -0.27954483}
-      - {x: 0.47389984, y: -0.27733612}
-      - {x: 0.4727707, y: -0.16840935}
-      - {x: 0.5577469, y: -0.06759071}
+      - {x: 0.47828037, y: -0.2783217}
       - {x: 0.5801544, y: 0.09800005}
-      - {x: 0.4430313, y: 0.034463406}
-      - {x: 0.4577484, y: 0.15687275}
-      - {x: 0.40431213, y: 0.2264638}
-      - {x: 0.30252075, y: 0.15806246}
-      - {x: 0.32287598, y: 0.21934319}
-      - {x: 0.27009583, y: 0.33846378}
-      - {x: 0.20594788, y: 0.28200006}
-      - {x: 0.19221497, y: 0.2272067}
-      - {x: 0.132, y: 0.39800003}
-      - {x: 0.040153503, y: 0.25764513}
-      - {x: 0.013130188, y: 0.38661766}
+      - {x: 0.27447575, y: 0.3334434}
       - {x: -0.08318329, y: 0.45543623}
-      - {x: -0.16430664, y: 0.3421545}
-      - {x: -0.1604538, y: 0.22221756}
-      - {x: -0.1907196, y: 0.28789997}
-      - {x: -0.27999878, y: 0.34087276}
-      - {x: -0.32702637, y: 0.26102734}
-      - {x: -0.3100586, y: 0.17866373}
-      - {x: -0.34287262, y: 0.09282732}
-      - {x: -0.3639984, y: 0.13189983}
-      - {x: -0.48641205, y: 0.19830894}
-      - {x: -0.4964676, y: 0.033181667}
+      - {x: -0.48962486, y: 0.19745529}
       - {x: -0.58000183, y: 0.034308434}
-      - {x: -0.5723038, y: -0.069027424}
-      - {x: -0.49918365, y: -0.12743616}
-      - {x: -0.5170593, y: -0.28871262}
-      - {x: -0.48727417, y: -0.3512889}
-      - {x: -0.43328094, y: -0.35861826}
-      - {x: -0.36468506, y: -0.41416657}
+      - {x: -0.5593951, y: -0.3311118}
       - {x: -0.32364655, y: -0.44759083}
 --- !u!61 &61145201624577634
 BoxCollider2D:
@@ -5078,7 +5105,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1458455247043522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -5086,8 +5112,9 @@ MonoBehaviour:
   hardness: 2
   forceThreshold: 50
   maxIntegrity: 100
-  disappearsIfNoBrokenPrefab: 1
   integrity: 100
+  dealsDamage: 1
+  disappearsIfNoBrokenPrefab: 1
   crackedPrefab: {fileID: 1937723452043942, guid: da6f1c0d1943b314b9aa1740de51488d,
     type: 3}
   crackedOverlay: 1
@@ -5109,11 +5136,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1458455247043522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   usesSideVector: 0
+  gravityScale: 1
   acceptsGravity: 1
 --- !u!1 &1924088163753900
 GameObject:
@@ -5171,6 +5198,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
