@@ -394,7 +394,7 @@ MonoBehaviour:
   - {fileID: 670661346}
   - {fileID: 1603800214}
   - {fileID: 838574609}
-  demoBuild: 0
+  demoBuild: 1
   saveWithTimeStamp: 0
   restartDemoDelay: 10
   txtDemoTimer: {fileID: 825789732}
@@ -35760,6 +35760,7 @@ GameObject:
   - component: {fileID: 1792176468}
   - component: {fileID: 1792176466}
   - component: {fileID: 1792176476}
+  - component: {fileID: 1792176467}
   - component: {fileID: 1792176482}
   - component: {fileID: 1792176479}
   - component: {fileID: 1792176473}
@@ -35794,6 +35795,35 @@ MonoBehaviour:
   timeLength: 0.7
   fragmentPrefab: {fileID: 6491032585982812421, guid: b9c52fd9a99b951428ca8f85171044a7,
     type: 3}
+--- !u!114 &1792176467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792176465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f8e8297141c714a81a49feab3fe894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectColor: {r: 1, g: 0.48235294, b: 0.40392157, a: 0}
+  teleportRangeSegment: {fileID: 11400000, guid: 0a96e2874f60cf3498b0ec0550706c39,
+    type: 2}
+  effectParticleController: {fileID: 217562836}
+  addsOnTeleportVisualEffect: 1
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  active: 0
+  maxCharge: 50
+  maxSpeed: 100
+  chargeIncrement: 2.5
+  chargeIncrementEarly: 0.5
+  chargeEarlyThreshold: 1
+  chargeDecayDelay: 1
+  chargeDecayRate: 25
+  charge: 0
 --- !u!114 &1792176468
 MonoBehaviour:
   m_ObjectHideFlags: 0
