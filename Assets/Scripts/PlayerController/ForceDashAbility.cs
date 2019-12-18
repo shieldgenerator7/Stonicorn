@@ -57,7 +57,6 @@ public class ForceDashAbility : PlayerAbility
 
     public void chargeUp(Vector2 oldPos, Vector2 newPos)
     {
-        Debug.Log("Charge up called!");
         float distance = Vector2.Distance(oldPos, newPos);
         if (Charge < chargeEarlyThreshold)
         {
