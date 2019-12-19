@@ -157,4 +157,19 @@ public class ForceDashAbility : PlayerAbility
             friu.gameObject.SetActive(false);
         }
     }
+
+    public override SavableObject getSavableObject()
+    {
+        SavableObject so = base.getSavableObject();
+        so.data.Add("charge", Charge);
+        so.data.Add("chargeDirection", ChargeDirection);
+        return so;
+    }
+
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        base.acceptSavableObject(savObj);
+        Charge = (float)savObj.data["charge"];
+        ChargeDirection = (Vector2)savObj.data["chargeDirection"];
+    }
 }
