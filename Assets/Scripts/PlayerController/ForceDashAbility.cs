@@ -67,6 +67,10 @@ public class ForceDashAbility : PlayerAbility
 
     private void FixedUpdate()
     {
+        if (!Active)
+        {
+            return;
+        }
         if (Charge > 0)
         {
             rb2d.AddForce(chargeDirection * (maxSpeed * Charge / maxCharge));
@@ -100,7 +104,11 @@ public class ForceDashAbility : PlayerAbility
         if (angle > 90)
         {
             //reduce charge level.
-            float nullifyPercent = (170 - angle) / 90;
+            float nullifyPercent = Mathf.Clamp(
+                (170 - angle) / 90,
+                0,
+                1
+                );
             Charge *= nullifyPercent;
         }
     }
@@ -154,7 +162,7 @@ public class ForceDashAbility : PlayerAbility
         }
         else
         {
-            friu.gameObject.SetActive(false);
+            friu?.gameObject.SetActive(false);
         }
     }
 
