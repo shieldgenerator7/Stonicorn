@@ -35802,7 +35802,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792176465}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79f8e8297141c714a81a49feab3fe894, type: 3}
   m_Name: 
@@ -35810,20 +35810,22 @@ MonoBehaviour:
   effectColor: {r: 1, g: 0.48235294, b: 0.40392157, a: 0}
   teleportRangeSegment: {fileID: 11400000, guid: 0a96e2874f60cf3498b0ec0550706c39,
     type: 2}
-  effectParticleController: {fileID: 217562836}
-  addsOnTeleportVisualEffect: 1
+  effectParticleController: {fileID: 0}
+  addsOnTeleportVisualEffect: 0
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
   unlocked: 0
   active: 0
   maxCharge: 50
-  maxSpeed: 1000
-  chargeIncrement: 10
+  maxSpeed: 500
+  maxEffectRange: 5
+  chargeIncrement: 5
   chargeIncrementEarly: 0.5
   chargeEarlyThreshold: 1.1
   chargeDecayDelay: 1
   chargeDecayRate: 25
   charge: 0
+  forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 3}
 --- !u!114 &1792176468
 MonoBehaviour:
   m_ObjectHideFlags: 0
