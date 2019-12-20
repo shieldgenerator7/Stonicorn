@@ -71,7 +71,7 @@ public class ForceDashAbility : PlayerAbility
         {
             return;
         }
-        if (Charge > 0)
+        if (Charge >= chargeEarlyThreshold)
         {
             rb2d.AddForce(chargeDirection * (maxSpeed * Charge / maxCharge));
         }
@@ -84,6 +84,8 @@ public class ForceDashAbility : PlayerAbility
     public void chargeUp(Vector2 oldPos, Vector2 newPos)
     {
         Vector2 direction = newPos - oldPos;
+        Vector2 dirNorm = direction.normalized;
+        ChargeDirection += dirNorm;
         float distance = direction.magnitude;
         if (Charge < chargeEarlyThreshold)
         {
@@ -92,25 +94,23 @@ public class ForceDashAbility : PlayerAbility
         else
         {
             Charge += chargeIncrement * distance / playerController.baseRange;
+            rb2d.AddForce(dirNorm * (maxSpeed * Charge / maxCharge));
+            
+            //If tapping opposite velocity direction,
+            Vector2 velocity = playerController.Velocity;
+            float angle = Vector2.Angle(direction, velocity);
+            if (angle > 90)
+            {
+                //reduce charge level.
+                float nullifyPercent = Mathf.Clamp(
+                    (170 - angle) / 90,
+                    0,
+                    1
+                    );
+                Charge *= nullifyPercent;
+            }
         }
-        Vector2 dirNorm = direction.normalized;
-        ChargeDirection += dirNorm;
-        rb2d.AddForce(dirNorm * (maxSpeed * Charge / maxCharge));
         lastChargeTime = Time.time;
-
-        //If tapping opposite velocity direction,
-        Vector2 velocity = playerController.Velocity;
-        float angle = Vector2.Angle(direction, velocity);
-        if (angle > 90)
-        {
-            //reduce charge level.
-            float nullifyPercent = Mathf.Clamp(
-                (170 - angle) / 90,
-                0,
-                1
-                );
-            Charge *= nullifyPercent;
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
