@@ -118,8 +118,6 @@ public class SavableObject
                 return typeof(PlayerAbility);
             case "TeleportAbility":
                 return typeof(TeleportAbility);
-            case "ForceBoostAbility":
-                return typeof(ForceBoostAbility);
             case "ForceDashAbility":
                 return typeof(ForceDashAbility);
             case "SwapAbility":
