@@ -219,6 +219,19 @@ public static class Utility
         }
         return true;
     }
+
+    /// <summary>
+    /// Returns true if the given objects equal each other or each other's immediate parents
+    /// </summary>
+    /// <param name="first"></param>
+    /// <param name="second"></param>
+    /// <returns></returns>
+    public static bool equalsHierarchy(this GameObject first, GameObject second)
+    {
+        return first == second
+            || (first.transform.parent?.gameObject == second)
+            || (first == second.transform.parent?.gameObject);
+    }
     #endregion
 
     /// <summary>
