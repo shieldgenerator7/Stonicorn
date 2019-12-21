@@ -610,12 +610,7 @@ public class GameManager : MonoBehaviour
     /// <param name="count">How many states to rewind. 0 doesn't rewind. 1 undoes 1 state</param>
     public void Rewind(int count)
     {
-        rewindId = chosenId - count;
-        //Set rewindDelay
-        rewindDelay = baseRewindDelay;
-        if (count * rewindDelay < minRewindDuration) {
-            rewindDelay = minRewindDuration / count;
-        }
+        RewindTo(chosenId - count);
     }
 
     /// <summary>
