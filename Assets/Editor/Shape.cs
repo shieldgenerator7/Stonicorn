@@ -39,6 +39,56 @@ public class Shape
         }
     }
 
+    private enum ColliderDirection
+    {
+        UNKNOWN,
+        LEFT,
+        RIGHT
+    }
+    private ColliderDirection direction;
+    private ColliderDirection Direction
+    {
+        get
+        {
+            if (direction == ColliderDirection.UNKNOWN)
+            {
+                //Find out which direction it's going
+                float angleSum = 0;
+                for (int i = 0; i < points.Count; i++)
+                {
+                    int i2 = (i + 1) % points.Count;
+                    int i3 = (i + 2) % points.Count;
+                    angleSum += Vector2.SignedAngle(
+                        points[i2] - points[i],
+                        points[i3] - points[i2]
+                        );
+                }
+                Debug.Log("angleSum = "+angleSum);
+                if (angleSum < 0)
+                {
+                    direction = ColliderDirection.LEFT;
+                }
+                else if (angleSum > 0)
+                {
+                    direction = ColliderDirection.RIGHT;
+                }
+                else
+                {
+                    throw new UnityException("Anglesum is invalid! angleSum: " + angleSum);
+                }
+            }
+            return direction;
+        }
+        set
+        {
+            if (Direction != value)
+            {
+                points.Reverse();
+            }
+            direction = value;
+        }
+    }
+
     public List<Shape> childrenShapes { get; private set; } = new List<Shape>();
 
     private PolygonCollider2D pc2d = null;
@@ -52,21 +102,33 @@ public class Shape
         this.scale = pc2d.transform.localScale;
         this.bounds = pc2d.bounds;
         this.points = new List<Vector2>(pc2d.GetPath(0));
+        Direction = ColliderDirection.RIGHT;
     }
 
-    public Shape(SpriteShapeController ssc)
+    public Shape(SpriteShapeController ssc):this(ssc.polygonCollider)
     {
         this.ssc = ssc;
-        this.transform = ssc.transform;
-        this.position = ssc.transform.position;
-        this.scale = ssc.transform.localScale;
-        this.bounds = ssc.polygonCollider.bounds;
-        this.points = new List<Vector2>(ssc.polygonCollider.GetPath(0));
-        this.points.Reverse();
+    }
+
+    private void reversePath()
+    {
+        if (Direction == ColliderDirection.LEFT)
+        {
+            Direction = ColliderDirection.RIGHT;
+        }
+        else if (Direction == ColliderDirection.RIGHT)
+        {
+            Direction = ColliderDirection.LEFT;
+        }
     }
 
     public void cutShape(Shape stencil, bool splitFurther = true)
     {
+        if (stencil.Direction != this.Direction)
+        {
+            throw new UnityException("Trying to cut shape with stencil of different thread type! shape: " + Direction + ", stencil: " + stencil.Direction);
+        }
+
         //Show paths (for debugging)
         //showPath(points);
         //showPath(stencilPoints);
@@ -245,9 +307,22 @@ public class Shape
         {
             return this.pc2d.OverlapPoint(point);
         }
-        PolygonCollider2D pc2d = new PolygonCollider2D();
-        pc2d.SetPath(0, LocalPoints);
-        return pc2d.OverlapPoint(point);
+        if (this.ssc)
+        {
+            PolygonCollider2D pc2d = ssc.polygonCollider;
+            //if (!pc2d)
+            //{
+            //    pc2d = new PolygonCollider2D();
+            //}
+            //LocalPoints.Reverse();
+            pc2d.SetPath(0, LocalPoints);
+            bool overlap = pc2d.OverlapPoint(point);
+            //LocalPoints.Reverse();
+            return overlap;
+        }
+        throw new System.DataMisalignedException(
+            "Shape " + this + " has a null pc2d (" + this.pc2d + ") and null ssc (" + this.ssc + ")!"
+            );
     }
 
     //
@@ -262,9 +337,7 @@ public class Shape
         }
         if (this.ssc)
         {
-            LocalPoints.Reverse();
             this.ssc.spline.setPoints(LocalPoints);
-            LocalPoints.Reverse();
         }
     }
 
@@ -326,7 +399,14 @@ public class Shape
     /// <param name="index"></param>
     private void insertPoints(Vector2[] vectors, int index)
     {
-        GlobalPoints.InsertRange(index, vectors);
+        try
+        {
+            GlobalPoints.InsertRange(index, vectors);
+        }
+        catch (System.ArgumentOutOfRangeException aoore)
+        {
+            Debug.LogError("AOORE! Global Points Count: " + GlobalPoints.Count + ", index: " + index);
+        }
     }
     /// <summary>
     /// Removes the quantified vectors in its Global Points list at the given index
