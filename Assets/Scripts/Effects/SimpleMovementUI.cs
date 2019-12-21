@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class SimpleMovementUI : SimpleMovement
 {
-
-    //Settings
-    private Vector2 startPosition;
-
-    //Runtime constants
-    private float speed;
-    private Vector2 endPosition;
-    //Runtime vars
-    private float lastKeyFrame;
-    private bool forwards = true;//true to return back to start
-    private bool paused = false;
-
     // Use this for initialization
     protected override void Start()
     {
