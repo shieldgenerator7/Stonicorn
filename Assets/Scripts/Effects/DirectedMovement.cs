@@ -41,11 +41,11 @@ public class DirectedMovement : SimpleMovement
         }
         //Set initial movement vector
         setMovement(
-            transform.InverseTransformPoint((Vector2)anchorObject.transform.position), 
-            getDirection(), 
-            minDistance, 
-            maxDistance, 
-            false, 
+            (Vector2)anchorObject.transform.position,
+            getDirection(),
+            minDistance,
+            maxDistance,
+            false,
             true
             );
     }
@@ -59,11 +59,11 @@ public class DirectedMovement : SimpleMovement
             prevPosAnchor = anchorObject.transform.position;
             prevPosGoal = goalObject.transform.position;
             setMovement(
-                transform.InverseTransformPoint(anchorObject.transform.position),
-                getDirection(), 
-                minDistance, 
-                maxDistance, 
-                true, 
+                anchorObject.transform.position,
+                getDirection(),
+                minDistance,
+                maxDistance,
+                true,
                 true
                 );
         }
@@ -72,8 +72,9 @@ public class DirectedMovement : SimpleMovement
 
     Vector2 getDirection()
     {
-        return (
-            transform.InverseTransformDirection((Vector2)goalObject.transform.position - (Vector2)anchorObject.transform.position)
+        return
+            (
+            (Vector2)goalObject.transform.position - (Vector2)anchorObject.transform.position
             )
             * ((pointAway) ? -1 : 1)
             ;

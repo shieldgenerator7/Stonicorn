@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleMovement : MonoBehaviour
+public class SimpleMovementUI : SimpleMovement
 {
 
     //Settings
-    public Vector2 direction;
-    public float duration;//in seconds
-    public float endDelay;//delay after reaching the end before resetting to the beginning
-    public bool roundTrip = false;//true: move backwards instead of jumping to start pos
-
     private Vector2 startPosition;
 
     //Runtime constants
@@ -22,23 +17,26 @@ public class SimpleMovement : MonoBehaviour
     private bool paused = false;
 
     // Use this for initialization
-    protected virtual void Start()
+    protected override void Start()
     {
-        setMovement(transform.position, this.direction, this.direction.magnitude, this.direction.magnitude, false, true);
+        setMovement(transform.localPosition, this.direction, this.direction.magnitude, this.direction.magnitude, false, true);
     }
     void OnEnable()
     {
-        lastKeyFrame = Time.time;
+        lastKeyFrame = Time.unscaledTime;
         forwards = true;
         paused = false;
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+    protected override void Update()
     {
+        //endPosition = startPosition + this.direction;
+        //speed = (endPosition - startPosition).magnitude / duration;
+
         if (paused)
         {
-            if (Time.time > lastKeyFrame + endDelay)
+            if (Time.unscaledTime > lastKeyFrame + endDelay)
             {
                 paused = false;
                 lastKeyFrame = lastKeyFrame + endDelay;
@@ -48,7 +46,7 @@ public class SimpleMovement : MonoBehaviour
                 }
                 else
                 {
-                    transform.position = startPosition;
+                    transform.localPosition = startPosition;
                 }
             }
         }
@@ -56,12 +54,12 @@ public class SimpleMovement : MonoBehaviour
         {
             if (forwards)
             {
-                transform.position = Vector2.MoveTowards(
-                    transform.position,
+                transform.localPosition = Vector2.MoveTowards(
+                    transform.localPosition,
                     endPosition,
-                    speed * Time.deltaTime
+                    speed * Time.unscaledDeltaTime
                     );
-                if ((Vector2)transform.position == endPosition)
+                if ((Vector2)transform.localPosition == endPosition)
                 {
                     paused = true;
                     lastKeyFrame = lastKeyFrame + duration;
@@ -69,12 +67,12 @@ public class SimpleMovement : MonoBehaviour
             }
             else
             {
-                transform.position = Vector2.MoveTowards(
-                    transform.position,
+                transform.localPosition = Vector2.MoveTowards(
+                    transform.localPosition,
                     startPosition,
-                    speed * Time.deltaTime
+                    speed * Time.unscaledDeltaTime
                     );
-                if ((Vector2)transform.position == startPosition)
+                if ((Vector2)transform.localPosition == startPosition)
                 {
                     paused = true;
                     lastKeyFrame = lastKeyFrame + duration;
@@ -83,7 +81,7 @@ public class SimpleMovement : MonoBehaviour
         }
     }
 
-    public virtual void setMovement(Vector2 start, Vector2 dir, float minDist = 0, float maxDist = 1, bool keepPercent = true, bool updateSpeed = false)
+    public override void setMovement(Vector2 start, Vector2 dir, float minDist = 0, float maxDist = 1, bool keepPercent = true, bool updateSpeed = false)
     {
         if (!updateSpeed)
         {
@@ -108,27 +106,21 @@ public class SimpleMovement : MonoBehaviour
         if (keepPercent)
         {
             percentThrough =
-                (Time.time - lastKeyFrame) / duration;
+                (Time.unscaledDeltaTime - lastKeyFrame) / duration;
         }
         startPosition = start;
         endPosition = startPosition + this.direction;
         if (percentThrough == 0)
         {
-            transform.position = startPosition;
+            transform.localPosition = startPosition;
         }
         else
         {
-            transform.position = startPosition + (this.direction * percentThrough);
+            transform.localPosition = startPosition + (this.direction * percentThrough);
         }
         if (updateSpeed)
         {
             speed = (endPosition - startPosition).magnitude / duration;
         }
-    }
-
-    public void setMovementEnd(Vector2 end, Vector2 dir)
-    {
-        dir = dir.normalized * this.direction.magnitude;
-        setMovement(end - dir, dir);
     }
 }
