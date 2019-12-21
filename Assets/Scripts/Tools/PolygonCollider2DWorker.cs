@@ -60,7 +60,10 @@ public class PolygonCollider2DWorker : MonoBehaviour
 
         foreach (PolygonCollider2D pc2dOther in GameObject.FindObjectsOfType<PolygonCollider2D>())
         {
-            if (pc2d != pc2dOther && pc2d.bounds.Intersects(pc2dOther.bounds))
+            if (pc2d != pc2dOther
+                && !pc2d.isTrigger
+                && pc2d.bounds.Intersects(pc2dOther.bounds)
+                )
             {
                 pc2dTargets.Add(pc2dOther);
             }
