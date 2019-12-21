@@ -573,6 +573,8 @@ public class GameManager : MonoBehaviour
                 refreshGameObjects();
                 //Put the music back to normal
                 Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
+                //Stop rewind visual effect
+                Managers.Effect.showRewindEffect(false);
                 //Update Scene tracking variables
                 foreach (SceneLoader sl in sceneLoaders)
                 {
@@ -625,6 +627,8 @@ public class GameManager : MonoBehaviour
     {
         //Set the music speed to rewind
         Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
+        //Show rewind visual effect
+        Managers.Effect.showRewindEffect(true);
         //Set the game state tracker vars
         rewindId = gamestateId;
         //Set rewindDelay
@@ -666,6 +670,8 @@ public class GameManager : MonoBehaviour
         Load(chosenId);
         //Set the music back to normal
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
+        //End rewind visual effect
+        Managers.Effect.showRewindEffect(false);
     }
     #endregion
 

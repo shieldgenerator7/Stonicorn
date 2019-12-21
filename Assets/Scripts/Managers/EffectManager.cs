@@ -17,6 +17,8 @@ public class EffectManager : MonoBehaviour
     [Header("Tap Target Highlighting")]
     public ParticleSystem tapTargetHighlight;
     [Header("Force Wave Shadows")]
+    [Header("Rewind Stripe Effect")]
+    public GameObject rewindCanvas;
     //Supporting Lists
     private List<TeleportStarUpdater> teleportStarList = new List<TeleportStarUpdater>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
@@ -193,5 +195,10 @@ public class EffectManager : MonoBehaviour
             Destroy(shadow);
         }
         forceWaveShadows.Clear();
+    }
+
+    public void showRewindEffect(bool show)
+    {
+        rewindCanvas.SetActive(show);
     }
 }

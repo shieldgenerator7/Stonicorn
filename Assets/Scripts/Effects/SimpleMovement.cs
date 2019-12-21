@@ -24,11 +24,11 @@ public class SimpleMovement : MonoBehaviour
     // Use this for initialization
     protected virtual void Start()
     {
-        setMovement(transform.position, this.direction, this.direction.magnitude, this.direction.magnitude, false, true);
+        setMovement(transform.localPosition, this.direction, this.direction.magnitude, this.direction.magnitude, false, true);
     }
     void OnEnable()
     {
-        lastKeyFrame = Time.time;
+        lastKeyFrame = Time.unscaledTime;
         forwards = true;
         paused = false;
     }
@@ -38,7 +38,7 @@ public class SimpleMovement : MonoBehaviour
     {
         if (paused)
         {
-            if (Time.time > lastKeyFrame + endDelay)
+            if (Time.unscaledTime > lastKeyFrame + endDelay)
             {
                 paused = false;
                 lastKeyFrame = lastKeyFrame + endDelay;
@@ -48,7 +48,7 @@ public class SimpleMovement : MonoBehaviour
                 }
                 else
                 {
-                    transform.position = startPosition;
+                    transform.localPosition = startPosition;
                 }
             }
         }
@@ -56,12 +56,12 @@ public class SimpleMovement : MonoBehaviour
         {
             if (forwards)
             {
-                transform.position = Vector2.MoveTowards(
-                    transform.position,
+                transform.localPosition = Vector2.MoveTowards(
+                    transform.localPosition,
                     endPosition,
-                    speed * Time.deltaTime
+                    speed * Time.unscaledDeltaTime
                     );
-                if ((Vector2)transform.position == endPosition)
+                if ((Vector2)transform.localPosition == endPosition)
                 {
                     paused = true;
                     lastKeyFrame = lastKeyFrame + duration;
@@ -69,12 +69,12 @@ public class SimpleMovement : MonoBehaviour
             }
             else
             {
-                transform.position = Vector2.MoveTowards(
-                    transform.position,
+                transform.localPosition = Vector2.MoveTowards(
+                    transform.localPosition,
                     startPosition,
-                    speed * Time.deltaTime
+                    speed * Time.unscaledDeltaTime
                     );
-                if ((Vector2)transform.position == startPosition)
+                if ((Vector2)transform.localPosition == startPosition)
                 {
                     paused = true;
                     lastKeyFrame = lastKeyFrame + duration;
