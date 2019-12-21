@@ -107,6 +107,7 @@ public class ForceDashAbility : PlayerAbility
                     0,
                     1
                     );
+                Debug.Log("Canceling charge: BACK TAP: " + angle + ", nullify%: " + nullifyPercent);
                 Charge *= nullifyPercent;
             }
         }
@@ -125,6 +126,25 @@ public class ForceDashAbility : PlayerAbility
         float angle = Vector2.Angle(-velocity, surfaceNormal);
         if (angle < 45)
         {
+            //Explode     
+            Vector2 explodePos;
+            //If object is breakable or movable,
+            if (collision.gameObject.isSavable())
+            {
+                //explode behind Merky
+                explodePos = (Vector2)transform.position - (velocity.normalized * 0.01f);
+            }
+            //Else
+            else
+            {
+                //explode in front of Merky  
+                explodePos = (Vector2)transform.position - (Vector2.Reflect(velocity, surfaceNormal).normalized * 0.01f);
+            }
+            Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
+            float charge = Charge;
+            //doExplosionEffect(explodePos, Mathf.Max(charge, chargeIncrement), true);
+            //dropHoldGesture();
+            Debug.Log("Canceling charge: HIT WALL: " + angle);
             Charge = 0;
         }
         //Else
@@ -159,10 +179,13 @@ public class ForceDashAbility : PlayerAbility
             }
             friu.gameObject.SetActive(true);
             friu.setRange(range);
+            //Particle effects
+            //effectParticleController.activateTeleportParticleSystem(true, effectColor, transform.position, range);
         }
         else
         {
             friu?.gameObject.SetActive(false);
+            //effectParticleController.activateTeleportParticleSystem(false);
         }
     }
 
