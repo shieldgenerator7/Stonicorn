@@ -33,7 +33,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float inputOffDuration = 1.0f;//how long Merky must wait before rewinding after shattering
     [SerializeField]
+    private float baseRewindDelay = 0.05f;
+    [SerializeField]
     private float rewindDelay = 0.05f;//the delay between rewind transitions
+    [SerializeField]
+    private float minRewindDuration = 1;//how many seconds a rewind should last for
 
     [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
@@ -605,6 +609,11 @@ public class GameManager : MonoBehaviour
     public void Rewind(int count)
     {
         rewindId = chosenId - count;
+        //Set rewindDelay
+        rewindDelay = baseRewindDelay;
+        if (count * rewindDelay < minRewindDuration) {
+            rewindDelay = minRewindDuration / count;
+        }
     }
 
     /// <summary>
@@ -618,6 +627,13 @@ public class GameManager : MonoBehaviour
         Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
         //Set the game state tracker vars
         rewindId = gamestateId;
+        //Set rewindDelay
+        int count = chosenId - rewindId;
+        rewindDelay = baseRewindDelay;
+        if (count * rewindDelay < minRewindDuration)
+        {
+            rewindDelay = minRewindDuration / count;
+        }
         //Recenter the camera on Merky
         Managers.Camera.recenter();
         //Disable physics while rewinding
