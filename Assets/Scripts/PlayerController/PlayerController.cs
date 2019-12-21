@@ -1008,6 +1008,11 @@ public class PlayerController : MonoBehaviour
     /// <param name="tapPos">The position to teleport to</param>
     public void processTapGesture(Vector3 tapPos)
     {
+        //Don't process while paused
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
         //If the player tapped on Merky,
         if (gestureOnPlayer(tapPos))
         {
