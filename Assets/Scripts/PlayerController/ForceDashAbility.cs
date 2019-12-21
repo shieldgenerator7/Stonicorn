@@ -85,33 +85,58 @@ public class ForceDashAbility : PlayerAbility
     {
         Vector2 direction = newPos - oldPos;
         Vector2 dirNorm = direction.normalized;
-        ChargeDirection += dirNorm;
-        float distance = direction.magnitude;
-        if (Charge < chargeEarlyThreshold)
+        if (shouldNegateCharge(dirNorm))
         {
-            Charge += chargeIncrementEarly * distance / playerController.baseRange;
+            negateCharge(dirNorm);
         }
         else
         {
-            Charge += chargeIncrement * distance / playerController.baseRange;
-            rb2d.AddForce(dirNorm * (maxSpeed * Charge / maxCharge));
-            
-            //If tapping opposite velocity direction,
-            Vector2 velocity = playerController.Velocity;
-            float angle = Vector2.Angle(direction, velocity);
-            if (angle > 90)
+            //If the player was grounded before teleporting,
+            if (playerController.GroundedPrev)
             {
-                //reduce charge level.
-                float nullifyPercent = Mathf.Clamp(
-                    (170 - angle) / 90,
-                    0,
-                    1
-                    );
-                Debug.Log("Canceling charge: BACK TAP: " + angle + ", nullify%: " + nullifyPercent);
-                Charge *= nullifyPercent;
+                //Update the charge direction
+                ChargeDirection += dirNorm;
+                float distance = direction.magnitude;
+                //If charge is just starting out,
+                if (Charge < chargeEarlyThreshold)
+                {
+                    //Use the lower charge increment
+                    Charge += chargeIncrementEarly * distance / playerController.baseRange;
+                }
+                else
+                {
+                    //Else, use the higher charge increment and
+                    Charge += chargeIncrement * distance / playerController.baseRange;
+                    //Add force in the charge direction
+                    rb2d.AddForce(dirNorm * (maxSpeed * Charge / maxCharge));
+                }
+                //Reset decay delay
+                lastChargeTime = Time.time;
             }
         }
-        lastChargeTime = Time.time;
+    }
+
+    private bool shouldNegateCharge(Vector2 direction)
+    {
+        float angle = Vector2.Angle(direction, ChargeDirection);
+        return (angle > 90);
+    }
+
+    private void negateCharge(Vector2 direction)
+    {
+        //If tapping opposite velocity direction,
+        float angle = Vector2.Angle(direction, chargeDirection);
+        if (angle > 90)
+        {
+            //reduce charge level.
+            float nullifyPercent = Mathf.Clamp(
+                (170 - angle) / 90,
+                0,
+                1
+                );
+            Debug.Log("Canceling charge: BACK TAP: " + angle + ", nullify%: " + nullifyPercent);
+            Charge *= nullifyPercent;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
