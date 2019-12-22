@@ -165,9 +165,8 @@ public class PlayerAbility : SavableMonoBehaviour
 
     public override void acceptSavableObject(SavableObject savObj)
     {
-        bool prevActive = active;
         unlocked = (bool)savObj.data["unlocked"] || unlocked;
-        Active = (bool)savObj.data["active"];
+        Active = (bool)savObj.data["active"] || active;
     }
 
 }
