@@ -60,7 +60,7 @@ public class Timer : MonoBehaviour
     {
         get => (useUnscaledTime)
             ? Time.unscaledTime
-            : Time.time;
+            : Managers.Time.Time;
     }
 
     // Start is called before the first frame update
