@@ -101,7 +101,7 @@ public class ForceDashAbility : PlayerAbility
                 if (Charge < chargeEarlyThreshold)
                 {
                     //Use the lower charge increment
-                    Charge += chargeIncrementEarly * distance / playerController.baseRange;
+                    Charge += chargeIncrementEarly * Mathf.Min(1, distance / playerController.baseRange);
                 }
                 else
                 {

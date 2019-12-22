@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
-  endGameTimer: {fileID: 0}
+  endGameTimer: {fileID: 1792176477}
 --- !u!1 &123588474
 GameObject:
   m_ObjectHideFlags: 0
@@ -35896,6 +35896,7 @@ GameObject:
   - component: {fileID: 1792176481}
   - component: {fileID: 1792176474}
   - component: {fileID: 1792176475}
+  - component: {fileID: 1792176477}
   m_Layer: 8
   m_Name: merky
   m_TagString: Player
@@ -36225,6 +36226,21 @@ MonoBehaviour:
   active: 0
   futureProjection: {fileID: 531202031}
   teleportPreviewPointer: {fileID: 1385001677}
+--- !u!114 &1792176477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792176465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e74116196545f4d8a0243a83262c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTime: 60
+  destroyOnFinish: 0
+  useUnscaledTime: 0
 --- !u!114 &1792176478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38512,7 +38528,7 @@ MonoBehaviour:
     - {fileID: 11500000, guid: 8b8160ef887efe8488e0909d4294841c, type: 3}
     - {fileID: 94021258}
     - {fileID: 94021257}
-    - {fileID: 0}
+    - {fileID: 1792176477}
     - {fileID: 0}
     - {fileID: 11500000, guid: 9f780fae2196b574fac53818cb106dc3, type: 3}
     - {fileID: 0}

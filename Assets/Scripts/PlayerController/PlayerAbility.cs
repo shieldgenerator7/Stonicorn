@@ -31,16 +31,19 @@ public class PlayerAbility : SavableMonoBehaviour
         get => active;
         set
         {
-            active = value;
-            if (active)
+            if (active != value)
             {
-                enabled = true;
-                init();
-            }
-            else
-            {
-                enabled = false;
-                OnDisable();
+                active = value;
+                if (active)
+                {
+                    enabled = true;
+                    init();
+                }
+                else
+                {
+                    enabled = false;
+                    OnDisable();
+                }
             }
         }
     }
@@ -162,13 +165,9 @@ public class PlayerAbility : SavableMonoBehaviour
 
     public override void acceptSavableObject(SavableObject savObj)
     {
-        unlocked = (bool)savObj.data["unlocked"];
-        active = (bool)savObj.data["active"];
-        if (unlocked && active)
-        {
-            enabled = true;
-            init();
-        }
+        bool prevActive = active;
+        unlocked = (bool)savObj.data["unlocked"] || unlocked;
+        Active = (bool)savObj.data["active"];
     }
 
 }
