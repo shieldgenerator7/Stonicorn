@@ -23,9 +23,17 @@ public class TimeManager : SavableMonoBehaviour
     }
     private float lastCheckedTime;//the Time.time point that it last checked for program time
 
+    public Timer endGameTimer;
+
     private void Start()
     {
         Time = 0;
+        endGameTimer.onTimeFinished += cycleEnded;
+    }
+
+    void cycleEnded()
+    {
+        Managers.Game.RewindToStart();
     }
 
     public override SavableObject getSavableObject()

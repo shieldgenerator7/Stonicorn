@@ -20,7 +20,10 @@ public class GestureProfile
     {
         if (Managers.Game.Rewinding)
         {
-            Managers.Game.cancelRewind();
+            if (Managers.Game.rewindInterruptableByPlayer)
+            {
+                Managers.Game.cancelRewind();
+            }
         }
         else
         {

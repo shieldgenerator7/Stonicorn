@@ -66,6 +66,8 @@ public class GameManager : MonoBehaviour
     private float resetGameTimer;//the time that the game will reset at
     private static float gamePlayTime;//how long the game can be played for, 0 for indefinitely
 
+    public bool rewindInterruptableByPlayer = true;
+
     private string pauseForLoadingSceneName = null;//the name of the scene that needs the game to pause while it's loading
     public string PauseForLoadingSceneName
     {
@@ -610,7 +612,7 @@ public class GameManager : MonoBehaviour
     /// <param name="count">How many states to rewind. 0 doesn't rewind. 1 undoes 1 state</param>
     public void Rewind(int count)
     {
-        RewindTo(chosenId - count);
+        RewindTo(chosenId - count, false);
     }
 
     /// <summary>
@@ -618,8 +620,10 @@ public class GameManager : MonoBehaviour
     /// Update carries out the motions of calling Load()
     /// </summary>
     /// <param name="gamestateId">The game state id to rewind to</param>
-    void RewindTo(int gamestateId)
+    void RewindTo(int gamestateId, bool playerInitiated = true)
     {
+        //Set interruptable
+        rewindInterruptableByPlayer = playerInitiated;
         //Set the music speed to rewind
         Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
         //Show rewind visual effect
@@ -643,9 +647,9 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Rewind the game all the way to the beginning
     /// </summary>
-    public void RewindToStart()
+    public void RewindToStart(bool playerInitiated = false)
     {
-        RewindTo(0);
+        RewindTo(0, playerInitiated);
     }
     /// <summary>
     /// True if time is rewinding
