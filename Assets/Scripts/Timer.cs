@@ -97,7 +97,12 @@ public class Timer : MonoBehaviour
         Active = true;
     }
 
-    public static void startTimer(float seconds = 1, OnTimeFinished timeFinished = null)
+    public void overrideStartTime(float startTime)
+    {
+        this.startTime = startTime;
+    }
+
+    public static Timer startTimer(float seconds = 1, OnTimeFinished timeFinished = null)
     {
         GameObject go = FindObjectOfType<GameManager>().gameObject;
         Timer timer = go.AddComponent<Timer>();
@@ -105,5 +110,6 @@ public class Timer : MonoBehaviour
         timer.useUnscaledTime = true;
         timer.onTimeFinished += timeFinished;
         timer.setTimer(seconds);
+        return timer;
     }
 }

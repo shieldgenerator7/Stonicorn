@@ -5,7 +5,7 @@ using UnityEngine;
 public class TimeManager : SavableMonoBehaviour
 {
     [SerializeField]
-    private float time = 0;//the time since the game started, accounting for rewind
+    private float time = -1;//the time since the game started, accounting for rewind
     public float Time
     {
         get
@@ -19,6 +19,8 @@ public class TimeManager : SavableMonoBehaviour
         {
             time = value;
             lastCheckedTime = UnityEngine.Time.time;
+            endGameTimer.Active = true;
+            endGameTimer.overrideStartTime(0);
         }
     }
     private float lastCheckedTime;//the Time.time point that it last checked for program time
@@ -27,7 +29,10 @@ public class TimeManager : SavableMonoBehaviour
 
     private void Start()
     {
-        Time = 0;
+        if (time <= 0)
+        {
+            Time = 0;
+        }
         endGameTimer.onTimeFinished += cycleEnded;
     }
 
