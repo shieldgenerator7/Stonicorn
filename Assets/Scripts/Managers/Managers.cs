@@ -71,6 +71,22 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Time Manager
+    //Used to keep track of the time since the game began,
+    //Taking into account time rewind and dilation
+    private TimeManager timeManager;
+    public static TimeManager Time
+    {
+        get
+        {
+            if (instance.timeManager == null)
+            {
+                instance.timeManager = FindObjectOfType<TimeManager>();
+            }
+            return instance.timeManager;
+        }
+    }
+
     //Physics 2D Surrogate
     //Used to enable triggers while main physics is disabled during time rewind
     private Physics2DSurrogate physics2DSurrogate;

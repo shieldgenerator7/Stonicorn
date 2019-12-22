@@ -108,6 +108,8 @@ public class SavableObject
                 return typeof(NPCMetalController);
             case "NPCVoiceLine":
                 return typeof(NPCVoiceLine);
+            case "TimeManager":
+                return typeof(TimeManager);
             case "GameEventManager":
                 return typeof(GameEventManager);
             case "GameStatistics":
