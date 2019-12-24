@@ -11,6 +11,7 @@ public class Timer : MonoBehaviour
     public const float minTime = 0;//in seconds, when it stops
     public bool destroyOnFinish = false;
     public bool useUnscaledTime = false;
+    public bool startFromZeroOnStart = false;
 
     private float startTime = -1;
 
@@ -67,6 +68,10 @@ public class Timer : MonoBehaviour
     void Start()
     {
         setTimer(Duration);
+        if (startFromZeroOnStart)
+        {
+            overrideStartTime(0);
+        }
     }
 
     // Update is called once per frame

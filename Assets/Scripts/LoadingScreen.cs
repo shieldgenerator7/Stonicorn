@@ -33,7 +33,8 @@ public class LoadingScreen : MonoBehaviour
         {
             image.fillAmount = 0;
         }
-        Managers.Time.Paused = false;
+        //Managers.Time.Paused = false;
+        Time.timeScale = 0;
         //Set Splash Screen delegate
         FindObjectOfType<SplashScreenUpdater>().onSplashScreenFinished += splashScreenFinished;
         //Disable this script until splash screen finishes
