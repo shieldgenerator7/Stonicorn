@@ -21,6 +21,12 @@ public class GameState
                 representation.transform.position = merky.position;
                 representation.transform.localScale = merky.localScale;
                 representation.transform.rotation = merky.rotation;
+                //If this is the first game state,
+                if (id == 0)
+                {
+                    //make its representation slightly bigger
+                    representation.transform.localScale *= 2f;
+                }
             }
             return representation;
         }
@@ -121,6 +127,19 @@ public class GameState
         {
             sr.color = new Color(c.r, c.g, c.b, 0.5f);
             ps.Stop();
+        }
+        //Do special processing for the first one
+        if (id == 0)
+        {
+            //Make sure it's always on screen
+            if (!Managers.Camera.inView(Representation.transform.position))
+            {
+                Representation.transform.position =
+                    Managers.Camera.getInViewPosition(
+                        Representation.transform.position,
+                        0.9f
+                    );
+            }
         }
     }
     public bool checkRepresentation(Vector3 touchPoint, bool checkSprite = true)

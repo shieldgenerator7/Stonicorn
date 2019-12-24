@@ -511,6 +511,17 @@ public class CameraController : MonoBehaviour
         Vector3 screenPoint = Cam.WorldToViewportPoint(position);
         return screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
     }
+    public Vector2 getInViewPosition(Vector2 position, float distanceFactor)
+    {
+        //Convert to viewport space
+        Vector2 vpPos = Cam.WorldToViewportPoint(position);
+        Vector2 middlePos = new Vector2(0.5f, 0.5f);
+        //Find direction
+        Vector2 direction = vpPos - middlePos;
+        Vector2 newPos = middlePos + (direction.normalized * 0.5f * distanceFactor);
+        //Convert back to world space
+        return Utility.ScreenToWorldPoint(Cam.ViewportToScreenPoint(newPos));
+    }
     public float distanceInWorldCoordinates(Vector2 screenPos1, Vector2 screenPos2)
     {
         return Vector2.Distance(Utility.ScreenToWorldPoint(screenPos1), Utility.ScreenToWorldPoint(screenPos2));
