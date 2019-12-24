@@ -78,12 +78,12 @@ public class GameManager : MonoBehaviour
             if (pauseForLoadingSceneName == null || pauseForLoadingSceneName == "")
             {
                 //Resume if the scene is done loading
-                Time.timeScale = 1;
+                Managers.Time.Paused = false;
             }
             else
             {
                 //Pause if the scene is still loading
-                Time.timeScale = 0;
+                Managers.Time.Paused = true;
             }
         }
     }

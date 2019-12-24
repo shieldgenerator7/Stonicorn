@@ -27,6 +27,12 @@ public class TimeManager : SavableMonoBehaviour
 
     public Timer endGameTimer;
 
+    public bool Paused
+    {
+        get => UnityEngine.Time.timeScale == 0;
+        set => UnityEngine.Time.timeScale = (value) ? 0 : 1;
+    }
+
     private void Start()
     {
         if (time <= 0)

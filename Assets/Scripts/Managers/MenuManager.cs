@@ -68,14 +68,14 @@ public class MenuManager : MonoBehaviour
                 //Pause
                 if (LoadingScreen.FinishedLoading)
                 {
-                    Time.timeScale = 0;
+                    Managers.Time.Paused = true;
                 }
             }
             else
             {
                 SceneManager.UnloadSceneAsync("MainMenu");
                 //Unpause
-                Time.timeScale = 1;
+                Managers.Time.Paused = false;
             }
         }
     }

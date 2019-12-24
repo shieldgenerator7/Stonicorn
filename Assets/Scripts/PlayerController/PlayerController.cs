@@ -978,14 +978,14 @@ public class PlayerController : MonoBehaviour
             //Highlight impact area
             Managers.Effect.showPointEffect("effect_contact", contactPoint);
             //Pause game
-            Time.timeScale = 0;
+            Managers.Time.Paused = true;
         }
     }
 
     private void hitTimerUp()
     {
         //Unpause game
-        Time.timeScale = 1;
+        Managers.Time.Paused = false;
         //Remove highlight
         Managers.Effect.showPointEffect("effect_contact", Vector2.zero, false);
         //Rewind
@@ -1009,7 +1009,7 @@ public class PlayerController : MonoBehaviour
     public void processTapGesture(Vector3 tapPos)
     {
         //Don't process while paused
-        if (Time.timeScale == 0)
+        if (Managers.Time.Paused)
         {
             return;
         }
