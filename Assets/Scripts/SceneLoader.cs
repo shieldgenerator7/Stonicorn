@@ -117,6 +117,10 @@ public class SceneLoader : MonoBehaviour
             Managers.Game.PauseForLoadingSceneName = sceneName;
         }
     }
+    public bool isPositionInScene(Vector2 pos)
+    {
+        return c2d.OverlapPoint(pos);
+    }
     void loadLevel()
     {
         isLoading = true;
@@ -129,9 +133,16 @@ public class SceneLoader : MonoBehaviour
         isUnloading = true;
         SceneManager.UnloadSceneAsync(sceneName);
     }
+    public void loadLevelIfUnLoaded()
+    {
+        if ((!isLoaded || isUnloading) && !isLoading)
+        {
+            loadLevel();
+        }
+    }
     public void unloadLevelIfLoaded()
     {
-        if (isLoaded)
+        if ((isLoaded || isLoading) && !isUnloading)
         {
             unloadLevel();
         }

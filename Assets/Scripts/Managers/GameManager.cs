@@ -169,10 +169,10 @@ public class GameManager : MonoBehaviour
             if (Rewinding)
             {
                 //And it's time to rewind the next step,
-                if (Time.time > lastRewindTime + rewindDelay)
+                if (Time.unscaledTime > lastRewindTime + rewindDelay)
                 {
                     //Rewind to the next previous game state
-                    lastRewindTime = Time.time;
+                    lastRewindTime = Time.unscaledTime;
                     Load(chosenId - 1);
                 }
             }
@@ -594,6 +594,8 @@ public class GameManager : MonoBehaviour
                         sl.lastOpenGameStateId = -1;
                     }
                 }
+                //Unpause time
+                Managers.Time.Paused = false;
                 //Re-enable physics because the rewind is over
                 Managers.Physics2DSurrogate.enabled = false;
                 //Grant the player gravity immunity
@@ -637,10 +639,24 @@ public class GameManager : MonoBehaviour
         {
             rewindDelay = minRewindDuration / count;
         }
+        //Load levels that Merky will be passing through
+        foreach(SceneLoader sl in sceneLoaders)
+        {
+            for (int i = gameStates.Count - 1; i > gamestateId; i--)
+            {
+                if (sl.isPositionInScene(gameStates[i].merky.position))
+                {
+                    sl.loadLevelIfUnLoaded();
+                    break;
+                }
+            }
+        }
         //Recenter the camera on Merky
         Managers.Camera.recenter();
         //Disable physics while rewinding
         Managers.Physics2DSurrogate.enabled = true;
+        //Pause time
+        Managers.Time.Paused = true;
         //Update Stats
         GameStatistics.addOne("Rewind");
     }
@@ -671,6 +687,8 @@ public class GameManager : MonoBehaviour
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
         //End rewind visual effect
         Managers.Effect.showRewindEffect(false);
+        //Resume time
+        Managers.Time.Paused = false;
     }
     #endregion
 
