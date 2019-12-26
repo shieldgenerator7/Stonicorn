@@ -18,6 +18,7 @@ public class TeleportRangeUpdater : MonoBehaviour
     public Timer timer;
 
     private List<GameObject> fragments = new List<GameObject>();
+    private float range;//cached range, gets updated in updateRange()
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,7 @@ public class TeleportRangeUpdater : MonoBehaviour
     public void updateRange(float range)
     {
         clear();
+        this.range = range;
         float circumference = 2 * range * Mathf.PI;
         float spacing = suggestedSpacing;// * fragmentPrefab.GetComponent<SpriteRenderer>().size.x;
         int fragmentCount = Mathf.RoundToInt(circumference / spacing);
@@ -94,6 +96,7 @@ public class TeleportRangeUpdater : MonoBehaviour
         Vector2 upVector = transform.up;
         float angleMin = 0;
         float angleMax = 360 * timeLeft / duration;
+        float maxShake = maxShakeDistance * (timeLeftShake - timeLeft) / timeLeftShake;
         foreach (GameObject fragment in fragments)
         {
             //Set the length to standard
@@ -112,25 +115,19 @@ public class TeleportRangeUpdater : MonoBehaviour
                     //If so, set the length to the time length
                     scale.y = timeLength;
                 }
+                else
+                {
+                    //Check to see if it should shake
+                    if (timeLeft <= timeLeftShake)
+                    {
+                        //Shake each fragment individually
+                        float randomRange = Random.Range(-maxShake, maxShake);
+                        fragment.transform.localPosition = fragment.transform.localPosition.normalized * (range + randomRange);
+                    }
+                }
             }
             //Put the size back in the fragment
             fragment.transform.localScale = scale;
-        }
-        if (timeLeft <= timeLeftShake)
-        {
-            shakeEffect(timeLeft);
-        }
-    }
-
-    private void shakeEffect(float timeLeft)
-    {
-        //Shake each fragment individually
-        float factor = (timeLeftShake - timeLeft) / timeLeftShake;
-        float range = Managers.Player.Range;
-        foreach (GameObject fragment in fragments)
-        {
-            float randomRange = Random.Range(-factor, factor);
-            fragment.transform.localPosition = fragment.transform.localPosition.normalized * (range + randomRange);
         }
     }
 
