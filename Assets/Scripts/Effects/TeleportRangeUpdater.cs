@@ -18,7 +18,7 @@ public class TeleportRangeUpdater : MonoBehaviour
     public Timer timer;
 
     private List<GameObject> fragments = new List<GameObject>();
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -116,26 +116,21 @@ public class TeleportRangeUpdater : MonoBehaviour
             //Put the size back in the fragment
             fragment.transform.localScale = scale;
         }
-        shakeEffect(timeLeft <= timeLeftShake, timeLeft);
+        if (timeLeft <= timeLeftShake)
+        {
+            shakeEffect(timeLeft);
+        }
     }
 
-    private void shakeEffect(bool shake, float timeLeft)
+    private void shakeEffect(float timeLeft)
     {
-        if (shake)
+        //Shake each fragment individually
+        float factor = (timeLeftShake - timeLeft) / timeLeftShake;
+        float range = Managers.Player.Range;
+        foreach (GameObject fragment in fragments)
         {
-            float factor = (timeLeftShake - timeLeft) / timeLeftShake;
-            if (transform.localPosition == Vector3.zero)
-            {
-                transform.localPosition = transform.right * maxShakeDistance * factor;
-            }
-            else
-            {
-                transform.localPosition = (transform.localPosition * -1).normalized * maxShakeDistance * factor;
-            }
-        }
-        else
-        {
-            transform.localPosition = Vector3.zero;
+            float randomRange = Random.Range(-factor, factor);
+            fragment.transform.localPosition = fragment.transform.localPosition.normalized * (range + randomRange);
         }
     }
 
