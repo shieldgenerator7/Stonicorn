@@ -7,7 +7,26 @@ public class GameState
 {
     public int id;
     public List<ObjectState> states = new List<ObjectState>();
-    public ObjectState merky;//the object state in the list specifically for Merky
+    private ObjectState merky;//the object state in the list specifically for Merky
+    public ObjectState Merky
+    {
+        get
+        {
+            if (merky == null)
+            {
+                foreach (ObjectState os in states)
+                {
+                    if (os.objectName == "merky")
+                    {
+                        merky = os;
+                        break;
+                    }
+                }
+            }
+            return merky;
+        }
+        private set => merky = value;
+    }
 
     public static int nextid = 0;
     private GameObject representation;//the player ghost that represents this game state
@@ -17,15 +36,22 @@ public class GameState
         {
             if (representation == null)
             {
-                representation = GameObject.Instantiate(Managers.Game.playerGhostPrefab);
-                representation.transform.position = merky.position;
-                representation.transform.localScale = merky.localScale;
-                representation.transform.rotation = merky.rotation;
-                //If this is the first game state,
-                if (id == 0)
+                try
                 {
-                    //make its representation slightly bigger
-                    representation.transform.localScale *= 2f;
+                    representation = GameObject.Instantiate(Managers.Game.playerGhostPrefab);
+                    representation.transform.position = Merky.position;
+                    representation.transform.localScale = Merky.localScale;
+                    representation.transform.rotation = Merky.rotation;
+                    //If this is the first game state,
+                    if (id == 0)
+                    {
+                        //make its representation slightly bigger
+                        representation.transform.localScale *= 2f;
+                    }
+                }
+                catch(System.NullReferenceException nre)
+                {
+                    Debug.LogError("GameState ("+id+") does not have a Merky! merky: " + Merky);
                 }
             }
             return representation;
@@ -48,7 +74,7 @@ public class GameState
             states.Add(os);
             if (go.name == "merky")
             {
-                merky = os;
+                Merky = os;
             }
         }
     }

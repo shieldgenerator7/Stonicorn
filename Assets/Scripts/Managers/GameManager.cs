@@ -161,9 +161,12 @@ public class GameManager : MonoBehaviour
             //to see if their scene needs loaded or unloaded
             //(done this way because standard trigger methods in Unity
             //don't always play nice with teleporting characters)
-            foreach (SceneLoader sl in sceneLoaders)
+            if (!Rewinding)
             {
-                sl.check();
+                foreach (SceneLoader sl in sceneLoaders)
+                {
+                    sl.check();
+                }
             }
             //If the time is rewinding,
             if (Rewinding)
@@ -642,9 +645,9 @@ public class GameManager : MonoBehaviour
         //Load levels that Merky will be passing through
         foreach(SceneLoader sl in sceneLoaders)
         {
-            for (int i = gameStates.Count - 1; i > gamestateId; i--)
+            for (int i = gameStates.Count - 1; i >= gamestateId; i--)
             {
-                if (sl.isPositionInScene(gameStates[i].merky.position))
+                if (sl.isPositionInScene(gameStates[i].Merky.position))
                 {
                     sl.loadLevelIfUnLoaded();
                     break;
@@ -725,7 +728,7 @@ public class GameManager : MonoBehaviour
                     PauseForLoadingSceneName = null;
                 }
                 //Update the scene loader's variables
-                sceneLoader.isLoaded = true;
+                sceneLoader.IsLoaded = true;
             }
         }
         catch (System.Exception e)
@@ -757,7 +760,7 @@ public class GameManager : MonoBehaviour
             if (sceneLoader)
             {
                 //Update the scene loader's variables
-                sceneLoader.isLoaded = false;
+                sceneLoader.IsLoaded = false;
             }
         }
         catch (System.Exception e)
@@ -1001,7 +1004,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public Vector2 getLatestSafeRewindGhostPosition()
     {
-        return gameStates[chosenId - 1].merky.position;
+        return gameStates[chosenId - 1].Merky.position;
     }
     #endregion
 
