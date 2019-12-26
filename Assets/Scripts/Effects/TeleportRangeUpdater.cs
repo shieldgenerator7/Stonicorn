@@ -10,6 +10,8 @@ public class TeleportRangeUpdater : MonoBehaviour
     public float transparency = 1.0f;
     public float normalLength = 0.5f;
     public float timeLength = 0.8f;
+    public float timeLeftShake = 10;//when this much time is left, it starts shaking
+    public float maxShakeDistance = 0.2f;//how far it moves left and right when shaking
 
     [Header("Components")]
     public GameObject fragmentPrefab;
@@ -113,6 +115,27 @@ public class TeleportRangeUpdater : MonoBehaviour
             }
             //Put the size back in the fragment
             fragment.transform.localScale = scale;
+        }
+        shakeEffect(timeLeft <= timeLeftShake, timeLeft);
+    }
+
+    private void shakeEffect(bool shake, float timeLeft)
+    {
+        if (shake)
+        {
+            float factor = (timeLeftShake - timeLeft) / timeLeftShake;
+            if (transform.localPosition == Vector3.zero)
+            {
+                transform.localPosition = transform.right * maxShakeDistance * factor;
+            }
+            else
+            {
+                transform.localPosition = (transform.localPosition * -1).normalized * maxShakeDistance * factor;
+            }
+        }
+        else
+        {
+            transform.localPosition = Vector3.zero;
         }
     }
 
