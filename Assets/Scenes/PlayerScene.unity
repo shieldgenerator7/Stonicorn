@@ -416,6 +416,7 @@ GameObject:
   - component: {fileID: 94021253}
   - component: {fileID: 94021250}
   - component: {fileID: 94021259}
+  - component: {fileID: 94021260}
   - component: {fileID: 94021251}
   - component: {fileID: 94021256}
   - component: {fileID: 94021258}
@@ -632,7 +633,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
-  endGameTimer: {fileID: 1792176477}
+  endGameTimer: {fileID: 94021260}
+--- !u!114 &94021260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 94021246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e74116196545f4d8a0243a83262c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTime: 60
+  destroyOnFinish: 0
+  useUnscaledTime: 0
+  startFromZeroOnStart: 1
 --- !u!1 &123588474
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,6 +763,9 @@ MonoBehaviour:
   sceneName: Clouds
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  isLoaded: 0
+  isLoading: 0
+  isUnloading: 0
 --- !u!60 &133642599
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -5849,6 +5869,9 @@ MonoBehaviour:
   sceneName: Tundra
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  isLoaded: 0
+  isLoading: 0
+  isUnloading: 0
 --- !u!4 &376425900
 Transform:
   m_ObjectHideFlags: 0
@@ -13373,6 +13396,58 @@ SpriteRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 1533246038}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &635821810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 635821811}
+  - component: {fileID: 635821812}
+  m_Layer: 0
+  m_Name: TeleportRangeUpdater
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &635821811
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635821810}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1792176472}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &635821812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635821810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc55f25217ef22547aba95015c7ad1fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  suggestedSpacing: 0.5
+  transparency: 0.8
+  normalLength: 0.4
+  timeLength: 0.7
+  timeLeftShake: 10
+  maxShakeDistance: 0.2
+  fragmentPrefab: {fileID: 6491032585982812421, guid: b9c52fd9a99b951428ca8f85171044a7,
+    type: 3}
+  timer: {fileID: 94021260}
 --- !u!1 &643834946 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1894144014325450, guid: da0cfcf3eca70db419a69ba28c602bd2,
@@ -18270,6 +18345,9 @@ MonoBehaviour:
   sceneName: MechFactory
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  isLoaded: 0
+  isLoading: 0
+  isUnloading: 0
 --- !u!60 &670661347
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -19154,6 +19232,9 @@ MonoBehaviour:
   sceneName: Moon
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  isLoaded: 0
+  isLoading: 0
+  isUnloading: 0
 --- !u!4 &838574611
 Transform:
   m_ObjectHideFlags: 0
@@ -20682,6 +20763,9 @@ MonoBehaviour:
   sceneName: Forest
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  isLoaded: 0
+  isLoading: 0
+  isUnloading: 0
 --- !u!60 &1216784143
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -31439,6 +31523,9 @@ MonoBehaviour:
   sceneName: Core
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  isLoaded: 0
+  isLoading: 0
+  isUnloading: 0
 --- !u!60 &1603800215
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -31519,6 +31606,9 @@ MonoBehaviour:
   sceneName: Jungle
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  isLoaded: 0
+  isLoading: 0
+  isUnloading: 0
 --- !u!60 &1644062410
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -36621,7 +36711,6 @@ GameObject:
   - component: {fileID: 1792176470}
   - component: {fileID: 1792176469}
   - component: {fileID: 1792176468}
-  - component: {fileID: 1792176466}
   - component: {fileID: 1792176476}
   - component: {fileID: 1792176467}
   - component: {fileID: 1792176479}
@@ -36631,7 +36720,6 @@ GameObject:
   - component: {fileID: 1792176481}
   - component: {fileID: 1792176474}
   - component: {fileID: 1792176475}
-  - component: {fileID: 1792176477}
   m_Layer: 8
   m_Name: merky
   m_TagString: Player
@@ -36639,24 +36727,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1792176466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1792176465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc55f25217ef22547aba95015c7ad1fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  suggestedSpacing: 0.5
-  transparency: 0.8
-  normalLength: 0.4
-  timeLength: 0.7
-  fragmentPrefab: {fileID: 6491032585982812421, guid: b9c52fd9a99b951428ca8f85171044a7,
-    type: 3}
 --- !u!114 &1792176467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36866,6 +36936,7 @@ Transform:
   - {fileID: 681276371}
   - {fileID: 531202032}
   - {fileID: 756930641}
+  - {fileID: 635821811}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -36961,22 +37032,6 @@ MonoBehaviour:
   active: 0
   futureProjection: {fileID: 531202031}
   teleportPreviewPointer: {fileID: 1385001677}
---- !u!114 &1792176477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1792176465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68e74116196545f4d8a0243a83262c22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxTime: 60
-  destroyOnFinish: 0
-  useUnscaledTime: 0
-  startFromZeroOnStart: 1
 --- !u!114 &1792176478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37478,6 +37533,9 @@ MonoBehaviour:
   sceneName: Well
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  isLoaded: 0
+  isLoading: 0
+  isUnloading: 0
 --- !u!60 &1894727110
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -39267,13 +39325,13 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
-    - {fileID: 1792176466}
+    - {fileID: 0}
     - {fileID: 11500000, guid: 8d4c5fa36addafc4981bdaae0350f9cb, type: 3}
     - {fileID: 11500000, guid: 68e74116196545f4d8a0243a83262c22, type: 3}
     - {fileID: 11500000, guid: 8b8160ef887efe8488e0909d4294841c, type: 3}
     - {fileID: 94021258}
     - {fileID: 94021257}
-    - {fileID: 1792176477}
+    - {fileID: 0}
     - {fileID: 0}
     - {fileID: 11500000, guid: 9f780fae2196b574fac53818cb106dc3, type: 3}
     - {fileID: 0}
@@ -40738,6 +40796,9 @@ MonoBehaviour:
   sceneName: Desert
   lastOpenGameStateId: -1
   firstOpenGameStateId: 2147483647
+  isLoaded: 0
+  isLoading: 0
+  isUnloading: 0
 --- !u!60 &2099265651
 PolygonCollider2D:
   m_ObjectHideFlags: 0

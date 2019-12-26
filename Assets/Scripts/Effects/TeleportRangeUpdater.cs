@@ -11,18 +11,16 @@ public class TeleportRangeUpdater : MonoBehaviour
     public float normalLength = 0.5f;
     public float timeLength = 0.8f;
 
-    [Header("Prefabs")]
+    [Header("Components")]
     public GameObject fragmentPrefab;
+    public Timer timer;
 
     private List<GameObject> fragments = new List<GameObject>();
-
-    private Timer timer;
-
+    
     // Start is called before the first frame update
     void Start()
     {
         //Timer
-        timer = GetComponent<Timer>();
         timer.onTimeLeftChanged += updateTimer;
         //Register range update delegate
         PlayerController pc = GetComponent<PlayerController>();
@@ -71,7 +69,7 @@ public class TeleportRangeUpdater : MonoBehaviour
             fragment.GetComponent<SpriteRenderer>().color = Color.white;
         }
         //Segment consulting
-        foreach (PlayerAbility ability in GetComponents<PlayerAbility>())
+        foreach (PlayerAbility ability in GetComponentsInParent<PlayerAbility>())
         {
             if (ability.enabled)
             {
