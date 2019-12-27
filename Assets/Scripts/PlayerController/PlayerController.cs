@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     //
     //Timer Processing Vars
     //
-    private float gravityImmuneStartTime;//when Merky last became immune to gravity
+    private float gravityImmuneStartTime = -1;//when Merky last became immune to gravity
     private float lastAutoTeleportTime;//the last time that Merky auto teleported using the hold gesture
 
     private float exhaustCoolDownTime;//the current cool down time (sec) for teleporting while exhausted
@@ -350,13 +350,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public bool GravityImmune
     {
-        get { return gravityImmuneStartTime > 0; }
+        get { return gravityImmuneStartTime >= 0; }
         set
         {
             bool grantGravityImmunity = value;
             if (grantGravityImmunity)
             {
-                if (gravityImmuneStartTime == 0)
+                if (gravityImmuneStartTime < 0)
                 {
                     //Turn off Merky's gravity
                     Gravity.AcceptsGravity = false;
@@ -373,7 +373,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                gravityImmuneStartTime = 0;
+                gravityImmuneStartTime = -1;
                 //Turn on Merky's gravity
                 Gravity.AcceptsGravity = true;
                 //Restore saved velocity
