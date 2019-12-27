@@ -574,6 +574,101 @@ public class GameManager : MonoBehaviour
             //If the rewind is finished,
             if (chosenId == rewindId)
             {
+                //Stop the rewind
+                Rewinding = false;
+            }
+        }
+        catch (System.Exception e)
+        {
+            ErrorMessage = "123456789012345678901234567890 GM.Load(): e: " + e;
+        }
+    }
+
+    /// <summary>
+    /// Rewinds back a number of states equal to count
+    /// </summary>
+    /// <param name="count">How many states to rewind. 0 doesn't rewind. 1 undoes 1 state</param>
+    public void Rewind(int count)
+    {
+        RewindTo(chosenId - count, false);
+    }
+
+    /// <summary>
+    /// Sets into motion the rewind state.
+    /// Update carries out the motions of calling Load()
+    /// </summary>
+    /// <param name="gamestateId">The game state id to rewind to</param>
+    void RewindTo(int gamestateId, bool playerInitiated = true)
+    {
+        //Set interruptable
+        rewindInterruptableByPlayer = playerInitiated;        
+        //Set the game state tracker vars
+        rewindId = gamestateId;
+        //Start the rewind
+        Rewinding = true;
+    }
+    /// <summary>
+    /// Rewind the game all the way to the beginning
+    /// </summary>
+    public void RewindToStart(bool playerInitiated = false)
+    {
+        RewindTo(0, playerInitiated);
+    }
+    /// <summary>
+    /// True if time is rewinding
+    /// </summary>
+    public bool Rewinding
+    {
+        get { return chosenId > rewindId; }
+        private set
+        {
+            //Start rewinding
+            if (value)
+            {
+                //Make sure rewind variable is set correctly
+                if (rewindId == chosenId)
+                {
+                    //If it has not been,
+                    //rewind to start
+                    rewindId = 0;
+                }
+                //Set the music speed to rewind
+                Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
+                //Show rewind visual effect
+                Managers.Effect.showRewindEffect(true);
+                //Set rewindDelay
+                int count = chosenId - rewindId;
+                rewindDelay = baseRewindDelay;
+                if (count * rewindDelay < minRewindDuration)
+                {
+                    rewindDelay = minRewindDuration / count;
+                }
+                //Load levels that Merky will be passing through
+                foreach (SceneLoader sl in sceneLoaders)
+                {
+                    for (int i = gameStates.Count - 1; i >= rewindId; i--)
+                    {
+                        if (sl.isPositionInScene(gameStates[i].Merky.position))
+                        {
+                            sl.loadLevelIfUnLoaded();
+                            break;
+                        }
+                    }
+                }
+                //Recenter the camera on Merky
+                Managers.Camera.recenter();
+                //Disable physics while rewinding
+                Managers.Physics2DSurrogate.enabled = true;
+                //Pause time
+                Managers.Time.Paused = true;
+                //Update Stats
+                GameStatistics.addOne("Rewind");
+            }
+            //Stop rewinding
+            else
+            {
+                //Set rewindId to chosenId
+                rewindId = chosenId;
                 //Refresh the game object list
                 refreshGameObjects();
                 //Put the music back to normal
@@ -601,97 +696,22 @@ public class GameManager : MonoBehaviour
                 Managers.Time.Paused = false;
                 //Re-enable physics because the rewind is over
                 Managers.Physics2DSurrogate.enabled = false;
-                //Grant the player gravity immunity
-                Managers.Player.GravityImmune = true;
+                //Rewind Finished Delegate
+                onRewindFinished?.Invoke();
             }
         }
-        catch (System.Exception e)
-        {
-            ErrorMessage = "123456789012345678901234567890 GM.Load(): e: " + e;
-        }
     }
-
-    /// <summary>
-    /// Rewinds back a number of states equal to count
-    /// </summary>
-    /// <param name="count">How many states to rewind. 0 doesn't rewind. 1 undoes 1 state</param>
-    public void Rewind(int count)
-    {
-        RewindTo(chosenId - count, false);
-    }
-
-    /// <summary>
-    /// Sets into motion the rewind state.
-    /// Update carries out the motions of calling Load()
-    /// </summary>
-    /// <param name="gamestateId">The game state id to rewind to</param>
-    void RewindTo(int gamestateId, bool playerInitiated = true)
-    {
-        //Set interruptable
-        rewindInterruptableByPlayer = playerInitiated;
-        //Set the music speed to rewind
-        Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
-        //Show rewind visual effect
-        Managers.Effect.showRewindEffect(true);
-        //Set the game state tracker vars
-        rewindId = gamestateId;
-        //Set rewindDelay
-        int count = chosenId - rewindId;
-        rewindDelay = baseRewindDelay;
-        if (count * rewindDelay < minRewindDuration)
-        {
-            rewindDelay = minRewindDuration / count;
-        }
-        //Load levels that Merky will be passing through
-        foreach(SceneLoader sl in sceneLoaders)
-        {
-            for (int i = gameStates.Count - 1; i >= gamestateId; i--)
-            {
-                if (sl.isPositionInScene(gameStates[i].Merky.position))
-                {
-                    sl.loadLevelIfUnLoaded();
-                    break;
-                }
-            }
-        }
-        //Recenter the camera on Merky
-        Managers.Camera.recenter();
-        //Disable physics while rewinding
-        Managers.Physics2DSurrogate.enabled = true;
-        //Pause time
-        Managers.Time.Paused = true;
-        //Update Stats
-        GameStatistics.addOne("Rewind");
-    }
-    /// <summary>
-    /// Rewind the game all the way to the beginning
-    /// </summary>
-    public void RewindToStart(bool playerInitiated = false)
-    {
-        RewindTo(0, playerInitiated);
-    }
-    /// <summary>
-    /// True if time is rewinding
-    /// </summary>
-    public bool Rewinding
-    {
-        get { return chosenId > rewindId; }
-    }
+    public delegate void OnRewindFinished();
+    public OnRewindFinished onRewindFinished;
     /// <summary>
     /// Ends the rewind at the current game state
     /// </summary>
     public void cancelRewind()
     {
-        //Set the game state id tracker vars
-        rewindId = chosenId;
+        //Stop the rewind
+        Rewinding = false;
         //Load the current game state
         Load(chosenId);
-        //Set the music back to normal
-        Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
-        //End rewind visual effect
-        Managers.Effect.showRewindEffect(false);
-        //Resume time
-        Managers.Time.Paused = false;
     }
     #endregion
 

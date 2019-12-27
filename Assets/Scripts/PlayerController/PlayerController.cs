@@ -65,10 +65,7 @@ public class PlayerController : MonoBehaviour
             //But it can be greater than base range
             range = Mathf.Max(value, 0);
             //Call range changed delegates
-            if (onRangeChanged != null)
-            {
-                onRangeChanged(range);
-            }
+            onRangeChanged?.Invoke(range);
         }
     }
     public delegate void OnRangeChanged(float range);
@@ -276,9 +273,10 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
         tpa = GetComponent<TeleportAbility>();
-        //Register the on death delegate
+        //Register the delegates
         HardMaterial.shattered += shattered;
         HardMaterial.hardCollision += hardCollision;
+        Managers.Game.onRewindFinished += grantGravityImmunityAfterRewind;
         //Estimate the halfWidth
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
         halfWidth = (extents.x + extents.y) / 2;
@@ -1131,6 +1129,14 @@ public class PlayerController : MonoBehaviour
         {
             ability.dropHoldGesture();
         }
+    }
+
+    void grantGravityImmunityAfterRewind()
+    {
+        //Grant gravity immunity
+        GravityImmune = true;
+        //Reset range to default
+        Range = baseRange;
     }
 }
 
