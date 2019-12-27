@@ -84,30 +84,12 @@ public class SavableObject
     {
         switch (typeName)
         {
-            case "GestureManager":
-                return typeof(GestureManager);
-            case "AfterWind":
-                return typeof(AfterWind);
-            case "StickyPadChecker":
-                return typeof(StickyPadChecker);
-            case "ElectricFieldController":
-                return typeof(ElectricFieldController);
-            case "PowerConduit":
-                return typeof(PowerConduit);
             case "HardMaterial":
                 return typeof(HardMaterial);
             case "GravityAccepter":
                 return typeof(GravityAccepter);
-            case "CrackedPiece":
-                return typeof(CrackedPiece);
-            case "BalloonController":
-                return typeof(BalloonController);
-            case "NPCController":
-                return typeof(NPCController);
-            case "NPCMetalController":
-                return typeof(NPCMetalController);
-            case "NPCVoiceLine":
-                return typeof(NPCVoiceLine);
+            case "GestureManager":
+                return typeof(GestureManager);
             case "TimeManager":
                 return typeof(TimeManager);
             case "GameEventManager":
@@ -132,6 +114,24 @@ public class SavableObject
                 return typeof(ElectricFieldAbility);
             case "LongTeleportAbility":
                 return typeof(LongTeleportAbility);
+            case "AfterWind":
+                return typeof(AfterWind);
+            case "StickyPadChecker":
+                return typeof(StickyPadChecker);
+            case "ElectricFieldController":
+                return typeof(ElectricFieldController);
+            case "PowerConduit":
+                return typeof(PowerConduit);
+            case "CrackedPiece":
+                return typeof(CrackedPiece);
+            case "BalloonController":
+                return typeof(BalloonController);
+            case "NPCController":
+                return typeof(NPCController);
+            case "NPCMetalController":
+                return typeof(NPCMetalController);
+            case "NPCVoiceLine":
+                return typeof(NPCVoiceLine);
             default:
                 throw new KeyNotFoundException(
                     "The type name \"" + typeName + "\" was not found. "
