@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 2043419896947057584}
   - component: {fileID: 7585513601979807100}
   m_Layer: 0
-  m_Name: Snail
+  m_Name: Enemy_Snail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,6 +64,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -96,7 +97,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2897467820420327007}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 59f8986261aa7804a8841709d0433ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -178,11 +178,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2897467820420327007}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   usesSideVector: 0
+  saveValues: 0
+  gravityScale: 1
   acceptsGravity: 0
 --- !u!58 &2043419896947057584
 CircleCollider2D:
@@ -209,7 +210,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2897467820420327007}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -217,8 +217,9 @@ MonoBehaviour:
   hardness: 3
   forceThreshold: 50
   maxIntegrity: 100
-  disappearsIfNoBrokenPrefab: 1
   integrity: 100
+  dealsDamage: 1
+  disappearsIfNoBrokenPrefab: 1
   crackedPrefab: {fileID: 0}
   crackedOverlay: 1
   crackStages: []
@@ -285,6 +286,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

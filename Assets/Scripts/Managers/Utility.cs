@@ -212,7 +212,13 @@ public static class Utility
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
-            if (rch2d.collider.gameObject != first && rch2d.collider.gameObject != second)
+            if (rch2d.collider.isTrigger)
+            {
+                //don't process triggers
+                continue;
+            }
+            GameObject collGO = rch2d.collider.gameObject;
+            if (!collGO.equalsHierarchy(first) && !collGO.equalsHierarchy(second))
             {
                 return false;
             }
