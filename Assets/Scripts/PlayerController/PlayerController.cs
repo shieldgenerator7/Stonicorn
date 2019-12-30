@@ -18,8 +18,6 @@ public class PlayerController : MonoBehaviour
     public float gravityImmuneDuration = 0.2f;//amount of time (sec) Merky is immune to gravity after landing
     [Range(0, 0.5f)]
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
-    [Range(0, 0.5f)]
-    public float groundTestDistance = 0.25f;//how far from Merky the ground test should go
     [Range(0, 3)]
     public float hitStunDuration = 1;//how long merky freezes after getting hit before he auto-rewinds
     //
@@ -79,93 +77,6 @@ public class PlayerController : MonoBehaviour
     }
 
     //
-    //Grounded state variables
-    //
-    private bool grounded = true;//true if grounded at all
-    public bool Grounded
-    {
-        get
-        {
-            GroundedPrev = grounded;
-            grounded = GroundedNormal;
-            //If it's grounded normally,
-            if (grounded)
-            {
-                //It's not going to even check the abilities
-                GroundedAbilityPrev = groundedAbility;
-                groundedAbility = false;
-            }
-            else
-            {
-                //Else, check the abilities
-                grounded = GroundedAbility;
-            }
-            return grounded;
-        }
-    }
-
-    private bool groundedNormal = true;//true if grounded to the direction of gravity
-    public bool GroundedNormal
-    {
-        get
-        {
-            GroundedNormalPrev = groundedNormal;
-            groundedNormal = isGroundedInDirection(Gravity.Gravity);
-            return groundedNormal;
-        }
-    }
-
-    private bool groundedAbility = false;//true if grounded to a wall
-    public bool GroundedAbility
-    {
-        get
-        {
-            GroundedAbilityPrev = groundedAbility;
-            groundedAbility = false;
-            //Check isGroundedCheck delegates
-            if (isGroundedCheck != null)
-            {
-                foreach (IsGroundedCheck igc in isGroundedCheck.GetInvocationList())
-                {
-                    bool result = igc.Invoke();
-                    //If at least 1 returns true,
-                    if (result == true)
-                    {
-                        //Merky is grounded
-                        groundedAbility = true;
-                        break;
-                    }
-                }
-            }
-            return groundedAbility;
-        }
-    }
-    public delegate bool IsGroundedCheck();
-    public IsGroundedCheck isGroundedCheck;
-
-    //Grounded Previously
-    private bool groundedPrev;
-    public bool GroundedPrev
-    {
-        get { return groundedPrev; }
-        private set { groundedPrev = value; }
-    }
-    //Grounded Previously in gravity direction
-    private bool groundedNormalPrev;
-    public bool GroundedNormalPrev
-    {
-        get { return groundedNormalPrev; }
-        private set { groundedNormalPrev = value; }
-    }
-    //Grounded Previously by an ability
-    private bool groundedAbilityPrev;
-    public bool GroundedAbilityPrev
-    {
-        get { return groundedAbilityPrev; }
-        private set { groundedAbilityPrev = value; }
-    }
-
-    //
     // Gravity Immunity Variables
     //
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
@@ -222,6 +133,19 @@ public class PlayerController : MonoBehaviour
                 gravity = GetComponent<GravityAccepter>();
             }
             return gravity;
+        }
+    }
+
+    private GroundChecker ground;
+    public GroundChecker Ground
+    {
+        get
+        {
+            if (ground == null)
+            {
+                ground = GetComponent<GroundChecker>();
+            }
+            return ground;
         }
     }
 
@@ -338,7 +262,7 @@ public class PlayerController : MonoBehaviour
             groundedTrigger.isTrigger = true;
         }
         //Move ground trigger to its new position based on the current gravity
-        Vector3 offset = Gravity.Gravity.normalized * groundTestDistance;
+        Vector3 offset = Gravity.Gravity.normalized * Ground.groundTestDistance;
         groundedTrigger.offset = transform.InverseTransformDirection(offset);
     }
 
@@ -397,7 +321,7 @@ public class PlayerController : MonoBehaviour
             if (shouldGrantGIT)
             {
                 //And Merky is grounded,
-                if (Grounded)
+                if (Ground.Grounded)
                 {
                     //Updated grounded state
                     updateGroundedState();
@@ -472,7 +396,7 @@ public class PlayerController : MonoBehaviour
     private void teleport(Vector3 targetPos)
     {
         //If Merky is teleporting from the air,
-        if (!Grounded)
+        if (!Ground.Grounded)
         {
             //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
@@ -755,7 +679,7 @@ public class PlayerController : MonoBehaviour
     private void updateGroundedState()
     {
         //If Merky is grounded,
-        if (Grounded)
+        if (Ground.Grounded)
         {
             //Refresh teleport range
             //Check to see if it's less than base range,
@@ -778,35 +702,10 @@ public class PlayerController : MonoBehaviour
             }
         }
         //Grounded delegates
-        onGroundedStateUpdated?.Invoke(grounded);
+        onGroundedStateUpdated?.Invoke(Ground.grounded);
     }
     public delegate void OnGroundedStateUpdated(bool grounded);
     public OnGroundedStateUpdated onGroundedStateUpdated;//called when grounded becomes true
-
-    /// <summary>
-    /// Returns true if there is ground in the given direction relative to Merky
-    /// </summary>
-    /// <param name="direction">The direction to check for ground in</param>
-    /// <returns>True if there is ground in the given direction</returns>
-    public bool isGroundedInDirection(Vector3 direction)
-    {
-        //Find objects in the given direction
-        Utility.RaycastAnswer answer;
-        answer = pc2d.CastAnswer(direction, groundTestDistance, true);
-        //Process the found objects
-        for (int i = 0; i < answer.count; i++)
-        {
-            RaycastHit2D rch2d = answer.rch2ds[i];
-            //If the object is a solid object,
-            if (!rch2d.collider.isTrigger)
-            {
-                //There is ground in the given direction
-                return true;
-            }
-        }
-        //Else, There is no ground in the given direction
-        return false;
-    }
 
     /// <summary>
     /// Determines whether the given position is occupied or not

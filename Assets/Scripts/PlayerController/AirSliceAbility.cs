@@ -22,7 +22,7 @@ public class AirSliceAbility : PlayerAbility {
 	// Use this for initialization
 	protected override void init () {
         base.init();
-        playerController.isGroundedCheck += airGroundedCheck;
+        playerController.Ground.isGroundedCheck += airGroundedCheck;
         playerController.onGroundedStateUpdated += resetAirPorts;
         playerController.onTeleport += sliceThings;
         swapAbility = GetComponent<SwapAbility>();
@@ -30,7 +30,7 @@ public class AirSliceAbility : PlayerAbility {
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.isGroundedCheck -= airGroundedCheck;
+        playerController.Ground.isGroundedCheck -= airGroundedCheck;
         playerController.onGroundedStateUpdated -= resetAirPorts;
         playerController.onTeleport -= sliceThings;
     }
@@ -51,7 +51,7 @@ public class AirSliceAbility : PlayerAbility {
 
     void sliceThings(Vector2 oldPos, Vector2 newPos)
     {
-        if (!playerController.GroundedNormalPrev)
+        if (!playerController.Ground.GroundedNormalPrev)
         {
             //Update Stats
             GameStatistics.addOne("AirSlice");
@@ -91,7 +91,7 @@ public class AirSliceAbility : PlayerAbility {
 
     protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
-        if (!playerController.GroundedPrev)
+        if (!playerController.Ground.GroundedPrev)
         {
             base.showTeleportEffect(oldPos, newPos);
             showStreak(oldPos, newPos);

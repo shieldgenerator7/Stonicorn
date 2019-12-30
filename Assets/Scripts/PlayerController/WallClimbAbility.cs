@@ -12,13 +12,13 @@ public class WallClimbAbility : PlayerAbility
     protected override void init()
     {
         base.init();
-        playerController.isGroundedCheck += isGroundedWall;
+        playerController.Ground.isGroundedCheck += isGroundedWall;
         playerController.onTeleport += plantSticky;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.isGroundedCheck -= isGroundedWall;
+        playerController.Ground.isGroundedCheck -= isGroundedWall;
         playerController.onTeleport -= plantSticky;
     }
 
@@ -27,13 +27,13 @@ public class WallClimbAbility : PlayerAbility
         bool isgrounded = false;
         Vector2 gravity = playerController.Gravity.Gravity;
         //Test right side
-        isgrounded = playerController.isGroundedInDirection(
+        isgrounded = playerController.Ground.isGroundedInDirection(
             -gravity.PerpendicularRight()
             );
         if (!isgrounded)
         {
             //Test left side
-            isgrounded = playerController.isGroundedInDirection(
+            isgrounded = playerController.Ground.isGroundedInDirection(
                 -gravity.PerpendicularLeft()
                 );
         }
@@ -42,7 +42,7 @@ public class WallClimbAbility : PlayerAbility
 
     protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
-        if (playerController.GroundedAbilityPrev)
+        if (playerController.Ground.GroundedAbilityPrev)
         {
             base.showTeleportEffect(oldPos, newPos);
         }
@@ -50,7 +50,7 @@ public class WallClimbAbility : PlayerAbility
 
     protected override void playTeleportSound(Vector2 oldPos, Vector2 newPos)
     {
-        if (playerController.GroundedAbilityPrev)
+        if (playerController.Ground.GroundedAbilityPrev)
         {
             base.playTeleportSound(oldPos, newPos);
         }
@@ -63,7 +63,7 @@ public class WallClimbAbility : PlayerAbility
     /// <param name="newPos"></param>
     public void plantSticky(Vector2 oldPos, Vector2 newPos)
     {
-        if (playerController.GroundedAbilityPrev)
+        if (playerController.Ground.GroundedAbilityPrev)
         {
             //Update Stats
             GameStatistics.addOne("WallClimb");

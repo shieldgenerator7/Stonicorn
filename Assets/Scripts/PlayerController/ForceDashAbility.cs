@@ -92,7 +92,7 @@ public class ForceDashAbility : PlayerAbility
         else
         {
             //If the player was grounded before teleporting,
-            if (playerController.GroundedPrev)
+            if (playerController.Ground.GroundedPrev)
             {
                 //Update the charge direction
                 ChargeDirection += dirNorm;
