@@ -27,6 +27,8 @@ public class SnailController : MonoBehaviour
     public Animator animator;
     public Collider2D bottomDetector;//used to make sure the snail is at the right orientation before coming out
     public Collider2D stoneDetector;//used to detect stone in its area
+    public GroundChecker ground;
+    public GravityAccepter gravity;
     private Rigidbody2D rb2d;
 
     // Start is called before the first frame update
@@ -45,7 +47,15 @@ public class SnailController : MonoBehaviour
             return;
         }
         //Own gravity
-        rb2d.AddForce(-floorDirection * rb2d.mass * stickForce);
+        if (ground.Grounded)
+        {
+            rb2d.AddForce(-floorDirection * rb2d.mass * stickForce);
+            gravity.AcceptsGravity = false;
+        }
+        else
+        {
+            gravity.AcceptsGravity = true;
+        }
 
         //Hunting
         animator.SetBool("scared", isScared);
