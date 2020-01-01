@@ -54,34 +54,33 @@ public class SceneLoader : MonoBehaviour
     /// <summary>
     /// True if the level is currently loaded
     /// </summary>
-    private bool isLoaded = false;
-    internal bool IsLoaded
+    private bool IsLoaded
     {
-        get => isLoaded;
-        set
+        get
         {
-            isLoaded = value;
-            if (isLoaded)
+            //2019-12-31: copied from https://forum.unity.com/threads/loading-an-additive-scene-once-and-only-once.395653/#post-2581612
+            for (int i = 0; i < SceneManager.sceneCount; i++)
             {
-                isLoading = false;
+                if (SceneManager.GetSceneAt(i).name == sceneName)
+                {
+                    return true;
+                }
             }
-            else
-            {
-                isUnloading = false;
-            }
+            return false;
         }
     }
-    [SerializeField]
-    /// <summary>
-    /// True if the level is currently loaded or is currently loading
-    /// </summary>
-    private bool isLoading = false;
-    [SerializeField]
-    /// <summary>
-    /// True if the level is currently unloaded or is currently unloaded
-    /// </summary>
-    private bool isUnloading = false;
     private Collider2D c2d;
+    protected Collider2D Collider
+    {
+        get
+        {
+            if (c2d == null)
+            {
+                c2d = GetComponent<Collider2D>();
+            }
+            return c2d;
+        }
+    }
 
     // Use this for initialization
     void Start()
@@ -90,8 +89,6 @@ public class SceneLoader : MonoBehaviour
         {
             return;
         }
-        c2d = gameObject.GetComponent<Collider2D>();
-        IsLoaded = SceneManager.GetSceneByName(sceneName).isLoaded;
     }
 
     public void check()
@@ -100,17 +97,18 @@ public class SceneLoader : MonoBehaviour
         {
             return;
         }
-        bool overlaps = c2d.OverlapPoint(ExplorerObject.transform.position);
+        bool isLoaded = IsLoaded;
+        bool overlaps = Collider.OverlapPoint(ExplorerObject.transform.position);
         if (overlaps)
         {
             currentScene = this;
         }
         //Unload when player leaves
-        if ((IsLoaded || isLoading) && !isUnloading)
+        if (isLoaded)
         {
             bool shouldUnload =
                 (explorer)
-                ? !explorer.canSeeBehind(c2d)
+                ? (Managers.Game.playerSceneLoaded && !explorer.canSeeBehind(Collider))
                 : !overlaps;
             if (shouldUnload)
             {
@@ -118,19 +116,18 @@ public class SceneLoader : MonoBehaviour
             }
         }
         //Load when player enters
-        else if ((!IsLoaded || isUnloading) && !isLoading)
+        else if (!isLoaded)
         {
             bool shouldLoad =
-                (explorer)
-                ? explorer.canSee(c2d)
-                : overlaps;
+                overlaps ||
+                explorer.canSee(Collider);
             if (shouldLoad)
             {
                 loadLevel();
             }
         }
         //If the player is in the level before it's done loading,
-        if (overlaps && !IsLoaded && isLoading)
+        if (overlaps && isLoaded && !Managers.Game.isSceneOpenByName(sceneName))
         {
             //Pause the game.
             Managers.Game.PauseForLoadingSceneName = sceneName;
@@ -138,30 +135,26 @@ public class SceneLoader : MonoBehaviour
     }
     public bool isPositionInScene(Vector2 pos)
     {
-        return c2d.OverlapPoint(pos);
+        return Collider.OverlapPoint(pos);
     }
     void loadLevel()
     {
-        isLoading = true;
-        isUnloading = false;
         LoadingScreen.LoadScene(sceneName);
     }
     void unloadLevel()
     {
-        isLoading = false;
-        isUnloading = true;
         SceneManager.UnloadSceneAsync(sceneName);
     }
     public void loadLevelIfUnLoaded()
     {
-        if ((!IsLoaded || isUnloading) && !isLoading)
+        if (!IsLoaded)
         {
             loadLevel();
         }
     }
     public void unloadLevelIfLoaded()
     {
-        if ((IsLoaded || isLoading) && !isUnloading)
+        if (IsLoaded)
         {
             unloadLevel();
         }
@@ -171,7 +164,7 @@ public class SceneLoader : MonoBehaviour
 
     public static Scene getCurrentScene()
     {
-        return SceneManager.GetSceneByName(currentScene.sceneName);
+        return currentScene.Scene;
     }
     /// <summary>
     /// Moves the given object to the current scene

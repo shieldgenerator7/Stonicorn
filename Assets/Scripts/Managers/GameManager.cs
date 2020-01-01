@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
     }
     //Scene Loading
     private List<Scene> openScenes = new List<Scene>();//the list of the scenes that are open
+    public bool playerSceneLoaded { get; private set; } = false;
     //Memories
     private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
 
@@ -128,6 +129,8 @@ public class GameManager : MonoBehaviour
                 //Save its future files with a time stamp
                 saveWithTimeStamp = true;
             }
+            //Check to see which levels need loaded
+            checkScenes();
             //Update the list of objects that have state to save
             refreshGameObjects();
             //If it's not in demo mode, and its save file exists,
@@ -163,10 +166,7 @@ public class GameManager : MonoBehaviour
             //don't always play nice with teleporting characters)
             if (!Rewinding)
             {
-                foreach (SceneLoader sl in sceneLoaders)
-                {
-                    sl.check();
-                }
+                checkScenes();
             }
             //If the time is rewinding,
             if (Rewinding)
@@ -716,10 +716,22 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Space Management
+    void checkScenes()
+    {
+        foreach (SceneLoader sl in sceneLoaders)
+        {
+            sl.check();
+        }
+    }
+
     void sceneLoaded(Scene scene, LoadSceneMode m)
     {
         try
         {
+            if (scene.name == "PlayerScene")
+            {
+                playerSceneLoaded = true;
+            }
             //Update the list of objects with state to save
             Debug.Log("sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
             refreshGameObjects();
@@ -747,8 +759,6 @@ public class GameManager : MonoBehaviour
                     //Unpause the game
                     PauseForLoadingSceneName = null;
                 }
-                //Update the scene loader's variables
-                sceneLoader.IsLoaded = true;
             }
         }
         catch (System.Exception e)
@@ -775,18 +785,35 @@ public class GameManager : MonoBehaviour
             Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
             //Remove the scene from the list of open scenes
             openScenes.Remove(scene);
-            //If its a level scene,
-            SceneLoader sceneLoader = getSceneLoaderByName(scene.name);
-            if (sceneLoader)
-            {
-                //Update the scene loader's variables
-                sceneLoader.IsLoaded = false;
-            }
         }
         catch (System.Exception e)
         {
             ErrorMessage = "123456789012345678901234567890 GM.sceneUnloaded(): e: " + e;
         }
+    }
+
+    public bool isSceneOpen(Scene scene)
+    {
+        foreach(Scene s in openScenes)
+        {
+            if (scene == s)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool isSceneOpenByName(string sceneName)
+    {
+        foreach (Scene s in openScenes)
+        {
+            if (sceneName == s.name)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /// <summary>
