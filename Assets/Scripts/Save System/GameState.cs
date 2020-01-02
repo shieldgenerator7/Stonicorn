@@ -162,9 +162,13 @@ public class GameState
             {
                 Representation.transform.position =
                     Managers.Camera.getInViewPosition(
-                        Representation.transform.position,
+                        Merky.position,
                         0.9f
                     );
+            }
+            else
+            {
+                Representation.transform.position = Merky.position;
             }
         }
     }
