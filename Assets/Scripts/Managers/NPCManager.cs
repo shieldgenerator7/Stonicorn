@@ -18,6 +18,8 @@ public class NPCManager : MonoBehaviour
     void Start()
     {
         npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
+        //Register pause delegate
+        Managers.Time.onPauseChanged += pauseCurrentNPC;
     }
 
     // Update is called once per frame
@@ -232,5 +234,10 @@ public class NPCManager : MonoBehaviour
         }
         strings.Add(buildString);
         return strings.ToArray();
+    }
+
+    void pauseCurrentNPC(bool paused)
+    {
+        lastTalkingNPC.GetComponent<NPCController>().pauseDialogue(paused);
     }
 }

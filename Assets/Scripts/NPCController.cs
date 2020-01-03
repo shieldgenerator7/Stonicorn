@@ -47,8 +47,6 @@ public class NPCController : SavableMonoBehaviour
         {
             refreshVoiceLines();
         }
-        //Register pause delegate
-        Managers.Time.onPauseChanged += pauseDialogue;
     }
     void refreshVoiceLines()
     {
@@ -341,7 +339,7 @@ public class NPCController : SavableMonoBehaviour
     /// Called from TimeManager.onPausedChanged() delegate
     /// </summary>
     /// <param name="paused"></param>
-    private void pauseDialogue(bool paused)
+    internal void pauseDialogue(bool paused)
     {
         if (paused)
         {
