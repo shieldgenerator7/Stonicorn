@@ -30,8 +30,14 @@ public class TimeManager : SavableMonoBehaviour
     public bool Paused
     {
         get => UnityEngine.Time.timeScale == 0;
-        set => UnityEngine.Time.timeScale = (value) ? 0 : 1;
+        set
+        {
+            UnityEngine.Time.timeScale = (value) ? 0 : 1;
+            onPauseChanged?.Invoke(value);
+        }
     }
+    public delegate void OnPauseChanged(bool paused);
+    public OnPauseChanged onPauseChanged;
 
     private void Start()
     {

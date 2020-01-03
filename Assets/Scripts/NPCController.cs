@@ -47,6 +47,8 @@ public class NPCController : SavableMonoBehaviour
         {
             refreshVoiceLines();
         }
+        //Register pause delegate
+        Managers.Time.onPauseChanged += pauseDialogue;
     }
     void refreshVoiceLines()
     {
@@ -201,7 +203,7 @@ public class NPCController : SavableMonoBehaviour
             string voicelinetextWhole = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time, true);
             NPCManager.speakNPC(gameObject, true, voicelinetext, voicelinetextWhole);
         }
-        else if (currentVoiceLineIndex >= 0)
+        else if (currentVoiceLineIndex >= 0 && !Managers.Time.Paused)
         {
             currentVoiceLineIndex = -1;
             NPCManager.speakNPC(gameObject, false, "", "");
@@ -332,6 +334,28 @@ public class NPCController : SavableMonoBehaviour
         if (currentVoiceLineIndex != index || !Source.isPlaying)
         {
             setVoiceLine(index);
+        }
+    }
+
+    /// <summary>
+    /// Called from TimeManager.onPausedChanged() delegate
+    /// </summary>
+    /// <param name="paused"></param>
+    private void pauseDialogue(bool paused)
+    {
+        if (paused)
+        {
+            if (Source.isPlaying)
+            {
+                Source.Pause();
+            }
+        }
+        else
+        {
+            if (currentVoiceLineIndex >= 0)
+            {
+                Source.Play();
+            }
         }
     }
 }
