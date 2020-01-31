@@ -199,6 +199,10 @@ public class NPCController : SavableMonoBehaviour
         {
             string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time);
             string voicelinetextWhole = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time, true);
+            if (voicelinetext.Length > voicelinetextWhole.Length)
+            {
+                throw new UnityException("Voice line text greater than whole! part: " + voicelinetext.Length + "; whole: " + voicelinetextWhole.Length);
+            }
             NPCManager.speakNPC(gameObject, true, voicelinetext, voicelinetextWhole);
         }
         else if (currentVoiceLineIndex >= 0 && !Managers.Time.Paused)
