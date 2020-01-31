@@ -347,6 +347,25 @@ public static class Utility
     }
 
     /// <summary>
+    /// Give it two points that define the line,
+    /// and the X value you'd like to know,
+    /// and it will give you the corresponing Y value
+    /// </summary>
+    public static float getLineSegmentY(Vector2 p1, Vector2 p2, float x)
+    {
+        // y = ax + b
+        // a = rise / run
+        float rise = p2.y - p1.y;
+        float run = p2.x - p1.x;
+        float a = rise / run;
+        // b = y - ax
+        float b = p2.y - a * p2.x;
+        //Now find y
+        float y = a * x + b;
+        return y;
+    }
+
+    /// <summary>
     /// Instantiates a GameObject so that it can be rewound.
     /// Only works on game objects that are "registered" to be rewound
     /// </summary>
