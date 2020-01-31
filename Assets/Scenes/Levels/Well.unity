@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -4243,6 +4244,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Goldie the Bronzicorn
       objectReference: {fileID: 0}
+    - target: {fileID: 6317144652256997883, guid: c4ccb1628833b204e85aa156745c57a6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ccb1628833b204e85aa156745c57a6, type: 3}
 --- !u!4 &1097422596 stripped
@@ -6547,11 +6553,13 @@ MonoBehaviour:
   m_AdaptiveUV: 1
   m_StretchUV: 0
   m_WorldSpaceUV: 0
+  m_CornerAngleThreshold: 30
   m_ColliderDetail: 16
   m_ColliderOffset: 0
   m_UpdateCollider: 1
   m_OptimizeCollider: 1
   m_OptimizeGeometry: 1
+  m_EnableTangents: 0
 --- !u!1971053207 &1919778478
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -6566,6 +6574,7 @@ SpriteShapeRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

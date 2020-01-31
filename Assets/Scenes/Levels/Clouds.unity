@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -127,11 +128,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (12)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -217,6 +213,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -482,6 +483,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (12)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &21641364 stripped
@@ -497,11 +503,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -587,6 +588,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -852,6 +858,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (2)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &202888127 stripped
@@ -867,11 +878,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (11)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -957,6 +963,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -1222,6 +1233,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (11)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &281874895 stripped
@@ -1237,11 +1253,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (15)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1327,6 +1338,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -1592,6 +1608,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (15)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &331635244 stripped
@@ -1607,11 +1628,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (6)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1697,6 +1713,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -1962,6 +1983,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (6)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &408613655 stripped
@@ -1977,11 +2003,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (17)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2067,6 +2088,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -2331,6 +2357,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (17)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
@@ -2427,6 +2458,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Clyde the Cloudicorn
       objectReference: {fileID: 0}
+    - target: {fileID: 115800, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 483700, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
       propertyPath: m_LocalPosition.x
       value: -196.27084
@@ -2463,6 +2498,28 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -336.562
       objectReference: {fileID: 0}
+    - target: {fileID: 21232124, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
+      propertyPath: m_Color.r
+      value: 0.6179246
+      objectReference: {fileID: 0}
+    - target: {fileID: 21232124, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21232124, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9370175
+      objectReference: {fileID: 0}
+    - target: {fileID: 82398419077081308, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: bbc59b8f063a42040914a3545d88b808, type: 3}
+    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLine
+      value: 
+      objectReference: {fileID: 8300000, guid: 43d6aa62e36ccf7428ec10a1e87f562a, type: 3}
     - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
         type: 3}
       propertyPath: greeting
@@ -2478,28 +2535,6 @@ PrefabInstance:
       propertyPath: interruptDistance
       value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 82398419077081308, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: bbc59b8f063a42040914a3545d88b808, type: 3}
-    - target: {fileID: 21232124, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
-      propertyPath: m_Color.r
-      value: 0.6179246
-      objectReference: {fileID: 0}
-    - target: {fileID: 21232124, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 21232124, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
-      propertyPath: m_Color.g
-      value: 0.9370175
-      objectReference: {fileID: 0}
-    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLine
-      value: 
-      objectReference: {fileID: 8300000, guid: 43d6aa62e36ccf7428ec10a1e87f562a, type: 3}
     - target: {fileID: 114696989949497388, guid: 5b5d6906f6733ca4e9263170af5e1c82,
         type: 3}
       propertyPath: voiceLine
@@ -2527,11 +2562,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2617,6 +2647,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -2882,6 +2917,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (3)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &792474343 stripped
@@ -2897,11 +2937,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (14)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2987,6 +3022,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -3252,6 +3292,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (14)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &820864588 stripped
@@ -3267,11 +3312,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (13)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3357,6 +3397,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -3622,6 +3667,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (13)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &986504624 stripped
@@ -3637,11 +3687,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (18)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3727,6 +3772,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -3992,6 +4042,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (18)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &993256676 stripped
@@ -4007,11 +4062,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4097,6 +4147,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -4362,6 +4417,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (4)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &1079374974 stripped
@@ -4377,11 +4437,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (9)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4467,6 +4522,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -4732,6 +4792,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (9)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &1556426245 stripped
@@ -4747,11 +4812,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (7)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4837,6 +4897,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -5102,6 +5167,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (7)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &1557929803 stripped
@@ -5117,11 +5187,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (16)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5207,6 +5272,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -5472,6 +5542,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (16)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &1585889017 stripped
@@ -5536,11 +5611,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5626,6 +5696,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -5891,6 +5966,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (5)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &1746611539 stripped
@@ -5906,11 +5986,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5996,6 +6071,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -6261,6 +6341,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (1)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &1778069769 stripped
@@ -6276,11 +6361,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (10)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6366,6 +6446,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -6631,6 +6716,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (10)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &1826933751 stripped
@@ -6713,11 +6803,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile (8)
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6803,6 +6888,11 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_Spline.m_ControlPoints.Array.data[7].position.x
@@ -7068,6 +7158,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
       objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile (8)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
 --- !u!4 &2113350082 stripped
@@ -7083,11 +7178,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617580970}
     m_Modifications:
-    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
-        type: 3}
-      propertyPath: m_Name
-      value: CloudShapeProfile
-      objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7172,6 +7262,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalAABB.m_Extent.z
       value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2891230181969961445, guid: c92abec211cde0040b2ae80abb00e9c2,
         type: 3}
@@ -7437,6 +7532,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[17].y
       value: -9.34546
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891230181969961447, guid: c92abec211cde0040b2ae80abb00e9c2,
+        type: 3}
+      propertyPath: m_Name
+      value: CloudShapeProfile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
