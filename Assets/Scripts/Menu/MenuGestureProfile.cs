@@ -16,11 +16,14 @@ public class MenuGestureProfile : GestureProfile
     }
     public override void processTapGesture(Vector3 curMPWorld)
     {
-        Managers.Menu.processTapGesture(curMPWorld);
+        if (MenuManager.Open)
+        {
+            Managers.Menu.processTapGesture(curMPWorld);
+        }
     }
     public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {
-        if (finished)
+        if (MenuManager.Open && finished)
         {
             processTapGesture(curMPWorld);
             Managers.Gesture.adjustHoldThreshold(holdTime);
@@ -28,7 +31,7 @@ public class MenuGestureProfile : GestureProfile
     }
     public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
     {
-        if (!Managers.Menu.processDragGesture(origMPWorld, newMPWorld))
+        if (MenuManager.Open && !Managers.Menu.processDragGesture(origMPWorld, newMPWorld))
         {
             base.processDragGesture(origMPWorld, newMPWorld);
         }
