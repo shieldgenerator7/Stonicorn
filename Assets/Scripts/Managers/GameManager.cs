@@ -129,6 +129,13 @@ public class GameManager : MonoBehaviour
                 //Save its future files with a time stamp
                 saveWithTimeStamp = true;
             }
+#if UNITY_EDITOR
+            //Add list of already open scenes to open scene list (for editor)
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                openScenes.Add(SceneManager.GetSceneAt(i));
+            }
+#endif 
             //Check to see which levels need loaded
             checkScenes();
             //Update the list of objects that have state to save
