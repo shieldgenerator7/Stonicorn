@@ -61,10 +61,11 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -72,6 +73,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -120,11 +122,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1115765260656410361, guid: 074cdafca2c2dc54390c5a5c770c41ff,
-        type: 3}
-      propertyPath: m_Name
-      value: tutorial_mouse_click Variant
-      objectReference: {fileID: 0}
     - target: {fileID: 316553189168530142, guid: 074cdafca2c2dc54390c5a5c770c41ff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -179,6 +176,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115765260656410361, guid: 074cdafca2c2dc54390c5a5c770c41ff,
+        type: 3}
+      propertyPath: m_Name
+      value: tutorial_mouse_click Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5820420818281651548, guid: 074cdafca2c2dc54390c5a5c770c41ff,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}

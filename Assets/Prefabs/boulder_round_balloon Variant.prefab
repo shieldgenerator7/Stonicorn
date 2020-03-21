@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   usesSideVector: 0
+  saveValues: 1
   gravityScale: 1
   acceptsGravity: 1
 --- !u!114 &1013786527
@@ -27,7 +28,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac15051a4e9b9eb469ed29ace2e2a03e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  peak: 0.02
+  peakMax: 0.02
+  peakMin: -0.02
   cycleLength: 2
 --- !u!1001 &3686006692625543864
 PrefabInstance:
@@ -38,7 +40,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 187140, guid: 57170385b5ed646499dfd174766a0779, type: 3}
       propertyPath: m_Name
-      value: boulder_round_balloon
+      value: boulder_round_balloon Variant
       objectReference: {fileID: 0}
     - target: {fileID: 435398, guid: 57170385b5ed646499dfd174766a0779, type: 3}
       propertyPath: m_LocalPosition.x

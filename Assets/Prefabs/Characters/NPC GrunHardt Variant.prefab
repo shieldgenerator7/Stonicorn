@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 115800, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
       propertyPath: m_Name
-      value: NPC GrunHardt
+      value: NPC GrunHardt Variant
       objectReference: {fileID: 0}
     - target: {fileID: 483700, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
       propertyPath: m_LocalPosition.x
@@ -72,79 +72,9 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLines.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLines.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLines.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLines.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLines.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLines.Array.data[4]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLines.Array.data[5]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLines.Array.data[6]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: lineFileName
-      value: Green.txt
-      objectReference: {fileID: 0}
-    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: eventReq
-      value: RedMeeting
-      objectReference: {fileID: 0}
-    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLine
-      value: 
-      objectReference: {fileID: 8300000, guid: 22ccf24fe233ae241a13ab3a71914450, type: 3}
-    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: triggerEvent
-      value: RedMeeting-Green
-      objectReference: {fileID: 0}
-    - target: {fileID: 114696989949497388, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: triggerEvent
-      value: GreenMeeting
-      objectReference: {fileID: 0}
-    - target: {fileID: 114696989949497388, guid: 5b5d6906f6733ca4e9263170af5e1c82,
-        type: 3}
-      propertyPath: voiceLineText
-      value: Another one! Do you happen to remember being turned to stone? Probably
-        not. But I hear there's cure. If you can get to the moon, the moonicorn can
-        cure you. I myself have tried but have gotte nstuck here. There's a lady unicorn
-        to the east. Maybe she can help you. Would you, perhaps, say hi to her for
-        me?
+    - target: {fileID: 21232124, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 60428431802213692, guid: 5b5d6906f6733ca4e9263170af5e1c82,
         type: 3}
@@ -1015,6 +945,80 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[1].Array.data[3].y
       value: -0.2899729
+      objectReference: {fileID: 0}
+    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: eventReq
+      value: RedMeeting
+      objectReference: {fileID: 0}
+    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLine
+      value: 
+      objectReference: {fileID: 8300000, guid: 22ccf24fe233ae241a13ab3a71914450, type: 3}
+    - target: {fileID: 114131796538701386, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: triggerEvent
+      value: RedMeeting-Green
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLines.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLines.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLines.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLines.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLines.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLines.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLines.Array.data[5]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLines.Array.data[6]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114557904908406206, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: lineFileName
+      value: Green.txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 114696989949497388, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: triggerEvent
+      value: GreenMeeting
+      objectReference: {fileID: 0}
+    - target: {fileID: 114696989949497388, guid: 5b5d6906f6733ca4e9263170af5e1c82,
+        type: 3}
+      propertyPath: voiceLineText
+      value: Another one! Do you happen to remember being turned to stone? Probably
+        not. But I hear there's cure. If you can get to the moon, the moonicorn can
+        cure you. I myself have tried but have gotte nstuck here. There's a lady
+        unicorn to the east. Maybe she can help you. Would you, perhaps, say hi to
+        her for me?
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114696989949497388, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
