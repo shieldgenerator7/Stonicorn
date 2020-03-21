@@ -28,11 +28,11 @@ public class TerrainConverter : MonoBehaviour
     {
         //Clear the list
         inputTerrains.Clear();
-        //Add Ferr2D terrains
-        foreach (Ferr2DT_PathTerrain f2dtpt in GameObject.FindObjectsOfType<Ferr2DT_PathTerrain>())
-        {
-            inputTerrains.Add(f2dtpt.gameObject);
-        }
+        ////Add Ferr2D terrains
+        //foreach (Ferr2DT_PathTerrain f2dtpt in GameObject.FindObjectsOfType<Ferr2DT_PathTerrain>())
+        //{
+        //    inputTerrains.Add(f2dtpt.gameObject);
+        //}
         //Add SpriteShape terrains
         foreach (SpriteShapeController ssc in GameObject.FindObjectsOfType<SpriteShapeController>())
         {
@@ -60,11 +60,11 @@ public class TerrainConverter : MonoBehaviour
             //Get vector paths from the terrains that need converted
             foreach (GameObject go in inputTerrains)
             {
-                Ferr2DT_PathTerrain f2dtpt = go.GetComponent<Ferr2DT_PathTerrain>();
-                if (f2dtpt != null)
-                {
-                    terrainShapes.Add(f2dtpt.convertToVectorPath());
-                }
+                //Ferr2DT_PathTerrain f2dtpt = go.GetComponent<Ferr2DT_PathTerrain>();
+                //if (f2dtpt != null)
+                //{
+                //    terrainShapes.Add(f2dtpt.convertToVectorPath());
+                //}
             }
             //Turn the vector paths into new terrains
             foreach (TerrainData td in terrainShapes)

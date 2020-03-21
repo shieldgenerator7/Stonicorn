@@ -7,13 +7,13 @@ public static class TerrainUtility
 {
     public static float MIN_POINT_DISTANCE = 0.05f;//the closest two adjacent points can be in a sprite shape spline
 
-    public static TerrainData convertToVectorPath(this Ferr2DT_PathTerrain ferrTerrain)
-    {
-        return new TerrainData(
-            ferrTerrain.PathData.GetPoints(1).ToArray(),
-            ferrTerrain.gameObject
-            );
-    }
+    //public static TerrainData convertToVectorPath(this Ferr2DT_PathTerrain ferrTerrain)
+    //{
+    //    return new TerrainData(
+    //        ferrTerrain.PathData.GetPoints(1).ToArray(),
+    //        ferrTerrain.gameObject
+    //        );
+    //}
 
     private static TerrainData convertToVectorPath(this SpriteShapeController ssc)
     {
