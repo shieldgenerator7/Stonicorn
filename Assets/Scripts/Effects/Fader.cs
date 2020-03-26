@@ -35,11 +35,9 @@ public class Fader : MonoBehaviour
         }
         srs = new ArrayList();
         srs.Add(GetComponent<SpriteRenderer>());
-        srs.Add(GetComponent<Ferr2DT_PathTerrain>());
         srs.Add(GetComponent<SpriteShapeRenderer>());
         srs.Add(GetComponent<CanvasRenderer>());
         srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
-        srs.AddRange(GetComponentsInChildren<Ferr2DT_PathTerrain>());
         srs.AddRange(GetComponentsInChildren<SpriteShapeRenderer>());
         srs.AddRange(GetComponentsInChildren<Image>());
         if (destroyColliders)
@@ -73,16 +71,6 @@ public class Fader : MonoBehaviour
                     Color prevColor = sr.color;
                     sr.color = new Color(prevColor.r, prevColor.g, prevColor.b, Mathf.SmoothStep(startfade, endfade, t));
                     checkDestroy(sr.color.a);
-                }
-                if (o is Ferr2DT_PathTerrain)
-                {
-                    Ferr2DT_PathTerrain sr = (Ferr2DT_PathTerrain)o;
-                    Color prevColor = sr.vertexColor;
-                    sr.vertexColor = new Color(prevColor.r, prevColor.g, prevColor.b, Mathf.SmoothStep(startfade, endfade, t));
-                    checkDestroy(sr.vertexColor.a);
-                    Transform tf = sr.gameObject.transform;
-                    float variance = 0.075f;
-                    tf.position = tf.position + tf.up.PerpendicularRight().normalized * Random.Range(-variance, variance);
                 }
                 if (o is SpriteShapeRenderer)
                 {//2019-01-12: copied from section for SpriteRenderer
