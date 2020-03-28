@@ -63,6 +63,22 @@ public class CustomMenu
         }
     }
 
+    [MenuItem("SG7/Editor/Deactivate Merky Spawn Point %&`")]
+    public static void uncallMerky()
+    {
+        if (Application.isEditor && !Application.isPlaying)
+        {
+            //Deactivate spawn point
+            PlayerTestSpawnPoint playerTSP = GameObject.FindObjectOfType<PlayerTestSpawnPoint>();
+            playerTSP.enabled = false;
+            GameObject playerSpawnObject = playerTSP.gameObject;
+            playerSpawnObject.SetActive(true);
+            //Select player object
+            GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
+            Selection.activeGameObject = playerObject;
+        }
+    }
+
     [MenuItem("SG7/Editor/Toggle Ruler %`")]
     /// <summary>
     /// Turns the ruler tools on and off
