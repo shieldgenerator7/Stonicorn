@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 0
 --- !u!196 &4
@@ -146,6 +147,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: moonicorn
       objectReference: {fileID: 0}
+    - target: {fileID: 1698906043408544, guid: 2ad61e15f4bda9547ad320b12063fb6f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4141564549229868, guid: 2ad61e15f4bda9547ad320b12063fb6f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 514.54
@@ -178,6 +183,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 82447050062699248, guid: 2ad61e15f4bda9547ad320b12063fb6f,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7223d2552aca54c4891910f36d684cd5, type: 3}
     - target: {fileID: 114265895427675804, guid: 2ad61e15f4bda9547ad320b12063fb6f,
         type: 3}
       propertyPath: voiceLines.Array.size
@@ -198,11 +208,6 @@ PrefabInstance:
       propertyPath: lineFileName
       value: Moonicorn.txt
       objectReference: {fileID: 0}
-    - target: {fileID: 82447050062699248, guid: 2ad61e15f4bda9547ad320b12063fb6f,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 7223d2552aca54c4891910f36d684cd5, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ad61e15f4bda9547ad320b12063fb6f, type: 3}
 --- !u!1 &1234771319
@@ -333,6 +338,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -401,6 +407,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
