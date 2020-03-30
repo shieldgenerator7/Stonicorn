@@ -6,7 +6,7 @@ public class ForceDashAbility : PlayerAbility
 {
     [Header("Settings")]
     public float maxCharge = 50;
-    public float maxSpeed = 20;
+    public float maxSpeed = 20;//this ability cannot cause Merky to move faster than this speed
     public float maxEffectRange = 5;
     public float chargeIncrement = 2.5f;//how much to increase charge on each tap
     public float chargeIncrementEarly = 0.5f;//how much to increase charge by when there's no charge
@@ -26,7 +26,7 @@ public class ForceDashAbility : PlayerAbility
             {
                 chargeDirection = Vector2.zero;
             }
-            showChargeEffect();
+            //showChargeEffect();
         }
     }
 
@@ -67,165 +67,189 @@ public class ForceDashAbility : PlayerAbility
 
     private void FixedUpdate()
     {
-        if (!Active)
-        {
-            return;
-        }
-        if (Charge >= chargeEarlyThreshold)
-        {
-            rb2d.AddForce(chargeDirection * (maxSpeed * Charge / maxCharge));
-        }
-        if (Time.time > lastChargeTime + chargeDecayDelay)
-        {
-            Charge -= chargeDecayRate * Time.deltaTime;
-        }
+        //if (!Active)
+        //{
+        //    return;
+        //}
+        //if (Charge >= chargeEarlyThreshold)
+        //{
+            //If speed is less than the max speed,
+            //if (rb2d.velocity.sqrMagnitude < (maxSpeed * maxSpeed))
+            //{
+            Debug.DrawLine(
+                transform.position,
+                (Vector2)transform.position + (rb2d.velocity),
+                Color.yellow
+                );
+            //Add force in the charge direction
+            //Vector2 forceDir = chargeDirection * (rb2d.mass * maxSpeed * Charge / maxCharge);
+            //rb2d.AddForce(forceDir);
+            Vector2 velocityDir = chargeDirection * (maxSpeed * Charge / maxCharge);
+            rb2d.velocity = velocityDir;
+            //if (!playerController.Ground.Grounded)
+            //{
+            //    ChargeDirection += Vector2.down * (9.8f / rb2d.velocity.magnitude);
+            //}
+            //}
+            Debug.DrawLine(
+                transform.position,
+                (Vector2)transform.position + (velocityDir * 0.5f),
+                Color.red
+                );
+       // }
+        //if (Time.time > lastChargeTime + chargeDecayDelay)
+        //{
+        //    Charge -= chargeDecayRate * Time.deltaTime;
+        //}
     }
 
     public void chargeUp(Vector2 oldPos, Vector2 newPos)
     {
         Vector2 direction = newPos - oldPos;
         Vector2 dirNorm = direction.normalized;
-        if (shouldNegateCharge(dirNorm))
-        {
-            negateCharge(dirNorm);
-        }
-        else
-        {
-            //If the player was grounded before teleporting,
-            if (playerController.Ground.GroundedPrev)
-            {
-                //Update the charge direction
-                ChargeDirection += dirNorm;
-                float distance = direction.magnitude;
-                //If charge is just starting out,
-                if (Charge < chargeEarlyThreshold)
-                {
-                    //Use the lower charge increment
-                    Charge += chargeIncrementEarly * Mathf.Min(1, distance / playerController.baseRange);
-                }
-                else
-                {
-                    //Else, use the higher charge increment and
-                    Charge += chargeIncrement * distance / playerController.baseRange;
-                    //Add force in the charge direction
-                    rb2d.AddForce(dirNorm * (maxSpeed * Charge / maxCharge));
-                }
-                //Reset decay delay
-                lastChargeTime = Time.time;
-            }
-        }
+        ChargeDirection = dirNorm;
+        Charge = maxCharge;
+        return;
+        //if (true || shouldNegateCharge(dirNorm))
+        //{
+        //    //negateCharge(dirNorm);
+        //}
+        //else
+        //{
+        //    //If the player was grounded before teleporting,
+        //    if (playerController.Ground.GroundedPrev)
+        //    {
+        //        //Update the charge direction
+        //        ChargeDirection += dirNorm;
+        //        float distance = direction.magnitude;
+        //        //If charge is just starting out,
+        //        if (Charge < chargeEarlyThreshold)
+        //        {
+        //            //Use the lower charge increment
+        //            Charge += chargeIncrementEarly * Mathf.Min(1, distance / playerController.baseRange);
+        //        }
+        //        else
+        //        {
+        //            //Else, use the higher charge increment and
+        //            Charge += chargeIncrement * distance / playerController.baseRange;
+        //        }
+        //        //Reset decay delay
+        //        lastChargeTime = Time.time;
+        //    }
+        //}
     }
 
-    private bool shouldNegateCharge(Vector2 direction)
-    {
-        float angle = Vector2.Angle(direction, ChargeDirection);
-        return (angle > 90);
-    }
+    //private bool shouldNegateCharge(Vector2 direction)
+    //{
+    //    float angle = Vector2.Angle(direction, ChargeDirection);
+    //    return (angle > 90);
+    //}
 
-    private void negateCharge(Vector2 direction)
-    {
-        //If tapping opposite velocity direction,
-        float angle = Vector2.Angle(direction, chargeDirection);
-        if (angle > 90)
-        {
-            //reduce charge level.
-            float nullifyPercent = Mathf.Clamp(
-                (170 - angle) / 90,
-                0,
-                1
-                );
-            Debug.Log("Canceling charge: BACK TAP: " + angle + ", nullify%: " + nullifyPercent);
-            Charge *= nullifyPercent;
-        }
-    }
+    //private void negateCharge(Vector2 direction)
+    //{
+    //    //If tapping opposite velocity direction,
+    //    float angle = Vector2.Angle(direction, chargeDirection);
+    //    if (angle > 90)
+    //    {
+    //        //reduce charge level.
+    //        float nullifyPercent = Mathf.Clamp(
+    //            (170 - angle) / 90,
+    //            0,
+    //            1
+    //            );
+    //        Debug.Log("Canceling charge: BACK TAP: " + angle + ", nullify%: " + nullifyPercent);
+    //        Charge *= nullifyPercent;
+    //    }
+    //}
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (!Active)
-        {
-            return;
-        }
-        //If collision is head on,
-        Vector2 velocity = playerController.Velocity;
-        Vector2 surfaceNormal = collision.GetContact(0).normal;
-        float angle = Vector2.Angle(-velocity, surfaceNormal);
-        if (angle < 45)
-        {
-            //Explode     
-            Vector2 explodePos;
-            //If object is breakable or movable,
-            if (collision.gameObject.isSavable())
-            {
-                //explode behind Merky
-                explodePos = (Vector2)transform.position - (velocity.normalized * 0.01f);
-            }
-            //Else
-            else
-            {
-                //explode in front of Merky  
-                explodePos = (Vector2)transform.position - (Vector2.Reflect(velocity, surfaceNormal).normalized * 0.01f);
-            }
-            Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
-            float charge = Charge;
-            //doExplosionEffect(explodePos, Mathf.Max(charge, chargeIncrement), true);
-            //dropHoldGesture();
-            Debug.Log("Canceling charge: HIT WALL: " + angle);
-            Charge = 0;
-        }
-        //Else
-        else
-        {
-            //Divert Merky's course
-            //If should rotate "left"
-            if (Vector2.SignedAngle(-velocity, surfaceNormal) < 0)
-            {
-                ChargeDirection = surfaceNormal.normalized.PerpendicularRight();
-            }
-            //Else should rotate "right"
-            else
-            {
-                ChargeDirection = surfaceNormal.normalized.PerpendicularLeft();
-            }
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    return;
+    //    if (!Active)
+    //    {
+    //        return;
+    //    }
+    //    //If collision is head on,
+    //    Vector2 velocity = playerController.Velocity;
+    //    Vector2 surfaceNormal = collision.GetContact(0).normal;
+    //    float angle = Vector2.Angle(-velocity, surfaceNormal);
+    //    if (angle < 45)
+    //    {
+    //        //Explode     
+    //        Vector2 explodePos;
+    //        //If object is breakable or movable,
+    //        if (collision.gameObject.isSavable())
+    //        {
+    //            //explode behind Merky
+    //            explodePos = (Vector2)transform.position - (velocity.normalized * 0.01f);
+    //        }
+    //        //Else
+    //        else
+    //        {
+    //            //explode in front of Merky  
+    //            explodePos = (Vector2)transform.position - (Vector2.Reflect(velocity, surfaceNormal).normalized * 0.01f);
+    //        }
+    //        Vector2 dir = ((Vector2)transform.position - explodePos).normalized;
+    //        float charge = Charge;
+    //        //doExplosionEffect(explodePos, Mathf.Max(charge, chargeIncrement), true);
+    //        //dropHoldGesture();
+    //        Debug.Log("Canceling charge: HIT WALL: " + angle);
+    //        //Charge = 0;
+    //    }
+    //    //Else
+    //    else
+    //    {
+    //        //Divert Merky's course
+    //        //If should rotate "left"
+    //        if (Vector2.SignedAngle(-velocity, surfaceNormal) < 0)
+    //        {
+    //            ChargeDirection = surfaceNormal.normalized.PerpendicularRight();
+    //        }
+    //        //Else should rotate "right"
+    //        else
+    //        {
+    //            ChargeDirection = surfaceNormal.normalized.PerpendicularLeft();
+    //        }
+    //    }
+    //}
 
-    void showChargeEffect()
-    {
-        float range = EffectRange;
-        if (range > 0)
-        {
-            if (friu == null)
-            {
-                GameObject frii = Instantiate(forceRangeIndicator);
-                friu = frii.GetComponent<TeleportRangeIndicatorUpdater>();
-                frii.GetComponent<SpriteRenderer>().enabled = false;
-                frii.transform.position = (Vector2)transform.position;
-                frii.transform.parent = transform;
-            }
-            friu.gameObject.SetActive(true);
-            friu.setRange(range);
-            //Particle effects
-            //effectParticleController.activateTeleportParticleSystem(true, effectColor, transform.position, range);
-        }
-        else
-        {
-            friu?.gameObject.SetActive(false);
-            //effectParticleController.activateTeleportParticleSystem(false);
-        }
-    }
+    //void showChargeEffect()
+    //{
+    //    float range = EffectRange;
+    //    if (range > 0)
+    //    {
+    //        if (friu == null)
+    //        {
+    //            GameObject frii = Instantiate(forceRangeIndicator);
+    //            friu = frii.GetComponent<TeleportRangeIndicatorUpdater>();
+    //            frii.GetComponent<SpriteRenderer>().enabled = false;
+    //            frii.transform.position = (Vector2)transform.position;
+    //            frii.transform.parent = transform;
+    //        }
+    //        friu.gameObject.SetActive(true);
+    //        friu.setRange(range);
+    //        //Particle effects
+    //        //effectParticleController.activateTeleportParticleSystem(true, effectColor, transform.position, range);
+    //    }
+    //    else
+    //    {
+    //        friu?.gameObject.SetActive(false);
+    //        //effectParticleController.activateTeleportParticleSystem(false);
+    //    }
+    //}
 
-    public override SavableObject getSavableObject()
-    {
-        SavableObject so = base.getSavableObject();
-        so.data.Add("charge", Charge);
-        so.data.Add("chargeDirection", ChargeDirection);
-        return so;
-    }
+    //public override SavableObject getSavableObject()
+    //{
+    //    SavableObject so = base.getSavableObject();
+    //    so.data.Add("charge", Charge);
+    //    so.data.Add("chargeDirection", ChargeDirection);
+    //    return so;
+    //}
 
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        base.acceptSavableObject(savObj);
-        Charge = (float)savObj.data["charge"];
-        ChargeDirection = (Vector2)savObj.data["chargeDirection"];
-    }
+    //public override void acceptSavableObject(SavableObject savObj)
+    //{
+    //    base.acceptSavableObject(savObj);
+    //    Charge = (float)savObj.data["charge"];
+    //    ChargeDirection = (Vector2)savObj.data["chargeDirection"];
+    //}
 }
