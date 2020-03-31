@@ -8,6 +8,7 @@ public class ForceDashAbility : PlayerAbility
     public float maxCharge = 50;
     public float maxSpeed = 20;//this script may not cause Merky to exceed this speed
     public float maxEffectRange = 5;
+    public float maxAirTime = 1;//how long it can add force in the air
     public float chargeIncrement = 2.5f;//how much to increase charge on each tap
     public float chargeIncrementEarly = 0.5f;//how much to increase charge by when there's no charge
     public float chargeEarlyThreshold = 1;//how much charge is needed to get the regular charge increment
@@ -73,7 +74,9 @@ public class ForceDashAbility : PlayerAbility
         {
             return;
         }
-        if (Charge >= chargeEarlyThreshold && playerController.Ground.Grounded)
+        if (Charge >= chargeEarlyThreshold
+            && (playerController.Ground.Grounded || Managers.Time.Time - playerController.Ground.LastGroundedTime < maxAirTime)
+            )
         {
             float oldSpeed = playerController.Speed;
             //Add force in the charge direction
