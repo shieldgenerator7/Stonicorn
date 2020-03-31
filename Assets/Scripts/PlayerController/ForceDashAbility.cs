@@ -57,12 +57,14 @@ public class ForceDashAbility : PlayerAbility
     {
         base.init();
         playerController.onTeleport += chargeUp;
+        playerController.Ground.isGroundedCheck += dashGroundedCheck;
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
         playerController.onTeleport -= chargeUp;
+        playerController.Ground.isGroundedCheck -= dashGroundedCheck;
     }
 
     private void FixedUpdate()
@@ -71,7 +73,7 @@ public class ForceDashAbility : PlayerAbility
         {
             return;
         }
-        if (Charge >= chargeEarlyThreshold)
+        if (Charge >= chargeEarlyThreshold && playerController.Ground.Grounded)
         {
             float oldSpeed = playerController.Speed;
             //Add force in the charge direction
@@ -143,6 +145,11 @@ public class ForceDashAbility : PlayerAbility
             Debug.Log("Canceling charge: BACK TAP: " + angle + ", nullify%: " + nullifyPercent);
             Charge *= nullifyPercent;
         }
+    }
+
+    bool dashGroundedCheck()
+    {
+        return Charge > 0 && playerController.Ground.isGroundedInDirection(ChargeDirection);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
