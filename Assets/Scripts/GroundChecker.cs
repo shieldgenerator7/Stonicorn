@@ -26,7 +26,6 @@ public class GroundChecker : MonoBehaviour
         }
     }
 
-    [SerializeField]
     private float lastGroundedTime = 0;
     /// <summary>
     /// Returns the last time that the Grounded check succeeded.
