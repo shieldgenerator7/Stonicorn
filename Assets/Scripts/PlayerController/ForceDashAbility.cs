@@ -127,7 +127,7 @@ public class ForceDashAbility : PlayerAbility
     private bool shouldNegateCharge(Vector2 direction)
     {
         float angle = Vector2.Angle(direction, ChargeDirection);
-        return (angle > 90);
+        return (angle > 135);
     }
 
     private void negateCharge(Vector2 direction)
