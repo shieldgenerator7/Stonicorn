@@ -6,7 +6,7 @@ public class ForceDashAbility : PlayerAbility
 {
     [Header("Settings")]
     public float maxCharge = 50;
-    public float maxSpeed = 20;
+    public float maxSpeed = 20;//this script may not cause Merky to exceed this speed
     public float maxEffectRange = 5;
     public float chargeIncrement = 2.5f;//how much to increase charge on each tap
     public float chargeIncrementEarly = 0.5f;//how much to increase charge by when there's no charge
@@ -73,7 +73,15 @@ public class ForceDashAbility : PlayerAbility
         }
         if (Charge >= chargeEarlyThreshold)
         {
-            rb2d.AddForce(chargeDirection * (maxSpeed * Charge / maxCharge));
+            float oldSpeed = playerController.Speed;
+            //Add force in the charge direction
+            rb2d.AddForce(chargeDirection * (rb2d.mass * maxSpeed * Charge / maxCharge));
+            //Reduce speed if too high
+            float newSpeed = playerController.Speed;
+            if (newSpeed > maxSpeed)
+            {
+                rb2d.velocity = rb2d.velocity.normalized * Mathf.Max(oldSpeed, maxSpeed);
+            }
         }
         if (Time.time > lastChargeTime + chargeDecayDelay)
         {
@@ -107,8 +115,6 @@ public class ForceDashAbility : PlayerAbility
                 {
                     //Else, use the higher charge increment and
                     Charge += chargeIncrement * distance / playerController.baseRange;
-                    //Add force in the charge direction
-                    rb2d.AddForce(dirNorm * (maxSpeed * Charge / maxCharge));
                 }
                 //Reset decay delay
                 lastChargeTime = Time.time;
