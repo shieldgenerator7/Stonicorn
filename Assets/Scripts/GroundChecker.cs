@@ -26,6 +26,31 @@ public class GroundChecker : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private float lastGroundedTime = 0;
+    /// <summary>
+    /// Returns the last time that the Grounded check succeeded.
+    /// Note that if the Grounded check was not done, this value may be old
+    /// </summary>
+    public float LastGroundedTime
+    {
+        get
+        {
+            return lastGroundedTime;
+        }
+        private set
+        {
+            lastGroundedTime = Mathf.Clamp(value, 0, Managers.Time.Time);
+        }
+    }
+    void updateLastGroundedTime(bool groundedCheckSuccess)
+    {
+        if (groundedCheckSuccess)
+        {
+            LastGroundedTime = Managers.Time.Time;
+        }
+    }
+
     //
     //Grounded state variables
     //
@@ -48,6 +73,7 @@ public class GroundChecker : MonoBehaviour
                 //Else, check the abilities
                 grounded = GroundedAbility;
             }
+            updateLastGroundedTime(grounded);
             return grounded;
         }
     }
@@ -59,6 +85,7 @@ public class GroundChecker : MonoBehaviour
         {
             GroundedNormalPrev = groundedNormal;
             groundedNormal = isGroundedInDirection(Gravity.Gravity);
+            updateLastGroundedTime(groundedNormal);
             return groundedNormal;
         }
     }
@@ -85,6 +112,7 @@ public class GroundChecker : MonoBehaviour
                     }
                 }
             }
+            updateLastGroundedTime(groundedAbility);
             return groundedAbility;
         }
     }

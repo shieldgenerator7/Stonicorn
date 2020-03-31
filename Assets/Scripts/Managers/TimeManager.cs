@@ -6,6 +6,9 @@ public class TimeManager : SavableMonoBehaviour
 {
     [SerializeField]
     private float time = -1;//the time since the game started, accounting for rewind
+    /// <summary>
+    /// The amount of time since the game started, accounting for rewind and game pauses
+    /// </summary>
     public float Time
     {
         get
