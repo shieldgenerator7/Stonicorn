@@ -892,8 +892,8 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Returns true if the given Vector3 is on Merky's sprite
     /// </summary>
-    /// <param name=""></param>
-    /// <returns></returns>
+    /// <param name="pos">The position to check</param>
+    /// <returns>True if the position is on Merky's sprite, false if otherwise</returns>
     public bool gestureOnPlayer(Vector2 pos)
     {
         return pos.inRange(transform.position, halfWidth);
@@ -924,7 +924,7 @@ public class PlayerController : MonoBehaviour
             //Get post-teleport position
             Vector3 newPos = findTeleportablePosition(tapPos);
             //Process onPreTeleport delegates
-            onPreTeleport?.Invoke(oldPos, newPos, tapPos);
+            _onPreTeleport?.Invoke(oldPos, newPos, tapPos);
             //Teleport
             teleport(newPos);
             //Save the game state
@@ -939,7 +939,19 @@ public class PlayerController : MonoBehaviour
     }
     //Used when you also need to know where the player tapped
     public delegate void OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
-    public OnPreTeleport onPreTeleport;
+    private OnPreTeleport _onPreTeleport;
+    public event OnPreTeleport onPreTeleport
+    {
+        add
+        {
+            _onPreTeleport -= value;
+            _onPreTeleport += value;
+        }
+        remove
+        {
+            _onPreTeleport -= value;
+        }
+    }
 
     /// <summary>
     /// Processes the tap gesture on the given checkpoint
@@ -954,11 +966,11 @@ public class PlayerController : MonoBehaviour
         //Get post-teleport position inside of new checkpoint
         Vector3 newPos = checkPoint.transform.position + offset;
         //If pre-processing needs done before teleporting,
-        if (onPreTeleport != null)
+        if (_onPreTeleport != null)
         {
             //Pre-process onPreTeleport delegates
             //Pass in newPos for both here because player teleported exactly where they intended to
-            onPreTeleport(oldPos, newPos, newPos);
+            _onPreTeleport(oldPos, newPos, newPos);
         }
         //Teleport
         teleport(newPos);
