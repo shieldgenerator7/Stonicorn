@@ -12,7 +12,7 @@ public class SceneLoader : MonoBehaviour
     {
         get
         {
-            if (scene == null)
+            if (!scene.IsValid())
             {
                 scene = SceneManager.GetSceneByName(sceneName);
             }
