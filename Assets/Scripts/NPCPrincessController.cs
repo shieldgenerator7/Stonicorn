@@ -30,7 +30,7 @@ public class NPCPrincessController : MonoBehaviour
         efa = GetComponent<ElectricFieldAbility>();
         if (efa)
         {
-            maxHoldTime = efa.maxHoldTime;
+            maxHoldTime = efa.maxChargeTime;
             ability = efa;
         }
     }
