@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerAbility : SavableMonoBehaviour
 {
@@ -24,13 +25,12 @@ public class PlayerAbility : SavableMonoBehaviour
             Active = unlocked;
         }
     }
-    [SerializeField]
-    private bool active = false;//whether the player has turned it on or off (default true after unlocked first becomes true)
     public bool Active
     {
-        get => active;
+        get => getLevel(0);
         set
         {
+            bool active = getLevel(0);
             if (active != value)
             {
                 active = value;
@@ -45,8 +45,13 @@ public class PlayerAbility : SavableMonoBehaviour
                     OnDisable();
                 }
             }
+            setLevel(0, active);
         }
     }
+
+    [Header("Persisting Variables")]
+    [SerializeField]
+    private List<bool> abilityLevels = new List<bool>(3);
 
     protected PlayerController playerController;
     protected Rigidbody2D rb2d;
@@ -106,6 +111,31 @@ public class PlayerAbility : SavableMonoBehaviour
         init();
     }
 
+    /// <summary>
+    /// Returns whether or not the level is active
+    /// </summary>
+    /// <param name="level">The zero-based index of the level</param>
+    /// <returns>True if the level is active</returns>
+    public bool getLevel(int level)
+    {
+        if (!abilityLevels[0])
+        {
+            //No further level can be on while the base ability is inactive
+            return false;
+        }
+        return abilityLevels[level];
+    }
+
+    /// <summary>
+    /// Turns an ability level on or off
+    /// </summary>
+    /// <param name="level">The zero-based index of the level</param>
+    /// <param name="active">True to turn it on</param>
+    public void setLevel(int level, bool active)
+    {
+        abilityLevels[level] = active;
+    }
+
     public virtual void processHoldGesture(Vector2 pos, float holdTime, bool finished) { }
 
     /// <summary>
@@ -159,14 +189,14 @@ public class PlayerAbility : SavableMonoBehaviour
     {
         return new SavableObject(this,
             "unlocked", unlocked,
-            "active", active
+            "active", Active
             );
     }
 
     public override void acceptSavableObject(SavableObject savObj)
     {
         unlocked = (bool)savObj.data["unlocked"] || unlocked;
-        Active = (bool)savObj.data["active"] || active;
+        Active = (bool)savObj.data["active"];
     }
 
 }

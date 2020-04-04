@@ -227,7 +227,7 @@ MonoBehaviour:
   soundEffect: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
   addsOnTeleportSoundEffect: 1
   unlocked: 0
-  active: 0
+  abilityLevels: 00
   futureProjection: {fileID: 2593851138179183123}
   teleportPreviewPointer: {fileID: 0}
 --- !u!114 &1792176467
@@ -250,7 +250,7 @@ MonoBehaviour:
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
   unlocked: 0
-  active: 0
+  abilityLevels: 000000
   maxCharge: 100
   maxSpeed: 25
   maxEffectRange: 3
@@ -260,6 +260,7 @@ MonoBehaviour:
   chargeEarlyThreshold: 4
   chargeDecayDelay: 2
   chargeDecayRate: 10
+  wakeLength: 5
   charge: 0
   forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 3}
 --- !u!114 &1792176479
@@ -282,7 +283,7 @@ MonoBehaviour:
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
   unlocked: 0
-  active: 0
+  abilityLevels: 000000
 --- !u!114 &1792176473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,7 +304,7 @@ MonoBehaviour:
   soundEffect: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
   addsOnTeleportSoundEffect: 1
   unlocked: 0
-  active: 0
+  abilityLevels: 000000
   wallDetectRange: 1
   stickyPadPrefab: {fileID: 1097801133131608, guid: 19e25460a3d23d54da8b46ccd9b9225d,
     type: 3}
@@ -327,7 +328,7 @@ MonoBehaviour:
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
   unlocked: 0
-  active: 0
+  abilityLevels: 000000
   sliceDamage: 100
   maxAirPorts: 2
   streakPrefab: {fileID: 133468, guid: a76ac723dbf060e4fae65f29bcb058d9, type: 3}
@@ -351,7 +352,7 @@ MonoBehaviour:
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
   unlocked: 0
-  active: 0
+  abilityLevels: 000000
   electricFieldPrefab: {fileID: 1181304595248282, guid: 25877458e6750fe4588a4006a6457d5d,
     type: 3}
   maxRange: 2.5
@@ -380,7 +381,7 @@ MonoBehaviour:
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
   unlocked: 0
-  active: 0
+  abilityLevels: 000000
 --- !u!114 &1792176474
 MonoBehaviour:
   m_ObjectHideFlags: 0
