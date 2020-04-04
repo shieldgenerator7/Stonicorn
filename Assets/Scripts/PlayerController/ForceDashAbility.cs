@@ -14,6 +14,8 @@ public class ForceDashAbility : PlayerAbility
     public float chargeEarlyThreshold = 1;//how much charge is needed to get the regular charge increment
     public float chargeDecayDelay = 1;//how may seconds after no tap until it decays
     public float chargeDecayRate = 25;//how much charge is lost per second
+    //Level 1
+    public float wakeLength = 5;//objects this far behind Merky get sped up too
 
     [SerializeField]
     private float charge;
@@ -78,15 +80,35 @@ public class ForceDashAbility : PlayerAbility
             && (playerController.Ground.Grounded || Managers.Time.Time - playerController.Ground.LastGroundedTime < maxAirTime)
             )
         {
-            float oldSpeed = playerController.Speed;
-            //Add force in the charge direction
-            rb2d.AddForce(chargeDirection * (rb2d.mass * maxSpeed * Charge / maxCharge));
-            //Reduce speed if too high
-            float newSpeed = playerController.Speed;
-            if (newSpeed > maxSpeed)
+            //Speed up Merky
+            speedUp(rb2d);
+            //Speed up objects caught in Merky's wake
+            if (getLevel(1))
             {
-                rb2d.velocity = rb2d.velocity.normalized * Mathf.Max(oldSpeed, maxSpeed);
+                Utility.RaycastAnswer answer;
+                //Front
+                answer = Utility.RaycastAll(transform.position, ChargeDirection, wakeLength);
+                for (int i = 0; i < answer.count; i++)
+                {
+                    RaycastHit2D rch2d = answer.rch2ds[i];
+                    if (rch2d.rigidbody && rch2d.rigidbody != rb2d)
+                    {
+                        speedUp(rch2d.rigidbody);
+                    }
+                }
+                //Back
+                answer = Utility.RaycastAll(transform.position, -ChargeDirection, wakeLength);
+                for (int i = 0; i < answer.count; i++)
+                {
+                    RaycastHit2D rch2d = answer.rch2ds[i];
+                    if (rch2d.rigidbody && rch2d.rigidbody != rb2d)
+                    {
+                        speedUp(rch2d.rigidbody);
+                    }
+                }
             }
+            //Adjust charge direction to align with velocity over time
+            ChargeDirection = ChargeDirection * (maxSpeed * Charge / maxCharge) + rb2d.velocity;
         }
         if (Time.time > lastChargeTime + chargeDecayDelay)
         {
@@ -127,6 +149,24 @@ public class ForceDashAbility : PlayerAbility
         }
     }
 
+    /// <summary>
+    /// Speeds up the given Rigidbody2D based on this ability's current state
+    /// </summary>
+    /// <param name="rb2d"></param>
+    public void speedUp(Rigidbody2D rb2d)
+    {
+        Debug.Log("ForceDash: Speeding up: " + rb2d.gameObject.name);
+        float oldSpeed = rb2d.velocity.magnitude;
+        //Add force in the charge direction
+        rb2d.AddForce(chargeDirection * (rb2d.mass * maxSpeed * Charge / maxCharge));
+        //Reduce speed if too high
+        float newSpeed = rb2d.velocity.magnitude;
+        if (newSpeed > maxSpeed)
+        {
+            rb2d.velocity = rb2d.velocity.normalized * Mathf.Max(oldSpeed, maxSpeed);
+        }
+    }
+    
     private bool shouldNegateCharge(Vector2 direction)
     {
         float angle = Vector2.Angle(direction, ChargeDirection);
@@ -145,7 +185,7 @@ public class ForceDashAbility : PlayerAbility
                 0,
                 1
                 );
-            Debug.Log("Canceling charge: BACK TAP: " + angle + ", nullify%: " + nullifyPercent);
+            Debug.Log("ForceDash: Canceling charge: BACK TAP: " + angle + ", nullify%: " + nullifyPercent);
             Charge *= nullifyPercent;
         }
     }
@@ -165,11 +205,18 @@ public class ForceDashAbility : PlayerAbility
         Vector2 velocity = playerController.Velocity;
         Vector2 surfaceNormal = collision.GetContact(0).normal;
         float angle = Vector2.Angle(-velocity, surfaceNormal);
-        if (angle < 45)
+        //If it cant bounce and the hit object is not movable,
+        if (angle < 45 && !collision.gameObject.GetComponent<Rigidbody2D>())
         {
+            //If explode isn't active,
+            if (!getLevel(2))
+            {
+                //don't do anything
+                return;
+            }
             //Explode     
             Vector2 explodePos;
-            //If object is breakable or movable,
+            //If object is breakable and not movable,
             if (collision.gameObject.isSavable())
             {
                 //explode behind Merky
@@ -185,7 +232,7 @@ public class ForceDashAbility : PlayerAbility
             float charge = Charge;
             //doExplosionEffect(explodePos, Mathf.Max(charge, chargeIncrement), true);
             //dropHoldGesture();
-            Debug.Log("Canceling charge: HIT WALL: " + angle);
+            Debug.Log("ForceDash: Canceling charge: HIT WALL: " + angle);
             Charge = 0;
         }
         //Else
