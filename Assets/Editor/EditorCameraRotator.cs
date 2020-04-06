@@ -23,16 +23,33 @@ public class EditorCameraRotator : Editor
             {
                 if (gz.mainGravityZone)
                 {
-                    if (gz.GetComponent<PolygonCollider2D>().OverlapPoint(sceneview.camera.transform.position))
+                    if (gz.radialGravity)
                     {
-                        if (sceneview.camera.transform.localRotation != gz.gameObject.transform.localRotation)
+                        if (gz.GetComponent<CircleCollider2D>().OverlapPoint(sceneview.camera.transform.position))
                         {
-                            sceneview.isRotationLocked = false;
-                            sceneview.camera.transform.localRotation = gz.gameObject.transform.localRotation;
-                            sceneview.camera.Render();
-                            ecro.rotZ = gz.transform.eulerAngles.z;
+                            if (sceneview.camera.transform.localRotation != gz.gameObject.transform.localRotation)
+                            {
+                                sceneview.isRotationLocked = false;
+                                sceneview.camera.transform.up = sceneview.camera.transform.position - gz.gameObject.transform.position;
+                                sceneview.camera.Render();
+                                ecro.rotZ = sceneview.camera.transform.eulerAngles.z;
+                            }
+                            break;
                         }
-                        break;
+                    }
+                    else
+                    {
+                        if (gz.GetComponent<PolygonCollider2D>().OverlapPoint(sceneview.camera.transform.position))
+                        {
+                            if (sceneview.camera.transform.localRotation != gz.gameObject.transform.localRotation)
+                            {
+                                sceneview.isRotationLocked = false;
+                                sceneview.camera.transform.localRotation = gz.gameObject.transform.localRotation;
+                                sceneview.camera.Render();
+                                ecro.rotZ = gz.transform.eulerAngles.z;
+                            }
+                            break;
+                        }
                     }
                 }
             }
