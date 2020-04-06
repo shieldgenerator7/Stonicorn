@@ -30,9 +30,14 @@ public class EditorCameraRotator : Editor
                             if (sceneview.camera.transform.localRotation != gz.gameObject.transform.localRotation)
                             {
                                 sceneview.isRotationLocked = false;
-                                sceneview.camera.transform.up = sceneview.camera.transform.position - gz.gameObject.transform.position;
+                                sceneview.camera.transform.up = sceneview.camera.transform.position - gz.transform.position;
                                 sceneview.camera.Render();
-                                ecro.rotZ = sceneview.camera.transform.eulerAngles.z;
+                                ecro.rotZ = Vector3.SignedAngle(
+                                    Vector3.up,
+                                    sceneview.camera.transform.position - gz.transform.position,
+                                    Vector3.forward
+                                    );
+                                //ecro.rotZ = sceneview.camera.transform.eulerAngles.z;
                             }
                             break;
                         }
