@@ -14,6 +14,8 @@ public class SpriteShapeTool : MonoBehaviour
     private int endIndex = 5;
     public int length = 5;
 
+    private Vector2 dragStartPosition;
+
     public void setSSC(Object obj)
     {
         if (obj is GameObject)
@@ -82,7 +84,7 @@ public class SpriteShapeTool : MonoBehaviour
 
         //HandleUtility.Repaint();
 
-        //Draw lien thru points to be leveled
+        //Draw line thru points to be leveled
         Gizmos.color = lineColor;
 
         int pointCount = ssc.spline.GetPointCount();
@@ -93,5 +95,40 @@ public class SpriteShapeTool : MonoBehaviour
                 ssc.transform.TransformPoint(ssc.spline.GetPosition((i + 1) % pointCount))
                 );
         }
+
+        ////Mouse Selecting
+        //if (Event.current.type == EventType.MouseDown)
+        //{
+        //    dragStartPosition = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
+        //    startIndex = int.MaxValue;
+        //    endIndex = -1;
+        //}
+        //else if (Event.current.type == EventType.MouseUp)
+        //{
+        //    dragStartPosition = Vector2.zero;
+        //}
+        //if (dragStartPosition != Vector2.zero)
+        //{
+        //    startIndex = int.MaxValue;
+        //    endIndex = -1;
+        //    Vector2 dragPos = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
+        //    for (int i = 0; i < ssc.spline.GetPointCount(); i++)
+        //    {
+        //        Vector2 p = ssc.transform.TransformPoint(ssc.spline.GetPosition(i % pointCount));
+        //        if (Utility.between(p.x, dragStartPosition.x, dragPos.x)
+        //            && Utility.between(p.y, dragStartPosition.y, dragPos.y))
+        //        {
+        //            if (i < startIndex)
+        //            {
+        //                startIndex = i;
+        //            }
+        //            if (i > endIndex)
+        //            {
+        //                endIndex = i;
+        //            }
+        //        }
+        //        length = endIndex - startIndex;
+        //    }
+        //}
     }
 }
