@@ -4,9 +4,21 @@ using UnityEngine;
 using System.Diagnostics;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 
 public class CustomMenu
 {
+    [MenuItem("SG7/Editor/Terrain/Focus Terrain Tool %T")]
+    public static void levelTerrainPoints()
+    {
+        SpriteShapeTool sst = GameObject.FindObjectOfType<SpriteShapeTool>();
+        if (sst)
+        {
+            Selection.activeGameObject = sst.gameObject;
+        }
+    }
+
+
     [MenuItem("SG7/Editor/Refactor/Change HideableArea to NonTeleportableArea")]
     public static void changeTag()
     {
