@@ -11,7 +11,8 @@ public class SpriteShapeTool : MonoBehaviour
     public Color lineColor = Color.green;
 
     public int startIndex = 0;
-    public int endIndex = 5;
+    private int endIndex = 5;
+    public int length = 5;
 
     public void setSSC(Object obj)
     {
@@ -42,11 +43,11 @@ public class SpriteShapeTool : MonoBehaviour
         //Radial Gravity
         if (gz.radialGravity)
         {
+            int pointCount = ssc.spline.GetPointCount();
             float rValue = Vector2.Distance(
-                ssc.transform.TransformPoint(ssc.spline.GetPosition(startIndex)), 
+                ssc.transform.TransformPoint(ssc.spline.GetPosition(startIndex % pointCount)),
                 gz.transform.position
                 );
-            int pointCount = ssc.spline.GetPointCount();
             for (int i = startIndex + 1; i <= endIndex; i++)
             {
                 Vector2 newPoint = (ssc.transform.TransformPoint(ssc.spline.GetPosition(i % pointCount)) - gz.transform.position)
@@ -63,6 +64,8 @@ public class SpriteShapeTool : MonoBehaviour
 
     private void checkEndIndex()
     {
+        length = Mathf.Max(length, 1);
+        endIndex = startIndex + length;
         if (endIndex < startIndex)
         {
             endIndex += ssc.spline.GetPointCount();
