@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class BreakableWall : SavableMonoBehaviour, Blastable
 {
-    public float forceThreshold = 50;//the minimum amount of force required to crack it
+    public float minForceThreshold = 2.5f;//the minimum amount of force required to crack it
+    public float maxForceThreshold = 50;//the maximum amount of force consumed per damage
     [Range(1, 5)]
     public int maxIntegrity = 3;
     [SerializeField]
+    [Range(1, 5)]
     private int integrity = 0;
     public int Integrity
     {
@@ -71,7 +73,8 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
                             BreakableWall bw = t.gameObject.GetComponent<BreakableWall>();
                             if (bw)
                             {
-                                bw.forceThreshold = this.forceThreshold;
+                                bw.minForceThreshold = this.minForceThreshold;
+                                bw.maxForceThreshold = this.maxForceThreshold;
                                 bw.maxIntegrity = this.maxIntegrity;
                                 if (bw.integrity == 0)
                                 {
@@ -135,8 +138,8 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
         {
             float force = rb2d.velocity.magnitude * rb2d.mass;
             float damage = checkForce(force, rb2d.velocity);
-            Debug.Log("BW: coll("+coll.gameObject.name
-                +"): force: " + force
+            Debug.Log("BW: coll(" + coll.gameObject.name
+                + "): force: " + force
                 + ", damage: " + damage);
             //Show Collision Effect
             float hitPercentage = damage * 100 / maxIntegrity;
@@ -144,7 +147,7 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
             //Play Collision Sound
             if (damage == 0)
             {
-                Managers.Sound.playSound(soundDamageNone, cp2ds[0].point);
+                Managers.Sound.playSound(soundDamageNone, cp2ds[0].point, 0.5f);
             }
             else if (damage == 1)
             {
@@ -159,9 +162,9 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
 
     public float checkForce(float force, Vector2 direction)
     {
-        if (force >= forceThreshold)
+        if (force >= minForceThreshold)
         {
-            int damage = Mathf.FloorToInt(force / forceThreshold);
+            int damage = Mathf.Max(1, Mathf.FloorToInt(force / maxForceThreshold));
             Integrity -= damage;
             if (integrity == 0)
             {
@@ -191,7 +194,7 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
         if (crackedPieces == null || ReferenceEquals(crackedPieces, null))
         {
             //Find the object
-            List<GameObject> gos = Managers.Game.getObjectsWithName(gameObject.name+"---");
+            List<GameObject> gos = Managers.Game.getObjectsWithName(gameObject.name + "---");
             if (gos.Count > 0)
             {
                 crackedPieces = gos[0];
