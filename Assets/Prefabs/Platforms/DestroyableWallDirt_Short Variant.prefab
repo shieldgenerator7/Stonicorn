@@ -373,6 +373,29 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[34].y
       value: -0.18062603
       objectReference: {fileID: 0}
+    - target: {fileID: 2691955003973334858, guid: def9afd975c159e4688d02f926bfff3b,
+        type: 3}
+      propertyPath: crackStages.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0eddcb59319e18342807b019a3adfa84,
+        type: 3}
+    - target: {fileID: 2691955003973334858, guid: def9afd975c159e4688d02f926bfff3b,
+        type: 3}
+      propertyPath: crackStages.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: be4f82b3fd51d0641ac94519833306db,
+        type: 3}
+    - target: {fileID: 2691955003973334858, guid: def9afd975c159e4688d02f926bfff3b,
+        type: 3}
+      propertyPath: crackStages.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b3184fdc8b66254c8118cc20640226a,
+        type: 3}
+    - target: {fileID: 2691955003973334858, guid: def9afd975c159e4688d02f926bfff3b,
+        type: 3}
+      propertyPath: crackedPrefab
+      value: 
+      objectReference: {fileID: 189, guid: 5bed10ab24f939e4db9f84e41210ef34, type: 3}
     - target: {fileID: 4939404160551460926, guid: def9afd975c159e4688d02f926bfff3b,
         type: 3}
       propertyPath: crackedPrefab
@@ -387,12 +410,12 @@ PrefabInstance:
         type: 3}
       propertyPath: crackStages.Array.data[1]
       value: 
-      objectReference: {fileID: 54714374254861943}
+      objectReference: {fileID: 0}
     - target: {fileID: 4939404160551460926, guid: def9afd975c159e4688d02f926bfff3b,
         type: 3}
       propertyPath: crackStages.Array.data[2]
       value: 
-      objectReference: {fileID: 3135307031369659363}
+      objectReference: {fileID: 0}
     - target: {fileID: 4939404160551460926, guid: def9afd975c159e4688d02f926bfff3b,
         type: 3}
       propertyPath: dealsDamage
@@ -470,18 +493,6 @@ PrefabInstance:
 --- !u!212 &7676140086316128499 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 1758209678862501833, guid: def9afd975c159e4688d02f926bfff3b,
-    type: 3}
-  m_PrefabInstance: {fileID: 8277979908068777786}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &54714374254861943 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 8224462084643160397, guid: def9afd975c159e4688d02f926bfff3b,
-    type: 3}
-  m_PrefabInstance: {fileID: 8277979908068777786}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &3135307031369659363 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6441154602825952473, guid: def9afd975c159e4688d02f926bfff3b,
     type: 3}
   m_PrefabInstance: {fileID: 8277979908068777786}
   m_PrefabAsset: {fileID: 0}

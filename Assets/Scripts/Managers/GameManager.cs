@@ -287,22 +287,35 @@ public class GameManager : MonoBehaviour
     {
         string key = Utility.getKey(sceneName, objectName);
         //If the gameObjects list has the game object,
-        if (Managers.Game.gameObjects.ContainsKey(key))
+        if (gameObjects.ContainsKey(key))
         {
             //Return it
-            return Managers.Game.gameObjects[key];
+            return gameObjects[key];
         }
         //Otherwise, sorry, you're out of luck
         return null;
     }
 
+    public List<GameObject> getObjectsWithName(string startsWith)
+    {
+        List<GameObject> matchingGOs = new List<GameObject>();
+        //Search for GameObjects that start with the given string
+        foreach(GameObject go in gameObjects.Values)
+        {
+            if (go.name.StartsWith(startsWith))
+            {
+                matchingGOs.Add(go);
+            }
+        }
+        return matchingGOs;
+    }
     /// <summary>
     /// Destroys the given GameObject and updates lists
     /// </summary>
     /// <param name="go">The GameObject to destroy</param>
     public void destroyObject(GameObject go)
     {
-        Managers.Game.removeObject(go);
+        removeObject(go);
         Destroy(go);
     }
     /// <summary>
@@ -969,7 +982,7 @@ public class GameManager : MonoBehaviour
             {
                 ES3.DeleteFile("merky.txt");
             }
-            Managers.Game.resetGame(false);
+            resetGame(false);
             ErrorMessage = "123456789012345678901234567890 GM.loadFromFile(): e: " + e;
         }
     }

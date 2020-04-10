@@ -105,7 +105,7 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
         addEnergy(-Mathf.Max(1, range) * Time.fixedDeltaTime);
     }
 
-    public float checkForce(float force)
+    public float checkForce(float force, Vector2 direction)
     {
         float energyLost = Mathf.Abs(energy * force / maxForceResistance);
         addEnergy(-energyLost);

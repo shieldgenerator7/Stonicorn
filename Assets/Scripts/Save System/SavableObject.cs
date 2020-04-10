@@ -86,6 +86,8 @@ public class SavableObject
         {
             case "HardMaterial":
                 return typeof(HardMaterial);
+            case "BreakableWall":
+                return typeof(BreakableWall);
             case "GravityAccepter":
                 return typeof(GravityAccepter);
             case "GestureManager":

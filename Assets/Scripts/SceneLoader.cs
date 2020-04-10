@@ -172,7 +172,11 @@ public class SceneLoader : MonoBehaviour
     /// <param name="go"></param>
     public static void moveToCurrentScene(GameObject go)
     {
-        SceneManager.MoveGameObjectToScene(go, getCurrentScene());
+        moveToScene(go, getCurrentScene());
+    }
+    public static void moveToScene(GameObject go, Scene s)
+    {
+        SceneManager.MoveGameObjectToScene(go, s);
     }
 
     #endregion

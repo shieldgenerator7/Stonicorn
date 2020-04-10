@@ -91,7 +91,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                 float force = rb2d.velocity.magnitude * rb2d.mass;
                 Debug.Log("HM collision: " + name + " collided with " + coll.gameObject.name+
                     ", force: "+force);
-                float damage = checkForce(force);
+                float damage = checkForce(force, rb2d.velocity);
                 float hitPercentage = damage * 100 / maxIntegrity;
                 Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
             }
@@ -103,7 +103,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     /// </summary>
     /// <returns>The amount of damage done
     /// (positive value means damage dealt, negative means HP healed)</returns>
-    public float checkForce(float force)
+    public float checkForce(float force, Vector2 direction)
     {
         if (force > forceThreshold)
         {
