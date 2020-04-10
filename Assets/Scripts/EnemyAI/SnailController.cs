@@ -65,12 +65,17 @@ public class SnailController : MonoBehaviour
             Debug.DrawLine(transform.position, (Vector2)transform.position + floorDirection, Color.blue);
 
             Debug.DrawLine(transform.position, lastSleepPosition, Color.red);
-            //If it's further from the last sleep pos than it was before,
-            if ((lastSleepPosition - (Vector2)transform.position).sqrMagnitude >
-                (lastSleepPosition - prevPos).sqrMagnitude)
+            //If it's moved since last frame,
+            if ((Vector2)transform.position != prevPos)
             {
                 //add to the total count of distance
                 rollDistance += Vector2.Distance(transform.position, prevPos);
+            }
+            else
+            {
+                //Make it so the player can hit it
+                isScared = false;
+                hm.dealsDamage = false;
             }
             prevPos = transform.position;
             hm.dealsDamage = rollDistance >= 0.5f;//true
