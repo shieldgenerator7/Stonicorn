@@ -95,7 +95,7 @@ public class ObjectState
             if (scene.IsValid() && scene.isLoaded)
             {
                 //First Pass: get GO from GameManager list
-                go = GameManager.getObject(sceneName, objectName);
+                go = Managers.Game.getObject(sceneName, objectName);
                 //Second Pass: get GO from GameManager Forgotten Object list
                 if (go == null)
                 {
@@ -119,7 +119,7 @@ public class ObjectState
                             {
                                 if (t.gameObject.isSavable())
                                 {
-                                    GameManager.addObject(t.gameObject);
+                                    Managers.Game.addObject(t.gameObject);
                                     if (t.gameObject.name == this.objectName)
                                     {
                                         go = t.gameObject;
@@ -131,7 +131,7 @@ public class ObjectState
                                 go = spawned;
                                 go.name = this.objectName;
                             }
-                            GameManager.addObject(spawned);
+                            Managers.Game.addObject(spawned);
                             break;
                         }
                     }

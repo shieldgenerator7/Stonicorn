@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     private float lastRewindTime;//the last time the game rewound
     private float inputOffStartTime;//the start time when input was turned off
     private float resetGameTimer;//the time that the game will reset at
-    private static float gamePlayTime;//how long the game can be played for, 0 for indefinitely
+    private float gamePlayTime;//how long the game can be played for, 0 for indefinitely
 
     public bool rewindInterruptableByPlayer = true;
 
@@ -236,19 +236,12 @@ public class GameManager : MonoBehaviour
     }
 
     #region GameObject List Management
+    
     /// <summary>
     /// Adds an object to list of objects that have state to save
     /// </summary>
     /// <param name="go">The GameObject to add to the list</param>
-    public static void addObject(GameObject go)
-    {
-        Managers.Game.addObjectImpl(go);
-    }
-    /// <summary>
-    /// Adds an object to the list, if it passes all tests
-    /// </summary>
-    /// <param name="go">The GameObject to add to the list</param>
-    private void addObjectImpl(GameObject go)
+    public void addObject(GameObject go)
     {
         //
         //Error checking
@@ -290,7 +283,7 @@ public class GameManager : MonoBehaviour
     /// <param name="sceneName">The scene name of the object</param>
     /// <param name="objectName">The name of the object</param>
     /// <returns></returns>
-    public static GameObject getObject(string sceneName, string objectName)
+    public GameObject getObject(string sceneName, string objectName)
     {
         string key = Utility.getKey(sceneName, objectName);
         //If the gameObjects list has the game object,
@@ -307,7 +300,7 @@ public class GameManager : MonoBehaviour
     /// Destroys the given GameObject and updates lists
     /// </summary>
     /// <param name="go">The GameObject to destroy</param>
-    public static void destroyObject(GameObject go)
+    public void destroyObject(GameObject go)
     {
         Managers.Game.removeObject(go);
         Destroy(go);
@@ -369,14 +362,14 @@ public class GameManager : MonoBehaviour
         //Add objects that can move
         foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
         {
-            addObjectImpl(rb.gameObject);
+            addObject(rb.gameObject);
         }
         //Add objects that have other variables that can get rewound
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
         {
             if (!gameObjects.ContainsValue(smb.gameObject))
             {
-                addObjectImpl(smb.gameObject);
+                addObject(smb.gameObject);
             }
         }
         //Forgotten Objects
@@ -384,7 +377,7 @@ public class GameManager : MonoBehaviour
         {
             if (fgo != null)
             {
-                addObjectImpl(fgo);
+                addObject(fgo);
             }
         }
         //Memories
@@ -1228,7 +1221,7 @@ public class GameManager : MonoBehaviour
     /// How long the demo lasts, in seconds
     /// 0 to have no time limit
     /// </summary>
-    public static float GameDemoLength
+    public float GameDemoLength
     {
         get { return gamePlayTime; }
         set { gamePlayTime = Mathf.Max(value, 0); }

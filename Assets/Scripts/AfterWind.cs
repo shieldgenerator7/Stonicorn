@@ -85,7 +85,7 @@ public class AfterWind : SavableMonoBehaviour
         sr.color = new Color(prevColor.r, prevColor.g, prevColor.b, Mathf.SmoothStep(0, 1, fadeFactor));
         if (fadeFactor <= 0 || Mathf.Approximately(fadeFactor, 0))
         {
-            GameManager.destroyObject(gameObject);
+            Managers.Game.destroyObject(gameObject);
         }
     }
 }

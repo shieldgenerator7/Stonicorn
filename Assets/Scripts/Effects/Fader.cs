@@ -116,7 +116,7 @@ public class Fader : MonoBehaviour
                 }
                 else
                 {
-                    GameManager.destroyObject(gameObject);
+                    Managers.Game.destroyObject(gameObject);
                 }
             }
             else if (destroyScriptOnFinish)

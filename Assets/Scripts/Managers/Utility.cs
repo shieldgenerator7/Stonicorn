@@ -390,7 +390,7 @@ public static class Utility
         GameObject newObj = GameObject.Instantiate(prefab);
         newObj.name += System.DateTime.Now.Ticks;
         SceneLoader.moveToCurrentScene(newObj);
-        GameManager.addObject(newObj);
+        Managers.Game.addObject(newObj);
         return newObj;
     }
 
