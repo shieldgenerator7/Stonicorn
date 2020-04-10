@@ -5,37 +5,36 @@ using UnityEngine;
 public class SnailController : MonoBehaviour
 {
     [Header("Settings")]
-    public string food = "stone";
     public float moveSpeed;
     public float jumpSpeed = 10;
     public float rotateSpeed;
+    public float maxRollDistance = 5;
     public float stickForce = 9.81f;//how much force it uses to stick to walls
     public float restickAngleAdjustment = 45;//used to keep it stuck to land around corners
 
     //Runtime Vars
-    private Vector2 lastSeenFoodPosition;//where stone was last seen
     public Vector2 floorDirection;//points away from the floor
     public Vector2 floorRight;//if floorDirection is Vector2.up, floorRight is Vector2.right
     private Dictionary<GameObject, ContactPoint2D[]> touchingObjects = new Dictionary<GameObject, ContactPoint2D[]>();
     public bool isScared = false;
-    public bool somethingInTrigger = false;
-    public float rollDistanceTarget = 0;//how far this snail is willing to roll for the current target
+    public Vector2 lastSleepPosition;//the last place that it was sleeping at
     public float rollDistance = 0;//how far this snail has gone for the current target
     public Vector2 prevPos;
 
     [Header("Components")]
     public Animator animator;
     public Collider2D bottomDetector;//used to make sure the snail is at the right orientation before coming out
-    public Collider2D stoneDetector;//used to detect stone in its area
     public GroundChecker ground;
     public GravityAccepter gravity;
     private Rigidbody2D rb2d;
+    private HardMaterial hm;
 
     // Start is called before the first frame update
     void Start()
     {
         animator.SetBool("scared", true);
         rb2d = GetComponentInChildren<Rigidbody2D>();
+        hm = GetComponent<HardMaterial>();
     }
 
     // Update is called once per frame
@@ -43,6 +42,7 @@ public class SnailController : MonoBehaviour
     {
         if (Managers.Game.Rewinding)
         {
+            Debug.Log("Snail: not processing snails while rewinding");
             //don't update while game manager is rewinding
             return;
         }
@@ -64,21 +64,23 @@ public class SnailController : MonoBehaviour
             rb2d.angularVelocity = rotateSpeed;
             Debug.DrawLine(transform.position, (Vector2)transform.position + floorDirection, Color.blue);
 
-            Debug.DrawLine(transform.position, lastSeenFoodPosition, Color.red);
-            //If it's further from the target than it was before,
-            if ((lastSeenFoodPosition - (Vector2)transform.position).sqrMagnitude >
-                (lastSeenFoodPosition - prevPos).sqrMagnitude)
+            Debug.DrawLine(transform.position, lastSleepPosition, Color.red);
+            //If it's further from the last sleep pos than it was before,
+            if ((lastSleepPosition - (Vector2)transform.position).sqrMagnitude >
+                (lastSleepPosition - prevPos).sqrMagnitude)
             {
                 //add to the total count of distance
                 rollDistance += Vector2.Distance(transform.position, prevPos);
             }
             prevPos = transform.position;
-            if (rollDistance >= rollDistanceTarget)
+            hm.dealsDamage = rollDistance >= 0.5f;//true
+            if (rollDistance >= maxRollDistance)
             {
                 int count = Utility.Cast(bottomDetector, Vector2.zero);
                 if (count > 0)
                 {
                     isScared = false;
+                    hm.dealsDamage = false;
                     animator.SetBool("scared", isScared);
                     //Flipping
                     if (rb2d.angularVelocity != 0)
@@ -87,13 +89,8 @@ public class SnailController : MonoBehaviour
                         flipScale.x = Mathf.Sign(rb2d.angularVelocity);
                         animator.transform.localScale = flipScale;
                     }
-                    checkHuntState();
                 }
             }
-        }
-        if (!isScared && somethingInTrigger)
-        {
-            checkHuntState();
         }
 
         //Unstucking
@@ -107,7 +104,33 @@ public class SnailController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        updateFloorVector(collision, true);
+        bool interactableObject = collision.gameObject.isSavable();
+        //If sleeping,
+        if (!isScared)
+        {
+            if (interactableObject)
+            {
+                //Wake up and roll out
+                lastSleepPosition = transform.position;
+                rollDistance = 0;
+                rotateSpeed = Mathf.Abs(rotateSpeed)
+                    * ((Vector3.Angle(
+                        collision.GetContact(0).point - lastSleepPosition,
+                        floorRight
+                        ) < 90) ? -1 : 1);
+                prevPos = transform.position;
+                isScared = true;
+            }
+        }
+        //Else if awake,
+        else
+        {
+            if (!interactableObject)
+            {
+                //Update floor variables
+                updateFloorVector(collision, true);
+            }
+        }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
@@ -140,73 +163,5 @@ public class SnailController : MonoBehaviour
 
         floorDirection = newFD;
         floorRight = Utility.RotateZ(floorDirection, -90);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        checkSomethingInTrigger();
-        if (somethingInTrigger && !isScared)
-        {
-            checkHuntState();
-        }
-    }
-
-    void checkSomethingInTrigger()
-    {//2019-02-08: copied from checkHuntState()
-        somethingInTrigger = false;
-        Utility.RaycastAnswer answer = Utility.CastAnswer(stoneDetector, Vector2.zero);
-        for (int i = 0; i < answer.count; i++)
-        {
-            RaycastHit2D rch2d = answer.rch2ds[i];
-            GameObject collGO = rch2d.collider.gameObject;
-            if (collGO != this.gameObject)
-            {
-                HardMaterial hm = collGO.GetComponent<HardMaterial>();
-                if (hm && hm.material == food)
-                {
-                    somethingInTrigger = true;
-                    return;
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Looks to see if there's food inside its collider
-    /// </summary>
-    void checkHuntState()
-    {//2019-02-08: copied from DiamondShell.checkHuntState()
-        Utility.RaycastAnswer answer = Utility.CastAnswer(stoneDetector, Vector2.zero);
-        for (int i = 0; i < answer.count; i++)
-        {
-            RaycastHit2D rch2d = answer.rch2ds[i];
-            GameObject collGO = rch2d.collider.gameObject;
-            if (collGO == this.gameObject)
-            {
-                continue;
-            }
-            HardMaterial hm = collGO.GetComponent<HardMaterial>();
-            if (hm && hm.material == food)
-            {
-                somethingInTrigger = true;
-                bool los = Utility.lineOfSight(this.gameObject, collGO);
-                if (los)
-                {
-                    //there is food in the collider
-                    lastSeenFoodPosition = rch2d.point;
-                    Debug.DrawLine(transform.position, lastSeenFoodPosition, Color.red, 1);
-                    //rollDistanceTarget = Vector2.Distance(rch2d.point, transform.position);
-                    rollDistance = 0;
-                    rotateSpeed = Mathf.Abs(rotateSpeed)
-                        * ((Vector3.Angle(
-                            lastSeenFoodPosition - (Vector2)transform.position,
-                            floorRight
-                            ) < 90) ? -1 : 1);
-                    prevPos = transform.position;
-                    isScared = true;
-                    return;
-                }
-            }
-        }
     }
 }

@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 8435740046917698784}
   - component: {fileID: 3118900764096104388}
   - component: {fileID: 3318912744836079946}
-  - component: {fileID: 2043419896947057584}
   - component: {fileID: 7585513601979807100}
   - component: {fileID: 1521082661794283007}
   m_Layer: 0
@@ -102,22 +101,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f8986261aa7804a8841709d0433ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  food: stone
   moveSpeed: 300
   jumpSpeed: 10
   rotateSpeed: 400
+  maxRollDistance: 5
   stickForce: 9.81
   restickAngleAdjustment: 45
   floorDirection: {x: 0, y: 0}
   floorRight: {x: 0, y: 0}
   isScared: 0
-  somethingInTrigger: 0
-  rollDistanceTarget: 3
+  lastSleepPosition: {x: 0, y: 0}
   rollDistance: 0
   prevPos: {x: 0, y: 0}
   animator: {fileID: 2897467821716145704}
   bottomDetector: {fileID: 3118900764096104388}
-  stoneDetector: {fileID: 2043419896947057584}
   ground: {fileID: 1521082661794283007}
   gravity: {fileID: 3318912744836079946}
 --- !u!50 &2897467820420327000
@@ -189,22 +186,6 @@ MonoBehaviour:
   saveValues: 0
   gravityScale: 1
   acceptsGravity: 0
---- !u!58 &2043419896947057584
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2897467820420327007}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 10
 --- !u!114 &7585513601979807100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,7 +203,7 @@ MonoBehaviour:
   forceThreshold: 50
   maxIntegrity: 100
   integrity: 100
-  dealsDamage: 1
+  dealsDamage: 0
   disappearsIfNoBrokenPrefab: 1
   crackedPrefab: {fileID: 0}
   crackedOverlay: 1
