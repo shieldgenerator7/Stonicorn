@@ -101,22 +101,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f8986261aa7804a8841709d0433ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 300
-  jumpSpeed: 10
   rotateSpeed: 400
   maxRollDistance: 10
   stickForce: 9.81
   restickAngleAdjustment: 45
-  floorDirection: {x: 0, y: 0}
-  floorRight: {x: 0, y: 0}
-  isScared: 0
-  lastSleepPosition: {x: 0, y: 0}
-  rollDistance: 0
-  prevPos: {x: 0, y: 0}
-  animator: {fileID: 2897467821716145704}
   bottomDetector: {fileID: 3118900764096104388}
-  ground: {fileID: 1521082661794283007}
-  gravity: {fileID: 3318912744836079946}
 --- !u!50 &2897467820420327000
 Rigidbody2D:
   serializedVersion: 4

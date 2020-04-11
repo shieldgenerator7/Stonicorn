@@ -5,36 +5,46 @@ using UnityEngine;
 public class SnailController : MonoBehaviour
 {
     [Header("Settings")]
-    public float moveSpeed;
-    public float jumpSpeed = 10;
     public float rotateSpeed;
     public float maxRollDistance = 5;
     public float stickForce = 9.81f;//how much force it uses to stick to walls
     public float restickAngleAdjustment = 45;//used to keep it stuck to land around corners
 
     //Runtime Vars
-    public Vector2 floorDirection;//points away from the floor
-    public Vector2 floorRight;//if floorDirection is Vector2.up, floorRight is Vector2.right
+    private Vector2 floorDirection;//points away from the floor
+    private Vector2 floorRight;//if floorDirection is Vector2.up, floorRight is Vector2.right
     private Dictionary<GameObject, ContactPoint2D[]> touchingObjects = new Dictionary<GameObject, ContactPoint2D[]>();
-    public bool isScared = false;
-    public Vector2 lastSleepPosition;//the last place that it was sleeping at
-    public float rollDistance = 0;//how far this snail has gone for the current target
-    public Vector2 prevPos;
+    private float rollDistance = 0;//how far this snail has gone for the current target
+    private Vector2 prevPos;
+    private bool Awake
+    {
+        get
+        {
+            return animator.GetCurrentAnimatorStateInfo(0).IsName("enemy_snail_awake");
+        }
+        set
+        {
+            animator.SetBool("awake", value);
+        }
+    }
 
     [Header("Components")]
-    public Animator animator;
     public Collider2D bottomDetector;//used to make sure the snail is at the right orientation before coming out
-    public GroundChecker ground;
-    public GravityAccepter gravity;
+    private Animator animator;
+    private GroundChecker ground;
+    private GravityAccepter gravity;
     private Rigidbody2D rb2d;
     private HardMaterial hm;
 
     // Start is called before the first frame update
     void Start()
     {
-        animator.SetBool("scared", true);
+        animator = GetComponentInChildren<Animator>();
+        ground = GetComponent<GroundChecker>();
+        gravity = GetComponent<GravityAccepter>();
         rb2d = GetComponentInChildren<Rigidbody2D>();
         hm = GetComponent<HardMaterial>();
+        Awake = false;
     }
 
     // Update is called once per frame
@@ -58,15 +68,18 @@ public class SnailController : MonoBehaviour
         }
 
         //Hunting
-        animator.SetBool("scared", isScared);
-        if (isScared)
+        if (Awake)
         {
+            hm.dealsDamage = true;
             rb2d.angularVelocity = rotateSpeed;
             Debug.DrawLine(transform.position, (Vector2)transform.position + floorDirection, Color.blue);
 
-            Debug.DrawLine(transform.position, lastSleepPosition, Color.red);
+            if (prevPos == Vector2.zero)
+            {
+
+            }
             //If it's moved since last frame,
-            if ((Vector2)transform.position != prevPos)
+            else if ((Vector2)transform.position != prevPos)
             {
                 //add to the total count of distance
                 rollDistance += Vector2.Distance(transform.position, prevPos);
@@ -74,19 +87,20 @@ public class SnailController : MonoBehaviour
             else
             {
                 //Make it so the player can hit it
-                isScared = false;
+                Awake = false;
                 hm.dealsDamage = false;
             }
             prevPos = transform.position;
-            hm.dealsDamage = rollDistance >= 0.5f;//true
+            //If it has rolled its max distance,
             if (rollDistance >= maxRollDistance)
             {
+                //And it is on the ground,
                 int count = Utility.Cast(bottomDetector, Vector2.zero);
                 if (count > 0)
                 {
-                    isScared = false;
+                    //Make it go to sleep again
+                    Awake = false;
                     hm.dealsDamage = false;
-                    animator.SetBool("scared", isScared);
                     //Flipping
                     if (rb2d.angularVelocity != 0)
                     {
@@ -97,34 +111,25 @@ public class SnailController : MonoBehaviour
                 }
             }
         }
-
-        //Unstucking
-        if (isScared && Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0))
-        {
-            rb2d.velocity = (floorRight * -Mathf.Sign(rotateSpeed) * moveSpeed)
-                + (floorDirection * jumpSpeed);
-            Debug.DrawLine(transform.position, (Vector2)transform.position + rb2d.velocity, Color.cyan, 1);
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         bool interactableObject = collision.gameObject.isSavable();
         //If sleeping,
-        if (!isScared)
+        if (!Awake)
         {
             if (interactableObject)
             {
                 //Wake up and roll out
-                lastSleepPosition = transform.position;
                 rollDistance = 0;
                 rotateSpeed = Mathf.Abs(rotateSpeed)
                     * ((Vector3.Angle(
-                        collision.GetContact(0).point - lastSleepPosition,
+                        collision.GetContact(0).point - (Vector2)transform.position,
                         floorRight
                         ) < 90) ? -1 : 1);
-                prevPos = transform.position;
-                isScared = true;
+                prevPos = Vector2.zero;
+                Awake = true;
             }
         }
         //Else if awake,
