@@ -20,7 +20,6 @@ GameObject:
   - component: {fileID: 1792176480}
   - component: {fileID: 1792176478}
   - component: {fileID: 1792176481}
-  - component: {fileID: 1792176474}
   - component: {fileID: 1792176475}
   - component: {fileID: 1792176466}
   m_Layer: 8
@@ -382,37 +381,6 @@ MonoBehaviour:
   addsOnTeleportSoundEffect: 0
   unlocked: 0
   abilityLevels: 000000
---- !u!114 &1792176474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: stone
-  hardness: 1
-  forceThreshold: 500
-  maxIntegrity: 100
-  integrity: 100
-  dealsDamage: 1
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 1164755296733718, guid: 144b0957faeecea48b8b6798272d93eb,
-    type: 3}
-  crackedOverlay: 1
-  crackStages:
-  - {fileID: 1363863460}
-  - {fileID: 902355116}
-  - {fileID: 408598913}
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!114 &1792176475
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class controls the behaviour of the Snail enemy type.
+/// It "sleeps" (outside its shell) until it gets hit by something,
+/// then it "wakes up" (restracts into its shell) and exposes its spikes,
+/// and then rolls in the direction it was hit.
+/// The spikes deal damage because they are tagged "Hazard" and have a trigger collider,
+/// and when something that can take Hazard damage enters the trigger,
+/// that object responds to hitting a Hazard (i.e. Merky hitting the Snail's spikes)
+/// SNAIL DEALS DAMAGE TO MERKY, EVEN THO SNAIL CLASS HAS NO CODE DOING SO
+/// </summary>
 public class SnailController : MonoBehaviour
 {
     [Header("Settings")]
@@ -34,7 +44,6 @@ public class SnailController : MonoBehaviour
     private GroundChecker ground;
     private GravityAccepter gravity;
     private Rigidbody2D rb2d;
-    private HardMaterial hm;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +52,6 @@ public class SnailController : MonoBehaviour
         ground = GetComponent<GroundChecker>();
         gravity = GetComponent<GravityAccepter>();
         rb2d = GetComponentInChildren<Rigidbody2D>();
-        hm = GetComponent<HardMaterial>();
         Awake = false;
     }
 
@@ -70,7 +78,6 @@ public class SnailController : MonoBehaviour
         //Hunting
         if (Awake)
         {
-            hm.dealsDamage = true;
             rb2d.angularVelocity = rotateSpeed;
             Debug.DrawLine(transform.position, (Vector2)transform.position + floorDirection, Color.blue);
 
@@ -88,7 +95,6 @@ public class SnailController : MonoBehaviour
             {
                 //Make it so the player can hit it
                 Awake = false;
-                hm.dealsDamage = false;
             }
             prevPos = transform.position;
             //If it has rolled its max distance,
@@ -100,7 +106,6 @@ public class SnailController : MonoBehaviour
                 {
                     //Make it go to sleep again
                     Awake = false;
-                    hm.dealsDamage = false;
                     //Flipping
                     if (rb2d.angularVelocity != 0)
                     {

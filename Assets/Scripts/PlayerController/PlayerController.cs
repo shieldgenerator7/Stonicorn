@@ -149,19 +149,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private HardMaterial hardMaterial;
-    public HardMaterial HardMaterial
-    {
-        get
-        {
-            if (hardMaterial == null)
-            {
-                hardMaterial = GetComponent<HardMaterial>();
-            }
-            return hardMaterial;
-        }
-    }
-
     private TeleportAbility tpa;
 
     /// <summary>
@@ -198,8 +185,6 @@ public class PlayerController : MonoBehaviour
         pc2d = GetComponent<PolygonCollider2D>();
         tpa = GetComponent<TeleportAbility>();
         //Register the delegates
-        HardMaterial.shattered += shattered;
-        HardMaterial.hardCollision += hardCollision;
         Managers.Game.onRewindFinished += grantGravityImmunityAfterRewind;
         //Estimate the halfWidth
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
@@ -239,8 +224,17 @@ public class PlayerController : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.collider.isTrigger)
+        Debug.Log("Merky collided with (t? "+collision.collider.isTrigger+"): " + collision.gameObject.name);
+        //If collided with a Hazard,
+        if (collision.gameObject.CompareTag("Hazard"))
         {
+            //Take damage (and rewind)
+            forceRewindHazard(2, collision.contacts[0].point);
+        }
+        //Else if collided with stand-on-able object,
+        else if (!collision.collider.isTrigger)
+        {
+            //Grant gravity immunity
             checkGravityImmunity(true);//first grounded frame after teleport
         }
     }
@@ -420,10 +414,6 @@ public class PlayerController : MonoBehaviour
 
         //Play Sound
         playTeleportSound(oldPos, newPos);
-
-        //Health Regen
-        HardMaterial.addIntegrity(Vector2.Distance(oldPos, newPos));
-
 
         //Gravity Immunity
         //If gravity immune,
@@ -846,30 +836,17 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Delegate method called when HardMaterial's integrity reaches 0
+    /// Call this to force Merky to rewind due to hitting a hazard
     /// </summary>
-    private void shattered()
-    {
-        //Put the gesture manager in rewind mode
-        Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
-        //Reset GameManager respawn time
-        Managers.Game.AcceptsInputNow = false;
-        //Increment death counter
-        GameStatistics.addOne("Death");
-        //If this is the first death,
-        if (GameStatistics.get("Death") == 1)
-        {
-            //Highlight the past preview that makes the most sense to rewind to
-            Vector2 lsrgp = Managers.Game.getLatestSafeRewindGhostPosition();
-            transform.position = ((Vector2)transform.position + lsrgp) / 2;
-            Managers.Effect.highlightTapArea(lsrgp);
-        }
-    }
-
-    private void hardCollision(float damageToSelf, float damageToOther, Vector2 contactPoint)
+    /// <param name="damageToSelf"></param>
+    /// <param name="damageToOther"></param>
+    /// <param name="contactPoint"></param>
+    private void forceRewindHazard(float damageToSelf, Vector2 contactPoint)
     {
         if (damageToSelf > 0)
         {
+            //Increment damaged counter
+            GameStatistics.addOne("Damaged");
             //Start hit timer
             Timer.startTimer(hitStunDuration, hitTimerUp);
             //Highlight impact area

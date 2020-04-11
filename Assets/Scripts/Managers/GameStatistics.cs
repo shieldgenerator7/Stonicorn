@@ -25,7 +25,7 @@ public class GameStatistics : SavableMonoBehaviour
         { "AirSliceObject", 0},//how many objects the player has sliced
         { "LongTeleport", 0},//how many times the player has teleported with an extended range
 
-        { "Death", 0},//how many times the player has died
+        { "Damaged", 0},//how many times the player has been damaged
         { "Rewind", 0},//how many times the rewind ability has been activated
         { "RewindPlayer", 0}//how many times the player used the rewind ability
     };

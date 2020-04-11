@@ -45,8 +45,7 @@ public class GestureProfile
         {
             Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MENU);
         }
-        else if (!Managers.Player.HardMaterial.isIntact()
-            || zoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND - 1))
+        else if (zoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND - 1))
         {
             Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
         }

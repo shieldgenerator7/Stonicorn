@@ -31,8 +31,6 @@ public class GameManager : MonoBehaviour
     //
     [Header("Settings")]
     [SerializeField]
-    private float inputOffDuration = 1.0f;//how long Merky must wait before rewinding after shattering
-    [SerializeField]
     private float baseRewindDelay = 0.05f;
     [SerializeField]
     private float rewindDelay = 0.05f;//the delay between rewind transitions
@@ -62,7 +60,6 @@ public class GameManager : MonoBehaviour
     private int rewindId;//the id to eventually load back to
     private int chosenId;//the id of the current game state
     private float lastRewindTime;//the last time the game rewound
-    private float inputOffStartTime;//the start time when input was turned off
     private float resetGameTimer;//the time that the game will reset at
     private float gamePlayTime;//how long the game can be played for, 0 for indefinitely
 
@@ -236,7 +233,7 @@ public class GameManager : MonoBehaviour
     }
 
     #region GameObject List Management
-    
+
     /// <summary>
     /// Adds an object to list of objects that have state to save
     /// </summary>
@@ -300,7 +297,7 @@ public class GameManager : MonoBehaviour
     {
         List<GameObject> matchingGOs = new List<GameObject>();
         //Search for GameObjects that start with the given string
-        foreach(GameObject go in gameObjects.Values)
+        foreach (GameObject go in gameObjects.Values)
         {
             if (go.name.StartsWith(startsWith))
             {
@@ -614,7 +611,7 @@ public class GameManager : MonoBehaviour
     void RewindTo(int gamestateId, bool playerInitiated = true)
     {
         //Set interruptable
-        rewindInterruptableByPlayer = playerInitiated;        
+        rewindInterruptableByPlayer = playerInitiated;
         //Set the game state tracker vars
         rewindId = gamestateId;
         //Start the rewind
@@ -807,7 +804,7 @@ public class GameManager : MonoBehaviour
 
     public bool isSceneOpen(Scene scene)
     {
-        foreach(Scene s in openScenes)
+        foreach (Scene s in openScenes)
         {
             if (scene == s)
             {
@@ -1013,16 +1010,11 @@ public class GameManager : MonoBehaviour
         //If the game state representations should be shown,
         if (show)
         {
-            bool intact = Managers.Player.HardMaterial.isIntact();
             //Loop through all game states
             foreach (GameState gs in gameStates)
             {
-                //Don't include last game state if merky is shattered
-                if (intact || gs.id != chosenId)
-                {
-                    //Otherwise, show the game state's representation
-                    gs.showRepresentation(chosenId);
-                }
+                //Show a sprite to represent them on screen
+                gs.showRepresentation(chosenId);
             }
         }
         //Else, they should be hidden
@@ -1076,32 +1068,22 @@ public class GameManager : MonoBehaviour
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
-        //If respawn timer is not over,
-        if (!AcceptsInputNow)
-        {
-            //don't do anything
-            return;
-        }
         GameState final = null;
         GameState prevFinal = null;
-        bool intact = Managers.Player.HardMaterial.isIntact();
+        //We have to do 2 passes to allow for both precision clicking and fat-fingered tapping
         //Sprite detection pass
         foreach (GameState gs in gameStates)
         {
-            //don't include last game state if merky is shattered
-            if (intact || gs.id != chosenId)
+            //Check sprite overlap
+            if (gs.checkRepresentation(curMPWorld))
             {
-                //Check sprite overlap
-                if (gs.checkRepresentation(curMPWorld))
+                //If this game state is more recent than the current picked one,
+                if (final == null || gs.id > final.id)//assuming the later ones have higher id values
                 {
-                    //If this game state is more recent than the current picked one,
-                    if (final == null || gs.id > final.id)//assuming the later ones have higher id values
-                    {
-                        //Set the current picked one to the previously picked one
-                        prevFinal = final;//keep the second-to-latest one
-                        //Set this game state to the current picked one
-                        final = gs;//keep the latest one
-                    }
+                    //Set the current picked one to the previously picked one
+                    prevFinal = final;//remember the second-to-latest one
+                    //Set this game state to the current picked one
+                    final = gs;//keep the latest one                    
                 }
             }
         }
@@ -1110,20 +1092,16 @@ public class GameManager : MonoBehaviour
         {
             foreach (GameState gs in gameStates)
             {
-                //don't include last game state if merky is shattered
-                if (intact || gs.id != chosenId)
+                //Check collider overlap
+                if (gs.checkRepresentation(curMPWorld, false))
                 {
-                    //Check collider overlap
-                    if (gs.checkRepresentation(curMPWorld, false))
+                    //If this game state is more recent than the current picked one,
+                    if (final == null || gs.id > final.id)//assuming the later ones have higher id values
                     {
-                        //If this game state is more recent than the current picked one,
-                        if (final == null || gs.id > final.id)//assuming the later ones have higher id values
-                        {
-                            //Set the current picked one to the previously picked one
-                            prevFinal = final;//keep the second-to-latest one
-                            //Set this game state to the current picked one
-                            final = gs;//keep the latest one
-                        }
+                        //Set the current picked one to the previously picked one
+                        prevFinal = final;//remember the second-to-latest one
+                        //Set this game state to the current picked one
+                        final = gs;//keep the latest one
                     }
                 }
             }
@@ -1156,19 +1134,6 @@ public class GameManager : MonoBehaviour
             //Update Stats
             GameStatistics.addOne("RewindPlayer");
         }
-        //Else if none were selected, and merky is dead,
-        else if (!intact)
-        {
-            //Go back to the latest safe past merky
-            //-1 to prevent trap saves
-            RewindTo(chosenId - 1);
-            //Update Stats
-            GameStatistics.addOne("RewindPlayer");
-        }
-        if (GameStatistics.get("Death") == 1)
-        {
-            Managers.Effect.highlightTapArea(Vector2.zero, false);
-        }
 
         //Leave this zoom level even if no past merky was chosen
         float defaultZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
@@ -1176,33 +1141,10 @@ public class GameManager : MonoBehaviour
         Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
 
         //Process tapProcessed delegates
-        if (tapProcessed != null)
-        {
-            tapProcessed(curMPWorld);
-        }
+        tapProcessed?.Invoke(curMPWorld);
     }
     public delegate void TapProcessed(Vector2 curMPWorld);
     public TapProcessed tapProcessed;
-
-    /// <summary>
-    /// Used primarily for managing the delay between the player dying and respawning
-    /// </summary>
-    public bool AcceptsInputNow
-    {
-        get { return Time.time > inputOffStartTime + inputOffDuration; }
-        set
-        {
-            bool acceptsNow = value;
-            if (acceptsNow)
-            {
-                inputOffStartTime = 0;
-            }
-            else
-            {
-                inputOffStartTime = Time.time;
-            }
-        }
-    }
     #endregion
 
     #region Demo Mode Methods

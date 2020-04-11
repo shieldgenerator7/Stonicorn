@@ -113,7 +113,6 @@ GameObject:
   - component: {fileID: 8435740046917698784}
   - component: {fileID: 3118900764096104388}
   - component: {fileID: 3318912744836079946}
-  - component: {fileID: 7585513601979807100}
   - component: {fileID: 1521082661794283007}
   m_Layer: 0
   m_Name: Enemy_Snail
@@ -273,33 +272,6 @@ MonoBehaviour:
   saveValues: 0
   gravityScale: 1
   acceptsGravity: 0
---- !u!114 &7585513601979807100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2897467820420327007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: stone
-  hardness: 3
-  forceThreshold: 50
-  maxIntegrity: 100
-  integrity: 100
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!114 &1521082661794283007
 MonoBehaviour:
   m_ObjectHideFlags: 0
