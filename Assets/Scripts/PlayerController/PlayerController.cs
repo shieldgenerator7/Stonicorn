@@ -226,10 +226,11 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Merky collided with (t? "+collision.collider.isTrigger+"): " + collision.gameObject.name);
         //If collided with a Hazard,
-        if (collision.gameObject.CompareTag("Hazard"))
+        Hazard hazard = collision.gameObject.GetComponent<Hazard>();
+        if (hazard && hazard.Hazardous)
         {
             //Take damage (and rewind)
-            forceRewindHazard(2, collision.contacts[0].point);
+            forceRewindHazard(hazard.DamageDealt, collision.contacts[0].point);
         }
         //Else if collided with stand-on-able object,
         else if (!collision.collider.isTrigger)

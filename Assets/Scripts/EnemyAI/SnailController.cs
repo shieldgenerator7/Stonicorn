@@ -12,7 +12,7 @@ using UnityEngine;
 /// that object responds to hitting a Hazard (i.e. Merky hitting the Snail's spikes)
 /// SNAIL DEALS DAMAGE TO MERKY, EVEN THO SNAIL CLASS HAS NO CODE DOING SO
 /// </summary>
-public class SnailController : MonoBehaviour
+public class SnailController : Hazard
 {
     [Header("Settings")]
     public float rotateSpeed;
@@ -78,6 +78,7 @@ public class SnailController : MonoBehaviour
         //Hunting
         if (Awake)
         {
+            Hazardous = true;
             rb2d.angularVelocity = rotateSpeed;
             Debug.DrawLine(transform.position, (Vector2)transform.position + floorDirection, Color.blue);
 
@@ -95,6 +96,7 @@ public class SnailController : MonoBehaviour
             {
                 //Make it so the player can hit it
                 Awake = false;
+                Hazardous = false;
             }
             prevPos = transform.position;
             //If it has rolled its max distance,
@@ -106,6 +108,7 @@ public class SnailController : MonoBehaviour
                 {
                     //Make it go to sleep again
                     Awake = false;
+                    Hazardous = false;
                     //Flipping
                     if (rb2d.angularVelocity != 0)
                     {
