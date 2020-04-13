@@ -192,4 +192,27 @@ public class SnailController : Hazard
         }
         FloorDirection = newFD;
     }
+
+    public override SavableObject getSavableObject()
+    {
+        SavableObject savObj = base.getSavableObject();
+        Dictionary<string, object> data = savObj.data;
+        data.Add("flipDir", Mathf.Sign(animator.transform.localScale.x));
+        data.Add("awake", Awake);
+        data.Add("rollDistance", rollDistance);
+        data.Add("prevPos", prevPos);
+        return savObj;
+    }
+
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        base.acceptSavableObject(savObj);
+        Vector3 animScale = animator.transform.localScale;
+        animScale.x = Mathf.Abs(animScale.x) * (float)savObj.data["flipDir"];
+        animator.transform.localScale = animScale;
+        Awake = (bool)savObj.data["awake"];
+        rollDistance = (float)savObj.data["rollDistance"];
+        prevPos = (Vector2)savObj.data["prevPos"];
+        FloorDirection = transform.up;
+    }
 }
