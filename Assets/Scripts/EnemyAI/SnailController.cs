@@ -7,9 +7,10 @@ using UnityEngine;
 /// It "sleeps" (outside its shell) until it gets hit by something,
 /// then it "wakes up" (restracts into its shell) and exposes its spikes,
 /// and then rolls in the direction it was hit.
-/// The spikes deal damage because they are tagged "Hazard" and have a trigger collider,
-/// and when something that can take Hazard damage enters the trigger,
-/// that object responds to hitting a Hazard (i.e. Merky hitting the Snail's spikes)
+/// The spikes deal damage because this object is a subtype of Hazard
+/// and its Hazardous property returns true while the spikes are out.
+/// When something that can take Hazard damage collides with this object,
+/// that object responds to hitting a Hazard on its own (i.e. Merky hitting the Snail's spikes)
 /// SNAIL DEALS DAMAGE TO MERKY, EVEN THO SNAIL CLASS HAS NO CODE DOING SO
 /// </summary>
 public class SnailController : Hazard
@@ -21,8 +22,20 @@ public class SnailController : Hazard
     public float restickAngleAdjustment = 45;//used to keep it stuck to land around corners
 
     //Runtime Vars
-    private Vector2 floorDirection;//points away from the floor
     private Vector2 floorRight;//if floorDirection is Vector2.up, floorRight is Vector2.right
+    private Vector2 floorDirection;//points away from the floor
+    /// <summary>
+    /// The direction pointing perpendicularly away from the floor.
+    /// </summary>
+    private Vector2 FloorDirection
+    {
+        get => floorDirection;
+        set
+        {
+            floorDirection = value.normalized;
+            floorRight = Utility.RotateZ(floorDirection, -90);
+        }
+    }
     private Dictionary<GameObject, ContactPoint2D[]> touchingObjects = new Dictionary<GameObject, ContactPoint2D[]>();
     private float rollDistance = 0;//how far this snail has gone for the current target
     private Vector2 prevPos;
@@ -53,6 +66,7 @@ public class SnailController : Hazard
         gravity = GetComponent<GravityAccepter>();
         rb2d = GetComponentInChildren<Rigidbody2D>();
         Awake = false;
+        FloorDirection = transform.up;
     }
 
     // Update is called once per frame
@@ -65,9 +79,9 @@ public class SnailController : Hazard
             return;
         }
         //Own gravity
-        if (ground.Grounded)
+        if (ground.isGroundedInDirection(-FloorDirection))
         {
-            rb2d.AddForce(-floorDirection * rb2d.mass * stickForce);
+            rb2d.AddForce(-FloorDirection * rb2d.mass * stickForce);
             gravity.AcceptsGravity = false;
         }
         else
@@ -80,11 +94,11 @@ public class SnailController : Hazard
         {
             Hazardous = true;
             rb2d.angularVelocity = rotateSpeed;
-            Debug.DrawLine(transform.position, (Vector2)transform.position + floorDirection, Color.blue);
+            Debug.DrawLine(transform.position, (Vector2)transform.position + FloorDirection, Color.blue);
 
             if (prevPos == Vector2.zero)
             {
-
+                //do nothing, wait for it to update
             }
             //If it's moved since last frame,
             else if ((Vector2)transform.position != prevPos)
@@ -162,8 +176,7 @@ public class SnailController : Hazard
         }
         if (touchingObjects.Count == 0)
         {
-            floorDirection = Utility.RotateZ(floorDirection, restickAngleAdjustment * Mathf.Sign(rotateSpeed));
-            floorRight = Utility.RotateZ(floorDirection, -90);
+            FloorDirection = Utility.RotateZ(FloorDirection, restickAngleAdjustment * Mathf.Sign(rotateSpeed));
         }
     }
     void updateFloorVector(Collision2D collision, bool updateVelocity)
@@ -177,9 +190,6 @@ public class SnailController : Hazard
                 newFD += cp2d.normal;
             }
         }
-        newFD.Normalize();
-
-        floorDirection = newFD;
-        floorRight = Utility.RotateZ(floorDirection, -90);
+        FloorDirection = newFD;
     }
 }
