@@ -214,5 +214,6 @@ public class SnailController : Hazard
         rollDistance = (float)savObj.data["rollDistance"];
         prevPos = (Vector2)savObj.data["prevPos"];
         FloorDirection = transform.up;
+        Hazardous = Awake;
     }
 }
