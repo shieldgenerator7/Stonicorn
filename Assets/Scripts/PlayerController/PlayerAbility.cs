@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerAbility : SavableMonoBehaviour
+public class PlayerAbility : SavableMonoBehaviour, Setting
 {
     public Color effectColor;//the color used for the particle system upon activation
 
@@ -187,16 +187,36 @@ public class PlayerAbility : SavableMonoBehaviour
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject(this,
-            "unlocked", unlocked,
-            "active", Active
-            );
+        return new SavableObject(this);
     }
 
     public override void acceptSavableObject(SavableObject savObj)
     {
-        unlocked = (bool)savObj.data["unlocked"] || unlocked;
-        Active = (bool)savObj.data["active"];
+    }
+
+    public SettingScope Scope
+    {
+        get => SettingScope.SAVE_FILE;
+    }
+    public string ID
+    {
+        get => GetType().Name;
+    }
+
+    public SettingObject Setting
+    {
+        get
+        {
+            return new SettingObject(ID,
+                "unlocked", unlocked,
+                "active", Active
+                );
+        }
+        set
+        {
+            unlocked = (bool)value.data["unlocked"] || unlocked;
+            Active = (bool)value.data["active"];
+        }
     }
 
 }

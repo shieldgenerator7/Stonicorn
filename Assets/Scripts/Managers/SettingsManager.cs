@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SettingsManager : SavableMonoBehaviour
+public class SettingsManager : MonoBehaviour, Setting
 {
     [SerializeField]
     private string fileName = "merky_settings.txt";
@@ -28,40 +28,50 @@ public class SettingsManager : SavableMonoBehaviour
 
     public void saveSettings()
     {
-        SavableObject so = getSavableObject();
-        ES3.Save<SavableObject>("settings", so, fileName);
+        ES3.Save<SettingObject>("settings", Setting, fileName);
     }
 
     public void loadSettings()
     {
         if (ES3.FileExists(fileName))
         {
-            SavableObject so = ES3.Load<SavableObject>("settings", fileName);
-            acceptSavableObject(so);
+            Setting = ES3.Load<SettingObject>("settings", fileName);
         }
     }
 
-    public override SavableObject getSavableObject()
+    public SettingScope Scope
     {
-        return new SavableObject(this,
-            "musicVolume", musicVolume,
-            "musicMute", musicMute,
-            "soundVolume", soundVolume,
-            "soundMute", soundMute,
-            "videoQuality", videoQuality,
-            "videoResolution", videoResolution,
-            "videoFullScreen", videoFullScreen
-            );
+        get => SettingScope.GAME_WHOLE;
     }
 
-    public override void acceptSavableObject(SavableObject savObj)
+    public string ID
     {
-        musicVolume = (float)savObj.data["musicVolume"];
-        musicMute = (bool)savObj.data["musicMute"];
-        soundVolume = (float)savObj.data["soundVolume"];
-        soundMute = (bool)savObj.data["soundMute"];
-        videoQuality = (int)savObj.data["videoQuality"];
-        videoResolution = (int)savObj.data["videoResolution"];
-        videoFullScreen = (bool)savObj.data["videoFullScreen"];
+        get => GetType().Name;
+    }
+
+    public SettingObject Setting
+    {
+        get
+        {
+            return new SettingObject(ID,
+                "musicVolume", musicVolume,
+                "musicMute", musicMute,
+                "soundVolume", soundVolume,
+                "soundMute", soundMute,
+                "videoQuality", videoQuality,
+                "videoResolution", videoResolution,
+                "videoFullScreen", videoFullScreen
+                );
+        }
+        set
+        {
+            musicVolume = (float)value.data["musicVolume"];
+            musicMute = (bool)value.data["musicMute"];
+            soundVolume = (float)value.data["soundVolume"];
+            soundMute = (bool)value.data["soundMute"];
+            videoQuality = (int)value.data["videoQuality"];
+            videoResolution = (int)value.data["videoResolution"];
+            videoFullScreen = (bool)value.data["videoFullScreen"];
+        }
     }
 }

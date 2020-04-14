@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Linq;
 
 /// <summary>
 /// GameManager in charge of Time and Space
@@ -927,6 +928,16 @@ public class GameManager : MonoBehaviour
             ES3.Save<List<SceneLoader>>("scenes", sceneLoaders, fileName);
             //Save settings
             Managers.Settings.saveSettings();
+            //Save file settings
+            List<SettingObject> settings = new List<SettingObject>();
+            foreach (Setting setting in FindObjectsOfType<MonoBehaviour>().OfType<Setting>())
+            {
+                if (setting.Scope == SettingScope.SAVE_FILE)
+                {
+                    settings.Add(setting.Setting);
+                }
+            }
+            ES3.Save<List<SettingObject>>("settings", settings, fileName);
         }
         catch (System.Exception e)
         {
@@ -957,12 +968,12 @@ public class GameManager : MonoBehaviour
                 //Loop through the scene loaders read in from the file
                 foreach (SceneLoader rsl in rsls)
                 {
-                    //If the scene in the game and the read in one match,
+                    //If the scene in the game and the read-in one match,
                     if (rsl != null && sl.sceneName == rsl.sceneName && rsl != sl)
                     {
                         //Restore the scene loader
                         sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
-                        //Destroy the read in scene loader,
+                        //Destroy the read-in scene loader,
                         Destroy(rsl);
                         //And immediately exit its loop
                         //to avoid ConcurrentModificationException
@@ -972,6 +983,23 @@ public class GameManager : MonoBehaviour
             }
             //Load settings
             Managers.Settings.loadSettings();
+            //Load file settings
+            List<SettingObject> settings = ES3.Load<List<SettingObject>>("settings", fileName);
+            foreach (Setting setting in FindObjectsOfType<MonoBehaviour>().OfType<Setting>())
+            {
+                if (setting.Scope == SettingScope.SAVE_FILE)
+                {
+                    string id = setting.ID;
+                    foreach (SettingObject setObj in settings)
+                    {
+                        if (id == setObj.id)
+                        {
+                            setting.Setting = setObj;
+                            break;
+                        }
+                    }
+                }
+            }
         }
         catch (System.Exception e)
         {

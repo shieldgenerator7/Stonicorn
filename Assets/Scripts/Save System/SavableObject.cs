@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class stores variables that need to be saved from SavableMonoBehaviours
+/// </summary>
 public class SavableObject
 {
-
-    //this class stores variables that need to be saved from MonoBehaviours
 
     public Dictionary<string, System.Object> data = new Dictionary<string, System.Object>();
     /// <summary>
