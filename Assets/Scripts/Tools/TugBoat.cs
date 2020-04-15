@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
+#if UNITY_EDITOR
+
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,3 +26,5 @@ public class TugBoat : MonoBehaviour
         }
     }
 }
+
+#endif
