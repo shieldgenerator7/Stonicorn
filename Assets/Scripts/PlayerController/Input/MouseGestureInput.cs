@@ -9,7 +9,10 @@ public class MouseGestureInput : GestureInput
     public float holdThreshold = 0.2f;
 
     private Vector2 origPosScreen;
-    private Vector2 origPosWorld;
+    private Vector2 OrigPosWorld
+    {
+        get => Utility.ScreenToWorldPoint(origPosScreen);
+    }
     private float origTime;
 
     private enum MouseEvent
@@ -53,7 +56,6 @@ public class MouseGestureInput : GestureInput
                 if (Input.GetMouseButtonDown(mouseButton))
                 {
                     origPosScreen = Input.mousePosition;
-                    origPosWorld = Utility.ScreenToWorldPoint(Input.mousePosition);
                     origTime = Time.time;
                 }
                 //Click middle
@@ -80,7 +82,7 @@ public class MouseGestureInput : GestureInput
             {
                 case MouseEvent.DRAG:
                     profile.processDragGesture(
-                        origPosWorld, 
+                        OrigPosWorld, 
                         Utility.ScreenToWorldPoint(Input.mousePosition)
                         );
                     break;
