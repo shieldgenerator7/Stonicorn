@@ -12,6 +12,16 @@ public class MouseGestureInput : GestureInput
     private Vector2 origPosWorld;
     private float origTime;
 
+    private enum MouseEvent
+    {
+        UNKNOWN,
+        CLICK,
+        DRAG,
+        HOLD,
+        SCROLL
+    }
+    private MouseEvent mouseEvent = MouseEvent.UNKNOWN;
+
     public override bool InputSupported
     {
         get => Input.mousePresent;
@@ -37,35 +47,71 @@ public class MouseGestureInput : GestureInput
             //
             //Check for click start
             //
-            if (Input.GetMouseButtonDown(mouseButton))
+            if (mouseEvent == MouseEvent.UNKNOWN)
             {
-                origPosScreen = Input.mousePosition;
-                origPosWorld = Utility.ScreenToWorldPoint(Input.mousePosition);
-                origTime = Time.time;
+                //Click beginning
+                if (Input.GetMouseButtonDown(mouseButton))
+                {
+                    origPosScreen = Input.mousePosition;
+                    origPosWorld = Utility.ScreenToWorldPoint(Input.mousePosition);
+                    origTime = Time.time;
+                }
+                //Click middle
+                else
+                {
+                    //Check Drag
+                    if (Vector2.Distance(origPosScreen, Input.mousePosition) >= dragThreshold)
+                    {
+                        mouseEvent = MouseEvent.DRAG;
+                    }
+                    //Check Hold
+                    else if (Time.time - origTime >= holdThreshold)
+                    {
+                        mouseEvent = MouseEvent.HOLD;
+                    }
+                }
             }
 
             //
             //Main Processing
             //
 
-            //Tap
-            if (Input.GetMouseButtonUp(mouseButton))
+            switch (mouseEvent)
             {
-                //If it's not a hold,
-                if (Time.time - origTime < holdThreshold
-                    //And it's not a drag,
-                    && Vector2.Distance(origPosScreen, Input.mousePosition) < dragThreshold)
-                {
-                    //Then it's a tap.
-                    profile.processTapGesture(Utility.ScreenToWorldPoint(Input.mousePosition));
-                }
+                case MouseEvent.DRAG:
+                    profile.processDragGesture(
+                        origPosWorld, 
+                        Utility.ScreenToWorldPoint(Input.mousePosition)
+                        );
+                    break;
+                case MouseEvent.HOLD:
+                    profile.processHoldGesture(
+                        Utility.ScreenToWorldPoint(Input.mousePosition),
+                        Time.time - origTime,
+                        Input.GetMouseButtonUp(mouseButton)
+                        );
+                    break;
             }
 
             //
-            //Check for removing touches
+            //Check for click end
             //
+            if (Input.GetMouseButtonUp(mouseButton))
+            {
+                //If it's unknown,
+                if (mouseEvent == MouseEvent.UNKNOWN)
+                {
+                    //Then it's a click.
+                    mouseEvent = MouseEvent.CLICK;
+                    profile.processTapGesture(Utility.ScreenToWorldPoint(Input.mousePosition));
+                }
+            }
             return true;
         }
-        return false;
+        else
+        {
+            mouseEvent = MouseEvent.UNKNOWN;
+            return false;
+        }
     }
 }
