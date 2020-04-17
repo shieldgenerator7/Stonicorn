@@ -37,7 +37,9 @@ public class MouseGestureInput : GestureInput
 
     public override bool InputOngoing
     {
-        get => Input.GetMouseButton(mouseButton) || Input.GetMouseButtonUp(mouseButton);
+        get => Input.GetMouseButton(mouseButton)
+            || Input.GetMouseButtonUp(mouseButton)
+            || Input.GetAxis("Mouse ScrollWheel") != 0;
     }
 
     public override bool processInput(GestureProfile profile)
@@ -57,6 +59,10 @@ public class MouseGestureInput : GestureInput
                 {
                     origPosScreen = Input.mousePosition;
                     origTime = Time.time;
+                }
+                else if (Input.GetAxis("Mouse ScrollWheel") != 0)
+                {
+                    mouseEvent = MouseEvent.SCROLL;
                 }
                 //Click middle
                 else
@@ -92,6 +98,16 @@ public class MouseGestureInput : GestureInput
                         Time.time - origTime,
                         Input.GetMouseButtonUp(mouseButton)
                         );
+                    break;
+                case MouseEvent.SCROLL:
+                    if (Input.GetAxis("Mouse ScrollWheel") < 0)
+                    {
+                        Managers.Camera.ZoomLevel *= 1.2f;
+                    }
+                    else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+                    {
+                        Managers.Camera.ZoomLevel /= 1.2f;
+                    }
                     break;
             }
 
