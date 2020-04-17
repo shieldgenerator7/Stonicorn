@@ -16,7 +16,7 @@ public class MenuButton : MonoBehaviour
         bc2d = GetComponent<BoxCollider2D>();
     }
 
-    public bool tapInArea(Vector3 pos)
+    public bool tapInArea(Vector2 pos)
     {
         return bc2d.OverlapPoint(pos);
     }
