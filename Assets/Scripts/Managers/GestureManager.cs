@@ -64,9 +64,10 @@ public class GestureManager : SavableMonoBehaviour
 
         //Inputs
         gestureInputs = new List<GestureInput>();
-        gestureInputs.Add(new MouseGestureInput());
         gestureInputs.Add(new TouchGestureInput());
-        activeInput = gestureInputs[1];//TEST
+        gestureInputs.Add(new MouseGestureInput());
+        gestureInputs.Add(new KeyboardGestureInput());
+        activeInput = gestureInputs[0];
     }
     public override SavableObject getSavableObject()
     {
