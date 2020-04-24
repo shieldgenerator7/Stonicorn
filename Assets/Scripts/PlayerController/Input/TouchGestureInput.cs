@@ -101,6 +101,4 @@ public class TouchGestureInput : GestureInput
             return false;
         }
     }
-
-    }
 }
