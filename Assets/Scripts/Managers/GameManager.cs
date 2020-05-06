@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
                 //Auto-enable demo mode
                 demoBuild = true;
                 //Tell the gesture manager to start the timer when the player taps in game
-                Managers.Gesture.tapGesture += startDemoTimer;
+                //Managers.Gesture.tapGesture += startDemoTimer;
                 //Show the timer
                 txtDemoTimer.transform.parent.gameObject.SetActive(true);
             }
@@ -1221,7 +1221,7 @@ public class GameManager : MonoBehaviour
             //Start the timer
             resetGameTimer = GameDemoLength + Time.time;
             //Unregister this delegate
-            Managers.Gesture.tapGesture -= startDemoTimer;
+            //Managers.Gesture.tapGesture -= startDemoTimer;
         }
     }
 

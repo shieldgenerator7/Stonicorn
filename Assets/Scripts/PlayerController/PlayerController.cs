@@ -972,8 +972,6 @@ public class PlayerController : MonoBehaviour
     /// <param name="finished">True if this is the last frame of the hold gesture</param>
     public void processHoldGesture(Vector3 holdPos, float holdTime, bool finished)
     {
-        //Get the actionable current duration of the hold gesture
-        float reducedHoldTime = holdTime - Managers.Gesture.HoldThreshold;
         //If the camera is centered on the player,
         if (!Managers.Camera.offsetOffPlayer())
         {
@@ -991,14 +989,14 @@ public class PlayerController : MonoBehaviour
         {
             //Show a teleport preview
 
-            //If this is the first counted frame of the hold gesture,
-            if (reducedHoldTime < Time.deltaTime)
+            //If this is the first frame of the hold gesture,
+            if (holdTime < Time.deltaTime)
             {
                 //Erase any visual effects of the other abilities
                 dropHoldGesture();
             }
             //Show the teleport preview effect
-            tpa.processHoldGesture(holdPos, reducedHoldTime, finished);
+            tpa.processHoldGesture(holdPos, holdTime, finished);
             //If this is the last frame of the hold gesture,
             if (finished)
             {
