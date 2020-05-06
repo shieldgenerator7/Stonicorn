@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using Microsoft.Win32.SafeHandles;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyboardGestureInput : GestureInput
 {
     public float holdThreshold = 0.2f;
+
+    private Vector2 prevDir = Vector2.zero;
+    private float gestureStartTime;
 
     private Vector2 origPosScreen;
     private Vector2 OrigPosWorld
@@ -33,19 +37,30 @@ public class KeyboardGestureInput : GestureInput
             {
                 vertical = 1;
             }
-            if (horizontal != 0 || vertical != 0)
+            Vector2 dir = (horizontal != 0 || vertical != 0)
+                ? (
+                (Vector2)((Camera.main.transform.up * vertical)
+                + (Camera.main.transform.right * horizontal)
+                ).normalized)
+                : Vector2.zero;
+            bool isInputNow = dir != Vector2.zero;
+            bool wasInputPrev = prevDir != Vector2.zero;
+            if (isInputNow || wasInputPrev)
             {
-                Vector2 dir = (
-                    (Camera.main.transform.up * vertical)
-                    + (Camera.main.transform.right * horizontal)
-                    ).normalized;
+                if (!wasInputPrev && isInputNow)
+                {
+                    //Gesture Start
+                    gestureStartTime = Time.time;
+                }
                 float range = Managers.Player.baseRange;
                 if (Input.GetButton("Short"))
                 {
                     range /= 2;
                 }
-                profile.processTapGesture(
-                    (Vector2)Managers.Player.transform.position + (dir * range)
+                profile.processHoldGesture(
+                    (Vector2)Managers.Player.transform.position + (dir * range),
+                    Time.time - gestureStartTime,
+                    !isInputNow
                     );
                 return true;
             }
@@ -54,6 +69,7 @@ public class KeyboardGestureInput : GestureInput
                 profile.processTapGesture(Managers.Player.transform.position);
                 return true;
             }
+            prevDir = dir;
         }
         return false;
     }
