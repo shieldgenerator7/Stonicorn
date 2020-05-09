@@ -925,7 +925,7 @@ public class GameManager : MonoBehaviour
             //Save game states
             ES3.Save<List<GameState>>("states", gameStates, fileName);
             //Save scene cache
-            ES3.Save<List<SceneLoader>>("scenes", sceneLoaders, fileName);
+            //ES3.Save<List<SceneLoader>>("scenes", sceneLoaders, fileName);
             //Save settings
             Managers.Settings.saveSettings();
             //Save file settings
@@ -961,26 +961,7 @@ public class GameManager : MonoBehaviour
             //Load game states
             gameStates = ES3.Load<List<GameState>>("states", fileName);
             //Scenes
-            List<SceneLoader> rsls = ES3.Load<List<SceneLoader>>("scenes", fileName);
-            //Loop through all scene loaders in the game
-            foreach (SceneLoader sl in sceneLoaders)
-            {
-                //Loop through the scene loaders read in from the file
-                foreach (SceneLoader rsl in rsls)
-                {
-                    //If the scene in the game and the read-in one match,
-                    if (rsl != null && sl.sceneName == rsl.sceneName && rsl != sl)
-                    {
-                        //Restore the scene loader
-                        sl.lastOpenGameStateId = rsl.lastOpenGameStateId;
-                        //Destroy the read-in scene loader,
-                        Destroy(rsl);
-                        //And immediately exit its loop
-                        //to avoid ConcurrentModificationException
-                        break;
-                    }
-                }
-            }
+            //List<SceneLoader> rsls = ES3.Load<List<SceneLoader>>("scenes", fileName);
             //Load settings
             Managers.Settings.loadSettings();
             //Load file settings

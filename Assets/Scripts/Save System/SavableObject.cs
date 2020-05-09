@@ -101,6 +101,8 @@ public class SavableObject
                 return typeof(GameStatistics);
             case "SettingsManager":
                 return typeof(SettingsManager);
+            case "SceneLoader":
+                return typeof(SceneLoader);
             case "PlayerAbility":
                 return typeof(PlayerAbility);
             case "TeleportAbility":
