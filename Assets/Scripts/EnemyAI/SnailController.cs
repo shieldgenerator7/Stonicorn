@@ -207,6 +207,10 @@ public class SnailController : Hazard
     public override void acceptSavableObject(SavableObject savObj)
     {
         base.acceptSavableObject(savObj);
+        if (!animator)
+        {
+            Start();
+        }
         Vector3 animScale = animator.transform.localScale;
         animScale.x = Mathf.Abs(animScale.x) * (float)savObj.data["flipDir"];
         animator.transform.localScale = animScale;
