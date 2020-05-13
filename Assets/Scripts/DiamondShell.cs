@@ -96,7 +96,7 @@ public class DiamondShell : MonoBehaviour
     void FixedUpdate()
     {
         //If it's stuck, change direction
-        if (direction != 0 && Mathf.Approximately(rb2d.velocity.magnitude, 0) && speed == maxSpeed)
+        if (direction != 0 && !rb2d.isMoving() && speed == maxSpeed)
         {
             if (waitStartTime == 0)
             {
@@ -160,13 +160,13 @@ public class DiamondShell : MonoBehaviour
                 //Decellerate before switching directions
                 speed -= accelerationPerSecond * 0.5f * Time.fixedDeltaTime;
                 speed = Mathf.Max(speed, 0);
-                if (rb2d.velocity.sqrMagnitude < 0.1f)
+                if (rb2d.isMoving())
                 {
-                    speed = 0;
+                    direction = prevDirection;
                 }
                 else
                 {
-                    direction = prevDirection;
+                    speed = 0;
                 }
             }
         }
@@ -175,7 +175,7 @@ public class DiamondShell : MonoBehaviour
             intendedDirection = 0;
             activateHuntMode(false);
             //Otherwise slow down
-            if (rb2d.velocity.sqrMagnitude > 0.1)
+            if (rb2d.isMoving())
             {
                 speed -= accelerationPerSecond * Time.fixedDeltaTime;
                 speed = Mathf.Max(speed, 0);
@@ -251,7 +251,7 @@ public class DiamondShell : MonoBehaviour
     /// </summary>
     /// <param name="damageToSelf"></param>
     /// <param name="damageToOther"></param>
-    void eatDamage(float damageToSelf, float damageToOther)
+    void eatDamage(float damageToSelf, float damageToOther, Vector2 contactPoint)
     {
         hm.addIntegrity(damageToOther * onDamageHealPercent);
     }

@@ -13,7 +13,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        if (transform.parent != null)
+        if (transform.parent != null && !(transform.parent.position == Vector3.zero))
         {
             Bounds bounds = GetComponentInParent<SpriteRenderer>().bounds;
             float extra = 0.1f;
@@ -26,7 +26,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!used && coll.gameObject.Equals(GameManager.getPlayerObject()))
+        if (!used && coll.gameObject.Equals(Managers.Player.gameObject))
         {
             activate(true);
         }
@@ -37,7 +37,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
         if (showFX)
         {
             //Ability Indicator Animation Setup
-            if (abilityIndicatorName != null)
+            if (abilityIndicatorName != null && abilityIndicatorName != "")
             {
                 foreach (GameObject abilityIndicator in GameObject.FindGameObjectsWithTag("AbilityIndicator"))
                 {
@@ -51,7 +51,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
         }
         used = true;
         activateEffect();
-        GameManager.saveMemory(this);
+        Managers.Game.saveMemory(this);
         Destroy(this);//makes sure it can only be used once
     }
 
@@ -63,10 +63,6 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     }
     public override void acceptMemoryObject(MemoryObject memObj)
     {
-        if (memObj.found)
-        {
-            used = true;
-            activate(false);
-        }
+        used = memObj.found;
     }
 }

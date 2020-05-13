@@ -12,9 +12,14 @@ public class MenuFrame : MonoBehaviour
     private BoxCollider2D bc2d;
 
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
+    {
+        init();
+    }
+    public void init()
     {
         bc2d = GetComponent<BoxCollider2D>();
+        buttons.Clear();
         foreach (Transform t in transform)
         {
             MenuButton mb = t.GetComponent<MenuButton>();
@@ -31,22 +36,18 @@ public class MenuFrame : MonoBehaviour
     public void frameCamera()
     {
         Camera cam = Camera.main;
-        CameraController camcon = cam.GetComponent<CameraController>();
+        CameraController camcon = Managers.Camera;
 
         //Set camera orthographic size
-        Vector3 camTop = Camera.main.ViewportToWorldPoint(new Vector3(0, 1));
-        Vector3 camBot = Camera.main.ViewportToWorldPoint(new Vector3(0, 0));
+        Vector3 camTop = cam.ViewportToWorldPoint(new Vector3(0, 1, 10));
+        Vector3 camBot = cam.ViewportToWorldPoint(new Vector3(0, 0, 10));
         float camWorldHeight = Vector3.Distance(camTop, camBot);
-        float curOrthoSize = cam.orthographicSize;
-        camcon.TargetZoomLevel = bc2d.bounds.size.y * curOrthoSize / camWorldHeight;
+        float curFieldView = cam.fieldOfView;
+        camcon.TargetZoomLevel = bc2d.bounds.size.y * curFieldView / camWorldHeight;
 
         //Set camera position
         //(by using CameraController.Offset)
-        Vector3 offset = camcon.Offset;
-        camcon.Offset =
-            transform.position
-            - GameManager.getPlayerObject().transform.position
-            + new Vector3(0, 0, offset.z);
+        camcon.Offset = transform.position - Managers.Player.transform.position;
     }
 
     public bool canDelegateTaps()
@@ -65,9 +66,21 @@ public class MenuFrame : MonoBehaviour
         {
             if (mb.tapInArea(tapPos))
             {
-                mb.activate();
+                mb.processTap(tapPos);
                 return;
             }
         }
+    }
+    public bool delegateDrag(Vector3 origMPWorld, Vector3 newMPWorld)
+    {
+        foreach (MenuButton mb in buttons)
+        {
+            if (mb.acceptsDragGesture() && mb.tapInArea(origMPWorld))
+            {
+                mb.processTap(newMPWorld);
+                return true;
+            }
+        }
+        return false;
     }
 }

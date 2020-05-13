@@ -8,6 +8,6 @@ public class MilestoneActivatorRange : MilestoneActivator
 
     public override void activateEffect()
     {
-        GameManager.getPlayerObject().GetComponent<PlayerController>().baseRange += incrementAmount;
+        Managers.Player.baseRange += incrementAmount;
     }
 }

@@ -3,25 +3,6 @@ using System.Collections;
 
 public class GestureProfile
 {
-
-    protected GameObject player;
-    protected PlayerController plrController;
-    protected Rigidbody2D rb2dPlayer;
-    protected Camera cam;
-    protected CameraController camController;
-    protected GameManager gm;
-    protected GestureManager gestureManager;
-
-    public GestureProfile()
-    {
-        player = GameObject.FindGameObjectWithTag(GameManager.playerTag);
-        plrController = player.GetComponent<PlayerController>();
-        rb2dPlayer = player.GetComponent<Rigidbody2D>();
-        cam = Camera.main;
-        camController = cam.GetComponent<CameraController>();
-        gm = GameObject.FindObjectOfType<GameManager>();
-        gestureManager = GameObject.FindObjectOfType<GestureManager>();
-    }
     /// <summary>
     /// Called when this profile is set to the current one
     /// </summary>
@@ -31,39 +12,42 @@ public class GestureProfile
     /// </summary>
     public virtual void deactivate() { }
 
-    public virtual void processTapGesture(GameObject go)
-    {
-        plrController.processTapGesture(go);
-    }
     public virtual void processTapGesture(Vector3 curMPWorld)
     {
-        if (GameManager.isRewinding())
+        if (Managers.Game.Rewinding)
         {
-            gm.cancelRewind();
+            if (Managers.Game.rewindInterruptableByPlayer)
+            {
+                Managers.Game.cancelRewind();
+            }
         }
         else
         {
-            plrController.processTapGesture(curMPWorld);
+            Managers.Player.processTapGesture(curMPWorld);
         }
     }
     public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {
-        plrController.processHoldGesture(curMPWorld, holdTime, finished);
+        Managers.Player.processHoldGesture(curMPWorld, holdTime, finished);
     }
-    public void processDragGesture()
+    public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
     {
-
+        Managers.Camera.processDragGesture(origMPWorld, newMPWorld);
     }
-    public virtual void processZoomLevelChange(float zoomLevel)
+    public void processZoomLevelChange(float zoomLevel)
     {
         //GestureProfile switcher
-        if (zoomLevel > camController.scalePointToZoomLevel((int)CameraController.CameraScalePoints.TIMEREWIND - 1))
+        if (zoomLevel < Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU + 1))
         {
-            gestureManager.switchGestureProfile("Rewind");
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MENU);
         }
-        if (zoomLevel < camController.scalePointToZoomLevel(1))
+        else if (zoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND - 1))
         {
-            gestureManager.switchGestureProfile("Menu");
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
+        }
+        else
+        {
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
         }
     }
 }

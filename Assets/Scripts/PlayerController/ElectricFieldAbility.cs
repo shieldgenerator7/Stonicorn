@@ -1,23 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ElectricFieldAbility : PlayerAbility, Blastable
+public class ElectricFieldAbility : PlayerAbility
 {//2017-11-17: copied from ShieldBubbleAbility
 
     public GameObject electricFieldPrefab;//prefab
     public float maxRange = 2.5f;
     public float maxEnergy = 100;//not the maximum for the player's electric fields
-    public float maxHoldTime = 1;//how long until the max range is reached after it begins charging
-    public float maxSlowPercent = 0.10f;//the max percent of slowness applied to objects near the center of the field when the field has maxRange
-    public float lastDisruptTime = 0;//the last time that something happened that disrupted the shield
-    public float baseActivationDelay = 2.0f;//how long after the last disruption the field can start regenerating
-    public float maxForceResistance = 500f;//if it gets this much force, it takes out the field, but it will come right back up
+    public float maxChargeTime = 1;//how long until the max range is reached after it begins charging
+    public float maxSlowPercent = 0.10f;//the percent of slowness applied to objects in the field when the field has maxRange
+    public float maxForceResistance = 500f;//how much force is required to deal 100% damage to the field at max range
 
     private GameObject currentElectricField;
     private ElectricFieldController cEFController;//"current Electric Field Controller"
 
-    private float activationDelay = 2.0f;//how long it will wait, usually set to the base delay
+    private bool activated = false;//true if Merky is currently using this ability
     private float playerTeleportRangeDiff;//the difference between the player's max teleport range and this EFA's max field range (if on the player)
     private bool newlyCreatedEF = false;//true if the current electric field is one that was just created by Merky
 
@@ -35,7 +31,6 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
             playerController.onPreTeleport += processTeleport;
             playerTeleportRangeDiff = playerController.baseRange - maxRange;
         }
-        lastDisruptTime = Time.time;
     }
     public override void OnDisable()
     {
@@ -48,26 +43,29 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
 
     void Update()
     {
-        if (!GameManager.isRewinding())
+        if (!Managers.Game.Rewinding)
         {
-            if (Time.time > lastDisruptTime + activationDelay)
+            //If activation delay has ended,
+            if (activated)
             {
-                processWaitGesture(Time.time - (lastDisruptTime + activationDelay));
+                //Make a field
+                chargeField();
             }
         }
         else
         {
-            dropWaitGesture();
+            dropField();
         }
     }
 
-    public void processWaitGesture(float waitTime)
+    public void chargeField()
     {
+        //If he's not charging one yet,
         if (currentElectricField == null)
         {
             //Find one that he's currently in
             Collider2D coll2d = GetComponent<Collider2D>();
-            int collCount = Utility.Cast(coll2d,Vector2.zero, rch2dsWait);
+            int collCount = Utility.Cast(coll2d, Vector2.zero, rch2dsWait);
             for (int i = 0; i < collCount; i++)
             {
                 ElectricFieldController efc = rch2dsWait[i].collider.gameObject.GetComponent<ElectricFieldController>();
@@ -78,6 +76,7 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
                     break;
                 }
             }
+            //If he's not in one already,
             if (currentElectricField == null)
             {
                 //Create a new one
@@ -87,23 +86,23 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
                 cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
                 cEFController.maxForceResistance = maxForceResistance;
                 newlyCreatedEF = true;
+                //Update Stats
+                GameStatistics.addOne("ElectricFieldField");
             }
         }
+        //If the one he's charging was created by him (and not been dropped yet)
         if (newlyCreatedEF)
         {
+            //Make it follow him
             currentElectricField.transform.position = transform.position;
         }
-        float energyToAdd = Time.deltaTime * maxEnergy / maxHoldTime;
+        //Charge the field
+        float energyToAdd = Time.deltaTime * maxEnergy / maxChargeTime;
         cEFController.addEnergy(energyToAdd);
+        //Keep the field from growing past Merky's range size
         if (playerController)
         {
-            float distance = Vector2.Distance(
-                currentElectricField.transform.position,
-                transform.position
-                );
-            float maxAllowedRange = distance
-                + playerController.Range
-                - playerTeleportRangeDiff;
+            float maxAllowedRange = playerController.Range - playerTeleportRangeDiff;
             if (cEFController.range > maxAllowedRange)
             {
                 cEFController.addEnergy(-energyToAdd);
@@ -115,35 +114,33 @@ public class ElectricFieldAbility : PlayerAbility, Blastable
         }
     }
 
-    public void dropWaitGesture()
+    public void dropField()
     {
-        lastDisruptTime = Time.time;
-
         currentElectricField = null;
         cEFController = null;
         newlyCreatedEF = false;
     }
 
-    public bool processTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
+    public void processTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
     {
-        dropWaitGesture();
-        float distance = Vector3.Distance(oldPos, triedPos);
-        activationDelay = baseActivationDelay * distance / playerController.baseRange;
-        return true;
-    }
-
-    public float checkForce(float force)
-    {
-        float addedDelay = maxHoldTime * force / maxForceResistance;
-        lastDisruptTime = Time.time + addedDelay - maxHoldTime;
-        if (force >= maxForceResistance)
+        //If player tapped on Merky,
+        if (playerController.gestureOnPlayer(triedPos))
         {
-            dropWaitGesture();
+            //If not activated,
+            if (!activated)
+            {
+                //Activate
+                activated = true;
+                //Update Stats
+                GameStatistics.addOne("ElectricField");
+            }
+            //Else,
+            else
+            {
+                //Deactivate or detach
+                activated = false;
+                dropField();
+            }
         }
-        return addedDelay;
-    }
-    public float getDistanceFromExplosion(Vector2 explosionPos)
-    {
-        return Utility.distanceToObject(explosionPos, gameObject);
     }
 }

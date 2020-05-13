@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -18,10 +19,15 @@ public class MenuManager : MonoBehaviour
                 frames.Add(mf);
             }
         }
-        GameObject player = GameManager.getPlayerObject();
+        GameObject player = Managers.Player.gameObject;
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
         startFrame.frameCamera();
+    }
+
+    private void Update()
+    {
+        Managers.Camera.Up = Managers.Player.transform.up;
     }
 
     public void processTapGesture(Vector3 pos)
@@ -32,6 +38,44 @@ public class MenuManager : MonoBehaviour
             {
                 mf.delegateTap(pos);
                 return;
+            }
+        }
+    }
+    public bool processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
+    {
+        foreach (MenuFrame mf in frames)
+        {
+            if (mf.tapInArea(origMPWorld))
+            {
+                if (mf.delegateDrag(origMPWorld, newMPWorld))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static bool Open
+    {
+        get { return Managers.Menu != null; }
+        set
+        {
+            bool show = value;
+            if (show)
+            {
+                LoadingScreen.LoadScene("MainMenu");
+                //Pause
+                if (LoadingScreen.FinishedLoading)
+                {
+                    Managers.Time.Paused = true;
+                }
+            }
+            else
+            {
+                SceneManager.UnloadSceneAsync("MainMenu");
+                //Unpause
+                Managers.Time.Paused = false;
             }
         }
     }

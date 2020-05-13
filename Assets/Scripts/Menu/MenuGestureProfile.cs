@@ -3,39 +3,36 @@ using System.Collections;
 
 public class MenuGestureProfile : GestureProfile
 {//2018-09-15: copied from RewindGestureProfile
-    private MenuManager menuManager;
 
     public override void activate()
     {
-        GameManager.showMainMenu(true);
+        MenuManager.Open = true;
+        Managers.Camera.Up = Managers.Player.transform.up;
     }
     public override void deactivate()
     {
-        GameManager.showMainMenu(false);
+        MenuManager.Open = false;
+        Managers.Camera.Up = -Managers.Player.Gravity.Gravity;
     }
     public override void processTapGesture(Vector3 curMPWorld)
     {
-        if (menuManager == null)
+        if (MenuManager.Open)
         {
-            menuManager = GameObject.FindObjectOfType<MenuManager>();
+            Managers.Menu.processTapGesture(curMPWorld);
         }
-        menuManager.processTapGesture(curMPWorld);
     }
     public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {
-        if (finished)
+        if (MenuManager.Open && finished)
         {
             processTapGesture(curMPWorld);
-            GameObject.FindObjectOfType<GestureManager>().adjustHoldThreshold(holdTime);
         }
     }
-    public override void processZoomLevelChange(float zoomLevel)
+    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
     {
-        camController.ZoomLevel = zoomLevel;
-        //GestureProfile switcher
-        if (zoomLevel > camController.scalePointToZoomLevel(1))
+        if (MenuManager.Open && !Managers.Menu.processDragGesture(origMPWorld, newMPWorld))
         {
-            gestureManager.switchGestureProfile("Main");
+            base.processDragGesture(origMPWorld, newMPWorld);
         }
     }
 }

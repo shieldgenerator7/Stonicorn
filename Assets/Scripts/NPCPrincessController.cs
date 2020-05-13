@@ -12,8 +12,8 @@ public class NPCPrincessController : MonoBehaviour
     float startHoldTime = 0;
     float soonestNextHold = 0;
 
-    private ForceTeleportAbility fta;
-    private ShieldBubbleAbility sba;
+    private ForceDashAbility fda;
+    private ElectricFieldAbility efa;
     private PlayerAbility ability;
 
     private float maxHoldTime;
@@ -21,17 +21,17 @@ public class NPCPrincessController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        fta = GetComponent<ForceTeleportAbility>();
-        if (fta)
+        fda = GetComponent<ForceDashAbility>();
+        if (fda)
         {
-            maxHoldTime = fta.maxCharge;
-            ability = fta;
+            maxHoldTime = fda.maxCharge;
+            ability = fda;
         }
-        sba = GetComponent<ShieldBubbleAbility>();
-        if (sba)
+        efa = GetComponent<ElectricFieldAbility>();
+        if (efa)
         {
-            maxHoldTime = sba.maxHoldTime;
-            ability = sba;
+            maxHoldTime = efa.maxChargeTime;
+            ability = efa;
         }
     }
 
@@ -71,14 +71,14 @@ public class NPCPrincessController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == GameManager.playerTag)
+        if (coll.gameObject.isPlayer())
         {
             hasTriggered = true;
         }
     }
     void OnTriggerExit2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == GameManager.playerTag)
+        if (coll.gameObject.isPlayer())
         {
             hasTriggered = false;
             ability.dropHoldGesture();

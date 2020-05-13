@@ -9,17 +9,22 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {//2018-09-17: copied from MusicManager
 
-    [Range(0.0f, 1.0f)]
-    public float maxVolume = 0.7f;//the loudest it should be
-    [SerializeField]
-    private bool mute = false;
+    public float Volume//for use by other scripts
+    {
+        get { return Managers.Settings.soundVolume * 100; }
+        set
+        {
+            Managers.Settings.soundVolume = value / 100;
+        }
+    }
     public bool Mute
     {
-        get { return mute; }
+        get { return Managers.Settings.soundMute; }
         set
         {
             Debug.Log("SoundManager Mute: " + value);
-            mute = value;
+            bool mute = value;
+            Managers.Settings.soundMute = mute;
             enabled = !mute;
         }
     }
@@ -27,26 +32,16 @@ public class SoundManager : MonoBehaviour
     [Range(0, 1)]
     public float quietVolumeScaling = 0.5f;//the scale for when it should be quieter
     private float volumeScaling = 1.0f;//how much to scale the volume by (gets reduced when song should be quieter)
-
-    private static SoundManager instance;
-
+    
     private void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            throw new UnityException("There is more than one SoundManager! this: " + name + ", instance: " + instance.name);
-        }
     }
 
-    public static void playSound(AudioClip clip, Vector3 pos, float volume = 1)
+    public void playSound(AudioClip clip, Vector3 pos, float volume = 1)
     {
-        if (!instance.mute)
+        if (!Mute)
         {
-            AudioSource.PlayClipAtPoint(clip, pos, volume * instance.maxVolume * instance.volumeScaling);
+            AudioSource.PlayClipAtPoint(clip, pos, volume * Managers.Settings.soundVolume * volumeScaling);
         }
     }
 

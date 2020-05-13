@@ -6,6 +6,7 @@ public class GravityZone : MonoBehaviour
 {
     public float gravityScale = 9.81f;
     public bool mainGravityZone = true;//true to change camera angle, false to not
+    public bool radialGravity = false;//true to make it gravitate towards the center of the gravity zone
     private Vector2 gravityVector;
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
     private bool playerIsTenant = false;//whether the player is inside this GravityZone
@@ -28,7 +29,7 @@ public class GravityZone : MonoBehaviour
                 if (!tenants.Contains(rb2d))
                 {
                     tenants.Add(rb2d);
-                    if (coll.gameObject == GameManager.getPlayerObject())
+                    if (coll.gameObject.isPlayer())
                     {
                         playerIsTenant = true;
                     }
@@ -44,7 +45,7 @@ public class GravityZone : MonoBehaviour
             if (rb2d != null)
             {
                 tenants.Remove(coll.gameObject.GetComponent<Rigidbody2D>());
-                if (coll.gameObject == GameManager.getPlayerObject())
+                if (coll.gameObject.isPlayer())
                 {
                     playerIsTenant = false;
                 }
@@ -56,17 +57,21 @@ public class GravityZone : MonoBehaviour
         //Check to see if the camera rotation needs updated
         if (mainGravityZone
             && playerIsTenant
-            && Camera.main.transform.rotation != transform.rotation)
+            && !MenuManager.Open)
         {
-            Camera.main.GetComponent<CameraController>().setRotation(transform.rotation);
+            Vector3 transformUp = transform.up;
+            if (radialGravity)
+            {
+                transformUp = Managers.Player.transform.position - transform.position;
+            }
+            if (Managers.Camera.transform.up != transformUp)
+            {
+                Managers.Camera.Up = transformUp;
+            }
         }
     }
     void FixedUpdate()
     {
-        if (GameManager.isRewinding())
-        {
-            return;//don't do anything if tie is rewinding
-        }
         bool cleanNeeded = false;
         foreach (Rigidbody2D rb2d in tenants)
         {
@@ -75,15 +80,21 @@ public class GravityZone : MonoBehaviour
                 cleanNeeded = true;
                 continue;
             }
-            Vector3 vector = gravityVector * rb2d.mass;
+            Vector2 finalGravityVector = gravityVector;
+            if (radialGravity)
+            {
+                finalGravityVector = (transform.position - rb2d.transform.position).normalized * gravityScale;
+            }
+            Vector3 vector = finalGravityVector * rb2d.mass;
             GravityAccepter ga = rb2d.gameObject.GetComponent<GravityAccepter>();
             if (ga)
             {
                 if (ga.AcceptsGravity)
                 {
+                    vector *= ga.gravityScale;
                     rb2d.AddForce(vector);
                     //Inform the gravity accepter of the direction
-                    ga.addGravity(this.gravityVector);
+                    ga.addGravity(finalGravityVector);
                 }
             }
             else
@@ -101,5 +112,17 @@ public class GravityZone : MonoBehaviour
                 }
             }
         }
+    }
+
+    public static GravityZone getGravityZone(Vector2 pos)
+    {
+        foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
+        {
+            if (gz.GetComponent<Collider2D>().OverlapPoint(pos))
+            {
+                return gz;
+            }
+        }
+        return null;
     }
 }

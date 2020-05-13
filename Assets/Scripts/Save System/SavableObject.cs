@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class stores variables that need to be saved from SavableMonoBehaviours
+/// </summary>
 public class SavableObject
 {
-
-    //this class stores variables that need to be saved from MonoBehaviours
 
     public Dictionary<string, System.Object> data = new Dictionary<string, System.Object>();
     /// <summary>
@@ -14,9 +15,9 @@ public class SavableObject
     public bool isSpawnedObject;//whether this SO's game object was spawned during run time
     public bool isSpawnedScript;//whether this SO's script was attached to its game object during run time
     public string scriptType;//the type of script that saved this SavableObject
-    public string prefabName="";//if isSpawnedObject, what the prefab name is. Prefab must be in the Resources folder
+    public string prefabName = "";//if isSpawnedObject, what the prefab name is. Prefab must be in the Resources folder
     public string spawnTag = "";//if isSpawnedObject, the unique tag applied to it to give it a unique name
-    
+
     public SavableObject() { }
 
     /// <summary>
@@ -30,7 +31,7 @@ public class SavableObject
         this.scriptType = smb.GetType().Name;
         if (pairs.Length % 2 != 0)
         {
-            throw new UnityException("Pairs has an odd amount of parameters! pairs.Length: "+pairs.Length);
+            throw new UnityException("Pairs has an odd amount of parameters! pairs.Length: " + pairs.Length);
         }
         for (int i = 0; i < pairs.Length; i += 2)
         {
@@ -56,7 +57,7 @@ public class SavableObject
     /// <returns></returns>
     public GameObject spawnObject()
     {
-        GameObject prefab = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/"+prefabName));
+        GameObject prefab = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/" + prefabName));
         if (spawnTag != null && spawnTag != "")
         {
             prefab.name += spawnTag;
@@ -84,38 +85,64 @@ public class SavableObject
     {
         switch (typeName)
         {
+            case "HardMaterial":
+                return typeof(HardMaterial);
+            case "BreakableWall":
+                return typeof(BreakableWall);
+            case "GravityAccepter":
+                return typeof(GravityAccepter);
             case "GestureManager":
                 return typeof(GestureManager);
-            case "Rigidbody2DLock":
-                return typeof(Rigidbody2DLock);
+            case "TimeManager":
+                return typeof(TimeManager);
+            case "GameEventManager":
+                return typeof(GameEventManager);
+            case "GameStatistics":
+                return typeof(GameStatistics);
+            case "SceneLoader":
+                return typeof(SceneLoader);
+            case "PlayerAbility":
+                return typeof(PlayerAbility);
+            case "TeleportAbility":
+                return typeof(TeleportAbility);
+            case "ForceDashAbility":
+                return typeof(ForceDashAbility);
+            case "SwapAbility":
+                return typeof(SwapAbility);
+            case "WallClimbAbility":
+                return typeof(WallClimbAbility);
+            case "AirSliceAbility":
+                return typeof(AirSliceAbility);
+            case "ElectricFieldAbility":
+                return typeof(ElectricFieldAbility);
+            case "LongTeleportAbility":
+                return typeof(LongTeleportAbility);
             case "AfterWind":
                 return typeof(AfterWind);
             case "StickyPadChecker":
                 return typeof(StickyPadChecker);
-            case "ShieldBubbleController":
-                return typeof(ShieldBubbleController);
             case "ElectricFieldController":
                 return typeof(ElectricFieldController);
             case "PowerConduit":
                 return typeof(PowerConduit);
-            case "ExplosionOrbController":
-                return typeof(ExplosionOrbController);
-            case "HardMaterial":
-                return typeof(HardMaterial);
             case "CrackedPiece":
                 return typeof(CrackedPiece);
+            case "BalloonController":
+                return typeof(BalloonController);
             case "NPCController":
                 return typeof(NPCController);
             case "NPCMetalController":
                 return typeof(NPCMetalController);
             case "NPCVoiceLine":
                 return typeof(NPCVoiceLine);
-            case "GameEventManager":
-                return typeof(GameEventManager);
-            case "GameStatistics":
-                return typeof(GameStatistics);
+            case "SnailController":
+                return typeof(SnailController);
             default:
-                throw new KeyNotFoundException("The type name \"" + typeName + "\" was not found. It might not be a SavableMonoBehaviour or might not exist.");
+                throw new KeyNotFoundException(
+                    "The type name \"" + typeName + "\" was not found. "
+                    + "It might not be a SavableMonoBehaviour or might not exist. "
+                    + "You might have to add it to this list."
+                    );
         }
     }
 

@@ -81,7 +81,6 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
             PowerConduit pc = hc.GetComponent<PowerConduit>();
             if (pc != null && pc.convertsToEnergy)
             {
-                //2017-11-17 FUTURE CODE: take out the 100 and put a variable in there, perhaps something to do with HP
                 float amountTaken = pc.convertSourceToEnergy(energy, Time.fixedDeltaTime);
                 addEnergy(-amountTaken);
             }
@@ -90,7 +89,7 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
             Rigidbody2D rb2d = hc.GetComponent<Rigidbody2D>();
             if (rb2d != null)
             {
-                if (!Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0))
+                if (rb2d.isMoving())
                 {
                     float dampening = energy * energyToSlowRatio;
                     dampening = Mathf.Max(0, dampening);
@@ -106,7 +105,7 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
         addEnergy(-Mathf.Max(1, range) * Time.fixedDeltaTime);
     }
 
-    public float checkForce(float force)
+    public float checkForce(float force, Vector2 direction)
     {
         float energyLost = Mathf.Abs(energy * force / maxForceResistance);
         addEnergy(-energyLost);
@@ -140,6 +139,6 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
 
     void dissipate()
     {
-        GameManager.destroyObject(gameObject);
+        Managers.Game.destroyObject(gameObject);
     }
 }

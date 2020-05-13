@@ -1,335 +1,483 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls Merky's teleport ability and other abilities
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
+    //
     //Settings
-    [SerializeField] private float range = 3;
+    //
+    [Header("Settings")]
+    public float baseRange = 3;//the range after touching the ground
+    public float exhaustRange = 1;//the range after teleporting into the air (and being exhausted)
+    [Range(0, 1)]
+    public float baseExhaustCoolDownTime = 0.5f;//the base cool down time (sec) for teleporting while exhausted
+    [Range(0, 1)]
+    public float gravityImmuneDuration = 0.2f;//amount of time (sec) Merky is immune to gravity after landing
+    [Range(0, 0.5f)]
+    public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
+    [Range(0, 3)]
+    public float hitStunDuration = 1;//how long merky freezes after getting hit before he auto-rewinds
+    //
+    //Timer Processing Vars
+    //
+    private float gravityImmuneStartTime = -1;//when Merky last became immune to gravity
+    private float lastAutoTeleportTime;//the last time that Merky auto teleported using the hold gesture
+
+    private float exhaustCoolDownTime;//the current cool down time (sec) for teleporting while exhausted
+    private float teleportTime;//the earliest time that Merky can teleport. To be set only in TeleportReady
+    /// <summary>
+    /// Returns whether the teleport ability is ready
+    /// True: teleport is able to be used
+    /// False: teleport is still on cooldown and can't be used
+    /// </summary>
+    public bool TeleportReady
+    {
+        get { return Time.time >= teleportTime; }
+        set
+        {
+            bool teleportReady = value;
+            if (teleportReady)
+            {
+                teleportTime = 0;
+            }
+            else
+            {
+                teleportTime = Time.time + exhaustCoolDownTime;
+            }
+        }
+    }
+
+    //
+    // State vars
+    //
+    private float range = 3;//how far Merky can currently teleport
     public float Range
     {
         get { return range; }
-        set { setRange(value); }
+        set
+        {
+            //Range cannot be zero
+            //But it can be greater than base range
+            range = Mathf.Max(value, 0);
+            //Call range changed delegates
+            onRangeChanged?.Invoke(range);
+        }
     }
-    public float baseRange = 3;
-    public float exhaustRange = 1;
-    public int maxAirPorts = 0;
-    public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
-    [Range(0, 1)]
-    public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
-    public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
-    public float groundTestDistance = 0.25f;//how far from Merky the ground test should go
-
-    //Processing
-    public float teleportTime = 0f;//the earliest time that Merky can teleport
-    private float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
-    private float lastAutoTeleportTime = 0f;//the last time that Merky auto teleported using the hold gesture
-
-
-    public GameObject teleportRangeParticalObject;
-    private ParticleSystemController teleportRangeParticalController;
-    public GameObject wallJumpAbilityIndicator;
-
-    public int airPorts = 0;
-    private bool grounded = true;//set in isGrounded()
-    private bool groundedAbility = false;//true if grounded exclusively to a wall; set in isGrounded()
-    public bool Grounded
-    {
-        get { return grounded || groundedAbility; }
-    }
-    private bool groundedPreTeleport = true;//true if Merky was grounded before teleporting
-    private bool groundedAbilityPreTeleport = false;//true if grounded exclusively to a wall; set in isGrounded()
-    public bool GroundedPreTeleport
-    {
-        get { return groundedPreTeleport || groundedAbilityPreTeleport; }
-    }
-    public bool GroundedPreTeleportAbility
-    {
-        get { return groundedAbilityPreTeleport; }
-    }
-    private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
-    private Rigidbody2D rb2d;
-    private PolygonCollider2D pc2d;
-    private PolygonCollider2D triggerPC2D;//used to determine when Merky is near ground
-    private GravityAccepter gravity;
-    private Vector2 savedVelocity;
-    private float savedAngularVelocity;
-    private float halfWidth = 0;//half of Merky's sprite width
+    public delegate void OnRangeChanged(float range);
+    public OnRangeChanged onRangeChanged;
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
-    private float[] rotations = new float[] { 285, 155, 90, 0 };
-    private RaycastHit2D[] rch2dsGrounded = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for determining if Merky is grounded
-    /// <summary>
-    /// Used for determining if Merky's landing spot is taken
-    /// </summary>
-    private Utility.RaycastAnswer answerIsOccupied
-        = new Utility.RaycastAnswer(new RaycastHit2D[Utility.MAX_HIT_COUNT], 0);
-    private RaycastHit2D[] rchdsAdjustForOccupant = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for finding Merky a new landing spot
-
-    public AudioClip teleportSound;
-    public BoxCollider2D scoutColliderMin;//collider used to scout the level for teleportable spots
-    public BoxCollider2D scoutColliderMax;//collider used to scout the level for teleportable spots
-    public Collider2D groundedTrigger;//the collider that is used to check if Merky is grounded
-
-    private CameraController mainCamCtr;//the camera controller for the main camera
-    public CameraController Cam
+    public bool InCheckPoint
     {
-        get { return mainCamCtr; }
-        private set { mainCamCtr = value; }
+        get { return inCheckPoint; }
+        set { inCheckPoint = value; }
     }
-    private GestureManager gm;
-    private HardMaterial hm;
+
+    //
+    // Gravity Immunity Variables
+    //
+    private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
+    private Vector2 savedVelocity;
+    private float savedAngularVelocity;
+
+    //
+    // Runtime Constants
+    //
+    private float[] rotations = new float[] { 285, 155, 90, 0 };//the default rotations for Merky
+    public float halfWidth { get; private set; }//half of Merky's sprite width
+
+    //
+    // Components
+    //
+    [Header("Components")]
+    public BoxCollider2D scoutColliderMin;//small collider (inside Merky) used to scout the level for teleportable spots
+    public BoxCollider2D scoutColliderMax;//big collider (outside Merky) used to scout the level for teleportable spots
+
+    private PolygonCollider2D pc2d;
+    private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
+    private Rigidbody2D rb2d;
+    public float Speed
+    {
+        get
+        {
+            float speed = rb2d.velocity.magnitude;
+            if (speed == 0)
+            {
+                speed = savedVelocity.magnitude;
+            }
+            return speed;
+        }
+    }
+    public Vector2 Velocity
+    {
+        get
+        {
+            Vector2 velocity = rb2d.velocity;
+            if (velocity.magnitude == 0)
+            {
+                velocity = savedVelocity;
+            }
+            return velocity;
+        }
+    }
+    private GravityAccepter gravity;
+    public GravityAccepter Gravity
+    {
+        get
+        {
+            if (gravity == null)
+            {
+                gravity = GetComponent<GravityAccepter>();
+            }
+            return gravity;
+        }
+    }
+
+    private GroundChecker ground;
+    public GroundChecker Ground
+    {
+        get
+        {
+            if (ground == null)
+            {
+                ground = GetComponent<GroundChecker>();
+            }
+            return ground;
+        }
+    }
 
     private TeleportAbility tpa;
-    private ForceTeleportAbility fta;
-    private WallClimbAbility wca;
-    private ShieldBubbleAbility sba;
+
+    /// <summary>
+    /// Returns a list of active abilities
+    /// </summary>
+    public List<PlayerAbility> ActiveAbilities
+    {
+        get
+        {
+            List<PlayerAbility> activeAbilities = new List<PlayerAbility>();
+            foreach (PlayerAbility ability in GetComponents<PlayerAbility>())
+            {
+                if (ability.enabled)
+                {
+                    activeAbilities.Add(ability);
+                }
+            }
+            return activeAbilities;
+        }
+    }
+
+    public void abilityActivated(PlayerAbility ability, bool active)
+    {
+        onAbilityActivated?.Invoke(ability, active);
+    }
+    public delegate void OnAbilityActivated(PlayerAbility ability, bool active);
+    public OnAbilityActivated onAbilityActivated;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
+        //Retrieve components
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
-        gravity = GetComponent<GravityAccepter>();
-        mainCamCtr = Camera.main.GetComponent<CameraController>();
-        gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
-        hm = GetComponent<HardMaterial>();
-        hm.shattered += shattered;
         tpa = GetComponent<TeleportAbility>();
-        fta = GetComponent<ForceTeleportAbility>();
-        wca = GetComponent<WallClimbAbility>();
-        sba = GetComponent<ShieldBubbleAbility>();
-        halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
-        teleportRangeParticalController = teleportRangeParticalObject.GetComponent<ParticleSystemController>();
-        teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
-        onPreTeleport += canTeleport;
-        setRange(baseRange);
-        //Check grounded collider
-        if (groundedTrigger == null)
+        //Register the delegates
+        Managers.Game.onRewindFinished += grantGravityImmunityAfterRewind;
+        //Estimate the halfWidth
+        Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
+        halfWidth = (extents.x + extents.y) / 2;
+        //Initialize the range
+        Range = baseRange;
+        //Initialize the ground trigger
+        updateGroundTrigger();
+    }
+
+    /// <summary>
+    /// Called once per physics update
+    /// </summary>
+    private void FixedUpdate()
+    {
+        //Check to see if gravity immunity has expired
+        checkGravityImmunity(false);
+        //Put the ground trigger in its proper spot
+        updateGroundTrigger();
+    }
+
+    /// <summary>
+    /// Updates Merky's range when his ground trigger hits ground
+    /// </summary>
+    /// <param name="coll2D"></param>
+    private void OnTriggerEnter2D(Collider2D coll2D)
+    {
+        if (!coll2D.isTrigger)
         {
-            //Use triggerPC2D
-            updateTriggerPC2D();
-            groundedTrigger = triggerPC2D;
-            //If it's still null, then throw an exception
-            if (groundedTrigger == null)
-            {
-                throw new UnityException("Player object " + name + "'s groundedTrigger is " + groundedTrigger + "!");
-            }
-        }
-        else if (!groundedTrigger.isTrigger)
-        {
-            throw new UnityException("Player object " + name + "'s groundedTrigger must have isTrigger = TRUE!");
+            checkGravityImmunity(true);//first grounded frame after teleport
         }
     }
 
-    void FixedUpdate()
-    {
-        checkGravityImmunity();
-        updateTriggerPC2D();
-    }
-    private void OnTriggerEnter2D(Collider2D coll)
-    {
-        checkGroundedState(false);
-        if (shouldGrantGIT && grounded)//first grounded frame after teleport
-        {
-            shouldGrantGIT = false;
-            grantGravityImmunity();
-        }
-    }
+    /// <summary>
+    /// Updates Merky's range when he hits ground
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        checkGroundedState(false);
-        if (shouldGrantGIT && grounded)//first grounded frame after teleport
+        Debug.Log("Merky collided with (t? "+collision.collider.isTrigger+"): " + collision.gameObject.name);
+        //If collided with a Hazard,
+        Hazard hazard = collision.gameObject.GetComponent<Hazard>();
+        if (hazard && hazard.Hazardous)
         {
-            shouldGrantGIT = false;
-            grantGravityImmunity();
+            //Take damage (and rewind)
+            forceRewindHazard(hazard.DamageDealt, collision.contacts[0].point);
         }
-    }
-
-    void updateTriggerPC2D()
-    {
-        if (triggerPC2D == null)
+        //Else if collided with stand-on-able object,
+        else if (!collision.collider.isTrigger)
         {
-            //PC2D ground trigger
-            triggerPC2D = gameObject.AddComponent<PolygonCollider2D>();
-            triggerPC2D.points = pc2d.points;
-            triggerPC2D.isTrigger = true;
-        }
-        //Move triggerPC2D to its new position based on the current gravity
-        Vector3 offset = gravity.Gravity.normalized * groundTestDistance;
-        float angle = transform.localEulerAngles.z;
-        triggerPC2D.offset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-    }
-
-    void grantGravityImmunity()
-    {
-        gravityImmuneTime = Time.time + gravityImmuneTimeAmount;
-        savedVelocity = rb2d.velocity;
-        savedAngularVelocity = rb2d.angularVelocity;
-        gravity.AcceptsGravity = false;
-        rb2d.velocity = new Vector3(0, 0);
-        rb2d.angularVelocity = 0f;
-    }
-    /// <summary>
-    /// Updates gravity immunity
-    /// </summary>
-    void checkGravityImmunity()
-    {
-        if (Time.time >= gravityImmuneTime
-            && gravityImmuneTime > 0)
-        {
-            gravityImmuneTime = 0;
-            gravity.AcceptsGravity = true;
-            rb2d.velocity = savedVelocity;
-            rb2d.angularVelocity = savedAngularVelocity;
+            //Grant gravity immunity
+            checkGravityImmunity(true);//first grounded frame after teleport
         }
     }
 
     /// <summary>
-    /// Whether or not Merky is moving
-    /// Does not consider rotation
+    /// Updates the position of the copycat collider that hits the ground before Merky does
+    /// This is done to refresh Merky's range slightly before
+    /// he actually hits the ground
     /// </summary>
-    /// <returns></returns>
-    bool isMoving()
+    private void updateGroundTrigger()
     {
-        return rb2d.velocity.magnitude >= 0.1f;
+        //If ground trigger is not present,
+        if (groundedTrigger == null)
+        {
+            //Make a new ground trigger collider
+            //by copying Merky's collider
+            groundedTrigger = gameObject.AddComponent<PolygonCollider2D>();
+            groundedTrigger.points = pc2d.points;
+            groundedTrigger.isTrigger = true;
+        }
+        //Move ground trigger to its new position based on the current gravity
+        Vector3 offset = Gravity.Gravity.normalized * Ground.groundTestDistance;
+        groundedTrigger.offset = transform.InverseTransformDirection(offset);
+    }
+
+    /// <summary>
+    /// True if Merky doesn't get affected by gravity, false if otherwise
+    /// Note that Merky can still be affected by other sources of force while gravity immune
+    /// </summary>
+    public bool GravityImmune
+    {
+        get { return gravityImmuneStartTime >= 0; }
+        set
+        {
+            bool grantGravityImmunity = value;
+            if (grantGravityImmunity)
+            {
+                if (gravityImmuneStartTime < 0)
+                {
+                    //Turn off Merky's gravity
+                    Gravity.AcceptsGravity = false;
+                    //Store velocity for later
+                    savedVelocity = rb2d.velocity;
+                    //Store angular velocity for later
+                    savedAngularVelocity = rb2d.angularVelocity;
+                }
+                gravityImmuneStartTime = Time.time;
+                //Freeze velocity
+                rb2d.velocity = Vector2.zero;
+                //Freeze angular velocity
+                rb2d.angularVelocity = 0;
+            }
+            else
+            {
+                gravityImmuneStartTime = -1;
+                //Turn on Merky's gravity
+                Gravity.AcceptsGravity = true;
+                //Restore saved velocity
+                rb2d.velocity = savedVelocity;
+                savedVelocity = Vector2.zero;
+                //Restore saved angular velocity
+                rb2d.angularVelocity = savedAngularVelocity;
+                savedAngularVelocity = 0;
+            }
+        }
+    }
+    /// <summary>
+    /// Turns gravity immunity on or off, if conditions are right
+    /// </summary>
+    /// <param name="checkToTurnOn">Whether to check if should be turned on</param>
+    private void checkGravityImmunity(bool checkToTurnOn)
+    {
+        //If the caller wants it turned on,
+        if (checkToTurnOn)
+        {
+            //And gravity immunity should be granted,
+            //(such as the first grounded frame after a teleport)
+            if (shouldGrantGIT)
+            {
+                //And Merky is grounded,
+                if (Ground.Grounded)
+                {
+                    //Updated grounded state
+                    updateGroundedState();
+                    //Turn off shuoldGrantGIT
+                    shouldGrantGIT = false;
+                    //Grant gravity immunity
+                    GravityImmune = true;
+                }
+            }
+        }
+        //Else if the caller wants it turned off,
+        else
+        {
+            //And it's currently on,
+            if (GravityImmune)
+            {
+                //And the gravity immune time has expired,
+                if (Time.time >= gravityImmuneStartTime + gravityImmuneDuration)
+                {
+                    //Turn off gravity immunity
+                    GravityImmune = false;
+                }
+            }
+        }
     }
 
     /// <summary>
     /// Rotates Merky to the next default rotation clockwise
     /// </summary>
-    void rotate()
+    private void rotate()
     {
         float newAngle = getNextRotation(transform.localEulerAngles.z);
         transform.localEulerAngles = new Vector3(0, 0, newAngle);
     }
+    /// <summary>
+    /// Returns the next default rotation clockwise to the given angle
+    /// </summary>
+    /// <param name="angleZ">The angle to get the next angle from</param>
+    /// <returns>The next default rotation clockwise to the given angle</returns>
     public float getNextRotation(float angleZ)
     {
-        int closestRotationIndex = 0;
-        //Figure out current rotation
-        float gravityRot = Utility.RotationZ(gravity.Gravity, Vector3.down);
-        float currentRotation = angleZ - gravityRot;
-        currentRotation = Utility.loopValue(currentRotation, 0, 360);
-        //Figure out which default rotation is closest
+        //Convert given angle to current gravity space
+        float gravityRot = Utility.RotationZ(Gravity.Gravity, Vector3.down);
+        float givenRotation = angleZ - gravityRot;
+        givenRotation = Utility.loopValue(givenRotation, 0, 360);
+        //Figure out which default rotation is closest to given
+        int givenRotationIndex = 0;
         float closest = 360;
         for (int i = 0; i < rotations.Length; i++)
         {
             float rotation = rotations[i];
-            float diff = Mathf.Abs(rotation - currentRotation);
-            diff = Mathf.Min(diff, Mathf.Abs(rotation - (currentRotation - 360)));
+            float diff = Mathf.Abs(rotation - givenRotation);
+            diff = Mathf.Min(diff, Mathf.Abs(rotation - (givenRotation - 360)));
             if (diff < closest)
             {
                 closest = diff;
-                closestRotationIndex = i;
+                givenRotationIndex = i;
             }
         }
-        int newRotationIndex = closestRotationIndex + 1;
-        if (newRotationIndex >= rotations.Length)
-        {
-            newRotationIndex = 0;
-        }
-        //Set rotation
+        //Find the next default rotation
+        int newRotationIndex = (givenRotationIndex + 1) % rotations.Length;
+        //Convert rotation back to global space
         float angle = rotations[newRotationIndex] + gravityRot;
         angle = Utility.loopValue(angle, 0, 360);
         return angle;
-    }
-    /// <summary>
-    /// Checks to make sure teleport is not on cooldown
-    /// </summary>
-    /// <param name="oldPos"></param>
-    /// <param name="newPOs"></param>
-    /// <param name="triedPos"></param>
-    /// <returns></returns>
-    private bool canTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
-    {
-        if (!isGrounded())
-        {
-            if (Time.time >= teleportTime)
-            {
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     /// <summary>
     /// Teleports, without any checking
     /// </summary>
-    /// <param name="targetPos">Place to teleport to in world coordinations</param>
-    /// <param name="playSound">Whether or not to play a sound</param>
-    private void teleport(Vector3 targetPos, bool playSound = true)//
+    /// <param name="targetPos">Position to teleport to in world coordinates</param>
+    private void teleport(Vector3 targetPos)
     {
-        //Update mid-air cooldowns
-        if (!isGrounded())
+        //If Merky is teleporting from the air,
+        if (!Ground.Grounded)
         {
-            airPorts++;
-        }
-        if (airPorts > maxAirPorts)
-        {
+            //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
-            float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -gravity.Gravity.normalized);
-            teleportTime = Time.time + exhaustCoolDownTime * upAmount;
+            float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -Gravity.Gravity.normalized);
+            exhaustCoolDownTime = baseExhaustCoolDownTime * upAmount;
+            TeleportReady = false;
         }
 
-        //Get new position
-        Vector3 newPos = targetPos;
-        //Actually Teleport
+        //Store old and new positions
         Vector3 oldPos = transform.position;
+        Vector3 newPos = targetPos;
+
+        //Actually Teleport
         transform.position = newPos;
+
+        //Update Stats
+        GameStatistics.addOne("Teleport");
 
         //Show effect
         showTeleportEffect(oldPos, newPos);
-        //Play Sound
-        if (playSound)
-        {
-            if (groundedAbility && wca.enabled)
-            {
-                SoundManager.playSound(wca.wallClimbSound, oldPos);
-            }
-            else
-            {
-                SoundManager.playSound(teleportSound, oldPos);
-            }
-        }
 
-        //Health Regen
-        hm.addIntegrity(Vector2.Distance(oldPos, newPos));
-        //Momentum Dampening
-        if (!Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0))//if Merky is moving
+        //Play Sound
+        playTeleportSound(oldPos, newPos);
+
+        //Gravity Immunity
+        //If gravity immune,
+        if (GravityImmune)
         {
+            //Turn it off
+            GravityImmune = false;
+        }
+        //When Merky touches ground next,
+        //he should get gravity immunity
+        shouldGrantGIT = true;
+
+        //Momentum Dampening
+        //If Merky is moving,
+        if (rb2d.isMoving())
+        {
+            //Reduce momentum that is going in opposite direction
             Vector3 direction = newPos - oldPos;
-            float newX = rb2d.velocity.x;//the new x velocity
+            float newX = rb2d.velocity.x;//the new velocity x
             float newY = rb2d.velocity.y;
+            //If velocity x is moving opposite of the teleport direction x,
             if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(direction.x))
             {
+                //Add teleport direction x to velocity x
                 newX = rb2d.velocity.x + direction.x;
+                //If the addition brought velocity x past 0,
                 if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(newX))
-                {//keep from exploiting boost in opposite direction
+                {
+                    //Keep from exploiting boost in opposite direction
                     newX = 0;
                 }
             }
+            //If velocity y is moving opposite of the teleport direction y,
             if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(direction.y))
             {
+                //Add teleport direction y to velocity y
                 newY = rb2d.velocity.y + direction.y;
+                //If the addition brought velocity y past 0,
                 if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(newY))
-                {//keep from exploiting boost in opposite direction
+                {
+                    //Keep from exploiting boost in opposite direction
                     newY = 0;
                 }
             }
+            //Update velocity
             rb2d.velocity = new Vector2(newX, newY);
         }
-        //Gravity Immunity
-        shouldGrantGIT = true;
-        checkGroundedState(true);//have to call it again because state has changed
-        triggerPC2D.offset = Vector2.zero;//reset the ground check trigger's offset to zero so Unity can know to trigger OnTriggerEnter2D() again in certain cases
+
+        //Check grounded state
+        //have to check it again because state has changed
+        updateGroundedState();
+
+        //reset the ground check trigger's offset to zero,
+        //so Unity knows to trigger OnTriggerEnter2D() again in certain cases
+        groundedTrigger.offset = Vector2.zero;
+
         //On Teleport Effects
         if (onTeleport != null)
         {
             onTeleport(oldPos, newPos);
         }
-        //Disable sticky pads stuck to Merky
+
+        //Detach Merky from sticky pads stuck to him
         foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
         {
             if (fj2d.connectedBody == rb2d)
@@ -337,461 +485,560 @@ public class PlayerController : MonoBehaviour
                 Destroy(fj2d);
             }
         }
+
+        //ERROR REPORTING CODE
+        if (GameManager.Message != null && GameManager.Message != "")
+        {
+            string errorMessage = "ERROR: " + GameManager.Message.Substring(
+                0,
+                Mathf.Min(100, GameManager.Message.Length)
+                ).Replace("\n", " ");
+            Utility.onScreenErrorMessage(errorMessage);
+            GameManager.Message = GameManager.Message.Substring(
+                Mathf.Min(25, GameManager.Message.Length)
+                );
+        }
+        else if (GameManager.Message == "")
+        {
+            Utility.onScreenErrorMessage(GameManager.Message, false);
+            GameManager.Message = null;
+        }
     }
+    public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
+    public OnTeleport onTeleport;
 
     /// <summary>
     /// Finds the teleportable position closest to the given targetPos
     /// </summary>
-    /// <param name="targetPos"></param>
+    /// <param name="targetPos">The ideal position to teleport to</param>
     /// <returns>targetPos if it is teleportable, else the closest teleportable position to it</returns>
-    public Vector3 findTeleportablePosition(Vector3 targetPos)
+    public Vector3 findTeleportablePosition(Vector2 targetPos)
     {
         //TSFS: Teleport Spot Finding System
-        Vector3 newPos = targetPos;
-        //Determine if new position is in range
-        Vector3 oldPos = transform.position;
-        if ((newPos - transform.position).sqrMagnitude <= range * range
-            || (GestureManager.CHEATS_ALLOWED && gm.cheatsEnabled))//allow unlimited range while cheat is active
+        Vector2 newPos = targetPos;
+        Vector2 oldPos = transform.position;
+        //If new position is not in range,
+        if ((newPos - (Vector2)transform.position).sqrMagnitude > range * range)
         {
-        }
-        else
-        {
+            //Shorten it to be within range
             newPos = ((newPos - oldPos).normalized * range) + oldPos;
         }
 
-        //Determine if you can even teleport to the position (i.e. is it occupied or not?)
+        if (findTeleportablePositionOverride != null)
         {
-            if (isOccupied(newPos))//test the current newPos first
+            Vector2 newPosOverride = Vector2.zero;
+            foreach (FindTeleportablePositionOverride ftpo in findTeleportablePositionOverride.GetInvocationList())
             {
-                //Try to adjust first
-                Vector3 adjustedPos = adjustForOccupant(newPos);
-                if (!isOccupied(adjustedPos))
+                newPosOverride = ftpo.Invoke(newPos, targetPos);
+                //The first one that returns a result
+                //that's not (0,0) is accepted
+                if (newPosOverride != Vector2.zero)
                 {
-                    return adjustedPos;
+                    return newPosOverride;
                 }
-                //Search for a good landing spot
-                List<Vector3> possibleOptions = new List<Vector3>();
-                const int pointsToTry = 5;//try 5 points along the line
-                const float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
-                const float variance = 0.4f;//max amount to adjust angle by
-                const int anglesToTry = 7;//try 7 angles off the line
-                const float anglesDiff = variance * 2 / (anglesToTry - 1);
-                //Vary the angle
-                for (float a = -variance; a <= variance; a += anglesDiff)
+            }
+        }
+
+        //Determine if you can teleport to the position
+        //(i.e. is it occupied or not?)
+        //If the new position is occupied,
+        if (isOccupied(newPos, targetPos))
+        {
+            //Try to adjust it first
+            Vector2 adjustedPos = adjustForOccupant(newPos);
+            if (!isOccupied(adjustedPos, targetPos))
+            {
+                return adjustedPos;
+            }
+            //Search for a good landing spot
+            List<Vector3> possibleOptions = new List<Vector3>();
+            const int pointsToTry = 5;//try 5 points along the line
+            const float difference = 1.00f / pointsToTry;//how much the previous jump was different by
+            const float variance = 0.4f;//max amount to adjust angle by
+            const int anglesToTry = 7;//try 7 angles off the line
+            const float anglesDiff = variance * 2 / (anglesToTry - 1);
+            Vector2 normalizedDir = (newPos - oldPos).normalized;
+            float oldDist = Vector2.Distance(oldPos, newPos);
+            //Vary the angle
+            for (float a = -variance; a <= variance; a += anglesDiff)
+            {
+                //Angle the direction
+                Vector2 dir = normalizedDir.RotateZ(a); ;//the direction to search
+                Vector2 angledNewPos = oldPos + dir * oldDist;
+                //Backtrack from the new position
+                float distance = Vector2.Distance(oldPos, angledNewPos);
+                Vector2 norm = (angledNewPos - oldPos).normalized;
+                norm *= distance;
+                for (float percent = 1 + (difference * 2); percent >= 0; percent -= difference)
                 {
-                    Vector3 dir = (newPos - oldPos).normalized;//the direction
-                    dir = Utility.RotateZ(dir, a);
-                    float oldDist = Vector3.Distance(oldPos, newPos);
-                    Vector3 angledNewPos = oldPos + dir * oldDist;//ANGLED
-                    //Backtrack
-                    float distance = Vector3.Distance(oldPos, angledNewPos);
-                    float percent = 1.00f - (difference * 2);//to start it off slightly further away
-                    Vector3 norm = (angledNewPos - oldPos).normalized;
-                    while (percent >= 0)
+                    Vector2 testPos = (norm * percent) + oldPos;
+                    //If the test position is occupied,
+                    if (isOccupied(testPos, targetPos))
                     {
-                        percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
-                        Vector3 testPos = (norm * distance * percent) + oldPos;
-                        if (isOccupied(testPos))
+                        //Adjust position based on occupant
+                        testPos = adjustForOccupant(testPos);
+                        //If the test position is no longer occupied,
+                        if (!isOccupied(testPos, targetPos))
                         {
-                            //adjust pos based on occupant
-                            testPos = adjustForOccupant(testPos);
-                            if (!isOccupied(testPos))
-                            {
-                                possibleOptions.Add(testPos);
-                                if (percent <= 1)//make sure you at least try the standard position
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //found an open spot (tho it might not be optimal)
+                            //Possible option found
                             possibleOptions.Add(testPos);
-                            if (percent <= 1)//make sure you at least try the standard position
+                            //If percent distance is in range (0 - 1),
+                            //(percent > 1 would put Merky outside his teleport range)
+                            if (percent <= 1)
                             {
+                                //Try a new angle
                                 break;
                             }
                         }
                     }
-                }
-                //Choose the closest option 
-                float closestSqrDistance = (newPos - oldPos).sqrMagnitude;
-                Vector3 closestOption = oldPos;
-                foreach (Vector3 option in possibleOptions)
-                {
-                    float sqrDistance = (newPos - option).sqrMagnitude;
-                    if (sqrDistance < closestSqrDistance)
+                    else
                     {
-                        closestSqrDistance = sqrDistance;
-                        closestOption = option;
+                        //Possible option found
+                        possibleOptions.Add(testPos);
+                        //If percent distance is in range (0 - 1),
+                        //(percent > 1 would put Merky outside his teleport range)
+                        if (percent <= 1)
+                        {
+                            //Try a new angle
+                            break;
+                        }
                     }
                 }
-                return closestOption;
             }
+            //Choose the closest option 
+            float closestSqrDistance = (newPos - oldPos).sqrMagnitude;
+            Vector2 closestOption = oldPos;
+            foreach (Vector2 option in possibleOptions)
+            {
+                float sqrDistance = (newPos - option).sqrMagnitude;
+                if (sqrDistance < closestSqrDistance)
+                {
+                    closestSqrDistance = sqrDistance;
+                    closestOption = option;
+                }
+            }
+            return closestOption;
         }
         return newPos;
     }
+    public delegate Vector2 FindTeleportablePositionOverride(Vector2 rangedPos, Vector2 tapPos);
+    public FindTeleportablePositionOverride findTeleportablePositionOverride;
 
-    void showTeleportEffect(Vector3 oldp, Vector3 newp)
+    /// <summary>
+    /// Shows a visual teleport effect at the given locations
+    /// </summary>
+    /// <param name="oldPos">The pre-teleport position</param>
+    /// <param name="newPos">The post-teleport position</param>
+    private void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
-        EffectManager.showTeleportStar(oldp);
-        //Check for wall jump
-        if (wca.enabled && groundedAbility)
+        Managers.Effect.showTeleportStar(oldPos);
+        //Process on show teleport effect delegates
+        if (onShowTeleportEffect != null)
         {
-            //Play jump effect in addition to teleport star
-            wca.playWallClimbEffects(oldp);
+            onShowTeleportEffect(oldPos, newPos);
         }
     }
+    public OnTeleport onShowTeleportEffect;
 
-
-    public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
-    public OnTeleport onTeleport;
-
-    //Used when you also need to know where the user clicked
-    public delegate bool OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
-    public OnPreTeleport onPreTeleport;
-
-    private void setRange(float newRange)
+    /// <summary>
+    /// Plays a teleport sound at the previous position
+    /// </summary>
+    /// <remarks>
+    /// It assumes that there's at least 1 delegate in onPlayTeleportSound
+    /// </remarks>
+    /// <param name="oldPos">The pre-teleport position</param>
+    /// <param name="newPos">The post-teleport position</param>
+    private void playTeleportSound(Vector2 oldPos, Vector2 newPos)
     {
-        range = newRange;
-        TeleportRangeIndicatorUpdater tri = GetComponentInChildren<TeleportRangeIndicatorUpdater>();
-        if (tri != null)
+        if (onPlayTeleportSound != null)
         {
-            tri.updateRange();
-        }
-        ParticleSystemController[] pscs = GetComponentsInChildren<ParticleSystemController>();
-        foreach (ParticleSystemController psc in pscs)
-        {
-            if (psc.dependsOnTeleportRange)
-            {
-                psc.setOuterRange(newRange);
-            }
-        }
-    }
-
-    void checkGroundedState(bool exhaust)
-    {
-        if (isGrounded())
-        {
-            airPorts = 0;
-            if (range < baseRange)
-            {
-                setRange(baseRange);
-            }
+            onPlayTeleportSound(oldPos, newPos);
         }
         else
         {
-            if (exhaust && airPorts >= maxAirPorts)
-            {
-                if (range > exhaustRange)
-                {
-                    setRange(exhaustRange);
-                }
-            }
+            throw new UnityException("No delegates added for playing sound! PlayerController: " + name);
         }
-
     }
+    public OnTeleport onPlayTeleportSound;
 
-    bool isGrounded()
+    /// <summary>
+    /// Updates variables depending on whether or not Merky is grounded.
+    /// Not done in the Grounded property because
+    /// sometimes you want to know the grounded state
+    /// without changing the rest of Merky's state
+    /// </summary>
+    private void updateGroundedState()
     {
-        groundedPreTeleport = grounded;
-        groundedAbilityPreTeleport = groundedAbility;
-        //if (gravity.Gravity == Vector2.zero)
-        //{
-        //    return true;
-        //}
-        groundedAbility = false;
-        bool isgrounded = isGrounded(gravity.Gravity);
-        if (!isgrounded && isGroundedCheck != null)//if nothing found yet and there is an extra ground check to do
+        //If Merky is grounded,
+        if (Ground.Grounded)
         {
-            //Check each onPreTeleport delegate
-            foreach (IsGroundedCheck igc in isGroundedCheck.GetInvocationList())
+            //Refresh teleport range
+            //Check to see if it's less than base range,
+            //because we don't want to remove any granted bonus range
+            //(such as the one Long Teleport grants)
+            if (range < baseRange)
             {
-                bool result = igc.Invoke();
-                //If at least 1 returns true, Merky is grounded
-                if (result == true)
-                {
-                    isgrounded = true;
-                    groundedAbility = true;
-                    break;
-                }
+                Range = baseRange;
+            }
+            //Refresh teleport exhaust cooldowns
+            TeleportReady = true;
+        }
+        //Else if Merky is in the air,
+        else
+        {
+            //Decrease the teleport range
+            if (range > exhaustRange)
+            {
+                Range = exhaustRange;
             }
         }
-        grounded = isgrounded;
-        return isgrounded;
+        //Grounded delegates
+        onGroundedStateUpdated?.Invoke(Ground.grounded);
     }
-    public bool isGrounded(Vector3 direction)
-    {
-        int count = Utility.Cast(pc2d, direction, rch2dsGrounded, groundTestDistance, true);
-        for (int i = 0; i < count; i++)
-        {
-            RaycastHit2D rch2d = rch2dsGrounded[i];
-            if (!rch2d.collider.isTrigger)
-            {
-                GameObject ground = rch2d.collider.gameObject;
-                if (!ground.Equals(transform.gameObject))
-                {
-                    //Debug.Log("isGround: grounded on: " + ground.name);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public delegate bool IsGroundedCheck();
-    public IsGroundedCheck isGroundedCheck;
+    public delegate void OnGroundedStateUpdated(bool grounded);
+    public OnGroundedStateUpdated onGroundedStateUpdated;//called when grounded becomes true
 
     /// <summary>
     /// Determines whether the given position is occupied or not
     /// </summary>
-    /// <param name="pos"></param>
-    /// <returns></returns>
-    public bool isOccupied(Vector3 pos)
+    /// <param name="testPos">The position to test</param>
+    /// <returns>True if something (besides Merky) is in the space, False if the space is clear</returns>
+    private bool isOccupied(Vector3 testPos, Vector3 tapPos)
     {
         bool occupied = false;
-        //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);        
-        Vector3 offset = pos - transform.position;
-        float angle = transform.localEulerAngles.z;
-        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-        //Test with max scout collider
+        Vector3 testOffset = testPos - transform.position;
+        testOffset = transform.InverseTransformDirection(testOffset);
+        //If there's a max scout collider,
         if (scoutColliderMax)
         {
-            Vector3 savedOffset = scoutColliderMax.offset;
-            scoutColliderMax.offset = rOffset;
-            answerIsOccupied.count = Utility.Cast(scoutColliderMax, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
-            occupied = isOccupied(answerIsOccupied, pos);
-            scoutColliderMax.offset = savedOffset;
+            //Test with max scout collider
+            occupied = isOccupiedImpl(scoutColliderMax, testOffset, testPos, tapPos);
         }
         else
         {
-            //assume the space is occupied so that it processes with the other colliders
+            //Else, assume the space is occupied so that it processes with the other colliders
             occupied = true;
         }
-        //Test with min scout collider
+        //If the max scout collider is occupied,
         if (occupied)
         {
-            Vector3 savedOffset = scoutColliderMin.offset;
-            scoutColliderMin.offset = rOffset;
-            answerIsOccupied.count = Utility.Cast(scoutColliderMin, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
-            occupied = isOccupied(answerIsOccupied, pos);
-            scoutColliderMin.offset = savedOffset;
-
-            //Test with actual collider
+            //There's something in or around merky, so
+            //Test with min scout collider
+            occupied = isOccupiedImpl(scoutColliderMin, testOffset, testPos, tapPos);
+            //If the min scout collider is not occupied,
             if (!occupied)
             {
-                savedOffset = pc2d.offset;
-                pc2d.offset = rOffset;
-                answerIsOccupied.count = Utility.Cast(pc2d, Vector2.zero, answerIsOccupied.rch2ds, 0, true);
-                occupied = isOccupied(answerIsOccupied, pos);
-                pc2d.offset = savedOffset;
+                //There's a possibility the space is clear
+                //Test with actual collider
+                occupied = isOccupiedImpl(pc2d, testOffset, testPos, tapPos);
             }
         }
         return occupied;
     }
-    bool isOccupied(Utility.RaycastAnswer answer, Vector3 triedPos)
+    /// <summary>
+    /// isOccupied Step 2. Only meant to be called by isOccupied(Vector3).
+    /// </summary>
+    private bool isOccupiedImpl(Collider2D coll, Vector3 testOffset, Vector3 testPos, Vector3 tapPos)
     {
+        //Find out what objects could be occupying the space
+        Vector3 savedOffset = coll.offset;
+        coll.offset = testOffset;
+        Utility.RaycastAnswer answer;
+        answer = coll.CastAnswer(Vector2.zero, 0, true);
+        coll.offset = savedOffset;
+
+        //Go through the found objects and see if any actually occupy the space
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rh2d = answer.rch2ds[i];
             GameObject go = rh2d.collider.gameObject;
-            if (!rh2d.collider.isTrigger)
+            //If the object is not this gameobject,
+            if (go != gameObject)
             {
-                if (go != gameObject)
+                //And if the object is not a trigger,
+                if (!rh2d.collider.isTrigger)
                 {
-                    if (isOccupiedException != null)
-                    {
-                        //Check each isOccupiedCatch delegate
-                        //2018-02-18: copied from processTapGesture(.)
-                        foreach (IsOccupiedException ioc in isOccupiedException.GetInvocationList())
-                        {
-                            //Make it do what it needs to do, then return the result
-                            bool result = ioc.Invoke(rh2d.collider, triedPos);
-                            //If at least 1 returns true, it's considered not occupied
-                            if (result == true)
-                            {
-                                return false;//return false for "not occupied"
-                            }
-                        }
-                    }
-                    //Debug.Log("Occupying object: " + go.name);
+                    //It's occupied!
+                    //Yep, it's occupied by an object
                     return true;
                 }
-
-            }
-            if (go.tag == "NonTeleportableArea" || (go.transform.parent != null && go.transform.parent.gameObject.tag == "NonTeleportableArea"))
-            {
-                if (go.GetComponent<SecretAreaTrigger>() == null)
+                //Else if it is a trigger,
+                else
                 {
-                    return true;//yep, it's occupied by a hidden area
+                    //And if it's a hidden area,
+                    if (go.CompareTag("NonTeleportableArea")
+                        || (go.transform.parent != null && go.transform.parent.gameObject.CompareTag("NonTeleportableArea")))
+                    {
+                        //And if it's not a trigger that reveals said hidden area,
+                        if (go.GetComponent<SecretAreaTrigger>() == null)
+                        {
+                            //Yep, it's occupied by a hidden area
+                            return true;
+                        }
+                    }
                 }
             }
         }
+        //There were no occupying objects or hidden areas, so
+        //Nope, it's not occupied
         return false;
     }
-
-    public delegate bool IsOccupiedException(Collider2D coll, Vector3 testPos);
-    public IsOccupiedException isOccupiedException;
 
     /// <summary>
     /// Adjusts the given Vector3 to avoid collision with the objects that it collides with
     /// </summary>
-    /// <param name="pos">The Vector3 to adjust</param>
+    /// <param name="testPos">The Vector3 to adjust</param>
     /// <returns>The Vector3, adjusted to avoid collision with objects it collides with</returns>
-    public Vector3 adjustForOccupant(Vector3 pos)
+    private Vector3 adjustForOccupant(Vector3 testPos)
     {
-        Vector3 moveDir = new Vector3(0, 0, 0);//the direction to move the pos so that it is valid
+        //Find the objects that it would collide with
+        Vector3 testOffset = testPos - transform.position;
+        testOffset = transform.InverseTransformDirection(testOffset);
         Vector3 savedOffset = pc2d.offset;
-        Vector3 offset = pos - transform.position;
-        float angle = transform.localEulerAngles.z;
-        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-        pc2d.offset = rOffset;
-        int count = Utility.Cast(pc2d, Vector2.zero, rchdsAdjustForOccupant, 0, true);
+        pc2d.offset = testOffset;
+        Utility.RaycastAnswer answer;
+        answer = pc2d.CastAnswer(Vector2.zero, 0, true);
         pc2d.offset = savedOffset;
-        for (int i = 0; i < count; i++)
+        //Adjust the move direction for each found object that it collides with
+        Vector3 moveDir = Vector3.zero;//the direction to move the testPos
+        for (int i = 0; i < answer.count; i++)
         {
-            RaycastHit2D rh2d = rchdsAdjustForOccupant[i];
+            RaycastHit2D rh2d = answer.rch2ds[i];
             GameObject go = rh2d.collider.gameObject;
-            if (!rh2d.collider.isTrigger)
+            //If the game object is not this game object,
+            if (go != transform.gameObject)
             {
-                if (go != transform.gameObject)
+                //And if the game object is not a trigger,
+                if (!rh2d.collider.isTrigger)
                 {
-                    Vector3 closPos = rh2d.point;
-                    Vector3 dir = pos - closPos;
-                    Vector3 size = pc2d.bounds.extents;
-                    float d2 = (size.magnitude) - Vector3.Distance(pos, closPos);
-                    moveDir += dir.normalized * d2;
+                    //Figure out in which direction to move and how far
+                    Vector3 outDir = testPos - (Vector3)rh2d.point;
+                    //(half width is only an estimate of the dist from the sprite center to its edge)
+                    float adjustDistance = halfWidth - rh2d.distance;
+                    //If the distance to move is invalid,
+                    if (adjustDistance < 0)
+                    {
+                        //Use a different estimate of sprite width
+                        adjustDistance = pc2d.bounds.extents.magnitude - rh2d.distance;
+                    }
+                    //If the sprite is mostly contained within the found object,
+                    if (rh2d.collider.OverlapPoint(testPos))
+                    {
+                        //Reverse the direction and increase the dist
+                        outDir *= -1;
+                        adjustDistance += halfWidth;
+                    }
+                    //Add the calculated direction and magnitude to the running total
+                    moveDir += outDir.normalized * adjustDistance;
                 }
             }
         }
-        return pos + moveDir;//not adjusted because there's nothing to adjust for
+        return testPos + moveDir;
     }
 
     /// <summary>
-    /// Delegate method called when hm's integrity reaches 0
+    /// Call this to force Merky to rewind due to hitting a hazard
     /// </summary>
-    private void shattered()
+    /// <param name="damageToSelf"></param>
+    /// <param name="damageToOther"></param>
+    /// <param name="contactPoint"></param>
+    private void forceRewindHazard(float damageToSelf, Vector2 contactPoint)
     {
-        gm.switchGestureProfile("Rewind");
-        GameManager.playerShattered();
-        GameStatistics.incrementCounter("deathCount");
-        if (GameStatistics.counter("deathCount") == 1)
+        if (damageToSelf > 0)
         {
-            Vector2 lsrgp = GameManager.getLatestSafeRewindGhostPosition();
-            transform.position = ((Vector2)transform.position + lsrgp) / 2;
-            EffectManager.highlightTapArea(lsrgp);
+            //Increment damaged counter
+            GameStatistics.addOne("Damaged");
+            //Start hit timer
+            Timer.startTimer(hitStunDuration, hitTimerUp);
+            //Highlight impact area
+            Managers.Effect.showPointEffect("effect_contact", contactPoint);
+            //Pause game
+            Managers.Time.Paused = true;
         }
     }
-    public bool isIntact()
-    {
-        return hm.isIntact();
-    }
 
-    public void setIsInCheckPoint(bool iicp)
+    private void hitTimerUp()
     {
-        inCheckPoint = iicp;
-    }
-    public bool getIsInCheckPoint()
-    {
-        return inCheckPoint;
+        //Unpause game
+        Managers.Time.Paused = false;
+        //Remove highlight
+        Managers.Effect.showPointEffect("effect_contact", Vector2.zero, false);
+        //Rewind
+        Managers.Game.Rewind(2);
     }
 
     /// <summary>
     /// Returns true if the given Vector3 is on Merky's sprite
     /// </summary>
-    /// <param name=""></param>
-    /// <returns></returns>
-    public bool gestureOnPlayer(Vector3 pos)
+    /// <param name="pos">The position to check</param>
+    /// <returns>True if the position is on Merky's sprite, false if otherwise</returns>
+    public bool gestureOnPlayer(Vector2 pos)
     {
-        return (pos - transform.position).sqrMagnitude < halfWidth * halfWidth;
+        return pos.inRange(transform.position, halfWidth);
     }
 
-    public void processTapGesture(Vector3 gpos)
+    /// <summary>
+    /// Process the tap gesture at the given position
+    /// </summary>
+    /// <param name="tapPos">The position to teleport to</param>
+    public void processTapGesture(Vector3 tapPos)
     {
-        if (gestureOnPlayer(gpos))
+        //Don't process while paused
+        if (Managers.Time.Paused)
         {
-            //Rotate player 90 degrees
+            return;
+        }
+        //If the player tapped on Merky,
+        if (gestureOnPlayer(tapPos))
+        {
+            //Rotate player ~90 degrees
             rotate();
         }
-        Vector3 prevPos = transform.position;
-        Vector3 newPos = findTeleportablePosition(gpos);
-        bool continueTeleport = true;
-        if (onPreTeleport != null)
+        //If teleport is not on cooldown,
+        if (TeleportReady)
         {
-            //Check each onPreTeleport delegate
-            foreach (OnPreTeleport opt in onPreTeleport.GetInvocationList())
-            {
-                //Make it do what it needs to do, then return the result
-                bool result = opt.Invoke(prevPos, newPos, gpos);
-                //If at least 1 returns false, don't teleport
-                if (result == false)
-                {
-                    continueTeleport = false;
-                    break;
-                }
-            }
-        }
-        if (continueTeleport)
-        {
-            teleport(newPos);
-            GameManager.Save();
-            //Reposition checkpoint previews
+            //If Merky is in a checkpoint,
             if (inCheckPoint)
             {
+                //And the tap pos is on a checkpoint preview,
+                foreach (CheckPointChecker cpc in FindObjectsOfType<CheckPointChecker>())
+                {
+                    if (cpc.checkGhostActivation(tapPos))
+                    {
+                        //Teleport to that checkpoint
+                        processTapGesture(cpc);
+                        //Don't process the rest of this method
+                        return;
+                    }
+                }
+            }
+            //Get pre-teleport position
+            Vector3 oldPos = transform.position;
+            //Get post-teleport position
+            Vector3 newPos = findTeleportablePosition(tapPos);
+            //Process onPreTeleport delegates
+            _onPreTeleport?.Invoke(oldPos, newPos, tapPos);
+            //Teleport
+            teleport(newPos);
+            //Save the game state
+            Managers.Game.Save();
+            //If Merky is in a checkpoint,
+            if (inCheckPoint)
+            {
+                //Reposition checkpoint previews
                 CheckPointChecker.readjustCheckPointGhosts(transform.position);
             }
         }
     }
-    public void processTapGesture(GameObject checkPoint)
+    //Used when you also need to know where the player tapped
+    public delegate void OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
+    private OnPreTeleport _onPreTeleport;
+    public event OnPreTeleport onPreTeleport
     {
-        CheckPointChecker cpc = checkPoint.GetComponent<CheckPointChecker>();
-        if (cpc != null)
+        add
         {
-            Vector2 prevPos = transform.position;
-            Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
-            Vector3 newPos = checkPoint.transform.position + offset;
-            if (onPreTeleport != null)
-            {
-                //Pass in newPos for both here because player teleported exactly where they intended to
-                onPreTeleport(prevPos, newPos, newPos);
-            }
-            teleport(newPos);
-            mainCamCtr.recenter();
-            cpc.trigger();
-            GameManager.Save();
+            _onPreTeleport -= value;
+            _onPreTeleport += value;
+        }
+        remove
+        {
+            _onPreTeleport -= value;
         }
     }
 
-
-    public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
+    /// <summary>
+    /// Processes the tap gesture on the given checkpoint
+    /// </summary>
+    /// <param name="checkPoint">The checkpoint to teleport to</param>
+    public void processTapGesture(CheckPointChecker checkPoint)
     {
-        Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
-        float reducedHoldTime = holdTime - gm.getHoldThreshold();
-        if (!mainCamCtr.offsetOffPlayer())
+        //Get pre-teleport position
+        Vector2 oldPos = transform.position;
+        //Get relative position inside of previous checkpoint
+        Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
+        //Get post-teleport position inside of new checkpoint
+        Vector3 newPos = checkPoint.transform.position + offset;
+        //If pre-processing needs done before teleporting,
+        if (_onPreTeleport != null)
         {
+            //Pre-process onPreTeleport delegates
+            //Pass in newPos for both here because player teleported exactly where they intended to
+            _onPreTeleport(oldPos, newPos, newPos);
+        }
+        //Teleport
+        teleport(newPos);
+        //Move the camera to Merky's center
+        Managers.Camera.recenter();
+        //Activate the new checkpoint
+        checkPoint.trigger();
+        //Save the game state
+        Managers.Game.Save();
+        //NOTE: processTapGesture(Vector3) is NOT called here,
+        //because that method cancels the teleport
+        //depending on the return value from onPreTeleport(),
+        //whereas here, we don't want the teleport canceled
+    }
+
+    /// <summary>
+    /// Process a hold gesture
+    /// </summary>
+    /// <param name="holdPos">The current hold position</param>
+    /// <param name="holdTime">The current hold duration</param>
+    /// <param name="finished">True if this is the last frame of the hold gesture</param>
+    public void processHoldGesture(Vector3 holdPos, float holdTime, bool finished)
+    {
+        //If the camera is centered on the player,
+        if (!Managers.Camera.offsetOffPlayer())
+        {
+            //Rapidly auto-teleport
+            //If enough time has passed since the last auto-teleport,
             if (Time.time > lastAutoTeleportTime + autoTeleportDelay)
             {
+                //Teleport
                 lastAutoTeleportTime = Time.time;
-                processTapGesture(gpos);
+                processTapGesture(holdPos);
             }
         }
+        //Else if the player is on the edge of the screen,
         else
         {
-            if (fta.enabled) { fta.dropHoldGesture(); }
-            if (sba.enabled) { sba.dropHoldGesture(); }
-            tpa.processHoldGesture(gpos, reducedHoldTime, finished);
+            //Show a teleport preview
+
+            //If this is the first frame of the hold gesture,
+            if (holdTime < Time.deltaTime)
+            {
+                //Erase any visual effects of the other abilities
+                dropHoldGesture();
+            }
+            //Show the teleport preview effect
+            tpa.processHoldGesture(holdPos, holdTime, finished);
+            //If this is the last frame of the hold gesture,
             if (finished)
             {
-                processTapGesture(gpos);
+                //Finally teleport to the location
+                processTapGesture(holdPos);
+                //Erase the teleport preview effects
+                tpa.dropHoldGesture();
             }
         }
     }
-    public void dropHoldGesture()
+    /// <summary>
+    /// Erase any visual effects of active abilities
+    /// </summary>
+    private void dropHoldGesture()
     {
-        tpa.dropHoldGesture();
-        if (fta.enabled) { fta.dropHoldGesture(); }
-        if (sba.enabled) { sba.dropHoldGesture(); }
+        foreach (PlayerAbility ability in ActiveAbilities)
+        {
+            ability.dropHoldGesture();
+        }
+    }
+
+    void grantGravityImmunityAfterRewind()
+    {
+        //Grant gravity immunity
+        GravityImmune = true;
+        //Reset range to default
+        Range = baseRange;
     }
 }
 

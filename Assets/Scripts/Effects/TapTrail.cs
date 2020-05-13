@@ -9,15 +9,15 @@ public class TapTrail : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == GameManager.playerTag)
+        if (collider.gameObject.isPlayer())
         {
             if (nextTapStone != null)
             {
-                EffectManager.highlightTapArea(nextTapStone.transform.position);
+                Managers.Effect.highlightTapArea(nextTapStone.transform.position);
             }
             else
             {
-                EffectManager.highlightTapArea(Vector2.zero, false);
+                Managers.Effect.highlightTapArea(Vector2.zero, false);
             }
         }
     }

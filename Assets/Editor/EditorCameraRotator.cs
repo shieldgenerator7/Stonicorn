@@ -12,7 +12,7 @@ public class EditorCameraRotator : Editor
     public void OnEnable()
     {
         ecro = (EditorCameraRotatorObject)target;
-        SceneView.onSceneGUIDelegate = rotateCamera;
+        SceneView.duringSceneGui += rotateCamera;
     }
 
     void rotateCamera(SceneView sceneview)
@@ -23,16 +23,38 @@ public class EditorCameraRotator : Editor
             {
                 if (gz.mainGravityZone)
                 {
-                    if (gz.GetComponent<PolygonCollider2D>().OverlapPoint(sceneview.camera.transform.position))
+                    if (gz.radialGravity)
                     {
-                        if (sceneview.camera.transform.localRotation != gz.gameObject.transform.localRotation)
+                        if (gz.GetComponent<CircleCollider2D>().OverlapPoint(sceneview.camera.transform.position))
                         {
-                            sceneview.isRotationLocked = false;
-                            sceneview.camera.transform.localRotation = gz.gameObject.transform.localRotation;
-                            sceneview.camera.Render();
-                            ecro.rotZ = gz.transform.eulerAngles.z;
+                            if (sceneview.camera.transform.localRotation != gz.gameObject.transform.localRotation)
+                            {
+                                sceneview.isRotationLocked = false;
+                                sceneview.camera.transform.up = sceneview.camera.transform.position - gz.transform.position;
+                                sceneview.camera.Render();
+                                ecro.rotZ = Vector3.SignedAngle(
+                                    Vector3.up,
+                                    sceneview.camera.transform.position - gz.transform.position,
+                                    Vector3.forward
+                                    );
+                                //ecro.rotZ = sceneview.camera.transform.eulerAngles.z;
+                            }
+                            break;
                         }
-                        break;
+                    }
+                    else
+                    {
+                        if (gz.GetComponent<PolygonCollider2D>().OverlapPoint(sceneview.camera.transform.position))
+                        {
+                            if (sceneview.camera.transform.localRotation != gz.gameObject.transform.localRotation)
+                            {
+                                sceneview.isRotationLocked = false;
+                                sceneview.camera.transform.localRotation = gz.gameObject.transform.localRotation;
+                                sceneview.camera.Render();
+                                ecro.rotZ = gz.transform.eulerAngles.z;
+                            }
+                            break;
+                        }
                     }
                 }
             }

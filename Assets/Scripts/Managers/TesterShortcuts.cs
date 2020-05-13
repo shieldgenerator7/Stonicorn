@@ -17,36 +17,35 @@ public class TesterShortcuts : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                GameManager.resetGame();
+                Managers.Game.resetGame();
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
                 activateAllCheckpoints();
             }
-            bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                enableAbility(1, shift);
+                toggleAbility(1);
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                enableAbility(2, shift);
+                toggleAbility(2);
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                enableAbility(3, shift);
+                toggleAbility(3);
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                enableAbility(4, shift);
+                toggleAbility(4);
             }
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
-                enableAbility(5, shift);
+                toggleAbility(5);
             }
             if (Input.GetKeyDown(KeyCode.Alpha6))
             {
-                enableAbility(6, shift);
+                toggleAbility(6);
             }
         }
     }
@@ -57,43 +56,109 @@ public class TesterShortcuts : MonoBehaviour
             cpc.activate();
         }
     }
-    public static void enableAbility(int abilityIndex, bool shift)
+    public static void toggleAbility(int abilityIndex)
     {
-        GameObject playerObject = GameManager.getPlayerObject();
+        enableAbility(abilityIndex, !abilityEnabled(abilityIndex));
+    }
+    public static void enableAbility(int abilityIndex, bool enable)
+    {
+        GameObject playerObject = Managers.Player.gameObject;
         switch (abilityIndex)
         {
             case 1:
-                ForceTeleportAbility fta = playerObject.GetComponent<ForceTeleportAbility>();
-                fta.enabled = !fta.enabled;
+                ForceDashAbility fta = playerObject.GetComponent<ForceDashAbility>();
+                fta.Active = enable;
                 break;
             case 2:
                 WallClimbAbility wca = playerObject.GetComponent<WallClimbAbility>();
-                wca.enabled = !wca.enabled;
+                wca.Active = enable;
                 break;
             case 3:
-                if (shift)
-                {
-                    ShieldBubbleAbility sba = playerObject.GetComponent<ShieldBubbleAbility>();
-                    sba.enabled = !sba.enabled;
-                }
-                else
-                {
-                    ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
-                    efa.enabled = !efa.enabled;
-                }
+                ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
+                efa.Active = enable;
                 break;
             case 4:
                 SwapAbility sa = playerObject.GetComponent<SwapAbility>();
-                sa.enabled = !sa.enabled;
+                sa.Active = enable;
                 break;
             case 5:
                 AirSliceAbility asa = playerObject.GetComponent<AirSliceAbility>();
-                asa.enabled = !asa.enabled;
+                asa.Active = enable;
                 break;
             case 6:
                 LongTeleportAbility lta = playerObject.GetComponent<LongTeleportAbility>();
-                lta.enabled = !lta.enabled;
+                lta.Active = enable;
                 break;
         }
+    }
+    public static bool abilityEnabled(int abilityIndex)
+    {
+        GameObject playerObject = Managers.Player.gameObject;
+        switch (abilityIndex)
+        {
+            case 1:
+                ForceDashAbility fta = playerObject.GetComponent<ForceDashAbility>();
+                return fta.Active;
+            case 2:
+                WallClimbAbility wca = playerObject.GetComponent<WallClimbAbility>();
+                return wca.Active;
+            case 3:
+                ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
+                return efa.Active;
+            case 4:
+                SwapAbility sa = playerObject.GetComponent<SwapAbility>();
+                return sa.Active;
+            case 5:
+                AirSliceAbility asa = playerObject.GetComponent<AirSliceAbility>();
+                return asa.Active;
+            case 6:
+                LongTeleportAbility lta = playerObject.GetComponent<LongTeleportAbility>();
+                return lta.Active;
+            default:
+                throw new System.ArgumentException("abilityIndex is invalid!: " + abilityIndex);
+        }
+    }
+
+    public enum Cheat
+    {
+        FORCE_CHARGE = 1,
+        WALL_CLIMB = 2,
+        ELECTRIC_FIELD = 3,
+        SWAP = 4,
+        AIR_SLICE = 5,
+        LONG_TELEPORT = 6,
+        ACTIVATE_ALL_CHECKPOINTS = 7,
+        RESET_GAME = 8
+    }
+    public static void activateCheat(Cheat cheat, bool activate)
+    {
+        if ((int)cheat <= 6)
+        {
+            enableAbility((int)cheat, activate);
+        }
+        else if (cheat == Cheat.ACTIVATE_ALL_CHECKPOINTS)
+        {
+            activateAllCheckpoints();
+        }
+        else if (cheat == Cheat.RESET_GAME)
+        {
+            Managers.Game.resetGame();
+        }
+    }
+    public static bool cheatActive(Cheat cheat)
+    {
+        if ((int)cheat <= 6)
+        {
+            return abilityEnabled((int)cheat);
+        }
+        else if (cheat == Cheat.ACTIVATE_ALL_CHECKPOINTS)
+        {
+            return false;
+        }
+        else if (cheat == Cheat.RESET_GAME)
+        {
+            return false;
+        }
+        return false;
     }
 }

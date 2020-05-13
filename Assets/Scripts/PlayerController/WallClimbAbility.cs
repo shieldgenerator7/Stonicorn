@@ -7,40 +7,53 @@ public class WallClimbAbility : PlayerAbility
     [Header("Settings")]
     public float wallDetectRange = 1.0f;//how far from the center of the old position it should look for a wall
     [Header("Necessary Input")]
-    public AudioClip wallClimbSound;
     public GameObject stickyPadPrefab;
-
-    private GravityAccepter gravity;
 
     protected override void init()
     {
         base.init();
-        gravity = GetComponent<GravityAccepter>();
-        playerController.isGroundedCheck += isGroundedWall;
+        playerController.Ground.isGroundedCheck += isGroundedWall;
         playerController.onTeleport += plantSticky;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.isGroundedCheck -= isGroundedWall;
+        playerController.Ground.isGroundedCheck -= isGroundedWall;
         playerController.onTeleport -= plantSticky;
     }
 
     bool isGroundedWall()
     {
         bool isgrounded = false;
-        isgrounded = playerController.isGrounded(Utility.PerpendicularRight(-gravity.Gravity));//right side
+        Vector2 gravity = playerController.Gravity.Gravity;
+        //Test right side
+        isgrounded = playerController.Ground.isGroundedInDirection(
+            -gravity.PerpendicularRight()
+            );
         if (!isgrounded)
         {
-            isgrounded = playerController.isGrounded(Utility.PerpendicularLeft(-gravity.Gravity));//left side
+            //Test left side
+            isgrounded = playerController.Ground.isGroundedInDirection(
+                -gravity.PerpendicularLeft()
+                );
         }
         return isgrounded;
     }
 
-    public void playWallClimbEffects(Vector2 pos)
+    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
-        particleSystem.transform.position = pos;
-        particleSystem.Play();
+        if (playerController.Ground.GroundedAbilityPrev)
+        {
+            base.showTeleportEffect(oldPos, newPos);
+        }
+    }
+
+    protected override void playTeleportSound(Vector2 oldPos, Vector2 newPos)
+    {
+        if (playerController.Ground.GroundedAbilityPrev)
+        {
+            base.playTeleportSound(oldPos, newPos);
+        }
     }
 
     /// <summary>
@@ -50,51 +63,51 @@ public class WallClimbAbility : PlayerAbility
     /// <param name="newPos"></param>
     public void plantSticky(Vector2 oldPos, Vector2 newPos)
     {
-        if (playerController.GroundedPreTeleportAbility)
+        if (playerController.Ground.GroundedAbilityPrev)
         {
+            //Update Stats
+            GameStatistics.addOne("WallClimb");
+            //Get the gravity direction
+            Vector2 gravity = playerController.Gravity.Gravity;
             //Look right
-            Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, Utility.PerpendicularRight(-gravity.Gravity), wallDetectRange);
-            //Debug.DrawLine(oldPos, oldPos + (Vector2)Utility.PerpendicularRight(-gravity.Gravity).normalized * wallDetectRange, Color.magenta, 2);
-            for (int i = 0; i < answer.count; i++)
-            {
-                RaycastHit2D rch2d = answer.rch2ds[i];
-                if (!rch2d.collider.isTrigger && rch2d.collider.gameObject != gameObject)
-                {
-                    spawnSticky(rch2d.point);
-                    break;
-                }
-            }
+            plantStickyInDirection(oldPos, -gravity.PerpendicularRight());
             //Look left
-            answer = Utility.RaycastAll(oldPos, Utility.PerpendicularLeft(-gravity.Gravity), wallDetectRange);
-            //Debug.DrawLine(oldPos, oldPos + (Vector2)Utility.PerpendicularLeft(-gravity.Gravity).normalized * wallDetectRange, Color.yellow, 2);
-            for (int i = 0; i < answer.count; i++)
+            plantStickyInDirection(oldPos, -gravity.PerpendicularLeft());
+        }
+    }
+    void plantStickyInDirection(Vector2 pos, Vector2 dir)
+    {
+        Utility.RaycastAnswer answer = Utility.RaycastAll(pos, dir, wallDetectRange);
+        for (int i = 0; i < answer.count; i++)
+        {
+            RaycastHit2D rch2d = answer.rch2ds[i];
+            if (!rch2d.collider.isTrigger && rch2d.collider.gameObject != gameObject)
             {
-                RaycastHit2D rch2d = answer.rch2ds[i];
-                if (!rch2d.collider.isTrigger && rch2d.collider.gameObject != gameObject)
-                {
-                    spawnSticky(rch2d.point);
-                    break;
-                }
+                spawnSticky(rch2d.point);
+                break;
             }
-
         }
     }
     void spawnSticky(Vector2 stickyPos)
     {
         bool tooClose = false;
-        foreach(StickyPadChecker spc in GameObject.FindObjectsOfType<StickyPadChecker>()){
+        foreach (StickyPadChecker spc in GameObject.FindObjectsOfType<StickyPadChecker>())
+        {
             SpriteRenderer spcSR = spc.GetComponent<SpriteRenderer>();
-            float minDim = Mathf.Min(spcSR.size.x, spcSR.size.y)/2;
-            if (((Vector2)spc.transform.position - stickyPos).sqrMagnitude < minDim * minDim)
+            float minDim = Mathf.Min(spcSR.size.x, spcSR.size.y) / 2;
+            if (stickyPos.inRange(spc.transform.position, minDim))
             {
                 tooClose = true;
                 break;
             }
         }
-        if (!tooClose) {
+        if (!tooClose)
+        {
             GameObject stickyPad = Utility.Instantiate(stickyPadPrefab);
-            stickyPad.GetComponent<StickyPadChecker>().init(gravity.Gravity);
+            stickyPad.GetComponent<StickyPadChecker>().init(playerController.Gravity.Gravity);
             stickyPad.transform.position = stickyPos;
+            //Update Stats
+            GameStatistics.addOne("WallClimbSticky");
         }
     }
 }

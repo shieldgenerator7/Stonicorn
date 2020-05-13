@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SplashScreenUpdater : MonoBehaviour
 {
@@ -19,12 +18,9 @@ public class SplashScreenUpdater : MonoBehaviour
     private float lastKeyFrame = 0;
     private float displayState = -1;//0 = fade in, 1 = showing, 2 = fade out
 
-    private bool levelLoaded = false;
-
     // Start is called before the first frame update
     void Start()
     {
-        SceneManager.sceneLoaded += OnLevelLoaded;
         currentSplashImage = splashImages[currentIndex];
     }
 
@@ -34,82 +30,98 @@ public class SplashScreenUpdater : MonoBehaviour
         if (displayState == -1)
         {
             displayState = 0;
-            lastKeyFrame = Time.time;
+            lastKeyFrame = Time.unscaledTime;
             fadeObjectIn(currentSplashImage);
         }
         else if (displayState == 0)
         {
-            if (Time.time > lastKeyFrame + fadeInTime)
+            if (Time.unscaledTime > lastKeyFrame + fadeInTime)
             {
                 displayState = 1;
-                lastKeyFrame = Time.time;
+                lastKeyFrame = Time.unscaledTime;
             }
         }
         else if (displayState == 1)
         {
-            if (Time.time > lastKeyFrame + showTime)
+            if (Time.unscaledTime > lastKeyFrame + showTime)
             {
-                //If the splash image is the last one, wait for the level to load before hiding it
-                if (levelLoaded || currentIndex < splashImages.Count - 1)
+                //Start the hiding process for the current splash image
+                if (currentIndex < splashImages.Count)
                 {
                     displayState = 2;
-                    lastKeyFrame = Time.time;
+                    lastKeyFrame = Time.unscaledTime;
                     fadeObjectOut(currentSplashImage);
                 }
             }
         }
         else if (displayState == 2)
         {
-            if (Time.time > lastKeyFrame + fadeOutTime)
+            if (Time.unscaledTime > lastKeyFrame + fadeOutTime)
             {
-                currentIndex++;
-                if (currentIndex < splashImages.Count)
-                {
-                    displayState = -1;
-                    lastKeyFrame = Time.time;
-                    currentSplashImage = splashImages[currentIndex];
-                }
-                else
-                {
-                    displayState = 3;
-                    Fader f = gameObject.AddComponent<Fader>();
-                    f.duration = fadeOutTime;
-                }
+                advanceToNextScreen();
             }
         }
-    }
-
-    void OnLevelLoaded(Scene s, LoadSceneMode loadMode)
-    {
-        //If the loaded scene is not the player scene,
-        if (s.buildIndex != 0)
+        if (Input.GetKeyUp(KeyCode.Escape) || Input.GetMouseButtonUp(0)
+            || (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended))
         {
-            //level loaded condition is true
-            levelLoaded = true;
+            Destroy(currentSplashImage);
+            advanceToNextScreen();
         }
-        //Remove the listener
-        SceneManager.sceneLoaded -= OnLevelLoaded;
     }
 
     void fadeObjectIn(GameObject obj)
     {
         obj.SetActive(true);
         Fader f = currentSplashImage.AddComponent<Fader>();
+        f.ignorePause = true;
         f.delayTime = 0;
         f.startfade = 0;
         f.endfade = 1;
         f.destroyObjectOnFinish = false;
         f.destroyScriptOnFinish = true;
+        f.isEffectOnly = true;
         f.duration = fadeInTime;
     }
     void fadeObjectOut(GameObject obj)
     {
         Fader f = currentSplashImage.AddComponent<Fader>();
+        f.ignorePause = true;
         f.delayTime = 0;
         f.startfade = 1;
         f.endfade = 0;
         f.destroyObjectOnFinish = true;
         f.destroyScriptOnFinish = true;
+        f.isEffectOnly = true;
         f.duration = fadeOutTime;
+    }
+    void advanceToNextScreen()
+    {
+        currentIndex++;
+        if (currentIndex < splashImages.Count)
+        {
+            displayState = -1;
+            lastKeyFrame = Time.unscaledTime;
+            currentSplashImage = splashImages[currentIndex];
+        }
+        else
+        {
+            displayState = 3;
+            Fader f = gameObject.AddComponent<Fader>();
+            f.ignorePause = true;
+            f.duration = fadeOutTime;
+            f.isEffectOnly = true;
+            f.onFadeFinished += onLastFadeFinished;
+        }
+    }
+
+    public delegate void OnSplashScreenFinished();
+    public OnSplashScreenFinished onSplashScreenFinished;
+
+    void onLastFadeFinished()
+    {
+        if (onSplashScreenFinished != null)
+        {
+            onSplashScreenFinished();
+        }
     }
 }

@@ -11,15 +11,15 @@ public class SimpleMovement : MonoBehaviour
     public float endDelay;//delay after reaching the end before resetting to the beginning
     public bool roundTrip = false;//true: move backwards instead of jumping to start pos
 
-    private Vector2 startPosition;
+    protected Vector2 startPosition;
 
     //Runtime constants
-    private float speed;
-    private Vector2 endPosition;
+    protected float speed;
+    protected Vector2 endPosition;
     //Runtime vars
-    private float lastKeyFrame;
-    private bool forwards = true;//true to return back to start
-    private bool paused = false;
+    protected float lastKeyFrame;
+    protected bool forwards = true;//true to return back to start
+    protected bool paused = false;
 
     // Use this for initialization
     protected virtual void Start()
@@ -83,9 +83,8 @@ public class SimpleMovement : MonoBehaviour
         }
     }
 
-    public void setMovement(Vector2 start, Vector2 dir, float minDist = 0, float maxDist = 1, bool keepPercent = true, bool updateSpeed = false)
+    public virtual void setMovement(Vector2 start, Vector2 dir, float minDist = 0, float maxDist = 1, bool keepPercent = true, bool updateSpeed = false)
     {
-        Debug.Log("start: " + start + ", dir: " + dir + ", direction: " + direction);
         if (!updateSpeed)
         {
             //Make sure direction is valid
@@ -125,7 +124,6 @@ public class SimpleMovement : MonoBehaviour
         {
             speed = (endPosition - startPosition).magnitude / duration;
         }
-        Debug.Log("startpos: " + startPosition + ", endpos: " + endPosition + ", speed: " + speed + ", duration: " + duration);
     }
 
     public void setMovementEnd(Vector2 end, Vector2 dir)

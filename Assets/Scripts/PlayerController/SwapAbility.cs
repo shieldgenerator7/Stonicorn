@@ -6,11 +6,13 @@ public class SwapAbility : PlayerAbility
 {
     private PolygonCollider2D pc2d;
 
-    private List<GameObject> swappableObjects = new List<GameObject>();
-    public List<GameObject> SwappableObjects
+    private GameObject swapTarget;
+    public GameObject SwapTarget
     {
-        get { return swappableObjects; }
+        get { return swapTarget; }
     }
+
+    private bool swappedSomething = false;
 
     /// <summary>
     /// Used for determining if the swapped object's landing spot is occupied
@@ -24,30 +26,46 @@ public class SwapAbility : PlayerAbility
     protected override void init()
     {
         base.init();
-        playerController.isOccupiedException += isColliderSwappable;
-        playerController.onPreTeleport += refreshSwappableObjectList;
+        playerController.Ground.isGroundedCheck += hasSwapped;
+        playerController.findTeleportablePositionOverride += findSwapPosition;
         playerController.onTeleport += swapObjects;
         pc2d = GetComponent<PolygonCollider2D>();
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.isOccupiedException -= isColliderSwappable;
-        playerController.onPreTeleport -= refreshSwappableObjectList;
+        playerController.Ground.isGroundedCheck -= hasSwapped;
+        playerController.findTeleportablePositionOverride -= findSwapPosition;
         playerController.onTeleport -= swapObjects;
     }
 
-    bool isColliderSwappable(Collider2D coll, Vector3 testPos)
+    bool hasSwapped()
     {
-        return isColliderSwappableImpl(coll, testPos, transform.position);
+        return swappedSomething;
     }
 
-    bool isColliderSwappableImpl(Collider2D coll, Vector3 testPos, Vector3 origPos)
+    bool isColliderSwappable(Collider2D coll, Vector3 tapPos)
     {
-        Vector3 swapPos = coll.gameObject.transform.position - testPos + origPos;
+        bool swappable =
+            coll.gameObject != this.gameObject
+            && coll.OverlapPoint(tapPos)
+            && isColliderSwappableImpl(coll, tapPos);
+        return swappable;
+    }
+
+    bool isColliderSwappableImpl(Collider2D coll, Vector3 testPos)
+    {
+        Vector3 swapPos = transform.position;
         if (coll.gameObject.GetComponent<Rigidbody2D>() != null)
         {
-            return !isOccupiedForObject(coll, swapPos);
+            return true;
+            //bool occupied = isOccupiedForObject(coll, swapPos);
+            //if (occupied)
+            //{
+            //    Vector2 newPos = adjustForOccupant(coll, swapPos);
+            //    occupied = isOccupiedForObject(coll, newPos);
+            //}
+            //return !occupied;
         }
         return false;
     }
@@ -87,13 +105,76 @@ public class SwapAbility : PlayerAbility
         return false;
     }
 
+    /// <summary>
+    /// Adjusts the given Vector3 to avoid collision with the objects that it collides with
+    /// </summary>
+    /// <param name="testPos">The Vector3 to adjust</param>
+    /// <returns>The Vector3, adjusted to avoid collision with objects it collides with</returns>
+    /// 2019-09-02: copied from PlayerController.adjustForOccupant()
+    private Vector3 adjustForOccupant(Collider2D coll, Vector3 testPos)
+    {
+        //Find the objects that it would collide with
+        Vector3 testOffset = testPos - coll.transform.position;
+        testOffset = transform.InverseTransformDirection(testOffset);
+        Vector3 savedOffset = pc2d.offset;
+        pc2d.offset = testOffset;
+        Utility.RaycastAnswer answer;
+        answer = pc2d.CastAnswer(Vector2.zero, 0, true);
+        pc2d.offset = savedOffset;
+        Vector3 extents = getExtents(coll);
+        //Adjust the move direction for each found object that it collides with
+        Vector3 moveDir = Vector3.zero;//the direction to move the testPos
+        for (int i = 0; i < answer.count; i++)
+        {
+            RaycastHit2D rh2d = answer.rch2ds[i];
+            GameObject go = rh2d.collider.gameObject;
+            //If the game object is not this game object,
+            if (go != transform.gameObject && go != coll.gameObject)
+            {
+                //And if the game object is not a trigger,
+                if (!rh2d.collider.isTrigger)
+                {
+                    //Figure out in which direction to move and how far
+                    Vector3 outDir = testPos - (Vector3)rh2d.point;
+                    //(half width is only an estimate of the dist from the sprite center to its edge)
+                    float adjustDistance = extents.x - rh2d.distance;
+                    //If the distance to move is invalid,
+                    if (adjustDistance < 0)
+                    {
+                        //Use a different estimate of sprite width
+                        adjustDistance = pc2d.bounds.extents.magnitude - rh2d.distance;
+                    }
+                    //If the sprite is mostly contained within the found object,
+                    if (rh2d.collider.OverlapPoint(testPos))
+                    {
+                        //Reverse the direction and increase the dist
+                        outDir *= -1;
+                        adjustDistance += extents.x;
+                    }
+                    //Add the calculated direction and magnitude to the running total
+                    moveDir += outDir.normalized * adjustDistance;
+                }
+            }
+        }
+        return testPos + moveDir;
+    }
+
+    Vector3 getExtents(Collider2D coll)
+    {
+        Vector3 savedUp = coll.transform.up;
+        coll.transform.up = Vector3.up;
+        Vector3 extents = coll.bounds.extents;
+        coll.transform.up = savedUp;
+        return extents;
+    }
+
     void swapObjects(Vector2 oldPos, Vector2 newPos)
     {
-        bool swappedSomething = false;
-        foreach (GameObject go in swappableObjects)
+        swappedSomething = false;
+        if (swapTarget)
         {
             //Clear connections
-            Rigidbody2D goRB2D = go.GetComponent<Rigidbody2D>();
+            Rigidbody2D goRB2D = swapTarget.GetComponent<Rigidbody2D>();
             if (goRB2D)
             {
                 foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
@@ -106,55 +187,51 @@ public class SwapAbility : PlayerAbility
             }
             //Swap object
             Vector2 swapPos = (Vector2)gameObject.transform.position - newPos + oldPos;
-            go.transform.position = swapPos;
+            if (isOccupiedForObject(gameObject.GetComponent<Collider2D>(), swapPos))
+            {
+                swapPos = adjustForOccupant(gameObject.GetComponent<Collider2D>(), swapPos);
+            }
+            swapTarget.transform.position = swapPos;
             swappedSomething = true;
+            //Give player time to tap again after swapping
+            playerController.GravityImmune = true;
+            //Update Stats
+            GameStatistics.addOne("SwapObject");
+            //Update Stats
+            GameStatistics.addOne("Swap");
         }
+    }
+
+    private Vector2 findSwapPosition(Vector2 targetPos, Vector2 tapPos)
+    {
+        findSwapTarget(targetPos, tapPos);
+        if (swapTarget != null)
+        {
+            return swapTarget.transform.position;
+        }
+        return Vector2.zero;
+    }
+
+    private void findSwapTarget(Vector2 targetPos, Vector2 tapPos)
+    {
+        swapTarget = null;
+        Utility.RaycastAnswer answer = Utility.RaycastAll(targetPos, Vector2.up, 0);
+        for (int i = 0; i < answer.count; i++)
+        {
+            RaycastHit2D rch2d = answer.rch2ds[i];
+            GameObject rch2dGO = rch2d.collider.gameObject;
+            if (isColliderSwappable(rch2d.collider, tapPos))
+            {
+                swapTarget = rch2dGO;
+            }
+        }
+    }
+
+    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
+    {
         if (swappedSomething)
         {
-            if (playerController.Range < playerController.baseRange)
-            {
-                playerController.Range = playerController.baseRange;
-            }
-            playerController.airPorts = 0;
+            base.showTeleportEffect(oldPos, newPos);
         }
-    }
-
-    private bool refreshSwappableObjectList(Vector2 oldPos, Vector2 newPos, Vector2 triesPos)
-    {
-        swappableObjects = getSwappableObjects(newPos, oldPos);
-        return true;
-    }
-
-    List<GameObject> getSwappableObjects(Vector3 pos, Vector3 origPos)
-    {
-        List<GameObject> gos = new List<GameObject>();
-        //2018-02-12: copied from PlayerController.isOccupied(.)       
-        Vector3 offset = pos - transform.position;
-        float angle = transform.localEulerAngles.z;
-        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
-
-        //Find objects that would collide with the PolygonCollider2D
-        //if it were at this location.
-        Vector3 savedOffset = pc2d.offset;
-        pc2d.offset = rOffset;
-        int count = Utility.Cast(pc2d, Vector2.zero, rh2dsSwappable, 0, true);
-        pc2d.offset = savedOffset;
-        for (int i = 0; i < count; i++)
-        {
-            RaycastHit2D rh2d = rh2dsSwappable[i];
-            GameObject go = rh2d.collider.gameObject;
-            if (!rh2d.collider.isTrigger)
-            {
-                if (go != gameObject)
-                {
-                    if (isColliderSwappableImpl(rh2d.collider, pos, origPos))
-                    {
-                        gos.Add(go);
-                    }
-                }
-
-            }
-        }
-        return gos;
     }
 }

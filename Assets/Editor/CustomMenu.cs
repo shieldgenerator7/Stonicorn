@@ -4,10 +4,22 @@ using UnityEngine;
 using System.Diagnostics;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 
 public class CustomMenu
 {
-    [MenuItem("SG7/Editor/Change HideableArea to NonTeleportableArea")]
+    [MenuItem("SG7/Editor/Terrain/Focus Terrain Tool %T")]
+    public static void levelTerrainPoints()
+    {
+        SpriteShapeTool sst = GameObject.FindObjectOfType<SpriteShapeTool>();
+        if (sst)
+        {
+            Selection.activeGameObject = sst.gameObject;
+        }
+    }
+
+
+    [MenuItem("SG7/Editor/Refactor/Change HideableArea to NonTeleportableArea")]
     public static void changeTag()
     {
         for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -29,19 +41,54 @@ public class CustomMenu
         }
     }
 
-    [MenuItem("SG7/Editor/Call Merky %#`")]
+    [MenuItem("SG7/Editor/Call Merky Spawn Point %#`")]
     public static void callMerky()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag(GameManager.playerTag);
-        if (GameObject.FindObjectsOfType<RulerDisplayer>().Length > 0)
+        if (Application.isEditor && !Application.isPlaying)
         {
-            playerObject.transform.position = RulerDisplayer.currentMousePos;
+            PlayerTestSpawnPoint playerTSP = GameObject.FindObjectOfType<PlayerTestSpawnPoint>();
+            playerTSP.enabled = true;
+            GameObject playerSpawnObject = playerTSP.gameObject;
+            playerSpawnObject.SetActive(true);
+            if (GameObject.FindObjectOfType<RulerDisplayer>())
+            {
+                playerSpawnObject.transform.position = RulerDisplayer.currentMousePos;
+            }
+            else
+            {
+                playerSpawnObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+            }
+            Selection.activeGameObject = playerSpawnObject;
         }
         else
         {
-            playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+            GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
+            if (GameObject.FindObjectOfType<RulerDisplayer>())
+            {
+                playerObject.transform.position = RulerDisplayer.currentMousePos;
+            }
+            else
+            {
+                playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+            }
+            Selection.activeGameObject = playerObject;
         }
-        Selection.activeGameObject = playerObject;
+    }
+
+    [MenuItem("SG7/Editor/Deactivate Merky Spawn Point %&`")]
+    public static void uncallMerky()
+    {
+        if (Application.isEditor && !Application.isPlaying)
+        {
+            //Deactivate spawn point
+            PlayerTestSpawnPoint playerTSP = GameObject.FindObjectOfType<PlayerTestSpawnPoint>();
+            playerTSP.enabled = false;
+            GameObject playerSpawnObject = playerTSP.gameObject;
+            playerSpawnObject.SetActive(true);
+            //Select player object
+            GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
+            Selection.activeGameObject = playerObject;
+        }
     }
 
     [MenuItem("SG7/Editor/Toggle Ruler %`")]
@@ -110,20 +157,8 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Hide or Unhide Hidden Areas %h")]
     public static void hideUnhideHiddenAreas()
     {
-        int levelsDeep = 3;//go three levels deep
-        bool changeDetermined = false;
-        bool show = false;
-        for (int i = 0; i < SceneManager.sceneCount; i++)
-        {
-            Scene s = SceneManager.GetSceneAt(i);
-            if (s.isLoaded)
-            {
-                foreach (GameObject go1 in s.GetRootGameObjects())
-                {
-                    hideUnhideHiddenAreas(go1, ref show, ref changeDetermined, levelsDeep-1);
-                }
-            }
-        }
+        //2019-01-01: copied from a comment by Mikilo: https://answers.unity.com/questions/1039366/is-it-possible-to-access-layer-visibility-and-lock.html
+        Tools.visibleLayers ^= 1 << LayerMask.NameToLayer("Hidden Area"); // Toggle a value in lockedLayers.
     }
 
     public static void hideUnhideHiddenAreas(GameObject go1, ref bool show, ref bool changeDetermined, int levelsDeep)
@@ -147,36 +182,7 @@ public class CustomMenu
             }
         }
     }
-
-    [MenuItem("SG7/Runtime/Save Game State %e")]
-    public static void saveGameState()
-    {
-        UnityEngine.Debug.Log("SAVED");
-        GameManager.Save();
-    }
-
-    [MenuItem("SG7/Runtime/Load Game State %#e")]
-    public static void loadGameState()
-    {
-        UnityEngine.Debug.Log("LOADED");
-        GameManager.LoadState();
-    }
-
-    [MenuItem("SG7/Runtime/Reload Game %#r")]
-    public static void reloadGame()
-    {
-        GameManager.resetGame();
-    }
-
-    [MenuItem("SG7/Runtime/Activate All Checkpoints &c")]
-    public static void activateAllCheckpoints()
-    {
-        foreach (CheckPointChecker cpc in GameObject.FindObjectsOfType<CheckPointChecker>())
-        {
-            cpc.activate();
-        }
-    }
-
+    
     [MenuItem("SG7/Build/Build Windows %w")]
     public static void buildWindows()
     {
@@ -194,7 +200,7 @@ public class CustomMenu
     }
     public static void build(BuildTarget buildTarget, string extension)
     {
-        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
+        string defaultPath = getDefaultBuildPath();
         if (!System.IO.Directory.Exists(defaultPath))
         {
             System.IO.Directory.CreateDirectory(defaultPath);
@@ -202,9 +208,15 @@ public class CustomMenu
         //2017-10-19 copied from https://docs.unity3d.com/Manual/BuildPlayerPipeline.html
         // Get filename.
         string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", defaultPath, PlayerSettings.productName, extension);
+
+        // User hit the cancel button.
+        if (buildName == "")
+            return;
+
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
         UnityEngine.Debug.Log("BUILDNAME: " + buildName);
         UnityEngine.Debug.Log("PATH: " + path);
+
         string[] levels = new string[EditorBuildSettings.scenes.Length];
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
         {
@@ -219,16 +231,21 @@ public class CustomMenu
         }
 
         // Build player.
-        BuildPipeline.BuildPlayer(levels, buildName, BuildTarget.StandaloneWindows, BuildOptions.None);
+        BuildPipeline.BuildPlayer(levels, buildName, buildTarget, BuildOptions.None);
 
         // Copy a file from the project folder to the build folder, alongside the built game.
-        //NOTE: Changes to the Dialogue folder won't reflected unless you delete the Dialogue folder in the build directory
-        if (!System.IO.Directory.Exists(path + "/Assets/Resources/Dialogue"))
+        string resourcesPath = path + "/Assets/Resources";
+        string dialogPath = resourcesPath + "/Dialogue";
+
+        if (!System.IO.Directory.Exists(dialogPath))
         {
-            System.IO.Directory.CreateDirectory(path + "/Assets/Resources");
-            FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/",
-                path + "/Assets/Resources/Dialogue/"
-                );
+            System.IO.Directory.CreateDirectory(resourcesPath);
+        }
+
+        if (true || EditorUtility.DisplayDialog("Dialog Refresh", "Refresh the voice acting entries in " + dialogPath + "?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable."))
+        {
+            FileUtil.DeleteFileOrDirectory(dialogPath);
+            FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/", dialogPath);
         }
 
         // Run the game (Process class from System.Diagnostics).
@@ -241,16 +258,35 @@ public class CustomMenu
     public static void runWindows()
     {//2018-08-10: copied from build()
         string extension = "exe";
-        string defaultPath = "C:/Users/steph/Documents/Unity/Stoned Builds/Builds/" + PlayerSettings.productName;
-        if (!System.IO.Directory.Exists(defaultPath))
-        {
-            throw new UnityException("You need to build the windows version for " + PlayerSettings.productName + " first!");
-        }
-        string buildName = defaultPath + "/" + PlayerSettings.productName + "." + extension;
+        string buildName = getBuildNamePath(extension);
         UnityEngine.Debug.Log("Launching: " + buildName);
         // Run the game (Process class from System.Diagnostics).
         Process proc = new Process();
         proc.StartInfo.FileName = buildName;
         proc.Start();
+    }
+
+    [MenuItem("SG7/Run/Open Build Folder #w")]
+    public static void openBuildFolder()
+    {
+        string extension = "exe";
+        string buildName = getBuildNamePath(extension);
+        //Open the folder where the game is located
+        EditorUtility.RevealInFinder(buildName);
+    }
+
+    public static string getDefaultBuildPath()
+    {
+        return System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName + "_" + PlayerSettings.bundleVersion.Replace(".", "_");
+    }
+    public static string getBuildNamePath(string extension, bool checkFolderExists = true)
+    {
+        string defaultPath = getDefaultBuildPath();
+        if (checkFolderExists && !System.IO.Directory.Exists(defaultPath))
+        {
+            throw new UnityException("You need to build the " + extension + " for " + PlayerSettings.productName + " (Version " + PlayerSettings.bundleVersion + ") first!");
+        }
+        string buildName = defaultPath + "/" + PlayerSettings.productName + "." + extension;
+        return buildName;
     }
 }

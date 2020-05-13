@@ -14,19 +14,12 @@ public class CheckPointChecker : MemoryMonoBehaviour
     private GameObject ghost;
     public CheckPointGhostMover cpGhostMover;
     public GameObject ghostPrefab;
-    private GameObject player;
-    private PlayerController plyrController;
     private static Camera checkpointCamera;
 
     // Use this for initialization
     void Start()
     {
-        if (ghost == null)
-        {
-            initializeGhost();
-        }
-        player = GameManager.getPlayerObject();
-        plyrController = player.GetComponent<PlayerController>();
+        initializeGhost();
         if (checkpointCamera == null)
         {
             GameObject cpBgCamera = GameObject.Find("CP BG Camera");
@@ -40,6 +33,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     void initializeGhost()
     {
         ghost = (GameObject)Instantiate(ghostPrefab);
+        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(ghost, gameObject.scene);
         ghost.SetActive(false);
         cpGhostMover = ghost.GetComponent<CheckPointGhostMover>();
         cpGhostMover.parentCPC = this;
@@ -49,7 +43,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     //When a player touches this checkpoint, activate it
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == GameManager.playerTag)
+        if (coll.gameObject.isPlayer())
         {
             activate();
         }
@@ -60,7 +54,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     */
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.CompareTag(GameManager.playerTag))
+        if (coll.gameObject.isPlayer())
         {
             trigger();
         }
@@ -74,10 +68,10 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         //Not already activated, go ahead and activate
         activated = true;
-        GameManager.saveMemory(this);
-        GameManager.saveCheckPoint(this);
+        Managers.Game.saveMemory(this);
+        Managers.saveCheckPoint(this);
         //if there's two or more active checkpoints
-        List<CheckPointChecker> activeCPCs = GameManager.getActiveCheckPoints();
+        List<CheckPointChecker> activeCPCs = Managers.ActiveCheckPoints;
         if (activeCPCs.Count > 1)
         {
             //Start the particles
@@ -111,9 +105,10 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public void trigger()
     {
+        //If this checkpoint is already the current one,
         if (current == this.gameObject)
         {
-            //don't trigger it twice
+            //don't trigger it
             return;
         }
         current = this.gameObject;
@@ -124,8 +119,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         activate();
         ghost.SetActive(false);
-        plyrController.setIsInCheckPoint(true);
-        foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
+        Managers.Player.InCheckPoint = true;
+        foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
         {
             if (cpc != this)
             {
@@ -135,7 +130,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     public static void readjustCheckPointGhosts(Vector2 epicenter)
     {
-        foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
+        foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
         {
             if (cpc.gameObject != current)
             {
@@ -147,7 +142,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         if (current == this.gameObject)
         {
-            plyrController.setIsInCheckPoint(false);
+            Managers.Player.InCheckPoint = false;
             activate();
             clearPostTeleport(true);
             current = null;
@@ -163,6 +158,18 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         checkpointCamera.gameObject.SetActive(true);
         checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0, 0, -10);
+        //Orient the camera to the gravity collider it's in
+        foreach(GravityZone gz in FindObjectsOfType<GravityZone>())
+        {
+            if (gz.GetComponent<Collider2D>().OverlapPoint(
+                checkpointCamera.gameObject.transform.position
+                ))
+            {
+                checkpointCamera.gameObject.transform.up =
+                    (Vector2)checkpointCamera.gameObject.transform.position - (Vector2)gz.transform.position;
+                break;
+            }
+        }
         //2016-12-06: The following code copied from an answer by jashan: http://answers.unity3d.com/questions/22954/how-to-save-a-picture-take-screenshot-from-a-camer.html
         int resWidth = 300;
         int resHeight = 300;
@@ -199,7 +206,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         checkpointCamera.gameObject.SetActive(false);
         string filename = gameObject.name + ".png";
-        ES2.SaveImage(screenShot, filename);
+        ES3.SaveImage(screenShot, filename);
         return filename;
     }
 
@@ -218,9 +225,9 @@ public class CheckPointChecker : MemoryMonoBehaviour
     /// </summary>
     /// <param name="targetPos"></param>
     /// <returns></returns>
-    public bool checkGhostActivation(Vector3 targetPos)
+    public bool checkGhostActivation(Vector2 targetPos)
     {
-        return ghost.GetComponent<CircleCollider2D>().bounds.Contains(targetPos);
+        return ghost.GetComponent<Collider2D>().OverlapPoint(targetPos);
     }
     /// <summary>
     /// So now the player has teleported out and the checkpoint ghosts need to go away

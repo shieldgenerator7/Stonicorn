@@ -7,7 +7,26 @@ public class GameState
 {
     public int id;
     public List<ObjectState> states = new List<ObjectState>();
-    public ObjectState merky;//the object state in the list specifically for Merky
+    private ObjectState merky;//the object state in the list specifically for Merky
+    public ObjectState Merky
+    {
+        get
+        {
+            if (merky == null)
+            {
+                foreach (ObjectState os in states)
+                {
+                    if (os.objectName == "merky")
+                    {
+                        merky = os;
+                        break;
+                    }
+                }
+            }
+            return merky;
+        }
+        private set => merky = value;
+    }
 
     public static int nextid = 0;
     private GameObject representation;//the player ghost that represents this game state
@@ -17,14 +36,26 @@ public class GameState
         {
             if (representation == null)
             {
-                representation = GameObject.Instantiate(GameManager.getPlayerGhostPrefab());
-                representation.transform.position = merky.position;
-                representation.transform.localScale = merky.localScale;
-                representation.transform.rotation = merky.rotation;
+                try
+                {
+                    representation = GameObject.Instantiate(Managers.Game.playerGhostPrefab);
+                    representation.transform.position = Merky.position;
+                    representation.transform.localScale = Merky.localScale;
+                    representation.transform.rotation = Merky.rotation;
+                    //If this is the first game state,
+                    if (id == 0)
+                    {
+                        //make its representation slightly bigger
+                        representation.transform.localScale *= 2f;
+                    }
+                }
+                catch(System.NullReferenceException nre)
+                {
+                    Debug.LogError("GameState ("+id+") does not have a Merky! merky: " + Merky);
+                }
             }
             return representation;
         }
-        private set { }
     }
 
     //Instantiation
@@ -33,21 +64,17 @@ public class GameState
         id = nextid;
         nextid++;
     }
-    public GameState(List<GameObject> list) : this()
+    public GameState(ICollection<GameObject> list) : this()
     {
         //Object States
         foreach (GameObject go in list)
         {
-            if (go == null)
-            {
-                continue;
-            }
             ObjectState os = new ObjectState(go);
             os.saveState();
             states.Add(os);
-            if (go.name.Equals("merky"))
+            if (go.name == "merky")
             {
-                merky = os;
+                Merky = os;
             }
         }
     }
@@ -63,7 +90,7 @@ public class GameState
     {
         foreach (ObjectState os in states)
         {
-            if (os.sceneName.Equals(go.scene.name) && os.objectName.Equals(go.name))
+            if (os.sceneName == go.scene.name && os.objectName == go.name)
             {
                 os.loadState();
                 return true;
@@ -92,7 +119,7 @@ public class GameState
     {
         if (go == null)
         {
-            return false;
+            throw new System.ArgumentNullException("GameState.hasGameObject() cannot accept null for go! go: " + go);
         }
         foreach (ObjectState os in states)
         {
@@ -126,6 +153,23 @@ public class GameState
         {
             sr.color = new Color(c.r, c.g, c.b, 0.5f);
             ps.Stop();
+        }
+        //Do special processing for the first one
+        if (id == 0)
+        {
+            //Make sure it's always on screen
+            if (!Managers.Camera.inView(Representation.transform.position))
+            {
+                Representation.transform.position =
+                    Managers.Camera.getInViewPosition(
+                        Merky.position,
+                        0.9f
+                    );
+            }
+            else
+            {
+                Representation.transform.position = Merky.position;
+            }
         }
     }
     public bool checkRepresentation(Vector3 touchPoint, bool checkSprite = true)

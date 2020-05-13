@@ -6,14 +6,27 @@ using UnityEngine;
 
 public class NPCController : SavableMonoBehaviour
 {
-    AudioSource source;
+    private AudioSource audioSource;
+    AudioSource Source
+    {
+        get
+        {
+            if (audioSource == null)
+            {
+                audioSource = GetComponent<AudioSource>();
+                if (audioSource == null)
+                {
+                    audioSource = gameObject.AddComponent<AudioSource>();
+                }
+            }
+            return audioSource;
+        }
+    }
 
     public string lineFileName;//the file that has the list of voice lines in it
     public List<NPCVoiceLine> voiceLines;
 
     public float interruptDistance = 10.0f;//if Merky goes further than this distance, the NPC stops talking
-
-    private GameObject playerObject;
 
     //State
     /// <summary>
@@ -29,16 +42,6 @@ public class NPCController : SavableMonoBehaviour
     // Use this for initialization
     protected virtual void Start()
     {
-        source = GetComponent<AudioSource>();
-        playerObject = GameManager.getPlayerObject();
-        if (source == null)
-        {
-            source = GetComponent<AudioSource>();
-            if (source == null)
-            {
-                source = gameObject.AddComponent<AudioSource>();
-            }
-        }
         //Read in the NPC's lines
         if (voiceLines == null)
         {
@@ -54,80 +57,88 @@ public class NPCController : SavableMonoBehaviour
             //2017-09-05: copied from an answer by Drakestar: http://answers.unity3d.com/questions/279750/loading-data-from-a-txt-file-c.html
             try
             {
-                string line;
-                StreamReader theReader = new StreamReader("Assets/Resources/Dialogue/" + lineFileName, Encoding.Default);
-                using (theReader)
-                {
-                    do
-                    {
-                        line = theReader.ReadLine();
+                string lineFileFSPath = "Assets/Resources/Dialogue/" + lineFileName; // Relative path to linefile on the filesystem.
+                List<string> fileLines; // Array of script file lines.
 
-                        if (line != null)
+                // Attempt to read the data file from the local filesystem.  If it doesn't exist fall back to the
+                // packed assets.  This is to allow overriding base behaviors with custom client-side ones.
+                if (File.Exists(lineFileFSPath))
+                {
+                    StreamReader theReader = new StreamReader(lineFileFSPath, Encoding.Default);
+                    fileLines = new List<string>(theReader.ReadToEnd().Split('\n'));
+                    theReader.Close();
+                }
+                else
+                {
+                    TextAsset internalFile = Resources.Load<TextAsset>("Dialogue/" + lineFileName.Split('.')[0]);
+
+                    Debug.Assert(internalFile != null, "Could not load fallback NPC text script assumed to be located at Dialogue/" + lineFileName + "!");
+
+                    fileLines = new List<string>(internalFile.ToString().Split('\n'));
+                }
+
+                foreach (string line in fileLines)
+                {
+                    if (line.StartsWith(":"))
+                    {
+                        writeIndex++;
+                        NPCVoiceLine npcvl = new NPCVoiceLine();
+                        voiceLines.Add(npcvl);
+                    }
+                    else if (line.StartsWith("audio:"))
+                    {
+                        string audioPath = line.Substring("audio:".Length).Trim();
+                        voiceLines[writeIndex].voiceLine = Resources.Load<AudioClip>("Dialogue/" + audioPath);
+                    }
+                    else if (line.StartsWith("text:"))
+                    {
+                        string text = line.Substring("text:".Length).Trim();
+                        voiceLines[writeIndex].voiceLineText = text;
+                        if (voiceLines[writeIndex].lineSegments.Count == 0)
                         {
-                            if (line.StartsWith(":"))
-                            {
-                                writeIndex++;
-                                NPCVoiceLine npcvl = new NPCVoiceLine();
-                                voiceLines.Add(npcvl);
-                            }
-                            else if (line.StartsWith("audio:"))
-                            {
-                                string audioPath = line.Substring("audio:".Length).Trim();
-                                voiceLines[writeIndex].voiceLine = Resources.Load<AudioClip>("Dialogue/" + audioPath);
-                            }
-                            else if (line.StartsWith("text:"))
-                            {
-                                string text = line.Substring("text:".Length).Trim();
-                                voiceLines[writeIndex].voiceLineText = text;
-                                if (voiceLines[writeIndex].lineSegments.Count == 0)
-                                {
-                                    voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(text));
-                                }
-                            }
-                            else if (line.StartsWith("segments:"))
-                            {
-                                string segmentText = line.Substring("segments:".Length).Trim();
-                                voiceLines[writeIndex].lineSegments.Clear();
-                                string voiceLineText = voiceLines[writeIndex].voiceLineText;
-                                foreach (string s in segmentText.Split('>'))
-                                {
-                                    string[] strs = s.Trim().Split(' ');
-                                    NPCVoiceLine.Line lineSegment = new NPCVoiceLine.Line(strs[0], float.Parse(strs[1]));
-                                    voiceLines[writeIndex].lineSegments.Add(lineSegment);
-                                    voiceLineText = lineSegment.bite(voiceLineText);
-                                }
-                                //Add a dummy line segment for text animation purposes
-                                voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(null, voiceLines[writeIndex].voiceLine.length));
-                            }
-                            else if (line.StartsWith("req:"))
-                            {
-                                string eventName = line.Substring("req:".Length).Trim();
-                                voiceLines[writeIndex].eventReq = eventName;
-                            }
-                            else if (line.StartsWith("exclude:"))
-                            {
-                                string eventName = line.Substring("exclude:".Length).Trim();
-                                voiceLines[writeIndex].eventReqExclude = eventName;
-                            }
-                            else if (line.StartsWith("event:"))
-                            {
-                                string eventName = line.Substring("event:".Length).Trim();
-                                voiceLines[writeIndex].triggerEvent = eventName;
-                            }
-                            else if (line.StartsWith("cpl:"))
-                            {
-                                bool cpSetting = bool.Parse(line.Substring("cpl:".Length).Trim());
-                                voiceLines[writeIndex].checkPointLine = cpSetting;
-                            }
-                            else if (line.StartsWith("trigger:"))
-                            {
-                                bool triggerSetting = bool.Parse(line.Substring("trigger:".Length).Trim());
-                                voiceLines[writeIndex].triggerLine = triggerSetting;
-                            }
+                            voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(text));
                         }
                     }
-                    while (line != null);
-                    theReader.Close();
+                    else if (line.StartsWith("segments:"))
+                    {
+                        string segmentText = line.Substring("segments:".Length).Trim();
+                        voiceLines[writeIndex].lineSegments.Clear();
+                        string voiceLineText = voiceLines[writeIndex].voiceLineText;
+                        foreach (string s in segmentText.Split('>'))
+                        {
+                            string[] strs = s.Trim().Split(' ');
+                            NPCVoiceLine.Line lineSegment = new NPCVoiceLine.Line(strs[0], float.Parse(strs[1]));
+                            voiceLines[writeIndex].lineSegments.Add(lineSegment);
+                            voiceLineText = lineSegment.bite(voiceLineText);
+                        }
+                        //Add a dummy line segment for text animation purposes
+                        voiceLines[writeIndex].lineSegments.Add(new NPCVoiceLine.Line(null, voiceLines[writeIndex].voiceLine.length));
+                    }
+                    else if (line.StartsWith("req:"))
+                    {
+                        string eventName = line.Substring("req:".Length).Trim();
+                        voiceLines[writeIndex].eventReq = eventName;
+                    }
+                    else if (line.StartsWith("exclude:"))
+                    {
+                        string eventName = line.Substring("exclude:".Length).Trim();
+                        voiceLines[writeIndex].eventReqExclude = eventName;
+                    }
+                    else if (line.StartsWith("event:"))
+                    {
+                        string eventName = line.Substring("event:".Length).Trim();
+                        voiceLines[writeIndex].triggerEvent = eventName;
+                    }
+                    else if (line.StartsWith("cpl:"))
+                    {
+                        bool cpSetting = bool.Parse(line.Substring("cpl:".Length).Trim());
+                        voiceLines[writeIndex].checkPointLine = cpSetting;
+                    }
+                    else if (line.StartsWith("trigger:"))
+                    {
+                        bool triggerSetting = bool.Parse(line.Substring("trigger:".Length).Trim());
+                        voiceLines[writeIndex].triggerLine = triggerSetting;
+                    }
                 }
             }
             // If anything broke in the try block, we throw an exception with information
@@ -143,7 +154,7 @@ public class NPCController : SavableMonoBehaviour
     {
         return new SavableObject(this,
             "currentVoiceLineIndex", currentVoiceLineIndex,
-            "playBackTime", source.time,
+            "playBackTime", Source.time,
             "lastPlayedCheckPointLineIndex", lastPlayedCheckPointLineIndex);
     }
     public override void acceptSavableObject(SavableObject savObj)
@@ -157,11 +168,11 @@ public class NPCController : SavableMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        source.transform.position = transform.position;
+        Source.transform.position = transform.position;
         //Debug.Log("Number things found: " + thingsFound);
         if (canGreet())
         {
-            if (!source.isPlaying)
+            if (!Source.isPlaying)
             {
                 int mrvli = getMostRelevantVoiceLineIndex();
                 if (mrvli >= 0)
@@ -181,18 +192,23 @@ public class NPCController : SavableMonoBehaviour
         {
             if (shouldStop())
             {
-                source.Stop();
+                Source.Stop();
             }
         }
-        if (source.isPlaying)
+        if (Source.isPlaying)
         {
-            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(source.time);
-            NPCManager.speakNPC(gameObject, true, voicelinetext);
+            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time);
+            string voicelinetextWhole = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time, true);
+            if (voicelinetext.Length > voicelinetextWhole.Length)
+            {
+                throw new UnityException("Voice line text greater than whole! part: " + voicelinetext.Length + "; whole: " + voicelinetextWhole.Length);
+            }
+            NPCManager.speakNPC(gameObject, true, voicelinetext, voicelinetextWhole);
         }
-        else if (currentVoiceLineIndex >= 0)
+        else if (currentVoiceLineIndex >= 0 && !Managers.Time.Paused)
         {
             currentVoiceLineIndex = -1;
-            NPCManager.speakNPC(gameObject, false, "");
+            NPCManager.speakNPC(gameObject, false, "", "");
         }
     }
 
@@ -211,12 +227,13 @@ public class NPCController : SavableMonoBehaviour
     /// <returns></returns>
     protected virtual bool canGreet()
     {
-        float distance = Vector3.Distance(playerObject.transform.position, transform.position);
+        Vector3 playerPos = Managers.Player.transform.position;
+        float distance = Vector3.Distance(playerPos, transform.position);
         if (distance > 5)
         {
             return false;
         }
-        Utility.RaycastAnswer answer = Utility.RaycastAll(transform.position, playerObject.transform.position - transform.position, distance);
+        Utility.RaycastAnswer answer = Utility.RaycastAll(transform.position, playerPos - transform.position, distance);
         int thingsFound = answer.count;
         //If only 2 things, there's nothing in between
         if (thingsFound > 2)
@@ -226,7 +243,7 @@ public class NPCController : SavableMonoBehaviour
                 RaycastHit2D rch2d = answer.rch2ds[i];
                 //If the thing in between is just a trigger, don't worry about it
                 if (!rch2d.collider.isTrigger
-                    && rch2d.collider.gameObject != playerObject
+                    && !rch2d.collider.gameObject.isPlayer()
                     && rch2d.collider.gameObject != gameObject)
                 {
                     return false;
@@ -243,7 +260,7 @@ public class NPCController : SavableMonoBehaviour
         {
             return false;
         }
-        return Vector3.Distance(playerObject.transform.position, transform.position) > interruptDistance;
+        return Vector3.Distance(Managers.Player.transform.position, transform.position) > interruptDistance;
     }
 
     public NPCVoiceLine getMostRelevantVoiceLine()
@@ -288,11 +305,11 @@ public class NPCController : SavableMonoBehaviour
         if (index >= 0 && index < voiceLines.Count)
         {
             currentVoiceLineIndex = index;
-            source.clip = voiceLines[index].voiceLine;
-            source.time = timePos;
-            if (!source.isPlaying)
+            Source.clip = voiceLines[index].voiceLine;
+            Source.time = timePos;
+            if (!Source.isPlaying)
             {
-                source.Play();
+                Source.Play();
             }
         }
         else
@@ -301,9 +318,9 @@ public class NPCController : SavableMonoBehaviour
             {
                 Debug.LogError(gameObject.name + ".setVoiceLine: invalid index: " + index);
             }
-            if (source != null && source.isPlaying)
+            if (Source != null && Source.isPlaying)
             {
-                source.Stop();
+                Source.Stop();
             }
         }
     }
@@ -316,9 +333,31 @@ public class NPCController : SavableMonoBehaviour
     public void setTriggerVoiceLine(NPCVoiceLine npcvl)
     {
         int index = voiceLines.IndexOf(npcvl);
-        if (currentVoiceLineIndex != index || !source.isPlaying)
+        if (currentVoiceLineIndex != index || !Source.isPlaying)
         {
             setVoiceLine(index);
+        }
+    }
+
+    /// <summary>
+    /// Called from TimeManager.onPausedChanged() delegate
+    /// </summary>
+    /// <param name="paused"></param>
+    internal void pauseDialogue(bool paused)
+    {
+        if (paused)
+        {
+            if (Source.isPlaying)
+            {
+                Source.Pause();
+            }
+        }
+        else
+        {
+            if (currentVoiceLineIndex >= 0)
+            {
+                Source.Play();
+            }
         }
     }
 }
