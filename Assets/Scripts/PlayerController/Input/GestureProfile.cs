@@ -12,10 +12,6 @@ public class GestureProfile
     /// </summary>
     public virtual void deactivate() { }
 
-    public void processTapGesture(CheckPointChecker cpc)
-    {
-        Managers.Player.processTapGesture(cpc);
-    }
     public virtual void processTapGesture(Vector3 curMPWorld)
     {
         if (Managers.Game.Rewinding)

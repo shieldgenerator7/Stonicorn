@@ -897,6 +897,21 @@ public class PlayerController : MonoBehaviour
         //If teleport is not on cooldown,
         if (TeleportReady)
         {
+            //If Merky is in a checkpoint,
+            if (inCheckPoint)
+            {
+                //And the tap pos is on a checkpoint preview,
+                foreach (CheckPointChecker cpc in FindObjectsOfType<CheckPointChecker>())
+                {
+                    if (cpc.checkGhostActivation(tapPos))
+                    {
+                        //Teleport to that checkpoint
+                        processTapGesture(cpc);
+                        //Don't process the rest of this method
+                        return;
+                    }
+                }
+            }
             //Get pre-teleport position
             Vector3 oldPos = transform.position;
             //Get post-teleport position
