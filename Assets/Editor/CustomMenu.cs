@@ -276,6 +276,20 @@ public class CustomMenu
         EditorUtility.RevealInFinder(buildName);
     }
 
+    [MenuItem("SG7/Run/Open App Data Folder &f")]
+    public static void openAppDataFolder()
+    {
+        string filePath = Application.persistentDataPath + "/merky.txt";
+        if (System.IO.File.Exists(filePath))
+        {
+            EditorUtility.RevealInFinder(filePath);
+        }
+        else
+        {
+            EditorUtility.RevealInFinder(Application.persistentDataPath);
+        }
+    }
+
     public static string getDefaultBuildPath()
     {
         return System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName + "_" + PlayerSettings.bundleVersion.Replace(".", "_");
