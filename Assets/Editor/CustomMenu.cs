@@ -5,6 +5,7 @@ using System.Diagnostics;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
+using Debug = UnityEngine.Debug;
 
 public class CustomMenu
 {
@@ -182,7 +183,7 @@ public class CustomMenu
             }
         }
     }
-    
+
     [MenuItem("SG7/Build/Build Windows %w")]
     public static void buildWindows()
     {
@@ -214,8 +215,8 @@ public class CustomMenu
             return;
 
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
-        UnityEngine.Debug.Log("BUILDNAME: " + buildName);
-        UnityEngine.Debug.Log("PATH: " + path);
+        Debug.Log("BUILDNAME: " + buildName);
+        Debug.Log("PATH: " + path);
 
         string[] levels = new string[EditorBuildSettings.scenes.Length];
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
@@ -259,7 +260,7 @@ public class CustomMenu
     {//2018-08-10: copied from build()
         string extension = "exe";
         string buildName = getBuildNamePath(extension);
-        UnityEngine.Debug.Log("Launching: " + buildName);
+        Debug.Log("Launching: " + buildName);
         // Run the game (Process class from System.Diagnostics).
         Process proc = new Process();
         proc.StartInfo.FileName = buildName;
