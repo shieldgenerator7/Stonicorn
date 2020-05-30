@@ -159,13 +159,13 @@ public class SnailController : Hazard
             if (!interactableObject)
             {
                 //Update floor variables
-                updateFloorVector(collision, true);
+                updateFloorVector(collision);
             }
         }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        updateFloorVector(collision, false);
+        updateFloorVector(collision);
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -178,7 +178,7 @@ public class SnailController : Hazard
             FloorDirection = Utility.RotateZ(FloorDirection, restickAngleAdjustment * Mathf.Sign(rotateSpeed));
         }
     }
-    void updateFloorVector(Collision2D collision, bool updateVelocity)
+    void updateFloorVector(Collision2D collision)
     {
         touchingObjects[collision.gameObject] = collision.contacts;
         Vector2 newFD = Vector2.zero;
