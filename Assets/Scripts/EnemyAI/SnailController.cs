@@ -126,7 +126,7 @@ public class SnailController : Hazard
                     if (rb2d.angularVelocity != 0)
                     {
                         Vector3 flipScale = animator.transform.localScale;
-                        flipScale.x = Mathf.Sign(rb2d.angularVelocity) * Mathf.Abs(flipScale.x);
+                        flipScale.x = Mathf.Sign(rb2d.angularVelocity);
                         animator.transform.localScale = flipScale;
                     }
                 }
