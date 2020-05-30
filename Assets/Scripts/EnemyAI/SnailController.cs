@@ -51,6 +51,8 @@ public class SnailController : Hazard
         }
     }
 
+    public override bool Hazardous => Awake;
+
     [Header("Components")]
     public Collider2D bottomDetector;//used to make sure the snail is at the right orientation before coming out
     private Animator animator;
@@ -92,7 +94,6 @@ public class SnailController : Hazard
         //Hunting
         if (Awake)
         {
-            Hazardous = true;
             rb2d.angularVelocity = rotateSpeed;
             Debug.DrawLine(transform.position, (Vector2)transform.position + FloorDirection, Color.blue);
 
@@ -110,7 +111,6 @@ public class SnailController : Hazard
             {
                 //Make it so the player can hit it
                 Awake = false;
-                Hazardous = false;
             }
             prevPos = transform.position;
             //If it has rolled its max distance,
@@ -122,7 +122,6 @@ public class SnailController : Hazard
                 {
                     //Make it go to sleep again
                     Awake = false;
-                    Hazardous = false;
                     //Flipping
                     if (rb2d.angularVelocity != 0)
                     {
@@ -218,6 +217,5 @@ public class SnailController : Hazard
         rollDistance = (float)savObj.data["rollDistance"];
         prevPos = (Vector2)savObj.data["prevPos"];
         FloorDirection = transform.up;
-        Hazardous = Awake;
     }
 }

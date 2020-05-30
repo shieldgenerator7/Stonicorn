@@ -7,16 +7,7 @@ using UnityEngine;
 /// </summary>
 public abstract class Hazard : SavableMonoBehaviour
 {
-    [SerializeField]
-    private bool hazardous = true;
-    public bool Hazardous
-    {
-        get => hazardous;
-        protected set
-        {
-            hazardous = value;
-        }
-    }
+    public virtual bool Hazardous => true;
 
     [SerializeField]
     private int damageDealt = 2;
@@ -31,11 +22,10 @@ public abstract class Hazard : SavableMonoBehaviour
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject(this, "hazardous", hazardous);
+        return new SavableObject(this);
     }
 
     public override void acceptSavableObject(SavableObject savObj)
     {
-        Hazardous = (bool)savObj.data["hazardous"];
     }
 }
