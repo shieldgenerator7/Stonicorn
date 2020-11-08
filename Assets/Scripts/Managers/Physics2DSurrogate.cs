@@ -10,7 +10,7 @@ public class Physics2DSurrogate : MonoBehaviour
  
     private void OnEnable()
     {
-        Physics2D.autoSimulation = false;
+        Physics2D.simulationMode = SimulationMode2D.Script;//turn off simulation
         SceneManager.sceneLoaded += refreshZones;
         SceneManager.sceneUnloaded += refreshZones;
         refreshZones();
@@ -18,7 +18,7 @@ public class Physics2DSurrogate : MonoBehaviour
 
     private void OnDisable()
     {
-        Physics2D.autoSimulation = true;
+        Physics2D.simulationMode = SimulationMode2D.FixedUpdate;//turn on simulation
         SceneManager.sceneLoaded -= refreshZones;
         SceneManager.sceneUnloaded -= refreshZones;
     }
