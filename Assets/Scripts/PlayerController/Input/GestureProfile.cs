@@ -30,9 +30,19 @@ public class GestureProfile
     {
         Managers.Player.processHoldGesture(curMPWorld, holdTime, finished);
     }
-    public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
+    public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, bool finished)
     {
-        Managers.Camera.processDragGesture(origMPWorld, newMPWorld);
+        //If the player drags on Merky,
+        if (Managers.Player.gestureOnPlayer(origMPWorld))
+        {
+            //Activate the ForceLaunch ability
+            Managers.Player.processDragGesture(origMPWorld, newMPWorld, finished);
+        }
+        else
+        {
+            //Drag the camera
+            Managers.Camera.processDragGesture(origMPWorld, newMPWorld);
+        }
     }
     public void processZoomLevelChange(float zoomLevel)
     {

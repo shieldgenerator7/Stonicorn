@@ -89,7 +89,8 @@ public class MouseGestureInput : GestureInput
                 case MouseEvent.DRAG:
                     profile.processDragGesture(
                         OrigPosWorld, 
-                        Utility.ScreenToWorldPoint(Input.mousePosition)
+                        Utility.ScreenToWorldPoint(Input.mousePosition),
+                        Input.GetMouseButtonUp(mouseButton)
                         );
                     break;
                 case MouseEvent.HOLD:

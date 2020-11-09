@@ -28,11 +28,11 @@ public class MenuGestureProfile : GestureProfile
             processTapGesture(curMPWorld);
         }
     }
-    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
+    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, bool finished)
     {
         if (MenuManager.Open && !Managers.Menu.processDragGesture(origMPWorld, newMPWorld))
         {
-            base.processDragGesture(origMPWorld, newMPWorld);
+            base.processDragGesture(origMPWorld, newMPWorld, finished);
         }
     }
 }

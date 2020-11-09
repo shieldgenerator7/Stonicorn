@@ -66,7 +66,7 @@ public class TesterShortcuts : MonoBehaviour
         switch (abilityIndex)
         {
             case 1:
-                ForceDashAbility fta = playerObject.GetComponent<ForceDashAbility>();
+                ForceLaunchAbility fta = playerObject.GetComponent<ForceLaunchAbility>();
                 fta.Active = enable;
                 break;
             case 2:
@@ -97,7 +97,7 @@ public class TesterShortcuts : MonoBehaviour
         switch (abilityIndex)
         {
             case 1:
-                ForceDashAbility fta = playerObject.GetComponent<ForceDashAbility>();
+                ForceLaunchAbility fta = playerObject.GetComponent<ForceLaunchAbility>();
                 return fta.Active;
             case 2:
                 WallClimbAbility wca = playerObject.GetComponent<WallClimbAbility>();

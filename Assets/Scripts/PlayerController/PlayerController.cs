@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Merky collided with (t? "+collision.collider.isTrigger+"): " + collision.gameObject.name);
+        Debug.Log("Merky collided with (t? " + collision.collider.isTrigger + "): " + collision.gameObject.name);
         //If collided with a Hazard,
         Hazard hazard = collision.gameObject.GetComponent<Hazard>();
         if (hazard && hazard.Hazardous)
@@ -1013,6 +1013,18 @@ public class PlayerController : MonoBehaviour
         {
             ability.dropHoldGesture();
         }
+    }
+
+    public delegate void OnDragGesture(Vector2 origPos, Vector2 newPos, bool finished);
+    public OnDragGesture onDragGesture;
+    /// <summary>
+    /// Process a drag gesture
+    /// </summary>
+    /// <param name="origPos"></param>
+    /// <param name="newPos"></param>
+    public void processDragGesture(Vector3 origPos, Vector3 newPos, bool finished)
+    {
+        onDragGesture?.Invoke(origPos, newPos, finished);
     }
 
     void grantGravityImmunityAfterRewind()
