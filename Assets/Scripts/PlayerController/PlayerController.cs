@@ -854,10 +854,17 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="pos">The position to check</param>
     /// <returns>True if the position is on Merky's sprite, false if otherwise</returns>
-    public bool gestureOnPlayer(Vector2 pos)
-    {
-        return pos.inRange(transform.position, halfWidth);
-    }
+    public bool gestureOnPlayer(Vector2 pos) =>
+        pos.inRange(transform.position, halfWidth);
+
+    /// <summary>
+    /// Returns true if the given Vector3 is on Merky's sprite
+    /// </summary>
+    /// <param name="pos">The position to check</param>
+    /// <param name="range">How far out to check, default is half of Merky's sprite width</param>
+    /// <returns>True if the position is on Merky's sprite, false if otherwise</returns>
+    public bool gestureOnPlayer(Vector2 pos, float range) =>
+        pos.inRange(transform.position, range);
 
     /// <summary>
     /// Process the tap gesture at the given position

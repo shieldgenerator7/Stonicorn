@@ -33,7 +33,7 @@ public class GestureProfile
     public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, bool finished)
     {
         //If the player drags on Merky,
-        if (Managers.Player.gestureOnPlayer(origMPWorld))
+        if (Managers.Player.gestureOnPlayer(origMPWorld, Managers.Player.baseRange))
         {
             //Activate the ForceLaunch ability
             Managers.Player.processDragGesture(origMPWorld, newMPWorld, finished);
