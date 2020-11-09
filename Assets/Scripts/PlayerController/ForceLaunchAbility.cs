@@ -64,7 +64,7 @@ public class ForceLaunchAbility : PlayerAbility
     /// or hasn't teleported since not being grounded
     /// </summary>
     bool CanLaunch =>
-        playerController.Ground.grounded
+        playerController.Ground.Grounded
         || rb2d.velocity.magnitude < 0.1f;
 
     void launch()
