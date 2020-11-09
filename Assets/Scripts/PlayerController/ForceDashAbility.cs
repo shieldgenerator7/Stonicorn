@@ -5,15 +5,15 @@ using UnityEngine;
 public class ForceDashAbility : PlayerAbility
 {
     [Header("Settings")]
-    public float maxCharge = 50;
-    public float maxSpeed = 20;//this script may not cause Merky to exceed this speed
-    public float maxEffectRange = 5;
-    public float maxAirTime = 1;//how long it can add force in the air
-    public float chargeIncrement = 2.5f;//how much to increase charge on each tap
-    public float chargeIncrementEarly = 0.5f;//how much to increase charge by when there's no charge
-    public float chargeEarlyThreshold = 1;//how much charge is needed to get the regular charge increment
-    public float chargeDecayDelay = 1;//how may seconds after no tap until it decays
-    public float chargeDecayRate = 25;//how much charge is lost per second
+    public float maxCharge = 100;
+    public float maxSpeed = 25;//this script may not cause Merky to exceed this speed
+    public float maxEffectRange = 3;
+    public float maxAirTime = 0.5f;//how long it can add force in the air
+    public float chargeIncrement = 10;//how much to increase charge on each tap
+    public float chargeIncrementEarly = 1;//how much to increase charge by when there's no charge
+    public float chargeEarlyThreshold = 4;//how much charge is needed to get the regular charge increment
+    public float chargeDecayDelay = 2;//how may seconds after no tap until it decays
+    public float chargeDecayRate = 10;//how much charge is lost per second
     //Level 1
     public float wakeLength = 5;//objects this far behind Merky get sped up too
 
