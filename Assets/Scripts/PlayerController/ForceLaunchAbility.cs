@@ -49,6 +49,9 @@ public class ForceLaunchAbility : PlayerAbility
         LaunchDirection = (Vector2)playerController.transform.position - newPos;
         if (finished && CanLaunch)
         {
+            //Save the game state
+            Managers.Game.Save();
+            //Actually launch
             launch();
         }
         updateDirectionVisuals();
