@@ -47,7 +47,7 @@ public class ForceLaunchAbility : PlayerAbility
     {
         launching = !finished;
         LaunchDirection = (Vector2)playerController.transform.position - newPos;
-        if (finished)
+        if (finished && CanLaunch)
         {
             launch();
         }
@@ -59,8 +59,17 @@ public class ForceLaunchAbility : PlayerAbility
         return playerController.Ground.isGroundedInDirection(rb2d.velocity);
     }
 
+    /// <summary>
+    /// True if the player is grounded
+    /// or hasn't teleported since not being grounded
+    /// </summary>
+    bool CanLaunch =>
+        playerController.Ground.grounded
+        || rb2d.velocity.magnitude < 0.1f;
+
     void launch()
     {
+        //Launch in indicated direction
         rb2d.velocity = Vector2.zero;
         float chargePercent = launchDirection.magnitude / maxPullBackDistance;
         rb2d.velocity += launchDirection.normalized * (maxLaunchSpeed * chargePercent);
@@ -68,7 +77,7 @@ public class ForceLaunchAbility : PlayerAbility
 
     void updateDirectionVisuals()
     {
-        if (launching)
+        if (launching && CanLaunch)
         {
             if (directionIndicator == null)
             {
