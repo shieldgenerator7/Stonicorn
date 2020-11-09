@@ -32,7 +32,8 @@ public class MenuGestureProfile : GestureProfile
     {
         if (MenuManager.Open && !Managers.Menu.processDragGesture(origMPWorld, newMPWorld))
         {
-            base.processDragGesture(origMPWorld, newMPWorld, finished);
+            //Drag the camera
+            Managers.Camera.processDragGesture(origMPWorld, newMPWorld);
         }
     }
 }

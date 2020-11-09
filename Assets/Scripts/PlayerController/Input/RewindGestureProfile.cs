@@ -28,4 +28,9 @@ public class RewindGestureProfile : GestureProfile
             Managers.Game.processTapGesture(curMPWorld);
         }
     }
+    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, bool finished)
+    {
+        //Drag the camera
+        Managers.Camera.processDragGesture(origMPWorld, newMPWorld);
+    }
 }
