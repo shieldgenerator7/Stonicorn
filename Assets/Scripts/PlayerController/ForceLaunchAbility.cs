@@ -15,6 +15,18 @@ public class ForceLaunchAbility : PlayerAbility
     private SpriteRenderer directionSR;
 
     private bool launching = false;//true: player is getting ready to launch
+    public bool Launching
+    {
+        get => launching;
+        set
+        {
+            launching = value;
+            if (launching || playerController.GravityImmune != launching)
+            {
+                playerController.GravityImmune = launching;
+            }
+        }
+    }
     private Vector2 launchDirection;
     public Vector2 LaunchDirection
     {
@@ -45,14 +57,21 @@ public class ForceLaunchAbility : PlayerAbility
 
     void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
     {
-        launching = !finished;
-        LaunchDirection = (Vector2)playerController.transform.position - newPos;
-        if (finished && CanLaunch)
+        if (CanLaunch)
         {
-            //Save the game state
-            Managers.Game.Save();
-            //Actually launch
-            launch();
+            Launching = !finished;
+            LaunchDirection = (Vector2)playerController.transform.position - newPos;
+            if (finished)
+            {
+                //Save the game state
+                Managers.Game.Save();
+                //Actually launch
+                launch();
+            }
+        }
+        else
+        {
+            Launching = false;
         }
         updateDirectionVisuals();
     }
