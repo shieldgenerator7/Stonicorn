@@ -8,6 +8,7 @@ public class ForceLaunchAbility : PlayerAbility
     [Header("Settings")]
     public float maxPullBackDistance = 3;//how far back the player can pull the sling
     public float maxLaunchSpeed = 20;//how fast Merky can go after launching
+    public float accelerationBoostPercent = 0.5f;//how much speed to add when tapping in the direction of movement
 
     [Header("Components")]
     public GameObject directionIndicatorPrefab;//prefab
@@ -54,6 +55,7 @@ public class ForceLaunchAbility : PlayerAbility
     protected override void init()
     {
         base.init();
+        playerController.onTeleport += processTap;
         playerController.onDragGesture += processDrag;
         playerController.Ground.isGroundedCheck += dashGroundedCheck;
     }
@@ -61,8 +63,26 @@ public class ForceLaunchAbility : PlayerAbility
     public override void OnDisable()
     {
         base.OnDisable();
+        playerController.onTeleport -= processTap;
         playerController.onDragGesture -= processDrag;
         playerController.Ground.isGroundedCheck -= dashGroundedCheck;
+    }
+    void processTap(Vector2 oldPos, Vector2 newPos)
+    {
+        //If Merky is moving,
+        if (rb2d.velocity.magnitude > 0.1f)
+        {
+            float angle = Vector2.Angle(
+                (newPos - oldPos), 
+                rb2d.velocity
+                );
+            //If the tap was in front of Merky,
+            if (angle <= 45)
+            {
+                //Speed him up
+                speedUp();
+            }
+        }
     }
 
     void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
@@ -105,6 +125,26 @@ public class ForceLaunchAbility : PlayerAbility
         rb2d.velocity = Vector2.zero;
         float chargePercent = launchDirection.magnitude / maxPullBackDistance;
         rb2d.velocity += launchDirection.normalized * (maxLaunchSpeed * chargePercent);
+    }
+
+    /// <summary>
+    /// Speed up in the direction of movement
+    /// </summary>
+    void speedUp()
+    {
+        float oldSpeed = rb2d.velocity.magnitude;
+        //If there's room to speed up
+        if (oldSpeed < maxLaunchSpeed)
+        {
+            //Add velocity in the direction of movement
+            rb2d.velocity += (rb2d.velocity.normalized * oldSpeed * accelerationBoostPercent);
+            //Reduce speed if too high
+            float newSpeed = rb2d.velocity.magnitude;
+            if (newSpeed > maxLaunchSpeed)
+            {
+                rb2d.velocity = rb2d.velocity.normalized * maxLaunchSpeed;
+            }
+        }
     }
 
     void updateDirectionVisuals()
