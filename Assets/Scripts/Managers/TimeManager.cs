@@ -35,12 +35,37 @@ public class TimeManager : SavableMonoBehaviour
         get => UnityEngine.Time.timeScale == 0;
         set
         {
-            UnityEngine.Time.timeScale = (value) ? 0 : 1;
+            UnityEngine.Time.timeScale = (value) ? 0 : timeSpeed;
             onPauseChanged?.Invoke(value);
         }
     }
     public delegate void OnPauseChanged(bool paused);
     public OnPauseChanged onPauseChanged;
+
+    [SerializeField]
+    private float slowTimeSpeed = 0.2f;
+    private float timeSpeed = 1;
+    public bool SlowTime
+    {
+        get => timeSpeed < 1;
+        set
+        {
+            if (value)
+            {
+                timeSpeed = slowTimeSpeed;
+            }
+            else
+            {
+                timeSpeed = 1;
+            }
+            //If not paused,
+            if (!Paused)
+            {
+                //Update the simulation time
+                UnityEngine.Time.timeScale = timeSpeed;
+            }
+        }
+    }
 
     private void Start()
     {

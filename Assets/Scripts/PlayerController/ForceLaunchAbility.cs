@@ -20,11 +20,21 @@ public class ForceLaunchAbility : PlayerAbility
         get => launching;
         set
         {
-            launching = value;
-            if (launching || playerController.GravityImmune != launching)
+            //If turning launching off when it's on,
+            if (launching && !value)
             {
-                playerController.GravityImmune = launching;
+                //Stop slowing time
+                Managers.Time.SlowTime = false;
             }
+            //If turning launching on,
+            else if (value)
+            {
+                //Start slowing time
+                Managers.Time.SlowTime = true;
+            }
+            //Set the launching variable
+            launching = value;
+            
         }
     }
     private Vector2 launchDirection;
