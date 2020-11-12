@@ -8,6 +8,7 @@ public class ForceLaunchAbility : PlayerAbility
     [Header("Settings")]
     public float maxPullBackDistance = 3;//how far back the player can pull the sling
     public float maxLaunchSpeed = 20;//how fast Merky can go after launching
+    public float bounceEnergyConservationPercent = 0.1f;//how much energy to conserve after bouncing
     public float accelerationBoostPercent = 0.5f;//how much speed to add when tapping in the direction of movement
 
     [Header("Components")]
@@ -51,6 +52,8 @@ public class ForceLaunchAbility : PlayerAbility
             }
         }
     }
+
+    private Vector2 currentVelocity;//used to recover the velocity when hitting a wall
 
     protected override void init()
     {
@@ -109,6 +112,30 @@ public class ForceLaunchAbility : PlayerAbility
     bool dashGroundedCheck()
     {
         return playerController.Ground.isGroundedInDirection(rb2d.velocity);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (Managers.Game.Rewinding)
+        {
+            return;
+        }
+        Vector2 velocity = currentVelocity;
+        Vector2 surfaceNormal = collision.GetContact(0).normal;
+        Vector2 reflect = Vector2.Reflect(
+            velocity, 
+            surfaceNormal
+            ) * bounceEnergyConservationPercent;
+        rb2d.velocity = reflect;
+    }
+
+    private void Update()
+    {
+        if (Managers.Game.Rewinding)
+        {
+            return;
+        }
+        currentVelocity = rb2d.velocity;
     }
 
     /// <summary>
