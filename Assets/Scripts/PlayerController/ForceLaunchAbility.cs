@@ -54,6 +54,7 @@ public class ForceLaunchAbility : PlayerAbility
     }
 
     private Vector2 currentVelocity;//used to recover the velocity when hitting a wall
+    private bool affectingVelocity = false;//true if recently launched
 
     protected override void init()
     {
@@ -84,6 +85,11 @@ public class ForceLaunchAbility : PlayerAbility
             {
                 //Speed him up
                 speedUp();
+            }
+            else
+            {
+                //Cancel effect on velocity
+                affectingVelocity = false;
             }
         }
     }
@@ -120,13 +126,18 @@ public class ForceLaunchAbility : PlayerAbility
         {
             return;
         }
-        Vector2 velocity = currentVelocity;
-        Vector2 surfaceNormal = collision.GetContact(0).normal;
-        Vector2 reflect = Vector2.Reflect(
-            velocity, 
-            surfaceNormal
-            ) * bounceEnergyConservationPercent;
-        rb2d.velocity = reflect;
+        //If this ability contributed to this collision,
+        if (affectingVelocity)
+        {
+            //Bounce off the surface
+            Vector2 velocity = currentVelocity;
+            Vector2 surfaceNormal = collision.GetContact(0).normal;
+            Vector2 reflect = Vector2.Reflect(
+                velocity,
+                surfaceNormal
+                ) * bounceEnergyConservationPercent;
+            rb2d.velocity = reflect;
+        }
     }
 
     private void Update()
@@ -135,6 +146,13 @@ public class ForceLaunchAbility : PlayerAbility
         {
             return;
         }
+        ////If Merky hardly moved last frame,
+        //if (currentVelocity.sqrMagnitude < 0.1f * 0.1f)
+        //{
+        //    //End this ability's effect on velocity
+        //    affectingVelocity = false;
+        //}
+        //Update current velocity
         currentVelocity = rb2d.velocity;
     }
 
@@ -152,6 +170,8 @@ public class ForceLaunchAbility : PlayerAbility
         rb2d.velocity = Vector2.zero;
         float chargePercent = launchDirection.magnitude / maxPullBackDistance;
         rb2d.velocity += launchDirection.normalized * (maxLaunchSpeed * chargePercent);
+        //Indicate effect on velocity
+        affectingVelocity = true;
     }
 
     /// <summary>
@@ -171,6 +191,8 @@ public class ForceLaunchAbility : PlayerAbility
             {
                 rb2d.velocity = rb2d.velocity.normalized * maxLaunchSpeed;
             }
+            //Indicate effect on velocity
+            affectingVelocity = true;
         }
     }
 
