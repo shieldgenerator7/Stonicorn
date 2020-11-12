@@ -129,14 +129,25 @@ public class ForceLaunchAbility : PlayerAbility
         //If this ability contributed to this collision,
         if (affectingVelocity)
         {
-            //Bounce off the surface
-            Vector2 velocity = currentVelocity;
-            Vector2 surfaceNormal = collision.GetContact(0).normal;
-            Vector2 reflect = Vector2.Reflect(
-                velocity,
-                surfaceNormal
-                ) * bounceEnergyConservationPercent;
-            rb2d.velocity = reflect;
+            Rigidbody2D rb2dColl = collision.gameObject.GetComponent<Rigidbody2D>();
+            if (rb2dColl)
+            {
+                //Bounce off the object, pushing it in your previous direction
+                //Bounce backwards
+                rb2dColl.velocity = rb2d.velocity;
+                rb2d.velocity *= -1 * bounceEnergyConservationPercent;
+            }
+            else
+            {
+                //Bounce off the surface
+                Vector2 velocity = currentVelocity;
+                Vector2 surfaceNormal = collision.GetContact(0).normal;
+                Vector2 reflect = Vector2.Reflect(
+                    velocity,
+                    surfaceNormal
+                    ) * bounceEnergyConservationPercent;
+                rb2d.velocity = reflect;
+            }
         }
     }
 
@@ -191,8 +202,6 @@ public class ForceLaunchAbility : PlayerAbility
             {
                 rb2d.velocity = rb2d.velocity.normalized * maxLaunchSpeed;
             }
-            //Indicate effect on velocity
-            affectingVelocity = true;
         }
     }
 
