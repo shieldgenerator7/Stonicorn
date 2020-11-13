@@ -68,14 +68,23 @@ public class MouseGestureInput : GestureInput
                 else
                 {
                     //Check Drag
-                    if (Vector2.Distance(origPosScreen, Input.mousePosition) >= dragThreshold)
+                    float dragDistance = Vector2.Distance(origPosScreen, Input.mousePosition);
+                    if (dragDistance >= dragThreshold)
                     {
                         mouseEvent = MouseEvent.DRAG;
                     }
                     //Check Hold
                     else if (Time.time - origTime >= holdThreshold)
                     {
-                        mouseEvent = MouseEvent.HOLD;
+                        //If trying to start a drag on Merky
+                        if (dragDistance > 10 && Managers.Player.gestureOnPlayer(OrigPosWorld))
+                        {
+                            mouseEvent = MouseEvent.DRAG;
+                        }
+                        else
+                        {
+                            mouseEvent = MouseEvent.HOLD;
+                        }
                     }
                 }
             }
@@ -88,7 +97,7 @@ public class MouseGestureInput : GestureInput
             {
                 case MouseEvent.DRAG:
                     profile.processDragGesture(
-                        OrigPosWorld, 
+                        OrigPosWorld,
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         Input.GetMouseButtonUp(mouseButton)
                         );
