@@ -234,4 +234,17 @@ public class ForceLaunchAbility : PlayerAbility
             directionIndicator?.SetActive(false);
         }
     }
+
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        base.acceptSavableObject(savObj);
+        affectingVelocity = (bool)savObj.data["affectingVelocity"];
+        currentVelocity = Vector2.zero;
+    }
+    public override SavableObject getSavableObject()
+    {
+        SavableObject savObj = base.getSavableObject();
+        savObj.data.Add("affectingVelocity", affectingVelocity);
+        return savObj;
+    }
 }
