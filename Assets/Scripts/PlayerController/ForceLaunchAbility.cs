@@ -125,22 +125,17 @@ public class ForceLaunchAbility : PlayerAbility
             Rigidbody2D rb2dColl = collision.gameObject.GetComponent<Rigidbody2D>();
             if (rb2dColl)
             {
-                //Bounce off the object, pushing it in your previous direction
-                //Bounce backwards
+                //Push the object in your previous direction
                 rb2dColl.velocity = rb2d.velocity;
-                rb2d.velocity *= -1 * bounceEnergyConservationPercent;
             }
-            else
-            {
-                //Bounce off the surface
-                Vector2 velocity = currentVelocity;
-                Vector2 surfaceNormal = collision.GetContact(0).normal;
-                Vector2 reflect = Vector2.Reflect(
-                    velocity,
-                    surfaceNormal
-                    ) * bounceEnergyConservationPercent;
-                rb2d.velocity = reflect;
-            }
+            //Bounce off the surface
+            Vector2 velocity = currentVelocity;
+            Vector2 surfaceNormal = collision.GetContact(0).normal;
+            Vector2 reflect = Vector2.Reflect(
+                velocity,
+                surfaceNormal
+                ) * bounceEnergyConservationPercent;
+            rb2d.velocity = reflect;
         }
     }
 
