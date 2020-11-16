@@ -10,6 +10,7 @@ public class ForceLaunchAbility : PlayerAbility
     public float maxLaunchSpeed = 20;//how fast Merky can go after launching
     public float bounceEnergyConservationPercent = 0.1f;//how much energy to conserve after bouncing
     public float accelerationBoostPercent = 0.5f;//how much speed to add when tapping in the direction of movement
+    public Color unavailableColor = Color.white;//the color the arrow will be when this ability's requirements are not met
 
     [Header("Components")]
     public GameObject directionIndicatorPrefab;//prefab
@@ -36,7 +37,6 @@ public class ForceLaunchAbility : PlayerAbility
             }
             //Set the launching variable
             launching = value;
-            
         }
     }
     private Vector2 launchDirection;
@@ -77,7 +77,7 @@ public class ForceLaunchAbility : PlayerAbility
         if (rb2d.velocity.magnitude > 0.1f)
         {
             float angle = Vector2.Angle(
-                (newPos - oldPos), 
+                (newPos - oldPos),
                 rb2d.velocity
                 );
             //If the tap was in front of Merky,
@@ -96,21 +96,14 @@ public class ForceLaunchAbility : PlayerAbility
 
     void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
     {
-        if (CanLaunch)
+        Launching = !finished;
+        LaunchDirection = (Vector2)playerController.transform.position - newPos;
+        if (finished && CanLaunch)
         {
-            Launching = !finished;
-            LaunchDirection = (Vector2)playerController.transform.position - newPos;
-            if (finished)
-            {
-                //Save the game state
-                Managers.Game.Save();
-                //Actually launch
-                launch();
-            }
-        }
-        else
-        {
-            Launching = false;
+            //Save the game state
+            Managers.Game.Save();
+            //Actually launch
+            launch();
         }
         updateDirectionVisuals();
     }
@@ -207,7 +200,7 @@ public class ForceLaunchAbility : PlayerAbility
 
     void updateDirectionVisuals()
     {
-        if (launching && CanLaunch)
+        if (launching)
         {
             if (directionIndicator == null)
             {
@@ -215,12 +208,6 @@ public class ForceLaunchAbility : PlayerAbility
                 directionIndicator.transform.parent = transform;
                 directionIndicator.transform.localPosition = Vector2.zero;
                 directionSR = directionIndicator.GetComponent<SpriteRenderer>();
-                directionSR.color = new Color(
-                    this.effectColor.r,
-                    this.effectColor.g,
-                    this.effectColor.b,
-                    directionSR.color.a
-                    );
             }
             directionIndicator.SetActive(true);
             directionIndicator.transform.up = launchDirection;
@@ -228,6 +215,19 @@ public class ForceLaunchAbility : PlayerAbility
                 1,
                 launchDirection.magnitude
                 );
+            if (CanLaunch)
+            {
+                directionSR.color = new Color(
+                    this.effectColor.r,
+                    this.effectColor.g,
+                    this.effectColor.b,
+                    directionSR.color.a
+                    );
+            }
+            else
+            {
+                directionSR.color = unavailableColor;
+            }
         }
         else
         {
