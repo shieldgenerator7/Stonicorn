@@ -27,10 +27,10 @@ public class PlayerAbility : SavableMonoBehaviour, Setting
     }
     public bool Active
     {
-        get => getLevel(0);
+        get => enabled;
         set
         {
-            bool active = getLevel(0);
+            bool active = enabled;
             if (active != value)
             {
                 active = value;
@@ -45,13 +45,12 @@ public class PlayerAbility : SavableMonoBehaviour, Setting
                     OnDisable();
                 }
             }
-            setLevel(0, active);
         }
     }
 
     [Header("Persisting Variables")]
-    [SerializeField]
-    private List<bool> abilityLevels = new List<bool>(3);
+    //[SerializeField]
+    //private List<bool> abilityLevels = new List<bool>(3);
 
     protected PlayerController playerController;
     protected Rigidbody2D rb2d;
@@ -109,31 +108,6 @@ public class PlayerAbility : SavableMonoBehaviour, Setting
     public void OnEnable()
     {
         init();
-    }
-
-    /// <summary>
-    /// Returns whether or not the level is active
-    /// </summary>
-    /// <param name="level">The zero-based index of the level</param>
-    /// <returns>True if the level is active</returns>
-    public bool getLevel(int level)
-    {
-        if (!abilityLevels[0])
-        {
-            //No further level can be on while the base ability is inactive
-            return false;
-        }
-        return abilityLevels[level];
-    }
-
-    /// <summary>
-    /// Turns an ability level on or off
-    /// </summary>
-    /// <param name="level">The zero-based index of the level</param>
-    /// <param name="active">True to turn it on</param>
-    public void setLevel(int level, bool active)
-    {
-        abilityLevels[level] = active;
     }
 
     public virtual void processHoldGesture(Vector2 pos, float holdTime, bool finished) { }
@@ -208,14 +182,12 @@ public class PlayerAbility : SavableMonoBehaviour, Setting
         get
         {
             return new SettingObject(ID,
-                "unlocked", unlocked,
-                "active", Active
+                "unlocked", unlocked
                 );
         }
         set
         {
             unlocked = (bool)value.data["unlocked"] || unlocked;
-            Active = (bool)value.data["active"];
         }
     }
 

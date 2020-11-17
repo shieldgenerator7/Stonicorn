@@ -83,7 +83,7 @@ public class ForceDashAbility : PlayerAbility
             //Speed up Merky
             speedUp(rb2d);
             //Speed up objects caught in Merky's wake
-            if (getLevel(1))
+            if (true)//getLevel(1))
             {
                 Utility.RaycastAnswer answer;
                 //Front
@@ -209,7 +209,7 @@ public class ForceDashAbility : PlayerAbility
         if (angle < 45 && !collision.gameObject.GetComponent<Rigidbody2D>())
         {
             //If explode isn't active,
-            if (!getLevel(2))
+            if (!true)//getLevel(2))
             {
                 //don't do anything
                 return;
