@@ -64,6 +64,7 @@ public class ForceLaunchAbility : PlayerAbility
     protected override void init()
     {
         base.init();
+        effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
         playerController.onTeleport += processTap;
         playerController.onDragGesture += processDrag;
         playerController.Ground.isGroundedCheck += dashGroundedCheck;
