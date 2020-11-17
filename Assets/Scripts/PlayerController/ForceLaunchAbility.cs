@@ -97,9 +97,7 @@ public class ForceLaunchAbility : PlayerAbility
     }
 
     bool dashGroundedCheck()
-    {
-        return playerController.Ground.isGroundedInDirection(rb2d.velocity);
-    }
+        => playerController.Ground.isGroundedInDirection(rb2d.velocity);
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -149,7 +147,7 @@ public class ForceLaunchAbility : PlayerAbility
     /// </summary>
     bool CanLaunch =>
         playerController.Ground.Grounded
-        || rb2d.velocity.magnitude < 0.1f;
+        || rb2d.velocity.sqrMagnitude < 0.1f;
 
     void launch()
     {
