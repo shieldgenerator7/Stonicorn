@@ -20,6 +20,7 @@ public class ForceLaunchAbility : PlayerAbility
     public GameObject directionIndicatorPrefab;//prefab
     private GameObject directionIndicator;
     private SpriteRenderer directionSR;
+    private float originalAlpha;
     public GameObject bouncinessIndicatorPrefab;//prefab
     private GameObject bouncinessIndicator;
 
@@ -209,6 +210,7 @@ public class ForceLaunchAbility : PlayerAbility
                 directionIndicator.transform.parent = transform;
                 directionIndicator.transform.localPosition = Vector2.zero;
                 directionSR = directionIndicator.GetComponent<SpriteRenderer>();
+                originalAlpha = directionSR.color.a;
             }
             directionIndicator.SetActive(true);
             directionIndicator.transform.up = launchDirection;
@@ -222,7 +224,7 @@ public class ForceLaunchAbility : PlayerAbility
                     this.effectColor.r,
                     this.effectColor.g,
                     this.effectColor.b,
-                    directionSR.color.a
+                    originalAlpha
                     );
             }
             else
