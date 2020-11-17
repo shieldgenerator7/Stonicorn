@@ -79,6 +79,7 @@ public class ForceLaunchAbility : PlayerAbility
             rb2d.velocity = Vector2.zero;
             //Cancel effect on velocity
             affectingVelocity = false;
+            updateBouncingVisuals();
         }
     }
 
@@ -127,6 +128,10 @@ public class ForceLaunchAbility : PlayerAbility
 
     private void Update()
     {
+        if (enabled)
+        {
+            updateBouncingVisuals();
+        }
         if (Managers.Game.Rewinding)
         {
             return;
@@ -157,6 +162,7 @@ public class ForceLaunchAbility : PlayerAbility
         rb2d.velocity += launchDirection.normalized * (maxLaunchSpeed * chargePercent);
         //Indicate effect on velocity
         affectingVelocity = true;
+        updateBouncingVisuals();
     }
 
     /// <summary>
@@ -216,11 +222,31 @@ public class ForceLaunchAbility : PlayerAbility
         }
     }
 
+    void updateBouncingVisuals()
+    {
+        effectParticleSystem.gameObject.transform.position = transform.position;
+        if (affectingVelocity)
+        {
+            if (!effectParticleSystem.isPlaying)
+            {
+                effectParticleSystem.Play();
+            }
+        }
+        else
+        {
+            if (effectParticleSystem.isPlaying)
+            {
+                effectParticleSystem.Stop();
+            }
+        }
+    }
+
     public override void acceptSavableObject(SavableObject savObj)
     {
         base.acceptSavableObject(savObj);
         affectingVelocity = (bool)savObj.data["affectingVelocity"];
         currentVelocity = Vector2.zero;
+        updateBouncingVisuals();
     }
     public override SavableObject getSavableObject()
     {

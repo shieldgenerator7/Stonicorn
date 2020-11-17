@@ -8,7 +8,7 @@ public class PlayerAbility : SavableMonoBehaviour, Setting
 
     public TeleportRangeSegment teleportRangeSegment;
     public ParticleSystemController effectParticleController;
-    private ParticleSystem effectParticleSystem;
+    protected ParticleSystem effectParticleSystem;
     public bool addsOnTeleportVisualEffect = true;
     public AudioClip soundEffect;
     public bool addsOnTeleportSoundEffect = true;
