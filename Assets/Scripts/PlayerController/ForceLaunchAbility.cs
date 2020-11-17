@@ -73,24 +73,12 @@ public class ForceLaunchAbility : PlayerAbility
     }
     void processTap(Vector2 oldPos, Vector2 newPos)
     {
-        //If Merky is moving,
-        if (rb2d.velocity.magnitude > 0.1f)
+        if (affectingVelocity)
         {
-            float angle = Vector2.Angle(
-                (newPos - oldPos),
-                rb2d.velocity
-                );
-            //If the tap was in front of Merky,
-            if (angle <= 45)
-            {
-                //Speed him up
-                speedUp();
-            }
-            else
-            {
-                //Cancel effect on velocity
-                affectingVelocity = false;
-            }
+            //Nullify velocity
+            rb2d.velocity = Vector2.zero;
+            //Cancel effect on velocity
+            affectingVelocity = false;
         }
     }
 
