@@ -5,8 +5,11 @@ using UnityEngine;
 public class MouseGestureInput : GestureInput
 {
     public int mouseButton = 0;
+    public int mouseButton2 = 1;
     public float dragThreshold = 50;
     public float holdThreshold = 0.2f;
+
+    private int dragType = -1;//-1 = no drag, 0 = LMB, 1 = RMB
 
     private Vector2 origPosScreen;
     private Vector2 OrigPosWorld
@@ -39,6 +42,8 @@ public class MouseGestureInput : GestureInput
     {
         get => Input.GetMouseButton(mouseButton)
             || Input.GetMouseButtonUp(mouseButton)
+            || Input.GetMouseButton(mouseButton2)
+            || Input.GetMouseButtonUp(mouseButton2)
             || Input.GetAxis("Mouse ScrollWheel") != 0;
     }
 
@@ -59,6 +64,13 @@ public class MouseGestureInput : GestureInput
                 {
                     origPosScreen = Input.mousePosition;
                     origTime = Time.time;
+                    dragType = 0;
+                }
+                else if (Input.GetMouseButtonDown(mouseButton2))
+                {
+                    origPosScreen = Input.mousePosition;
+                    origTime = Time.time;
+                    dragType = 1;
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") != 0)
                 {
@@ -99,7 +111,8 @@ public class MouseGestureInput : GestureInput
                     profile.processDragGesture(
                         OrigPosWorld,
                         Utility.ScreenToWorldPoint(Input.mousePosition),
-                        Input.GetMouseButtonUp(mouseButton)
+                        Input.GetMouseButtonUp(mouseButton),
+                        dragType
                         );
                     break;
                 case MouseEvent.HOLD:
@@ -133,6 +146,7 @@ public class MouseGestureInput : GestureInput
                     mouseEvent = MouseEvent.CLICK;
                     profile.processTapGesture(Utility.ScreenToWorldPoint(Input.mousePosition));
                 }
+                dragType = -1;
             }
             return true;
         }
