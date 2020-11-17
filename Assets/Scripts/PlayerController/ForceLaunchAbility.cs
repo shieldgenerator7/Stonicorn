@@ -260,7 +260,7 @@ public class ForceLaunchAbility : PlayerAbility
         }
         else
         {
-            bouncinessIndicator.SetActive(false);
+            bouncinessIndicator?.SetActive(false);
         }
     }
 
