@@ -20,6 +20,8 @@ public class ForceLaunchAbility : PlayerAbility
     public GameObject directionIndicatorPrefab;//prefab
     private GameObject directionIndicator;
     private SpriteRenderer directionSR;
+    public GameObject bouncinessIndicatorPrefab;//prefab
+    private GameObject bouncinessIndicator;
 
     private bool launching = false;//true: player is getting ready to launch
     public bool Launching
@@ -64,7 +66,6 @@ public class ForceLaunchAbility : PlayerAbility
     protected override void init()
     {
         base.init();
-        effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
         playerController.onTeleport += processTap;
         playerController.onDragGesture += processDrag;
         playerController.Ground.isGroundedCheck += dashGroundedCheck;
@@ -237,20 +238,27 @@ public class ForceLaunchAbility : PlayerAbility
 
     void updateBouncingVisuals()
     {
-        effectParticleSystem.gameObject.transform.position = transform.position;
         if (affectingVelocity)
         {
-            if (!effectParticleSystem.isPlaying)
+            if (bouncinessIndicator == null)
             {
-                effectParticleSystem.Play();
+                bouncinessIndicator = Instantiate(bouncinessIndicatorPrefab);
+                bouncinessIndicator.transform.parent = transform;
+                bouncinessIndicator.transform.localPosition = Vector2.zero;
+                SpriteRenderer sr = bouncinessIndicator.GetComponent<SpriteRenderer>();
+                sr.color = new Color(
+                    this.effectColor.r,
+                    this.effectColor.g,
+                    this.effectColor.b,
+                    sr.color.a
+                    );
             }
+            bouncinessIndicator.SetActive(true);
+            bouncinessIndicator.transform.up = -rb2d.velocity;
         }
         else
         {
-            if (effectParticleSystem.isPlaying)
-            {
-                effectParticleSystem.Stop();
-            }
+            bouncinessIndicator.SetActive(false);
         }
     }
 
