@@ -14,6 +14,13 @@ public abstract class GestureInput
         get;
     }
 
+    public enum DragType
+    {
+        UNKNOWN,
+        DRAG_PLAYER,
+        DRAG_CAMERA
+    }
+
     public abstract bool InputOngoing { get; }
 
     public abstract bool processInput(GestureProfile profile);

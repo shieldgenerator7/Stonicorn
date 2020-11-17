@@ -9,7 +9,7 @@ public class MouseGestureInput : GestureInput
     public float dragThreshold = 50;
     public float holdThreshold = 0.2f;
 
-    private int dragType = -1;//-1 = no drag, 0 = LMB, 1 = RMB
+    private DragType dragType = DragType.UNKNOWN;
 
     private Vector2 origPosScreen;
     private Vector2 OrigPosWorld
@@ -64,13 +64,13 @@ public class MouseGestureInput : GestureInput
                 {
                     origPosScreen = Input.mousePosition;
                     origTime = Time.time;
-                    dragType = 0;
+                    dragType = DragType.DRAG_PLAYER;
                 }
                 else if (Input.GetMouseButtonDown(mouseButton2))
                 {
                     origPosScreen = Input.mousePosition;
                     origTime = Time.time;
-                    dragType = 1;
+                    dragType = DragType.DRAG_CAMERA;
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") != 0)
                 {
@@ -111,8 +111,8 @@ public class MouseGestureInput : GestureInput
                     profile.processDragGesture(
                         OrigPosWorld,
                         Utility.ScreenToWorldPoint(Input.mousePosition),
-                        Input.GetMouseButtonUp(mouseButton),
-                        dragType
+                        dragType,
+                        Input.GetMouseButtonUp(mouseButton)
                         );
                     break;
                 case MouseEvent.HOLD:
@@ -146,7 +146,7 @@ public class MouseGestureInput : GestureInput
                     mouseEvent = MouseEvent.CLICK;
                     profile.processTapGesture(Utility.ScreenToWorldPoint(Input.mousePosition));
                 }
-                dragType = -1;
+                dragType = DragType.UNKNOWN;
             }
             return true;
         }
