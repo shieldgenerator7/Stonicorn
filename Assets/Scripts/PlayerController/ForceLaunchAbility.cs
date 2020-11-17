@@ -10,6 +10,10 @@ public class ForceLaunchAbility : PlayerAbility
     public float maxLaunchSpeed = 20;//how fast Merky can go after launching
     public float bounceEnergyConservationPercent = 0.1f;//how much energy to conserve after bouncing
     public float accelerationBoostPercent = 0.5f;//how much speed to add when tapping in the direction of movement
+    public float speedMinimum = 0.5f;//if this speed isn't maintained, bounciness will be lost
+    public float bouncinessLossDelay = 0.5f;//after this amount of time of being under speed, bounciness will be lost
+
+
     public Color unavailableColor = Color.white;//the color the arrow will be when this ability's requirements are not met
 
     [Header("Components")]
@@ -55,6 +59,7 @@ public class ForceLaunchAbility : PlayerAbility
 
     private Vector2 currentVelocity;//used to recover the velocity when hitting a wall
     private bool affectingVelocity = false;//true if recently launched
+    private float lastSpeedMetTime = 0;//the last time Merky had met the minimum bounciness speed requirement
 
     protected override void init()
     {
@@ -128,22 +133,29 @@ public class ForceLaunchAbility : PlayerAbility
 
     private void Update()
     {
-        if (enabled)
-        {
-            updateBouncingVisuals();
-        }
         if (Managers.Game.Rewinding)
         {
             return;
         }
-        ////If Merky hardly moved last frame,
-        //if (currentVelocity.sqrMagnitude < 0.1f * 0.1f)
-        //{
-        //    //End this ability's effect on velocity
-        //    affectingVelocity = false;
-        //}
         //Update current velocity
         currentVelocity = rb2d.velocity;
+        //Check minimum bounciness speed requirements
+        if (affectingVelocity)
+        {
+            if (currentVelocity.sqrMagnitude >= speedMinimum * speedMinimum)
+            {
+                lastSpeedMetTime = Managers.Time.Time;
+            }
+            else
+            {
+                if (Managers.Time.Time >= lastSpeedMetTime + bouncinessLossDelay)
+                {
+                    //End this ability's effect on velocity
+                    affectingVelocity = false;
+                }
+            }
+            updateBouncingVisuals();
+        }
     }
 
     /// <summary>
