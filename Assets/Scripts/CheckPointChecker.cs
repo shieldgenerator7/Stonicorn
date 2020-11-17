@@ -70,8 +70,9 @@ public class CheckPointChecker : MemoryMonoBehaviour
         activated = true;
         Managers.Game.saveMemory(this);
         Managers.saveCheckPoint(this);
-        //if there's two or more active checkpoints
+        //Get the list of active checkpoints
         List<CheckPointChecker> activeCPCs = Managers.ActiveCheckPoints;
+        //If there's two or more active checkpoints,
         if (activeCPCs.Count > 1)
         {
             //Start the particles
@@ -79,28 +80,19 @@ public class CheckPointChecker : MemoryMonoBehaviour
             {
                 ps.Play();
             }
-            //Start the fade-in effect
-            foreach (Fader f in GetComponentsInChildren<Fader>())
-            {
-                f.enabled = true;
-            }
-            //Activate the other checkpoints
-            foreach (CheckPointChecker cpc in activeCPCs)
-            {
-                if (!cpc.activated)
-                {
-                    cpc.activate();
-                }
-            }
         }
-        else
+        //Start the fade-in effect
+        foreach (Fader f in GetComponentsInChildren<Fader>())
         {
-            //Pretend you're not activated so the next time
-            //a checkpoint gets activated,
-            //this one will get activated too.
-            //This is special code to keep a checkpoint
-            //from displaying as active when it's the only active checkpoint.
-            activated = false;
+            f.enabled = true;
+        }
+        //Activate the other checkpoints
+        foreach (CheckPointChecker cpc in activeCPCs)
+        {
+            if (!cpc.activated)
+            {
+                cpc.activate();
+            }
         }
     }
     public void trigger()
@@ -159,7 +151,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         checkpointCamera.gameObject.SetActive(true);
         checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0, 0, -10);
         //Orient the camera to the gravity collider it's in
-        foreach(GravityZone gz in FindObjectsOfType<GravityZone>())
+        foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
         {
             if (gz.GetComponent<Collider2D>().OverlapPoint(
                 checkpointCamera.gameObject.transform.position
