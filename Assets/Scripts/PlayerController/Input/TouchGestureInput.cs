@@ -89,6 +89,37 @@ public class TouchGestureInput : GestureInput
                     touchEvent = TouchEvent.CAMERA;
                 }
             }
+            //If converting from a player gesture to a camera gesture,
+            else if (touchEvent != TouchEvent.CAMERA && maxTouchCount > 1)
+            {
+                //End the current player gesture
+                //(No need to process tap gesture,
+                //because it requires that all input stops to activate)
+                Touch touch = Input.touches[0];
+                TouchData data = touchDatas[touch.fingerId];
+                switch (touchEvent)
+                {
+                    //DRAG
+                    case TouchEvent.DRAG:
+                        profile.processDragGesture(
+                            data.origPosWorld,
+                            Utility.ScreenToWorldPoint(touch.position),
+                            DragType.DRAG_PLAYER,
+                            true
+                            );
+                        break;
+                    //HOLD
+                    case TouchEvent.HOLD:
+                        profile.processHoldGesture(
+                            Utility.ScreenToWorldPoint(touch.position),
+                            Time.time - data.origTime,
+                            true
+                            );
+                        break;
+                }
+                //Convert to camera gesture
+                touchEvent = TouchEvent.CAMERA;
+            }
 
             //
             //Main Processing
