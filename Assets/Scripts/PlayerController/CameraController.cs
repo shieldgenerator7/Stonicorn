@@ -95,7 +95,7 @@ public class CameraController : MonoBehaviour
     private bool lockCamera = false;
 
     [Tooltip("Runtime Var, Doesn't do anything from editor")]
-    public Vector3 originalCameraPosition;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
+    public Vector2 originalCameraPosition;//"original camera position": the camera offset (relative to the player) at the last mouse down (or tap down) event
 
     private int prevScreenWidth;
     private int prevScreenHeight;
@@ -414,12 +414,12 @@ public class CameraController : MonoBehaviour
     public delegate void OnOffsetChange(Vector3 offset);
     public OnOffsetChange onOffsetChange;
 
-    public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld)
+    public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, bool finished)
     {
         bool canMove = false;
         Vector2 delta = origMPWorld - newMPWorld;
         Vector2 playerPos = Managers.Player.transform.position;
-        Vector3 newPos = playerPos + (Vector2)originalCameraPosition + delta;
+        Vector3 newPos = playerPos + originalCameraPosition + delta;
         //If the camera is not zoomed into the menu,
         if (ZoomLevel > toZoomLevel(CameraScalePoints.MENU))
         {
@@ -440,6 +440,10 @@ public class CameraController : MonoBehaviour
             newPos.z = Offset.z;
             transform.position = newPos;
             pinPoint();
+        }
+        if (finished)
+        {
+            originalCameraPosition = Offset;
         }
     }
 

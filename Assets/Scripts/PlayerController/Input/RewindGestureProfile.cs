@@ -31,6 +31,6 @@ public class RewindGestureProfile : GestureProfile
     public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, bool finished)
     {
         //Drag the camera
-        Managers.Camera.processDragGesture(origMPWorld, newMPWorld);
+        Managers.Camera.processDragGesture(origMPWorld, newMPWorld, finished);
     }
 }

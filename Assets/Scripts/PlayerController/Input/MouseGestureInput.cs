@@ -105,14 +105,14 @@ public class MouseGestureInput : GestureInput
                         OrigPosWorld,
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         dragType,
-                        Input.GetMouseButtonUp(mouseButton)
+                        Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2)
                         );
                     break;
                 case MouseEvent.HOLD:
                     profile.processHoldGesture(
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         Time.time - origTime,
-                        Input.GetMouseButtonUp(mouseButton)
+                        Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2)
                         );
                     break;
                 case MouseEvent.SCROLL:
@@ -139,13 +139,28 @@ public class MouseGestureInput : GestureInput
                     mouseEvent = MouseEvent.CLICK;
                     profile.processTapGesture(Utility.ScreenToWorldPoint(Input.mousePosition));
                 }
-                dragType = DragType.UNKNOWN;
+            }
+            if (Input.GetMouseButtonUp(mouseButton2))
+            {
+                //If it's unknown,
+                if (mouseEvent == MouseEvent.UNKNOWN)
+                {
+                    //Then it's a camera drag
+                    mouseEvent = MouseEvent.DRAG;
+                    profile.processDragGesture(
+                          OrigPosWorld,
+                          Utility.ScreenToWorldPoint(Input.mousePosition),
+                          dragType,
+                          true
+                          );
+                }
             }
             return true;
         }
         else
         {
             mouseEvent = MouseEvent.UNKNOWN;
+            dragType = DragType.UNKNOWN;
             return false;
         }
     }
