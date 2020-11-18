@@ -27,19 +27,13 @@ public class TouchGestureInput : GestureInput
     }
 
     public override bool InputSupported
-    {
-        get => Input.touchSupported || Input.stylusTouchSupported;
-    }
+        => Input.touchSupported || Input.stylusTouchSupported;
 
     public override InputDeviceMethod InputType
-    {
-        get => InputDeviceMethod.TOUCH;
-    }
+        => InputDeviceMethod.TOUCH;
 
     public override bool InputOngoing
-    {
-        get => Input.touchCount > 0;
-    }
+        => Input.touchCount > 0;
 
     public override bool processInput(GestureProfile profile)
     {
@@ -49,8 +43,7 @@ public class TouchGestureInput : GestureInput
             //Check for adding new touches
             //
             for (int i = 0; i < Input.touchCount; i++)
-            {                
-                //Managers.Camera.ZoomLevel = 5;
+            {
                 Touch touch = Input.touches[i];
                 if (touch.phase == TouchPhase.Began)
                 {

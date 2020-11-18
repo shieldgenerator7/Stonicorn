@@ -12,20 +12,15 @@ public class KeyboardGestureInput : GestureInput
 
     private Vector2 origPosScreen;
     private Vector2 OrigPosWorld
-    {
-        get => Utility.ScreenToWorldPoint(origPosScreen);
-    }
+        => Utility.ScreenToWorldPoint(origPosScreen);
+
     private float origTime;
 
     public override InputDeviceMethod InputType
-    {
-        get => InputDeviceMethod.KEYBOARD;
-    }
+        => InputDeviceMethod.KEYBOARD;
 
     public override bool InputOngoing
-    {
-        get => Input.anyKey;
-    }
+        => Input.anyKey;
 
     public override bool processInput(GestureProfile profile)
     {

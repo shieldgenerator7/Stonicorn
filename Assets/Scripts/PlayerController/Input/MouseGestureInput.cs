@@ -13,9 +13,8 @@ public class MouseGestureInput : GestureInput
 
     private Vector2 origPosScreen;
     private Vector2 OrigPosWorld
-    {
-        get => Utility.ScreenToWorldPoint(origPosScreen);
-    }
+        => Utility.ScreenToWorldPoint(origPosScreen);
+
     private float origTime;
 
     private enum MouseEvent
@@ -29,23 +28,17 @@ public class MouseGestureInput : GestureInput
     private MouseEvent mouseEvent = MouseEvent.UNKNOWN;
 
     public override bool InputSupported
-    {
-        get => Input.mousePresent;
-    }
+        => Input.mousePresent;
 
     public override InputDeviceMethod InputType
-    {
-        get => InputDeviceMethod.MOUSE;
-    }
+        => InputDeviceMethod.MOUSE;
 
     public override bool InputOngoing
-    {
-        get => Input.GetMouseButton(mouseButton)
+        => Input.GetMouseButton(mouseButton)
             || Input.GetMouseButtonUp(mouseButton)
             || Input.GetMouseButton(mouseButton2)
             || Input.GetMouseButtonUp(mouseButton2)
             || Input.GetAxis("Mouse ScrollWheel") != 0;
-    }
 
     public override bool processInput(GestureProfile profile)
     {

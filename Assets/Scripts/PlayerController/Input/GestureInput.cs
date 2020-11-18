@@ -5,14 +5,9 @@ using UnityEngine;
 public abstract class GestureInput
 {
     public virtual bool InputSupported
-    {
-        get => true;
-    }
+        => true;
 
-    public abstract InputDeviceMethod InputType
-    {
-        get;
-    }
+    public abstract InputDeviceMethod InputType { get; }
 
     public enum DragType
     {
@@ -25,5 +20,6 @@ public abstract class GestureInput
 
     public abstract bool processInput(GestureProfile profile);
 
-    public static implicit operator bool (GestureInput gi) => gi != null;
+    public static implicit operator bool(GestureInput gi)
+        => gi != null;
 }
