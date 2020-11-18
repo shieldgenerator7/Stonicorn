@@ -15,13 +15,13 @@ public class TouchGestureInput : GestureInput
     struct TouchData
     {
         public Vector2 origPosScreen;
-        public Vector2 origPosWorld
-            => Utility.ScreenToWorldPoint(origPosScreen);
+        public Vector2 origPosWorld;
         public float origTime;
 
         public TouchData(Touch touch)
         {
             origPosScreen = touch.position;
+            origPosWorld = Utility.ScreenToWorldPoint(touch.position);
             origTime = Time.time;
         }
     }
