@@ -113,10 +113,7 @@ public class CameraController : MonoBehaviour
                     scale,
                     scalePoints[0].absoluteScalePoint(),
                     scalePoints[scalePoints.Count - 1].absoluteScalePoint());
-                if (onZoomLevelChanged != null)
-                {
-                    onZoomLevelChanged(scale, scale - prevScale);
-                }
+                onZoomLevelChanged?.Invoke(scale, scale - prevScale);
                 updateFieldOfView();
             }
         }
@@ -459,12 +456,14 @@ public class CameraController : MonoBehaviour
 
     public void updateFieldOfView()
     {
-        if (Screen.height > Screen.width)//portrait orientation
+        //portrait orientation
+        if (Screen.height > Screen.width)
         {
             Cam.fieldOfView = (scale * Cam.pixelHeight) / Cam.pixelWidth;
         }
+        //landscape orientation
         else
-        {//landscape orientation
+        {
             Cam.fieldOfView = scale;
         }
     }
