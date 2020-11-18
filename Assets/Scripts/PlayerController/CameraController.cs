@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
     private Vector3 offset;
     public Vector3 Offset
     {
-        get { return offset; }
+        get => offset;
         set
         {
             if (value.z == 0)
@@ -33,10 +33,7 @@ public class CameraController : MonoBehaviour
                 }
             }
             offset = value;
-            if (onOffsetChange != null)
-            {
-                onOffsetChange(offset);
-            }
+            onOffsetChange?.Invoke(offset);
         }
     }
     /// <summary>
@@ -50,10 +47,7 @@ public class CameraController : MonoBehaviour
     /// How far away the camera is from where it wants to be
     /// </summary>
     public Vector2 Displacement
-    {
-        get { return transform.position - Managers.Player.transform.position + offset; }
-        private set { }
-    }
+        => transform.position - Managers.Player.transform.position + offset;
 
     /// <summary>
     /// The up direction that the camera should be rotated towards
@@ -108,7 +102,7 @@ public class CameraController : MonoBehaviour
 
     public float ZoomLevel
     {
-        get { return scale; }
+        get => scale;
         set
         {
             float prevScale = scale;
@@ -136,7 +130,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public float TargetZoomLevel
     {
-        get { return desiredScale; }
+        get => desiredScale;
         set
         {
             desiredScale = value;
@@ -290,9 +284,8 @@ public class CameraController : MonoBehaviour
     }
 
     public bool RotationFinished
-    {
-        get { return transform.up == Up; }
-    }
+        => transform.up == Up;
+
 
     /// <summary>
     /// If Merky is on the edge of the screen, discard movement delay
@@ -472,33 +465,26 @@ public class CameraController : MonoBehaviour
         }
     }
     public Vector2 CamSizeWorld
-    {
-        get =>
-            new Vector2(
-                CameraWidthWorld,
-                CameraHeightWorld
-                );
-    }
+        => new Vector2(
+            CameraWidthWorld,
+            CameraHeightWorld
+            );
+
     public float CameraWidthWorld
-    {
-        get =>
-            Vector2.Distance(
-                Utility.ScreenToWorldPoint(Vector2.zero),
-                Utility.ScreenToWorldPoint(
-                    new Vector2(Cam.pixelWidth, 0)
-                )
-            );        
-    }
-    public float CameraHeightWorld
-    {
-        get =>
-            Vector2.Distance(
-                Utility.ScreenToWorldPoint(Vector2.zero),
-                Utility.ScreenToWorldPoint(
-                    new Vector2(0, Cam.pixelHeight)
+        => Vector2.Distance(
+            Utility.ScreenToWorldPoint(Vector2.zero),
+            Utility.ScreenToWorldPoint(
+                new Vector2(Cam.pixelWidth, 0)
                 )
             );
-    }
+
+    public float CameraHeightWorld
+        => Vector2.Distance(
+            Utility.ScreenToWorldPoint(Vector2.zero),
+            Utility.ScreenToWorldPoint(
+                new Vector2(0, Cam.pixelHeight)
+                )
+            );
 
     /// <summary>
     /// Returns whether or not the given position is in the camera's view
