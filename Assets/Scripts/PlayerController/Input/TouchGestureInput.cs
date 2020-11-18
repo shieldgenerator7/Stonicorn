@@ -11,19 +11,36 @@ public class TouchGestureInput : GestureInput
     private int touchCount = 0;//how many touches to process, usually only 0 or 1, only 2 if zoom
     private int maxTouchCount = 0;//the max amount of touches involved in this gesture at any one time
 
+    //Camera Drag processing variables
     private Vector2 origTouchCenter;
     private Vector2 origTouchCenterWorld
         => Utility.ScreenToWorldPoint(origTouchCenter);
-    private Vector2 TouchCenter
-        => Utility.average(
-            Input.touches
+    private List<Vector2> AliveTouchPositions
+        => Input.touches
             .Where(t =>
                 t.phase != TouchPhase.Ended
                 && t.phase != TouchPhase.Canceled
                 ).ToList()
-            .ConvertAll(t => t.position)
-            );
+            .ConvertAll(t => t.position);
+    private Vector2 TouchCenter
+        => Utility.average(AliveTouchPositions);
 
+    //Camera Zoom processing variables
+    private float origCameraZoom;//camera zoom at the start of pinch gesture
+    private float origAvgDistanceFromCenter;//how far the taps are from the tap center at start of pinch gesture
+    private float AverageDistanceFromCenter
+    {
+        get
+        {
+            Vector2 center = TouchCenter;
+            List<Vector2> atps = AliveTouchPositions;
+            return (atps.Count > 0)
+                ? atps.Average(v => Vector2.Distance(v, center))
+                : 0;
+        }
+    }
+
+    //Touch Data
     private Dictionary<int, TouchData> touchDatas = new Dictionary<int, TouchData>();
 
     struct TouchData
@@ -73,6 +90,8 @@ public class TouchGestureInput : GestureInput
                 {
                     touchDatas.Add(touch.fingerId, new TouchData(touch));
                     origTouchCenter = TouchCenter;
+                    origCameraZoom = Managers.Camera.ZoomLevel;
+                    origAvgDistanceFromCenter = AverageDistanceFromCenter;
                 }
             }
             maxTouchCount = Mathf.Max(maxTouchCount, Input.touchCount);
@@ -192,6 +211,13 @@ public class TouchGestureInput : GestureInput
                         ).ToArray()
                         .Length == 0
                     );
+                //Get the change in scale and zoom the camera
+                float adfc = AverageDistanceFromCenter;
+                if (adfc > 0)
+                {
+                    float scaleFactor = origAvgDistanceFromCenter / adfc;
+                    Managers.Camera.ZoomLevel = origCameraZoom * scaleFactor;
+                }
             }
 
             //
@@ -204,6 +230,8 @@ public class TouchGestureInput : GestureInput
                 {
                     touchDatas.Remove(touch.fingerId);
                     origTouchCenter = TouchCenter;
+                    origCameraZoom = Managers.Camera.ZoomLevel;
+                    origAvgDistanceFromCenter = AverageDistanceFromCenter;
                 }
             }
             return true;
@@ -215,6 +243,9 @@ public class TouchGestureInput : GestureInput
             touchEvent = TouchEvent.UNKNOWN;
             maxTouchCount = 0;
             origTouchCenter = Vector2.zero;
+            origCameraZoom = Managers.Camera.ZoomLevel;
+            origAvgDistanceFromCenter = 0;
+            touchDatas.Clear();
             return false;
         }
     }
