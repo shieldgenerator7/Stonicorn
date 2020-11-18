@@ -157,8 +157,10 @@ public class MouseGestureInput : GestureInput
             }
             return true;
         }
+        //If there's no input,
         else
         {
+            //Reset gesture variables
             mouseEvent = MouseEvent.UNKNOWN;
             dragType = DragType.UNKNOWN;
             return false;

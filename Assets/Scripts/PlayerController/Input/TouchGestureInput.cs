@@ -26,6 +26,16 @@ public class TouchGestureInput : GestureInput
         }
     }
 
+    private enum TouchEvent
+    {
+        UNKNOWN,
+        TAP,
+        DRAG,
+        HOLD,
+        CAMERA
+    }
+    private TouchEvent touchEvent = TouchEvent.UNKNOWN;
+
     public override bool InputSupported
         => Input.touchSupported || Input.stylusTouchSupported;
 
@@ -53,21 +63,73 @@ public class TouchGestureInput : GestureInput
             maxTouchCount = Mathf.Max(maxTouchCount, Input.touchCount);
 
             //
+            // Gesture Identification
+            //
+
+            if (touchEvent == TouchEvent.UNKNOWN)
+            {
+                if (maxTouchCount == 1)
+                {
+                    Touch touch = Input.touches[0];
+                    TouchData data = touchDatas[touch.fingerId];
+                    //Drag Gesture
+                    if (Vector2.Distance(data.origPosScreen, touch.position) >= dragThreshold)
+                    {
+                        touchEvent = TouchEvent.DRAG;
+                    }
+                    //Hold Gesture
+                    if (Time.time - data.origTime >= holdThreshold)
+                    {
+                        touchEvent = TouchEvent.HOLD;
+                    }
+                }
+                //If more than one touch
+                else if (maxTouchCount > 1)
+                {
+                    touchEvent = TouchEvent.CAMERA;
+                }
+            }
+
+            //
             //Main Processing
             //
 
-            //Tap
-            if (maxTouchCount == 1 && Input.touches[0].phase == TouchPhase.Ended)
+            if (maxTouchCount == 1)
             {
                 Touch touch = Input.touches[0];
                 TouchData data = touchDatas[touch.fingerId];
-                //If it's not a hold,
-                if (Time.time - data.origTime < holdThreshold
-                    //And it's not a drag,
-                    && Vector2.Distance(data.origPosScreen, touch.position) < dragThreshold)
+                switch (touchEvent)
                 {
-                    //Then it's a tap.
-                    profile.processTapGesture(Utility.ScreenToWorldPoint(touch.position));
+                    //DRAG
+                    case TouchEvent.DRAG:
+                        profile.processDragGesture(
+                            data.origPosWorld,
+                            Utility.ScreenToWorldPoint(touch.position),
+                            DragType.DRAG_PLAYER,
+                            touch.phase == TouchPhase.Ended
+                            );
+                        break;
+                    //HOLD
+                    case TouchEvent.HOLD:
+                        profile.processHoldGesture(
+                            Utility.ScreenToWorldPoint(touch.position),
+                            Time.time - data.origTime,
+                            touch.phase == TouchPhase.Ended
+                            );
+                        break;
+                }
+
+                //
+                // Check for tap end
+                //
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    //If it's unknown,
+                    if (touchEvent == TouchEvent.UNKNOWN)
+                    {
+                        //Then it's a tap
+                        profile.processTapGesture(Utility.ScreenToWorldPoint(touch.position));
+                    }
                 }
             }
 
@@ -82,14 +144,13 @@ public class TouchGestureInput : GestureInput
                     touchDatas.Remove(touch.fingerId);
                 }
             }
-            if (Input.touchCount == 0)
-            {
-                maxTouchCount = 0;
-            }
             return true;
         }
+        //If there is no input,
         else
         {
+            //Reset gesture variables
+            touchEvent = TouchEvent.UNKNOWN;
             maxTouchCount = 0;
             return false;
         }
