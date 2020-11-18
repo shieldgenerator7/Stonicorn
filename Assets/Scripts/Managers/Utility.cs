@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class Utility
@@ -85,6 +86,10 @@ public static class Utility
     {
         return (v1 - v2).sqrMagnitude <= range * range;
     }
+    public static Vector2 average(List<Vector2> vectors)
+        => (vectors.Count > 0)
+            ? vectors.Aggregate((result, v) => result + v) / vectors.Count
+            : Vector2.zero;
     #endregion
 
     #region Rigidbody2D Extension Methods

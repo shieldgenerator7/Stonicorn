@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TouchGestureInput : GestureInput
@@ -9,6 +10,19 @@ public class TouchGestureInput : GestureInput
 
     private int touchCount = 0;//how many touches to process, usually only 0 or 1, only 2 if zoom
     private int maxTouchCount = 0;//the max amount of touches involved in this gesture at any one time
+
+    private Vector2 origTouchCenter;
+    private Vector2 origTouchCenterWorld
+        => Utility.ScreenToWorldPoint(origTouchCenter);
+    private Vector2 TouchCenter
+        => Utility.average(
+            Input.touches
+            .Where(t =>
+                t.phase != TouchPhase.Ended
+                && t.phase != TouchPhase.Canceled
+                ).ToList()
+            .ConvertAll(t => t.position)
+            );
 
     private Dictionary<int, TouchData> touchDatas = new Dictionary<int, TouchData>();
 
@@ -21,7 +35,7 @@ public class TouchGestureInput : GestureInput
         public TouchData(Touch touch)
         {
             origPosScreen = touch.position;
-            origPosWorld = Utility.ScreenToWorldPoint(touch.position);
+            origPosWorld = Utility.ScreenToWorldPoint(origPosScreen);
             origTime = Time.time;
         }
     }
@@ -58,6 +72,7 @@ public class TouchGestureInput : GestureInput
                 if (touch.phase == TouchPhase.Began)
                 {
                     touchDatas.Add(touch.fingerId, new TouchData(touch));
+                    origTouchCenter = TouchCenter;
                 }
             }
             maxTouchCount = Mathf.Max(maxTouchCount, Input.touchCount);
@@ -163,6 +178,21 @@ public class TouchGestureInput : GestureInput
                     }
                 }
             }
+            else if (maxTouchCount > 1)
+            {
+                //Get the center and drag the camera to it
+                profile.processDragGesture(
+                    origTouchCenterWorld,
+                    Utility.ScreenToWorldPoint(TouchCenter),
+                    DragType.DRAG_CAMERA,
+                    Input.touches
+                        .Where(t =>
+                            t.phase != TouchPhase.Ended
+                            && t.phase != TouchPhase.Canceled
+                        ).ToArray()
+                        .Length == 0
+                    );
+            }
 
             //
             //Check for removing touches
@@ -173,6 +203,7 @@ public class TouchGestureInput : GestureInput
                 if (touch.phase == TouchPhase.Ended)
                 {
                     touchDatas.Remove(touch.fingerId);
+                    origTouchCenter = TouchCenter;
                 }
             }
             return true;
@@ -183,6 +214,7 @@ public class TouchGestureInput : GestureInput
             //Reset gesture variables
             touchEvent = TouchEvent.UNKNOWN;
             maxTouchCount = 0;
+            origTouchCenter = Vector2.zero;
             return false;
         }
     }
