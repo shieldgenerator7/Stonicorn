@@ -10,7 +10,7 @@ public class TouchGestureInput : GestureInput
     private int touchCount = 0;//how many touches to process, usually only 0 or 1, only 2 if zoom
     private int maxTouchCount = 0;//the max amount of touches involved in this gesture at any one time
 
-    private Dictionary<Touch, TouchData> touchDatas = new Dictionary<Touch, TouchData>();
+    private Dictionary<int, TouchData> touchDatas = new Dictionary<int, TouchData>();
 
     struct TouchData
     {
@@ -54,7 +54,7 @@ public class TouchGestureInput : GestureInput
                 Touch touch = Input.touches[i];
                 if (touch.phase == TouchPhase.Began)
                 {
-                    touchDatas.Add(touch, new TouchData(touch));
+                    touchDatas.Add(touch.fingerId, new TouchData(touch));
                 }
             }
             maxTouchCount = Mathf.Max(maxTouchCount, Input.touchCount);
@@ -67,7 +67,7 @@ public class TouchGestureInput : GestureInput
             if (maxTouchCount == 1 && Input.touches[0].phase == TouchPhase.Ended)
             {
                 Touch touch = Input.touches[0];
-                TouchData data = touchDatas[touch];
+                TouchData data = touchDatas[touch.fingerId];
                 //If it's not a hold,
                 if (Time.time - data.origTime < holdThreshold
                     //And it's not a drag,
@@ -86,7 +86,7 @@ public class TouchGestureInput : GestureInput
                 Touch touch = Input.touches[i];
                 if (touch.phase == TouchPhase.Ended)
                 {
-                    touchDatas.Remove(touch);
+                    touchDatas.Remove(touch.fingerId);
                 }
             }
             if (Input.touchCount == 0)
