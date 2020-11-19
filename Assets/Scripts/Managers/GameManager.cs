@@ -554,7 +554,7 @@ public class GameManager : MonoBehaviour
         //Set interruptable
         rewindInterruptableByPlayer = playerInitiated;
         //Set the game state tracker vars
-        rewindId = gamestateId;
+        rewindId = Mathf.Max(0, gamestateId);
         //Start the rewind
         Rewinding = true;
     }
