@@ -90,6 +90,12 @@ public static class Utility
         => (vectors.Count > 0)
             ? vectors.Aggregate((result, v) => result + v) / vectors.Count
             : Vector2.zero;
+    public static Vector3 setX(this Vector3 v, float x)
+        => new Vector3(x, v.y, v.z);
+    public static Vector3 setY(this Vector3 v, float y)
+        => new Vector3(v.x, y, v.z);
+    public static Vector3 setZ(this Vector3 v, float z)
+        => new Vector3(v.x, v.y, z);
     #endregion
 
     #region Rigidbody2D Extension Methods
@@ -467,6 +473,34 @@ public static class Utility
             Debug.Log("Utility.CastAnswer: max list count: " + maxReturnedList);
         }
         return new RaycastAnswer(rch2dsNonAlloc, count);
+    }
+    /// <summary>
+    /// Returns the number of solid non-trigger objects in the collider area
+    /// </summary>
+    /// <param name="coll2d"></param>
+    /// <param name="direction"></param>
+    /// <param name="distance"></param>
+    /// <param name="ignoreSiblingColliders"></param>
+    /// <returns></returns>
+    public static int CastCountSolid(Collider2D coll2d, Vector2 direction, float distance = 0, bool ignoreSiblingColliders = true)
+    {
+        RaycastHit2D[] results = rch2dsNonAlloc;
+        int count = 0;
+        count = coll2d.Cast(direction, results, distance, ignoreSiblingColliders);
+        if (count > maxReturnedList)
+        {
+            maxReturnedList = count;
+            Debug.Log("Utility.CastCountSolid: max list count: " + maxReturnedList);
+        }
+        int solidCount = 0;
+        for (int i = 0; i < count; i++)
+        {
+            if (!results[i].collider.isTrigger)
+            {
+                solidCount++;
+            }
+        }
+        return solidCount;
     }
 
     public static void copyTransform(Transform fromTransform, ref GameObject toObject)
