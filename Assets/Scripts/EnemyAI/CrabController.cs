@@ -11,8 +11,15 @@ public class CrabController : Hazard
     [Header("Components")]
     public Collider2D cliffDetector;
     public Collider2D obstacleDetector;
+    public Collider2D clawCollider;
+    public Collider2D holdDetector;
 
     private Rigidbody2D rb2d;
+
+    //
+    // Processing Variables
+    //
+    bool holdingObject = false;//true if holding one or more movable objects
 
     //
     // Properties
@@ -25,6 +32,9 @@ public class CrabController : Hazard
 
     public bool ObstacleDetected
         => Utility.CastCountSolid(obstacleDetector, Vector2.zero) > 0;
+
+    public bool HeldObjectDetected
+        => Utility.CastCountSolid(holdDetector, Vector2.zero) > 0;
 
     // Start is called before the first frame update
     void Start()
@@ -39,12 +49,37 @@ public class CrabController : Hazard
             rb2d.AddForce(
                 transform.right
                 * Mathf.Sign(transform.localScale.x)
-                * rb2d.mass
+                * rb2d.mass * 2
                 * moveSpeed
                 );
             if (rb2d.velocity.sqrMagnitude > moveSpeed * moveSpeed)
             {
                 rb2d.velocity = rb2d.velocity.normalized * moveSpeed;
+            }
+        }
+        if (holdingObject)
+        {
+            bool foundValidRB2D = false;
+            Utility.RaycastAnswer rca = Utility.CastAnswer(holdDetector, Vector2.zero);
+            if (rca.count > 0)
+            {
+                for (int i = 0; i < rca.count; i++)
+                {
+                    RaycastHit2D rch2d = rca.rch2ds[i];
+                    if (!rch2d.collider.isTrigger)
+                    {
+                        Rigidbody2D collRB2D = rch2d.collider.GetComponent<Rigidbody2D>();
+                        if (collRB2D)
+                        {
+                            collRB2D.velocity = rb2d.velocity;
+                            foundValidRB2D = true;
+                        }
+                    }
+                }
+            }
+            if (!foundValidRB2D)
+            {
+                holdingObject = false;
             }
         }
     }
@@ -53,7 +88,33 @@ public class CrabController : Hazard
     {
         if (ObstacleDetected)
         {
+            GameObject collGO = collision.gameObject;
+            Rigidbody2D collRB2D = collGO.GetComponent<Rigidbody2D>();
+            if (collRB2D)
+            {
+                rb2d.velocity = Vector2.zero;
+                //Pick up object
+                collGO.transform.position = clawCollider.bounds.center;
+            }
             changeDirection();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (HeldObjectDetected)
+        {
+            GameObject collGO = collision.gameObject;
+            Rigidbody2D collRB2D = collGO.GetComponent<Rigidbody2D>();
+            if (collRB2D)
+            {
+                holdingObject = true;
+                collRB2D.velocity = rb2d.velocity;
+            }
+        }
+        else
+        {
+            holdingObject = false;
         }
     }
 
@@ -62,6 +123,10 @@ public class CrabController : Hazard
         if (CliffDetected)
         {
             changeDirection();
+        }
+        if (!HeldObjectDetected)
+        {
+            holdingObject = false;
         }
     }
 
