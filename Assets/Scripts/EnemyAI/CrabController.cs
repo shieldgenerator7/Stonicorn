@@ -74,6 +74,7 @@ public class CrabController : Hazard
                         if (collRB2D)
                         {
                             collRB2D.velocity = rb2d.velocity;
+                            collRB2D.angularVelocity = 0;
                             foundValidRB2D = true;
                         }
                     }
