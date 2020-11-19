@@ -256,9 +256,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8891363696297088197}
   - component: {fileID: 97970954455186870}
-  - component: {fileID: 264581021448296599}
   - component: {fileID: 1548221666}
   - component: {fileID: 3218187188486719399}
+  - component: {fileID: 264581021448296599}
+  - component: {fileID: 2541194897243294332}
   m_Layer: 0
   m_Name: Crab
   m_TagString: Untagged
@@ -334,24 +335,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &264581021448296599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2074043541384526292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccfabb61767b61b4aaca745889ffd459, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageDealt: 2
-  shellColor: {r: 0.7176471, g: 0.2784314, b: 0.16078432, a: 1}
-  eyeColor: {r: 1, g: 1, b: 1, a: 1}
-  eyeSRs:
-  - {fileID: 8110178254951418595}
-  - {fileID: 7273263049246004004}
 --- !u!50 &1548221666
 Rigidbody2D:
   serializedVersion: 4
@@ -404,6 +387,41 @@ PolygonCollider2D:
       - {x: -0.57, y: -0.08}
       - {x: -0.15, y: -0.23}
       - {x: 0.15, y: -0.23}
+--- !u!114 &264581021448296599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074043541384526292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccfabb61767b61b4aaca745889ffd459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageDealt: 2
+  moveSpeed: 1
+--- !u!114 &2541194897243294332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074043541384526292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 232821d27cba59f4eaff02375056253b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialColors:
+  - label: Shell
+    color: {r: 0.7176471, g: 0.2784314, b: 0.16078432, a: 1}
+    srs: []
+  - label: Eyes
+    color: {r: 1, g: 1, b: 1, a: 1}
+    srs:
+    - {fileID: 8110178254951418595}
+    - {fileID: 7273263049246004004}
 --- !u!1 &2366590116300921720
 GameObject:
   m_ObjectHideFlags: 0
