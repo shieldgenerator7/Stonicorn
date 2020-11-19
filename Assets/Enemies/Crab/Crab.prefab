@@ -341,6 +341,7 @@ Transform:
   - {fileID: 1073203604971144554}
   - {fileID: 6202185074520198235}
   - {fileID: 2737323238303918942}
+  - {fileID: 32291642123885410}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -461,11 +462,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageDealt: 2
   moveSpeed: 1
+  throwSpeed: 3
   legAnimator: {fileID: 1674174212153035194}
   cliffDetector: {fileID: 7152653924036852794}
   obstacleDetector: {fileID: 5895585959752090250}
   clawCollider: {fileID: 3963815321087787618}
   holdDetector: {fileID: 6745517917957444332}
+  throwDirection: {fileID: 32291642123885410}
 --- !u!114 &2541194897243294332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1015,6 +1018,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &5171296674518836307
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 32291642123885410}
+  m_Layer: 0
+  m_Name: ThrowDirection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &32291642123885410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5171296674518836307}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8891363696297088197}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5365205490097385549
 GameObject:
   m_ObjectHideFlags: 0

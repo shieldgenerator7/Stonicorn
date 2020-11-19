@@ -6,6 +6,7 @@ public class CrabController : Hazard
 {
     [Header("Settings")]
     public float moveSpeed = 1;
+    public float throwSpeed = 5;
     [Header("Animators")]
     public Animator legAnimator;
     [Header("Components")]
@@ -13,6 +14,7 @@ public class CrabController : Hazard
     public Collider2D obstacleDetector;
     public Collider2D clawCollider;
     public Collider2D holdDetector;
+    public Transform throwDirection;
 
     private Rigidbody2D rb2d;
 
@@ -88,13 +90,16 @@ public class CrabController : Hazard
     {
         if (ObstacleDetected)
         {
-            GameObject collGO = collision.gameObject;
-            Rigidbody2D collRB2D = collGO.GetComponent<Rigidbody2D>();
-            if (collRB2D)
+            if (!holdingObject)
             {
-                rb2d.velocity = Vector2.zero;
-                //Pick up object
-                collGO.transform.position = clawCollider.bounds.center;
+                GameObject collGO = collision.gameObject;
+                Rigidbody2D collRB2D = collGO.GetComponent<Rigidbody2D>();
+                if (collRB2D)
+                {
+                    rb2d.velocity = Vector2.zero;
+                    //Pick up object
+                    collGO.transform.position = clawCollider.bounds.center;
+                }
             }
             changeDirection();
         }
@@ -110,6 +115,7 @@ public class CrabController : Hazard
             {
                 holdingObject = true;
                 collRB2D.velocity = rb2d.velocity;
+                collRB2D.angularVelocity = 0;
             }
         }
         else
@@ -122,6 +128,13 @@ public class CrabController : Hazard
     {
         if (CliffDetected)
         {
+            //Let go of any objects
+            if (holdingObject)
+            {
+                holdingObject = false;
+                throwObjects();
+            }
+            //Change direction
             changeDirection();
         }
         if (!HeldObjectDetected)
@@ -135,5 +148,28 @@ public class CrabController : Hazard
         rb2d.velocity = Vector2.zero;
         Vector3 scale = transform.localScale;
         transform.localScale = scale.setX(scale.x * -1);
+    }
+
+    void throwObjects()
+    {
+        Utility.RaycastAnswer rca = Utility.CastAnswer(holdDetector, Vector2.zero);
+        if (rca.count > 0)
+        {
+            for (int i = 0; i < rca.count; i++)
+            {
+                RaycastHit2D rch2d = rca.rch2ds[i];
+                if (!rch2d.collider.isTrigger)
+                {
+                    Rigidbody2D collRB2D = rch2d.collider.GetComponent<Rigidbody2D>();
+                    if (collRB2D)
+                    {
+                        //Throw object
+                        collRB2D.velocity =
+                            (throwDirection.position - transform.position)
+                            * throwSpeed;
+                    }
+                }
+            }
+        }
     }
 }
