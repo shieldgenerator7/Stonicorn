@@ -258,7 +258,7 @@ GameObject:
   - component: {fileID: 97970954455186870}
   - component: {fileID: 264581021448296599}
   - component: {fileID: 1548221666}
-  - component: {fileID: 1548221665}
+  - component: {fileID: 3218187188486719399}
   m_Layer: 0
   m_Name: Crab
   m_TagString: Untagged
@@ -279,6 +279,7 @@ Transform:
   m_Children:
   - {fileID: 9024757283168586282}
   - {fileID: 2546040907424195839}
+  - {fileID: 1169529690878297088}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -368,8 +369,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &1548221665
-BoxCollider2D:
+--- !u!60 &3218187188486719399
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -391,9 +392,14 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.168, y: 0.482}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.57, y: -0.08}
+      - {x: 0.43, y: 0.22}
+      - {x: -0.43, y: 0.22}
+      - {x: -0.57, y: -0.08}
+      - {x: -0.15, y: -0.23}
+      - {x: 0.15, y: -0.23}
 --- !u!1 &2366590116300921720
 GameObject:
   m_ObjectHideFlags: 0
