@@ -34,10 +34,19 @@ public class CrabController : Hazard
 
     void FixedUpdate()
     {
-        rb2d.velocity =
-            transform.right
-            * Mathf.Sign(transform.localScale.x)
-            * moveSpeed;
+        if (rb2d.velocity.sqrMagnitude < moveSpeed * moveSpeed)
+        {
+            rb2d.AddForce(
+                transform.right
+                * Mathf.Sign(transform.localScale.x)
+                * rb2d.mass
+                * moveSpeed
+                );
+            if (rb2d.velocity.sqrMagnitude > moveSpeed * moveSpeed)
+            {
+                rb2d.velocity = rb2d.velocity.normalized * moveSpeed;
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -58,6 +67,7 @@ public class CrabController : Hazard
 
     void changeDirection()
     {
+        rb2d.velocity = Vector2.zero;
         Vector3 scale = transform.localScale;
         transform.localScale = scale.setX(scale.x * -1);
     }
