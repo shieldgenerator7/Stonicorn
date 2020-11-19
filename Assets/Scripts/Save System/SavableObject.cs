@@ -137,6 +137,12 @@ public class SavableObject
                 return typeof(NPCVoiceLine);
             case "SnailController":
                 return typeof(SnailController);
+            case "StaticHazard":
+                return typeof(StaticHazard);
+            case "CrabController":
+                return typeof(CrabController);
+            case "CactusController":
+                return typeof(CactusController);
             default:
                 throw new KeyNotFoundException(
                     "The type name \"" + typeName + "\" was not found. "
