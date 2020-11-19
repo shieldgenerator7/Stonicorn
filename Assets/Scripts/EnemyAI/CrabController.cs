@@ -10,6 +10,7 @@ public class CrabController : Hazard
     public Animator legAnimator;
     [Header("Components")]
     public Collider2D cliffDetector;
+    public Collider2D obstacleDetector;
 
     private Rigidbody2D rb2d;
 
@@ -21,6 +22,9 @@ public class CrabController : Hazard
 
     public bool CliffDetected
         => Utility.CastCountSolid(cliffDetector, Vector2.zero) == 0;
+
+    public bool ObstacleDetected
+        => Utility.CastCountSolid(obstacleDetector, Vector2.zero) > 0;
 
     // Start is called before the first frame update
     void Start()
@@ -36,12 +40,25 @@ public class CrabController : Hazard
             * moveSpeed;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (ObstacleDetected)
+        {
+            changeDirection();
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (CliffDetected)
         {
-            Vector3 scale = transform.localScale;
-            transform.localScale = scale.setX(scale.x * -1);
+            changeDirection();
         }
+    }
+
+    void changeDirection()
+    {
+        Vector3 scale = transform.localScale;
+        transform.localScale = scale.setX(scale.x * -1);
     }
 }
