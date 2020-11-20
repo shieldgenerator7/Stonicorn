@@ -9,10 +9,12 @@ public class SpriteShapeTool : MonoBehaviour
 {
     public SpriteShapeController ssc;
     public Color lineColor = Color.green;
+    public Color circleColor = Color.blue;
 
     public int startIndex = 0;
     private int endIndex = 5;
     public int length = 5;
+    public int correctHeightIndex = 0;//the index that has the correct height
 
     private Vector2 dragStartPosition;
 
@@ -47,10 +49,12 @@ public class SpriteShapeTool : MonoBehaviour
         {
             int pointCount = ssc.spline.GetPointCount();
             float rValue = Vector2.Distance(
-                ssc.transform.TransformPoint(ssc.spline.GetPosition(startIndex % pointCount)),
+                ssc.transform.TransformPoint(
+                    ssc.spline.GetPosition(correctHeightIndex % pointCount)
+                    ),
                 gz.transform.position
                 );
-            for (int i = startIndex + 1; i <= endIndex; i++)
+            for (int i = startIndex; i <= endIndex; i++)
             {
                 Vector2 newPoint = (ssc.transform.TransformPoint(ssc.spline.GetPosition(i % pointCount)) - gz.transform.position)
                     .normalized * rValue + gz.transform.position;
@@ -66,12 +70,13 @@ public class SpriteShapeTool : MonoBehaviour
 
     private void checkEndIndex()
     {
-        length = Mathf.Max(length, 1);
+        length = Mathf.Clamp(length, 1, ssc.spline.GetPointCount());
         endIndex = startIndex + length;
         if (endIndex < startIndex)
         {
             endIndex += ssc.spline.GetPointCount();
         }
+        correctHeightIndex = Mathf.Clamp(correctHeightIndex, startIndex, endIndex);
     }
 
     private void OnDrawGizmos()
@@ -95,7 +100,14 @@ public class SpriteShapeTool : MonoBehaviour
                 ssc.transform.TransformPoint(ssc.spline.GetPosition((i + 1) % pointCount))
                 );
         }
-
+        //Draw circle over correct height point
+        Gizmos.color = circleColor;
+        Gizmos.DrawWireSphere(
+            ssc.transform.TransformPoint(
+                ssc.spline.GetPosition(correctHeightIndex % pointCount)
+                ),
+            1
+            );
         ////Mouse Selecting
         //if (Event.current.type == EventType.MouseDown)
         //{

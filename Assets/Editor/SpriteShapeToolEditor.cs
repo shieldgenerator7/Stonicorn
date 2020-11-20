@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 [CustomEditor(typeof(SpriteShapeTool))]
@@ -20,6 +21,7 @@ public class SpriteShapeToolEditor : Editor
         GUI.enabled = !EditorApplication.isPlaying;
         if (GUILayout.Button("Level Terrain Points"))
         {
+            Undo.RecordObject(sst.gameObject, "Level points in SpriteShape " + sst.name);
             sst.levelPoints();
         }
     }
