@@ -168,11 +168,11 @@ public class CheckPointGhostMover : MonoBehaviour
             if (cpc != parentCPC)
             {
                 GameObject go = cpc.gameObject;
-                if (cpc.activated && cpc.cpGhostMover.gameObject.activeInHierarchy)
+                if (cpc.activated && cpc.GhostMover.gameObject.activeInHierarchy)
                 {
-                    if (cpc.cpGhostMover.overlaps(sr.bounds, spriteRadius))
+                    if (cpc.GhostMover.overlaps(sr.bounds, spriteRadius))
                     {
-                        if (sqrDistanceFromCurrentCP > cpc.cpGhostMover.sqrDistanceFromCurrentCP)
+                        if (sqrDistanceFromCurrentCP > cpc.GhostMover.sqrDistanceFromCurrentCP)
                         {
                             return true;
                         }
