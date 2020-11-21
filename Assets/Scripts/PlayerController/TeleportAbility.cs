@@ -15,6 +15,7 @@ public class TeleportAbility : PlayerAbility
     public GameObject flashlightPrefab;//prefab
     private GameObject flashlight;
     private bool flashlightOn = false;
+    private SpriteRenderer flashlightSR;
     private Vector2 flashlightDirection;
     public Vector2 FlashlightDirection
     {
@@ -84,14 +85,16 @@ public class TeleportAbility : PlayerAbility
                 this.flashlight = Instantiate(flashlightPrefab);
                 this.flashlight.transform.parent = transform;
                 this.flashlight.transform.localPosition = Vector2.zero;
+                this.flashlightSR = this.flashlight.GetComponent<SpriteRenderer>();
             }
             flashlight.SetActive(true);
             flashlight.transform.up = flashlightDirection;
-            flashlight.transform.localScale = new Vector3(
-                1,
-                flashlightDirection.magnitude,
-                1
-                );
+            flashlightSR.color = new Color(
+                    flashlightSR.color.r,
+                    flashlightSR.color.g,
+                    flashlightSR.color.b,
+                    (flashlightDirection.magnitude - 0.5f)/ maxPullBackDistance
+                    );
         }
         else
         {
