@@ -84,7 +84,7 @@ public class AirSliceAbility : PlayerAbility {
             //Give player time to tap again after teleporting in the air
             if (AirPortsUsed <= maxAirPorts)
             {
-                playerController.GravityImmune = true;
+                playerController.MovementPaused = true;
             }
         }
     }

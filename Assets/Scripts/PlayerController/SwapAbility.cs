@@ -194,7 +194,7 @@ public class SwapAbility : PlayerAbility
             swapTarget.transform.position = swapPos;
             swappedSomething = true;
             //Give player time to tap again after swapping
-            playerController.GravityImmune = true;
+            playerController.MovementPaused = true;
             //Update Stats
             GameStatistics.addOne("SwapObject");
             //Update Stats

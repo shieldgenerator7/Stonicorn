@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1)]
     public float baseExhaustCoolDownTime = 0.5f;//the base cool down time (sec) for teleporting while exhausted
     [Range(0, 1)]
-    public float gravityImmuneDuration = 0.2f;//amount of time (sec) Merky is immune to gravity after landing
+    public float pauseMovementDuration = 0.2f;//amount of time (sec) Merky's movement is paused after landing
     [Range(0, 0.5f)]
     public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
     [Range(0, 3)]
@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     //
     //Timer Processing Vars
     //
-    private float gravityImmuneStartTime = -1;//when Merky last became immune to gravity
+    private float pauseMovementStartTime = -1;//when Merky last had his movement paused
     private float lastAutoTeleportTime;//the last time that Merky auto teleported using the hold gesture
 
     private float exhaustCoolDownTime;//the current cool down time (sec) for teleporting while exhausted
@@ -77,9 +77,9 @@ public class PlayerController : MonoBehaviour
     }
 
     //
-    // Gravity Immunity Variables
+    // Movement Pausing Variables
     //
-    private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
+    private bool shouldPauseMovement = false;//whether or not to pause movement, true after teleport
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
 
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
         pc2d = GetComponent<PolygonCollider2D>();
         tpa = GetComponent<TeleportAbility>();
         //Register the delegates
-        Managers.Game.onRewindFinished += grantGravityImmunityAfterRewind;
+        Managers.Game.onRewindFinished += pauseMovementAfterRewind;
         //Estimate the halfWidth
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
         halfWidth = (extents.x + extents.y) / 2;
@@ -201,7 +201,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         //Check to see if gravity immunity has expired
-        checkGravityImmunity(false);
+        checkMovementPause(false);
         //Put the ground trigger in its proper spot
         updateGroundTrigger();
     }
@@ -214,7 +214,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!coll2D.isTrigger)
         {
-            checkGravityImmunity(true);//first grounded frame after teleport
+            checkMovementPause(true);//first grounded frame after teleport
         }
     }
 
@@ -236,7 +236,7 @@ public class PlayerController : MonoBehaviour
         else if (!collision.collider.isTrigger)
         {
             //Grant gravity immunity
-            checkGravityImmunity(true);//first grounded frame after teleport
+            checkMovementPause(true);//first grounded frame after teleport
         }
     }
 
@@ -262,18 +262,17 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// True if Merky doesn't get affected by gravity, false if otherwise
-    /// Note that Merky can still be affected by other sources of force while gravity immune
+    /// True if pausing movement for a time, false if otherwise
     /// </summary>
-    public bool GravityImmune
+    public bool MovementPaused
     {
-        get { return gravityImmuneStartTime >= 0; }
+        get { return pauseMovementStartTime >= 0; }
         set
         {
-            bool grantGravityImmunity = value;
-            if (grantGravityImmunity)
+            bool pauseMovement = value;
+            if (pauseMovement)
             {
-                if (gravityImmuneStartTime < 0)
+                if (pauseMovementStartTime < 0)
                 {
                     //Turn off Merky's gravity
                     Gravity.AcceptsGravity = false;
@@ -282,7 +281,7 @@ public class PlayerController : MonoBehaviour
                     //Store angular velocity for later
                     savedAngularVelocity = rb2d.angularVelocity;
                 }
-                gravityImmuneStartTime = Time.time;
+                pauseMovementStartTime = Time.time;
                 //Freeze velocity
                 rb2d.velocity = Vector2.zero;
                 //Freeze angular velocity
@@ -290,7 +289,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                gravityImmuneStartTime = -1;
+                pauseMovementStartTime = -1;
                 //Turn on Merky's gravity
                 Gravity.AcceptsGravity = true;
                 //Restore saved velocity
@@ -303,17 +302,17 @@ public class PlayerController : MonoBehaviour
         }
     }
     /// <summary>
-    /// Turns gravity immunity on or off, if conditions are right
+    /// Turns movement pausing on or off, if conditions are right
     /// </summary>
     /// <param name="checkToTurnOn">Whether to check if should be turned on</param>
-    private void checkGravityImmunity(bool checkToTurnOn)
+    private void checkMovementPause(bool checkToTurnOn)
     {
         //If the caller wants it turned on,
         if (checkToTurnOn)
         {
             //And gravity immunity should be granted,
             //(such as the first grounded frame after a teleport)
-            if (shouldGrantGIT)
+            if (shouldPauseMovement)
             {
                 //And Merky is grounded,
                 if (Ground.Grounded)
@@ -321,9 +320,9 @@ public class PlayerController : MonoBehaviour
                     //Updated grounded state
                     updateGroundedState();
                     //Turn off shuoldGrantGIT
-                    shouldGrantGIT = false;
+                    shouldPauseMovement = false;
                     //Grant gravity immunity
-                    GravityImmune = true;
+                    MovementPaused = true;
                 }
             }
         }
@@ -331,13 +330,13 @@ public class PlayerController : MonoBehaviour
         else
         {
             //And it's currently on,
-            if (GravityImmune)
+            if (MovementPaused)
             {
                 //And the gravity immune time has expired,
-                if (Time.time >= gravityImmuneStartTime + gravityImmuneDuration)
+                if (Time.time >= pauseMovementStartTime + pauseMovementDuration)
                 {
                     //Turn off gravity immunity
-                    GravityImmune = false;
+                    MovementPaused = false;
                 }
             }
         }
@@ -418,14 +417,14 @@ public class PlayerController : MonoBehaviour
 
         //Gravity Immunity
         //If gravity immune,
-        if (GravityImmune)
+        if (MovementPaused)
         {
             //Turn it off
-            GravityImmune = false;
+            MovementPaused = false;
         }
         //When Merky touches ground next,
         //he should get gravity immunity
-        shouldGrantGIT = true;
+        shouldPauseMovement = true;
 
         //Momentum Dampening
         //If Merky is moving,
@@ -1034,10 +1033,10 @@ public class PlayerController : MonoBehaviour
         onDragGesture?.Invoke(origPos, newPos, finished);
     }
 
-    void grantGravityImmunityAfterRewind()
+    void pauseMovementAfterRewind()
     {
         //Grant gravity immunity
-        GravityImmune = true;
+        MovementPaused = true;
         //Reset range to default
         Range = baseRange;
     }
