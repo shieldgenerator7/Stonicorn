@@ -15,7 +15,8 @@ public class HiddenArea : MemoryMonoBehaviour
     {
         discovered = true;
         Managers.Game.saveMemory(this);
-        gameObject.AddComponent<Fader>();
+        Fader fader = gameObject.AddComponent<Fader>();
+        fader.ignorePause = true;
     }
 
     //2016-11-26: called when this HiddenArea had been discovered in a previous session

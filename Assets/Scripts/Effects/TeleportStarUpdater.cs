@@ -20,7 +20,7 @@ public class TeleportStarUpdater : MonoBehaviour
             gameObject.SetActive(value);
             if (value)
             {
-                startTime = Time.time;
+                startTime = Time.unscaledTime;
                 transform.localScale = baseScale;
                 baseColor.a = 1;
             }
@@ -38,7 +38,7 @@ public class TeleportStarUpdater : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         sr.color = baseColor;
         baseScale = transform.localScale;
-        shrinkRate = duration * Time.deltaTime;
+        shrinkRate = duration * Time.unscaledDeltaTime;
         shrinkVector = new Vector3(shrinkRate, shrinkRate);
     }
 
@@ -49,7 +49,7 @@ public class TeleportStarUpdater : MonoBehaviour
         sr.color = baseColor;
         transform.Rotate(Vector3.forward * -10);//2016-03-03: copied from an answer by Eric5h5: http://answers.unity3d.com/questions/580001/trying-to-rotate-a-2d-sprite.html
         transform.localScale -= shrinkVector;
-        if (Time.time > startTime + duration)
+        if (Time.unscaledTime > startTime + duration)
         {
             TurnedOn = false;
         }
