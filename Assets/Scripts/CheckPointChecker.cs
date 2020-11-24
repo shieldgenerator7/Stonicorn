@@ -6,8 +6,8 @@ using System.Collections.Generic;
 public class CheckPointChecker : MemoryMonoBehaviour
 {
 
-    public static GameObject current = null;//the current checkpoint
-   
+    public static CheckPointChecker current = null;//the current checkpoint
+
     public bool activated = false;
     public Sprite ghostSprite;
     private GameObject ghost;
@@ -15,6 +15,10 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public CheckPointGhostMover GhostMover => cpGhostMover;
     public GameObject ghostPrefab;
     private static Camera checkpointCamera;
+
+    public int defaultTelepadIndex = 0;
+    public List<Transform> telepads;
+    public int telepadIndex { get; private set; } = -1;//the current telepad the player is in
 
     // Use this for initialization
     void Start()
@@ -103,7 +107,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
             //don't trigger it
             return;
         }
-        current = this.gameObject;
+        current = this;
         if (ghostSprite == null)
         {
             Debug.LogError("CheckPointChecker " + gameObject.name + " needs to have a ghost sprite!");
@@ -118,7 +122,43 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 cpc.showRelativeTo(this.gameObject);
             }
         }
+        //Set current telepad
+        float minDist = float.MaxValue;
+        int minTP = -1;
+        //Find the telepad
+        for (int i = 0; i < telepads.Count; i++)
+        {
+            Transform tp = telepads[i];
+            if (tp)
+            {
+                float dist = Vector2.Distance(
+                    tp.position,
+                    Managers.Player.transform.position
+                    );
+                //That is closest to the player
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    minTP = i;
+                }
+            }
+        }
+        telepadIndex = minTP;
     }
+
+    public Vector2 getTelepadPosition(CheckPointChecker fromCP)
+    {
+        int currentTelepad = fromCP.telepadIndex;
+        if (this.telepads[currentTelepad] != null)
+        {
+            return this.telepads[currentTelepad].position;
+        }
+        else
+        {
+            return this.telepads[defaultTelepadIndex].position;
+        }
+    }
+
     public static void readjustCheckPointGhosts(Vector2 epicenter)
     {
         foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)

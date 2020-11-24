@@ -942,10 +942,8 @@ public class PlayerController : MonoBehaviour
     {
         //Get pre-teleport position
         Vector2 oldPos = transform.position;
-        //Get relative position inside of previous checkpoint
-        Vector3 offset = transform.position - CheckPointChecker.current.transform.position;
         //Get post-teleport position inside of new checkpoint
-        Vector3 newPos = checkPoint.transform.position + offset;
+        Vector3 newPos = checkPoint.getTelepadPosition(CheckPointChecker.current);
         //If pre-processing needs done before teleporting,
         if (_onPreTeleport != null)
         {
