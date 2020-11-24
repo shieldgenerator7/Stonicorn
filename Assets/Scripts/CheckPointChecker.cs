@@ -47,7 +47,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     //When a player touches this checkpoint, activate it
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.isPlayer())
+        if (coll.collider.isPlayerSolid())
         {
             activate();
         }
@@ -58,7 +58,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     */
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.isPlayer())
+        if (coll.isPlayerSolid())
         {
             trigger();
         }
@@ -178,12 +178,15 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     void OnTriggerExit2D(Collider2D coll)
     {
-        if (current == this)
+        if (coll.isPlayerSolid())
         {
-            Managers.Player.InCheckPoint = false;
-            activate();
-            clearPostTeleport(true);
-            current = null;
+            if (current == this)
+            {
+                Managers.Player.InCheckPoint = false;
+                activate();
+                clearPostTeleport(true);
+                current = null;
+            }
         }
     }
 

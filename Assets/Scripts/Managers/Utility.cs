@@ -153,6 +153,16 @@ public static class Utility
     {
         return go == Managers.Player.gameObject;
     }
+    /// <summary>
+    /// Returns true if the collider is of the player's and is not a trigger
+    /// </summary>
+    /// <param name="coll2d"></param>
+    /// <returns></returns>
+    public static bool isPlayerSolid(this Collider2D coll2d)
+    {
+        return coll2d.gameObject == Managers.Player.gameObject
+            && !coll2d.isTrigger;
+    }
 
     /// <summary>
     /// Returns true if the game object has state to save
