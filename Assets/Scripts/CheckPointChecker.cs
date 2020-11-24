@@ -122,7 +122,27 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 cpc.showRelativeTo(this.gameObject);
             }
         }
+        calculateTelepadIndex();
+    }
+
+    public Vector2 getTelepadPosition(CheckPointChecker fromCP)
+    {
+        fromCP.calculateTelepadIndex();
+        int currentTelepad = fromCP.telepadIndex;
+        if (this.telepads[currentTelepad] != null)
+        {
+            return this.telepads[currentTelepad].position;
+        }
+        else
+        {
+            return this.telepads[defaultTelepadIndex].position;
+        }
+    }
+
+    public void calculateTelepadIndex()
+    {
         //Set current telepad
+        telepadIndex = -1;
         float minDist = float.MaxValue;
         int minTP = -1;
         //Find the telepad
@@ -144,19 +164,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
             }
         }
         telepadIndex = minTP;
-    }
-
-    public Vector2 getTelepadPosition(CheckPointChecker fromCP)
-    {
-        int currentTelepad = fromCP.telepadIndex;
-        if (this.telepads[currentTelepad] != null)
-        {
-            return this.telepads[currentTelepad].position;
-        }
-        else
-        {
-            return this.telepads[defaultTelepadIndex].position;
-        }
     }
 
     public static void readjustCheckPointGhosts(Vector2 epicenter)
