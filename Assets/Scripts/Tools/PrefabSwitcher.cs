@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+#if UNITY_EDITOR
 public class PrefabSwitcher : MonoBehaviour
 {
     public GameObject newPrefab;
@@ -43,3 +44,4 @@ public class PrefabSwitcher : MonoBehaviour
     }
 }
 
+#endif
