@@ -42,27 +42,44 @@ public class CustomMenu
         }
     }
 
-    [MenuItem("SG7/Editor/Call Merky Spawn Point %#`")]
+    [MenuItem("SG7/Editor/Toggle Merky Spawn Point %#`")]
     public static void callMerky()
     {
         if (Application.isEditor && !Application.isPlaying)
         {
             PlayerTestSpawnPoint playerTSP = GameObject.FindObjectOfType<PlayerTestSpawnPoint>();
-            playerTSP.enabled = true;
             GameObject playerSpawnObject = playerTSP.gameObject;
-            playerSpawnObject.SetActive(true);
-            if (GameObject.FindObjectOfType<RulerDisplayer>())
+            if (!playerTSP.enabled)
             {
-                playerSpawnObject.transform.position = RulerDisplayer.currentMousePos;
+                //Enable it
+                playerTSP.enabled = true;
+                playerSpawnObject.SetActive(true);
+                RulerDisplayer rd = GameObject.FindObjectOfType<RulerDisplayer>();
+                if (rd)
+                {
+                    rd.transform.position = RulerDisplayer.currentMousePos;
+                }
+                else
+                {
+                    playerSpawnObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+                }
+                Selection.activeGameObject = playerSpawnObject;
             }
             else
             {
-                playerSpawnObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
+                //Disable it               
+                //Deactivate spawn point
+                playerTSP.enabled = false;
+                playerSpawnObject.SetActive(true);
+                //Select player object
+                GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
+                Selection.activeGameObject = playerObject;
+
             }
-            Selection.activeGameObject = playerSpawnObject;
         }
         else
         {
+            //Call the player
             GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
             if (GameObject.FindObjectOfType<RulerDisplayer>())
             {
@@ -72,22 +89,6 @@ public class CustomMenu
             {
                 playerObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
             }
-            Selection.activeGameObject = playerObject;
-        }
-    }
-
-    [MenuItem("SG7/Editor/Deactivate Merky Spawn Point %&`")]
-    public static void uncallMerky()
-    {
-        if (Application.isEditor && !Application.isPlaying)
-        {
-            //Deactivate spawn point
-            PlayerTestSpawnPoint playerTSP = GameObject.FindObjectOfType<PlayerTestSpawnPoint>();
-            playerTSP.enabled = false;
-            GameObject playerSpawnObject = playerTSP.gameObject;
-            playerSpawnObject.SetActive(true);
-            //Select player object
-            GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
             Selection.activeGameObject = playerObject;
         }
     }

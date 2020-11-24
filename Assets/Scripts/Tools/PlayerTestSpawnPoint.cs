@@ -21,7 +21,18 @@ public class PlayerTestSpawnPoint : MonoBehaviour
             }
         }
         //Destroy object
-        Destroy(gameObject);
+        //If it's under a ruler displayer,
+        RulerDisplayer rd = GetComponentInParent<RulerDisplayer>();
+        if (rd)
+        {
+            //Destroy that ruler displayer and everything under it
+            Destroy(rd.gameObject);
+        }
+        else
+        {
+            //Otherwise just destroy this spawn point object
+            Destroy(gameObject);
+        }
     }
 }
 
