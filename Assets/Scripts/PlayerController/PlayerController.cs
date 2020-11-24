@@ -10,8 +10,12 @@ public class PlayerController : MonoBehaviour
     //Settings
     //
     [Header("Settings")]
+    [Range(0,10)]
     public float baseRange = 3;//the range after touching the ground
+    [Range(0, 10)]
     public float exhaustRange = 1;//the range after teleporting into the air (and being exhausted)
+    [Range(0, 1)]
+    public float coolDownTime = 0.1f;//the minimum time between teleports
     [Range(0, 1)]
     public float baseExhaustCoolDownTime = 0.5f;//the base cool down time (sec) for teleporting while exhausted
     [Range(0, 1)]
@@ -24,6 +28,7 @@ public class PlayerController : MonoBehaviour
     //Timer Processing Vars
     //
     private float pauseMovementStartTime = -1;//when Merky last had his movement paused
+    private float lastTeleportTime;//the last time that Merky teleported
     private float lastAutoTeleportTime;//the last time that Merky auto teleported using the hold gesture
 
     private float exhaustCoolDownTime;//the current cool down time (sec) for teleporting while exhausted
@@ -45,7 +50,10 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                teleportTime = Time.unscaledTime + exhaustCoolDownTime;
+                teleportTime = Time.unscaledTime + Mathf.Max(
+                    coolDownTime,
+                    exhaustCoolDownTime
+                    );
             }
         }
     }
@@ -376,8 +384,9 @@ public class PlayerController : MonoBehaviour
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
             float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -Gravity.Gravity.normalized);
             exhaustCoolDownTime = baseExhaustCoolDownTime * upAmount;
-            TeleportReady = false;
         }
+        //Put teleport on cooldown
+        TeleportReady = false;
 
         //Store old and new positions
         Vector3 oldPos = transform.position;
@@ -639,7 +648,7 @@ public class PlayerController : MonoBehaviour
                 Range = baseRange;
             }
             //Refresh teleport exhaust cooldowns
-            TeleportReady = true;
+            exhaustCoolDownTime = 0;
         }
         //Else if Merky is in the air,
         else
@@ -910,7 +919,7 @@ public class PlayerController : MonoBehaviour
     /// Processes the tap gesture on the given checkpoint
     /// </summary>
     /// <param name="checkPoint">The checkpoint to teleport to</param>
-    public void processTapGesture(CheckPointChecker checkPoint)
+    private void processTapGesture(CheckPointChecker checkPoint)
     {
         //Get pre-teleport position
         Vector2 oldPos = transform.position;
