@@ -177,6 +177,7 @@ public class SwapAbility : PlayerAbility
             Rigidbody2D goRB2D = swapTarget.GetComponent<Rigidbody2D>();
             if (goRB2D)
             {
+                //Disconnect attachments, if any
                 foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
                 {
                     if (fj2d.connectedBody == goRB2D)
@@ -184,7 +185,13 @@ public class SwapAbility : PlayerAbility
                         Destroy(fj2d);
                     }
                 }
+                //Nullify velocity
+                goRB2D.velocity = Vector2.zero;
+                goRB2D.angularVelocity = 0;
             }
+            //Nullify Merky's velocity
+            rb2d.velocity = Vector2.zero;
+            rb2d.angularVelocity = 0;
             //Swap object
             Vector2 swapPos = (Vector2)gameObject.transform.position - newPos + oldPos;
             if (isOccupiedForObject(gameObject.GetComponent<Collider2D>(), swapPos))
