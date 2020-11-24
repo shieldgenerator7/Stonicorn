@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public bool TeleportReady
     {
-        get { return Time.time >= teleportTime; }
+        get { return Time.unscaledTime >= teleportTime; }
         set
         {
             bool teleportReady = value;
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                teleportTime = Time.time + exhaustCoolDownTime;
+                teleportTime = Time.unscaledTime + exhaustCoolDownTime;
             }
         }
     }
@@ -271,7 +271,7 @@ public class PlayerController : MonoBehaviour
                     //Slow down time
                     Managers.Time.Paused = true;
                 }
-                pauseMovementStartTime = Time.time;
+                pauseMovementStartTime = Time.unscaledTime;
             }
             else
             {
@@ -312,8 +312,8 @@ public class PlayerController : MonoBehaviour
             //And it's currently on,
             if (MovementPaused)
             {
-                if (Time.time >= pauseMovementStartTime + pauseMovementDuration)
                 //And the movement pause time has expired,
+                if (Time.unscaledTime >= pauseMovementStartTime + pauseMovementDuration)
                 {
                     //Turn off movement pausing
                     MovementPaused = false;
@@ -395,15 +395,15 @@ public class PlayerController : MonoBehaviour
         //Play Sound
         playTeleportSound(oldPos, newPos);
 
-        //Gravity Immunity
-        //If gravity immune,
+        //Movement pausing
+        //If movement paused,
         if (MovementPaused)
         {
             //Turn it off
             MovementPaused = false;
         }
         //When Merky touches ground next,
-        //he should get gravity immunity
+        //he should get his movement paused
         shouldPauseMovement = true;
 
         //Momentum Dampening
@@ -451,10 +451,7 @@ public class PlayerController : MonoBehaviour
         groundedTrigger.offset = Vector2.zero;
 
         //On Teleport Effects
-        if (onTeleport != null)
-        {
-            onTeleport(oldPos, newPos);
-        }
+        onTeleport?.Invoke(oldPos, newPos);
 
         //Detach Merky from sticky pads stuck to him
         foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
@@ -851,11 +848,6 @@ public class PlayerController : MonoBehaviour
     /// <param name="tapPos">The position to teleport to</param>
     public void processTapGesture(Vector3 tapPos)
     {
-        //Don't process while paused
-        if (Managers.Time.Paused)
-        {
-            return;
-        }
         //If the player tapped on Merky,
         if (gestureOnPlayer(tapPos))
         {
@@ -958,10 +950,10 @@ public class PlayerController : MonoBehaviour
         {
             //Rapidly auto-teleport
             //If enough time has passed since the last auto-teleport,
-            if (Time.time > lastAutoTeleportTime + autoTeleportDelay)
+            if (Time.unscaledTime > lastAutoTeleportTime + autoTeleportDelay)
             {
                 //Teleport
-                lastAutoTeleportTime = Time.time;
+                lastAutoTeleportTime = Time.unscaledTime;
                 processTapGesture(holdPos);
             }
         }
