@@ -71,12 +71,10 @@ public class SnailController : Hazard
         FloorDirection = transform.up;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (Managers.Game.Rewinding)
         {
-            Debug.Log("Snail: not processing snails while rewinding");
             //don't update while game manager is rewinding
             return;
         }
@@ -95,8 +93,9 @@ public class SnailController : Hazard
         if (Awake)
         {
             rb2d.angularVelocity = rotateSpeed;
+#if UNITY_EDITOR
             Debug.DrawLine(transform.position, (Vector2)transform.position + FloorDirection, Color.blue);
-
+#endif
             if (prevPos == Vector2.zero)
             {
                 //do nothing, wait for it to update
