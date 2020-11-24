@@ -59,6 +59,14 @@ public class CheckPointGhostMover : MonoBehaviour
         goingHome = false;
     }
 
+    internal void snapToNewPosition(Vector2 epicenter)
+    {
+        Vector2 offset = (Vector2)transform.position - this.epicenter;
+        this.epicenter = epicenter;
+        transform.position = epicenter + offset;
+        enabled = false;
+    }
+
     internal void readjustPosition(Vector2 epicenter)
     {
         this.epicenter = epicenter;

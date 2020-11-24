@@ -172,7 +172,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         {
             if (cpc != current)
             {
-                cpc.cpGhostMover.readjustPosition(epicenter);
+                cpc.cpGhostMover.snapToNewPosition(epicenter);
             }
         }
     }
