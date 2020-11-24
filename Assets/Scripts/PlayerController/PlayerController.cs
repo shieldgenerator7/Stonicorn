@@ -80,8 +80,6 @@ public class PlayerController : MonoBehaviour
     // Movement Pausing Variables
     //
     private bool shouldPauseMovement = false;//whether or not to pause movement, true after teleport
-    private Vector2 savedVelocity;
-    private float savedAngularVelocity;
 
     //
     // Runtime Constants
@@ -104,10 +102,6 @@ public class PlayerController : MonoBehaviour
         get
         {
             float speed = rb2d.velocity.magnitude;
-            if (speed == 0)
-            {
-                speed = savedVelocity.magnitude;
-            }
             return speed;
         }
     }
@@ -116,10 +110,6 @@ public class PlayerController : MonoBehaviour
         get
         {
             Vector2 velocity = rb2d.velocity;
-            if (velocity.magnitude == 0)
-            {
-                velocity = savedVelocity;
-            }
             return velocity;
         }
     }
@@ -195,13 +185,17 @@ public class PlayerController : MonoBehaviour
         updateGroundTrigger();
     }
 
+    private void Update()
+    {
+        //Check to see if movement pausing has expired
+        checkMovementPause(false);
+    }
+
     /// <summary>
     /// Called once per physics update
     /// </summary>
     private void FixedUpdate()
     {
-        //Check to see if gravity immunity has expired
-        checkMovementPause(false);
         //Put the ground trigger in its proper spot
         updateGroundTrigger();
     }
@@ -274,30 +268,16 @@ public class PlayerController : MonoBehaviour
             {
                 if (pauseMovementStartTime < 0)
                 {
-                    //Turn off Merky's gravity
-                    Gravity.AcceptsGravity = false;
-                    //Store velocity for later
-                    savedVelocity = rb2d.velocity;
-                    //Store angular velocity for later
-                    savedAngularVelocity = rb2d.angularVelocity;
+                    //Slow down time
+                    Managers.Time.Paused = true;
                 }
                 pauseMovementStartTime = Time.time;
-                //Freeze velocity
-                rb2d.velocity = Vector2.zero;
-                //Freeze angular velocity
-                rb2d.angularVelocity = 0;
             }
             else
             {
+                //Resume normal time speed
+                Managers.Time.Paused = false;
                 pauseMovementStartTime = -1;
-                //Turn on Merky's gravity
-                Gravity.AcceptsGravity = true;
-                //Restore saved velocity
-                rb2d.velocity = savedVelocity;
-                savedVelocity = Vector2.zero;
-                //Restore saved angular velocity
-                rb2d.angularVelocity = savedAngularVelocity;
-                savedAngularVelocity = 0;
             }
         }
     }
@@ -310,7 +290,7 @@ public class PlayerController : MonoBehaviour
         //If the caller wants it turned on,
         if (checkToTurnOn)
         {
-            //And gravity immunity should be granted,
+            //And movement should be paused,
             //(such as the first grounded frame after a teleport)
             if (shouldPauseMovement)
             {
@@ -319,9 +299,9 @@ public class PlayerController : MonoBehaviour
                 {
                     //Updated grounded state
                     updateGroundedState();
-                    //Turn off shuoldGrantGIT
+                    //Turn off shouldPauseMovement
                     shouldPauseMovement = false;
-                    //Grant gravity immunity
+                    //Pause Movement
                     MovementPaused = true;
                 }
             }
@@ -332,10 +312,10 @@ public class PlayerController : MonoBehaviour
             //And it's currently on,
             if (MovementPaused)
             {
-                //And the gravity immune time has expired,
                 if (Time.time >= pauseMovementStartTime + pauseMovementDuration)
+                //And the movement pause time has expired,
                 {
-                    //Turn off gravity immunity
+                    //Turn off movement pausing
                     MovementPaused = false;
                 }
             }
