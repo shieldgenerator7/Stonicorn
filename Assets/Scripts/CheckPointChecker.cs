@@ -102,7 +102,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public void trigger()
     {
         //If this checkpoint is already the current one,
-        if (current == this.gameObject)
+        if (current == this)
         {
             //don't trigger it
             return;
@@ -163,7 +163,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
         {
-            if (cpc.gameObject != current)
+            if (cpc != current)
             {
                 cpc.cpGhostMover.readjustPosition(epicenter);
             }
@@ -171,7 +171,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     void OnTriggerExit2D(Collider2D coll)
     {
-        if (current == this.gameObject)
+        if (current == this)
         {
             Managers.Player.InCheckPoint = false;
             activate();
