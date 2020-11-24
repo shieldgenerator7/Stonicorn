@@ -30,6 +30,7 @@ public class PrefabSwitcherEditor : Editor
             List<GameObject> newObjs = oldObjs.ConvertAll(go => ps.switchPrefab(go));
             Undo.RecordObjects(newObjs.ToArray(), "Create new objects with prefab: " + ps.newPrefab.name);
             Undo.RecordObjects(oldObjs.ToArray(), "Delete old objects");
+            newObjs.ForEach(go => EditorUtility.SetDirty(go));
             oldObjs.ForEach(go => DestroyImmediate(go));
             ps.oldObjects.Clear();
             ps.oldObjects.AddRange(newObjs);
