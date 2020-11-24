@@ -16,7 +16,7 @@ public class PrefabSwitcher : MonoBehaviour
         {
             newPrefab = this.newPrefab;
         }
-        GameObject newObject = Instantiate(newPrefab);
+        GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(newPrefab);
         newObject.transform.parent = oldObject.transform.parent;
         newObject.transform.position = oldObject.transform.position;
         newObject.transform.up = oldObject.transform.up;
