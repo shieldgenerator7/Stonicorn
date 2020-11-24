@@ -42,9 +42,9 @@ public class RippleEffect : MonoBehaviour
         //Size
         transform.localScale = Vector2.one * ((size2 - size1) * percent + size1);
         //Time
-        if (percent == 1)
+        if (Managers.Time.beat(duration))
         {
-            lastStartTime = lastStartTime + duration;
+            lastStartTime = Managers.Time.Time + offset;
         }
     }
 }

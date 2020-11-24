@@ -81,6 +81,17 @@ public class TimeManager : SavableMonoBehaviour
         Managers.Game.RewindToStart();
     }
 
+    /// <summary>
+    /// Returns true if the repeated cycle duration has been hit (again)
+    /// Used for syncing things up
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    public bool beat(float duration)
+        //EX: deltaTime = 0.2; 5.01 % 5 = 0.01, but 4.99 % 5 == 4.99
+        =>Time % duration < (Time - UnityEngine.Time.deltaTime) % duration;
+
+
     public override SavableObject getSavableObject()
     {
         return new SavableObject(this,
