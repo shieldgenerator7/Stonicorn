@@ -6,38 +6,87 @@ public class WallClimbAbility : PlayerAbility
 
     [Header("Settings")]
     public float wallDetectRange = 1.0f;//how far from the center of the old position it should look for a wall
+    public float wallMagnetSpeed = 0.5f;//how fast Merky should move towards the wall if he's grounded to it
     [Header("Necessary Input")]
     public GameObject stickyPadPrefab;
+
+    private bool groundedLeft = false;
+    private bool groundedRight = false;
 
     protected override void init()
     {
         base.init();
         playerController.Ground.isGroundedCheck += isGroundedWall;
-        playerController.onTeleport += plantSticky;
+        playerController.onTeleport += processTeleport;
     }
     public override void OnDisable()
     {
         base.OnDisable();
         playerController.Ground.isGroundedCheck -= isGroundedWall;
-        playerController.onTeleport -= plantSticky;
+        playerController.onTeleport -= processTeleport;
     }
 
     bool isGroundedWall()
     {
-        bool isgrounded = false;
+        groundedLeft = groundedRight = false;
         Vector2 gravity = playerController.Gravity.Gravity;
+        //Test left side
+        groundedLeft = playerController.Ground.isGroundedInDirection(
+            -gravity.PerpendicularLeft()
+            );
         //Test right side
-        isgrounded = playerController.Ground.isGroundedInDirection(
+        groundedRight = playerController.Ground.isGroundedInDirection(
             -gravity.PerpendicularRight()
             );
-        if (!isgrounded)
+        return groundedLeft || groundedRight;
+    }
+
+    /// <summary>
+    /// Should be called after isGroundedWall() gets called
+    /// </summary>
+    /// <param name="oldPos"></param>
+    /// <param name="newPos"></param>
+    void processTeleport(Vector2 oldPos, Vector2 newPos)
+    {
+        if (groundedLeft || groundedRight)
         {
-            //Test left side
-            isgrounded = playerController.Ground.isGroundedInDirection(
-                -gravity.PerpendicularLeft()
-                );
+            //plantSticky(newPos);
+            rb2d.velocity = Vector2.zero;
         }
-        return isgrounded;
+    }
+
+    private void Update()
+    {
+        if (!playerController.Ground.GroundedNormal)
+        {
+            if (groundedLeft)
+            {
+                rb2d.AddForce(
+                    wallMagnetSpeed
+                    * rb2d.mass
+                    * -playerController.Gravity.Gravity.PerpendicularLeft()
+                    );
+            }
+            if (groundedRight)
+            {
+                rb2d.AddForce(
+                    wallMagnetSpeed
+                    * rb2d.mass
+                    * -playerController.Gravity.Gravity.PerpendicularRight()
+                    );
+            }
+            if (groundedLeft || groundedRight)
+            {
+                //Update grounding variables
+                isGroundedWall();
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        //Updated grounded variables
+        isGroundedWall();
     }
 
     protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
@@ -59,9 +108,9 @@ public class WallClimbAbility : PlayerAbility
     /// <summary>
     /// Plants a sticky pad at the oldPos if it's near a wall
     /// </summary>
-    /// <param name="oldPos"></param>
+    /// <param name="teleportPos"></param>
     /// <param name="newPos"></param>
-    public void plantSticky(Vector2 oldPos, Vector2 newPos)
+    public void plantSticky(Vector2 teleportPos)
     {
         if (playerController.Ground.GroundedAbilityPrev)
         {
@@ -69,10 +118,16 @@ public class WallClimbAbility : PlayerAbility
             GameStatistics.addOne("WallClimb");
             //Get the gravity direction
             Vector2 gravity = playerController.Gravity.Gravity;
-            //Look right
-            plantStickyInDirection(oldPos, -gravity.PerpendicularRight());
-            //Look left
-            plantStickyInDirection(oldPos, -gravity.PerpendicularLeft());
+            if (groundedLeft)
+            {
+                //Look left
+                plantStickyInDirection(teleportPos, -gravity.PerpendicularLeft());
+            }
+            if (groundedRight)
+            {
+                //Look right
+                plantStickyInDirection(teleportPos, -gravity.PerpendicularRight());
+            }
         }
     }
     void plantStickyInDirection(Vector2 pos, Vector2 dir)
