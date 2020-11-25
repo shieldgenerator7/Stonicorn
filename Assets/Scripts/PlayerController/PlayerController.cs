@@ -991,7 +991,7 @@ public class PlayerController : MonoBehaviour
                 //Finally teleport to the location
                 processTapGesture(holdPos);
                 //Erase the teleport preview effects
-                tpa.dropHoldGesture();
+                tpa.stopGestureEffects();
             }
         }
     }
@@ -1002,7 +1002,7 @@ public class PlayerController : MonoBehaviour
     {
         foreach (PlayerAbility ability in ActiveAbilities)
         {
-            ability.dropHoldGesture();
+            ability.stopGestureEffects();
         }
     }
 

@@ -291,4 +291,9 @@ public class ForceDashAbility : PlayerAbility
         Charge = (float)savObj.data["charge"];
         ChargeDirection = (Vector2)savObj.data["chargeDirection"];
     }
+
+    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    {
+        throw new System.NotImplementedException();
+    }
 }

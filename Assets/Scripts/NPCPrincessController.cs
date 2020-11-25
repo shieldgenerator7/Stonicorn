@@ -47,18 +47,18 @@ public class NPCPrincessController : MonoBehaviour
             float timeDiff = Time.time - startHoldTime;
             if (timeDiff < maxHoldTime)
             {
-                ability.processHoldGesture(transform.position + offsetVector, timeDiff, false);
+                //ability.processHoldGesture(transform.position + offsetVector, timeDiff, false);
             }
             else
             {
                 if (soonestNextHold == 0)
                 {
                     soonestNextHold = Time.time + holdCooldown;
-                    ability.processHoldGesture(transform.position + offsetVector, timeDiff, true);
+                    //ability.processHoldGesture(transform.position + offsetVector, timeDiff, true);
                 }
                 else
                 {
-                    ability.dropHoldGesture();
+                    ability.stopGestureEffects();
                     if (soonestNextHold < Time.time)
                     {
                         soonestNextHold = 0;
@@ -81,7 +81,7 @@ public class NPCPrincessController : MonoBehaviour
         if (coll.gameObject.isPlayer())
         {
             hasTriggered = false;
-            ability.dropHoldGesture();
+            ability.stopGestureEffects();
         }
     }
 }

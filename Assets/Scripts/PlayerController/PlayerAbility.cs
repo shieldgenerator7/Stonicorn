@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerAbility : SavableMonoBehaviour, Setting
+public abstract class PlayerAbility : SavableMonoBehaviour, Setting
 {
     public Color effectColor;//the color used for the particle system upon activation
 
@@ -12,6 +12,8 @@ public class PlayerAbility : SavableMonoBehaviour, Setting
     public bool addsOnTeleportVisualEffect = true;
     public AudioClip soundEffect;
     public bool addsOnTeleportSoundEffect = true;
+    public int upgradeLevel = 0;
+    public List<AbilityUpgradeLevel> upgradeLevels;
 
     [Header("Savable Variables")]
     [SerializeField]
@@ -110,20 +112,9 @@ public class PlayerAbility : SavableMonoBehaviour, Setting
         init();
     }
 
-    public virtual void processHoldGesture(Vector2 pos, float holdTime, bool finished) { }
+    public virtual void stopGestureEffects() { }
 
-    /// <summary>
-    /// Returns whether or not this ability has its hold gesture activated
-    /// </summary>
-    /// <returns></returns>
-    public virtual bool isHoldingGesture()
-    {
-        return effectParticleSystem.isPlaying;
-    }
-
-    public virtual void dropHoldGesture() { }
-
-
+    public abstract void acceptUpgradeLevel(AbilityUpgradeLevel aul);
 
     protected void playEffect(Vector2 playPos)
     {
@@ -161,30 +152,30 @@ public class PlayerAbility : SavableMonoBehaviour, Setting
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject(this);
+        return new SavableObject(this,
+            "upgradeLevel", upgradeLevel
+            );
     }
 
     public override void acceptSavableObject(SavableObject savObj)
     {
+        upgradeLevel = Mathf.Max(
+            upgradeLevel,
+            (int)savObj.data["upgradeLevel"]
+            );
+        acceptUpgradeLevel(upgradeLevels[upgradeLevel]);
     }
 
-    public SettingScope Scope
-    {
-        get => SettingScope.SAVE_FILE;
-    }
-    public string ID
-    {
-        get => GetType().Name;
-    }
+    public SettingScope Scope => SettingScope.SAVE_FILE;
+
+    public string ID => GetType().Name;
 
     public SettingObject Setting
     {
-        get
-        {
-            return new SettingObject(ID,
+        get =>
+            new SettingObject(ID,
                 "unlocked", unlocked
                 );
-        }
         set
         {
             unlocked = (bool)value.data["unlocked"] || unlocked;

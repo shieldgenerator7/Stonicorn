@@ -119,4 +119,9 @@ public class ElectricFieldAbility : PlayerAbility
             }
         }
     }
+
+    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    {
+        throw new System.NotImplementedException();
+    }
 }

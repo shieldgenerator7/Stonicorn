@@ -114,4 +114,9 @@ public class AirSliceAbility : PlayerAbility {
         base.acceptSavableObject(savObj);
         AirPortsUsed = 0;
     }
+
+    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    {
+        throw new System.NotImplementedException();
+    }
 }

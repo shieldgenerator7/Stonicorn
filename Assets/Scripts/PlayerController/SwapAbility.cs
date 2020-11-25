@@ -241,4 +241,9 @@ public class SwapAbility : PlayerAbility
             base.showTeleportEffect(oldPos, newPos);
         }
     }
+
+    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    {
+        throw new System.NotImplementedException();
+    }
 }

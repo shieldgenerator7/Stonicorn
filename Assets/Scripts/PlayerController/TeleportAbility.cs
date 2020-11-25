@@ -42,7 +42,7 @@ public class TeleportAbility : PlayerAbility
         playerController.onDragGesture -= processDrag;
     }
 
-    public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
+    public void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
         //Show a preview of where Merky will teleport
         Vector2 futurePos = playerController.findTeleportablePosition(pos);
@@ -63,7 +63,7 @@ public class TeleportAbility : PlayerAbility
         }
     }
 
-    public override void dropHoldGesture()
+    public override void stopGestureEffects()
     {
         futureProjection.SetActive(false);
         teleportPreviewPointer.SetActive(false);
@@ -100,5 +100,10 @@ public class TeleportAbility : PlayerAbility
         {
             flashlight?.SetActive(false);
         }
+    }
+
+    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    {
+        throw new System.NotImplementedException();
     }
 }

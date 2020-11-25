@@ -277,4 +277,9 @@ public class ForceLaunchAbility : PlayerAbility
         savObj.data.Add("affectingVelocity", affectingVelocity);
         return savObj;
     }
+
+    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    {
+        throw new System.NotImplementedException();
+    }
 }

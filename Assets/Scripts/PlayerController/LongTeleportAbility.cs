@@ -42,4 +42,9 @@ public class LongTeleportAbility : PlayerAbility
             GameStatistics.addOne("LongTeleport");
         }
     }
+
+    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    {
+        throw new System.NotImplementedException();
+    }
 }
