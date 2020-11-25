@@ -82,8 +82,10 @@ public class AirSliceAbility : PlayerAbility {
                 AirPortsUsed = 0;
             }
             //Give player time to tap again after teleporting in the air
+            //Also nullify velocity
             if (AirPortsUsed <= maxAirPorts)
             {
+                rb2d.velocity = Vector2.zero;
                 playerController.MovementPaused = true;
             }
         }
