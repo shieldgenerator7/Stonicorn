@@ -115,7 +115,7 @@ public class AirSliceAbility : PlayerAbility {
         AirPortsUsed = 0;
     }
 
-    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
         throw new System.NotImplementedException();
     }

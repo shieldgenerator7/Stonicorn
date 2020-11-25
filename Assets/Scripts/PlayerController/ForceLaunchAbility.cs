@@ -278,7 +278,7 @@ public class ForceLaunchAbility : PlayerAbility
         return savObj;
     }
 
-    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
         maxPullBackDistance = aul.stat1;
         maxLaunchSpeed = aul.stat2;

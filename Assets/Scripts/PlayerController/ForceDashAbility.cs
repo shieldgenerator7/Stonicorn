@@ -292,7 +292,7 @@ public class ForceDashAbility : PlayerAbility
         ChargeDirection = (Vector2)savObj.data["chargeDirection"];
     }
 
-    public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
         throw new System.NotImplementedException();
     }

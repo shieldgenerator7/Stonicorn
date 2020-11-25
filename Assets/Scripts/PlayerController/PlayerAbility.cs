@@ -62,6 +62,9 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
     {
         rb2d = GetComponent<Rigidbody2D>();
         playerController = GetComponent<PlayerController>();
+        //Upgrade Levels
+        acceptUpgradeLevel(upgradeLevel);
+        //Visual Effects
         if (addsOnTeleportVisualEffect)
         {
             if (effectParticleController)
@@ -77,6 +80,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
                 Debug.LogWarning("PlayerAbility (" + this.GetType() + ") on " + name + " does not have a particle effect! effectParticleController: " + effectParticleController);
             }
         }
+        //Sound Effects
         if (soundEffect)
         {
             if (addsOnTeleportSoundEffect)
@@ -114,7 +118,18 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
 
     public virtual void stopGestureEffects() { }
 
-    public abstract void acceptUpgradeLevel(AbilityUpgradeLevel aul);
+    private void acceptUpgradeLevel(int level)
+    {
+        if (upgradeLevels.Count > 0)
+        {
+            acceptUpgradeLevel(upgradeLevels[level]);
+        }
+        else
+        {
+            Debug.LogError(GetType().Name + " does not have any upgrade levels!");
+        }
+    }
+    protected abstract void acceptUpgradeLevel(AbilityUpgradeLevel aul);
 
     protected void playEffect(Vector2 playPos)
     {
@@ -163,7 +178,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
             upgradeLevel,
             (int)savObj.data["upgradeLevel"]
             );
-        acceptUpgradeLevel(upgradeLevels[upgradeLevel]);
+        acceptUpgradeLevel(upgradeLevel);
     }
 
     public SettingScope Scope => SettingScope.SAVE_FILE;
@@ -174,11 +189,17 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
     {
         get =>
             new SettingObject(ID,
-                "unlocked", unlocked
+                "unlocked", unlocked,
+                "upgradeLevel", upgradeLevel
                 );
         set
         {
             unlocked = (bool)value.data["unlocked"] || unlocked;
+            upgradeLevel = Mathf.Max(
+                (int)value.data["upgradeLevel"],
+                upgradeLevel
+                );
+            acceptUpgradeLevel(upgradeLevel);
         }
     }
 
