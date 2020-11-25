@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     //Settings
     //
     [Header("Settings")]
-    [Range(0,10)]
+    [Range(0, 10)]
     public float baseRange = 3;//the range after touching the ground
     [Range(0, 10)]
     public float exhaustRange = 1;//the range after teleporting into the air (and being exhausted)
@@ -277,14 +277,14 @@ public class PlayerController : MonoBehaviour
                 if (pauseMovementStartTime < 0)
                 {
                     //Slow down time
-                    Managers.Time.Paused = true;
+                    Managers.Time.setPause(this, true);
                 }
                 pauseMovementStartTime = Time.unscaledTime;
             }
             else
             {
                 //Resume normal time speed
-                Managers.Time.Paused = false;
+                Managers.Time.setPause(this, false);
                 pauseMovementStartTime = -1;
             }
         }
@@ -820,14 +820,14 @@ public class PlayerController : MonoBehaviour
             //Highlight impact area
             Managers.Effect.showPointEffect("effect_contact", contactPoint);
             //Pause game
-            Managers.Time.Paused = true;
+            Managers.Time.setPause(this, true);
         }
     }
 
     private void hitTimerUp()
     {
         //Unpause game
-        Managers.Time.Paused = false;
+        Managers.Time.setPause(this, false);
         //Remove highlight
         Managers.Effect.showPointEffect("effect_contact", Vector2.zero, false);
         //Rewind
@@ -857,6 +857,12 @@ public class PlayerController : MonoBehaviour
     /// <param name="tapPos">The position to teleport to</param>
     public void processTapGesture(Vector3 tapPos)
     {
+        //If the game is paused because Merky is hit,
+        if (Managers.Time.Paused && !Managers.Game.rewindInterruptableByPlayer)
+        {
+            //Don't process input
+            return;
+        }
         //If the player tapped on Merky,
         if (gestureOnPlayer(tapPos))
         {

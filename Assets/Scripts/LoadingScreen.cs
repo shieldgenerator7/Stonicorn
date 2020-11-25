@@ -109,7 +109,7 @@ public class LoadingScreen : MonoBehaviour
         finishedLoading = true;
         if (MenuManager.Open)
         {
-            Managers.Time.Paused = true;
+            Managers.Time.setPause(this, true);
         }
         checkUnload();
     }
@@ -129,6 +129,7 @@ public class LoadingScreen : MonoBehaviour
         if (finishedLoading && finishedSplashScreen)
         {
             instance = null;
+            Managers.Time.setPause(this, false);
             SceneManager.UnloadSceneAsync("LoadingScreen");
         }
     }

@@ -8,12 +8,12 @@ public class RewindGestureProfile : GestureProfile
         //Show Previous Teleport Points
         Managers.Game.showPlayerGhosts(true);
         //Pause game
-        Managers.Time.Paused = true;
+        Managers.Time.setPause(Managers.Gesture, true);
     }
     public override void deactivate()
     {
         //Unpause
-        Managers.Time.Paused = false;
+        Managers.Time.setPause(Managers.Gesture, false);
         //Hide Previous Teleport Points
         Managers.Game.showPlayerGhosts(false);
     }

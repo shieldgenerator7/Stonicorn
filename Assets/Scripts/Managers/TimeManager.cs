@@ -33,7 +33,7 @@ public class TimeManager : SavableMonoBehaviour
     public bool Paused
     {
         get => UnityEngine.Time.timeScale == 0;
-        set
+        private set
         {
             UnityEngine.Time.timeScale = (value) ? 0 : timeSpeed;
             onPauseChanged?.Invoke(value);
@@ -41,6 +41,7 @@ public class TimeManager : SavableMonoBehaviour
     }
     public delegate void OnPauseChanged(bool paused);
     public OnPauseChanged onPauseChanged;
+    private List<MonoBehaviour> pausers = new List<MonoBehaviour>();
 
     [SerializeField]
     private float slowTimeSpeed = 0.2f;
@@ -82,6 +83,41 @@ public class TimeManager : SavableMonoBehaviour
     }
 
     /// <summary>
+    /// If any script wants to pause the game, the game is paused.
+    /// Only when all scripts agree to unpause the game will it be unpaused
+    /// </summary>
+    /// <param name="pauser"></param>
+    /// <param name="pause"></param>
+    public void setPause(MonoBehaviour pauser, bool pause = true)
+    {
+        if (pause)
+        {
+            if (pauser != null && !pausers.Contains(pauser))
+            {
+                pausers.Add(pauser);
+                Paused = true;
+            }
+        }
+        else
+        {
+            pausers.Remove(pauser);
+            if (pausers.Count == 0)
+            {
+                Paused = false;
+            }
+#if UNITY_EDITOR
+            else
+            {
+                //Display to developer why you can't unpause
+                string msg = "Can't unpause: ";
+                pausers.ForEach(mb => msg += mb.GetType());
+                Debug.Log(msg);
+            }
+#endif
+        }
+    }
+
+    /// <summary>
     /// Returns true if the repeated cycle duration has been hit (again)
     /// Used for syncing things up
     /// </summary>
@@ -89,7 +125,7 @@ public class TimeManager : SavableMonoBehaviour
     /// <returns></returns>
     public bool beat(float duration)
         //EX: deltaTime = 0.2; 5.01 % 5 = 0.01, but 4.99 % 5 == 4.99
-        =>Time % duration < (Time - UnityEngine.Time.deltaTime) % duration;
+        => Time % duration < (Time - UnityEngine.Time.deltaTime) % duration;
 
 
     public override SavableObject getSavableObject()

@@ -58,12 +58,12 @@ public class GameManager : MonoBehaviour
             if (pauseForLoadingSceneName == null || pauseForLoadingSceneName == "")
             {
                 //Resume if the scene is done loading
-                Managers.Time.Paused = false;
+                Managers.Time.setPause(this, false);
             }
             else
             {
                 //Pause if the scene is still loading
-                Managers.Time.Paused = true;
+                Managers.Time.setPause(this, true);
             }
         }
     }
@@ -611,7 +611,7 @@ public class GameManager : MonoBehaviour
                 //Disable physics while rewinding
                 Managers.Physics2DSurrogate.enabled = true;
                 //Pause time
-                Managers.Time.Paused = true;
+                Managers.Time.setPause(this, true);
                 //Update Stats
                 GameStatistics.addOne("Rewind");
             }
@@ -644,7 +644,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 //Unpause time
-                Managers.Time.Paused = false;
+                Managers.Time.setPause(this, false);
                 //Re-enable physics because the rewind is over
                 Managers.Physics2DSurrogate.enabled = false;
                 //Rewind Finished Delegate
