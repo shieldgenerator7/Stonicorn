@@ -118,7 +118,8 @@ public class GravityZone : MonoBehaviour
     {
         foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
         {
-            if (gz.GetComponent<Collider2D>().OverlapPoint(pos))
+            if (gz.GetComponent<Collider2D>().OverlapPoint(pos)
+                && gz.mainGravityZone)
             {
                 return gz;
             }
