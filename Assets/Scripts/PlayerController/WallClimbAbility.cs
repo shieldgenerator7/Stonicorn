@@ -85,8 +85,11 @@ public class WallClimbAbility : PlayerAbility
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        //Updated grounded variables
-        isGroundedWall();
+        if (Active)
+        {
+            //Updated grounded variables
+            isGroundedWall();
+        }
     }
 
     protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
