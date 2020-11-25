@@ -280,6 +280,9 @@ public class ForceLaunchAbility : PlayerAbility
 
     public override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        throw new System.NotImplementedException();
+        maxPullBackDistance = aul.stat1;
+        maxLaunchSpeed = aul.stat2;
+        bounceEnergyConservationPercent = aul.stat3;
+        accelerationBoostPercent = aul.stat4;
     }
 }
