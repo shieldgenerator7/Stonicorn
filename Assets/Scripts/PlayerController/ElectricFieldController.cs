@@ -101,8 +101,6 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
                 }
             }
         }
-        //Auto-drain energy
-        addEnergy(-Mathf.Max(1, range) * Time.fixedDeltaTime);
     }
 
     public float checkForce(float force, Vector2 direction)
@@ -119,9 +117,13 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
     {
         return Mathf.Max(0, Vector2.Distance(explosionPos, transform.position) - range);
     }
-    public void addEnergy(float amount)
+    public void addEnergy(float amount, float maxEnergy = 0)
     {
         energy += amount;
+        if (maxEnergy > 0)
+        {
+            energy = Mathf.Min(energy, maxEnergy);
+        }
         if (energy <= 0)
         {
             dissipate();
