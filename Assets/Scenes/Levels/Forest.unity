@@ -466,7 +466,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -17073,7 +17073,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -38864,7 +38864,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -42115,7 +42115,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -42312,6 +42312,75 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1425741548}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1426591806
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 240.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99977225
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.021340424
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 2.446
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181119415636568738, guid: 59cfe7455ddf98745a2ef92bafc53e65,
+        type: 3}
+      propertyPath: m_Name
+      value: NPC GrunHardt Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 59cfe7455ddf98745a2ef92bafc53e65, type: 3}
 --- !u!1001 &1428636219
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46109,86 +46178,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 1d8c4061116ec114697491949fd57f32,
     type: 3}
   m_PrefabInstance: {fileID: 1631206324}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1643088731
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 20.17
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 240.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9305879
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.36606863
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -71.787
-      objectReference: {fileID: 0}
-    - target: {fileID: 6317144652256997883, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_Name
-      value: NPC Kaki the Cacticorn
-      objectReference: {fileID: 0}
-    - target: {fileID: 6317144652256997883, guid: c4ccb1628833b204e85aa156745c57a6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c4ccb1628833b204e85aa156745c57a6, type: 3}
---- !u!4 &1643088732 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1643088731}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1646176311
 PrefabInstance:
@@ -51087,82 +51076,6 @@ Transform:
   m_Father: {fileID: 978303211}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1866589784
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1866589785}
-  - component: {fileID: 1866589787}
-  - component: {fileID: 1866589786}
-  m_Layer: 0
-  m_Name: Force Wave Ability Grant
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1866589785
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866589784}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1643088732}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1866589786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866589784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4decc246a7eb3d0438c4436d93d75ec8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particle: {fileID: 0}
-  starAmount: 25
-  starSpawnDuration: 25
-  abilityIndicatorName: 
-  used: 0
-  abilityTypeName: SwapAbility
---- !u!61 &1866589787
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866589784}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.1, y: 1.1}
-  m_EdgeRadius: 0
 --- !u!1001 &1867325129
 PrefabInstance:
   m_ObjectHideFlags: 0
