@@ -37,13 +37,13 @@ public class SavableObject
         {
             data.Add((string)pairs[i], pairs[i + 1]);
         }
-        if (smb.isSpawnedObject())
+        if (smb.IsSpawnedObject)
         {
             isSpawnedObject = true;
-            prefabName = smb.getPrefabName();
-            spawnTag = smb.getSpawnTag();
+            prefabName = smb.PrefabName;
+            spawnTag = smb.SpawnTag;
         }
-        if (smb.isSpawnedScript())
+        if (smb.IsSpawnedScript)
         {
             isSpawnedScript = true;
         }

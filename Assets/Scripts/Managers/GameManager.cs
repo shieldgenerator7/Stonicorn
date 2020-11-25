@@ -497,7 +497,7 @@ public class GameManager : MonoBehaviour
             {
                 //If the game object was spawned during run time
                 //(versus pre-placed at edit time)
-                if (smb.isSpawnedObject())
+                if (smb.IsSpawnedObject)
                 {
                     //And if the game object is not in the game state,
                     if (!gameStates[gamestateId].hasGameObject(go))

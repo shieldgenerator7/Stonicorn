@@ -60,19 +60,14 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
         }
         addEnergy(0);
     }
-    public override bool isSpawnedObject()
-    {
-        return true;
-    }
-    public override string getPrefabName()
-    {
-        return "ElectricField";
-    }
+    public override bool IsSpawnedObject => true;
+
+    public override string PrefabName => "ElectricField";
 
     void FixedUpdate()
     {
         //2017-01-24: copied from WeightSwitchActivator.FixedUpdate()
-        int count = Utility.Cast(aoeCollider,Vector2.zero, rch2dsPowerable, 0);
+        int count = Utility.Cast(aoeCollider, Vector2.zero, rch2dsPowerable, 0);
         for (int i = 0; i < count; i++)
         {
             GameObject hc = rch2dsPowerable[i].collider.gameObject;

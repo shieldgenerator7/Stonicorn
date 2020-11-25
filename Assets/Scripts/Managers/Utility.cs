@@ -398,7 +398,7 @@ public static class Utility
         bool foundValidSavable = false;
         foreach (SavableMonoBehaviour smb in prefab.GetComponents<SavableMonoBehaviour>())
         {
-            if (smb.isSpawnedObject())
+            if (smb.IsSpawnedObject)
             {
                 foundValidSavable = true;
                 break;

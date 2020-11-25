@@ -44,14 +44,10 @@ public class AfterWind : SavableMonoBehaviour
         fadeStartTime = Time.time - (float)savObj.data["fadeTime"];
         init();
     }
-    public override bool isSpawnedObject()
-    {
-        return true;
-    }
-    public override string getPrefabName()
-    {
-        return "ForceChargeAfterWind";
-    }
+    public override bool IsSpawnedObject => true;
+
+    public override string PrefabName => "ForceChargeAfterWind";
+
 
     void FixedUpdate()
     {

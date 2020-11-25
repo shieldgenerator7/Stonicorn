@@ -88,15 +88,9 @@ public class StickyPadChecker : SavableMonoBehaviour
             }
         }
     }
-    public override bool isSpawnedObject()
-    {
-        return true;
-    }
-    public override string getPrefabName()
-    {
-        return "StickyPad";
-    }
-
+    public override bool IsSpawnedObject => true;
+    public override string PrefabName => "StickyPad";
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.collider.isTrigger)
