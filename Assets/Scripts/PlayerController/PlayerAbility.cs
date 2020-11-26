@@ -12,8 +12,6 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
     public bool addsOnTeleportVisualEffect = true;
     public AudioClip soundEffect;
     public bool addsOnTeleportSoundEffect = true;
-    public int upgradeLevel = 0;
-    public List<AbilityUpgradeLevel> upgradeLevels;
 
     [Header("Savable Variables")]
     [SerializeField]
@@ -51,8 +49,21 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
     }
 
     [Header("Persisting Variables")]
-    //[SerializeField]
-    //private List<bool> abilityLevels = new List<bool>(3);
+    [SerializeField]
+    private int upgradeLevel = 0;
+    public List<AbilityUpgradeLevel> upgradeLevels;
+    public int UpgradeLevel
+    {
+        get => upgradeLevel;
+        set
+        {
+            upgradeLevel = Mathf.Max(
+                upgradeLevel,
+                Mathf.Clamp(value, 0, upgradeLevels.Count - 1)
+                );
+            acceptUpgradeLevel(upgradeLevel);
+        }
+    }
 
     protected PlayerController playerController;
     protected Rigidbody2D rb2d;
@@ -174,11 +185,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
 
     public override void acceptSavableObject(SavableObject savObj)
     {
-        upgradeLevel = Mathf.Max(
-            upgradeLevel,
-            (int)savObj.data["upgradeLevel"]
-            );
-        acceptUpgradeLevel(upgradeLevel);
+        UpgradeLevel = (int)savObj.data["upgradeLevel"];
     }
 
     public SettingScope Scope => SettingScope.SAVE_FILE;
@@ -195,12 +202,13 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
         set
         {
             unlocked = (bool)value.data["unlocked"] || unlocked;
-            upgradeLevel = Mathf.Max(
-                (int)value.data["upgradeLevel"],
-                upgradeLevel
-                );
-            acceptUpgradeLevel(upgradeLevel);
+            UpgradeLevel = (int)value.data["upgradeLevel"];
         }
+    }
+
+    private void Update()
+    {
+        acceptUpgradeLevel(upgradeLevel);
     }
 
 }
