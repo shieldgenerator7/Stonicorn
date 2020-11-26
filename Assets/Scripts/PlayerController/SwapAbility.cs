@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class SwapAbility : PlayerAbility
 {
+    public float swapSizeScaleLimit = 1;
+
     private PolygonCollider2D pc2d;
 
     private GameObject swapTarget;
-    public GameObject SwapTarget
-    {
-        get { return swapTarget; }
-    }
+    public GameObject SwapTarget => swapTarget;
 
     private bool swappedSomething = false;
 
@@ -58,7 +57,10 @@ public class SwapAbility : PlayerAbility
         Vector3 swapPos = transform.position;
         if (coll.gameObject.GetComponent<Rigidbody2D>() != null)
         {
-            return true;
+            if (coll.bounds.size.magnitude <= playerController.halfWidth * 2 * swapSizeScaleLimit)
+            {
+                return true;
+            }
             //bool occupied = isOccupiedForObject(coll, swapPos);
             //if (occupied)
             //{
@@ -244,6 +246,6 @@ public class SwapAbility : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        throw new System.NotImplementedException();
+        swapSizeScaleLimit = aul.stat1;
     }
 }
