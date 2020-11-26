@@ -1,0 +1,77 @@
+{
+  "dialogues": [
+    {
+      "title": "Moonicorn Static",
+      "conditions": [
+        {
+          "variableName": "outCPactivated",
+          "testType": 5,
+          "testValue": 5
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "[static]",
+          "imageFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "outCPactivated",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Moonicorn Radio Greeting",
+      "conditions": [
+        {
+          "variableName": "outCPactivated",
+          "testType": 3,
+          "testValue": 6
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Merky... come in Merky...",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Merky",
+          "text": "",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Merky! It's you!",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Listen, we don't have much time!",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "You need to get to the moon as soon as possible.",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "I can't wait to see you!",
+          "imageFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "outCPactivated",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    }
+  ]
+}
