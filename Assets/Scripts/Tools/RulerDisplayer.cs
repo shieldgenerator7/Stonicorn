@@ -41,6 +41,9 @@ public class RulerDisplayer : MonoBehaviour
         //Draw teleport range
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, 3);
+        //Draw first ForceLaunch range
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, 4.7f);
 
         if (!active)
         {
