@@ -227,6 +227,7 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
   addsOnTeleportSoundEffect: 1
+  unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
   - stat1: 0
@@ -264,7 +265,6 @@ MonoBehaviour:
     stat3: 0
     stat4: 0
     featureLevel: 0
-  unlocked: 0
   futureProjection: {fileID: 2593851138179183123}
   teleportPreviewPointer: {fileID: 0}
   maxPullBackDistance: 6
@@ -289,6 +289,7 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 0
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
   - stat1: 3
@@ -326,7 +327,6 @@ MonoBehaviour:
     stat3: 0.9
     stat4: 1
     featureLevel: 2
-  unlocked: 0
   maxPullBackDistance: 3
   maxLaunchSpeed: 20
   bounceEnergyConservationPercent: 0.9
@@ -357,6 +357,7 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
   - stat1: 2
@@ -394,7 +395,6 @@ MonoBehaviour:
     stat3: 0
     stat4: 0
     featureLevel: 2
-  unlocked: 0
   swapSizeScaleLimit: 2
 --- !u!114 &1792176473
 MonoBehaviour:
@@ -415,46 +415,47 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
   addsOnTeleportSoundEffect: 1
+  unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
   - stat1: 0
-    stat2: 0
+    stat2: 2
     stat3: 0
     stat4: 0
     featureLevel: 0
   - stat1: 0.25
-    stat2: 0
+    stat2: 4
     stat3: 0
     stat4: 0
     featureLevel: 0
   - stat1: 0.5
-    stat2: 0
+    stat2: 6
     stat3: 0
     stat4: 0
     featureLevel: 0
   - stat1: 0.5
-    stat2: 0
+    stat2: 6
     stat3: 0
     stat4: 0
     featureLevel: 1
   - stat1: 0.75
-    stat2: 0
+    stat2: 8
     stat3: 0
     stat4: 0
     featureLevel: 1
   - stat1: 1
-    stat2: 0
+    stat2: 10
     stat3: 0
     stat4: 0
     featureLevel: 1
   - stat1: 1
-    stat2: 0
+    stat2: 10
     stat3: 0
     stat4: 0
     featureLevel: 2
-  unlocked: 0
-  wallDetectRange: 1
+  wallDetectRange: 2
   wallMagnetSpeed: 1
+  magnetDuration: 2
   stickyPadPrefab: {fileID: 1097801133131608, guid: 19e25460a3d23d54da8b46ccd9b9225d,
     type: 3}
 --- !u!114 &1792176480
@@ -476,6 +477,7 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
   - stat1: 1
@@ -513,7 +515,6 @@ MonoBehaviour:
     stat3: 0
     stat4: 0
     featureLevel: 2
-  unlocked: 0
   sliceDamage: 100
   maxAirPorts: 2
   streakPrefab: {fileID: 133468, guid: a76ac723dbf060e4fae65f29bcb058d9, type: 3}
@@ -536,6 +537,7 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 0
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
   - stat1: 1.5
@@ -573,7 +575,6 @@ MonoBehaviour:
     stat3: 90
     stat4: 0
     featureLevel: 2
-  unlocked: 0
   maxRange: 2.5
   maxEnergy: 100
   maxChargeTime: 1
@@ -601,6 +602,7 @@ MonoBehaviour:
   addsOnTeleportVisualEffect: 1
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
+  unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
   - stat1: 4
@@ -638,7 +640,6 @@ MonoBehaviour:
     stat3: 0
     stat4: 0
     featureLevel: 2
-  unlocked: 0
 --- !u!114 &1792176475
 MonoBehaviour:
   m_ObjectHideFlags: 0

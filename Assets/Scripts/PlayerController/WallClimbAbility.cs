@@ -7,11 +7,14 @@ public class WallClimbAbility : PlayerAbility
     [Header("Settings")]
     public float wallDetectRange = 1.0f;//how far from the center of the old position it should look for a wall
     public float wallMagnetSpeed = 0.5f;//how fast Merky should move towards the wall if he's grounded to it
+    public float magnetDuration = 2;//how long you stick to the wall after teleporting
     [Header("Necessary Input")]
     public GameObject stickyPadPrefab;
 
     private bool groundedLeft = false;
     private bool groundedRight = false;
+
+    private float magnetStartTime = -100;
 
     protected override void init()
     {
@@ -52,12 +55,14 @@ public class WallClimbAbility : PlayerAbility
         {
             //plantSticky(newPos);
             rb2d.velocity = Vector2.zero;
+            magnetStartTime = Managers.Time.Time;
         }
     }
 
     private void Update()
     {
-        if (!playerController.Ground.GroundedNormal)
+        if (Managers.Time.Time <= magnetStartTime + magnetDuration
+            && !playerController.Ground.GroundedNormal)
         {
             if (groundedLeft)
             {
@@ -79,6 +84,12 @@ public class WallClimbAbility : PlayerAbility
             {
                 //Update grounding variables
                 isGroundedWall();
+                //If no longer grounded
+                if (!groundedLeft && !groundedRight)
+                {
+                    //Stop magnet
+                    magnetStartTime = -100;
+                }
             }
         }
     }
@@ -89,6 +100,12 @@ public class WallClimbAbility : PlayerAbility
         {
             //Updated grounded variables
             isGroundedWall();
+            //If no longer grounded
+            if (!groundedLeft && !groundedRight)
+            {
+                //Stop magnet
+                magnetStartTime = -100;
+            }
         }
     }
 
@@ -171,6 +188,7 @@ public class WallClimbAbility : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        throw new System.NotImplementedException();
+        wallMagnetSpeed = aul.stat1;
+        magnetDuration = aul.stat2;
     }
 }
