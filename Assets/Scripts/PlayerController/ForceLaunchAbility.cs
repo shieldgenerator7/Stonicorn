@@ -221,9 +221,9 @@ public class ForceLaunchAbility : PlayerAbility
             if (CanLaunch)
             {
                 directionSR.color = new Color(
-                    this.effectColor.r,
-                    this.effectColor.g,
-                    this.effectColor.b,
+                    this.EffectColor.r,
+                    this.EffectColor.g,
+                    this.EffectColor.b,
                     originalAlpha
                     );
             }
@@ -249,9 +249,9 @@ public class ForceLaunchAbility : PlayerAbility
                 bouncinessIndicator.transform.localPosition = Vector2.zero;
                 SpriteRenderer sr = bouncinessIndicator.GetComponent<SpriteRenderer>();
                 sr.color = new Color(
-                    this.effectColor.r,
-                    this.effectColor.g,
-                    this.effectColor.b,
+                    this.EffectColor.r,
+                    this.EffectColor.g,
+                    this.EffectColor.b,
                     sr.color.a
                     );
             }

@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public abstract class PlayerAbility : SavableMonoBehaviour, Setting
 {
-    public Color effectColor;//the color used for the particle system upon activation
+    //the color used for the particle system upon activation
+    public Color EffectColor => teleportRangeSegment.color;
 
     public TeleportRangeSegment teleportRangeSegment;
     public ParticleSystemController effectParticleController;
