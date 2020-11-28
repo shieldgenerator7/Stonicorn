@@ -42,9 +42,6 @@ public class MouseGestureInput : GestureInput
 
     public override bool processInput(GestureProfile profile)
     {
-        //Debug.Log("mouse down: " + Input.GetMouseButtonDown(mouseButton) + " " + Time.time);
-        //Debug.Log("mouse press: " + Input.GetMouseButton(mouseButton) + " " + Time.time);
-        //Debug.Log("mouse up: " + Input.GetMouseButtonUp(mouseButton) + " " + Time.time);
         if (InputOngoing)
         {
             //

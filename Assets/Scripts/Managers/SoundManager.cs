@@ -22,7 +22,6 @@ public class SoundManager : MonoBehaviour
         get { return Managers.Settings.soundMute; }
         set
         {
-            Debug.Log("SoundManager Mute: " + value);
             bool mute = value;
             Managers.Settings.soundMute = mute;
             enabled = !mute;
@@ -32,7 +31,7 @@ public class SoundManager : MonoBehaviour
     [Range(0, 1)]
     public float quietVolumeScaling = 0.5f;//the scale for when it should be quieter
     private float volumeScaling = 1.0f;//how much to scale the volume by (gets reduced when song should be quieter)
-    
+
     private void Start()
     {
     }

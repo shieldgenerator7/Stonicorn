@@ -169,7 +169,6 @@ public class NPCController : SavableMonoBehaviour
     void Update()
     {
         Source.transform.position = transform.position;
-        //Debug.Log("Number things found: " + thingsFound);
         if (canGreet())
         {
             if (!Source.isPlaying)

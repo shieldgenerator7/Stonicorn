@@ -41,7 +41,7 @@ public class PowerConduit : SavableMonoBehaviour
             }
             else
             {
-                Debug.Log("UseAlpha was set but there is no SpriteRenderer on the lightEffect ("
+                Debug.LogError("UseAlpha was set but there is no SpriteRenderer on the lightEffect ("
                     + lightEffect.name + "), so switching to not use alpha. GameObject: " + gameObject.name);
                 useAlpha = false;
             }
@@ -124,7 +124,6 @@ public class PowerConduit : SavableMonoBehaviour
             throw new System.MethodAccessException("PowerConduit.convertSourceToEnergy(..) should not be called on this object because its convertsToEnergy var is: " + convertsToEnergy);
         }
         float amountTaken = Mathf.Min(maxEnergyPerSecond * deltaTime, maxAvailable);
-        Debug.Log("amounttakne: " + amountTaken + ", deltatime: " + deltaTime);
         adjustEnergy(amountTaken);
         return amountTaken;
     }

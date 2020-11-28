@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TeleportRangeIndicatorUpdater : MonoBehaviour {
+public class TeleportRangeIndicatorUpdater : MonoBehaviour
+{
 
     public GameObject parentObj;
 
@@ -19,9 +20,8 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
         }
         sr = GetComponent<SpriteRenderer>();
         sr.enabled = true;
-        Debug.Log("TRIU ("+name+"): range: " + baseRange + ", scale: " + baseScale);
     }
-    
+
     public void updateRange()
     {
         if (controller.TeleportReady)

@@ -138,9 +138,6 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
         {
             float force = rb2d.velocity.magnitude * rb2d.mass;
             float damage = checkForce(force, rb2d.velocity);
-            Debug.Log("BW: coll(" + coll.gameObject.name
-                + "): force: " + force
-                + ", damage: " + damage);
             //Show Collision Effect
             float hitPercentage = damage * 100 / maxIntegrity;
             Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);

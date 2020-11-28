@@ -183,7 +183,6 @@ public class SceneLoader : SavableMonoBehaviour
 
     public override SavableObject getSavableObject()
     {
-        Debug.Log("sceneloader get SO");
         return new SavableObject(this,
             "firstOpenGameStateId", firstOpenGameStateId,
             "lastOpenGameStateId", lastOpenGameStateId

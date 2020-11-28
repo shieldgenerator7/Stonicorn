@@ -56,8 +56,6 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             float hitHardness = (hm.dealsDamage)
                 ? hm.hardness / hardness * coll.relativeVelocity.magnitude
                 : 0;
-            Debug.Log("HM collision: " + name + " collided with " + coll.gameObject.name +
-                ", hitHardness: " + hitHardness);
             addIntegrity(-1 * hitHardness);
             //Calculate damage to other
             float hitHardnessOther = (this.dealsDamage)
@@ -89,8 +87,6 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             if (rb2d != null)
             {
                 float force = rb2d.velocity.magnitude * rb2d.mass;
-                Debug.Log("HM collision: " + name + " collided with " + coll.gameObject.name+
-                    ", force: "+force);
                 float damage = checkForce(force, rb2d.velocity);
                 float hitPercentage = damage * 100 / maxIntegrity;
                 Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
@@ -206,7 +202,11 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                 }
                 else if (!disappearsIfNoBrokenPrefab)
                 {
-                    Debug.Log("/!\\ HardMaterial " + gameObject.name + " has no broken prefab! (Scene: " + gameObject.scene.name + ")");
+                    Debug.LogError(
+                        "/!\\ HardMaterial " + gameObject.name
+                        + " has no broken prefab! (Scene: "
+                        + gameObject.scene.name + ")"
+                        );
                 }
                 alreadyBroken = true;
             }

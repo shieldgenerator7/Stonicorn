@@ -155,7 +155,6 @@ public class ForceDashAbility : PlayerAbility
     /// <param name="rb2d"></param>
     public void speedUp(Rigidbody2D rb2d)
     {
-        Debug.Log("ForceDash: Speeding up: " + rb2d.gameObject.name);
         float oldSpeed = rb2d.velocity.magnitude;
         //Add force in the charge direction
         rb2d.AddForce(chargeDirection * (rb2d.mass * maxSpeed * Charge / maxCharge));
@@ -166,7 +165,7 @@ public class ForceDashAbility : PlayerAbility
             rb2d.velocity = rb2d.velocity.normalized * Mathf.Max(oldSpeed, maxSpeed);
         }
     }
-    
+
     private bool shouldNegateCharge(Vector2 direction)
     {
         float angle = Vector2.Angle(direction, ChargeDirection);
@@ -185,7 +184,6 @@ public class ForceDashAbility : PlayerAbility
                 0,
                 1
                 );
-            Debug.Log("ForceDash: Canceling charge: BACK TAP: " + angle + ", nullify%: " + nullifyPercent);
             Charge *= nullifyPercent;
         }
     }
@@ -232,7 +230,6 @@ public class ForceDashAbility : PlayerAbility
             float charge = Charge;
             //doExplosionEffect(explodePos, Mathf.Max(charge, chargeIncrement), true);
             //dropHoldGesture();
-            Debug.Log("ForceDash: Canceling charge: HIT WALL: " + angle);
             Charge = 0;
         }
         //Else

@@ -7,7 +7,7 @@ public class MenuButton : MonoBehaviour
 
     public MenuFrame frame;
     public MenuActionButton mab;
-    
+
     private BoxCollider2D bc2d;
 
     // Use this for initialization
@@ -33,7 +33,6 @@ public class MenuButton : MonoBehaviour
 
     public virtual void activate()
     {
-        Debug.Log("MenuButton " + name + " pressed");
         if (frame != null)
         {
             frame.frameCamera();

@@ -327,7 +327,7 @@ public class GameManager : MonoBehaviour
         //Write out to the console which keys were cleaned
         if (cleanedKeys != "")
         {
-            Debug.Log("Cleaned: " + cleanedKeys);
+            Debug.LogError("Cleaned: " + cleanedKeys);
         }
     }
 
@@ -994,7 +994,6 @@ public class GameManager : MonoBehaviour
     /// <param name="curMPWorld">The position of the tap in world coordinates</param>
     public void processTapGesture(Vector3 curMPWorld)
     {
-        Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
         GameState final = null;
         GameState prevFinal = null;
         //We have to do 2 passes to allow for both precision clicking and fat-fingered tapping

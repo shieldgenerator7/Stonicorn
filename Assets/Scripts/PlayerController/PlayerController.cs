@@ -226,7 +226,6 @@ public class PlayerController : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Merky collided with (t? " + collision.collider.isTrigger + "): " + collision.gameObject.name);
         //If collided with a Hazard,
         Hazard hazard = collision.gameObject.GetComponent<Hazard>();
         if (hazard && hazard.Hazardous)
