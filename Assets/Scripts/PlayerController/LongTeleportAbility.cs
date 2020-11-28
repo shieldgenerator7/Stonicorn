@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class LongTeleportAbility : PlayerAbility
 {
+    [Header("Settings")]
+    public float maxRangeIncreaseFactor = 2;
+    public float maxDragDistance = 6;//how far out to drag the camera to get max range
 
     protected override void init()
     {
@@ -23,7 +26,14 @@ public class LongTeleportAbility : PlayerAbility
     /// </summary>
     void adjustRange(Vector3 offset)
     {
-        playerController.Range = playerController.baseRange + ((Vector2)offset).magnitude;
+        float dragFactor = Mathf.Min(
+            ((Vector2)offset).magnitude / maxDragDistance,
+            1
+            );
+        playerController.Range = Mathf.Max(
+            playerController.baseRange,
+            playerController.baseRange * maxRangeIncreaseFactor * dragFactor
+            );
     }
 
     protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
@@ -45,6 +55,6 @@ public class LongTeleportAbility : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        throw new System.NotImplementedException();
+        maxRangeIncreaseFactor = aul.stat1;
     }
 }

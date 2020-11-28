@@ -595,21 +595,31 @@ MonoBehaviour:
   unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
+  - stat1: 2
+    stat2: 0
+    stat3: 0
+    stat4: 0
+    featureLevel: 0
+  - stat1: 3
+    stat2: 0
+    stat3: 0
+    stat4: 0
+    featureLevel: 0
   - stat1: 4
     stat2: 0
     stat3: 0
     stat4: 0
     featureLevel: 0
+  - stat1: 4
+    stat2: 0
+    stat3: 0
+    stat4: 0
+    featureLevel: 1
   - stat1: 5
     stat2: 0
     stat3: 0
     stat4: 0
-    featureLevel: 0
-  - stat1: 6
-    stat2: 0
-    stat3: 0
-    stat4: 0
-    featureLevel: 0
+    featureLevel: 1
   - stat1: 6
     stat2: 0
     stat3: 0
@@ -619,17 +629,9 @@ MonoBehaviour:
     stat2: 0
     stat3: 0
     stat4: 0
-    featureLevel: 1
-  - stat1: 9
-    stat2: 0
-    stat3: 0
-    stat4: 0
-    featureLevel: 1
-  - stat1: 9
-    stat2: 0
-    stat3: 0
-    stat4: 0
     featureLevel: 2
+  maxRangeIncreaseFactor: 2
+  maxDragDistance: 6
 --- !u!114 &1792176475
 MonoBehaviour:
   m_ObjectHideFlags: 0
