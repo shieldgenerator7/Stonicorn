@@ -127,7 +127,8 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
         }
         else
         {
-            Debug.LogError(GetType().Name + " does not have any upgrade levels!");
+            Debug.LogError(GetType().Name + " does not have any upgrade levels! "
+                +"Obj: "+gameObject.name);
         }
     }
     protected abstract void acceptUpgradeLevel(AbilityUpgradeLevel aul);

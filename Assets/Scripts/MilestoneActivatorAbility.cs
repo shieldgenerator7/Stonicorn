@@ -4,15 +4,17 @@ public class MilestoneActivatorAbility : MilestoneActivator
 {
 
     public string abilityTypeName;
+    public bool canGrantAbility = true;
+    public bool canGrantUpgrade = true;
 
     public override void activateEffect()
     {
         PlayerAbility pa = ((PlayerAbility)Managers.Player.GetComponent(abilityTypeName));
-        if (!pa.Unlocked)
+        if (canGrantAbility && !pa.Unlocked)
         {
             pa.Unlocked = true;
         }
-        else
+        else if (canGrantUpgrade)
         {
             pa.UpgradeLevel++;
         }
