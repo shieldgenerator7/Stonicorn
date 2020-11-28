@@ -63,6 +63,7 @@ public class ForceLaunchAbility : PlayerAbility
     private Vector2 currentVelocity;//used to recover the velocity when hitting a wall
     private bool affectingVelocity = false;//true if recently launched
     private float lastSpeedMetTime = 0;//the last time Merky had met the minimum bounciness speed requirement
+    private Vector2 dragPos;
 
     protected override void init()
     {
@@ -94,6 +95,7 @@ public class ForceLaunchAbility : PlayerAbility
     void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
     {
         Launching = !finished;
+        dragPos = newPos;
         LaunchDirection = (Vector2)playerController.transform.position - newPos;
         if (finished && CanLaunch)
         {
@@ -134,7 +136,7 @@ public class ForceLaunchAbility : PlayerAbility
         }
     }
 
-    private void Update()
+    protected override void Update()
     {
         if (Managers.Game.Rewinding)
         {
@@ -166,8 +168,9 @@ public class ForceLaunchAbility : PlayerAbility
     /// or hasn't teleported since not being grounded
     /// </summary>
     bool CanLaunch =>
-        playerController.Ground.Grounded
-        || rb2d.velocity.sqrMagnitude < 0.1f;
+        (playerController.Ground.Grounded
+        || rb2d.velocity.sqrMagnitude < 0.1f)
+        && !Managers.Player.gestureOnPlayer(dragPos);
 
     void launch()
     {

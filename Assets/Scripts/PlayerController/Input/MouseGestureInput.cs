@@ -78,15 +78,7 @@ public class MouseGestureInput : GestureInput
                     //Check Hold
                     else if (Time.time - origTime >= holdThreshold)
                     {
-                        //If trying to start a drag on Merky
-                        if (dragDistance > 10 && Managers.Player.gestureOnPlayer(OrigPosWorld))
-                        {
-                            mouseEvent = MouseEvent.DRAG;
-                        }
-                        else
-                        {
-                            mouseEvent = MouseEvent.HOLD;
-                        }
+                        mouseEvent = MouseEvent.HOLD;
                     }
                 }
             }
