@@ -682,9 +682,9 @@ public class GameManager : MonoBehaviour
             playerSceneLoaded = true;
         }
         //Update the list of objects with state to save
-        Debug.Log("sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
+        Logger.log(this, "sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
         refreshGameObjects();
-        Debug.Log("sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        Logger.log(this, "sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
         //Add the given scene to list of open scenes
         openScenes.Add(scene);
         //If time is moving forward,
@@ -722,9 +722,9 @@ public class GameManager : MonoBehaviour
             }
         }
         //Update the list of game objects to save
-        Debug.Log("sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
+        Logger.log(this, "sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
         refreshGameObjects();
-        Debug.Log("sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        Logger.log(this, "sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
         //Remove the scene from the list of open scenes
         openScenes.Remove(scene);
     }
@@ -769,7 +769,7 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-        Debug.Log("LOFS: Scene " + scene.name + ": last state seen: " + lastStateSeen);
+        Logger.log(this, "LOFS: Scene " + scene.name + ": last state seen: " + lastStateSeen);
         //If the scene was never seen,
         if (lastStateSeen < 0)
         {
@@ -811,7 +811,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log("LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
+        Logger.log(this, "LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
     }
 
     private SceneLoader getSceneLoaderByName(string sceneName)

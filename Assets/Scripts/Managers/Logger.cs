@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Logger: MonoBehaviour {
 
-    public List<string> logObjects = new List<string>();
+    public List<GameObject> logObjects = new List<GameObject>();
     static Logger instance;
 
     void Start()
@@ -19,9 +19,14 @@ public class Logger: MonoBehaviour {
         }
     }
     
+    public static void log(MonoBehaviour mb, string message)
+    {
+        log(mb.gameObject, message);
+    }
+
     public static void log(GameObject go, string message)
     {
-        if (instance.logObjects.Contains(go.name))
+        if (instance.logObjects.Contains(go))
         {
             Debug.Log(go.name + " >>> "+ message);
         }

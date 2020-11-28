@@ -188,17 +188,30 @@ public class CustomMenu
         }
     }
 
+    [MenuItem("SG7/Editor/Log Objects %l")]
+    public static void logObjects()
+    {
+        Logger logger = GameObject.FindObjectOfType<Logger>();
+        if (logger)
+        {
+            logger.logObjects.AddRange(
+                Selection.GetFiltered<GameObject>(SelectionMode.Editable)
+            );
+            Selection.activeObject = logger;
+        }
+    }
+
     [MenuItem("SG7/Build/Build Windows %w")]
     public static void buildWindows()
     {
         build(BuildTarget.StandaloneWindows, "exe");
     }
-    [MenuItem("SG7/Build/Build Linux %l")]
+    [MenuItem("SG7/Build/Build Linux")]
     public static void buildLinux()
     {
         build(BuildTarget.StandaloneLinux, "x86");
     }
-    [MenuItem("SG7/Build/Build Mac OS X %#l")]
+    [MenuItem("SG7/Build/Build Mac OS X")]
     public static void buildMacOSX()
     {
         build(BuildTarget.StandaloneOSX, "");

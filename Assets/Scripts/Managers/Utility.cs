@@ -440,7 +440,7 @@ public static class Utility
         if (count > maxReturnedList)
         {
             maxReturnedList = count;
-            Debug.Log("Utility.RaycastAll: max list count: " + maxReturnedList);
+            Logger.log(Managers.Game, "Utility.RaycastAll: max list count: " + maxReturnedList);
         }
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
@@ -460,7 +460,7 @@ public static class Utility
         if (count > maxReturnedList)
         {
             maxReturnedList = count;
-            Debug.Log("Utility.Cast: max list count: " + maxReturnedList);
+            Logger.log(Managers.Game, "Utility.Cast: max list count: " + maxReturnedList);
         }
         return count;
     }
@@ -480,7 +480,7 @@ public static class Utility
         if (count > maxReturnedList)
         {
             maxReturnedList = count;
-            Debug.Log("Utility.CastAnswer: max list count: " + maxReturnedList);
+            Logger.log(Managers.Game, "Utility.CastAnswer: max list count: " + maxReturnedList);
         }
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
@@ -500,7 +500,7 @@ public static class Utility
         if (count > maxReturnedList)
         {
             maxReturnedList = count;
-            Debug.Log("Utility.CastCountSolid: max list count: " + maxReturnedList);
+            Logger.log(Managers.Game, "Utility.CastCountSolid: max list count: " + maxReturnedList);
         }
         int solidCount = 0;
         for (int i = 0; i < count; i++)
