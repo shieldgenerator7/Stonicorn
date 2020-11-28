@@ -30,20 +30,9 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
         get => enabled;
         set
         {
-            bool active = enabled;
-            if (active != value)
+            if (enabled != value)
             {
-                active = value;
-                if (active)
-                {
-                    enabled = true;
-                    init();
-                }
-                else
-                {
-                    enabled = false;
-                    OnDisable();
-                }
+                enabled = value;
             }
         }
     }
