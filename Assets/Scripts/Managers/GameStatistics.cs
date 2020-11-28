@@ -59,7 +59,7 @@ public class GameStatistics : SavableMonoBehaviour
         {
             stats[statName] = Mathf.Max(stats[statName], (int)savObj.data[statName]);
         }
-        printStats();
+        printStats(false);
     }
 
     public static void addOne(string counterName)
@@ -88,11 +88,14 @@ public class GameStatistics : SavableMonoBehaviour
                 );
         }
     }
-    private void printStats()
+    public void printStats(bool all)
     {
         foreach (KeyValuePair<string, int> stat in stats)
         {
-            Debug.Log("Stat: " + stat.Key + " = " + stat.Value);
+            if (all || stat.Value > 0)
+            {
+                Debug.Log("Stat: " + stat.Key + " = " + stat.Value);
+            }
         }
     }
 }
