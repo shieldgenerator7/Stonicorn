@@ -2,31 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AirSliceAbility : PlayerAbility {
+public class AirSliceAbility : PlayerAbility
+{
 
     [Header("Settings")]
     public float sliceDamage = 100f;//how much force damage to do to objects that get cut
     public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
     [Header("Components")]
     public GameObject streakPrefab;
-    
+
     private int airPorts = 0;//"air teleports": how many airports Merky has used since touching the ground
     public int AirPortsUsed
     {
-        get { return airPorts; }
-        private set { airPorts = Mathf.Max(0, value); }
+        get => airPorts;
+        private set => airPorts = Mathf.Max(0, value);
     }
 
     private SwapAbility swapAbility;
 
-	// Use this for initialization
-	protected override void init () {
+    // Use this for initialization
+    protected override void init()
+    {
         base.init();
         playerController.Ground.isGroundedCheck += airGroundedCheck;
         playerController.onGroundedStateUpdated += resetAirPorts;
         playerController.onTeleport += sliceThings;
         swapAbility = GetComponent<SwapAbility>();
-	}
+    }
     public override void OnDisable()
     {
         base.OnDisable();
@@ -109,10 +111,19 @@ public class AirSliceAbility : PlayerAbility {
         tsu.turnOn(true);
     }
 
+    public override SavableObject getSavableObject()
+    {
+        SavableObject savObj = base.getSavableObject();
+        savObj.data.Add(
+            "AirPortsUsed", AirPortsUsed
+            );
+        return savObj;
+    }
+
     public override void acceptSavableObject(SavableObject savObj)
     {
         base.acceptSavableObject(savObj);
-        AirPortsUsed = 0;
+        AirPortsUsed = (int)savObj.data["AirPortsUsed"];
     }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
