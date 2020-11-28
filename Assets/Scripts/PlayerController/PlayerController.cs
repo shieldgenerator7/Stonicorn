@@ -660,9 +660,9 @@ public class PlayerController : MonoBehaviour
             }
         }
         //Grounded delegates
-        onGroundedStateUpdated?.Invoke(Ground.grounded);
+        onGroundedStateUpdated?.Invoke(Ground.grounded, Ground.groundedNormal);
     }
-    public delegate void OnGroundedStateUpdated(bool grounded);
+    public delegate void OnGroundedStateUpdated(bool grounded, bool groundedNormal);
     public OnGroundedStateUpdated onGroundedStateUpdated;//called when grounded becomes true
 
     /// <summary>

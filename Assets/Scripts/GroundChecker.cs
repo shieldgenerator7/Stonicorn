@@ -77,7 +77,7 @@ public class GroundChecker : MonoBehaviour
         }
     }
 
-    private bool groundedNormal = true;//true if grounded to the direction of gravity
+    public bool groundedNormal { get; private set; } = true;//true if grounded to the direction of gravity
     public bool GroundedNormal
     {
         get
@@ -155,7 +155,8 @@ public class GroundChecker : MonoBehaviour
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
             //If the object is a solid object,
-            if (!rch2d.collider.isTrigger)
+            if (!rch2d.collider.isTrigger
+                && !rch2d.collider.gameObject.isPlayer())
             {
                 //There is ground in the given direction
                 return true;

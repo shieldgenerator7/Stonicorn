@@ -40,9 +40,9 @@ public class AirSliceAbility : PlayerAbility {
         return AirPortsUsed < maxAirPorts;
     }
 
-    void resetAirPorts(bool grounded)
+    void resetAirPorts(bool grounded, bool groundedNormal)
     {
-        if (grounded)
+        if (groundedNormal)
         {
             //Refresh air teleports
             AirPortsUsed = 0;
