@@ -6,10 +6,9 @@ public class ElectricFieldAbility : PlayerAbility
     [Header("Settings")]
     public float maxRange = 2.5f;
     public float maxEnergy = 100;//not the maximum for the player's electric fields
-    public float maxChargeTime = 1;//how long until the max range is reached after it begins charging
     public float maxSlowPercent = 0.10f;//the percent of slowness applied to objects in the field when the field has maxRange
-    public float maxForceResistance = 500f;//how much force is required to deal 100% damage to the field at max range
-    
+    public float maxChargeTime = 1;//how long until the max range is reached after it begins charging
+
     [Header("Components")]
     public GameObject electricFieldPrefab;//prefab
     public AudioClip shieldBubbleSound;
@@ -18,7 +17,7 @@ public class ElectricFieldAbility : PlayerAbility
 
     private bool activated = false;//true if Merky is currently using this ability
 
-    
+
     protected override void init()
     {
         base.init();
@@ -36,8 +35,9 @@ public class ElectricFieldAbility : PlayerAbility
         }
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (!Managers.Game.Rewinding)
         {
             if (activated)
@@ -59,11 +59,10 @@ public class ElectricFieldAbility : PlayerAbility
         if (cEFController == null)
         {
             //Create a new one
-            GameObject currentElectricField = Utility.Instantiate(electricFieldPrefab);
-            cEFController = currentElectricField.GetComponent<ElectricFieldController>();
+            cEFController = Utility.Instantiate(electricFieldPrefab)
+                .GetComponent<ElectricFieldController>();
             cEFController.energyToRangeRatio = maxRange / maxEnergy;
             cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
-            cEFController.maxForceResistance = maxForceResistance;
             //Update Stats
             GameStatistics.addOne("ElectricFieldField");
         }
@@ -122,6 +121,13 @@ public class ElectricFieldAbility : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        throw new System.NotImplementedException();
+        maxRange = aul.stat1;
+        maxEnergy = aul.stat2;
+        maxSlowPercent = aul.stat3;
+        if (cEFController)
+        {
+            cEFController.energyToRangeRatio = maxRange / maxEnergy;
+            cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
+        }
     }
 }

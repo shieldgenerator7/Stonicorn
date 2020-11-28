@@ -40,6 +40,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
 
     [Header("Persisting Variables")]
     [SerializeField]
+    [Range(0,6)]
     private int upgradeLevel = 0;
     public List<AbilityUpgradeLevel> upgradeLevels;
     public int UpgradeLevel
@@ -197,7 +198,10 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
         }
     }
 
-    private void Update()
+    /// <summary>
+    /// TEST METHOD: remove once done testing!
+    /// </summary>
+    protected virtual void Update()
     {
         acceptUpgradeLevel(upgradeLevel);
     }
