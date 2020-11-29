@@ -55,11 +55,13 @@ public class GameManager : MonoBehaviour
         {
             //Load the save file
             loadFromFile();
-            //Update the game state id trackers
-            Managers.Rewind.init();
-            //Load the memories
-            Managers.Object.LoadMemories();
         }
+        //Update the list of objects that have state to save
+        Managers.Object.refreshGameObjects();
+        //Update the game state id trackers
+        Managers.Rewind.init();
+        //Load the memories
+        Managers.Object.LoadMemories();
         //Scene delegates
         Managers.Scene.onSceneLoaded += sceneLoaded;
         Managers.Scene.onSceneUnloaded += sceneUnloaded;
@@ -228,6 +230,8 @@ public class GameManager : MonoBehaviour
     }
     void processRewindEnd(List<GameState> gameStates, int rewindStateId)
     {
+        //Refresh the game object list
+        Managers.Object.refreshGameObjects();
         //Put the music back to normal
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
         //Stop rewind visual effect

@@ -28,16 +28,8 @@ public class RewindManager : MonoBehaviour
     public List<GameState> GameStates => gameStates;
     public int GameStateCount => gameStates.Count;
 
-    // Use this for initialization
-    void Start()
-    {
-        init();
-    }
-
     public void init()
     {
-        //Update the list of objects that have state to save
-        Managers.Object.refreshGameObjects();
         //Initialize the current game state id
         //There are possibly none, so the default "current" is -1
         //Update the game state id trackers
@@ -252,8 +244,6 @@ public class RewindManager : MonoBehaviour
             {
                 //Set rewindId to chosenId
                 rewindId = chosenId;
-                //Refresh the game object list
-                Managers.Object.refreshGameObjects();
                 //Rewind Finished Delegate
                 onRewindFinished?.Invoke(gameStates, chosenId);
             }
