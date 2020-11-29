@@ -30,7 +30,7 @@ public abstract class MemoryMonoBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.isPlayer())
+        if (coll.isPlayerSolid())
         {
             Discovered = true;
         }

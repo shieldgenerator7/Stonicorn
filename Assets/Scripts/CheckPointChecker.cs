@@ -48,31 +48,13 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         if (coll.collider.isPlayerSolid())
         {
-            activate();
+            Discovered = true;
         }
     }
 
-    /**
-    * When the player is inside, show the other activated checkpoints
-    */
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.isPlayerSolid())
-        {
-            Discovered = true;
-            trigger();
-        }
-    }
     public void activate()
     {
-        //Don't activate if already activated
-        if (Discovered)
-        {
-            return;
-        }
         //Not already activated, go ahead and activate
-        Discovered = true;
-        Managers.Object.saveMemory(this);
         Managers.saveCheckPoint(this);
         //Get the list of active checkpoints
         List<CheckPointChecker> activeCPCs = Managers.ActiveCheckPoints;
@@ -168,6 +150,18 @@ public class CheckPointChecker : MemoryMonoBehaviour
             }
         }
     }
+
+    private void OnTriggerStay2D(Collider2D coll)
+    {
+        if (coll.isPlayerSolid())
+        {
+            if (current != this)
+            {
+                trigger();
+            }
+        }
+    }
+
     void OnTriggerExit2D(Collider2D coll)
     {
         if (coll.isPlayerSolid())
@@ -282,8 +276,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     protected override void nowDiscovered()
     {
-        //Don't do anything.
-        //Everything that would be here is in trigger() and activate() instead.
+        trigger();
     }
     protected override void previouslyDiscovered()
     {
