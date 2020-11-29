@@ -241,6 +241,20 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Player Rewind Controller
+    private PlayerRewindController playerRewindController;
+    public static PlayerRewindController PlayerRewind
+    {
+        get
+        {
+            if (instance.playerRewindController == null)
+            {
+                instance.playerRewindController = FindObjectOfType<PlayerRewindController>();
+            }
+            return instance.playerRewindController;
+        }
+    }
+
     //Camera Controller
     private CameraController cameraController;
     public static CameraController Camera

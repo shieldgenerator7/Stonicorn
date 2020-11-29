@@ -137,12 +137,6 @@ public class RewindManager : MonoBehaviour
         //Actually load the game state
         gameStates[gamestateId].load();
 
-        //Destroy game states in game-state-future
-        for (int i = gameStates.Count - 1; i > gamestateId; i--)
-        {
-            Destroy(gameStates[i].Representation);
-            gameStates.RemoveAt(i);
-        }
         //Update the next game state id
         GameState.nextid = gamestateId + 1;
 

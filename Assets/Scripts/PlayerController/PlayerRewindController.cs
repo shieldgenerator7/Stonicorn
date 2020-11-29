@@ -22,8 +22,10 @@ public class PlayerRewindController : MonoBehaviour
         if (show)
         {
             //Loop through all game states
-            foreach (GameState gs in Managers.Rewind.GameStates)
+            List<GameState> gameStates = Managers.Rewind.GameStates;
+            for(int i = 0; i < gameStates.Count; i++)
             {
+                GameState gs = gameStates[i];
                 //Update its representation
                 updateRepresentation(gs);
                 //Show a sprite to represent them on screen
