@@ -119,10 +119,10 @@ public class ForceLaunchAbility : PlayerAbility
         //If this ability contributed to this collision,
         if (affectingVelocity)
         {
+            //Push the object in your previous direction
             Rigidbody2D rb2dColl = collision.gameObject.GetComponent<Rigidbody2D>();
             if (rb2dColl)
             {
-                //Push the object in your previous direction
                 rb2dColl.velocity = rb2d.velocity;
             }
             //Bounce off the surface
@@ -133,6 +133,9 @@ public class ForceLaunchAbility : PlayerAbility
                 surfaceNormal
                 ) * bounceEnergyConservationPercent;
             rb2d.velocity = reflect;
+            currentVelocity = rb2d.velocity;
+            //Save the game state
+            Managers.Rewind.Save();
         }
     }
 
@@ -157,6 +160,8 @@ public class ForceLaunchAbility : PlayerAbility
                 {
                     //End this ability's effect on velocity
                     affectingVelocity = false;
+                    //Save game state
+                    Managers.Rewind.Save();
                 }
             }
             updateBouncingVisuals();
@@ -267,18 +272,20 @@ public class ForceLaunchAbility : PlayerAbility
         }
     }
 
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        base.acceptSavableObject(savObj);
-        affectingVelocity = (bool)savObj.data["affectingVelocity"];
-        currentVelocity = Vector2.zero;
-        updateBouncingVisuals();
-    }
     public override SavableObject getSavableObject()
     {
         SavableObject savObj = base.getSavableObject();
         savObj.data.Add("affectingVelocity", affectingVelocity);
+        savObj.data.Add("currentVelocity", currentVelocity);
         return savObj;
+    }
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        base.acceptSavableObject(savObj);
+        affectingVelocity = (bool)savObj.data["affectingVelocity"];
+        currentVelocity = (Vector2)savObj.data["currentVelocity"];
+        rb2d.velocity = currentVelocity;
+        updateBouncingVisuals();
     }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
