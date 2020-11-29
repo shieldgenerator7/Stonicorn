@@ -85,7 +85,8 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
                                     bw.integrity = this.maxIntegrity / pieces.transform.childCount;
                                 }
                             }
-                            Managers.Object.addObject(t.gameObject);
+                            //Register new object
+                            Managers.Object.addObject(t.gameObject, true);
                         }
                         Managers.Object.addObject(pieces);
                     }

@@ -18,7 +18,7 @@ public class ObjectManager : MonoBehaviour
     /// Adds an object to list of objects that have state to save
     /// </summary>
     /// <param name="go">The GameObject to add to the list</param>
-    public void addObject(GameObject go)
+    public void addObject(GameObject go, bool isSpawnedObject = false)
     {
         //
         //Error checking
@@ -34,13 +34,24 @@ public class ObjectManager : MonoBehaviour
         //the object's name and scene name
         string key = go.getKey();
 
-        //If the game object's name is already in the dictionary...
-        if (gameObjects.ContainsKey(key))
+        //If the game object's name is already in the dictionary,
+        if (gameObjects.ContainsKey(key)
+            //And it's not null...
+            && !(gameObjects[key] == null
+            || ReferenceEquals(gameObjects[key], null)))
         {
-            throw new System.ArgumentException(
-                  "GameObject (" + key + ") is already inside the gameObjects dictionary! "
-                  + "Check for 2 or more objects with the same name."
-                  );
+            if (isSpawnedObject)
+            {
+                gameObjects[key] = go;
+                return;
+            }
+            else
+            {
+                throw new System.ArgumentException(
+                      "GameObject (" + key + ") is already inside the gameObjects dictionary! "
+                      + "Check for 2 or more objects with the same name."
+                      );
+            }
         }
         //If the game object doesn't have any state to save...
         if (!go.isSavable())
@@ -128,7 +139,8 @@ public class ObjectManager : MonoBehaviour
         foreach (string key in keys)
         {
             //If the key's value is null,
-            if (gameObjects[key] == null)
+            if (gameObjects[key] == null
+                || ReferenceEquals(gameObjects[key], null))
             {
                 //Clean the key out
                 cleanedKeys += key + ", ";
@@ -138,7 +150,7 @@ public class ObjectManager : MonoBehaviour
         //Write out to the console which keys were cleaned
         if (cleanedKeys != "")
         {
-            Debug.LogError("Cleaned: " + cleanedKeys);
+            Debug.LogWarning("Cleaned: " + cleanedKeys);
         }
     }
 

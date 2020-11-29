@@ -94,12 +94,14 @@ public class ObjectState
             Scene scene = SceneManager.GetSceneByName(sceneName);
             if (scene.IsValid() && scene.isLoaded)
             {
-                //First Pass: get GO from GameManager list
+                //First Pass: get GO from ObjectManager list
                 go = Managers.Object.getObject(sceneName, objectName);
-                //Second Pass: get GO from GameManager Forgotten Object list
+                //Second Pass: get GO from ObjectManager Forgotten Object list
                 if (go == null)
                 {
-                    go = searchList(Managers.Object.ForgottenObjects);
+                    go = Managers.Object.ForgottenObjects.Find(
+                        lgo => lgo != null && lgo.name == objectName && lgo.scene.name == sceneName
+                        );
                 }
                 //Third Pass: try spawning it, if applicable
                 if (go == null || ReferenceEquals(go, null))
@@ -119,7 +121,7 @@ public class ObjectState
                             {
                                 if (t.gameObject.isSavable())
                                 {
-                                    Managers.Object.addObject(t.gameObject);
+                                    Managers.Object.addObject(t.gameObject, true);
                                     if (t.gameObject.name == this.objectName)
                                     {
                                         go = t.gameObject;
@@ -169,17 +171,5 @@ public class ObjectState
             }
         }
         return go;
-    }
-
-    GameObject searchList(List<GameObject> list)
-    {
-        foreach (GameObject lgo in list)
-        {
-            if (lgo != null && lgo.name == objectName && lgo.scene.name == sceneName)
-            {
-                return lgo;
-            }
-        }
-        return null;
     }
 }

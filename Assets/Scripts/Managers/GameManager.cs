@@ -239,7 +239,9 @@ public class GameManager : MonoBehaviour
     void sceneUnloaded(Scene scene)
     {
         //Remove the given scene's objects from the forgotten objects list
-        Managers.Object.ForgottenObjects.RemoveAll(fgo => fgo.scene == scene);
+        Managers.Object.ForgottenObjects.RemoveAll(
+            fgo => fgo == null || fgo.scene == scene
+            );
         //Update the list of game objects to save
 #if UNITY_EDITOR
         Logger.log(this, "sceneUnloaded: " + scene.name + ", old object count: " + Managers.Object.GameObjectCount);
