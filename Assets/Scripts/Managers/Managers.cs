@@ -283,6 +283,20 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Demo Mode
+    private DemoModeManager demoModeManager;
+    public static DemoModeManager DemoMode
+    {
+        get
+        {
+            if (instance.demoModeManager == null)
+            {
+                instance.demoModeManager = FindObjectOfType<DemoModeManager>();
+            }
+            return instance.demoModeManager;
+        }
+    }
+
     //
     // Lists
     //

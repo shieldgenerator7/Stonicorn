@@ -6,11 +6,11 @@ public class MenuActionSlideDemoLength : MenuActionSlide
 {
     public override void valueAdjusted(float value)
     {
-        Managers.Game.GameDemoLength = value * 60;
+        Managers.DemoMode.GameDemoLength = value * 60;
     }
 
     public override float getCurrentValue()
     {
-        return Managers.Game.GameDemoLength / 60;
+        return Managers.DemoMode.GameDemoLength / 60;
     }
 }
