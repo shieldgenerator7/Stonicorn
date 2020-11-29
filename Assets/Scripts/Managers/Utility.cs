@@ -350,22 +350,6 @@ public static class Utility
         //Use it find value within new range
         return newLow + (newHigh - newLow) * distancePercent;
     }
-    public static int clamp(int value, int min, int max)
-    {
-        if (min > max)
-        {
-            throw new System.ArgumentException("Min cannot be greater than max! min: " + min + ", max: " + max);
-        }
-        if (value < min)
-        {
-            value = min;
-        }
-        if (value > max)
-        {
-            value = max;
-        }
-        return value;
-    }
 
     /// <summary>
     /// Give it two points that define the line,

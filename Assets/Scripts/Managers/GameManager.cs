@@ -258,10 +258,12 @@ public class GameManager : MonoBehaviour
     public void LoadObjectsFromScene(Scene scene)
     {
         //Find the last state that this scene was saved in
-        int lastStateSeen = sceneLoaders.Find(
-            sl => sl.Scene == scene
-            )
-            .lastOpenGameStateId;
+        int lastStateSeen = -1;
+        SceneLoader sceneLoader = sceneLoaders.Find(sl => sl.Scene == scene);
+        if (sceneLoader)
+        {
+            lastStateSeen = sceneLoader.lastOpenGameStateId;
+        }
 
 #if UNITY_EDITOR
         Logger.log(this, "LOFS: Scene " + scene.name + ": last state seen: " + lastStateSeen);

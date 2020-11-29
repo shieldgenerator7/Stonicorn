@@ -25,7 +25,7 @@ public class RewindManager : MonoBehaviour
     private List<GameState> gameStates = new List<GameState>();//basically a timeline
     public List<GameState> GameStates => gameStates;
     public int GameStateCount => gameStates.Count;
-    
+
     // Use this for initialization
     void Start()
     {
@@ -76,7 +76,7 @@ public class RewindManager : MonoBehaviour
             fileName
             );
     }
-    
+
     /// <summary>
     /// Saves the current game state
     /// </summary>
@@ -101,7 +101,11 @@ public class RewindManager : MonoBehaviour
     public void Load(int gamestateId)
     {
         //Update chosenId to game-state-now
-        chosenId = Utility.clamp(gamestateId, 0, gameStates.Count);
+        chosenId = Mathf.Clamp(gamestateId, -1, gameStates.Count - 1);
+        if (chosenId < 0)
+        {
+            return;
+        }
         //Remove null objects from the list
         Managers.Object.cleanObjects();
         //Destroy objects not spawned yet in the new selected state
@@ -284,6 +288,6 @@ public class RewindManager : MonoBehaviour
         Rewinding = false;
         //Load the current game state
         Load(chosenId);
-    }    
+    }
 
 }
