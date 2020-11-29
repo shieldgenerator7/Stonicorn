@@ -235,7 +235,8 @@ public class CameraController : MonoBehaviour
 
                 if (autoOffsetCancelTime > 0)
                 {
-                    if (Time.time > autoOffsetCancelTime)
+                    if (Time.time > autoOffsetCancelTime
+                        && !Managers.Time.SlowTime)
                     {
                         autoOffset = Vector2.zero;
                         previousMoveDir = Vector2.zero;
