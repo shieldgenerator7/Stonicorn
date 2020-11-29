@@ -284,7 +284,6 @@ public class ForceLaunchAbility : PlayerAbility
         base.acceptSavableObject(savObj);
         affectingVelocity = (bool)savObj.data["affectingVelocity"];
         currentVelocity = (Vector2)savObj.data["currentVelocity"];
-        rb2d.velocity = currentVelocity;
         updateBouncingVisuals();
     }
 
