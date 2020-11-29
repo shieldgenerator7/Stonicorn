@@ -6,19 +6,44 @@ using UnityEngine;
 
 public class PlayerTestSpawnPoint : MonoBehaviour
 {
+    public bool ForceLaunchAbility;
+    public bool SwapAbility;
+    public bool WallClimbAbility;
+    public bool AirSliceAbility;
+    public bool ElectricFieldAbility;
+    public bool LongTeleportAbility;
+
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("PlayerTestSpawnPoint activating");
         //Set player position
-        FindObjectOfType<PlayerController>().transform.position = transform.position;
+        PlayerController pc = FindObjectOfType<PlayerController>();
+        pc.transform.position = transform.position;
         //Activate abilities
-        foreach (MilestoneActivator maa in GetComponents<MilestoneActivator>())
+        if (ForceLaunchAbility)
         {
-            if (maa.enabled)
-            {
-                maa.activateEffect();
-            }
+            pc.GetComponent<ForceLaunchAbility>().enabled = true;
+        }
+        if (SwapAbility)
+        {
+            pc.GetComponent<SwapAbility>().enabled = true;
+        }
+        if (WallClimbAbility)
+        {
+            pc.GetComponent<WallClimbAbility>().enabled = true;
+        }
+        if (AirSliceAbility)
+        {
+            pc.GetComponent<AirSliceAbility>().enabled = true;
+        }
+        if (ElectricFieldAbility)
+        {
+            pc.GetComponent<ElectricFieldAbility>().enabled = true;
+        }
+        if (LongTeleportAbility)
+        {
+            pc.GetComponent<LongTeleportAbility>().enabled = true;
         }
         //Destroy object
         //If it's under a ruler displayer,
