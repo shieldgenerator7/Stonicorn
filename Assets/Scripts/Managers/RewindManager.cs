@@ -12,6 +12,8 @@ public class RewindManager : MonoBehaviour
     private float rewindDelay = 0.05f;//the delay between rewind transitions
     [SerializeField]
     private float minRewindDuration = 1;//how many seconds a rewind should last for
+    [SerializeField]
+    private float maxRewindDuration = 30;
 
     //Runtime vars
     private int rewindId;//the id to eventually load back to
@@ -237,6 +239,10 @@ public class RewindManager : MonoBehaviour
                 if (count * rewindDelay < minRewindDuration)
                 {
                     rewindDelay = minRewindDuration / count;
+                }
+                if (count * rewindDelay > maxRewindDuration)
+                {
+                    rewindDelay = maxRewindDuration / count;
                 }
                 //Rewind Started Delegate
                 onRewindStarted?.Invoke(gameStates, rewindId);
