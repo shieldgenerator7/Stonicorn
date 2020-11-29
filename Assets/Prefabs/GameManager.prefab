@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 2859978935190022873}
   - component: {fileID: 2859978935190022872}
   - component: {fileID: 2859978935190022865}
+  - component: {fileID: 2995129134111674952}
   - component: {fileID: 2859978935190022870}
   - component: {fileID: 2859978935190022877}
   - component: {fileID: 2859978935190022879}
@@ -68,16 +69,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16f178c2a67a674a90713d2858d7da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoaders:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   demoBuild: 1
   saveWithTimeStamp: 0
   restartDemoDelay: 10
@@ -172,6 +163,7 @@ MonoBehaviour:
   baseRewindDelay: 0.05
   rewindDelay: 0.05
   minRewindDuration: 0.5
+  maxRewindDuration: 30
 --- !u!114 &2859978935190022865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +176,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2811facb69cf84a489222e135f2c490c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2995129134111674952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2859978935190022699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe19d297adebfe4e8b8591e31f3e1f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoaders: []
 --- !u!114 &2859978935190022870
 MonoBehaviour:
   m_ObjectHideFlags: 0

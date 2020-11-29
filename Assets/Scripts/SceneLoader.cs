@@ -108,7 +108,7 @@ public class SceneLoader : SavableMonoBehaviour
         {
             bool shouldUnload =
                 (explorer)
-                ? (Managers.Game.playerSceneLoaded && !explorer.canSeeBehind(Collider))
+                ? (Managers.Scene.playerSceneLoaded && !explorer.canSeeBehind(Collider))
                 : !overlaps;
             if (shouldUnload)
             {
@@ -127,10 +127,10 @@ public class SceneLoader : SavableMonoBehaviour
             }
         }
         //If the player is in the level before it's done loading,
-        if (overlaps && isLoaded && !Managers.Game.isSceneOpen(sceneName))
+        if (overlaps && isLoaded && !Managers.Scene.isSceneOpen(sceneName))
         {
             //Pause the game.
-            Managers.Game.PauseForLoadingSceneName = sceneName;
+            Managers.Scene.PauseForLoadingSceneName = sceneName;
         }
     }
     public bool isPositionInScene(Vector2 pos)

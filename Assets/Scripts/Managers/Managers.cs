@@ -195,6 +195,20 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Scenes Manager
+    private ScenesManager scenesManager;
+    public static ScenesManager Scene
+    {
+        get
+        {
+            if (instance.scenesManager == null)
+            {
+                instance.scenesManager = FindObjectOfType<ScenesManager>();
+            }
+            return instance.scenesManager;
+        }
+    }
+
     //Menu Manager
     private MenuManager menuManager;
     public static MenuManager Menu
