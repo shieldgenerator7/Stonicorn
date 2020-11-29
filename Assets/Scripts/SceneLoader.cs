@@ -127,7 +127,7 @@ public class SceneLoader : SavableMonoBehaviour
             }
         }
         //If the player is in the level before it's done loading,
-        if (overlaps && isLoaded && !Managers.Game.isSceneOpenByName(sceneName))
+        if (overlaps && isLoaded && !Managers.Game.isSceneOpen(sceneName))
         {
             //Pause the game.
             Managers.Game.PauseForLoadingSceneName = sceneName;

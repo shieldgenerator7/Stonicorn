@@ -258,7 +258,8 @@ public class GameManager : MonoBehaviour
         }
         //Remove the given scene's objects from the forgotten objects list
         Managers.Object.ForgottenObjects.RemoveAll(
-            fgo => fgo == null || fgo.scene == scene
+            fgo => fgo == null || ReferenceEquals(fgo, null)
+            || fgo.scene == scene
             );
         //Update the list of game objects to save
 #if UNITY_EDITOR
@@ -284,7 +285,7 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public bool isSceneOpenByName(string sceneName)
+    public bool isSceneOpen(string sceneName)
     {
         foreach (Scene s in openScenes)
         {

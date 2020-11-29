@@ -42,6 +42,8 @@ public class ObjectManager : MonoBehaviour
         {
             if (isSpawnedObject)
             {
+                Debug.LogWarning("ObjectManager.adObject(): replacing" +
+                    gameObjects[key] + " with " + go);
                 gameObjects[key] = go;
                 return;
             }
