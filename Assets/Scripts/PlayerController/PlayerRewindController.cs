@@ -6,6 +6,7 @@ public class PlayerRewindController : MonoBehaviour
 {
     [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
+    public GameObject ghostFolder;//object that the preview ghosts will be parented under
     /// <summary>
     /// The list of past merky representations
     /// Indexed into by the game state id
@@ -52,7 +53,7 @@ public class PlayerRewindController : MonoBehaviour
             }
             //Put a new rep into the list
             representations[gs.id] = GameObject.Instantiate(playerGhostPrefab);
-            representations[gs.id].transform.parent = transform;
+            representations[gs.id].transform.parent = ghostFolder.transform;
         }
         //Retrieve the rep from the list
         GameObject rep = representations[gs.id];
@@ -252,6 +253,7 @@ public class PlayerRewindController : MonoBehaviour
         float defaultZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
         Managers.Camera.ZoomLevel = defaultZoomLevel;
         Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
+        showPlayerGhosts(false);
 
         //Process tapProcessed delegates
         tapProcessed?.Invoke(curMPWorld);
