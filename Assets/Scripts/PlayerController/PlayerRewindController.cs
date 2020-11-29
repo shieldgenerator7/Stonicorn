@@ -52,6 +52,7 @@ public class PlayerRewindController : MonoBehaviour
             }
             //Put a new rep into the list
             representations[gs.id] = GameObject.Instantiate(playerGhostPrefab);
+            representations[gs.id].transform.parent = transform;
         }
         //Retrieve the rep from the list
         GameObject rep = representations[gs.id];
