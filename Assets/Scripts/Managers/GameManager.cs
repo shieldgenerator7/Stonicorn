@@ -106,6 +106,10 @@ public class GameManager : MonoBehaviour
         //Register scene loading delegates
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
+        //Register rewind delegates
+        Managers.Rewind.onGameStateSaved += saveSceneStateIds;
+        Managers.Rewind.onRewindStarted += processRewindStart;
+        Managers.Rewind.onRewindFinished += processRewindEnd;
     }
 
     // Update is called once per frame
@@ -319,8 +323,20 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void rewindSceneStateIds(List<GameState> gameStates, int rewindStateId)
+    void processRewindStart(List<GameState> gameStates, int rewindStateId)
     {
+        //Set the music speed to rewind
+        Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
+        //Show rewind visual effect
+        Managers.Effect.showRewindEffect(true);
+        //Recenter the camera on Merky
+        Managers.Camera.recenter();
+        //Disable physics while rewinding
+        Managers.Physics2DSurrogate.enabled = true;
+        //Pause time
+        Managers.Time.setPause(this, true);
+        //Update Stats
+        GameStatistics.addOne("Rewind");
         //Load levels that Merky will be passing through
         foreach (SceneLoader sl in sceneLoaders)
         {
@@ -334,8 +350,16 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void rewindSceneStateIdsFinish(List<GameState> gameStates, int rewindStateId)
+    void processRewindEnd(List<GameState> gameStates, int rewindStateId)
     {
+        //Put the music back to normal
+        Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
+        //Stop rewind visual effect
+        Managers.Effect.showRewindEffect(false);
+        //Unpause time
+        Managers.Time.setPause(this, false);
+        //Re-enable physics because the rewind is over
+        Managers.Physics2DSurrogate.enabled = false;
         //Update Scene tracking variables
         foreach (SceneLoader sl in sceneLoaders)
         {

@@ -221,7 +221,7 @@ public class RewindManager : MonoBehaviour
     /// </summary>
     public bool Rewinding
     {
-        get { return chosenId > rewindId; }
+        get => chosenId > rewindId;
         private set
         {
             //Start rewinding
@@ -234,10 +234,6 @@ public class RewindManager : MonoBehaviour
                     //rewind to start
                     rewindId = 0;
                 }
-                //Set the music speed to rewind
-                Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
-                //Show rewind visual effect
-                Managers.Effect.showRewindEffect(true);
                 //Set rewindDelay
                 int count = chosenId - rewindId;
                 rewindDelay = baseRewindDelay;
@@ -245,16 +241,8 @@ public class RewindManager : MonoBehaviour
                 {
                     rewindDelay = minRewindDuration / count;
                 }
-                //Recenter the camera on Merky
-                Managers.Camera.recenter();
-                //Disable physics while rewinding
-                Managers.Physics2DSurrogate.enabled = true;
-                //Pause time
-                Managers.Time.setPause(this, true);
-                //Update Stats
-                GameStatistics.addOne("Rewind");
                 //Rewind Started Delegate
-                onRewindFinished?.Invoke(gameStates, rewindId);
+                onRewindStarted?.Invoke(gameStates, rewindId);
             }
             //Stop rewinding
             else
@@ -263,14 +251,6 @@ public class RewindManager : MonoBehaviour
                 rewindId = chosenId;
                 //Refresh the game object list
                 Managers.Object.refreshGameObjects();
-                //Put the music back to normal
-                Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
-                //Stop rewind visual effect
-                Managers.Effect.showRewindEffect(false);
-                //Unpause time
-                Managers.Time.setPause(this, false);
-                //Re-enable physics because the rewind is over
-                Managers.Physics2DSurrogate.enabled = false;
                 //Rewind Finished Delegate
                 onRewindFinished?.Invoke(gameStates, chosenId);
             }
