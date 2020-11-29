@@ -103,6 +103,21 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Object Manager
+    //Manages the list of known objects
+    private ObjectManager objectManager;
+    public static ObjectManager Object
+    {
+        get
+        {
+            if (instance.objectManager == null)
+            {
+                instance.objectManager = FindObjectOfType<ObjectManager>();
+            }
+            return instance.objectManager;
+        }
+    }
+
     //Physics 2D Surrogate
     //Used to enable triggers while main physics is disabled during time rewind
     private Physics2DSurrogate physics2DSurrogate;
