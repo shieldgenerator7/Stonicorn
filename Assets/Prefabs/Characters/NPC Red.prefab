@@ -49,6 +49,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -81,7 +83,7 @@ SpriteRenderer:
   m_Size: {x: 0.99988556, y: 0.7831197}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &4891096472614760310
@@ -210,7 +212,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6317144652256997883}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: baec8ceac9609dc448cadd3efa4966cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
