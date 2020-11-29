@@ -37,12 +37,6 @@ public class DemoModeManager : MonoBehaviour
             //Show the timer
             txtDemoTimer.transform.parent.gameObject.SetActive(true);
         }
-        //If in demo mode,
-        if (demoBuild)
-        {
-            //Save its future files with a time stamp
-            Managers.Game.saveWithTimeStamp = true;
-        }
     }
 
     public void processDemoMode()

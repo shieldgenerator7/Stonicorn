@@ -9,12 +9,16 @@ using System.Linq;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    public bool saveWithTimeStamp = false;//true to save with date/timestamp in filename, even when not in demo build
-
     // Use this for initialization
     void Start()
     {
         Managers.DemoMode.init();
+        //If in demo mode,
+        if (Managers.DemoMode.DemoMode)
+        {
+            //Save its future files with a time stamp
+            Managers.File.saveWithTimeStamp = true;
+        }
         //Init the ScenesManager
         Managers.Scene.init();
         //Check to see which levels need loaded
@@ -23,7 +27,7 @@ public class GameManager : MonoBehaviour
         if (!Managers.DemoMode.DemoMode && ES3.FileExists("merky.txt"))
         {
             //Load the save file
-            loadFromFile();
+            Managers.File.loadFromFile();
         }
         //Update the list of objects that have state to save
         Managers.Object.refreshGameObjects();
@@ -177,83 +181,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    #region File Management
-    /// <summary>
-    /// Saves the memories, game states, and scene cache to a save file
-    /// </summary>
-    public void saveToFile()
-    {
-        //Set the base filename
-        string fileName = "merky";
-        //If saving with time stamp,
-        if (saveWithTimeStamp)
-        {
-            //Add the time stamp to the filename
-            System.DateTime now = System.DateTime.Now;
-            fileName += "-" + now.Ticks;
-        }
-        //Add an extension to the filename
-        fileName += ".txt";
-        //Save game states and memories
-        Managers.Rewind.saveToFile(fileName);
-        Managers.Object.saveToFile(fileName);
-        //Save settings
-        Managers.Settings.saveSettings();
-        //Save file settings
-        List<SettingObject> settings = new List<SettingObject>();
-        foreach (Setting setting in FindObjectsOfType<MonoBehaviour>().OfType<Setting>())
-        {
-            if (setting.Scope == SettingScope.SAVE_FILE)
-            {
-                settings.Add(setting.Setting);
-            }
-        }
-        ES3.Save<List<SettingObject>>("settings", settings, fileName);
-    }
-    /// <summary>
-    /// Loads the game from the save file
-    /// It assumes the file already exists
-    /// </summary>
-    public void loadFromFile()
-    {
-        try
-        {
-            //Set the base filename
-            string fileName = "merky";
-            //Add an extension to the filename
-            fileName += ".txt";
-            //Load game states and memories
-            Managers.Rewind.loadFromFile(fileName);
-            Managers.Object.loadFromFile(fileName);
-            //Load settings
-            Managers.Settings.loadSettings();
-            //Load file settings
-            List<SettingObject> settings = ES3.Load<List<SettingObject>>("settings", fileName);
-            foreach (Setting setting in FindObjectsOfType<MonoBehaviour>().OfType<Setting>())
-            {
-                if (setting.Scope == SettingScope.SAVE_FILE)
-                {
-                    string id = setting.ID;
-                    foreach (SettingObject setObj in settings)
-                    {
-                        if (id == setObj.id)
-                        {
-                            setting.Setting = setObj;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        catch (System.Exception e)
-        {
-            if (ES3.FileExists("merky.txt"))
-            {
-                ES3.DeleteFile("merky.txt");
-            }
-            resetGame(false);
-        }
-    }
+    
     //Sent to all GameObjects before the application is quit
     //Auto-save on exit
     void OnApplicationQuit()
@@ -261,7 +189,7 @@ public class GameManager : MonoBehaviour
         //Save the game state and then
         Managers.Rewind.Save();
         //Save the game to file
-        saveToFile();
+        Managers.File.saveToFile();
     }
     private void OnApplicationPause(bool pause)
     {
@@ -270,7 +198,6 @@ public class GameManager : MonoBehaviour
             OnApplicationQuit();
         }
     }
-    #endregion
 
     /// <summary>
     /// Resets the game back to the very beginning
@@ -282,7 +209,7 @@ public class GameManager : MonoBehaviour
         if (savePrevGame)
         {
             Managers.Rewind.Save();
-            Managers.Game.saveToFile();
+            Managers.File.saveToFile();
         }
         //Empty object lists
         Managers.Object.clearObjects();

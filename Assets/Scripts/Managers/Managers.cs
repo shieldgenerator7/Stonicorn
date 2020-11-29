@@ -236,6 +236,20 @@ public class Managers : MonoBehaviour
             return instance.settingsManager;
         }
     }
+    
+    //File Manager
+    private FileManager fileManager;
+    public static FileManager File
+    {
+        get
+        {
+            if (instance.fileManager == null)
+            {
+                instance.fileManager = FindObjectOfType<FileManager>();
+            }
+            return instance.fileManager;
+        }
+    }
 
     //
     // Controllers
