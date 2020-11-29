@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,20 +17,20 @@ public class RewindManager : MonoBehaviour
     private int rewindId;//the id to eventually load back to
     private int chosenId;//the id of the current game state
     private float lastRewindTime;//the last time the game rewound
+    public int GameStateId => chosenId;
 
     public bool rewindInterruptableByPlayer { get; private set; } = true;
 
     //Game States
     private List<GameState> gameStates = new List<GameState>();//basically a timeline
+    public int GameStateCount => gameStates.Count;
     private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();//list of current objects that have state to save
+    public int GameObjectCount => gameObjects.Values.Count;
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable, but still have state to save
-    public List<GameObject> ForgottenObjects
-    {
-        get { return forgottenObjects; }
-    }
+    public List<GameObject> ForgottenObjects => forgottenObjects;
+
     //Memories
     private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
-
 
     // Use this for initialization
     void Start()
@@ -62,6 +63,34 @@ public class RewindManager : MonoBehaviour
                 Load(chosenId - 1);
             }
         }
+    }
+
+    public void saveToFile(string fileName)
+    {
+        ES3.Save<Dictionary<string, MemoryObject>>(
+            "memories",
+            memories,
+            fileName
+            );
+        //Save game states
+        ES3.Save<List<GameState>>(
+            "states",
+            gameStates,
+            fileName
+            );
+    }
+    public void loadFromFile(string fileName)
+    {
+        //Load memories
+        memories = ES3.Load<Dictionary<string, MemoryObject>>(
+            "memories",
+            fileName
+            );
+        //Load game states
+        gameStates = ES3.Load<List<GameState>>(
+            "states",
+            fileName
+            );
     }
 
     /// <summary>
@@ -351,6 +380,38 @@ public class RewindManager : MonoBehaviour
         }
     }
 
+    public void LoadObjects(string sceneName, int lastStateSeen, Predicate<GameObject> filter)
+    {
+        int newObjectsFound = 0;
+        int objectsLoaded = 0;
+        foreach (GameObject go in gameObjects.Values)
+        {
+            if (filter(go))
+            {
+                //Search through the game states to see when it was last saved
+                for (int stateid = lastStateSeen; stateid >= 0; stateid--)
+                {
+                    //If the game object was last saved in this game state,
+                    if (gameStates[stateid].loadObject(go))
+                    {
+                        //Great! It's loaded,
+                        //Let's move onto the next object
+                        objectsLoaded++;
+                        break;
+                    }
+                    //Else,
+                    else
+                    {
+                        //Continue until you find the game state that has the most recent information about this object
+                    }
+                }
+            }
+        }
+#if UNITY_EDITOR
+        Logger.log(this, "LOFS: Scene " + sceneName + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
+#endif
+    }
+
     /// <summary>
     /// Rewinds back a number of states equal to count
     /// </summary>
@@ -480,7 +541,7 @@ public class RewindManager : MonoBehaviour
     /// <summary>
     /// Restore all saved memories of game objects that have a memory saved
     /// </summary>
-    void LoadMemories()
+    public void LoadMemories()
     {
         //Find all the game objects that can have memories
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())

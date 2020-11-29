@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
             //Update the game state id trackers
             Managers.Rewind.init();
             //Load the memories
-            LoadMemories();
+            Managers.Rewind.LoadMemories();
         }
         //Register scene loading delegates
         SceneManager.sceneLoaded += sceneLoaded;
@@ -180,25 +180,25 @@ public class GameManager : MonoBehaviour
         }
         //Update the list of objects with state to save
 #if UNITY_EDITOR
-        Logger.log(this, "sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
+        Logger.log(this, "sceneLoaded: " + scene.name + ", old object count: " + Managers.Rewind.GameObjectCount);
 #endif
-        refreshGameObjects();
+        Managers.Rewind.refreshGameObjects();
 #if UNITY_EDITOR
-        Logger.log(this, "sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        Logger.log(this, "sceneLoaded: " + scene.name + ", new object count: " + Managers.Rewind.GameObjectCount);
 #endif
         //Add the given scene to list of open scenes
         openScenes.Add(scene);
         //If time is moving forward,
-        if (!Rewinding)
+        if (!Managers.Rewind.Rewinding)
         {
             //Load the previous state of the objects in the scene
             LoadObjectsFromScene(scene);
         }
         //If the game has just begun,
-        if (gameStates.Count == 0)
+        if (Managers.Rewind.GameStates.Count == 0)
         {
             //Create the initial save state
-            Save();
+            Managers.Rewind.Save();
         }
         //If its a level scene,
         SceneLoader sceneLoader = getSceneLoaderByName(scene.name);
@@ -214,22 +214,14 @@ public class GameManager : MonoBehaviour
     void sceneUnloaded(Scene scene)
     {
         //Remove the given scene's objects from the forgotten objects list
-        for (int i = forgottenObjects.Count - 1; i >= 0; i--)
-        {
-            GameObject fgo = forgottenObjects[i];
-            if (fgo == null || fgo.scene == scene)
-            {
-                forgottenObjects.RemoveAt(i);
-            }
-        }
+        Managers.Rewind.ForgottenObjects.RemoveAll(fgo => fgo.scene == scene);
         //Update the list of game objects to save
-
 #if UNITY_EDITOR
-        Logger.log(this, "sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
+        Logger.log(this, "sceneUnloaded: " + scene.name + ", old object count: " + Managers.Rewind.GameObjectCount);
 #endif
-        refreshGameObjects();
+        Managers.Rewind.refreshGameObjects();
 #if UNITY_EDITOR
-        Logger.log(this, "sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
+        Logger.log(this, "sceneUnloaded: " + scene.name + ", new object count: " + Managers.Rewind.GameObjectCount);
 #endif
         //Remove the scene from the list of open scenes
         openScenes.Remove(scene);
@@ -266,15 +258,11 @@ public class GameManager : MonoBehaviour
     public void LoadObjectsFromScene(Scene scene)
     {
         //Find the last state that this scene was saved in
-        int lastStateSeen = -1;
-        foreach (SceneLoader sl in sceneLoaders)
-        {
-            if (scene == sl.Scene)
-            {
-                lastStateSeen = sl.lastOpenGameStateId;
-                break;
-            }
-        }
+        int lastStateSeen = sceneLoaders.Find(
+            sl => sl.Scene == scene
+            )
+            .lastOpenGameStateId;
+
 #if UNITY_EDITOR
         Logger.log(this, "LOFS: Scene " + scene.name + ": last state seen: " + lastStateSeen);
 #endif
@@ -286,42 +274,14 @@ public class GameManager : MonoBehaviour
             return;
         }
         //If the scene was last seen after gamestate-now,
-        if (lastStateSeen > chosenId)
-        {
-            //The scene is now last seen gamestate-now
-            lastStateSeen = chosenId;
-        }
-        int newObjectsFound = 0;
-        int objectsLoaded = 0;
-        //Load Each Object
-        foreach (GameObject go in gameObjects.Values)
-        {
-            //If the game object is in the given scene,
-            if (go.scene == scene)
-            {
-                newObjectsFound++;
-                //Search through the game states to see when it was last saved
-                for (int stateid = lastStateSeen; stateid >= 0; stateid--)
-                {
-                    //If the game object was last saved in this game state,
-                    if (gameStates[stateid].loadObject(go))
-                    {
-                        //Great! It's loaded,
-                        //Let's move onto the next object
-                        objectsLoaded++;
-                        break;
-                    }
-                    //Else,
-                    else
-                    {
-                        //Continue until you find the game state that has the most recent information about this object
-                    }
-                }
-            }
-        }
-#if UNITY_EDITOR
-        Logger.log(this, "LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
-#endif
+        //The scene is now last seen gamestate-now
+        lastStateSeen = Mathf.Min(lastStateSeen, Managers.Rewind.GameStateId);
+        //Load the objects
+        Managers.Rewind.LoadObjects(
+            scene.name,
+            lastStateSeen,
+            go => go.scene == scene
+            );
     }
 
     private SceneLoader getSceneLoaderByName(string sceneName)
@@ -412,9 +372,7 @@ public class GameManager : MonoBehaviour
         //Add an extension to the filename
         fileName += ".txt";
         //Save memories
-        ES3.Save<Dictionary<string, MemoryObject>>("memories", memories, fileName);
-        //Save game states
-        ES3.Save<List<GameState>>("states", gameStates, fileName);
+        Managers.Rewind.saveToFile(fileName);
         //Save scene cache
         //ES3.Save<List<SceneLoader>>("scenes", sceneLoaders, fileName);
         //Save settings
@@ -442,10 +400,8 @@ public class GameManager : MonoBehaviour
             string fileName = "merky";
             //Add an extension to the filename
             fileName += ".txt";
-            //Load memories
-            memories = ES3.Load<Dictionary<string, MemoryObject>>("memories", fileName);
-            //Load game states
-            gameStates = ES3.Load<List<GameState>>("states", fileName);
+            //Load objects
+            Managers.Rewind.loadFromFile(fileName);
             //Scenes
             //List<SceneLoader> rsls = ES3.Load<List<SceneLoader>>("scenes", fileName);
             //Load settings
@@ -482,7 +438,7 @@ public class GameManager : MonoBehaviour
     void OnApplicationQuit()
     {
         //Save the game state and then
-        Save();
+        Managers.Rewind.Save();
         //Save the game to file
         saveToFile();
     }
@@ -508,7 +464,7 @@ public class GameManager : MonoBehaviour
             foreach (GameState gs in gameStates)
             {
                 //Show a sprite to represent them on screen
-                gs.showRepresentation(chosenId);
+                gs.showRepresentation(Managers.Rewind.GameStateId);
             }
         }
         //Else, they should be hidden
