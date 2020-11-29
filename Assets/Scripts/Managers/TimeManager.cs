@@ -79,7 +79,7 @@ public class TimeManager : SavableMonoBehaviour
 
     void cycleEnded()
     {
-        Managers.Game.RewindToStart();
+        Managers.Rewind.RewindToStart();
     }
 
     /// <summary>

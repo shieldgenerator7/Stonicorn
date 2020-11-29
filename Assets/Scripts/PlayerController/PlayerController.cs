@@ -184,7 +184,7 @@ public class PlayerController : MonoBehaviour
         pc2d = GetComponent<PolygonCollider2D>();
         tpa = GetComponent<TeleportAbility>();
         //Register the delegates
-        Managers.Game.onRewindFinished += pauseMovementAfterRewind;
+        Managers.Rewind.onRewindFinished += pauseMovementAfterRewind;
         //Estimate the halfWidth
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
         halfWidth = (extents.x + extents.y) / 2;
@@ -835,7 +835,7 @@ public class PlayerController : MonoBehaviour
         //Remove highlight
         Managers.Effect.showPointEffect("effect_contact", Vector2.zero, false);
         //Rewind
-        Managers.Game.Rewind(damageToSelf);
+        Managers.Rewind.Rewind(damageToSelf);
     }
 
     /// <summary>
@@ -900,7 +900,7 @@ public class PlayerController : MonoBehaviour
             //Teleport
             teleport(newPos);
             //Save the game state
-            Managers.Game.Save();
+            Managers.Rewind.Save();
             //If Merky is in a checkpoint,
             if (inCheckPoint)
             {
@@ -949,7 +949,7 @@ public class PlayerController : MonoBehaviour
         //Activate the new checkpoint
         checkPoint.trigger();
         //Save the game state
-        Managers.Game.Save();
+        Managers.Rewind.Save();
         //NOTE: processTapGesture(Vector3) is NOT called here,
         //because that method cancels the teleport
         //depending on the return value from onPreTeleport(),
@@ -1022,7 +1022,7 @@ public class PlayerController : MonoBehaviour
         onDragGesture?.Invoke(origPos, newPos, finished);
     }
 
-    void pauseMovementAfterRewind()
+    void pauseMovementAfterRewind(List<GameState> gameStates, int gameStateId)
     {
         //Grant gravity immunity
         MovementPaused = true;

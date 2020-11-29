@@ -135,13 +135,13 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             //Forgotten Objects
             if (alreadyBroken || !gameObject.activeInHierarchy || oldIntegrity < 0)
             {
-                Managers.Game.saveForgottenObject(gameObject, false);
+                Managers.Object.saveForgottenObject(gameObject, false);
             }
         }
         else if (oldIntegrity > 0 || gameObject.activeInHierarchy)
         {
             bool shouldRefresh = false;
-            if (!alreadyBroken && !Managers.Game.Rewinding)
+            if (!alreadyBroken && !Managers.Rewind.Rewinding)
             {
                 if (crackedPrefab != null)
                 {
@@ -220,14 +220,14 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             }
             if (crackedPrefab != null || disappearsIfNoBrokenPrefab)
             {
-                Managers.Game.saveForgottenObject(gameObject);
+                Managers.Object.saveForgottenObject(gameObject);
                 shouldRefresh = true;
             }
-            if (!Managers.Game.Rewinding)
+            if (!Managers.Rewind.Rewinding)
             {
                 if (shouldRefresh)
                 {
-                    Managers.Game.refreshGameObjects();
+                    Managers.Object.refreshGameObjects();
                 }
                 if (shattered != null)
                 {

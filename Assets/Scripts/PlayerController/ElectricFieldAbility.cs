@@ -38,7 +38,7 @@ public class ElectricFieldAbility : PlayerAbility
     protected override void Update()
     {
         base.Update();
-        if (!Managers.Game.Rewinding)
+        if (!Managers.Rewind.Rewinding)
         {
             if (activated)
             {

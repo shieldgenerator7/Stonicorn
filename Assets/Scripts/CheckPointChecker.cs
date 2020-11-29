@@ -72,7 +72,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         //Not already activated, go ahead and activate
         activated = true;
-        Managers.Game.saveMemory(this);
+        Managers.Object.saveMemory(this);
         Managers.saveCheckPoint(this);
         //Get the list of active checkpoints
         List<CheckPointChecker> activeCPCs = Managers.ActiveCheckPoints;

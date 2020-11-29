@@ -73,7 +73,7 @@ public class SnailController : Hazard
 
     void FixedUpdate()
     {
-        if (Managers.Game.Rewinding)
+        if (Managers.Rewind.Rewinding)
         {
             //don't update while game manager is rewinding
             return;

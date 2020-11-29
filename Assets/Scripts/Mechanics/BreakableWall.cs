@@ -22,14 +22,14 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
                 sr.sprite = crackStages[maxIntegrity - integrity];
                 if (!gameObject.activeSelf)
                 {
-                    Managers.Game.saveForgottenObject(gameObject, false);
+                    Managers.Object.saveForgottenObject(gameObject, false);
                 }
             }
             else
             {
                 if (gameObject.activeSelf)
                 {
-                    Managers.Game.saveForgottenObject(gameObject, true);
+                    Managers.Object.saveForgottenObject(gameObject, true);
                     //
                     //Break into pieces
                     //
@@ -81,9 +81,9 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
                                     bw.integrity = this.maxIntegrity / pieces.transform.childCount;
                                 }
                             }
-                            Managers.Game.addObject(t.gameObject);
+                            Managers.Object.addObject(t.gameObject);
                         }
-                        Managers.Game.addObject(pieces);
+                        Managers.Object.addObject(pieces);
                     }
                     //
                     //Reveal hidden areas
@@ -191,7 +191,7 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
         if (crackedPieces == null || ReferenceEquals(crackedPieces, null))
         {
             //Find the object
-            List<GameObject> gos = Managers.Game.getObjectsWithName(gameObject.name + "---");
+            List<GameObject> gos = Managers.Object.getObjectsWithName(gameObject.name + "---");
             if (gos.Count > 0)
             {
                 crackedPieces = gos[0];

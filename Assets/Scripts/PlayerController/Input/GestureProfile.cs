@@ -14,11 +14,11 @@ public class GestureProfile
 
     public virtual void processTapGesture(Vector3 curMPWorld)
     {
-        if (Managers.Game.Rewinding)
+        if (Managers.Rewind.Rewinding)
         {
-            if (Managers.Game.rewindInterruptableByPlayer)
+            if (Managers.Rewind.rewindInterruptableByPlayer)
             {
-                Managers.Game.cancelRewind();
+                Managers.Rewind.cancelRewind();
             }
         }
         else

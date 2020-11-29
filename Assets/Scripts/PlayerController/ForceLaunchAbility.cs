@@ -100,7 +100,7 @@ public class ForceLaunchAbility : PlayerAbility
         if (finished && CanLaunch)
         {
             //Save the game state
-            Managers.Game.Save();
+            Managers.Rewind.Save();
             //Actually launch
             launch();
         }
@@ -112,7 +112,7 @@ public class ForceLaunchAbility : PlayerAbility
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (Managers.Game.Rewinding)
+        if (Managers.Rewind.Rewinding)
         {
             return;
         }
@@ -138,7 +138,7 @@ public class ForceLaunchAbility : PlayerAbility
 
     protected override void Update()
     {
-        if (Managers.Game.Rewinding)
+        if (Managers.Rewind.Rewinding)
         {
             return;
         }

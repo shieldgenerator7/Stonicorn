@@ -136,6 +136,6 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
 
     void dissipate()
     {
-        Managers.Game.destroyObject(gameObject);
+        Managers.Object.destroyObject(gameObject);
     }
 }

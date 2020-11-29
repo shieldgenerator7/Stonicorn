@@ -30,7 +30,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour
         if (triggersOnce)
         {
             triggered = true;
-            Managers.Game.saveMemory(this);
+            Managers.Object.saveMemory(this);
             Destroy(gameObject);
         }
     }
@@ -46,7 +46,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour
             if (triggersOnce)
             {
                 triggered = true;
-                Managers.Game.saveMemory(this);
+                Managers.Object.saveMemory(this);
                 Destroy(gameObject);
             }
         }
