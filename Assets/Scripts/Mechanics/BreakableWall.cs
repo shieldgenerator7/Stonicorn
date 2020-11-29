@@ -19,6 +19,10 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
             integrity = Mathf.Clamp(value, 0, maxIntegrity);
             if (integrity > 0)
             {
+                if (sr == null)
+                {
+                    sr = GetComponent<SpriteRenderer>();
+                }
                 sr.sprite = crackStages[maxIntegrity - integrity];
                 if (!gameObject.activeSelf)
                 {

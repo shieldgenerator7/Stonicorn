@@ -238,6 +238,6 @@ public class NPCManager : MonoBehaviour
 
     void pauseCurrentNPC(bool paused)
     {
-        lastTalkingNPC.GetComponent<NPCController>().pauseDialogue(paused);
+        lastTalkingNPC?.GetComponent<NPCController>().pauseDialogue(paused);
     }
 }
