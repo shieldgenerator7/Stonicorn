@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
             //Update the game state id trackers
             Managers.Rewind.init();
             //Load the memories
-            Managers.Rewind.LoadMemories();
+            Managers.Object.LoadMemories();
         }
         //Register scene loading delegates
         SceneManager.sceneLoaded += sceneLoaded;
@@ -180,11 +180,11 @@ public class GameManager : MonoBehaviour
         }
         //Update the list of objects with state to save
 #if UNITY_EDITOR
-        Logger.log(this, "sceneLoaded: " + scene.name + ", old object count: " + Managers.Rewind.GameObjectCount);
+        Logger.log(this, "sceneLoaded: " + scene.name + ", old object count: " + Managers.Object.GameObjectCount);
 #endif
-        Managers.Rewind.refreshGameObjects();
+        Managers.Object.refreshGameObjects();
 #if UNITY_EDITOR
-        Logger.log(this, "sceneLoaded: " + scene.name + ", new object count: " + Managers.Rewind.GameObjectCount);
+        Logger.log(this, "sceneLoaded: " + scene.name + ", new object count: " + Managers.Object.GameObjectCount);
 #endif
         //Add the given scene to list of open scenes
         openScenes.Add(scene);
@@ -195,7 +195,7 @@ public class GameManager : MonoBehaviour
             LoadObjectsFromScene(scene);
         }
         //If the game has just begun,
-        if (Managers.Rewind.GameStates.Count == 0)
+        if (Managers.Rewind.GameStateCount == 0)
         {
             //Create the initial save state
             Managers.Rewind.Save();
@@ -214,14 +214,14 @@ public class GameManager : MonoBehaviour
     void sceneUnloaded(Scene scene)
     {
         //Remove the given scene's objects from the forgotten objects list
-        Managers.Rewind.ForgottenObjects.RemoveAll(fgo => fgo.scene == scene);
+        Managers.Object.ForgottenObjects.RemoveAll(fgo => fgo.scene == scene);
         //Update the list of game objects to save
 #if UNITY_EDITOR
-        Logger.log(this, "sceneUnloaded: " + scene.name + ", old object count: " + Managers.Rewind.GameObjectCount);
+        Logger.log(this, "sceneUnloaded: " + scene.name + ", old object count: " + Managers.Object.GameObjectCount);
 #endif
-        Managers.Rewind.refreshGameObjects();
+        Managers.Object.refreshGameObjects();
 #if UNITY_EDITOR
-        Logger.log(this, "sceneUnloaded: " + scene.name + ", new object count: " + Managers.Rewind.GameObjectCount);
+        Logger.log(this, "sceneUnloaded: " + scene.name + ", new object count: " + Managers.Object.GameObjectCount);
 #endif
         //Remove the scene from the list of open scenes
         openScenes.Remove(scene);
@@ -461,7 +461,7 @@ public class GameManager : MonoBehaviour
         if (show)
         {
             //Loop through all game states
-            foreach (GameState gs in gameStates)
+            foreach (GameState gs in Managers.Rewind.GameStates)
             {
                 //Show a sprite to represent them on screen
                 gs.showRepresentation(Managers.Rewind.GameStateId);
@@ -471,7 +471,7 @@ public class GameManager : MonoBehaviour
         else
         {
             //Loop through all game states
-            foreach (GameState gs in gameStates)
+            foreach (GameState gs in Managers.Rewind.GameStates)
             {
                 //And hide their representations
                 gs.hideRepresentation();
@@ -487,7 +487,7 @@ public class GameManager : MonoBehaviour
     {
         float closestDistance = float.MaxValue;
         GameObject closestObject = null;
-        foreach (GameState gs in gameStates)
+        foreach (GameState gs in Managers.Rewind.GameStates)
         {
             Vector2 gsPos = gs.Representation.transform.position;
             float gsDistance = Vector2.Distance(gsPos, pos);
@@ -505,9 +505,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public Vector2 getLatestSafeRewindGhostPosition()
-    {
-        return gameStates[chosenId - 1].Merky.position;
-    }
+        => Managers.Rewind.GameStates[
+            Managers.Rewind.GameStateId - 1
+            ]
+            .Merky.position;
+
     #endregion
 
     #region Input Processing
@@ -521,7 +523,7 @@ public class GameManager : MonoBehaviour
         GameState prevFinal = null;
         //We have to do 2 passes to allow for both precision clicking and fat-fingered tapping
         //Sprite detection pass
-        foreach (GameState gs in gameStates)
+        foreach (GameState gs in Managers.Rewind.GameStates)
         {
             //Check sprite overlap
             if (gs.checkRepresentation(curMPWorld))
@@ -539,7 +541,7 @@ public class GameManager : MonoBehaviour
         //Collider detection pass
         if (final == null)
         {
-            foreach (GameState gs in gameStates)
+            foreach (GameState gs in Managers.Rewind.GameStates)
             {
                 //Check collider overlap
                 if (gs.checkRepresentation(curMPWorld, false))
@@ -560,25 +562,25 @@ public class GameManager : MonoBehaviour
         if (final != null)
         {
             //If the tapped one is already the current one,
-            if (final.id == chosenId)
+            if (final.id == Managers.Rewind.GameStateId)
             {
                 //And if the current one overlaps a previous one,
                 if (prevFinal != null)
                 {
                     //Choose the previous one
-                    RewindTo(prevFinal.id);
+                    Managers.Rewind.RewindTo(prevFinal.id);
                 }
                 else
                 {
                     //Else, Reload the current one
-                    Load(final.id);
+                    Managers.Rewind.Load(final.id);
                 }
             }
             //Else if a past one was tapped,
             else
             {
                 //Rewind back to it
-                RewindTo(final.id);
+                Managers.Rewind.RewindTo(final.id);
             }
             //Update Stats
             GameStatistics.addOne("RewindPlayer");
@@ -610,7 +612,7 @@ public class GameManager : MonoBehaviour
             saveToFile();
         }
         //Empty object lists
-        Managers.Rewind.clearObjects();
+        Managers.Object.clearObjects();
         //Reset game state nextid static variable
         GameState.nextid = 0;
         //Unset SceneLoader static variables

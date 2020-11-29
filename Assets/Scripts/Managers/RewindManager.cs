@@ -23,6 +23,7 @@ public class RewindManager : MonoBehaviour
 
     //Game States
     private List<GameState> gameStates = new List<GameState>();//basically a timeline
+    public List<GameState> GameStates => gameStates;
     public int GameStateCount => gameStates.Count;
     
     // Use this for initialization
@@ -195,7 +196,7 @@ public class RewindManager : MonoBehaviour
     /// Update carries out the motions of calling Load()
     /// </summary>
     /// <param name="gamestateId">The game state id to rewind to</param>
-    void RewindTo(int gamestateId, bool playerInitiated = true)
+    public void RewindTo(int gamestateId, bool playerInitiated = true)
     {
         //Set interruptable
         rewindInterruptableByPlayer = playerInitiated;

@@ -7,6 +7,7 @@ public class ObjectManager : MonoBehaviour
 {
     private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();//list of current objects that have state to save
     public List<GameObject> GameObjects => gameObjects.Values.ToList();
+    public int GameObjectCount => gameObjects.Count;
     private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable, but still have state to save
     public List<GameObject> ForgottenObjects => forgottenObjects;
 
