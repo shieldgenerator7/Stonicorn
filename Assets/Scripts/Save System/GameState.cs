@@ -23,34 +23,6 @@ public class GameState
     }
 
     public static int nextid = 0;
-    private GameObject representation;//the player ghost that represents this game state
-    public GameObject Representation
-    {
-        get
-        {
-            if (representation == null)
-            {
-                try
-                {
-                    representation = GameObject.Instantiate(Managers.Game.playerGhostPrefab);
-                    representation.transform.position = Merky.position;
-                    representation.transform.localScale = Merky.localScale;
-                    representation.transform.rotation = Merky.rotation;
-                    //If this is the first game state,
-                    if (id == 0)
-                    {
-                        //make its representation slightly bigger
-                        representation.transform.localScale *= 2f;
-                    }
-                }
-                catch (System.NullReferenceException nre)
-                {
-                    Debug.LogError("GameState (" + id + ") does not have a Merky! merky: " + Merky);
-                }
-            }
-            return representation;
-        }
-    }
 
     //Instantiation
     public GameState()
@@ -109,65 +81,5 @@ public class GameState
         return states.Any(
             os => os.objectName == go.name && os.sceneName == go.scene.name
             );
-    }
-    //Representation (check point ghost)
-    public void showRepresentation(int mostRecentId)
-    {
-        Representation.SetActive(true);
-        //Set the Alpha Value
-        SpriteRenderer sr = Representation.GetComponent<SpriteRenderer>();
-        Color c = sr.color;
-        ParticleSystem ps = Representation.GetComponentInChildren<ParticleSystem>();
-
-        if (mostRecentId - id < 10)
-        {
-            sr.color = new Color(c.r, c.g, c.b, 1.0f);
-            ps.Play();
-        }
-        else if (mostRecentId - id < 100)
-        {
-            sr.color = new Color(c.r, c.g, c.b, 0.9f);
-            ps.Stop();
-        }
-        else
-        {
-            sr.color = new Color(c.r, c.g, c.b, 0.5f);
-            ps.Stop();
-        }
-        //Do special processing for the first one
-        if (id == 0)
-        {
-            //Make sure it's always on screen
-            if (!Managers.Camera.inView(Representation.transform.position))
-            {
-                Representation.transform.position =
-                    Managers.Camera.getInViewPosition(
-                        Merky.position,
-                        0.9f
-                    );
-            }
-            else
-            {
-                Representation.transform.position = Merky.position;
-            }
-        }
-    }
-    public bool checkRepresentation(Vector3 touchPoint, bool checkSprite = true)
-    {
-        if (checkSprite)
-        {
-            return Representation.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
-        }
-        else
-        {
-            return Representation.GetComponent<Collider2D>().OverlapPoint(touchPoint);
-        }
-    }
-    public void hideRepresentation()
-    {
-        if (representation != null)
-        {
-            representation.SetActive(false);
-        }
     }
 }
