@@ -682,9 +682,13 @@ public class GameManager : MonoBehaviour
             playerSceneLoaded = true;
         }
         //Update the list of objects with state to save
+#if UNITY_EDITOR
         Logger.log(this, "sceneLoaded: " + scene.name + ", old object count: " + gameObjects.Count);
+#endif
         refreshGameObjects();
+#if UNITY_EDITOR
         Logger.log(this, "sceneLoaded: " + scene.name + ", new object count: " + gameObjects.Count);
+#endif
         //Add the given scene to list of open scenes
         openScenes.Add(scene);
         //If time is moving forward,
@@ -722,9 +726,14 @@ public class GameManager : MonoBehaviour
             }
         }
         //Update the list of game objects to save
+
+#if UNITY_EDITOR
         Logger.log(this, "sceneUnloaded: " + scene.name + ", old object count: " + gameObjects.Count);
+#endif
         refreshGameObjects();
+#if UNITY_EDITOR
         Logger.log(this, "sceneUnloaded: " + scene.name + ", new object count: " + gameObjects.Count);
+#endif
         //Remove the scene from the list of open scenes
         openScenes.Remove(scene);
     }
@@ -769,7 +778,9 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
+#if UNITY_EDITOR
         Logger.log(this, "LOFS: Scene " + scene.name + ": last state seen: " + lastStateSeen);
+#endif
         //If the scene was never seen,
         if (lastStateSeen < 0)
         {
@@ -811,7 +822,9 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+#if UNITY_EDITOR
         Logger.log(this, "LOFS: Scene " + scene.name + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
+#endif
     }
 
     private SceneLoader getSceneLoaderByName(string sceneName)

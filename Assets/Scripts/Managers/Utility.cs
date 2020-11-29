@@ -437,11 +437,7 @@ public static class Utility
     public static RaycastAnswer RaycastAll(Vector2 origin, Vector2 direction, float distance)
     {
         int count = Physics2D.RaycastNonAlloc(origin, direction, rch2dsNonAlloc, distance);
-        if (count > maxReturnedList)
-        {
-            maxReturnedList = count;
-            Logger.log(Managers.Game, "Utility.RaycastAll: max list count: " + maxReturnedList);
-        }
+        checkMaxReturnedList("Utility.RaycastAll", count);
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
     public static int Cast(Collider2D coll2d, Vector2 direction, RaycastHit2D[] results = null, float distance = 0, bool ignoreSiblingColliders = true)
@@ -457,11 +453,7 @@ public static class Utility
         }
         int count = 0;
         count = coll2d.Cast(direction, results, distance, ignoreSiblingColliders);
-        if (count > maxReturnedList)
-        {
-            maxReturnedList = count;
-            Logger.log(Managers.Game, "Utility.Cast: max list count: " + maxReturnedList);
-        }
+        checkMaxReturnedList("Utility.Cast", count);
         return count;
     }
     /// <summary>
@@ -475,13 +467,8 @@ public static class Utility
     /// <returns></returns>
     public static RaycastAnswer CastAnswer(this Collider2D coll2d, Vector2 direction, float distance = 0, bool ignoreSiblingColliders = true)
     {
-        int count = 0;
-        count = coll2d.Cast(direction, rch2dsNonAlloc, distance, ignoreSiblingColliders);
-        if (count > maxReturnedList)
-        {
-            maxReturnedList = count;
-            Logger.log(Managers.Game, "Utility.CastAnswer: max list count: " + maxReturnedList);
-        }
+        int count = coll2d.Cast(direction, rch2dsNonAlloc, distance, ignoreSiblingColliders);
+        checkMaxReturnedList("Utility.CastAnswer", count);
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
     /// <summary>
@@ -497,11 +484,7 @@ public static class Utility
         RaycastHit2D[] results = rch2dsNonAlloc;
         int count = 0;
         count = coll2d.Cast(direction, results, distance, ignoreSiblingColliders);
-        if (count > maxReturnedList)
-        {
-            maxReturnedList = count;
-            Logger.log(Managers.Game, "Utility.CastCountSolid: max list count: " + maxReturnedList);
-        }
+        checkMaxReturnedList("Utility.CastCountSolid", count);
         int solidCount = 0;
         for (int i = 0; i < count; i++)
         {
@@ -511,6 +494,20 @@ public static class Utility
             }
         }
         return solidCount;
+    }
+
+    private static void checkMaxReturnedList(string methodName, int count)
+    {
+#if UNITY_EDITOR
+        if (count > maxReturnedList)
+        {
+            maxReturnedList = count;
+            Logger.log(
+                Managers.Game,
+                methodName + ": max list count: " + maxReturnedList
+                );
+        }
+#endif
     }
 
     public static void copyTransform(Transform fromTransform, ref GameObject toObject)

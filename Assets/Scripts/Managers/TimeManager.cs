@@ -111,7 +111,9 @@ public class TimeManager : SavableMonoBehaviour
                 //Display to developer why you can't unpause
                 string msg = "Can't unpause: ";
                 pausers.ForEach(mb => msg += mb.GetType());
+#if UNITY_EDITOR
                 Logger.log(this, msg);
+#endif
             }
 #endif
         }
