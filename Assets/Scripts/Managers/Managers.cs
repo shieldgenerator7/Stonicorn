@@ -87,6 +87,22 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Rewind Manager
+    //Used to save and load gamestates,
+    //Allowing for time to be rewound
+    private RewindManager rewindManager;
+    public static RewindManager Rewind
+    {
+        get
+        {
+            if (instance.rewindManager == null)
+            {
+                instance.rewindManager = FindObjectOfType<RewindManager>();
+            }
+            return instance.rewindManager;
+        }
+    }
+
     //Physics 2D Surrogate
     //Used to enable triggers while main physics is disabled during time rewind
     private Physics2DSurrogate physics2DSurrogate;
