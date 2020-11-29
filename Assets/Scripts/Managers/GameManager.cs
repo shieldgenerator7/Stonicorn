@@ -373,10 +373,9 @@ public class GameManager : MonoBehaviour
         }
         //Add an extension to the filename
         fileName += ".txt";
-        //Save memories
+        //Save game states and memories
         Managers.Rewind.saveToFile(fileName);
-        //Save scene cache
-        //ES3.Save<List<SceneLoader>>("scenes", sceneLoaders, fileName);
+        Managers.Object.saveToFile(fileName);
         //Save settings
         Managers.Settings.saveSettings();
         //Save file settings
@@ -402,10 +401,9 @@ public class GameManager : MonoBehaviour
             string fileName = "merky";
             //Add an extension to the filename
             fileName += ".txt";
-            //Load objects
+            //Load game states and memories
             Managers.Rewind.loadFromFile(fileName);
-            //Scenes
-            //List<SceneLoader> rsls = ES3.Load<List<SceneLoader>>("scenes", fileName);
+            Managers.Object.loadFromFile(fileName);
             //Load settings
             Managers.Settings.loadSettings();
             //Load file settings
