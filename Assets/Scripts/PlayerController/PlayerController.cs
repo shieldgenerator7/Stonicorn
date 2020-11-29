@@ -809,7 +809,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="damageToSelf"></param>
     /// <param name="damageToOther"></param>
     /// <param name="contactPoint"></param>
-    private void forceRewindHazard(float damageToSelf, Vector2 contactPoint)
+    private void forceRewindHazard(int damageToSelf, Vector2 contactPoint)
     {
         if (damageToSelf > 0)
         {
@@ -818,7 +818,7 @@ public class PlayerController : MonoBehaviour
             //Increment damaged counter
             GameStatistics.addOne("Damaged");
             //Start hit timer
-            Timer.startTimer(hitStunDuration, hitTimerUp);
+            Timer.startTimer(hitStunDuration, ()=>hitTimerUp(damageToSelf));
             //Highlight impact area
             Managers.Effect.showPointEffect("effect_contact", contactPoint);
             //Pause game
@@ -826,7 +826,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void hitTimerUp()
+    private void hitTimerUp(int damageToSelf)
     {
         //Mark not hit
         hazardHit = false;
@@ -835,7 +835,7 @@ public class PlayerController : MonoBehaviour
         //Remove highlight
         Managers.Effect.showPointEffect("effect_contact", Vector2.zero, false);
         //Rewind
-        Managers.Game.Rewind(2);
+        Managers.Game.Rewind(damageToSelf);
     }
 
     /// <summary>
