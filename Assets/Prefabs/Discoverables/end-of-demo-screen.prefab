@@ -1,50 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8733178177272199822
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8733178177272199823}
-  - component: {fileID: 8733178177272199792}
-  m_Layer: 0
-  m_Name: Game Reset Script
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8733178177272199823
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8733178177272199822}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8733178178621473299}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8733178177272199792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8733178177272199822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: 51ba9c2896f8b604eaf141c38656bcd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countDownTime: 10
 --- !u!1 &8733178177893910355
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +67,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8733178177893910355}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: fb142b27c2edc524888a745711b29515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -120,7 +74,7 @@ MonoBehaviour:
   triggerEnterAction: 0
   triggerExitAction: 1
   objectsToActivate:
-  - {fileID: 8733178177272199822}
+  - {fileID: 0}
   forPlayerOnly: 1
   zoomLevelEnterAction: 3
   zoomLevelExitAction: 3
@@ -169,7 +123,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8733178177893910356}
-  - {fileID: 8733178177272199823}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -37.408}
@@ -187,6 +140,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -198,6 +153,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -230,7 +186,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8733178178621473297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: f6388b631329efa42a202632d94a8232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -246,15 +201,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8733178178621473297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: eb4464456f71e204bb2885c825805fb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 3}
-  starAmount: 50
-  starSpawnDuration: 50
-  abilityIndicatorName: 
-  used: 0
   url: http://www.stonicorn.com
 --- !u!61 &8733178178621473301
 BoxCollider2D:
