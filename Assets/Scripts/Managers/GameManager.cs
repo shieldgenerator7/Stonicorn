@@ -114,29 +114,36 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        if (Managers.Rewind.Rewinding)
+        if (MenuManager.Open)
         {
-            Managers.Rewind.processRewind();
-            Managers.Physics2DSurrogate.processFrame();
+            //do nothing
         }
         else
         {
-            //Check all the scene loaders
-            //to see if their scene needs loaded or unloaded
-            //(done this way because standard trigger methods in Unity
-            //don't always play nice with teleporting characters)
-            checkScenes();
-            //Camera screen dimensions
-            Managers.Camera.checkScreenDimensions();
-            //NPC Dialogue
-            if (Managers.NPC.enabled)
+            if (Managers.Rewind.Rewinding)
             {
-                Managers.NPC.processDialogue();
+                Managers.Rewind.processRewind();
+                Managers.Physics2DSurrogate.processFrame();
             }
-            //Music Fade
-            Managers.Music.processFade();
-            //Visual Effects
-            Managers.Effect.processEffects();
+            else
+            {
+                //Check all the scene loaders
+                //to see if their scene needs loaded or unloaded
+                //(done this way because standard trigger methods in Unity
+                //don't always play nice with teleporting characters)
+                checkScenes();
+                //Camera screen dimensions
+                Managers.Camera.checkScreenDimensions();
+                //NPC Dialogue
+                if (Managers.NPC.enabled)
+                {
+                    Managers.NPC.processDialogue();
+                }
+                //Music Fade
+                Managers.Music.processFade();
+                //Visual Effects
+                Managers.Effect.processEffects();
+            }
         }
         Managers.Gesture.processGestures();
         Managers.Camera.updateCameraPosition();
@@ -202,6 +209,10 @@ public class GameManager : MonoBehaviour
         else if (scene.name == "MainMenu")
         {
             Managers.Menu.opened();
+            if (Managers.Rewind.Rewinding)
+            {
+                Managers.Effect.showRewindEffect(false);
+            }
         }
         //Update the list of objects with state to save
 #if UNITY_EDITOR
@@ -238,6 +249,13 @@ public class GameManager : MonoBehaviour
     }
     void sceneUnloaded(Scene scene)
     {
+        if (scene.name == "MainMenu")
+        {
+            if (Managers.Rewind.Rewinding)
+            {
+                Managers.Effect.showRewindEffect(true);
+            }
+        }
         //Remove the given scene's objects from the forgotten objects list
         Managers.Object.ForgottenObjects.RemoveAll(
             fgo => fgo == null || fgo.scene == scene
