@@ -113,14 +113,33 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Check all the scene loaders
-        //to see if their scene needs loaded or unloaded
-        //(done this way because standard trigger methods in Unity
-        //don't always play nice with teleporting characters)
-        if (!Managers.Rewind.Rewinding)
+
+        if (Managers.Rewind.Rewinding)
         {
-            checkScenes();
+            Managers.Rewind.processRewind();
+            Managers.Physics2DSurrogate.processFrame();
         }
+        else
+        {
+            //Check all the scene loaders
+            //to see if their scene needs loaded or unloaded
+            //(done this way because standard trigger methods in Unity
+            //don't always play nice with teleporting characters)
+            checkScenes();
+            //Camera screen dimensions
+            Managers.Camera.checkScreenDimensions();
+            //NPC Dialogue
+            if (Managers.NPC.enabled)
+            {
+                Managers.NPC.processDialogue();
+            }
+            //Music Fade
+            Managers.Music.processFade();
+            //Visual Effects
+            Managers.Effect.processEffects();
+        }
+        Managers.Gesture.processGestures();
+        Managers.Camera.updateCameraPosition();
         //If in demo mode,
         if (GameDemoLength > 0)
         {
@@ -179,6 +198,10 @@ public class GameManager : MonoBehaviour
         if (scene.name == "PlayerScene")
         {
             playerSceneLoaded = true;
+        }
+        else if (scene.name == "MainMenu")
+        {
+            Managers.Menu.opened();
         }
         //Update the list of objects with state to save
 #if UNITY_EDITOR

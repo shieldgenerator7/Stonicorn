@@ -24,7 +24,7 @@ public class EffectManager : MonoBehaviour
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
     private Dictionary<GameObject, GameObject> forceWaveShadows = new Dictionary<GameObject, GameObject>();
 
-    void Update()
+    public void processEffects()
     {
         for (int i = 0; i < teleportStarList.Count; i++)
         {

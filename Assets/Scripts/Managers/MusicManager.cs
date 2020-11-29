@@ -80,7 +80,7 @@ public class MusicManager : MonoBehaviour
     public float rewindSongSpeed = -1.5f;
 
     // Update is called once per frame
-    void Update()
+    public void processFade()
     {
         if (fadePercent < 1)
         {

@@ -42,7 +42,7 @@ public class GestureManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void processGestures()
     {
         //
         //Input Device Scouting

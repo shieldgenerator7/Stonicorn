@@ -23,7 +23,7 @@ public class NPCManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void processDialogue()
     {
         Camera cam = Camera.main;
         CameraController camCtr = Managers.Camera;

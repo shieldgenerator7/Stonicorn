@@ -117,4 +117,23 @@ public class Timer : MonoBehaviour
         timer.setTimer(seconds);
         return timer;
     }
+
+    public static Timer startTimerRecyclable(float seconds = 1, OnTimeFinished timeFinished = null, GameObject go = null)
+    {
+        if (go == null)
+        {
+            go = FindObjectOfType<GameManager>().gameObject;
+        }
+        Timer timer = go.GetComponent<Timer>();
+        if (timer == null)
+        {
+            timer = go.AddComponent<Timer>();
+        }
+        timer.destroyOnFinish = false;
+        timer.useUnscaledTime = true;
+        timer.onTimeFinished -= timeFinished;
+        timer.onTimeFinished += timeFinished;
+        timer.setTimer(seconds);
+        return timer;
+    }
 }

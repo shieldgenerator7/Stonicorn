@@ -194,12 +194,6 @@ public class PlayerController : MonoBehaviour
         updateGroundTrigger();
     }
 
-    private void Update()
-    {
-        //Check to see if movement pausing has expired
-        checkMovementPause(false);
-    }
-
     /// <summary>
     /// Called once per physics update
     /// </summary>
@@ -280,6 +274,11 @@ public class PlayerController : MonoBehaviour
                     Managers.Time.setPause(this, true);
                 }
                 pauseMovementStartTime = Time.unscaledTime;
+                Timer.startTimerRecyclable(
+                    pauseMovementDuration,
+                    endMovementPause,
+                    gameObject
+                    );
             }
             else
             {
@@ -289,6 +288,12 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    private void endMovementPause()
+    {
+        MovementPaused = false;
+    }
+
     /// <summary>
     /// Turns movement pausing on or off, if conditions are right
     /// </summary>
@@ -818,7 +823,7 @@ public class PlayerController : MonoBehaviour
             //Increment damaged counter
             GameStatistics.addOne("Damaged");
             //Start hit timer
-            Timer.startTimer(hitStunDuration, ()=>hitTimerUp(damageToSelf));
+            Timer.startTimer(hitStunDuration, () => hitTimerUp(damageToSelf));
             //Highlight impact area
             Managers.Effect.showPointEffect("effect_contact", contactPoint);
             //Pause game

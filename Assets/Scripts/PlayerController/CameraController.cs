@@ -204,7 +204,7 @@ public class CameraController : MonoBehaviour
         refocus();
     }
 
-    void Update()
+    public void checkScreenDimensions()
     {
         if (prevScreenHeight != Screen.height || prevScreenWidth != Screen.width)
         {
@@ -215,7 +215,7 @@ public class CameraController : MonoBehaviour
     }
 
     // Update is called once per frame, after all other objects have moved that frame
-    void LateUpdate()
+    public void updateCameraPosition()
     {
         if (true)//!Managers.Gesture.cameraDragInProgress)
         {

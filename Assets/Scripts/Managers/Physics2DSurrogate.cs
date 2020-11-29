@@ -7,7 +7,7 @@ public class Physics2DSurrogate : MonoBehaviour
 {
     private List<GravityZone> gravityZones;
     private MusicZone[] musicZones;
- 
+
     private void OnEnable()
     {
         Physics2D.simulationMode = SimulationMode2D.Script;//turn off simulation
@@ -31,7 +31,8 @@ public class Physics2DSurrogate : MonoBehaviour
     {
         refreshZones();
     }
-    void refreshZones() { 
+    void refreshZones()
+    {
         //Gravity
         gravityZones = new List<GravityZone>();
         foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
@@ -45,14 +46,14 @@ public class Physics2DSurrogate : MonoBehaviour
         musicZones = FindObjectsOfType<MusicZone>();
     }
 
-    private void Update()
+    public void processFrame()
     {
         //Camera
         CameraController cam = Managers.Camera;
         cam.refocus();
         Vector2 camPos = cam.transform.position;
         //Gravity
-        foreach(GravityZone gz in gravityZones)
+        foreach (GravityZone gz in gravityZones)
         {
             if (gz.GetComponent<Collider2D>().OverlapPoint(camPos))
             {

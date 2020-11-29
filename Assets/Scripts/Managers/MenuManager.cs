@@ -25,11 +25,6 @@ public class MenuManager : MonoBehaviour
         startFrame.frameCamera();
     }
 
-    private void Update()
-    {
-        Managers.Camera.Up = Managers.Player.transform.up;
-    }
-
     public void processTapGesture(Vector3 pos)
     {
         foreach (MenuFrame mf in frames)
@@ -54,6 +49,12 @@ public class MenuManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void opened()
+    {
+        //Orient camera to menu
+        Managers.Camera.Up = Managers.Player.transform.up;
     }
 
     public static bool Open

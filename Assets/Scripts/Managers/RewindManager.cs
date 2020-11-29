@@ -44,18 +44,15 @@ public class RewindManager : MonoBehaviour
         Load(chosenId);
     }
 
-    void Update()
+    public void processRewind()
     {
-        //If the time is rewinding,
-        if (Rewinding)
+        //Assuming it's rewinding,
+        //If it's time to rewind the next step,
+        if (Time.unscaledTime > lastRewindTime + rewindDelay)
         {
-            //And it's time to rewind the next step,
-            if (Time.unscaledTime > lastRewindTime + rewindDelay)
-            {
-                //Rewind to the next previous game state
-                lastRewindTime = Time.unscaledTime;
-                Load(chosenId - 1);
-            }
+            //Rewind to the next previous game state
+            lastRewindTime = Time.unscaledTime;
+            Load(chosenId - 1);
         }
     }
 
