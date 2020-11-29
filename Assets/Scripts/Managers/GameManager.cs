@@ -90,6 +90,10 @@ public class GameManager : MonoBehaviour
         {
             openScenes.Add(SceneManager.GetSceneAt(i));
         }
+        if (openScenes.Find(scene => scene.name == "PlayerScene") != null)
+        {
+            playerSceneLoaded = true;
+        }
 #endif
         //Check to see which levels need loaded
         checkScenes();
