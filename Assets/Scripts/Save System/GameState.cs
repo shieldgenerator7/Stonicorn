@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameState
 {
@@ -14,14 +15,7 @@ public class GameState
         {
             if (merky == null)
             {
-                foreach (ObjectState os in states)
-                {
-                    if (os.objectName == "merky")
-                    {
-                        merky = os;
-                        break;
-                    }
-                }
+                merky = states.Find(os => os.objectName == "merky");
             }
             return merky;
         }
@@ -49,9 +43,9 @@ public class GameState
                         representation.transform.localScale *= 2f;
                     }
                 }
-                catch(System.NullReferenceException nre)
+                catch (System.NullReferenceException nre)
                 {
-                    Debug.LogError("GameState ("+id+") does not have a Merky! merky: " + Merky);
+                    Debug.LogError("GameState (" + id + ") does not have a Merky! merky: " + Merky);
                 }
             }
             return representation;
@@ -81,20 +75,17 @@ public class GameState
     //Loading
     public void load()
     {
-        foreach (ObjectState os in states)
-        {
-            os.loadState();
-        }
+        states.ForEach(os => os.loadState());
     }
     public bool loadObject(GameObject go)
     {
-        foreach (ObjectState os in states)
+        ObjectState state = states.Find(
+            os => os.sceneName == go.scene.name && os.objectName == go.name
+            );
+        if (state != null)
         {
-            if (os.sceneName == go.scene.name && os.objectName == go.name)
-            {
-                os.loadState();
-                return true;
-            }
+            state.loadState();
+            return true;
         }
         return false;
     }
@@ -106,14 +97,8 @@ public class GameState
     //Gets the list of the game objects that have object states in this game state
     //
     public List<GameObject> getGameObjects()
-    {
-        List<GameObject> objects = new List<GameObject>();
-        foreach (ObjectState os in states)
-        {
-            objects.Add(os.getGameObject());
-        }
-        return objects;
-    }
+        => states.ConvertAll(os => os.getGameObject());
+
     //Returns true IFF the given GameObject has an ObjectState in this GameState
     public bool hasGameObject(GameObject go)
     {
@@ -121,14 +106,9 @@ public class GameState
         {
             throw new System.ArgumentNullException("GameState.hasGameObject() cannot accept null for go! go: " + go);
         }
-        foreach (ObjectState os in states)
-        {
-            if (os.objectName == go.name && os.sceneName == go.scene.name)
-            {
-                return true;
-            }
-        }
-        return false;
+        return states.Any(
+            os => os.objectName == go.name && os.sceneName == go.scene.name
+            );
     }
     //Representation (check point ghost)
     public void showRepresentation(int mostRecentId)
