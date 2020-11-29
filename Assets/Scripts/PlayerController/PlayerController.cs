@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour
     // Movement Pausing Variables
     //
     private bool shouldPauseMovement = false;//whether or not to pause movement, true after teleport
+    private bool hazardHit = false;
 
     //
     // Runtime Constants
@@ -812,6 +813,8 @@ public class PlayerController : MonoBehaviour
     {
         if (damageToSelf > 0)
         {
+            //Mark hit
+            hazardHit = true;
             //Increment damaged counter
             GameStatistics.addOne("Damaged");
             //Start hit timer
@@ -825,6 +828,8 @@ public class PlayerController : MonoBehaviour
 
     private void hitTimerUp()
     {
+        //Mark not hit
+        hazardHit = false;
         //Unpause game
         Managers.Time.setPause(this, false);
         //Remove highlight
@@ -857,7 +862,7 @@ public class PlayerController : MonoBehaviour
     public void processTapGesture(Vector3 tapPos)
     {
         //If the game is paused because Merky is hit,
-        if (Managers.Time.Paused && !Managers.Game.rewindInterruptableByPlayer)
+        if (hazardHit)
         {
             //Don't process input
             return;
