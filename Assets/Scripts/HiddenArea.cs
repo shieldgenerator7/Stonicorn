@@ -8,40 +8,16 @@ public class HiddenArea : MemoryMonoBehaviour
     //remember whether they've been found or not,
     //and not their triggers
 
-    public bool discovered = false;
-
     //2016-11-26: called when this HiddenArea has just been discovered now
-    public void nowDiscovered()
+    protected override void nowDiscovered()
     {
-        discovered = true;
-        Managers.Object.saveMemory(this);
         Fader fader = gameObject.AddComponent<Fader>();
         fader.ignorePause = true;
     }
 
     //2016-11-26: called when this HiddenArea had been discovered in a previous session
-    public void previouslyDiscovered()
+    protected override void previouslyDiscovered()
     {
         Destroy(gameObject);
-    }
-
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (!coll.isTrigger && coll.gameObject.isPlayer())
-        {
-            nowDiscovered();
-        }
-    }
-
-    public override MemoryObject getMemoryObject()
-    {
-        return new MemoryObject(this, discovered);
-    }
-    public override void acceptMemoryObject(MemoryObject memObj)
-    {
-        if (memObj.found)
-        {
-            previouslyDiscovered();
-        }
     }
 }

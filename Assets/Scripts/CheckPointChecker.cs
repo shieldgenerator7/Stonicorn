@@ -8,7 +8,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
 
     public static CheckPointChecker current = null;//the current checkpoint
 
-    public bool activated = false;
     public Sprite ghostSprite;
     private GameObject ghost;
     private CheckPointGhostMover cpGhostMover;
@@ -60,18 +59,19 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         if (coll.isPlayerSolid())
         {
+            Discovered = true;
             trigger();
         }
     }
     public void activate()
     {
         //Don't activate if already activated
-        if (activated)
+        if (Discovered)
         {
             return;
         }
         //Not already activated, go ahead and activate
-        activated = true;
+        Discovered = true;
         Managers.Object.saveMemory(this);
         Managers.saveCheckPoint(this);
         //Get the list of active checkpoints
@@ -89,14 +89,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
         foreach (Fader f in GetComponentsInChildren<Fader>())
         {
             f.enabled = true;
-        }
-        //Activate the other checkpoints
-        foreach (CheckPointChecker cpc in activeCPCs)
-        {
-            if (!cpc.activated)
-            {
-                cpc.activate();
-            }
         }
     }
     public void trigger()
@@ -256,7 +248,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     */
     public void showRelativeTo(GameObject currentCheckpoint)
     {
-        if (activated)
+        if (Discovered)
         {
             cpGhostMover.showRelativeTo(currentCheckpoint);
         }
@@ -288,17 +280,14 @@ public class CheckPointChecker : MemoryMonoBehaviour
             }
         }
     }
-
-    public override MemoryObject getMemoryObject()
+    protected override void nowDiscovered()
     {
-        return new MemoryObject(this, activated);
+        //Don't do anything.
+        //Everything that would be here is in trigger() and activate() instead.
     }
-    public override void acceptMemoryObject(MemoryObject memObj)
+    protected override void previouslyDiscovered()
     {
-        if (memObj.found)
-        {
-            activate();
-        }
+        activate();
     }
 }
 

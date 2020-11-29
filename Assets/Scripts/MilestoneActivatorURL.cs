@@ -9,7 +9,7 @@ public class MilestoneActivatorURL : MilestoneActivator
     {
         Application.OpenURL(url);
     }
-    public override void acceptMemoryObject(MemoryObject memObj)
+    protected override void previouslyDiscovered()
     {
         //don't do anything
         //this way it won't activate the link when opening the game

@@ -4,22 +4,11 @@ using UnityEngine;
 
 public class ZoomOutTrigger : MemoryMonoBehaviour
 {
-
     //Settings
     public CameraController.CameraScalePoints scalePoint = CameraController.CameraScalePoints.DEFAULT;
     public bool triggersOnce = true;//true if it only triggers once
-    //State
-    public bool triggered = false;//whether or this has zoomed out the camera
 
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.isPlayer())
-        {
-            trigger();
-        }
-    }
-
-    public virtual void trigger()
+    protected override void nowDiscovered()
     {
         CameraController camCtr = Managers.Camera;
         camCtr.ZoomLevel = camCtr.toZoomLevel(scalePoint);//zoom out
@@ -29,26 +18,15 @@ public class ZoomOutTrigger : MemoryMonoBehaviour
         }
         if (triggersOnce)
         {
-            triggered = true;
-            Managers.Object.saveMemory(this);
             Destroy(gameObject);
         }
     }
 
-    public override MemoryObject getMemoryObject()
+    protected override void previouslyDiscovered()
     {
-        return new MemoryObject(this, triggered);
-    }
-    public override void acceptMemoryObject(MemoryObject memObj)
-    {
-        if (memObj.found)
+        if (triggersOnce)
         {
-            if (triggersOnce)
-            {
-                triggered = true;
-                Managers.Object.saveMemory(this);
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
         }
     }
 }

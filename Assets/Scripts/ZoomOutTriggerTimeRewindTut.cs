@@ -6,9 +6,9 @@ public class ZoomOutTriggerTimeRewindTut : ZoomOutTrigger {
 
     public Vector2 targetPoint;//the point to determine closest past merky
 
-    public override void trigger()
+    protected override void nowDiscovered()
     {
-        base.trigger();
+        base.nowDiscovered();
         //Highlight past merky closest to the targetPoint
         GameObject targetObject = Managers.Game.getClosestPlayerGhost(targetPoint);
         Managers.Effect.highlightTapArea(targetObject.transform.position);

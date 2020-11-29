@@ -27,7 +27,7 @@ public class TeleportShortcut : MonoBehaviour
             {
                 if (ma != null)
                 {
-                    ma.activate(false);
+                    ma.Discovered = true;
                 }
             }
         }

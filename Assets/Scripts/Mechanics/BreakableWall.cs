@@ -92,7 +92,7 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
                     {
                         if (ha != null && !ReferenceEquals(ha, null))
                         {
-                            ha.nowDiscovered();
+                            ha.Discovered = true;
                         }
                     }
                 }

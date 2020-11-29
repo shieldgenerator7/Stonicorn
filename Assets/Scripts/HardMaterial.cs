@@ -215,7 +215,7 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
                 //2017-06-08: copied from CrackedGroundChecker.setCracked()
                 if (ha != null && !ReferenceEquals(ha, null))//2016-11-26: reference equal null test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
                 {
-                    ha.nowDiscovered();
+                    ha.Discovered = true;
                 }
             }
             if (crackedPrefab != null || disappearsIfNoBrokenPrefab)

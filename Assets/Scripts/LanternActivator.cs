@@ -2,50 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LanternActivator : MemoryMonoBehaviour {
+public class LanternActivator : MemoryMonoBehaviour
+{
 
     /// <summary>
     /// The sound that plays when this lantern is lit.
     /// </summary>
     public AudioClip lightSound;
-    public bool lit = false;
 
-    void OnTriggerEnter2D(Collider2D coll)
+    protected override void nowDiscovered()
     {
-        if (coll.gameObject.isPlayer())
-        {
-            lightTorch();
-        }
-    }
-    
-    /// <summary>
-    /// Lights the torch
-    /// </summary>
-    /// <param name="firstTime">True if it has just been activated, false if being reactivated after loading</param>
-    void lightTorch(bool firstTime = true)
-    {
-        lit = true;
         foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
         {
             ps.Play();
         }
-        if (firstTime)
-        {
-            Managers.Sound.playSound(lightSound, transform.position);
-        }
-        Managers.Object.saveMemory(this);
+        Managers.Sound.playSound(lightSound, transform.position);
         Destroy(this);//delete this script
     }
 
-    public override MemoryObject getMemoryObject()
+    protected override void previouslyDiscovered()
     {
-        return new MemoryObject(this, lit);
-    }
-    public override void acceptMemoryObject(MemoryObject memObj)
-    {
-        if (memObj.found)
+        foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
         {
-            lightTorch(false);
+            ps.Play();
         }
+        Destroy(this);//delete this script
     }
 }

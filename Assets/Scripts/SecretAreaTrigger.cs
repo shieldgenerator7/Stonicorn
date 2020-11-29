@@ -23,7 +23,7 @@ public class SecretAreaTrigger : MonoBehaviour
             {
                 HiddenArea ha;
                 ha = secretHider.GetComponent<HiddenArea>();
-                ha.nowDiscovered();
+                ha.Discovered = true;
             }
         }
     }
