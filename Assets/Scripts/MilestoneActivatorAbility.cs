@@ -24,4 +24,13 @@ public class MilestoneActivatorAbility : MilestoneActivator
             fader.enabled = true;
         }
     }
+
+    protected override void previouslyDiscovered()
+    {
+        Fader fader = GetComponent<Fader>();
+        if (fader)
+        {
+            fader.enabled = true;
+        }
+    }
 }
