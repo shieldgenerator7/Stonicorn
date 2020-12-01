@@ -17,6 +17,7 @@ public class WallClimbAbility : PlayerAbility
 
     private bool groundedLeft = false;
     private bool groundedRight = false;
+    private bool groundedCeiling = false;
 
     private float magnetStartTime = -1;
     public bool Magneted
@@ -27,12 +28,12 @@ public class WallClimbAbility : PlayerAbility
             if (value)
             {
                 magnetStartTime = Managers.Time.Time;
-                gravity.gravityScale = 1 - wallMagnetAntiGravity;
+                gravityAccepter.gravityScale = 1 - wallMagnetAntiGravity;
             }
             else
             {
                 magnetStartTime = -1;
-                gravity.gravityScale = 1;
+                gravityAccepter.gravityScale = 1;
             }
             onMagnetChanged?.Invoke(value);
         }
@@ -40,28 +41,36 @@ public class WallClimbAbility : PlayerAbility
     public delegate void OnMagnetChanged(bool on);
     public OnMagnetChanged onMagnetChanged;
 
-    private GravityAccepter gravity;
+    private GravityAccepter gravityAccepter;
 
     protected override void init()
     {
         base.init();
-        playerController.Ground.isGroundedCheck += isGroundedWall;
+        playerController.Ground.isGroundedCheck += isGroundedAbility;
         playerController.onTeleport += processTeleport;
-        gravity = GetComponent<GravityAccepter>();
+        gravityAccepter = playerController.Gravity;
         onMagnetChanged -= updateClimbSpikeEffect;
         onMagnetChanged += updateClimbSpikeEffect;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.Ground.isGroundedCheck -= isGroundedWall;
+        playerController.Ground.isGroundedCheck -= isGroundedAbility;
         playerController.onTeleport -= processTeleport;
+    }
+
+    bool isGroundedAbility()
+    {
+        //Make sure to check all possible directions
+        bool grounded = isGroundedWall();
+        grounded = (FeatureLevel >= 1 && isGroundedCeiling()) || grounded;
+        return grounded;
     }
 
     bool isGroundedWall()
     {
         groundedLeft = groundedRight = false;
-        Vector2 gravity = playerController.Gravity.Gravity;
+        Vector2 gravity = gravityAccepter.Gravity;
         //Test left side
         groundedLeft = playerController.Ground.isGroundedInDirection(
             -gravity.PerpendicularLeft()
@@ -72,6 +81,14 @@ public class WallClimbAbility : PlayerAbility
             );
         return groundedLeft || groundedRight;
     }
+    bool isGroundedCeiling()
+    {
+        groundedCeiling = false;
+        groundedCeiling = playerController.Ground.isGroundedInDirection(
+            -gravityAccepter.Gravity
+            );
+        return groundedCeiling;
+    }
 
     /// <summary>
     /// Should be called after isGroundedWall() gets called
@@ -80,7 +97,7 @@ public class WallClimbAbility : PlayerAbility
     /// <param name="newPos"></param>
     void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        if (groundedLeft || groundedRight)
+        if (groundedLeft || groundedRight || groundedCeiling)
         {
             //plantSticky(newPos);
             rb2d.velocity = Vector2.zero;
@@ -95,13 +112,13 @@ public class WallClimbAbility : PlayerAbility
             if (Managers.Time.Time <= magnetStartTime + magnetDuration
                 && !playerController.Ground.GroundedNormal)
             {
-                if (groundedLeft || groundedRight)
+                if (groundedLeft || groundedRight || groundedCeiling)
                 {
                     //Update grounding variables
-                    isGroundedWall();
+                    isGroundedAbility();
                     //If no longer grounded
                 }
-                if (!groundedLeft && !groundedRight)
+                if (!groundedLeft && !groundedRight && !groundedCeiling)
                 {
                     //Stop magnet
                     Magneted = false;
@@ -120,7 +137,7 @@ public class WallClimbAbility : PlayerAbility
         if (Active)
         {
             //Updated grounded variables
-            isGroundedWall();
+            isGroundedAbility();
             //If no longer grounded
             if (!groundedLeft && !groundedRight)
             {

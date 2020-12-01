@@ -134,6 +134,9 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
     }
     protected abstract void acceptUpgradeLevel(AbilityUpgradeLevel aul);
 
+    protected int FeatureLevel
+        => upgradeLevels[upgradeLevel].featureLevel;
+
     protected void playEffect(Vector2 playPos)
     {
         playEffect(playPos, true);
