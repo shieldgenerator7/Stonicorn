@@ -31,6 +31,12 @@ public class PowerConduit : SavableMonoBehaviour
     // Use this for initialization
     void Start()
     {
+        initLightEffectRenderer();
+        bc2d = GetComponent<BoxCollider2D>();
+    }
+
+    public void initLightEffectRenderer()
+    {
         if (useAlpha)
         {
             lightEffectRenderer = lightEffect.GetComponent<SpriteRenderer>();
@@ -46,7 +52,6 @@ public class PowerConduit : SavableMonoBehaviour
                 useAlpha = false;
             }
         }
-        bc2d = GetComponent<BoxCollider2D>();
     }
 
     public override SavableObject getSavableObject()
@@ -56,6 +61,10 @@ public class PowerConduit : SavableMonoBehaviour
     public override void acceptSavableObject(SavableObject savObj)
     {
         currentEnergyLevel = (float)savObj.data["currentEnergyLevel"];
+        if (!lightEffectRenderer)
+        {
+            initLightEffectRenderer();
+        }
         adjustEnergy(0);
     }
 
