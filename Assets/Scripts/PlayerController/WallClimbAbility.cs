@@ -10,6 +10,9 @@ public class WallClimbAbility : PlayerAbility
     public float magnetDuration = 2;//how long you stick to the wall after teleporting
     [Header("Necessary Input")]
     public GameObject stickyPadPrefab;
+    public GameObject climbSpikesPrefab;//prefab for the visual effect while wall climbing
+
+    private GameObject climbSpikesEffect;
 
     private bool groundedLeft = false;
     private bool groundedRight = false;
@@ -30,8 +33,11 @@ public class WallClimbAbility : PlayerAbility
                 magnetStartTime = -1;
                 gravity.gravityScale = 1;
             }
+            onMagnetChanged?.Invoke(value);
         }
     }
+    public delegate void OnMagnetChanged(bool on);
+    public OnMagnetChanged onMagnetChanged;
 
     private GravityAccepter gravity;
 
@@ -40,7 +46,9 @@ public class WallClimbAbility : PlayerAbility
         base.init();
         playerController.Ground.isGroundedCheck += isGroundedWall;
         playerController.onTeleport += processTeleport;
-        gravity = GetComponent<GravityAccepter>(); 
+        gravity = GetComponent<GravityAccepter>();
+        onMagnetChanged -= updateClimbSpikeEffect;
+        onMagnetChanged += updateClimbSpikeEffect;
     }
     public override void OnDisable()
     {
@@ -134,6 +142,32 @@ public class WallClimbAbility : PlayerAbility
         if (playerController.Ground.GroundedAbilityPrev)
         {
             base.playTeleportSound(oldPos, newPos);
+        }
+    }
+
+    private void updateClimbSpikeEffect(bool on)
+    {
+        if (on)
+        {
+            if (climbSpikesEffect == null)
+            {
+                climbSpikesEffect = Instantiate(climbSpikesPrefab);
+                climbSpikesEffect.transform.parent = transform;
+                climbSpikesEffect.transform.localPosition = Vector2.zero;
+                climbSpikesEffect.transform.up = transform.up;
+                SpriteRenderer cseSR = climbSpikesEffect.GetComponent<SpriteRenderer>();
+                cseSR.color = new Color(
+                    this.EffectColor.r,
+                    this.EffectColor.g,
+                    this.EffectColor.b,
+                    cseSR.color.a
+                    );
+            }
+            climbSpikesEffect.SetActive(true);
+        }
+        else
+        {
+            climbSpikesEffect?.SetActive(false);
         }
     }
 
