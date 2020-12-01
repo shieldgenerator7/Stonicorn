@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class WallClimbAbility : PlayerAbility
 {//2017-03-17: copied from ForceTeleportAbility
@@ -151,17 +152,17 @@ public class WallClimbAbility : PlayerAbility
         {
             if (climbSpikesEffect == null)
             {
-                climbSpikesEffect = Instantiate(climbSpikesPrefab);
+                climbSpikesEffect = Instantiate(climbSpikesPrefab, transform);
                 climbSpikesEffect.transform.parent = transform;
-                climbSpikesEffect.transform.localPosition = Vector2.zero;
-                climbSpikesEffect.transform.up = transform.up;
-                SpriteRenderer cseSR = climbSpikesEffect.GetComponent<SpriteRenderer>();
-                cseSR.color = new Color(
-                    this.EffectColor.r,
-                    this.EffectColor.g,
-                    this.EffectColor.b,
-                    cseSR.color.a
-                    );
+                climbSpikesEffect.GetComponentsInChildren<SpriteRenderer>().ToList()
+                    .ForEach(cseSR =>
+                        cseSR.color = new Color(
+                            this.EffectColor.r,
+                            this.EffectColor.g,
+                            this.EffectColor.b,
+                            cseSR.color.a
+                            )
+                        );
             }
             climbSpikesEffect.SetActive(true);
         }
