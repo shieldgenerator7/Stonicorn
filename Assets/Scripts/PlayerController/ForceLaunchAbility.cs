@@ -139,7 +139,7 @@ public class ForceLaunchAbility : PlayerAbility
         }
     }
 
-    protected override void Update()
+    void Update()
     {
         if (Managers.Rewind.Rewinding)
         {

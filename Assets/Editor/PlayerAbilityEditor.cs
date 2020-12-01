@@ -11,55 +11,68 @@ public class PlayerAbilityEditor : Editor
     {
         DrawDefaultInspector();
 
+        GUI.enabled = !EditorApplication.isPlaying;
         GUILayout.Box("Fill out Upgrade Level 0 and Level 5,\nthen press the button below.");
-
-        if (GUILayout.Button("Auto-Fillout Upgrade Levels"))
+                if (GUILayout.Button("Auto-Fillout Upgrade Levels (Edit Mode)"))
         {
             PlayerAbility pa = (PlayerAbility)target;
-            if (pa.upgradeLevels.Count == 7)
+            autoFillOutUpgradeLevels(pa);
+        }
+
+        GUI.enabled = EditorApplication.isPlaying;
+        GUILayout.Box("Change the Upgrade Level,\nthen press the button below.");
+        if (GUILayout.Button("Update Upgrade Level (Play Mode)"))
+        {
+            PlayerAbility pa = (PlayerAbility)target;
+            pa.testUpgradeLevel();
+        }
+    }
+
+    private void autoFillOutUpgradeLevels(PlayerAbility pa)
+    {
+        if (pa.upgradeLevels.Count == 7)
+        {
+            //Auto-set feature levels
+            if (!pa.upgradeLevels.Any(aul => aul.featureLevel > 0))
             {
-                //Auto-set feature levels
-                if (!pa.upgradeLevels.Any(aul => aul.featureLevel > 0))
+                AbilityUpgradeLevel aul3 = pa.upgradeLevels[3];
+                aul3.featureLevel = 1;
+                pa.upgradeLevels[3] = aul3;
+                AbilityUpgradeLevel aul6 = pa.upgradeLevels[6];
+                aul6.featureLevel = 2;
+                pa.upgradeLevels[6] = aul6;
+            }
+
+            //Fill out stats
+            AbilityUpgradeLevel aul0 = pa.upgradeLevels[0];
+            AbilityUpgradeLevel aul5 = pa.upgradeLevels[5];
+            int ix = 0;
+            int maxFeatureLevel = 0;
+            for (int i = 0; i < pa.upgradeLevels.Count; i++)
+            {
+                if (i % 3 != 0)
                 {
-                    AbilityUpgradeLevel aul3 = pa.upgradeLevels[3];
-                    aul3.featureLevel = 1;
-                    pa.upgradeLevels[3] = aul3;
-                    AbilityUpgradeLevel aul6 = pa.upgradeLevels[6];
-                    aul6.featureLevel = 2;
-                    pa.upgradeLevels[6] = aul6;
+                    ix++;
                 }
 
-                //Fill out stats
-                AbilityUpgradeLevel aul0 = pa.upgradeLevels[0];
-                AbilityUpgradeLevel aul5 = pa.upgradeLevels[5];
-                int ix = 0;
-                int maxFeatureLevel = 0;
-                for (int i = 0; i < pa.upgradeLevels.Count; i++)
+                AbilityUpgradeLevel aul = pa.upgradeLevels[i];
+
+                if (i != 0 && i != 5)
                 {
-                    if (i % 3 != 0)
-                    {
-                        ix++;
-                    }
-
-                    AbilityUpgradeLevel aul = pa.upgradeLevels[i];
-
-                    if (i != 0 && i != 5)
-                    {
-                        aul.stat1 = (aul5.stat1 - aul0.stat1)
-                            * ix / 4 + aul0.stat1;
-                        aul.stat2 = (aul5.stat2 - aul0.stat2)
-                            * ix / 4 + aul0.stat2;
-                        aul.stat3 = (aul5.stat3 - aul0.stat3)
-                            * ix / 4 + aul0.stat3;
-                        aul.stat4 = (aul5.stat4 - aul0.stat4)
-                            * ix / 4 + aul0.stat4;
-                    }
-
-                    maxFeatureLevel = Mathf.Max(aul.featureLevel, maxFeatureLevel);
-                    aul.featureLevel = maxFeatureLevel;
-
-                    pa.upgradeLevels[i] = aul;
+                    aul.stat1 = (aul5.stat1 - aul0.stat1)
+                        * ix / 4 + aul0.stat1;
+                    aul.stat2 = (aul5.stat2 - aul0.stat2)
+                        * ix / 4 + aul0.stat2;
+                    aul.stat3 = (aul5.stat3 - aul0.stat3)
+                        * ix / 4 + aul0.stat3;
+                    aul.stat4 = (aul5.stat4 - aul0.stat4)
+                        * ix / 4 + aul0.stat4;
                 }
+
+                maxFeatureLevel = Mathf.Max(aul.featureLevel, maxFeatureLevel);
+                aul.featureLevel = maxFeatureLevel;
+
+                pa.upgradeLevels[i] = aul;
             }
         }
     }

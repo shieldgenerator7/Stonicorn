@@ -35,9 +35,8 @@ public class ElectricFieldAbility : PlayerAbility
         }
     }
 
-    protected override void Update()
+    void Update()
     {
-        base.Update();
         if (!Managers.Rewind.Rewinding)
         {
             if (activated)

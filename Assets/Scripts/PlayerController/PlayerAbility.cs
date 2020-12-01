@@ -198,12 +198,11 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
         }
     }
 
-    /// <summary>
-    /// TEST METHOD: remove once done testing!
-    /// </summary>
-    protected virtual void Update()
+#if UNITY_EDITOR
+    public void testUpgradeLevel()
     {
         acceptUpgradeLevel(upgradeLevel);
     }
+#endif
 
 }
