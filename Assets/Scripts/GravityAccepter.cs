@@ -12,7 +12,6 @@ public class GravityAccepter : SavableMonoBehaviour
     [SerializeField]
     private bool saveValues = true;
 
-    [Header("Runtime Vars")]
     public float gravityScale = 1;
     private Vector2 gravityVector;
     public Vector2 Gravity

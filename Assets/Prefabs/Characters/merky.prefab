@@ -221,6 +221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGhostPrefab: {fileID: 1000011127396842, guid: 9606e6e6819228048814d508f93b193e,
     type: 3}
+  ghostFolder: {fileID: 0}
 --- !u!114 &1792176476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,43 +427,43 @@ MonoBehaviour:
   unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
-  - stat1: 0
+  - stat1: 0.5
+    stat2: 1
+    stat3: 0
+    stat4: 0
+    featureLevel: 0
+  - stat1: 0.6
     stat2: 2
     stat3: 0
     stat4: 0
     featureLevel: 0
-  - stat1: 0.25
+  - stat1: 0.7
+    stat2: 3
+    stat3: 0
+    stat4: 0
+    featureLevel: 0
+  - stat1: 0.7
+    stat2: 3
+    stat3: 0
+    stat4: 0
+    featureLevel: 1
+  - stat1: 0.8
     stat2: 4
     stat3: 0
     stat4: 0
-    featureLevel: 0
-  - stat1: 0.5
-    stat2: 6
-    stat3: 0
-    stat4: 0
-    featureLevel: 0
-  - stat1: 0.5
-    stat2: 6
+    featureLevel: 1
+  - stat1: 0.9
+    stat2: 5
     stat3: 0
     stat4: 0
     featureLevel: 1
-  - stat1: 0.75
-    stat2: 8
-    stat3: 0
-    stat4: 0
-    featureLevel: 1
-  - stat1: 1
-    stat2: 10
-    stat3: 0
-    stat4: 0
-    featureLevel: 1
-  - stat1: 1
-    stat2: 10
+  - stat1: 0.9
+    stat2: 5
     stat3: 0
     stat4: 0
     featureLevel: 2
   wallDetectRange: 2
-  wallMagnetSpeed: 1
+  wallMagnetAntiGravity: 0.5
   magnetDuration: 2
   stickyPadPrefab: {fileID: 1097801133131608, guid: 19e25460a3d23d54da8b46ccd9b9225d,
     type: 3}

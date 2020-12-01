@@ -6,7 +6,7 @@ public class WallClimbAbility : PlayerAbility
 
     [Header("Settings")]
     public float wallDetectRange = 1.0f;//how far from the center of the old position it should look for a wall
-    public float wallMagnetSpeed = 0.5f;//how fast Merky should move towards the wall if he's grounded to it
+    public float wallMagnetAntiGravity = 0.1f;//how fast Merky should move towards the wall if he's grounded to it
     public float magnetDuration = 2;//how long you stick to the wall after teleporting
     [Header("Necessary Input")]
     public GameObject stickyPadPrefab;
@@ -14,13 +14,33 @@ public class WallClimbAbility : PlayerAbility
     private bool groundedLeft = false;
     private bool groundedRight = false;
 
-    private float magnetStartTime = -100;
+    private float magnetStartTime = -1;
+    public bool Magneted
+    {
+        get => magnetStartTime >= 0;
+        set
+        {
+            if (value)
+            {
+                magnetStartTime = Managers.Time.Time;
+                gravity.gravityScale = 1 - wallMagnetAntiGravity;
+            }
+            else
+            {
+                magnetStartTime = -1;
+                gravity.gravityScale = 1;
+            }
+        }
+    }
+
+    private GravityAccepter gravity;
 
     protected override void init()
     {
         base.init();
         playerController.Ground.isGroundedCheck += isGroundedWall;
         playerController.onTeleport += processTeleport;
+        gravity = GetComponent<GravityAccepter>(); 
     }
     public override void OnDisable()
     {
@@ -55,41 +75,33 @@ public class WallClimbAbility : PlayerAbility
         {
             //plantSticky(newPos);
             rb2d.velocity = Vector2.zero;
-            magnetStartTime = Managers.Time.Time;
+            Magneted = true;
         }
     }
 
     private void Update()
     {
-        if (Managers.Time.Time <= magnetStartTime + magnetDuration
-            && !playerController.Ground.GroundedNormal)
+        if (Magneted)
         {
-            if (groundedLeft)
+            if (Managers.Time.Time <= magnetStartTime + magnetDuration
+                && !playerController.Ground.GroundedNormal)
             {
-                rb2d.AddForce(
-                    wallMagnetSpeed
-                    * rb2d.mass
-                    * -playerController.Gravity.Gravity.PerpendicularLeft()
-                    );
-            }
-            if (groundedRight)
-            {
-                rb2d.AddForce(
-                    wallMagnetSpeed
-                    * rb2d.mass
-                    * -playerController.Gravity.Gravity.PerpendicularRight()
-                    );
-            }
-            if (groundedLeft || groundedRight)
-            {
-                //Update grounding variables
-                isGroundedWall();
-                //If no longer grounded
+                if (groundedLeft || groundedRight)
+                {
+                    //Update grounding variables
+                    isGroundedWall();
+                    //If no longer grounded
+                }
                 if (!groundedLeft && !groundedRight)
                 {
                     //Stop magnet
-                    magnetStartTime = -100;
+                    Magneted = false;
                 }
+            }
+            else
+            {
+                //Stop magnet
+                Magneted = false;
             }
         }
     }
@@ -104,7 +116,7 @@ public class WallClimbAbility : PlayerAbility
             if (!groundedLeft && !groundedRight)
             {
                 //Stop magnet
-                magnetStartTime = -100;
+                Magneted = false;
             }
         }
     }
@@ -188,7 +200,7 @@ public class WallClimbAbility : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        wallMagnetSpeed = aul.stat1;
+        wallMagnetAntiGravity = aul.stat1;
         magnetDuration = aul.stat2;
     }
 }
