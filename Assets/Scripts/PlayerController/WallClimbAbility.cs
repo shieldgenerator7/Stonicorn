@@ -99,9 +99,15 @@ public class WallClimbAbility : PlayerAbility
     {
         if (groundedLeft || groundedRight || groundedCeiling)
         {
-            //plantSticky(newPos);
+            //Update Stats
+            GameStatistics.addOne("WallClimb");
             rb2d.velocity = Vector2.zero;
             Magneted = true;
+            //Plant Sticky
+            if (FeatureLevel >= 2)
+            {
+                plantSticky(oldPos);
+            }
         }
     }
 
@@ -198,8 +204,6 @@ public class WallClimbAbility : PlayerAbility
     {
         if (playerController.Ground.GroundedAbilityPrev)
         {
-            //Update Stats
-            GameStatistics.addOne("WallClimb");
             //Get the gravity direction
             Vector2 gravity = playerController.Gravity.Gravity;
             if (groundedLeft)
@@ -211,6 +215,11 @@ public class WallClimbAbility : PlayerAbility
             {
                 //Look right
                 plantStickyInDirection(teleportPos, -gravity.PerpendicularRight());
+            }
+            if (groundedCeiling)
+            {
+                //Look up
+                plantStickyInDirection(teleportPos, -gravity);
             }
         }
     }
