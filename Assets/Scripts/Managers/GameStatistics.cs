@@ -30,18 +30,6 @@ public class GameStatistics : SavableMonoBehaviour
         { "RewindPlayer", 0}//how many times the player used the rewind ability
     };
 
-    private static GameStatistics instance;
-
-    // Use this for initialization
-    void Start()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(instance);
-        }
-        instance = this;
-    }
-
     public override SavableObject getSavableObject()
     {
         List<object> statParams = new List<object>();
@@ -62,25 +50,25 @@ public class GameStatistics : SavableMonoBehaviour
         printStats(false);
     }
 
-    public static void addOne(string counterName)
+    public void addOne(string counterName)
     {
         checkStatName(counterName);
-        instance.stats[counterName]++;
+        stats[counterName]++;
     }
 
-    public static int get(string counterName)
+    public int get(string counterName)
     {
         checkStatName(counterName);
-        return instance.stats[counterName];
+        return stats[counterName];
     }
 
     /// <summary>
     /// Throws an error if the given stat name isn't being tracked
     /// </summary>
     /// <param name="statName"></param>
-    private static void checkStatName(string statName)
+    private void checkStatName(string statName)
     {
-        if (!instance.stats.ContainsKey(statName))
+        if (!stats.ContainsKey(statName))
         {
             throw new System.ArgumentException(
                 "GameStatistics is not tracking that stat (" + statName + ")! "

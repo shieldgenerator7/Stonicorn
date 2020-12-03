@@ -56,7 +56,7 @@ public class AirSliceAbility : PlayerAbility
         if (!playerController.Ground.GroundedNormal)
         {
             //Update Stats
-            GameStatistics.addOne("AirSlice");
+            Managers.Stats.addOne("AirSlice");
             //Update air ports
             AirPortsUsed++;
             //Check if sliced something
@@ -73,7 +73,7 @@ public class AirSliceAbility : PlayerAbility
                     {
                         hm.addIntegrity(-sliceDamage);
                         slicedSomething = true;
-                        GameStatistics.addOne("AirSliceObject");
+                        Managers.Stats.addOne("AirSliceObject");
                     }
                 }
             }

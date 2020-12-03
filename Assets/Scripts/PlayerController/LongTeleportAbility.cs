@@ -49,7 +49,7 @@ public class LongTeleportAbility : PlayerAbility
         if (playerController.Range > playerController.baseRange)
         {
             //Update Stats
-            GameStatistics.addOne("LongTeleport");
+            Managers.Stats.addOne("LongTeleport");
         }
     }
 

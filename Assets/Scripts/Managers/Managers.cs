@@ -71,6 +71,21 @@ public class Managers : MonoBehaviour
         }
     }
 
+    //Game Statistics
+    //Keeps track of how many times everything has happened
+    private GameStatistics gameStatistics;
+    public static GameStatistics Stats
+    {
+        get
+        {
+            if (instance.gameStatistics == null)
+            {
+                instance.gameStatistics = FindObjectOfType<GameStatistics>();
+            }
+            return instance.gameStatistics;
+        }
+    }
+
     //Time Manager
     //Used to keep track of the time since the game began,
     //Taking into account time rewind and dilation

@@ -392,7 +392,7 @@ public class PlayerController : MonoBehaviour
         transform.position = newPos;
 
         //Update Stats
-        GameStatistics.addOne("Teleport");
+        Managers.Stats.addOne("Teleport");
 
         //Show effect
         showTeleportEffect(oldPos, newPos);
@@ -812,7 +812,7 @@ public class PlayerController : MonoBehaviour
             //Mark hit
             hazardHit = true;
             //Increment damaged counter
-            GameStatistics.addOne("Damaged");
+            Managers.Stats.addOne("Damaged");
             //Start hit timer
             Timer.startTimer(hitStunDuration, () => hitTimerUp(damageToSelf));
             //Highlight impact area

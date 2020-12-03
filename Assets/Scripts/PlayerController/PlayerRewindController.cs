@@ -260,7 +260,7 @@ public class PlayerRewindController : MonoBehaviour
                 Managers.Rewind.RewindTo(final.id);
             }
             //Update Stats
-            GameStatistics.addOne("RewindPlayer");
+            Managers.Stats.addOne("RewindPlayer");
         }
 
         //Leave this zoom level even if no past merky was chosen

@@ -63,7 +63,7 @@ public class ElectricFieldAbility : PlayerAbility
             cEFController.energyToRangeRatio = maxRange / maxEnergy;
             cEFController.energyToSlowRatio = maxSlowPercent / maxEnergy;
             //Update Stats
-            GameStatistics.addOne("ElectricFieldField");
+            Managers.Stats.addOne("ElectricFieldField");
         }
         //Make the field follow him
         cEFController.transform.position = transform.position;
@@ -107,7 +107,7 @@ public class ElectricFieldAbility : PlayerAbility
                 //Activate
                 activated = true;
                 //Update Stats
-                GameStatistics.addOne("ElectricField");
+                Managers.Stats.addOne("ElectricField");
             }
             //Else,
             else

@@ -100,7 +100,7 @@ public class WallClimbAbility : PlayerAbility
         if (groundedLeft || groundedRight || groundedCeiling)
         {
             //Update Stats
-            GameStatistics.addOne("WallClimb");
+            Managers.Stats.addOne("WallClimb");
             rb2d.velocity = Vector2.zero;
             Magneted = true;
             //Plant Sticky
@@ -255,7 +255,7 @@ public class WallClimbAbility : PlayerAbility
             stickyPad.GetComponent<StickyPadChecker>().init(playerController.Gravity.Gravity);
             stickyPad.transform.position = stickyPos;
             //Update Stats
-            GameStatistics.addOne("WallClimbSticky");
+            Managers.Stats.addOne("WallClimbSticky");
         }
     }
 
