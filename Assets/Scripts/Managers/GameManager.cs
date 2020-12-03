@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     private void Awake()
     {
+        Managers.initInstance();
         Managers.Camera.init();
     }
 
