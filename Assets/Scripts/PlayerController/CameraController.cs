@@ -178,7 +178,7 @@ public class CameraController : MonoBehaviour
     }
 
     // Use this for initialization
-    void Awake()
+    public void init()
     {
         Managers.Player.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)

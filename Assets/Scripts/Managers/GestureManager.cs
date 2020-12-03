@@ -20,7 +20,7 @@ public class GestureManager : MonoBehaviour
     private List<GestureInput> gestureInputs;
 
     // Use this for initialization
-    void Start()
+    public void init()
     {
         gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
         gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());

@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
     public OnAbilityActivated onAbilityActivated;
 
     // Use this for initialization
-    private void Start()
+    public void init()
     {
         //Retrieve components
         rb2d = GetComponent<Rigidbody2D>();
@@ -191,15 +191,6 @@ public class PlayerController : MonoBehaviour
         //Initialize the range
         Range = baseRange;
         //Initialize the ground trigger
-        updateGroundTrigger();
-    }
-
-    /// <summary>
-    /// Called once per physics update
-    /// </summary>
-    private void FixedUpdate()
-    {
-        //Put the ground trigger in its proper spot
         updateGroundTrigger();
     }
 
@@ -241,7 +232,7 @@ public class PlayerController : MonoBehaviour
     /// This is done to refresh Merky's range slightly before
     /// he actually hits the ground
     /// </summary>
-    private void updateGroundTrigger()
+    internal void updateGroundTrigger()
     {
         //If ground trigger is not present,
         if (groundedTrigger == null)

@@ -9,9 +9,16 @@ using System.Linq;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    private void Awake()
+    {
+        Managers.Camera.init();
+    }
+
     // Use this for initialization
     void Start()
     {
+        Managers.Gesture.init();
+        Managers.Player.init();
         Managers.DemoMode.init();
         //If in demo mode,
         if (Managers.DemoMode.DemoMode)
@@ -86,6 +93,15 @@ public class GameManager : MonoBehaviour
         {
             Managers.DemoMode.processDemoMode();
         }
+    }
+
+    /// <summary>
+    /// Called once per physics update
+    /// </summary>
+    private void FixedUpdate()
+    {
+        //Put the player ground trigger in its proper spot
+        Managers.Player.updateGroundTrigger();
     }
 
     #region Scene Load delegates
