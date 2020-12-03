@@ -13,6 +13,11 @@ public class PlayerRewindController : MonoBehaviour
     /// </summary>
     private List<GameObject> representations = new List<GameObject>();
 
+    private void Start()
+    {
+        Managers.Rewind.onRewindState += hideOldRepresentations;
+    }
+
     #region Player Ghosts
     /// <summary>
     /// Shows the game state representations
@@ -35,8 +40,8 @@ public class PlayerRewindController : MonoBehaviour
         else
         {
             //And hide all game states representations
-            Managers.Rewind.GameStates.ForEach(
-                gs => hideRepresentation(gs)
+            representations.ForEach(
+                rep => rep.SetActive(false)
                 );
         }
     }
@@ -168,9 +173,18 @@ public class PlayerRewindController : MonoBehaviour
             return getRepresentation(gs).GetComponent<Collider2D>().OverlapPoint(touchPoint);
         }
     }
-    private void hideRepresentation(GameState gs)
+    private void hideOldRepresentations(List<GameState> gameStates, int gameStateId)
     {
-        getRepresentation(gs).SetActive(false);
+        //Hide representations that got rewound out of
+        for (int i = gameStateId; i < representations.Count; i++)
+        {
+            representations[i].SetActive(false);
+        }
+        //Update position of first representation
+        if (gameStateId >= 0)
+        {
+            updateRepresentation(gameStates[0]);
+        }
     }
 
     #endregion

@@ -143,6 +143,7 @@ public class RewindManager : MonoBehaviour
             //Stop the rewind
             Rewinding = false;
         }
+        onRewindState?.Invoke(gameStates, chosenId);
     }
 
     public void LoadObjects(string sceneName, int lastStateSeen, Predicate<GameObject> filter)
@@ -252,6 +253,7 @@ public class RewindManager : MonoBehaviour
     public delegate void OnRewind(List<GameState> gameStates, int gameStateId);
     public OnRewind onRewindStarted;
     public OnRewind onRewindFinished;
+    public OnRewind onRewindState;
     /// <summary>
     /// Ends the rewind at the current game state
     /// </summary>
