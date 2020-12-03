@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CameraController : MonoBehaviour
 {
@@ -196,8 +195,6 @@ public class CameraController : MonoBehaviour
         scalePoints.Add(new ScalePoint(4 * 11, true));
         //Set the initialize scale point
         scale = scalePoints[0].absoluteScalePoint();
-        //Clean Delegates set up
-        SceneManager.sceneUnloaded += cleanDelegates;
         //Position initialization
         pinPoint();
         recenter();
@@ -528,19 +525,5 @@ public class CameraController : MonoBehaviour
                 "scalePoint should be between " + 0 + " and " + (scalePoints.Count - 1) + ", inclusive. scalePoint: " + scalePoint);
         }
         return scalePoints[scalePoint].absoluteScalePoint();
-    }
-
-    void cleanDelegates(Scene s)
-    {
-        if (onZoomLevelChanged != null)
-        {
-            foreach (OnZoomLevelChanged ozlc in onZoomLevelChanged.GetInvocationList())
-            {
-                if (ozlc.Target.Equals(null))
-                {
-                    onZoomLevelChanged -= ozlc;
-                }
-            }
-        }
     }
 }

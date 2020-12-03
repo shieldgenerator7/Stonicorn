@@ -124,10 +124,16 @@ public class ActivationTrigger : MonoBehaviour
     {
         if (tutorialTriggerStates.ContainsKey(triggerName))
         {
-            ActivationOptions savedOption =
-                (tutorialTriggerStates[triggerName]) ? ActivationOptions.ACTIVATE : ActivationOptions.DEACTIVATE;
+            ActivationOptions savedOption = (tutorialTriggerStates[triggerName])
+                ? ActivationOptions.ACTIVATE
+                : ActivationOptions.DEACTIVATE;
             processObjects(savedOption);
         }
+    }
+    private void OnDisable()
+    {
+        Managers.Camera.onZoomLevelChanged -= OnCameraZoomLevelChanged;
+        Managers.Camera.onOffsetChange -= OnCameraOffsetChanged;
     }
 
     private void OnTriggerEnter2D(Collider2D coll)
