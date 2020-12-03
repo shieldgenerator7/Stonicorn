@@ -262,6 +262,11 @@ public class ForceLaunchAbility : PlayerAbility
                     this.EffectColor.b,
                     sr.color.a
                     );
+                //Fixes error when Force Launch not used before rewind in a session
+                if (!rb2d)
+                {
+                    rb2d = GetComponent<Rigidbody2D>();
+                }
             }
             bouncinessIndicator.SetActive(true);
             bouncinessIndicator.transform.up = -rb2d.velocity;
