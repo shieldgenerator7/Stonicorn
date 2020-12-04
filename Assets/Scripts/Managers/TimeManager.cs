@@ -125,9 +125,10 @@ public class TimeManager : SavableMonoBehaviour
     /// </summary>
     /// <param name="duration"></param>
     /// <returns></returns>
-    public bool beat(float duration)
+    public bool beat(float duration, float offset = 0)
         //EX: deltaTime = 0.2; 5.01 % 5 = 0.01, but 4.99 % 5 == 4.99
-        => Time % duration < (Time - UnityEngine.Time.deltaTime) % duration;
+        => (Time + offset) % duration
+            < (Time + offset - UnityEngine.Time.deltaTime) % duration;
 
 
     public override SavableObject getSavableObject()

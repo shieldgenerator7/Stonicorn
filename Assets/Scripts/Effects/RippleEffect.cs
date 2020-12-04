@@ -30,11 +30,11 @@ public class RippleEffect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float percent = (Time.time - lastStartTime) / duration;
-        if (percent > 1)
-        {
-            percent = 1;
-        }
+        float percent = Mathf.Clamp(
+            (Managers.Time.Time - lastStartTime) / duration,
+            0,
+            1
+            );
         //Alpha
         Color color = sr.color;
         color.a = (alpha2 - alpha1) * percent + alpha1;
@@ -42,9 +42,9 @@ public class RippleEffect : MonoBehaviour
         //Size
         transform.localScale = Vector2.one * ((size2 - size1) * percent + size1);
         //Time
-        if (Managers.Time.beat(duration))
+        if (Managers.Time.beat(duration, offset))
         {
-            lastStartTime = Managers.Time.Time + offset;
+            lastStartTime = Managers.Time.Time;
         }
     }
 }
