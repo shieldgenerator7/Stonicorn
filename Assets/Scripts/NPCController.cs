@@ -168,46 +168,53 @@ public class NPCController : SavableMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Source.transform.position = transform.position;
-        if (canGreet())
+        try
         {
-            if (!Source.isPlaying)
+            Source.transform.position = transform.position;
+            if (canGreet())
             {
-                int mrvli = getMostRelevantVoiceLineIndex();
-                if (mrvli >= 0)
+                if (!Source.isPlaying)
                 {
-                    setVoiceLine(mrvli);
-                    NPCVoiceLine npcvl = voiceLines[mrvli];
-                    npcvl.played = true;
-                    lastPlayedCheckPointLineIndex = mrvli;
-                    if (npcvl.triggerEvent != null)
+                    int mrvli = getMostRelevantVoiceLineIndex();
+                    if (mrvli >= 0)
                     {
-                        GameEventManager.addEvent(npcvl.triggerEvent);
+                        setVoiceLine(mrvli);
+                        NPCVoiceLine npcvl = voiceLines[mrvli];
+                        npcvl.played = true;
+                        lastPlayedCheckPointLineIndex = mrvli;
+                        if (npcvl.triggerEvent != null)
+                        {
+                            GameEventManager.addEvent(npcvl.triggerEvent);
+                        }
                     }
                 }
             }
-        }
-        else
-        {
-            if (shouldStop())
+            else
             {
-                Source.Stop();
+                if (shouldStop())
+                {
+                    Source.Stop();
+                }
+            }
+            if (Source.isPlaying)
+            {
+                string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time);
+                string voicelinetextWhole = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time, true);
+                if (voicelinetext.Length > voicelinetextWhole.Length)
+                {
+                    throw new UnityException("Voice line text greater than whole! part: " + voicelinetext.Length + "; whole: " + voicelinetextWhole.Length);
+                }
+                NPCManager.speakNPC(gameObject, true, voicelinetext, voicelinetextWhole);
+            }
+            else if (currentVoiceLineIndex >= 0 && !Managers.Time.Paused)
+            {
+                currentVoiceLineIndex = -1;
+                NPCManager.speakNPC(gameObject, false, "", "");
             }
         }
-        if (Source.isPlaying)
+        catch (System.ArgumentOutOfRangeException aoore)
         {
-            string voicelinetext = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time);
-            string voicelinetextWhole = voiceLines[currentVoiceLineIndex].getVoiceLineText(Source.time, true);
-            if (voicelinetext.Length > voicelinetextWhole.Length)
-            {
-                throw new UnityException("Voice line text greater than whole! part: " + voicelinetext.Length + "; whole: " + voicelinetextWhole.Length);
-            }
-            NPCManager.speakNPC(gameObject, true, voicelinetext, voicelinetextWhole);
-        }
-        else if (currentVoiceLineIndex >= 0 && !Managers.Time.Paused)
-        {
-            currentVoiceLineIndex = -1;
-            NPCManager.speakNPC(gameObject, false, "", "");
+            Debug.LogError(aoore);
         }
     }
 

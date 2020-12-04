@@ -172,11 +172,26 @@ public class SceneLoader : SavableMonoBehaviour
     /// <param name="go"></param>
     public static void moveToCurrentScene(GameObject go)
     {
+        if (currentScene == null)
+        {
+            Managers.Scene.checkScenes();
+        }
+        else if (currentScene.Scene == null)
+        {
+            Debug.LogError("Current SceneLoader " + currentScene.sceneName + " has a null scene!");
+        }
         moveToScene(go, getCurrentScene());
     }
     public static void moveToScene(GameObject go, Scene s)
     {
-        SceneManager.MoveGameObjectToScene(go, s);
+        try
+        {
+            SceneManager.MoveGameObjectToScene(go, s);
+        }
+        catch (System.ArgumentException ae)
+        {
+            Debug.LogError("Trying to move " + go.name + " into scene " + s.name);
+        }
     }
 
     #endregion

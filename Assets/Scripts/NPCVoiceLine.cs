@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCVoiceLine {
+public class NPCVoiceLine
+{
 
     //Settings
     public AudioClip voiceLine;
@@ -61,7 +62,7 @@ public class NPCVoiceLine {
         }
         if (lineSegments[prevCurrentLine].audioBeginTime <= playtime)
         {
-            while (prevCurrentLine <= lineSegments.Count-2 && lineSegments[prevCurrentLine + 1].audioBeginTime <= playtime)
+            while (prevCurrentLine <= lineSegments.Count - 2 && lineSegments[prevCurrentLine + 1].audioBeginTime <= playtime)
             {
                 prevCurrentLine++;
             }
@@ -76,9 +77,16 @@ public class NPCVoiceLine {
                 }
             }
         }
-        if (!wholeSegment && prevCurrentLine < lineSegments.Count-1)
+        if (!wholeSegment && prevCurrentLine < lineSegments.Count - 1)
         {
-            float percentage = (playtime - lineSegments[prevCurrentLine].audioBeginTime) / (lineSegments[prevCurrentLine + 1].audioBeginTime - lineSegments[prevCurrentLine].audioBeginTime);
+            float percentage = Mathf.Clamp(
+                (playtime - lineSegments[prevCurrentLine].audioBeginTime)
+                    / (lineSegments[prevCurrentLine + 1].audioBeginTime
+                        - lineSegments[prevCurrentLine].audioBeginTime
+                        ),
+                0,
+                1
+                );
             string text = lineSegments[prevCurrentLine].lineText;
             int index = (int)(percentage * text.Length);
             index = Mathf.Min(index + 7, text.Length);

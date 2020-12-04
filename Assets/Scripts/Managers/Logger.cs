@@ -26,7 +26,7 @@ public class Logger: MonoBehaviour {
 
     public static void log(GameObject go, string message)
     {
-        if (instance.logObjects.Contains(go))
+        if (instance && instance.logObjects.Contains(go))
         {
             Debug.Log(go.name + " >>> "+ message);
         }
