@@ -8,10 +8,13 @@ public class TeleportRangeUpdater : MonoBehaviour
     public float suggestedSpacing = 3;//radial distance between fragments, not guaranteed
     [Range(0, 1)]
     public float transparency = 1.0f;
+    [Range(0, 1)]
+    public float timeTransparency = 0.5f;
     public float normalLength = 0.5f;
     public float timeLength = 0.8f;
     public float timeLeftShake = 10;//when this much time is left, it starts shaking
     public float maxShakeDistance = 0.2f;//how far it moves left and right when shaking
+    public float maxShakeAlpha = 0.3f;//the max diff between the timeTransparency and the random alpha
 
     [Header("Components")]
     public GameObject fragmentPrefab;
@@ -25,6 +28,7 @@ public class TeleportRangeUpdater : MonoBehaviour
     {
         //Timer
         timer.onTimeLeftChanged += updateTimer;
+        timer.onTimeLeftChanged += updateTimerAlpha;
         //Register range update delegate
         PlayerController pc = GetComponent<PlayerController>();
         if (!pc)
@@ -63,6 +67,7 @@ public class TeleportRangeUpdater : MonoBehaviour
         updateColors();
         //Update timers
         updateTimer(timer.TimeLeft, timer.Duration);
+        updateTimerAlpha(timer.TimeLeft, timer.Duration);
     }
 
     public void updateColors()
@@ -128,6 +133,46 @@ public class TeleportRangeUpdater : MonoBehaviour
             }
             //Put the size back in the fragment
             fragment.transform.localScale = scale;
+        }
+    }
+    public void updateTimerAlpha(float timeLeft, float duration)
+    {
+        Vector2 upVector = transform.up;
+        float angleMin = 0;
+        float angleMax = 360 * timeLeft / duration;
+        float maxShake = maxShakeAlpha * (timeLeftShake - timeLeft) / timeLeftShake;
+        foreach (GameObject fragment in fragments)
+        {
+            //Set the alpha to standard
+            SpriteRenderer sr = fragment.GetComponent<SpriteRenderer>();
+            Color color = sr.color;
+            color.a = transparency;
+            if (timeLeft > 0)
+            {
+                //Check to see if it's in the timer range
+                if (Utility.between(
+                    Utility.RotationZ(upVector, fragment.transform.up),
+                    angleMin,
+                    angleMax
+                    )
+                    )
+                {
+                    //If so, set the length to the time length
+                    color.a = timeTransparency;
+                }
+                else
+                {
+                    //Check to see if it should shake
+                    if (timeLeft <= timeLeftShake)
+                    {
+                        //Shake each fragment alpha individually
+                        float randomRange = Random.Range(-maxShake, maxShake);
+                        color.a = transparency + randomRange;
+                    }
+                }
+            }
+            //Put the color back in the fragment
+            sr.color = color;
         }
     }
 
