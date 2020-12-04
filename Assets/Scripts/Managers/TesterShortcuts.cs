@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TesterShortcuts : MonoBehaviour
@@ -53,7 +54,7 @@ public class TesterShortcuts : MonoBehaviour
     {
         foreach (CheckPointChecker cpc in GameObject.FindObjectsOfType<CheckPointChecker>())
         {
-            cpc.activate();
+            cpc.Discovered = true;
         }
     }
     public static void toggleAbility(int abilityIndex)
@@ -153,7 +154,11 @@ public class TesterShortcuts : MonoBehaviour
         }
         else if (cheat == Cheat.ACTIVATE_ALL_CHECKPOINTS)
         {
-            return false;
+            //If no checkpoints are undiscovered (all CPs discovered)
+            //Then this cheat is active,
+            //even if the CPs were activated by legitimate means
+            return !FindObjectsOfType<CheckPointChecker>().ToList()
+                .Any(cpc => !cpc.Discovered);
         }
         else if (cheat == Cheat.RESET_GAME)
         {
