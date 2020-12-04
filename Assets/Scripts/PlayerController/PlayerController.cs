@@ -103,6 +103,9 @@ public class PlayerController : MonoBehaviour
     public BoxCollider2D scoutColliderMin;//small collider (inside Merky) used to scout the level for teleportable spots
     public BoxCollider2D scoutColliderMax;//big collider (outside Merky) used to scout the level for teleportable spots
 
+    [Header("Sound Effects")]
+    public AudioClip teleportUnavailableSound;
+
     private PolygonCollider2D pc2d;
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
     private Rigidbody2D rb2d;
@@ -903,6 +906,11 @@ public class PlayerController : MonoBehaviour
                 //Reposition checkpoint previews
                 CheckPointChecker.readjustCheckPointGhosts(transform.position);
             }
+        }
+        //Teleport on cooldown
+        else
+        {
+            AudioSource.PlayClipAtPoint(teleportUnavailableSound, tapPos);
         }
     }
     //Used when you also need to know where the player tapped
