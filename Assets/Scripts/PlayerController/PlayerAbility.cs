@@ -192,13 +192,11 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
         get =>
             new SettingObject(ID,
                 "unlocked", unlocked,
-                "active", Active,
                 "upgradeLevel", upgradeLevel
                 );
         set
         {
-            unlocked = (bool)value.data["unlocked"] || unlocked;
-            Active = (bool)value.data["active"] || Active;
+            Unlocked = (bool)value.data["unlocked"] || unlocked;
             UpgradeLevel = (int)value.data["upgradeLevel"];
         }
     }
