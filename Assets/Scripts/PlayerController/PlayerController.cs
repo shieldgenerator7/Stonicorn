@@ -1025,8 +1025,6 @@ public class PlayerController : MonoBehaviour
     {
         //Grant gravity immunity
         MovementPaused = true;
-        //Reset range to default
-        Range = baseRange;
     }
 }
 

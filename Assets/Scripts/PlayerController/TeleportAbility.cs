@@ -93,7 +93,7 @@ public class TeleportAbility : PlayerAbility
                     flashlightSR.color.r,
                     flashlightSR.color.g,
                     flashlightSR.color.b,
-                    (flashlightDirection.magnitude - 0.5f)/ maxPullBackDistance
+                    (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance
                     );
         }
         else
@@ -105,5 +105,17 @@ public class TeleportAbility : PlayerAbility
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
         //throw new System.NotImplementedException();
+    }
+
+    public override SavableObject CurrentState
+    {
+        get => base.CurrentState.more(
+            "range", playerController.Range
+            );
+        set
+        {
+            base.CurrentState = value;
+            playerController.Range = value.Float("range");
+        }
     }
 }
