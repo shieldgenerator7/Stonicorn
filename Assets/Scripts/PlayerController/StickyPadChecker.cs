@@ -22,72 +22,76 @@ public class StickyPadChecker : SavableMonoBehaviour
         transform.up = -gravityDir;
     }
 
-    public override SavableObject getSavableObject()
-    {//2018-02-21: copied from GameEventManager.getSavableObject()
-        SavableObject so = new SavableObject(this);
-        int counter = 0;
-        foreach (string str in connectedObjs)
-        {
-            so.data.Add("conObj" + counter, str);
-            counter++;
-        }
-        so.data.Add("conObjCount", counter);
-        return so;
-    }
-    public override void acceptSavableObject(SavableObject savObj)
+    public override SavableObject CurrentState
     {
-        connectedObjs = new HashSet<string>();
-        for (int i = 0; i < (int)savObj.data["conObjCount"]; i++)
+        get
         {
-            connectedObjs.Add((string)savObj.data["conObj" + i]);
-        }
-        foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
-        {
-            if (!connectedObjs.Contains(fj2d.connectedBody.gameObject.name))
+            SavableObject so = new SavableObject(this);
+            int counter = 0;
+            foreach (string str in connectedObjs)
             {
-                Destroy(fj2d);
+                so.data.Add("conObj" + counter, str);
+                counter++;
             }
+            so.data.Add("conObjCount", counter);
+            return so;
         }
-        //Get list of objects in area
-        int colliderCount = Utility.Cast(coll2d, Vector2.zero, rch2ds, 0);
-        //Find names that don't have a FixedJoint2D
-        foreach (string objname in connectedObjs)
+        set
         {
-            bool foundone = false;
+            connectedObjs = new HashSet<string>();
+            for (int i = 0; i < (int)value.data["conObjCount"]; i++)
+            {
+                connectedObjs.Add((string)value.data["conObj" + i]);
+            }
             foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
             {
-                if (fj2d.connectedBody.gameObject.name == objname)
+                if (!connectedObjs.Contains(fj2d.connectedBody.gameObject.name))
                 {
-                    //found one, break the inner loop
-                    foundone = true;
-                    break;
+                    Destroy(fj2d);
                 }
             }
-            if (!foundone)
+            //Get list of objects in area
+            int colliderCount = Utility.Cast(coll2d, Vector2.zero, rch2ds, 0);
+            //Find names that don't have a FixedJoint2D
+            foreach (string objname in connectedObjs)
             {
-                //Find the name's object
-                GameObject conObj = null;
-                for (int i = 0; i < colliderCount; i++)
+                bool foundone = false;
+                foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
                 {
-                    RaycastHit2D rch2d = rch2ds[i];
-                    if (rch2d.collider.gameObject.name == objname)
+                    if (fj2d.connectedBody.gameObject.name == objname)
                     {
-                        conObj = rch2d.collider.gameObject;
+                        //found one, break the inner loop
+                        foundone = true;
                         break;
                     }
                 }
-                //create new FixedJoint2D
-                if (conObj != null)
-                {
-                    stickToObject(conObj);
-                }
-                else
+                if (!foundone)
                 {
                     throw new UnityException("Connected object \"" + objname + "\" not found! StickyPadChecker: " + gameObject.name);
+                    //Find the name's object
+                    GameObject conObj = null;
+                    for (int i = 0; i < colliderCount; i++)
+                    {
+                        RaycastHit2D rch2d = rch2ds[i];
+                        if (rch2d.collider.gameObject.name == objname)
+                        {
+                            conObj = rch2d.collider.gameObject;
+                            break;
+                        }
+                    }
+                    //create new FixedJoint2D
+                    if (conObj != null)
+                    {
+                        stickToObject(conObj);
+                    }
+                    else
+                    {
+                    }
                 }
             }
         }
     }
+   
     public override bool IsSpawnedObject => true;
     public override string PrefabName => "StickyPad";
     
