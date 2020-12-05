@@ -276,10 +276,10 @@ public class ForceDashAbility : PlayerAbility
 
     public override SavableObject getSavableObject()
     {
-        SavableObject so = base.getSavableObject();
-        so.data.Add("charge", Charge);
-        so.data.Add("chargeDirection", ChargeDirection);
-        return so;
+        return base.getSavableObject().more(
+            "charge", Charge,
+            "chargeDirection", ChargeDirection
+            );
     }
 
     public override void acceptSavableObject(SavableObject savObj)

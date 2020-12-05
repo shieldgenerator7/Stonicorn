@@ -21,7 +21,10 @@ public class CrackedPiece : SavableMonoBehaviour
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject(this, "prefabName", prefabName, "spawnTag", spawnTag);
+        return new SavableObject(this,
+            "prefabName", prefabName,
+            "spawnTag", spawnTag
+            );
     }
 
     public override void acceptSavableObject(SavableObject savObj)

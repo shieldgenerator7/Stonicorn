@@ -56,7 +56,9 @@ public class PowerConduit : SavableMonoBehaviour
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject(this, "currentEnergyLevel", currentEnergyLevel);
+        return new SavableObject(this, 
+            "currentEnergyLevel", currentEnergyLevel
+            );
     }
     public override void acceptSavableObject(SavableObject savObj)
     {

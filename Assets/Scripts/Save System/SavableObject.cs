@@ -29,14 +29,9 @@ public class SavableObject
     public SavableObject(SavableMonoBehaviour smb, params System.Object[] pairs)
     {
         this.scriptType = smb.GetType().Name;
-        if (pairs.Length % 2 != 0)
-        {
-            throw new UnityException("Pairs has an odd amount of parameters! pairs.Length: " + pairs.Length);
-        }
-        for (int i = 0; i < pairs.Length; i += 2)
-        {
-            data.Add((string)pairs[i], pairs[i + 1]);
-        }
+
+        more(pairs);
+
         if (smb.IsSpawnedObject)
         {
             isSpawnedObject = true;
@@ -47,6 +42,25 @@ public class SavableObject
         {
             isSpawnedScript = true;
         }
+    }
+
+    /// <summary>
+    /// Used to add things to an existing SavableObject
+    /// and return it in one line
+    /// </summary>
+    /// <param name="pairs"></param>
+    /// <returns></returns>
+    public SavableObject more(params System.Object[] pairs)
+    {
+        if (pairs.Length % 2 != 0)
+        {
+            throw new UnityException("Pairs has an odd amount of parameters! pairs.Length: " + pairs.Length);
+        }
+        for (int i = 0; i < pairs.Length; i += 2)
+        {
+            data.Add((string)pairs[i], pairs[i + 1]);
+        }
+        return this;
     }
 
     /// <summary>
@@ -73,9 +87,8 @@ public class SavableObject
     }
 
     public System.Type getSavableMonobehaviourType()
-    {
-        return getSavableMonobehaviourType(scriptType);
-    }
+        => getSavableMonobehaviourType(scriptType);
+
     /// <summary>
     /// The definitive list of known savable types
     /// </summary>

@@ -155,7 +155,8 @@ public class NPCController : SavableMonoBehaviour
         return new SavableObject(this,
             "currentVoiceLineIndex", currentVoiceLineIndex,
             "playBackTime", Source.time,
-            "lastPlayedCheckPointLineIndex", lastPlayedCheckPointLineIndex);
+            "lastPlayedCheckPointLineIndex", lastPlayedCheckPointLineIndex
+            );
     }
     public override void acceptSavableObject(SavableObject savObj)
     {

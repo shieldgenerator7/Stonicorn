@@ -193,13 +193,12 @@ public class SnailController : Hazard
 
     public override SavableObject getSavableObject()
     {
-        SavableObject savObj = base.getSavableObject();
-        Dictionary<string, object> data = savObj.data;
-        data.Add("flipDir", Mathf.Sign(animator.transform.localScale.x));
-        data.Add("awake", Awake);
-        data.Add("rollDistance", rollDistance);
-        data.Add("prevPos", prevPos);
-        return savObj;
+        return base.getSavableObject().more(
+            "flipDir", Mathf.Sign(animator.transform.localScale.x),
+            "awake", Awake,
+            "rollDistance", rollDistance,
+            "prevPos", prevPos
+            );
     }
 
     public override void acceptSavableObject(SavableObject savObj)

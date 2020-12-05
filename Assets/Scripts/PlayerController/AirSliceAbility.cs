@@ -113,11 +113,9 @@ public class AirSliceAbility : PlayerAbility
 
     public override SavableObject getSavableObject()
     {
-        SavableObject savObj = base.getSavableObject();
-        savObj.data.Add(
+        return base.getSavableObject().more(
             "AirPortsUsed", AirPortsUsed
             );
-        return savObj;
     }
 
     public override void acceptSavableObject(SavableObject savObj)

@@ -32,9 +32,9 @@ public class CactusController : Hazard
 
     public override SavableObject getSavableObject()
     {
-        SavableObject so = base.getSavableObject();
-        so.data.Add("rooted", rooted);
-        return so;
+        return base.getSavableObject().more(
+            "rooted", rooted
+            );
     }
     public override void acceptSavableObject(SavableObject savObj)
     {

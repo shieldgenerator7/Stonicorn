@@ -279,10 +279,10 @@ public class ForceLaunchAbility : PlayerAbility
 
     public override SavableObject getSavableObject()
     {
-        SavableObject savObj = base.getSavableObject();
-        savObj.data.Add("affectingVelocity", affectingVelocity);
-        savObj.data.Add("currentVelocity", currentVelocity);
-        return savObj;
+        return base.getSavableObject().more(
+            "affectingVelocity", affectingVelocity,
+            "currentVelocity", currentVelocity
+            );
     }
     public override void acceptSavableObject(SavableObject savObj)
     {

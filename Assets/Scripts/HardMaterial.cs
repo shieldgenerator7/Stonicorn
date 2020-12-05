@@ -291,7 +291,10 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject(this, "integrity", integrity, "alreadyBroken", alreadyBroken);
+        return new SavableObject(this,
+            "integrity", integrity,
+            "alreadyBroken", alreadyBroken
+            );
     }
     public override void acceptSavableObject(SavableObject savObj)
     {
