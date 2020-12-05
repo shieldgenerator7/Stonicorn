@@ -27,8 +27,8 @@ public class CrackedPiece : SavableMonoBehaviour
             );
         set
         {
-            prefabName = (string)value.data["prefabName"];
-            spawnTag = (string)value.data["spawnTag"];
+            prefabName = value.String("prefabName");
+            spawnTag = value.String("spawnTag");
         }
-    }    
+    }
 }

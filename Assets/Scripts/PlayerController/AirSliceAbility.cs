@@ -119,7 +119,7 @@ public class AirSliceAbility : PlayerAbility
         set
         {
             base.CurrentState = value;
-            AirPortsUsed = (int)value.data["AirPortsUsed"];
+            AirPortsUsed = value.Int("AirPortsUsed");
         }
     }
 

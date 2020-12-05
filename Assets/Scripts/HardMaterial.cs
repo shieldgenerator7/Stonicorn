@@ -298,8 +298,8 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
             );
         set
         {
-            integrity = (float)value.data["integrity"];
-            alreadyBroken = (bool)value.data["alreadyBroken"];
+            integrity = value.Float("integrity");
+            alreadyBroken = value.Bool("alreadyBroken");
             setIntegrity(integrity);
         }
     }

@@ -190,7 +190,7 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
         get => new SavableObject(this, "integrity", integrity);
         set
         {
-            Integrity = (int)value.data["integrity"];
+            Integrity = value.Int("integrity");
             //If it doesnt have a reference to its cracked pieces,
             if (crackedPieces == null || ReferenceEquals(crackedPieces, null))
             {
@@ -206,5 +206,5 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
                 }
             }
         }
-    }    
+    }
 }

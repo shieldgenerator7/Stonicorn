@@ -138,7 +138,7 @@ public class TimeManager : SavableMonoBehaviour
             );
         set
         {
-            Time = (float)value.data["time"];
+            Time = value.Float("time");
         }
     }
 }

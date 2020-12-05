@@ -61,7 +61,7 @@ public class PowerConduit : SavableMonoBehaviour
             );
         set
         {
-            currentEnergyLevel = (float)value.data["currentEnergyLevel"];
+            currentEnergyLevel = value.Float("currentEnergyLevel");
             if (!lightEffectRenderer)
             {
                 initLightEffectRenderer();

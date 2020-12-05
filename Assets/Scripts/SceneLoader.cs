@@ -204,8 +204,8 @@ public class SceneLoader : SavableMonoBehaviour
             );
         set
         {
-            firstOpenGameStateId = (int)value.data["firstOpenGameStateId"];
-            lastOpenGameStateId = (int)value.data["lastOpenGameStateId"];
+            firstOpenGameStateId = value.Int("firstOpenGameStateId");
+            lastOpenGameStateId = value.Int("lastOpenGameStateId");
         }
     }
 }

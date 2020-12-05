@@ -47,7 +47,7 @@ public class GameStatistics : SavableMonoBehaviour
             List<string> statNames = new List<string>(stats.Keys);
             foreach (string statName in statNames)
             {
-                stats[statName] = Mathf.Max(stats[statName], (int)value.data[statName]);
+                stats[statName] = Mathf.Max(stats[statName], value.Int(statName));
             }
             printStats(false);
         }

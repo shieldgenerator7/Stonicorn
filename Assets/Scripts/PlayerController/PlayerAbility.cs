@@ -175,7 +175,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
         get => new SavableObject(this,
             "upgradeLevel", upgradeLevel
             );
-        set => UpgradeLevel = (int)value.data["upgradeLevel"];
+        set => UpgradeLevel = value.Int("upgradeLevel");
     }
 
     public SettingScope Scope => SettingScope.SAVE_FILE;

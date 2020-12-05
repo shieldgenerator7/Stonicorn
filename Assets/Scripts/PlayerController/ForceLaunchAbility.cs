@@ -285,9 +285,9 @@ public class ForceLaunchAbility : PlayerAbility
             );
         set
         {
-            base.CurrentState=value;
-            affectingVelocity = (bool)value.data["affectingVelocity"];
-            currentVelocity = (Vector2)value.data["currentVelocity"];
+            base.CurrentState = value;
+            affectingVelocity = value.Bool("affectingVelocity");
+            currentVelocity = value.Vector2("currentVelocity");
             updateBouncingVisuals();
         }
     }

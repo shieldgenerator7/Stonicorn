@@ -283,8 +283,8 @@ public class ForceDashAbility : PlayerAbility
         set
         {
             base.CurrentState = value;
-            Charge = (float)value.data["charge"];
-            ChargeDirection = (Vector2)value.data["chargeDirection"];
+            Charge = value.Float("charge");
+            ChargeDirection = value.Vector2("chargeDirection");
         }
     }    
 

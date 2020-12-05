@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEventManager : SavableMonoBehaviour {
+public class GameEventManager : SavableMonoBehaviour
+{
 
     public List<string> events = new List<string>();//the list of events that have happened
 
@@ -28,18 +29,18 @@ public class GameEventManager : SavableMonoBehaviour {
             int counter = 0;
             foreach (string str in events)
             {
-                so.data.Add("event" + counter, str);
+                so.more("event" + counter, str);
                 counter++;
             }
-            so.data.Add("eventCount", counter);
+            so.more("eventCount", counter);
             return so;
         }
         set
         {
             events = new List<string>();
-            for (int i = 0; i < (int)value.data["eventCount"]; i++)
+            for (int i = 0; i < value.Int("eventCount"); i++)
             {
-                events.Add((string)value.data["event" + i]);
+                events.Add(value.String("event" + i));
             }
         }
     }

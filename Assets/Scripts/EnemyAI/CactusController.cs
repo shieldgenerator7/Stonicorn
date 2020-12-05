@@ -38,7 +38,7 @@ public class CactusController : Hazard
         set
         {
             base.CurrentState = value;
-            Rooted = (bool)value.data["rooted"];
+            Rooted = value.Bool("rooted");
         }
     }
 }

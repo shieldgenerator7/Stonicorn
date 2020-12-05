@@ -159,10 +159,10 @@ public class NPCController : SavableMonoBehaviour
             );
         set
         {
-            currentVoiceLineIndex = (int)value.data["currentVoiceLineIndex"];
-            float playBackTime = (float)value.data["playBackTime"];
+            currentVoiceLineIndex = value.Int("currentVoiceLineIndex");
+            float playBackTime = value.Float("playBackTime");
             setVoiceLine(currentVoiceLineIndex, playBackTime);
-            lastPlayedCheckPointLineIndex = (int)value.data["lastPlayedCheckPointLineIndex"];
+            lastPlayedCheckPointLineIndex = value.Int("lastPlayedCheckPointLineIndex");
         }
     }
     

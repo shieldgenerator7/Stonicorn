@@ -38,9 +38,9 @@ public class AfterWind : SavableMonoBehaviour
             );
         set
         {
-            windVector = (Vector2)value.data["windVector"];
-            fadeOutDuration = (float)value.data["fadeOutDuration"];
-            fadeStartTime = Time.time - (float)value.data["fadeTime"];
+            windVector = value.Vector2("windVector");
+            fadeOutDuration = value.Float("fadeOutDuration");
+            fadeStartTime = Time.time - value.Float("fadeTime");
             init();
         }
     }

@@ -191,7 +191,8 @@ public class SnailController : Hazard
         FloorDirection = newFD;
     }
 
-    public override SavableObject CurrentState {
+    public override SavableObject CurrentState
+    {
         get => base.CurrentState.more(
             "flipDir", Mathf.Sign(animator.transform.localScale.x),
             "awake", Awake,
@@ -206,11 +207,11 @@ public class SnailController : Hazard
                 Start();
             }
             Vector3 animScale = animator.transform.localScale;
-            animScale.x = Mathf.Abs(animScale.x) * (float)value.data["flipDir"];
+            animScale.x = Mathf.Abs(animScale.x) * value.Float("flipDir");
             animator.transform.localScale = animScale;
-            Awake = (bool)value.data["awake"];
-            rollDistance = (float)value.data["rollDistance"];
-            prevPos = (Vector2)value.data["prevPos"];
+            Awake = value.Bool("awake");
+            rollDistance = value.Float("rollDistance");
+            prevPos = value.Vector2("prevPos");
             FloorDirection = transform.up;
         }
     }

@@ -7,8 +7,8 @@ using UnityEngine;
 /// </summary>
 public class SavableObject
 {
-
-    public Dictionary<string, System.Object> data = new Dictionary<string, System.Object>();
+    [ES3Serializable]
+    private Dictionary<string, System.Object> data = new Dictionary<string, System.Object>();
     /// <summary>
     /// True if it's an object that spawned during runtime
     /// </summary>
@@ -62,6 +62,19 @@ public class SavableObject
         }
         return this;
     }
+
+    public System.Object get(string name)
+        => data[name];
+    public bool Bool(string name)
+        => (bool)data[name];
+    public int Int(string name)
+        => (int)data[name];
+    public float Float(string name)
+        => (float)data[name];
+    public string String(string name)
+        => (string)data[name];
+    public Vector2 Vector2(string name)
+        => (Vector2)data[name];
 
     /// <summary>
     /// Spawn this saved object's game object

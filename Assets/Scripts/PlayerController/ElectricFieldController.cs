@@ -49,10 +49,10 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
             );
         set
         {
-            energy = (float)value.data["energy"];
-            energyToRangeRatio = (float)value.data["energyToRangeRatio"];
-            energyToSlowRatio = (float)value.data["energyToSlowRatio"];
-            maxForceResistance = (float)value.data["maxForceResistance"];
+            energy = value.Float("energy");
+            energyToRangeRatio = value.Float("energyToRangeRatio");
+            energyToSlowRatio = value.Float("energyToSlowRatio");
+            maxForceResistance = value.Float("maxForceResistance");
             if (!friu)
             {
                 init();

@@ -30,18 +30,18 @@ public class StickyPadChecker : SavableMonoBehaviour
             int counter = 0;
             foreach (string str in connectedObjs)
             {
-                so.data.Add("conObj" + counter, str);
+                so.more("conObj" + counter, str);
                 counter++;
             }
-            so.data.Add("conObjCount", counter);
+            so.more("conObjCount", counter);
             return so;
         }
         set
         {
             connectedObjs = new HashSet<string>();
-            for (int i = 0; i < (int)value.data["conObjCount"]; i++)
+            for (int i = 0; i < value.Int("conObjCount"); i++)
             {
-                connectedObjs.Add((string)value.data["conObj" + i]);
+                connectedObjs.Add(value.String("conObj" + i));
             }
             foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
             {

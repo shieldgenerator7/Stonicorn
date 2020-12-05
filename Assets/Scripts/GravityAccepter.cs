@@ -113,8 +113,8 @@ public class GravityAccepter : SavableMonoBehaviour
         {
             if (saveValues)
             {
-                AcceptsGravity = (bool)value.data["acceptsGravity"];
-                gravityScale = (float)value.data["gravityScale"];
+                AcceptsGravity = value.Bool("acceptsGravity");
+                gravityScale = value.Float("gravityScale");
             }
         }
     }

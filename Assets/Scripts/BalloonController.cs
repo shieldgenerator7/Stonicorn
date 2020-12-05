@@ -37,7 +37,7 @@ public class BalloonController : SavableMonoBehaviour
             );
         set
         {
-            timeElapsed = (float)value.data["timeElapsed"];
+            timeElapsed = value.Float("timeElapsed");
         }
     }
 }
