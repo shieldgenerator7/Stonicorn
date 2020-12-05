@@ -41,8 +41,15 @@ public class PlayerRewindController : MonoBehaviour
         {
             //And hide all game states representations
             representations.ForEach(
-                rep => rep.SetActive(false)
+                rep => rep?.SetActive(false)
                 );
+#if UNITY_EDITOR
+            int count = representations.FindAll(rep => rep == null).Count;
+            if (count > 0)
+            {
+                Debug.LogError("PlayerRewindController has " + count + " null representations in it!");
+            }
+#endif
         }
     }
 
@@ -178,7 +185,7 @@ public class PlayerRewindController : MonoBehaviour
         //Hide representations that got rewound out of
         for (int i = gameStateId; i < representations.Count; i++)
         {
-            representations[i].SetActive(false);
+            representations[i]?.SetActive(false);
         }
         //Update position of first representation
         if (gameStateId >= 0)
