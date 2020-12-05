@@ -17,12 +17,12 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
         set
         {
             integrity = Mathf.Clamp(value, 0, maxIntegrity);
+            if (sr == null)
+            {
+                sr = GetComponent<SpriteRenderer>();
+            }
             if (integrity > 0)
             {
-                if (sr == null)
-                {
-                    sr = GetComponent<SpriteRenderer>();
-                }
                 sr.sprite = crackStages[maxIntegrity - integrity];
                 if (!gameObject.activeSelf)
                 {
@@ -86,7 +86,7 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
                                 }
                             }
                             //Register new object
-                            Managers.Object.addObject(t.gameObject, true);
+                            Managers.Object.addObject(t.gameObject);
                         }
                         Managers.Object.addObject(pieces);
                     }

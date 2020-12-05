@@ -18,7 +18,7 @@ public class ObjectManager : MonoBehaviour
     /// Adds an object to list of objects that have state to save
     /// </summary>
     /// <param name="go">The GameObject to add to the list</param>
-    public void addObject(GameObject go, bool isSpawnedObject = false)
+    public void addObject(GameObject go)
     {
         //
         //Error checking
@@ -40,9 +40,9 @@ public class ObjectManager : MonoBehaviour
             && !(gameObjects[key] == null
             || ReferenceEquals(gameObjects[key], null)))
         {
-            if (isSpawnedObject)
+            if (go.isSpawnedObject())
             {
-                Debug.LogWarning("ObjectManager.adObject(): replacing" +
+                Debug.LogWarning("ObjectManager.addObject(): replacing " +
                     gameObjects[key] + " with " + go);
                 gameObjects[key] = go;
                 return;

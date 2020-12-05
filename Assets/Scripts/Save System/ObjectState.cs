@@ -121,7 +121,7 @@ public class ObjectState
                             {
                                 if (t.gameObject.isSavable())
                                 {
-                                    Managers.Object.addObject(t.gameObject, true);
+                                    Managers.Object.addObject(t.gameObject);
                                     if (t.gameObject.name == this.objectName)
                                     {
                                         go = t.gameObject;

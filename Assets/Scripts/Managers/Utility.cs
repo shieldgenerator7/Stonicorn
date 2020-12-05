@@ -164,6 +164,19 @@ public static class Utility
             && !coll2d.isTrigger;
     }
 
+    public static bool isSpawnedObject(this GameObject go)
+    {
+        return go.isSpawnedObjectImpl()
+            || (go.transform.parent 
+                && go.transform.parent.gameObject.isSpawnedObjectImpl()
+                );
+    }
+    private static bool isSpawnedObjectImpl(this GameObject go)
+    {
+        return go.GetComponents<SavableMonoBehaviour>().ToList()
+            .Any(smb => smb.IsSpawnedObject);
+    }
+
     /// <summary>
     /// Returns true if the game object has state to save
     /// </summary>
