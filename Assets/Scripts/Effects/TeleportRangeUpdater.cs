@@ -24,6 +24,11 @@ public class TeleportRangeUpdater : MonoBehaviour
     private List<GameObject> fragments = new List<GameObject>();
     private float range;//cached range, gets updated in updateRange()
 
+    public float bounceBackSpeed = 2;
+    private Vector2 prevVelocity;
+    private Rigidbody2D rb2dParent;
+    private Vector2 offset = Vector2.zero;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,12 +40,27 @@ public class TeleportRangeUpdater : MonoBehaviour
         pc.onRangeChanged += updateRange;
         pc.onAbilityActivated += abilityActivated;
         updateRange(pc.Range);
+        //rb2dParent
+        rb2dParent = parentObj.GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        transform.position = parentObj.transform.position;
+        //Check if needs to shake
+        if (rb2dParent)
+        {
+            if (rb2dParent.velocity != prevVelocity
+                && rb2dParent.velocity.magnitude < 0.1f)
+            {
+                offset += (prevVelocity - rb2dParent.velocity) * 0.1f;
+            }
+            prevVelocity = rb2dParent.velocity;
+        }
+        //Update position and rotation
+        transform.position = parentObj.transform.position + (Vector3)offset;
         transform.up = Managers.Camera.transform.up;
+        //Decrease offset
+        offset = Vector2.Lerp(offset, Vector2.zero, bounceBackSpeed * Time.deltaTime);
     }
 
     public void updateRange(float range)
