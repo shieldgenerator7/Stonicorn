@@ -11,7 +11,7 @@ public class GestureManager : MonoBehaviour
 
     //Gesture Event Methods
     //public TapGesture tapGesture;
-    public OnInputDeviceSwitched onInputDeviceSwitched;
+    public event OnInputDeviceSwitched onInputDeviceSwitched;
 
     /// <summary>
     /// The input that is currently providing input or that has most recently provided input

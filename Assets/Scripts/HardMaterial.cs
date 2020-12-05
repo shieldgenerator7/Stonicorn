@@ -30,8 +30,8 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     public List<AudioClip> crackSounds;
     public List<HiddenArea> secretHiders;//the hidden areas to show when cracked
 
-    public Shattered shattered;
-    public HardCollision hardCollision;
+    public event Shattered shattered;
+    public event HardCollision hardCollision;
 
     void Start()
     {

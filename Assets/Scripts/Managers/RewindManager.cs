@@ -84,7 +84,7 @@ public class RewindManager : MonoBehaviour
         onGameStateSaved?.Invoke(chosenId);
     }
     public delegate void OnGameStateSaved(int gameStateId);
-    public OnGameStateSaved onGameStateSaved;
+    public event OnGameStateSaved onGameStateSaved;
     /// <summary>
     /// Load the game state with the given id
     /// </summary>
@@ -251,9 +251,9 @@ public class RewindManager : MonoBehaviour
         }
     }
     public delegate void OnRewind(List<GameState> gameStates, int gameStateId);
-    public OnRewind onRewindStarted;
-    public OnRewind onRewindFinished;
-    public OnRewind onRewindState;
+    public event OnRewind onRewindStarted;
+    public event OnRewind onRewindFinished;
+    public event OnRewind onRewindState;
     /// <summary>
     /// Ends the rewind at the current game state
     /// </summary>

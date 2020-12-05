@@ -116,7 +116,7 @@ public class GroundChecker : MonoBehaviour
         }
     }
     public delegate bool IsGroundedCheck();
-    public IsGroundedCheck isGroundedCheck;
+    public event IsGroundedCheck isGroundedCheck;
 
     //Grounded Previously
     private bool groundedPrev;

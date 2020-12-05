@@ -273,6 +273,6 @@ public class PlayerRewindController : MonoBehaviour
         tapProcessed?.Invoke(curMPWorld);
     }
     public delegate void TapProcessed(Vector2 curMPWorld);
-    public TapProcessed tapProcessed;
+    public event TapProcessed tapProcessed;
     #endregion
 }

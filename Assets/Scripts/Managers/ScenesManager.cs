@@ -93,8 +93,8 @@ public class ScenesManager : MonoBehaviour
         openScenes.Remove(scene);
     }
     public delegate void OnSceneLoadedChanged(Scene scene);
-    public OnSceneLoadedChanged onSceneLoaded;
-    public OnSceneLoadedChanged onSceneUnloaded;
+    public event OnSceneLoadedChanged onSceneLoaded;
+    public event OnSceneLoadedChanged onSceneUnloaded;
 
     public bool isSceneOpen(Scene scene)
     {

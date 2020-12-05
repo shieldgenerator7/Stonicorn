@@ -91,7 +91,7 @@ public class GravityAccepter : SavableMonoBehaviour
     }
 
     public delegate void OnGravityChanged(Vector2 newGravity);
-    public OnGravityChanged onGravityChanged;
+    public event OnGravityChanged onGravityChanged;
 
     public override SavableObject getSavableObject()
     {

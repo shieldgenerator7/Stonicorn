@@ -39,7 +39,7 @@ public class WallClimbAbility : PlayerAbility
         }
     }
     public delegate void OnMagnetChanged(bool on);
-    public OnMagnetChanged onMagnetChanged;
+    public event OnMagnetChanged onMagnetChanged;
 
     private GravityAccepter gravityAccepter;
 

@@ -407,7 +407,7 @@ public class CameraController : MonoBehaviour
     }
 
     public delegate void OnOffsetChange(Vector3 offset);
-    public OnOffsetChange onOffsetChange;
+    public event OnOffsetChange onOffsetChange;
 
     public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, bool finished)
     {
@@ -450,7 +450,7 @@ public class CameraController : MonoBehaviour
     /// <param name="newZoomLevel">The now current zoom level</param>
     /// <param name="delta">The intended zoom in/out change: negative = in, positive = out</param>
     public delegate void OnZoomLevelChanged(float newZoomLevel, float delta);
-    public OnZoomLevelChanged onZoomLevelChanged;
+    public event OnZoomLevelChanged onZoomLevelChanged;
 
     public void updateFieldOfView()
     {

@@ -90,10 +90,10 @@ public class Timer : MonoBehaviour
     }
 
     public delegate void OnTimeLeftChanged(float timeLeft, float duration);
-    public OnTimeLeftChanged onTimeLeftChanged;
+    public event OnTimeLeftChanged onTimeLeftChanged;
 
     public delegate void OnTimeFinished();
-    public OnTimeFinished onTimeFinished;
+    public event OnTimeFinished onTimeFinished;
 
     public void setTimer(float seconds = 0)
     {

@@ -58,7 +58,7 @@ public class Fader : MonoBehaviour
     {
         if (startTime <= CurrentTime)
         {
-            float t = Mathf.Min(duration,(CurrentTime - startTime) / duration);//2016-03-17: copied from an answer by treasgu (http://answers.unity3d.com/questions/654836/unity2d-sprite-fade-in-and-out.html)
+            float t = Mathf.Min(duration, (CurrentTime - startTime) / duration);//2016-03-17: copied from an answer by treasgu (http://answers.unity3d.com/questions/654836/unity2d-sprite-fade-in-and-out.html)
             foreach (Object o in srs)
             {
                 if (!o)
@@ -104,7 +104,7 @@ public class Fader : MonoBehaviour
     {
         if (currentFade == endfade)
         {
-            if(onFadeFinished != null)
+            if (onFadeFinished != null)
             {
                 onFadeFinished();
             }
@@ -127,6 +127,6 @@ public class Fader : MonoBehaviour
     }
 
     public delegate void OnFadeFinished();
-    public OnFadeFinished onFadeFinished;
+    public event OnFadeFinished onFadeFinished;
 
 }

@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     public delegate void OnRangeChanged(float range);
-    public OnRangeChanged onRangeChanged;
+    public event OnRangeChanged onRangeChanged;
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
     public bool InCheckPoint
@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
         onAbilityActivated?.Invoke(ability, active);
     }
     public delegate void OnAbilityActivated(PlayerAbility ability, bool active);
-    public OnAbilityActivated onAbilityActivated;
+    public event OnAbilityActivated onAbilityActivated;
 
     // Use this for initialization
     public void init()
@@ -471,7 +471,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
-    public OnTeleport onTeleport;
+    public event OnTeleport onTeleport;
 
     /// <summary>
     /// Finds the teleportable position closest to the given targetPos
@@ -588,7 +588,7 @@ public class PlayerController : MonoBehaviour
         return newPos;
     }
     public delegate Vector2 FindTeleportablePositionOverride(Vector2 rangedPos, Vector2 tapPos);
-    public FindTeleportablePositionOverride findTeleportablePositionOverride;
+    public event FindTeleportablePositionOverride findTeleportablePositionOverride;
 
     /// <summary>
     /// Shows a visual teleport effect at the given locations
@@ -604,7 +604,7 @@ public class PlayerController : MonoBehaviour
             onShowTeleportEffect(oldPos, newPos);
         }
     }
-    public OnTeleport onShowTeleportEffect;
+    public event OnTeleport onShowTeleportEffect;
 
     /// <summary>
     /// Plays a teleport sound at the previous position
@@ -625,7 +625,7 @@ public class PlayerController : MonoBehaviour
             throw new UnityException("No delegates added for playing sound! PlayerController: " + name);
         }
     }
-    public OnTeleport onPlayTeleportSound;
+    public event OnTeleport onPlayTeleportSound;
 
     /// <summary>
     /// Updates variables depending on whether or not Merky is grounded.
@@ -662,7 +662,7 @@ public class PlayerController : MonoBehaviour
         onGroundedStateUpdated?.Invoke(Ground.grounded, Ground.groundedNormal);
     }
     public delegate void OnGroundedStateUpdated(bool grounded, bool groundedNormal);
-    public OnGroundedStateUpdated onGroundedStateUpdated;//called when grounded becomes true
+    public event OnGroundedStateUpdated onGroundedStateUpdated;//called when grounded becomes true
 
     /// <summary>
     /// Determines whether the given position is occupied or not
@@ -915,7 +915,7 @@ public class PlayerController : MonoBehaviour
     }
     //Used when you also need to know where the player tapped
     public delegate void OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
-    private OnPreTeleport _onPreTeleport;
+    private event OnPreTeleport _onPreTeleport;
     public event OnPreTeleport onPreTeleport
     {
         add
@@ -1015,7 +1015,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public delegate void OnDragGesture(Vector2 origPos, Vector2 newPos, bool finished);
-    public OnDragGesture onDragGesture;
+    public event OnDragGesture onDragGesture;
     /// <summary>
     /// Process a drag gesture
     /// </summary>

@@ -40,7 +40,7 @@ public class TimeManager : SavableMonoBehaviour
         }
     }
     public delegate void OnPauseChanged(bool paused);
-    public OnPauseChanged onPauseChanged;
+    public event OnPauseChanged onPauseChanged;
     private List<MonoBehaviour> pausers = new List<MonoBehaviour>();
 
     [SerializeField]

@@ -115,7 +115,7 @@ public class SplashScreenUpdater : MonoBehaviour
     }
 
     public delegate void OnSplashScreenFinished();
-    public OnSplashScreenFinished onSplashScreenFinished;
+    public event OnSplashScreenFinished onSplashScreenFinished;
 
     void onLastFadeFinished()
     {
