@@ -30,15 +30,14 @@ public class BalloonController : SavableMonoBehaviour
         ga.gravityScale = pingpong;
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this,
+        get => new SavableObject(this,
             "timeElapsed", timeElapsed
             );
-    }
-
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        timeElapsed = (float)savObj.data["timeElapsed"];
+        set
+        {
+            timeElapsed = (float)value.data["timeElapsed"];
+        }
     }
 }

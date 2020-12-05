@@ -196,17 +196,16 @@ public class SceneLoader : SavableMonoBehaviour
 
     #endregion
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this,
+        get => new SavableObject(this,
             "firstOpenGameStateId", firstOpenGameStateId,
             "lastOpenGameStateId", lastOpenGameStateId
             );
-    }
-
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        firstOpenGameStateId = (int)savObj.data["firstOpenGameStateId"];
-        lastOpenGameStateId = (int)savObj.data["lastOpenGameStateId"];
+        set
+        {
+            firstOpenGameStateId = (int)value.data["firstOpenGameStateId"];
+            lastOpenGameStateId = (int)value.data["lastOpenGameStateId"];
+        }
     }
 }

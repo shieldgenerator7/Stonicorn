@@ -274,20 +274,19 @@ public class ForceDashAbility : PlayerAbility
         }
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return base.getSavableObject().more(
+        get => base.CurrentState.more(
             "charge", Charge,
             "chargeDirection", ChargeDirection
             );
-    }
-
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        base.acceptSavableObject(savObj);
-        Charge = (float)savObj.data["charge"];
-        ChargeDirection = (Vector2)savObj.data["chargeDirection"];
-    }
+        set
+        {
+            base.CurrentState = value;
+            Charge = (float)value.data["charge"];
+            ChargeDirection = (Vector2)value.data["chargeDirection"];
+        }
+    }    
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {

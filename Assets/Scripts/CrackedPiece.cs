@@ -19,17 +19,16 @@ public class CrackedPiece : SavableMonoBehaviour
 
     public override string SpawnTag => spawnTag;
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this,
+        get => new SavableObject(this,
             "prefabName", prefabName,
             "spawnTag", spawnTag
             );
-    }
-
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        prefabName = (string)savObj.data["prefabName"];
-        spawnTag = (string)savObj.data["spawnTag"];
-    }
+        set
+        {
+            prefabName = (string)value.data["prefabName"];
+            spawnTag = (string)value.data["spawnTag"];
+        }
+    }    
 }

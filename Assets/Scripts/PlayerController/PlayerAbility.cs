@@ -171,16 +171,11 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
         Managers.Sound.playSound(soundEffect, oldPos);
     }
 
-    public override SavableObject getSavableObject()
-    {
-        return new SavableObject(this,
+    public override SavableObject CurrentState { 
+        get => new SavableObject(this,
             "upgradeLevel", upgradeLevel
             );
-    }
-
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        UpgradeLevel = (int)savObj.data["upgradeLevel"];
+        set => UpgradeLevel = (int)value.data["upgradeLevel"];
     }
 
     public SettingScope Scope => SettingScope.SAVE_FILE;

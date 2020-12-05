@@ -46,7 +46,7 @@ public class ObjectState
         soList = new List<SavableObject>();
         foreach (SavableMonoBehaviour smb in smbList)
         {
-            this.soList.Add(smb.getSavableObject());
+            this.soList.Add(smb.CurrentState);
         }
     }
     public void loadState()
@@ -79,7 +79,7 @@ public class ObjectState
                     throw new UnityException("Object " + go + " is missing non-spawnable script " + so.scriptType);
                 }
             }
-            smb.acceptSavableObject(so);
+            smb.CurrentState = so;
         }
     }
 

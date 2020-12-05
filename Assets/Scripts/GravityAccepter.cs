@@ -93,27 +93,29 @@ public class GravityAccepter : SavableMonoBehaviour
     public delegate void OnGravityChanged(Vector2 newGravity);
     public event OnGravityChanged onGravityChanged;
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        if (saveValues)
+        get
         {
-            return new SavableObject(this,
-                "acceptsGravity", AcceptsGravity,
-                "gravityScale", gravityScale
-                );
+            if (saveValues)
+            {
+                return new SavableObject(this,
+                    "acceptsGravity", AcceptsGravity,
+                    "gravityScale", gravityScale
+                    );
+            }
+            else
+            {
+                return new SavableObject(this);
+            }
         }
-        else
+        set
         {
-            return new SavableObject(this);
-        }
-    }
-
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        if (saveValues)
-        {
-            AcceptsGravity = (bool)savObj.data["acceptsGravity"];
-            gravityScale = (float)savObj.data["gravityScale"];
+            if (saveValues)
+            {
+                AcceptsGravity = (bool)value.data["acceptsGravity"];
+                gravityScale = (float)value.data["gravityScale"];
+            }
         }
     }
 }

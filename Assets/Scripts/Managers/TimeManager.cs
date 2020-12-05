@@ -131,15 +131,14 @@ public class TimeManager : SavableMonoBehaviour
             < (Time + offset - UnityEngine.Time.deltaTime) % duration;
 
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this,
+        get => new SavableObject(this,
             "time", Time
             );
-    }
-
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        Time = (float)savObj.data["time"];
+        set
+        {
+            Time = (float)value.data["time"];
+        }
     }
 }

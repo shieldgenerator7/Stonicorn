@@ -30,24 +30,27 @@ public class GameStatistics : SavableMonoBehaviour
         { "RewindPlayer", 0}//how many times the player used the rewind ability
     };
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        List<object> statParams = new List<object>();
-        foreach (KeyValuePair<string, int> stat in stats)
+        get
         {
-            statParams.Add(stat.Key);
-            statParams.Add(stat.Value);
+            List<object> statParams = new List<object>();
+            foreach (KeyValuePair<string, int> stat in stats)
+            {
+                statParams.Add(stat.Key);
+                statParams.Add(stat.Value);
+            }
+            return new SavableObject(this, statParams.ToArray());
         }
-        return new SavableObject(this, statParams.ToArray());
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        List<string> statNames = new List<string>(stats.Keys);
-        foreach (string statName in statNames)
+        set
         {
-            stats[statName] = Mathf.Max(stats[statName], (int)savObj.data[statName]);
+            List<string> statNames = new List<string>(stats.Keys);
+            foreach (string statName in statNames)
+            {
+                stats[statName] = Mathf.Max(stats[statName], (int)value.data[statName]);
+            }
+            printStats(false);
         }
-        printStats(false);
     }
 
     public void addOne(string counterName)

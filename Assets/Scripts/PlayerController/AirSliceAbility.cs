@@ -111,17 +111,16 @@ public class AirSliceAbility : PlayerAbility
         tsu.turnOn(true);
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return base.getSavableObject().more(
+        get => base.CurrentState.more(
             "AirPortsUsed", AirPortsUsed
             );
-    }
-
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        base.acceptSavableObject(savObj);
-        AirPortsUsed = (int)savObj.data["AirPortsUsed"];
+        set
+        {
+            base.CurrentState = value;
+            AirPortsUsed = (int)value.data["AirPortsUsed"];
+        }
     }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)

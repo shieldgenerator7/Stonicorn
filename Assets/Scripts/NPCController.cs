@@ -150,21 +150,22 @@ public class NPCController : SavableMonoBehaviour
         }
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this,
+        get => new SavableObject(this,
             "currentVoiceLineIndex", currentVoiceLineIndex,
             "playBackTime", Source.time,
             "lastPlayedCheckPointLineIndex", lastPlayedCheckPointLineIndex
             );
+        set
+        {
+            currentVoiceLineIndex = (int)value.data["currentVoiceLineIndex"];
+            float playBackTime = (float)value.data["playBackTime"];
+            setVoiceLine(currentVoiceLineIndex, playBackTime);
+            lastPlayedCheckPointLineIndex = (int)value.data["lastPlayedCheckPointLineIndex"];
+        }
     }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        currentVoiceLineIndex = (int)savObj.data["currentVoiceLineIndex"];
-        float playBackTime = (float)savObj.data["playBackTime"];
-        setVoiceLine(currentVoiceLineIndex, playBackTime);
-        lastPlayedCheckPointLineIndex = (int)savObj.data["lastPlayedCheckPointLineIndex"];
-    }
+    
 
     // Update is called once per frame
     void Update()

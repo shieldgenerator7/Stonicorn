@@ -289,17 +289,18 @@ public class HardMaterial : SavableMonoBehaviour, Blastable
     /// </summary>
     public delegate void HardCollision(float damageToSelf, float damageToOther, Vector2 contactPoint);
 
-    public override SavableObject getSavableObject()
+
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this,
+        get => new SavableObject(this,
             "integrity", integrity,
             "alreadyBroken", alreadyBroken
             );
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        integrity = (float)savObj.data["integrity"];
-        alreadyBroken = (bool)savObj.data["alreadyBroken"];
-        setIntegrity(integrity);
+        set
+        {
+            integrity = (float)value.data["integrity"];
+            alreadyBroken = (bool)value.data["alreadyBroken"];
+            setIntegrity(integrity);
+        }
     }
 }

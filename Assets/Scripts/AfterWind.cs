@@ -29,20 +29,20 @@ public class AfterWind : SavableMonoBehaviour
         }
         fadeEndTime = fadeStartTime + fadeOutDuration;
     }
-    public override SavableObject getSavableObject()
-    {//2018-02-22: copied from ElectricFieldController.getSavableObject()
-        return new SavableObject(this,
+    public override SavableObject CurrentState
+    {
+        get => new SavableObject(this,
             "windVector", windVector,
             "fadeOutDuration", fadeOutDuration,
             "fadeTime", (Time.time - fadeStartTime)
             );
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        windVector = (Vector2)savObj.data["windVector"];
-        fadeOutDuration = (float)savObj.data["fadeOutDuration"];
-        fadeStartTime = Time.time - (float)savObj.data["fadeTime"];
-        init();
+        set
+        {
+            windVector = (Vector2)value.data["windVector"];
+            fadeOutDuration = (float)value.data["fadeOutDuration"];
+            fadeStartTime = Time.time - (float)value.data["fadeTime"];
+            init();
+        }
     }
     public override bool IsSpawnedObject => true;
 

@@ -30,15 +30,15 @@ public class CactusController : Hazard
         }
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return base.getSavableObject().more(
+        get => base.CurrentState.more(
             "rooted", rooted
             );
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        base.acceptSavableObject(savObj);
-        Rooted = (bool)savObj.data["rooted"];
+        set
+        {
+            base.CurrentState = value;
+            Rooted = (bool)value.data["rooted"];
+        }
     }
 }

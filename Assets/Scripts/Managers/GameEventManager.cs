@@ -20,24 +20,27 @@ public class GameEventManager : SavableMonoBehaviour {
         }
     }
 
-    public override SavableObject getSavableObject()
-    {//2017-07-28: copied from Rigidbody2DLock.getSavableObject()
-        SavableObject so = new SavableObject(this);
-        int counter = 0;
-        foreach (string str in events)
-        {
-            so.data.Add("event" + counter, str);
-            counter++;
-        }
-        so.data.Add("eventCount", counter);
-        return so;
-    }
-    public override void acceptSavableObject(SavableObject savObj)
+    public override SavableObject CurrentState
     {
-        events = new List<string>();
-        for (int i = 0; i < (int)savObj.data["eventCount"]; i++)
+        get
         {
-            events.Add((string)savObj.data["event" + i]);
+            SavableObject so = new SavableObject(this);
+            int counter = 0;
+            foreach (string str in events)
+            {
+                so.data.Add("event" + counter, str);
+                counter++;
+            }
+            so.data.Add("eventCount", counter);
+            return so;
+        }
+        set
+        {
+            events = new List<string>();
+            for (int i = 0; i < (int)value.data["eventCount"]; i++)
+            {
+                events.Add((string)value.data["event" + i]);
+            }
         }
     }
 

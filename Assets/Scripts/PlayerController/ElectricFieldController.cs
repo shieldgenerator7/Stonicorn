@@ -39,27 +39,28 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
         particleController = GetComponentInChildren<ParticleSystemController>();
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this,
+        get => new SavableObject(this,
             "energy", energy,
             "energyToRangeRatio", energyToRangeRatio,
             "energyToSlowRatio", energyToSlowRatio,
             "maxForceResistance", maxForceResistance
             );
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        energy = (float)savObj.data["energy"];
-        energyToRangeRatio = (float)savObj.data["energyToRangeRatio"];
-        energyToSlowRatio = (float)savObj.data["energyToSlowRatio"];
-        maxForceResistance = (float)savObj.data["maxForceResistance"];
-        if (!friu)
+        set
         {
-            init();
+            energy = (float)value.data["energy"];
+            energyToRangeRatio = (float)value.data["energyToRangeRatio"];
+            energyToSlowRatio = (float)value.data["energyToSlowRatio"];
+            maxForceResistance = (float)value.data["maxForceResistance"];
+            if (!friu)
+            {
+                init();
+            }
+            addEnergy(0);
         }
-        addEnergy(0);
     }
+    
     public override bool IsSpawnedObject => true;
 
     public override string PrefabName => "ElectricField";

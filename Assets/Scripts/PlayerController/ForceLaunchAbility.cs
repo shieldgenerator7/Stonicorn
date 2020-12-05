@@ -277,19 +277,19 @@ public class ForceLaunchAbility : PlayerAbility
         }
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return base.getSavableObject().more(
+        get => base.CurrentState.more(
             "affectingVelocity", affectingVelocity,
             "currentVelocity", currentVelocity
             );
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        base.acceptSavableObject(savObj);
-        affectingVelocity = (bool)savObj.data["affectingVelocity"];
-        currentVelocity = (Vector2)savObj.data["currentVelocity"];
-        updateBouncingVisuals();
+        set
+        {
+            base.CurrentState=value;
+            affectingVelocity = (bool)value.data["affectingVelocity"];
+            currentVelocity = (Vector2)value.data["currentVelocity"];
+            updateBouncingVisuals();
+        }
     }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)

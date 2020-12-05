@@ -20,12 +20,9 @@ public abstract class Hazard : SavableMonoBehaviour
         }
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this);
-    }
-
-    public override void acceptSavableObject(SavableObject savObj)
-    {
+        get => new SavableObject(this);
+        set { }
     }
 }

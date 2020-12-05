@@ -185,26 +185,26 @@ public class BreakableWall : SavableMonoBehaviour, Blastable
         return explosionPos.distanceToObject(gameObject);
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this, "integrity", integrity);
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        Integrity = (int)savObj.data["integrity"];
-        //If it doesnt have a reference to its cracked pieces,
-        if (crackedPieces == null || ReferenceEquals(crackedPieces, null))
+        get => new SavableObject(this, "integrity", integrity);
+        set
         {
-            //Find the object
-            List<GameObject> gos = Managers.Object.getObjectsWithName(gameObject.name + "---");
-            if (gos.Count > 0)
+            Integrity = (int)value.data["integrity"];
+            //If it doesnt have a reference to its cracked pieces,
+            if (crackedPieces == null || ReferenceEquals(crackedPieces, null))
             {
-                crackedPieces = gos[0];
-            }
-            else
-            {
-                crackedPieces = null;
+                //Find the object
+                List<GameObject> gos = Managers.Object.getObjectsWithName(gameObject.name + "---");
+                if (gos.Count > 0)
+                {
+                    crackedPieces = gos[0];
+                }
+                else
+                {
+                    crackedPieces = null;
+                }
             }
         }
-    }
+    }    
 }

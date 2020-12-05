@@ -54,20 +54,20 @@ public class PowerConduit : SavableMonoBehaviour
         }
     }
 
-    public override SavableObject getSavableObject()
+    public override SavableObject CurrentState
     {
-        return new SavableObject(this, 
+        get => new SavableObject(this,
             "currentEnergyLevel", currentEnergyLevel
             );
-    }
-    public override void acceptSavableObject(SavableObject savObj)
-    {
-        currentEnergyLevel = (float)savObj.data["currentEnergyLevel"];
-        if (!lightEffectRenderer)
+        set
         {
-            initLightEffectRenderer();
+            currentEnergyLevel = (float)value.data["currentEnergyLevel"];
+            if (!lightEffectRenderer)
+            {
+                initLightEffectRenderer();
+            }
+            adjustEnergy(0);
         }
-        adjustEnergy(0);
     }
 
     void OnTriggerStay2D(Collider2D coll)
