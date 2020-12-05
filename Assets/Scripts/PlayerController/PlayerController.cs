@@ -732,15 +732,10 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     //And if it's a hidden area,
-                    if (go.CompareTag("NonTeleportableArea")
-                        || (go.transform.parent != null && go.transform.parent.gameObject.CompareTag("NonTeleportableArea")))
+                    if (go.CompareTag("NonTeleportableArea"))
                     {
-                        //And if it's not a trigger that reveals said hidden area,
-                        if (go.GetComponent<SecretAreaTrigger>() == null)
-                        {
-                            //Yep, it's occupied by a hidden area
-                            return true;
-                        }
+                        //Yep, it's occupied by a hidden area
+                        return true;
                     }
                 }
             }

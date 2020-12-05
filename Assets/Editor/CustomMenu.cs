@@ -41,6 +41,42 @@ public class CustomMenu
             }
         }
     }
+    [MenuItem("SG7/Editor/Refactor/Propagate HideableArea NonTeleportableArea Tag")]
+    public static void refactorHideableArea()
+    {
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene s = SceneManager.GetSceneAt(i);
+            if (s.isLoaded)
+            {
+                foreach (GameObject go in s.GetRootGameObjects())
+                {
+                    foreach (Transform tf in go.transform)
+                    {
+                        //Find the HiddenAreas
+                        if (tf.GetComponent<HiddenArea>())
+                        {
+                            foreach (Transform tf2 in tf)
+                            {
+                                //If it's a SecretAreaTrigger,
+                                //It needs to be teleportable
+                                if (tf2.GetComponent<SecretAreaTrigger>())
+                                {
+                                    tf2.gameObject.tag = "Untagged";
+                                }
+                                //Part of the hidden area,
+                                //Needs to be NOT teleportable
+                                else
+                                {
+                                    tf2.gameObject.tag = "NonTeleportableArea";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     [MenuItem("SG7/Editor/Toggle Merky Spawn Point %#`")]
     public static void callMerky()
