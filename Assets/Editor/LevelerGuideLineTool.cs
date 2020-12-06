@@ -15,8 +15,13 @@ class LevelerGuideLineTool : EditorTool
 
     GUIContent m_IconContent;
 
-    Dictionary<Transform, float> distances = new Dictionary<Transform, float>();
-    Dictionary<Transform, Vector2> directions = new Dictionary<Transform, Vector2>();
+    Dictionary<Transform, Vector2> positions = new Dictionary<Transform, Vector2>();
+    Vector2 center;
+    Vector2 xPos;
+    Vector2 yPos;
+    Vector2 clickPos;
+    Vector2 xPointDir = Vector2.right;
+    Vector2 yPointDir = Vector2.up;
 
     void OnEnable()
     {
@@ -36,82 +41,84 @@ class LevelerGuideLineTool : EditorTool
     // This is called for each window that your tool is active in. Put the functionality of your tool here.
     public override void OnToolGUI(EditorWindow window)
     {
+        bool mouseDown = Event.current.type == EventType.MouseDown;
+        bool mouseUp = Event.current.type == EventType.MouseUp;
+        if (mouseDown)
+        {
+            Debug.Log("CLICK");
+            positions.Clear();
+            foreach (Transform t in Selection.transforms)
+            {
+                positions.Add(t, t.position);
+            }
+            center = Vector2.zero;
+            GravityZone gz = GravityZone.getGravityZone(Tools.handlePosition);
+            if (gz)
+            {
+                center = gz.transform.position;
+            }
+            xPos = Tools.handlePosition;
+            yPos = Tools.handlePosition;
+            clickPos = Tools.handlePosition;
+            yPointDir = (clickPos - center).normalized;
+            xPointDir = yPointDir.PerpendicularRight();
+        }
+        if (mouseUp)
+        {
+            Debug.Log("UNCLICK");
+            positions.Clear();
+            xPos = Tools.handlePosition;
+            yPos = Tools.handlePosition;
+            clickPos = Tools.handlePosition;
+            yPointDir = (clickPos - center).normalized;
+            xPointDir = yPointDir.PerpendicularRight();
+        }
+
         EditorGUI.BeginChangeCheck();
 
-        Vector2 center = GravityZone.getGravityZone(Tools.handlePosition).transform.position;
-
-        //Distances
-        distances.Clear();
-        foreach (Transform transform in Selection.transforms)
+        using (new Handles.DrawingScope(Handles.xAxisColor))
         {
-            distances.Add(transform, Vector2.Distance(transform.position, center));
+            xPos = Handles.Slider(xPos, xPointDir);
         }
-        //Directions
-        directions.Clear();
-        foreach (Transform transform in Selection.transforms)
+        using (new Handles.DrawingScope(Handles.yAxisColor))
         {
-            directions.Add(transform, ((Vector2)transform.position - center).normalized);
-        }
-
-        Vector3 position = Tools.handlePosition;
-        Vector3 verticalPos = Tools.handlePosition;
-
-        Transform targetTransform = ((GameObject)target).transform;
-
-        using (new Handles.DrawingScope(Color.green))
-        {
-            position = Handles.Slider(
-                position,
-                targetTransform.right
-                );
-        }
-        using (new Handles.DrawingScope(Color.red))
-        {
-            verticalPos = Handles.Slider(
-                verticalPos,
-                targetTransform.transform.up
-                );
+            yPos = Handles.Slider(yPos, yPointDir);
         }
 
         if (EditorGUI.EndChangeCheck())
         {
-            Vector3 delta = position - Tools.handlePosition;
-            Vector3 verticalDelta = verticalPos - Tools.handlePosition;
-            float verticalMag = verticalDelta.magnitude;
-            float sign =
-                (
-                    Vector2.Distance(targetTransform.position + verticalDelta, center)
-                    >
-                    Vector2.Distance(targetTransform.position, center)
-                )
-                ? 1
-                : -1;
+            Vector2 xDir = xPos - clickPos;
+            Vector2 yDir = yPos - clickPos;
+            float xMag = xDir.magnitude;
+            float yMag = yDir.magnitude;
+            Vector2 delta = new Vector2(
+                 xMag * Mathf.Sign(Vector2.Dot(xDir, xPointDir)),
+                 yMag * Mathf.Sign(Vector2.Dot(yDir, yPointDir))
+                );
+            Debug.Log("delta: " + delta);
 
-            Undo.RecordObjects(Selection.transforms, "Move Object along Leveler Guide Lines");
+            Undo.RecordObjects(
+                Selection.transforms,
+                "Move w/ Radial Gravity"
+                );
 
-            foreach (var transform in Selection.transforms)
+            foreach (Transform transform in Selection.transforms)
             {
-                if (delta.magnitude != 0)
-                {
-                    transform.position += delta;
-                    Vector2 direction = ((Vector2)transform.position - center).normalized;
-                    transform.up = direction;
-                    transform.position = direction * distances[transform] + center;
-                }
-                if (verticalDelta.magnitude != 0)
-                {
-                    //transform.position += verticalDelta;
-                    transform.position =
-                        directions[transform]
-                        * (
-                            distances[transform]
-                            + (verticalMag * sign)
-                        )
-                        + center
-                        ;
-                    transform.up = directions[transform];
-                }
+                Vector2 direction = (positions[transform] - center).normalized;
+                float distance = Vector2.Distance(positions[transform], center);
+
+                //delta x
+                transform.position = positions[transform]
+                    + (xPointDir * delta.x);
+                direction = ((Vector2)transform.position - center).normalized;
+
+                //delta y
+                distance += delta.y;
+
+                //composite
+                transform.up = direction;
+                transform.position = direction * distance + center;
             }
         }
-    }
+    }   
 }
