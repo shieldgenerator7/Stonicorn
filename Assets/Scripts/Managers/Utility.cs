@@ -96,6 +96,17 @@ public static class Utility
         => new Vector3(v.x, y, v.z);
     public static Vector3 setZ(this Vector3 v, float z)
         => new Vector3(v.x, v.y, z);
+
+public static Vector2 travelAlongCircle(this Vector2 pos, Vector2 center, float distance)
+{
+    //2020-12-05: copied from http://answers.unity.com/answers/572675/view.html
+    Vector3 axis = Vector3.back;
+    Vector2 dir = pos - center;
+    float circumference = 2.0f * Mathf.PI * dir.magnitude;
+    float angle = distance / circumference * 360.0f;
+    dir = Quaternion.AngleAxis(angle, axis) * dir;
+    return dir + center;
+}
     #endregion
 
     #region Rigidbody2D Extension Methods

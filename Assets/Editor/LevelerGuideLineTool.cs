@@ -108,8 +108,10 @@ class LevelerGuideLineTool : EditorTool
                 float distance = Vector2.Distance(positions[transform], center);
 
                 //delta x
-                transform.position = positions[transform]
-                    + (xPointDir * delta.x);
+                transform.position = positions[transform].travelAlongCircle(
+                    center,
+                    delta.x
+                    );
                 direction = ((Vector2)transform.position - center).normalized;
 
                 //delta y
