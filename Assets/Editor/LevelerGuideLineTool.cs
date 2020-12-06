@@ -41,6 +41,14 @@ class LevelerGuideLineTool : EditorTool
     // This is called for each window that your tool is active in. Put the functionality of your tool here.
     public override void OnToolGUI(EditorWindow window)
     {
+        if (clickPos == Vector2.zero)
+        {
+            xPos = Tools.handlePosition;
+            yPos = Tools.handlePosition;
+            clickPos = Tools.handlePosition;
+            yPointDir = (clickPos - center).normalized;
+            xPointDir = yPointDir.PerpendicularRight();
+        }
         bool mouseDown = Event.current.type == EventType.MouseDown;
         bool mouseUp = Event.current.type == EventType.MouseUp;
         if (mouseDown)
