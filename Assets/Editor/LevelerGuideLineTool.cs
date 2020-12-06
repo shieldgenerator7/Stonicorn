@@ -31,6 +31,16 @@ class LevelerGuideLineTool : EditorTool
             text = "Leveler Guide Line Tool",
             tooltip = "Leveler Guide Line Tool"
         };
+        Selection.selectionChanged -= updateVars;
+        Selection.selectionChanged += updateVars;
+    }
+    void updateVars()
+    {
+        xPos = Tools.handlePosition;
+        yPos = Tools.handlePosition;
+        clickPos = Tools.handlePosition;
+        yPointDir = (clickPos - center).normalized;
+        xPointDir = yPointDir.PerpendicularRight();
     }
 
     public override GUIContent toolbarIcon
@@ -43,11 +53,7 @@ class LevelerGuideLineTool : EditorTool
     {
         if (clickPos == Vector2.zero)
         {
-            xPos = Tools.handlePosition;
-            yPos = Tools.handlePosition;
-            clickPos = Tools.handlePosition;
-            yPointDir = (clickPos - center).normalized;
-            xPointDir = yPointDir.PerpendicularRight();
+            updateVars();
         }
         bool mouseDown = Event.current.type == EventType.MouseDown;
         bool mouseUp = Event.current.type == EventType.MouseUp;
@@ -65,21 +71,13 @@ class LevelerGuideLineTool : EditorTool
             {
                 center = gz.transform.position;
             }
-            xPos = Tools.handlePosition;
-            yPos = Tools.handlePosition;
-            clickPos = Tools.handlePosition;
-            yPointDir = (clickPos - center).normalized;
-            xPointDir = yPointDir.PerpendicularRight();
+            updateVars();
         }
         if (mouseUp)
         {
             Debug.Log("UNCLICK");
             positions.Clear();
-            xPos = Tools.handlePosition;
-            yPos = Tools.handlePosition;
-            clickPos = Tools.handlePosition;
-            yPointDir = (clickPos - center).normalized;
-            xPointDir = yPointDir.PerpendicularRight();
+            updateVars();
         }
 
         EditorGUI.BeginChangeCheck();
@@ -130,5 +128,5 @@ class LevelerGuideLineTool : EditorTool
                 transform.position = direction * distance + center;
             }
         }
-    }   
+    }
 }
