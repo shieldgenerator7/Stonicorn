@@ -875,7 +875,10 @@ public class PlayerController : MonoBehaviour
             //Teleport
             teleport(newPos);
             //Save the game state
-            Managers.Rewind.Save();
+            if (Ground.GroundedPrev)
+            {
+                Managers.Rewind.Save();
+            }
             //If Merky is in a checkpoint,
             if (inCheckPoint)
             {

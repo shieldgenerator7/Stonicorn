@@ -127,6 +127,8 @@ public class SavableObject
                 return typeof(GameStatistics);
             case "SceneLoader":
                 return typeof(SceneLoader);
+            case "GroundChecker":
+                return typeof(GroundChecker);
             case "PlayerAbility":
                 return typeof(PlayerAbility);
             case "TeleportAbility":

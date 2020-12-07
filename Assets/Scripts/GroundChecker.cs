@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(GravityAccepter))]
-public class GroundChecker : MonoBehaviour
+public class GroundChecker : SavableMonoBehaviour
 {
     [Header("Settings")]
     [Range(0, 0.5f)]
@@ -142,5 +142,26 @@ public class GroundChecker : MonoBehaviour
         }
         //Else, There is no ground in the given direction
         return false;
+    }
+
+    public override SavableObject CurrentState
+    {
+        get => new SavableObject(this,
+            "Grounded", Grounded,
+            "GroundedNormal", GroundedNormal,
+            "GroundedAbility", GroundedAbility,
+            "GroundedPrev", GroundedPrev,
+            "GroundedNormalPrev", GroundedNormalPrev,
+            "GroundedAbilityPrev", GroundedAbilityPrev
+            );
+        set
+        {
+            Grounded = value.Bool("Grounded");
+            GroundedNormal = value.Bool("GroundedNormal");
+            GroundedAbility = value.Bool("GroundedAbility");
+            GroundedPrev = value.Bool("GroundedPrev");
+            GroundedNormalPrev = value.Bool("GroundedNormalPrev");
+            GroundedAbilityPrev = value.Bool("GroundedAbilityPrev");
+        }
     }
 }
