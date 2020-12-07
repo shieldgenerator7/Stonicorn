@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(GravityAccepter))]
@@ -53,91 +54,68 @@ public class GroundChecker : MonoBehaviour
     //
     //Grounded state variables
     //
-    internal bool grounded { get; private set; }//true if grounded at all
-    public bool Grounded
-    {
-        get
-        {
-            GroundedPrev = grounded;
-            grounded = GroundedNormal;
-            //If it's grounded normally,
-            if (grounded)
-            {
-                //It's not going to even check the abilities
-                GroundedAbilityPrev = groundedAbility;
-                groundedAbility = false;
-            }
-            else
-            {
-                //Else, check the abilities
-                grounded = GroundedAbility;
-            }
-            updateLastGroundedTime(grounded);
-            return grounded;
-        }
-    }
+    /// <summary>
+    /// True if grounded at all
+    /// </summary>
+    public bool Grounded { get; private set; }
 
-    public bool groundedNormal { get; private set; } = true;//true if grounded to the direction of gravity
-    public bool GroundedNormal
-    {
-        get
-        {
-            GroundedNormalPrev = groundedNormal;
-            groundedNormal = isGroundedInDirection(Gravity.Gravity);
-            updateLastGroundedTime(groundedNormal);
-            return groundedNormal;
-        }
-    }
+    /// <summary>
+    /// True if grounded in the direction of gravity
+    /// </summary>
+    public bool GroundedNormal { get; private set; }
 
-    private bool groundedAbility = false;//true if grounded to a wall
-    public bool GroundedAbility
-    {
-        get
-        {
-            GroundedAbilityPrev = groundedAbility;
-            groundedAbility = false;
-            //Check isGroundedCheck delegates
-            if (isGroundedCheck != null)
-            {
-                foreach (IsGroundedCheck igc in isGroundedCheck.GetInvocationList())
-                {
-                    bool result = igc.Invoke();
-                    //If at least 1 returns true,
-                    if (result == true)
-                    {
-                        //Merky is grounded
-                        groundedAbility = true;
-                        break;
-                    }
-                }
-            }
-            updateLastGroundedTime(groundedAbility);
-            return groundedAbility;
-        }
-    }
+    /// <summary>
+    /// True if an ability says it's grounded,
+    /// such as to a wall or after a swap
+    /// </summary>
+    public bool GroundedAbility { get; private set; }
+
     public delegate bool IsGroundedCheck();
     public event IsGroundedCheck isGroundedCheck;
 
     //Grounded Previously
-    private bool groundedPrev;
-    public bool GroundedPrev
-    {
-        get { return groundedPrev; }
-        private set { groundedPrev = value; }
-    }
+    public bool GroundedPrev { get; private set; }
     //Grounded Previously in gravity direction
-    private bool groundedNormalPrev;
-    public bool GroundedNormalPrev
-    {
-        get { return groundedNormalPrev; }
-        private set { groundedNormalPrev = value; }
-    }
+    public bool GroundedNormalPrev { get; private set; }
     //Grounded Previously by an ability
-    private bool groundedAbilityPrev;
-    public bool GroundedAbilityPrev
+    public bool GroundedAbilityPrev { get; private set; }
+
+    public void checkGroundedState()
     {
-        get { return groundedAbilityPrev; }
-        private set { groundedAbilityPrev = value; }
+        //Grounded at all
+        GroundedPrev = Grounded;
+        checkGroundedStateNormal();
+        Grounded = GroundedNormal;
+        //If it's grounded normally,
+        if (Grounded)
+        {
+            //It's not going to even check the abilities
+            GroundedAbilityPrev = GroundedAbility;
+            GroundedAbility = false;
+        }
+        else
+        {
+            //Else, check the abilities
+            checkGroundedStateAbility();
+            Grounded = GroundedAbility;
+        }
+        updateLastGroundedTime(Grounded);
+    }
+    private void checkGroundedStateNormal()
+    {
+        GroundedNormalPrev = GroundedNormal;
+        GroundedNormal = isGroundedInDirection(Gravity.Gravity);
+    }
+    private void checkGroundedStateAbility()
+    {
+        GroundedAbilityPrev = GroundedAbility;
+        if (isGroundedCheck != null)
+        {
+            //If at least 1 delegate returns true,
+            //Merky is grounded
+            GroundedAbility = isGroundedCheck.GetInvocationList().ToList()
+                .Any(del => ((IsGroundedCheck)del).Invoke());
+        }
     }
 
     /// <summary>

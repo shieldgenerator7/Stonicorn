@@ -301,10 +301,11 @@ public class PlayerController : MonoBehaviour
             //(such as the first grounded frame after a teleport)
             if (shouldPauseMovement)
             {
+                Ground.checkGroundedState();
                 //And Merky is grounded,
                 if (Ground.Grounded)
                 {
-                    //Updated grounded state
+                    //Update grounded state
                     updateGroundedState();
                     //Turn off shouldPauseMovement
                     shouldPauseMovement = false;
@@ -635,6 +636,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void updateGroundedState()
     {
+        Ground.checkGroundedState();
         //If Merky is grounded,
         if (Ground.Grounded)
         {
@@ -659,7 +661,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         //Grounded delegates
-        onGroundedStateUpdated?.Invoke(Ground.grounded, Ground.groundedNormal);
+        onGroundedStateUpdated?.Invoke(Ground.Grounded, Ground.GroundedNormal);
     }
     public delegate void OnGroundedStateUpdated(bool grounded, bool groundedNormal);
     public event OnGroundedStateUpdated onGroundedStateUpdated;//called when grounded becomes true
