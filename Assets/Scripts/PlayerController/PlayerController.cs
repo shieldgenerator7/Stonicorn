@@ -205,6 +205,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!coll2D.isTrigger)
         {
+            updateGroundedState();
             checkMovementPause(true);//first grounded frame after teleport
         }
     }
@@ -227,6 +228,7 @@ public class PlayerController : MonoBehaviour
         {
             //Grant gravity immunity
             checkMovementPause(true);//first grounded frame after teleport
+            updateGroundedState();
         }
     }
 
