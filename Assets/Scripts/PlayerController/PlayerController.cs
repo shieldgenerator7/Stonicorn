@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour
         if (coll2D.isSolid())
         {
             updateGroundedState();
-            checkMovementPause(true);//first grounded frame after teleport
+            checkMovementPause();//first grounded frame after teleport
         }
     }
 
@@ -229,7 +229,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 //Grant gravity immunity
-                checkMovementPause(true);//first grounded frame after teleport
+                checkMovementPause();//first grounded frame after teleport
             }
         }
     }
@@ -296,40 +296,19 @@ public class PlayerController : MonoBehaviour
     /// Turns movement pausing on or off, if conditions are right
     /// </summary>
     /// <param name="checkToTurnOn">Whether to check if should be turned on</param>
-    private void checkMovementPause(bool checkToTurnOn)
+    private void checkMovementPause()
     {
-        //If the caller wants it turned on,
-        if (checkToTurnOn)
+        //And movement should be paused,
+        //(such as the first grounded frame after a teleport)
+        if (shouldPauseMovement)
         {
-            //And movement should be paused,
-            //(such as the first grounded frame after a teleport)
-            if (shouldPauseMovement)
+            //And Merky is grounded,
+            if (Ground.Grounded)
             {
-                Ground.checkGroundedState();
-                //And Merky is grounded,
-                if (Ground.Grounded)
-                {
-                    //Update grounded state
-                    updateGroundedState();
-                    //Turn off shouldPauseMovement
-                    shouldPauseMovement = false;
-                    //Pause Movement
-                    MovementPaused = true;
-                }
-            }
-        }
-        //Else if the caller wants it turned off,
-        else
-        {
-            //And it's currently on,
-            if (MovementPaused)
-            {
-                //And the movement pause time has expired,
-                if (Time.unscaledTime >= pauseMovementStartTime + pauseMovementDuration)
-                {
-                    //Turn off movement pausing
-                    MovementPaused = false;
-                }
+                //Turn off shouldPauseMovement
+                shouldPauseMovement = false;
+                //Pause Movement
+                MovementPaused = true;
             }
         }
     }
@@ -458,10 +437,6 @@ public class PlayerController : MonoBehaviour
         //Check grounded state
         //have to check it again because state has changed
         updateGroundedState();
-
-        //reset the ground check trigger's offset to zero,
-        //so Unity knows to trigger OnTriggerEnter2D() again in certain cases
-        groundedTrigger.offset = Vector2.zero;
 
         //On Teleport Effects
         onTeleport?.Invoke(oldPos, newPos);
