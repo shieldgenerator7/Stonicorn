@@ -174,6 +174,16 @@ public static Vector2 travelAlongCircle(this Vector2 pos, Vector2 center, float 
         return coll2d.gameObject == Managers.Player.gameObject
             && !coll2d.isTrigger;
     }
+    /// <summary>
+    /// Returns true if the collider can be stood on,
+    /// i.e. is not a trigger
+    /// </summary>
+    /// <param name="coll2d"></param>
+    /// <returns></returns>
+    public static bool isSolid(this Collider2D coll2d)
+    {
+        return !coll2d.isTrigger;
+    }
 
     public static bool isSpawnedObject(this GameObject go)
     {

@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="coll2D"></param>
     private void OnTriggerEnter2D(Collider2D coll2D)
     {
-        if (!coll2D.isTrigger)
+        if (coll2D.isSolid())
         {
             updateGroundedState();
             checkMovementPause(true);//first grounded frame after teleport
@@ -216,19 +216,21 @@ public class PlayerController : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //If collided with a Hazard,
-        Hazard hazard = collision.gameObject.GetComponent<Hazard>();
-        if (hazard && hazard.Hazardous)
+        if (collision.collider.isSolid())
         {
-            //Take damage (and rewind)
-            forceRewindHazard(hazard.DamageDealt, collision.contacts[0].point);
-        }
-        //Else if collided with stand-on-able object,
-        else if (!collision.collider.isTrigger)
-        {
-            //Grant gravity immunity
-            checkMovementPause(true);//first grounded frame after teleport
             updateGroundedState();
+            //If collided with a Hazard,
+            Hazard hazard = collision.gameObject.GetComponent<Hazard>();
+            if (hazard && hazard.Hazardous)
+            {
+                //Take damage (and rewind)
+                forceRewindHazard(hazard.DamageDealt, collision.contacts[0].point);
+            }
+            else
+            {
+                //Grant gravity immunity
+                checkMovementPause(true);//first grounded frame after teleport
+            }
         }
     }
 
