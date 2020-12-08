@@ -22,7 +22,54 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Whether or not the player is inside a checkpoint
     /// </summary>
-    public bool InCheckPoint { get; set; }
+    public bool InCheckPoint
+    {
+        set
+        {
+            if (value)
+            {
+                Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
+                Teleport.overrideTeleportPosition += checkCheckPointGhosts;
+                Teleport.onTeleport -= updateCheckPointCheckers;
+                Teleport.onTeleport += updateCheckPointCheckers;
+            }
+            else
+            {
+                Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
+                Teleport.onTeleport -= updateCheckPointCheckers;
+            }
+        }
+    }
+    private Vector2 checkCheckPointGhosts(Vector2 pos, Vector2 tapPos)
+    {
+        CheckPointChecker checkPoint = Managers.ActiveCheckPoints
+            .Find(cpc => cpc.checkGhostActivation(pos));
+        if (checkPoint)
+        {
+            Vector2 telepadPos = checkPoint.getTelepadPosition(CheckPointChecker.current);
+            Vector2 foundPos = Teleport.findTeleportablePosition(telepadPos, telepadPos);
+            if (checkPoint.GetComponent<Collider2D>().OverlapPoint(foundPos))
+            {
+                return foundPos;
+            }
+        }
+        return Vector2.zero;
+    }
+    private void updateCheckPointCheckers(Vector2 oldPos, Vector2 newPos)
+    {
+        //If teleport to other checkpoint,
+        if ((oldPos - newPos).magnitude > Teleport.Range * 2)
+        {
+            //Move the camera to Merky's center
+            Managers.Camera.recenter();
+        }
+        //If teleport within same checkpoint,
+        else
+        {
+            //Reposition checkpoint previews
+            CheckPointChecker.readjustCheckPointGhosts(transform.position);
+        }
+    }
 
     //
     // Movement Pausing Variables
@@ -316,7 +363,7 @@ public class PlayerController : MonoBehaviour
         //Play Sound
         playTeleportSound(oldPos, newPos);
     }
-    
+
     /// <summary>
     /// Call this to force Merky to rewind due to hitting a hazard
     /// </summary>

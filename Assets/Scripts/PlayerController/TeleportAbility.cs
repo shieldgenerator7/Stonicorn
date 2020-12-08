@@ -182,11 +182,10 @@ public class TeleportAbility : PlayerAbility
     /// </summary>
     /// <param name="targetPos">The ideal position to teleport to</param>
     /// <returns>targetPos if it is teleportable, else the closest teleportable position to it</returns>
-    public Vector3 findTeleportablePosition(Vector2 targetPos)
+    public Vector3 findTeleportablePosition(Vector2 oldPos, Vector2 targetPos)
     {
         //TSFS: Teleport Spot Finding System
         Vector2 newPos = targetPos;
-        Vector2 oldPos = transform.position;
         //If new position is not in range,
         if ((newPos - (Vector2)transform.position).sqrMagnitude > range * range)
         {
@@ -292,6 +291,7 @@ public class TeleportAbility : PlayerAbility
         return newPos;
     }
     public delegate Vector2 FindTeleportablePositionOverride(Vector2 rangedPos, Vector2 tapPos);
+    public event FindTeleportablePositionOverride overrideTeleportPosition;
     public event FindTeleportablePositionOverride findTeleportablePositionOverride;
 
     /// <summary>
@@ -436,45 +436,38 @@ public class TeleportAbility : PlayerAbility
         if (TeleportReady)
         {
             //Get pre-teleport position
-            Vector3 oldPos = transform.position;
-            //If Merky is in a checkpoint,
-            if (playerController.InCheckPoint)
+            Vector2 oldPos = transform.position;
+            //Override target position
+            Vector2 targetPos = pos;
+            if (overrideTeleportPosition != null)
             {
-                //And the tap pos is on a checkpoint preview,
-                foreach (CheckPointChecker cpc in FindObjectsOfType<CheckPointChecker>())
+                Vector2 newPosOverride = Vector2.zero;
+                foreach (FindTeleportablePositionOverride ftpo in overrideTeleportPosition.GetInvocationList())
                 {
-                    if (cpc.checkGhostActivation(pos))
+                    newPosOverride = ftpo.Invoke(pos, pos);
+                    //The first one that returns a result
+                    //that's not (0,0) is accepted
+                    if (newPosOverride != Vector2.zero)
                     {
-                        //Teleport to that checkpoint
-                        //Get post-teleport position inside of new checkpoint
-                        Vector3 newPosCPC = cpc.getTelepadPosition(CheckPointChecker.current);
-                        //Teleport
-                        teleport(newPosCPC);
-                        //Move the camera to Merky's center
-                        Managers.Camera.recenter();
-                        //Activate the new checkpoint
-                        cpc.trigger();
-                        //Save the game state
-                        Managers.Rewind.Save();
-                        //Don't process the rest of this method
-                        return;
+                        targetPos = newPosOverride;
+                        break;
                     }
                 }
             }
+            //If no override was found,
+            if (targetPos == pos)
+            {
+                //Find a teleportable spot
+                targetPos = findTeleportablePosition(oldPos, targetPos);
+            }
             //Get post-teleport position
-            Vector3 newPos = findTeleportablePosition(pos);
+            Vector3 newPos = targetPos;
             //Teleport
             teleport(newPos);
             //Save the game state
             if (playerController.Ground.GroundedPrev)
             {
                 Managers.Rewind.Save();
-            }
-            //If Merky is in a checkpoint,
-            if (playerController.InCheckPoint)
-            {
-                //Reposition checkpoint previews
-                CheckPointChecker.readjustCheckPointGhosts(transform.position);
             }
         }
         //Teleport on cooldown
@@ -487,7 +480,7 @@ public class TeleportAbility : PlayerAbility
     public void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
         //Show a preview of where Merky will teleport
-        Vector2 futurePos = findTeleportablePosition(pos);
+        Vector2 futurePos = findTeleportablePosition(transform.position, pos);
         //Future Projection
         futureProjection.SetActive(true);
         futureProjection.transform.rotation = transform.rotation;
