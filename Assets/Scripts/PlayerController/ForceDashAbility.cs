@@ -200,7 +200,7 @@ public class ForceDashAbility : PlayerAbility
             return;
         }
         //If collision is head on,
-        Vector2 velocity = playerController.Velocity;
+        Vector2 velocity = rb2d.velocity;
         Vector2 surfaceNormal = collision.GetContact(0).normal;
         float angle = Vector2.Angle(-velocity, surfaceNormal);
         //If it cant bounce and the hit object is not movable,

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -28,7 +29,6 @@ public class PlayerController : MonoBehaviour
     //Timer Processing Vars
     //
     private float pauseMovementStartTime = -1;//when Merky last had his movement paused
-    private float lastTeleportTime;//the last time that Merky teleported
     private float lastAutoTeleportTime;//the last time that Merky auto teleported using the hold gesture
 
     private float exhaustCoolDownTime;//the current cool down time (sec) for teleporting while exhausted
@@ -40,11 +40,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public bool TeleportReady
     {
-        get { return Time.unscaledTime >= teleportTime; }
+        get => Time.unscaledTime >= teleportTime;
         set
         {
-            bool teleportReady = value;
-            if (teleportReady)
+            if (value)
             {
                 teleportTime = 0;
             }
@@ -64,7 +63,7 @@ public class PlayerController : MonoBehaviour
     private float range = 3;//how far Merky can currently teleport
     public float Range
     {
-        get { return range; }
+        get => range;
         set
         {
             //Range cannot be zero
@@ -77,12 +76,10 @@ public class PlayerController : MonoBehaviour
     public delegate void OnRangeChanged(float range);
     public event OnRangeChanged onRangeChanged;
 
-    private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
-    public bool InCheckPoint
-    {
-        get { return inCheckPoint; }
-        set { inCheckPoint = value; }
-    }
+    /// <summary>
+    /// Whether or not the player is inside a checkpoint
+    /// </summary>
+    public bool InCheckPoint { get; set; }
 
     //
     // Movement Pausing Variables
@@ -110,46 +107,11 @@ public class PlayerController : MonoBehaviour
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
     private Rigidbody2D rb2d;
     public float Speed
-    {
-        get
-        {
-            float speed = rb2d.velocity.magnitude;
-            return speed;
-        }
-    }
-    public Vector2 Velocity
-    {
-        get
-        {
-            Vector2 velocity = rb2d.velocity;
-            return velocity;
-        }
-    }
-    private GravityAccepter gravity;
-    public GravityAccepter Gravity
-    {
-        get
-        {
-            if (gravity == null)
-            {
-                gravity = GetComponent<GravityAccepter>();
-            }
-            return gravity;
-        }
-    }
+        => rb2d.velocity.magnitude;
 
-    private GroundChecker ground;
-    public GroundChecker Ground
-    {
-        get
-        {
-            if (ground == null)
-            {
-                ground = GetComponent<GroundChecker>();
-            }
-            return ground;
-        }
-    }
+    public GravityAccepter Gravity { get; private set; }
+
+    public GroundChecker Ground { get; private set; }
 
     private TeleportAbility tpa;
 
@@ -157,20 +119,8 @@ public class PlayerController : MonoBehaviour
     /// Returns a list of active abilities
     /// </summary>
     public List<PlayerAbility> ActiveAbilities
-    {
-        get
-        {
-            List<PlayerAbility> activeAbilities = new List<PlayerAbility>();
-            foreach (PlayerAbility ability in GetComponents<PlayerAbility>())
-            {
-                if (ability.enabled)
-                {
-                    activeAbilities.Add(ability);
-                }
-            }
-            return activeAbilities;
-        }
-    }
+        => GetComponents<PlayerAbility>().ToList()
+            .FindAll(ability => ability.enabled);
 
     public void abilityActivated(PlayerAbility ability, bool active)
     {
@@ -186,6 +136,8 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
         tpa = GetComponent<TeleportAbility>();
+        Ground = GetComponent<GroundChecker>();
+        Gravity = GetComponent<GravityAccepter>();
         //Register the delegates
         Managers.Rewind.onRewindFinished += pauseMovementAfterRewind;
         //Estimate the halfWidth
@@ -260,11 +212,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public bool MovementPaused
     {
-        get { return pauseMovementStartTime >= 0; }
+        get => pauseMovementStartTime >= 0;
         set
         {
-            bool pauseMovement = value;
-            if (pauseMovement)
+            if (value)
             {
                 if (pauseMovementStartTime < 0)
                 {
@@ -852,7 +803,7 @@ public class PlayerController : MonoBehaviour
         if (TeleportReady)
         {
             //If Merky is in a checkpoint,
-            if (inCheckPoint)
+            if (InCheckPoint)
             {
                 //And the tap pos is on a checkpoint preview,
                 foreach (CheckPointChecker cpc in FindObjectsOfType<CheckPointChecker>())
@@ -880,7 +831,7 @@ public class PlayerController : MonoBehaviour
                 Managers.Rewind.Save();
             }
             //If Merky is in a checkpoint,
-            if (inCheckPoint)
+            if (InCheckPoint)
             {
                 //Reposition checkpoint previews
                 CheckPointChecker.readjustCheckPointGhosts(transform.position);
