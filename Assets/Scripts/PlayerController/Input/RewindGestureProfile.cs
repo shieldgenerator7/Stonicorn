@@ -17,6 +17,10 @@ public class RewindGestureProfile : GestureProfile
         //Hide Previous Teleport Points
         Managers.PlayerRewind.showPlayerGhosts(false);
     }
+    public override void processHoverGesture(Vector2 curMPWorld)
+    {
+        Managers.PlayerRewind.processHoverGesture(curMPWorld);
+    }
     public override void processTapGesture(Vector3 curMPWorld)
     {
         Managers.PlayerRewind.processTapGesture(curMPWorld);

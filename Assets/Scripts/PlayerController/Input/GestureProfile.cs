@@ -12,6 +12,8 @@ public class GestureProfile
     /// </summary>
     public virtual void deactivate() { }
 
+    public virtual void processHoverGesture(Vector2 curMPWorld) { }
+
     public virtual void processTapGesture(Vector3 curMPWorld)
     {
         if (Managers.Rewind.Rewinding)

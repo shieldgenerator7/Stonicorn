@@ -21,24 +21,6 @@ public class PlayerRewindController : MonoBehaviour
         Managers.Rewind.onRewindState += hideOldRepresentations;
     }
 
-    private void Update()
-    {
-        Vector2 mouseOverPos = Utility.ScreenToWorldPoint(Input.mousePosition);
-        GameState gs = getGameStateAtPosition(mouseOverPos);
-        if (gs != null)
-        {
-            //Show selection highlighter
-            selectionHighlighter.SetActive(true);
-            selectionHighlighter.transform.localScale = transform.localScale;
-            selectionHighlighter.transform.position = gs.Merky.position;
-        }
-        else
-        {
-            //Hide selection highlighter
-            selectionHighlighter.SetActive(false);
-        }
-    }
-
     #region Player Ghosts
     /// <summary>
     /// Shows the game state representations
@@ -262,6 +244,23 @@ public class PlayerRewindController : MonoBehaviour
     #endregion
 
     #region Input Processing
+
+    public void processHoverGesture(Vector3 pos)
+    {
+        GameState gs = getGameStateAtPosition(pos);
+        if (gs != null)
+        {
+            //Show selection highlighter
+            selectionHighlighter.SetActive(true);
+            selectionHighlighter.transform.localScale = transform.localScale;
+            selectionHighlighter.transform.position = gs.Merky.position;
+        }
+        else
+        {
+            //Hide selection highlighter
+            selectionHighlighter.SetActive(false);
+        }
+    }
     /// <summary>
     /// Processes the tap gesture at the given position
     /// </summary>
@@ -293,6 +292,7 @@ public class PlayerRewindController : MonoBehaviour
         Managers.Camera.ZoomLevel = defaultZoomLevel;
         Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
         showPlayerGhosts(false);
+        selectionHighlighter.SetActive(false);
 
         //Process tapProcessed delegates
         tapProcessed?.Invoke(curMPWorld);

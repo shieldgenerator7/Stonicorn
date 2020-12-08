@@ -152,6 +152,10 @@ public class MouseGestureInput : GestureInput
             //Reset gesture variables
             mouseEvent = MouseEvent.UNKNOWN;
             dragType = DragType.UNKNOWN;
+            //Hover gesture
+            profile.processHoverGesture(
+                Utility.ScreenToWorldPoint(Input.mousePosition)
+                );
             return false;
         }
     }
