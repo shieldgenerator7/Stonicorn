@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
                 //Visual Effects
                 Managers.Effect.processEffects();
             }
+            Managers.Camera.Up = GravityZone.getUpDirection(Managers.Camera.transform.position);
         }
         Managers.Gesture.processGestures();
         Managers.Camera.updateCameraPosition();
@@ -198,7 +199,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    
+
     //Sent to all GameObjects before the application is quit
     //Auto-save on exit
     void OnApplicationQuit()

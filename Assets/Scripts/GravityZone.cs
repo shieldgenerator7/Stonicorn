@@ -75,8 +75,23 @@ public class GravityZone : MonoBehaviour
         }
     }
 
+    public static Vector2 getUpDirection(Vector2 pos)
     {
+        GravityZone gz = getGravityZone(pos);
+        if (!gz)
         {
+            return Vector2.zero;
         }
+        //Check to see if the camera rotation needs updated
+        return (gz.radialGravity)
+            ? (pos - (Vector2)gz.transform.position)
+            : (Vector2)gz.transform.up;
+
     }
+
+    public static GravityZone getGravityZone(Vector2 pos)
+        => FindObjectsOfType<GravityZone>()
+            .FirstOrDefault(
+                gz => gz.mainGravityZone && gz.coll2d.OverlapPoint(pos)
+            );
 }

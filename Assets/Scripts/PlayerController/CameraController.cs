@@ -58,7 +58,10 @@ public class CameraController : MonoBehaviour
         {
             if (!Locked)
             {
-                rotationUp = value;
+                if (value != Vector3.zero)
+                {
+                    rotationUp = value;
+                }
             }
         }
     }
