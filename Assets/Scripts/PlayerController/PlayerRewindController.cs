@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerRewindController : MonoBehaviour
@@ -7,6 +8,8 @@ public class PlayerRewindController : MonoBehaviour
     [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
     public GameObject ghostFolder;//object that the preview ghosts will be parented under
+    public GameObject selectionHighlighter;//the object that visually points at the future projection
+
     /// <summary>
     /// The list of past merky representations
     /// Indexed into by the game state id
@@ -18,12 +21,31 @@ public class PlayerRewindController : MonoBehaviour
         Managers.Rewind.onRewindState += hideOldRepresentations;
     }
 
+    private void Update()
+    {
+        Vector2 mouseOverPos = Utility.ScreenToWorldPoint(Input.mousePosition);
+        GameState gs = getGameStateAtPosition(mouseOverPos);
+        if (gs != null)
+        {
+            //Show selection highlighter
+            selectionHighlighter.SetActive(true);
+            selectionHighlighter.transform.localScale = transform.localScale;
+            selectionHighlighter.transform.position = mouseOverPos;
+        }
+        else
+        {
+            //Hide selection highlighter
+            selectionHighlighter.SetActive(false);
+        }
+    }
+
     #region Player Ghosts
     /// <summary>
     /// Shows the game state representations
     /// </summary>
     public void showPlayerGhosts(bool show)
     {
+        this.enabled = show;
         //If the game state representations should be shown,
         if (show)
         {
@@ -194,6 +216,49 @@ public class PlayerRewindController : MonoBehaviour
         }
     }
 
+    private List<GameState> getGameStatesAtPosition(Vector2 pos)
+    {
+        //We have to do 2 passes to allow for
+        //both precision clicking and fat-fingered tapping
+
+        //Sprite detection pass
+        List<GameState> states = Managers.Rewind.GameStates
+            .FindAll(gs => checkRepresentation(gs, pos))
+            .OrderBy(gs => gs.id).ToList();
+
+        //Collider detection pass
+        if (states.Count == 0)
+        {
+            states = Managers.Rewind.GameStates
+                .FindAll(gs => checkRepresentation(gs, pos, false))
+                .OrderBy(gs => gs.id).ToList();
+        }
+
+        return states;
+    }
+
+    private GameState getGameStateAtPosition(Vector2 pos)
+    {
+        List<GameState> states = getGameStatesAtPosition(pos);
+        if (states.Count > 0)
+        {
+            GameState final = states.Last();
+            //If the tapped one is already the current one,
+            if (final.id == Managers.Rewind.GameStateId
+                //And if the current one overlaps a previous one,
+                && states.Count > 1)
+            {
+                //Choose the previous one
+                states.Remove(final);
+                return states.Last();
+            }
+            //Return the most recent one
+            return final;
+        }
+        //Return nothing
+        return null;
+    }
+
     #endregion
 
     #region Input Processing
@@ -203,62 +268,15 @@ public class PlayerRewindController : MonoBehaviour
     /// <param name="curMPWorld">The position of the tap in world coordinates</param>
     public void processTapGesture(Vector3 curMPWorld)
     {
-        GameState final = null;
-        GameState prevFinal = null;
-        //We have to do 2 passes to allow for both precision clicking and fat-fingered tapping
-        //Sprite detection pass
-        foreach (GameState gs in Managers.Rewind.GameStates)
-        {
-            //Check sprite overlap
-            if (checkRepresentation(gs, curMPWorld))
-            {
-                //If this game state is more recent than the current picked one,
-                if (final == null || gs.id > final.id)//assuming the later ones have higher id values
-                {
-                    //Set the current picked one to the previously picked one
-                    prevFinal = final;//remember the second-to-latest one
-                    //Set this game state to the current picked one
-                    final = gs;//keep the latest one                    
-                }
-            }
-        }
-        //Collider detection pass
-        if (final == null)
-        {
-            foreach (GameState gs in Managers.Rewind.GameStates)
-            {
-                //Check collider overlap
-                if (checkRepresentation(gs, curMPWorld, false))
-                {
-                    //If this game state is more recent than the current picked one,
-                    if (final == null || gs.id > final.id)//assuming the later ones have higher id values
-                    {
-                        //Set the current picked one to the previously picked one
-                        prevFinal = final;//remember the second-to-latest one
-                        //Set this game state to the current picked one
-                        final = gs;//keep the latest one
-                    }
-                }
-            }
-        }
-        //Process tapped game state
-        //If a past merky was indeed selected,
+        GameState final = getGameStateAtPosition(curMPWorld);
         if (final != null)
         {
+            //Process tapped game state
             //If the tapped one is already the current one,
             if (final.id == Managers.Rewind.GameStateId)
             {
-                //And if the current one overlaps a previous one,
-                if (prevFinal != null)
-                {
-                    //Choose the previous one
-                    Managers.Rewind.RewindTo(prevFinal.id);
-                }
-                else
-                {
-                    //Else, Reload the current one
-                    Managers.Rewind.Load(final.id);
-                }
+                //Reload the current one
+                Managers.Rewind.Load(final.id);
             }
             //Else if a past one was tapped,
             else
