@@ -88,7 +88,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         activate();
         ghost.SetActive(false);
-        Managers.Player.InCheckPoint = true;
+        InCheckPoint = true;
         foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
         {
             if (cpc != this)
@@ -168,11 +168,63 @@ public class CheckPointChecker : MemoryMonoBehaviour
         {
             if (current == this)
             {
-                Managers.Player.InCheckPoint = false;
+                InCheckPoint = false;
                 activate();
                 clearPostTeleport(true);
                 current = null;
             }
+        }
+    }
+    /// <summary>
+    /// Whether or not the player is inside a checkpoint
+    /// </summary>
+    public static bool InCheckPoint
+    {
+        set
+        {
+            if (value)
+            {
+                Managers.Player.Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
+                Managers.Player.Teleport.overrideTeleportPosition += checkCheckPointGhosts;
+                Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
+                Managers.Player.Teleport.onTeleport += updateCheckPointCheckers;
+            }
+            else
+            {
+                Managers.Player.Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
+                Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
+            }
+        }
+    }
+    private static Vector2 checkCheckPointGhosts(Vector2 pos, Vector2 tapPos)
+    {
+        CheckPointChecker checkPoint = Managers.ActiveCheckPoints
+            .Find(cpc => cpc.checkGhostActivation(pos));
+        if (checkPoint)
+        {
+            Vector2 telepadPos = checkPoint.getTelepadPosition(current);
+            Vector2 foundPos = Managers.Player.Teleport
+                .findTeleportablePosition(telepadPos, telepadPos);
+            if (checkPoint.GetComponent<Collider2D>().OverlapPoint(foundPos))
+            {
+                return foundPos;
+            }
+        }
+        return Vector2.zero;
+    }
+    private static void updateCheckPointCheckers(Vector2 oldPos, Vector2 newPos)
+    {
+        //If teleport to other checkpoint,
+        if ((oldPos - newPos).magnitude > Managers.Player.Teleport.Range * 2)
+        {
+            //Move the camera to Merky's center
+            Managers.Camera.recenter();
+        }
+        //If teleport within same checkpoint,
+        else
+        {
+            //Reposition checkpoint previews
+            readjustCheckPointGhosts(Managers.Player.transform.position);
         }
     }
 
