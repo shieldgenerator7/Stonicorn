@@ -12,13 +12,13 @@ public class LongTeleportAbility : PlayerAbility
     {
         base.init();
         Managers.Camera.onOffsetChange += adjustRange;
-        Managers.Player.onTeleport += longTeleport;
+        Managers.Player.Teleport.onTeleport += longTeleport;
     }
     public override void OnDisable()
     {
         base.OnDisable();
         Managers.Camera.onOffsetChange -= adjustRange;
-        Managers.Player.onTeleport -= longTeleport;
+        Managers.Player.Teleport.onTeleport -= longTeleport;
     }
 
     /// <summary>
@@ -30,15 +30,15 @@ public class LongTeleportAbility : PlayerAbility
             ((Vector2)offset).magnitude / maxDragDistance,
             1
             );
-        playerController.Range = Mathf.Max(
-            playerController.baseRange,
-            playerController.baseRange * maxRangeIncreaseFactor * dragFactor
+        playerController.Teleport.Range = Mathf.Max(
+            playerController.Teleport.baseRange,
+            playerController.Teleport.baseRange * maxRangeIncreaseFactor * dragFactor
             );
     }
 
     protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
-        if (playerController.Range > playerController.baseRange)
+        if (playerController.Teleport.Range > playerController.Teleport.baseRange)
         {
             base.showTeleportEffect(oldPos, newPos);
         }
@@ -46,7 +46,7 @@ public class LongTeleportAbility : PlayerAbility
 
     void longTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        if (playerController.Range > playerController.baseRange)
+        if (playerController.Teleport.Range > playerController.Teleport.baseRange)
         {
             //Update Stats
             Managers.Stats.addOne("LongTeleport");

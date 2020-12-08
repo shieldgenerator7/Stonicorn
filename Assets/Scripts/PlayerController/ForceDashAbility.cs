@@ -59,14 +59,14 @@ public class ForceDashAbility : PlayerAbility
     protected override void init()
     {
         base.init();
-        playerController.onTeleport += chargeUp;
+        playerController.Teleport.onTeleport += chargeUp;
         playerController.Ground.isGroundedCheck += dashGroundedCheck;
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.onTeleport -= chargeUp;
+        playerController.Teleport.onTeleport -= chargeUp;
         playerController.Ground.isGroundedCheck -= dashGroundedCheck;
     }
 
@@ -136,12 +136,16 @@ public class ForceDashAbility : PlayerAbility
                 if (Charge < chargeEarlyThreshold)
                 {
                     //Use the lower charge increment
-                    Charge += chargeIncrementEarly * Mathf.Min(1, distance / playerController.baseRange);
+                    Charge += chargeIncrementEarly * Mathf.Min(
+                        1,
+                        distance / playerController.Teleport.baseRange
+                        );
                 }
                 else
                 {
                     //Else, use the higher charge increment and
-                    Charge += chargeIncrement * distance / playerController.baseRange;
+                    Charge += chargeIncrement * distance
+                        / playerController.Teleport.baseRange;
                 }
                 //Reset decay delay
                 lastChargeTime = Time.time;
@@ -286,7 +290,7 @@ public class ForceDashAbility : PlayerAbility
             Charge = value.Float("charge");
             ChargeDirection = value.Vector2("chargeDirection");
         }
-    }    
+    }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {

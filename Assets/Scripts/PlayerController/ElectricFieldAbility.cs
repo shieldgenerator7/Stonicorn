@@ -23,7 +23,7 @@ public class ElectricFieldAbility : PlayerAbility
         base.init();
         if (playerController)
         {
-            playerController.onPreTeleport += processTeleport;
+            playerController.Teleport.onPreTeleport += processTeleport;
         }
     }
     public override void OnDisable()
@@ -31,7 +31,7 @@ public class ElectricFieldAbility : PlayerAbility
         base.OnDisable();
         if (playerController)
         {
-            playerController.onPreTeleport -= processTeleport;
+            playerController.Teleport.onPreTeleport -= processTeleport;
         }
     }
 

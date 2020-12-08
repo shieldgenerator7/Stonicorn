@@ -161,7 +161,7 @@ public class CameraController : MonoBehaviour
         {
             if (relative)
             {
-                return scalePoint * Managers.Player.baseRange;
+                return scalePoint * Managers.Player.Teleport.baseRange;
             }
             return scalePoint;
         }
@@ -180,7 +180,7 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     public void init()
     {
-        Managers.Player.onTeleport += checkForAutoMovement;
+        Managers.Player.Teleport.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)
         {
             Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object (" + planModeCanvas.name + ") doesn't have a Canvas component!");

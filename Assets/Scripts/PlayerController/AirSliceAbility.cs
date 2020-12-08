@@ -26,7 +26,7 @@ public class AirSliceAbility : PlayerAbility
         base.init();
         playerController.Ground.isGroundedCheck += airGroundedCheck;
         playerController.onGroundedStateUpdated += resetAirPorts;
-        playerController.onPreTeleport += sliceThings;
+        playerController.Teleport.onPreTeleport += sliceThings;
         swapAbility = GetComponent<SwapAbility>();
     }
     public override void OnDisable()
@@ -34,7 +34,7 @@ public class AirSliceAbility : PlayerAbility
         base.OnDisable();
         playerController.Ground.isGroundedCheck -= airGroundedCheck;
         playerController.onGroundedStateUpdated -= resetAirPorts;
-        playerController.onPreTeleport -= sliceThings;
+        playerController.Teleport.onPreTeleport -= sliceThings;
     }
 
     bool airGroundedCheck()

@@ -47,7 +47,7 @@ public class WallClimbAbility : PlayerAbility
     {
         base.init();
         playerController.Ground.isGroundedCheck += isGroundedAbility;
-        playerController.onTeleport += processTeleport;
+        playerController.Teleport.onTeleport += processTeleport;
         gravityAccepter = playerController.Gravity;
         onMagnetChanged -= updateClimbSpikeEffect;
         onMagnetChanged += updateClimbSpikeEffect;
@@ -56,7 +56,7 @@ public class WallClimbAbility : PlayerAbility
     {
         base.OnDisable();
         playerController.Ground.isGroundedCheck -= isGroundedAbility;
-        playerController.onTeleport -= processTeleport;
+        playerController.Teleport.onTeleport -= processTeleport;
     }
 
     bool isGroundedAbility()

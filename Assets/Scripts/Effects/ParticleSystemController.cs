@@ -21,8 +21,8 @@ public class ParticleSystemController : MonoBehaviour {
         if (dependsOnTeleportRange)
         {
             PlayerController pc = Managers.Player;
-            pc.onRangeChanged += setOuterRange;
-            setOuterRange(pc.Range);
+            pc.Teleport.onRangeChanged += setOuterRange;
+            setOuterRange(pc.Teleport.Range);
         }
     }
 

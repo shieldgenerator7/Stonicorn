@@ -24,7 +24,7 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour
 
     public void updateRange()
     {
-        if (controller.TeleportReady)
+        if (controller.Teleport.TeleportReady)
         {
             sr.enabled = true;
         }
@@ -32,7 +32,7 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour
         {
             sr.enabled = false;
         }
-        float newSize = controller.Range;
+        float newSize = controller.Teleport.Range;
         setRange(newSize);
     }
     public void setRange(float range)

@@ -37,9 +37,9 @@ public class TeleportRangeUpdater : MonoBehaviour
         timer.onTimeLeftChanged += updateTimerAlpha;
         //Register range update delegate
         PlayerController pc = parentObj.GetComponent<PlayerController>();
-        pc.onRangeChanged += updateRange;
+        pc.Teleport.onRangeChanged += updateRange;
         pc.onAbilityActivated += abilityActivated;
-        updateRange(pc.Range);
+        updateRange(pc.Teleport.Range);
         //rb2dParent
         rb2dParent = parentObj.GetComponent<Rigidbody2D>();
     }

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Managers.initInstance();
+        Managers.Player.init();
         Managers.Camera.init();
     }
 
@@ -19,7 +20,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Managers.Gesture.init();
-        Managers.Player.init();
         Managers.DemoMode.init();
         //If in demo mode,
         if (Managers.DemoMode.DemoMode)

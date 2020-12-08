@@ -68,7 +68,7 @@ public class ForceLaunchAbility : PlayerAbility
     protected override void init()
     {
         base.init();
-        playerController.onTeleport += processTap;
+        playerController.Teleport.onTeleport += processTap;
         playerController.onDragGesture += processDrag;
         playerController.Ground.isGroundedCheck += dashGroundedCheck;
     }
@@ -76,7 +76,7 @@ public class ForceLaunchAbility : PlayerAbility
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.onTeleport -= processTap;
+        playerController.Teleport.onTeleport -= processTap;
         playerController.onDragGesture -= processDrag;
         playerController.Ground.isGroundedCheck -= dashGroundedCheck;
     }
