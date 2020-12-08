@@ -14,13 +14,15 @@ public class HiddenAreaConnector : MonoBehaviour
         if (!lanternActivator)
         {
             throw new System.NullReferenceException(
-                "HiddenAreaConnector needs a LanternActivator selected!"
+                "HiddenAreaConnector needs a LanternActivator selected! "
+                +"Try selecting one again."
                 );
         }
         if (!hiddenArea)
         {
             throw new System.NullReferenceException(
-                "HiddenAreaConnector needs a HiddenArea selected!"
+                "HiddenAreaConnector needs a HiddenArea selected! "
+                + "Try selecting one again."
                 );
         }
         Undo.RecordObjects(
