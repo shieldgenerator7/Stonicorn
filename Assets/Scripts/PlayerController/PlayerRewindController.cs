@@ -30,7 +30,7 @@ public class PlayerRewindController : MonoBehaviour
             //Show selection highlighter
             selectionHighlighter.SetActive(true);
             selectionHighlighter.transform.localScale = transform.localScale;
-            selectionHighlighter.transform.position = mouseOverPos;
+            selectionHighlighter.transform.position = gs.Merky.position;
         }
         else
         {
