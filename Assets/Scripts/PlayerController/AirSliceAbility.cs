@@ -87,7 +87,7 @@ public class AirSliceAbility : PlayerAbility
             //Also nullify velocity
             if (AirPortsUsed <= maxAirPorts)
             {
-                rb2d.velocity = Vector2.zero;
+                rb2d.nullifyMovement();
                 playerController.MovementPaused = true;
             }
         }

@@ -101,7 +101,7 @@ public class WallClimbAbility : PlayerAbility
         {
             //Update Stats
             Managers.Stats.addOne("WallClimb");
-            rb2d.velocity = Vector2.zero;
+            rb2d.nullifyMovement();
             Magneted = true;
             //Plant Sticky
             if (FeatureLevel >= 2)

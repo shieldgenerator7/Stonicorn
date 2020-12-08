@@ -97,7 +97,7 @@ public class CrabController : Hazard
                 Rigidbody2D collRB2D = collGO.GetComponent<Rigidbody2D>();
                 if (collRB2D)
                 {
-                    rb2d.velocity = Vector2.zero;
+                    rb2d.nullifyMovement();
                     //Pick up object
                     collGO.transform.position = clawCollider.bounds.center;
                 }
@@ -146,7 +146,7 @@ public class CrabController : Hazard
 
     void changeDirection()
     {
-        rb2d.velocity = Vector2.zero;
+        rb2d.nullifyMovement();
         Vector3 scale = transform.localScale;
         transform.localScale = scale.setX(scale.x * -1);
     }

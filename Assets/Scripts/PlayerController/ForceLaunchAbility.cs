@@ -85,7 +85,7 @@ public class ForceLaunchAbility : PlayerAbility
         if (affectingVelocity)
         {
             //Nullify velocity
-            rb2d.velocity = Vector2.zero;
+            rb2d.nullifyMovement();
             //Cancel effect on velocity
             affectingVelocity = false;
             updateBouncingVisuals();
@@ -180,7 +180,7 @@ public class ForceLaunchAbility : PlayerAbility
     void launch()
     {
         //Launch in indicated direction
-        rb2d.velocity = Vector2.zero;
+        rb2d.nullifyMovement();
         float chargePercent = launchDirection.magnitude / maxPullBackDistance;
         rb2d.velocity += launchDirection.normalized * (maxLaunchSpeed * chargePercent);
         //Indicate effect on velocity

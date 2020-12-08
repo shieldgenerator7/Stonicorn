@@ -156,6 +156,11 @@ public static Vector2 travelAlongCircle(this Vector2 pos, Vector2 center, float 
     {
         return !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
     }
+    public static void nullifyMovement(this Rigidbody2D rb2d)
+    {
+        rb2d.velocity = Vector2.zero;
+        rb2d.angularVelocity = 0;
+    }
     #endregion
 
     #region GameObject Extension Methods

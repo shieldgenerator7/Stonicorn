@@ -188,12 +188,10 @@ public class SwapAbility : PlayerAbility
                     }
                 }
                 //Nullify velocity
-                goRB2D.velocity = Vector2.zero;
-                goRB2D.angularVelocity = 0;
+                goRB2D.nullifyMovement();
             }
             //Nullify Merky's velocity
-            rb2d.velocity = Vector2.zero;
-            rb2d.angularVelocity = 0;
+            rb2d.nullifyMovement();
             //Swap object
             Vector2 swapPos = (Vector2)gameObject.transform.position - newPos + oldPos;
             if (isOccupiedForObject(gameObject.GetComponent<Collider2D>(), swapPos))

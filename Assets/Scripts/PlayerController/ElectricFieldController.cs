@@ -93,7 +93,7 @@ public class ElectricFieldController : SavableMonoBehaviour, Blastable
                 }
                 else
                 {
-                    rb2d.velocity *= 0;
+                    rb2d.nullifyMovement();
                 }
             }
         }
