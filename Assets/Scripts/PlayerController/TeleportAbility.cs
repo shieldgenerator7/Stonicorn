@@ -30,7 +30,7 @@ public class TeleportAbility : PlayerAbility
     [Header("Future Projection")]
     public GameObject futureProjection;//the object that is used to show a preview of the landing spot
     public GameObject teleportPreviewPointer;//the object that visually points at the future projection
-    
+
     /// <summary>
     /// Returns whether the teleport ability is ready
     /// True: teleport is able to be used
@@ -176,22 +176,6 @@ public class TeleportAbility : PlayerAbility
     }
     public delegate void OnTeleport(Vector2 oldPos, Vector2 newPos);
     public event OnTeleport onTeleport;
-
-    //Used when you also need to know where the player tapped
-    public delegate void OnPreTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos);
-    private event OnPreTeleport _onPreTeleport;
-    public event OnPreTeleport onPreTeleport
-    {
-        add
-        {
-            _onPreTeleport -= value;
-            _onPreTeleport += value;
-        }
-        remove
-        {
-            _onPreTeleport -= value;
-        }
-    }
 
     /// <summary>
     /// Finds the teleportable position closest to the given targetPos
@@ -464,9 +448,6 @@ public class TeleportAbility : PlayerAbility
                         //Teleport to that checkpoint
                         //Get post-teleport position inside of new checkpoint
                         Vector3 newPosCPC = cpc.getTelepadPosition(CheckPointChecker.current);
-                        //Pre-process onPreTeleport delegates
-                        //Pass in newPos for both here because player teleported exactly where they intended to
-                        _onPreTeleport?.Invoke(oldPos, newPosCPC, newPosCPC);
                         //Teleport
                         teleport(newPosCPC);
                         //Move the camera to Merky's center
@@ -482,8 +463,6 @@ public class TeleportAbility : PlayerAbility
             }
             //Get post-teleport position
             Vector3 newPos = findTeleportablePosition(pos);
-            //Process onPreTeleport delegates
-            _onPreTeleport?.Invoke(oldPos, newPos, pos);
             //Teleport
             teleport(newPos);
             //Save the game state

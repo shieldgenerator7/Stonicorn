@@ -23,7 +23,7 @@ public class ElectricFieldAbility : PlayerAbility
         base.init();
         if (playerController)
         {
-            playerController.Teleport.onPreTeleport += processTeleport;
+            playerController.Teleport.onTeleport += processTeleport;
         }
     }
     public override void OnDisable()
@@ -31,7 +31,7 @@ public class ElectricFieldAbility : PlayerAbility
         base.OnDisable();
         if (playerController)
         {
-            playerController.Teleport.onPreTeleport -= processTeleport;
+            playerController.Teleport.onTeleport -= processTeleport;
         }
     }
 
@@ -96,10 +96,10 @@ public class ElectricFieldAbility : PlayerAbility
         cEFController = null;
     }
 
-    public void processTeleport(Vector2 oldPos, Vector2 newPos, Vector2 triedPos)
+    public void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         //If player tapped on Merky,
-        if (playerController.gestureOnPlayer(triedPos))
+        if (playerController.gestureOnPlayer(oldPos))
         {
             //If not activated,
             if (!activated)
