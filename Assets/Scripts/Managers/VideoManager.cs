@@ -20,7 +20,11 @@ public class VideoManager : MonoBehaviour
         get => Managers.Settings.videoResolution;
         set
         {
-            int resolutionIndex = value;
+            int resolutionIndex = Mathf.Clamp(
+                value,
+                0,
+                Screen.resolutions.Length - 1
+                );
             Managers.Settings.videoResolution = resolutionIndex;
             Resolution resolution = Screen.resolutions[resolutionIndex];
             Screen.SetResolution(resolution.width, resolution.height, Managers.Settings.videoFullScreen);
