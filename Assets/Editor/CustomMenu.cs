@@ -126,6 +126,14 @@ public class CustomMenu
         }
     }
 
+    [MenuItem("SG7/Editor/Refactor/Connect selected Lantern and HiddenArea %#H")]
+    public static void connectLanternToHiddenArea()
+    {
+        HiddenAreaConnector hac = GameObject.FindObjectOfType<HiddenAreaConnector>();
+        Selection.activeGameObject = hac.gameObject;
+        hac.connect();
+    }
+
     [MenuItem("SG7/Editor/Spawn Point/Toggle Merky Spawn Point %#`")]
     public static void callMerky()
     {
