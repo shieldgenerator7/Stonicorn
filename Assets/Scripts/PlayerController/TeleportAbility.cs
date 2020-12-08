@@ -30,26 +30,7 @@ public class TeleportAbility : PlayerAbility
     [Header("Future Projection")]
     public GameObject futureProjection;//the object that is used to show a preview of the landing spot
     public GameObject teleportPreviewPointer;//the object that visually points at the future projection
-    [Header("Flashlight")]
-    public float maxPullBackDistance = 6;
-    public GameObject flashlightPrefab;//prefab
-    private GameObject flashlight;
-    private bool flashlightOn = false;
-    private SpriteRenderer flashlightSR;
-    private Vector2 flashlightDirection;
-    public Vector2 FlashlightDirection
-    {
-        get => flashlightDirection;
-        private set
-        {
-            flashlightDirection = value;
-            if (flashlightDirection.magnitude > maxPullBackDistance)
-            {
-                flashlightDirection = flashlightDirection.normalized * maxPullBackDistance;
-            }
-        }
-    }
-
+    
     /// <summary>
     /// Returns whether the teleport ability is ready
     /// True: teleport is able to be used
@@ -99,7 +80,6 @@ public class TeleportAbility : PlayerAbility
     {
         base.init();
         pc2d = GetComponent<PolygonCollider2D>();
-        playerController.onDragGesture += processDrag;
         playerController.onGroundedStateUpdated += onGroundedChanged;
         //Initialize the range
         Range = baseRange;
@@ -108,7 +88,6 @@ public class TeleportAbility : PlayerAbility
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.onDragGesture -= processDrag;
         playerController.onGroundedStateUpdated -= onGroundedChanged;
     }
 
@@ -552,13 +531,6 @@ public class TeleportAbility : PlayerAbility
         futureProjection.SetActive(false);
         teleportPreviewPointer.SetActive(false);
     }
-
-    public void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
-    {
-        flashlightOn = !finished;
-        FlashlightDirection = (Vector2)playerController.transform.position - newPos;
-        updateFlashlightVisuals();
-    }
     #endregion
 
     private void onGroundedChanged(bool grounded, bool groundedNormal)
@@ -588,35 +560,10 @@ public class TeleportAbility : PlayerAbility
         }
     }
 
-    void updateFlashlightVisuals()
-    {
-        if (flashlightOn)
-        {
-            if (this.flashlight == null)
-            {
-                this.flashlight = Instantiate(flashlightPrefab);
-                this.flashlight.transform.parent = transform;
-                this.flashlight.transform.localPosition = Vector2.zero;
-                this.flashlightSR = this.flashlight.GetComponent<SpriteRenderer>();
-            }
-            flashlight.SetActive(true);
-            flashlight.transform.up = flashlightDirection;
-            flashlightSR.color = new Color(
-                    flashlightSR.color.r,
-                    flashlightSR.color.g,
-                    flashlightSR.color.b,
-                    (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance
-                    );
-        }
-        else
-        {
-            flashlight?.SetActive(false);
-        }
-    }
-
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        //throw new System.NotImplementedException();
+        baseRange = aul.stat1;
+        exhaustRange = aul.stat2;
     }
 
     public override SavableObject CurrentState

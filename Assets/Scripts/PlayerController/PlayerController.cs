@@ -19,11 +19,6 @@ public class PlayerController : MonoBehaviour
     [Range(0, 3)]
     public float hitStunDuration = 1;//how long merky freezes after getting hit before he auto-rewinds
 
-    //
-    //Timer Processing Vars
-    //
-    private float pauseMovementStartTime = -1;//when Merky last had his movement paused
-
     /// <summary>
     /// Whether or not the player is inside a checkpoint
     /// </summary>
@@ -33,6 +28,7 @@ public class PlayerController : MonoBehaviour
     // Movement Pausing Variables
     //
     private bool shouldPauseMovement = false;//whether or not to pause movement, true after teleport
+    private float pauseMovementStartTime = -1;//when Merky last had his movement paused
     private bool hazardHit = false;
 
     //
