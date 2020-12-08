@@ -1,92 +1,63 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GravityZone : MonoBehaviour
 {
     public float gravityScale = 9.81f;
     public bool mainGravityZone = true;//true to change camera angle, false to not
-    public bool radialGravity = false;//true to make it gravitate towards the center of the gravity zone
+    public bool radialGravity = true;//true to make it gravitate towards the center of the gravity zone
+    
     private Vector2 gravityVector;
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
-    private bool playerIsTenant = false;//whether the player is inside this GravityZone
 
-    private static RaycastHit2D[] rch2dStartup = new RaycastHit2D[Utility.MAX_HIT_COUNT];
+    private Collider2D coll2d;
 
     // Use this for initialization
     void Start()
     {
         gravityVector = -transform.up.normalized * gravityScale;
+        coll2d = GetComponent<Collider2D>();
     }
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!coll.isTrigger)
+        if (coll.isSolid())
         {
-            Rigidbody2D rb2d = coll.gameObject.GetComponent<Rigidbody2D>();
-            if (rb2d != null)
+            Rigidbody2D rb2d = coll.GetComponent<Rigidbody2D>();
+            if (rb2d)
             {
                 if (!tenants.Contains(rb2d))
                 {
                     tenants.Add(rb2d);
-                    if (coll.gameObject.isPlayer())
-                    {
-                        playerIsTenant = true;
-                    }
                 }
             }
         }
     }
     void OnTriggerExit2D(Collider2D coll)
     {
-        if (!coll.isTrigger)
+        if (coll.isSolid())
         {
-            Rigidbody2D rb2d = coll.gameObject.GetComponent<Rigidbody2D>();
-            if (rb2d != null)
+            Rigidbody2D rb2d = coll.GetComponent<Rigidbody2D>();
+            if (rb2d)
             {
-                tenants.Remove(coll.gameObject.GetComponent<Rigidbody2D>());
-                if (coll.gameObject.isPlayer())
-                {
-                    playerIsTenant = false;
-                }
+                tenants.Remove(rb2d);
             }
         }
     }
-    private void Update()
-    {
-        //Check to see if the camera rotation needs updated
-        if (mainGravityZone
-            && playerIsTenant
-            && !MenuManager.Open)
-        {
-            Vector3 transformUp = transform.up;
-            if (radialGravity)
-            {
-                transformUp = Managers.Player.transform.position - transform.position;
-            }
-            if (Managers.Camera.transform.up != transformUp)
-            {
-                Managers.Camera.Up = transformUp;
-            }
-        }
-    }
+
     void FixedUpdate()
     {
-        bool cleanNeeded = false;
+        tenants.RemoveAll(ten => !ten || ReferenceEquals(ten, null));
         foreach (Rigidbody2D rb2d in tenants)
         {
-            if (rb2d == null || ReferenceEquals(rb2d, null))
-            {
-                cleanNeeded = true;
-                continue;
-            }
-            Vector2 finalGravityVector = gravityVector;
-            if (radialGravity)
-            {
-                finalGravityVector = (transform.position - rb2d.transform.position).normalized * gravityScale;
-            }
+            Vector2 finalGravityVector = (radialGravity)
+                ? (Vector2)(transform.position - rb2d.transform.position).normalized
+                    * gravityScale
+                : gravityVector;
             Vector3 vector = finalGravityVector * rb2d.mass;
-            GravityAccepter ga = rb2d.gameObject.GetComponent<GravityAccepter>();
+            GravityAccepter ga = rb2d.GetComponent<GravityAccepter>();
             if (ga)
             {
                 if (ga.AcceptsGravity)
@@ -102,28 +73,10 @@ public class GravityZone : MonoBehaviour
                 rb2d.AddForce(vector);
             }
         }
-        if (cleanNeeded)
-        {
-            for (int i = tenants.Count - 1; i >= 0; i--)
-            {
-                if (tenants[i] == null || ReferenceEquals(tenants[i], null))
-                {
-                    tenants.RemoveAt(i);
-                }
-            }
-        }
     }
 
-    public static GravityZone getGravityZone(Vector2 pos)
     {
-        foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
         {
-            if (gz.GetComponent<Collider2D>().OverlapPoint(pos)
-                && gz.mainGravityZone)
-            {
-                return gz;
-            }
         }
-        return null;
     }
 }
