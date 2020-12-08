@@ -10,6 +10,11 @@ public class LanternActivator : MemoryMonoBehaviour
     /// </summary>
     public AudioClip lightSound;
 
+    /// <summary>
+    /// The hidden area to reveal when this lantern is activated
+    /// </summary>
+    public HiddenArea secretHider;
+
     protected override void nowDiscovered()
     {
         foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
@@ -17,7 +22,13 @@ public class LanternActivator : MemoryMonoBehaviour
             ps.Play();
         }
         Managers.Sound.playSound(lightSound, transform.position);
-        Destroy(this);//delete this script
+        //Hidden Area
+        if (secretHider)
+        {
+            secretHider.Discovered = true;
+        }
+        //delete this script
+        Destroy(this);
     }
 
     protected override void previouslyDiscovered()
