@@ -59,7 +59,6 @@ class LevelerGuideLineTool : EditorTool
         bool mouseUp = Event.current.type == EventType.MouseUp;
         if (mouseDown)
         {
-            Debug.Log("CLICK");
             positions.Clear();
             foreach (Transform t in Selection.transforms)
             {
@@ -75,7 +74,6 @@ class LevelerGuideLineTool : EditorTool
         }
         if (mouseUp)
         {
-            Debug.Log("UNCLICK");
             positions.Clear();
             updateVars();
         }
@@ -101,7 +99,6 @@ class LevelerGuideLineTool : EditorTool
                  xMag * Mathf.Sign(Vector2.Dot(xDir, xPointDir)),
                  yMag * Mathf.Sign(Vector2.Dot(yDir, yPointDir))
                 );
-            Debug.Log("delta: " + delta);
 
             Undo.RecordObjects(
                 Selection.transforms,
