@@ -186,7 +186,11 @@ public class ForceLaunchAbility : PlayerAbility
         //Indicate effect on velocity
         affectingVelocity = true;
         updateBouncingVisuals();
+        //Delegate
+        onLaunch?.Invoke();
     }
+    public delegate void OnLaunch();
+    public event OnLaunch onLaunch;
 
     /// <summary>
     /// Speed up in the direction of movement

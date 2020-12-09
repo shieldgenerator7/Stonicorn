@@ -16,11 +16,6 @@ public class CloudMeter : MonoBehaviour
     {
         Managers.Player.onAbilityActivated += abilityEnableChanged;
         airSliceAbility.onAirPortsUsedChanged += airPortsUsedChanged;
-        //TEST
-        for (float i = -Mathf.PI; i <= Mathf.PI; i += 0.1f)
-        {
-
-        }
     }
 
     private void Update()
@@ -53,6 +48,10 @@ public class CloudMeter : MonoBehaviour
     private void airPortsUsedChanged(int airPortsUsed, int maxAirPorts)
     {
         arrangeClouds(maxAirPorts - airPortsUsed, maxAirPorts);
+        if (airPortsUsed > 0)
+        {
+            gameObject.SetActive(true);
+        }
     }
 
     private void arrangeClouds(int available, int max)
@@ -67,7 +66,7 @@ public class CloudMeter : MonoBehaviour
             if (i < max)
             {
                 sr.gameObject.SetActive(true);
-                sr.sprite = (i <= available) ? availableSprite : usedSprite;
+                sr.sprite = (i < available) ? availableSprite : usedSprite;
                 float percent = (max - 1 > 0)
                     ? ((float)i / (max - 1)) * 2 - 1
                     : 0;

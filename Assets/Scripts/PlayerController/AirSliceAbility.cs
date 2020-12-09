@@ -34,6 +34,7 @@ public class AirSliceAbility : PlayerAbility
         playerController.onGroundedStateUpdated += resetAirPorts;
         playerController.Teleport.onTeleport += sliceThings;
         swapAbility = GetComponent<SwapAbility>();
+        GetComponent<ForceLaunchAbility>().onLaunch += useAirPort;
     }
     public override void OnDisable()
     {
@@ -41,6 +42,7 @@ public class AirSliceAbility : PlayerAbility
         playerController.Ground.isGroundedCheck -= airGroundedCheck;
         playerController.onGroundedStateUpdated -= resetAirPorts;
         playerController.Teleport.onTeleport -= sliceThings;
+        GetComponent<ForceLaunchAbility>().onLaunch -= useAirPort;
     }
 
     bool airGroundedCheck()
@@ -57,14 +59,23 @@ public class AirSliceAbility : PlayerAbility
         }
     }
 
+    void useAirPort()
+    {
+        AirPortsUsed++;
+        if (AirPortsUsed == maxAirPorts)
+        {
+            playerController.updateGroundedState();
+        }
+    }
+
     void sliceThings(Vector2 oldPos, Vector2 newPos)
     {
-        if (!playerController.Ground.GroundedNormal)
+        if (!playerController.Ground.GroundedNormalPrev)
         {
             //Update Stats
             Managers.Stats.addOne("AirSlice");
             //Update air ports
-            AirPortsUsed++;
+            useAirPort();
             //Check if sliced something
             bool slicedSomething = false;
             Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, (newPos - oldPos), Vector2.Distance(oldPos, newPos));
@@ -87,7 +98,7 @@ public class AirSliceAbility : PlayerAbility
             if (slicedSomething)
             {
                 //Allow them to teleport more in the air
-                AirPortsUsed = 0;
+                AirPortsUsed--;
             }
             //Give player time to tap again after teleporting in the air
             //Also nullify velocity
