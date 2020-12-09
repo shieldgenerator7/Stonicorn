@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 1792176479}
   - component: {fileID: 1792176473}
   - component: {fileID: 1792176480}
+  - component: {fileID: 8071823167986652926}
   - component: {fileID: 1792176478}
   - component: {fileID: 1792176481}
   - component: {fileID: 1792176475}
@@ -516,6 +517,68 @@ MonoBehaviour:
   sliceDamage: 100
   maxAirPorts: 2
   streakPrefab: {fileID: 133468, guid: a76ac723dbf060e4fae65f29bcb058d9, type: 3}
+--- !u!114 &8071823167986652926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f510429724f6307439f6e266d153d440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportRangeSegment: {fileID: 11400000, guid: 1402f0d20ef5d8e4b99fd7da54e88abf,
+    type: 2}
+  effectParticleController: {fileID: 0}
+  addsOnTeleportVisualEffect: 0
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  upgradeLevel: 0
+  upgradeLevels:
+  - stat1: 1
+    stat2: 10
+    stat3: 10
+    stat4: 0
+    featureLevel: 0
+  - stat1: 1.5
+    stat2: 30
+    stat3: 30
+    stat4: 0
+    featureLevel: 0
+  - stat1: 2
+    stat2: 55
+    stat3: 55
+    stat4: 0
+    featureLevel: 0
+  - stat1: 2
+    stat2: 50
+    stat3: 50
+    stat4: 1
+    featureLevel: 1
+  - stat1: 2.5
+    stat2: 80
+    stat3: 80
+    stat4: 2
+    featureLevel: 1
+  - stat1: 3
+    stat2: 100
+    stat3: 100
+    stat4: 3
+    featureLevel: 1
+  - stat1: 3
+    stat2: 100
+    stat3: 100
+    stat4: 3
+    featureLevel: 2
+  maxRange: 2.5
+  maxEnergy: 100
+  energyPerSecond: 100
+  slowSpeed: 1
+  energy: 0
+  activated: 0
 --- !u!114 &1792176478
 MonoBehaviour:
   m_ObjectHideFlags: 0
