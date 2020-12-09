@@ -15,7 +15,7 @@ public class CloudMeter : MonoBehaviour
     void Start()
     {
         Managers.Player.onAbilityActivated += abilityEnableChanged;
-        airSliceAbility.onAirPortsUsedChanged += airPortsUsedChanged;
+        abilityEnableChanged(airSliceAbility, airSliceAbility.enabled);
     }
 
     private void Update()
@@ -31,10 +31,12 @@ public class CloudMeter : MonoBehaviour
             if (active)
             {
                 Managers.Player.onGroundedStateUpdated += groundStateChanged;
+                airSliceAbility.onAirPortsUsedChanged += airPortsUsedChanged;
             }
             else
             {
                 Managers.Player.onGroundedStateUpdated -= groundStateChanged;
+                airSliceAbility.onAirPortsUsedChanged -= airPortsUsedChanged;
             }
         }
     }

@@ -40,7 +40,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
 
     [Header("Persisting Variables")]
     [SerializeField]
-    [Range(0,6)]
+    [Range(0, 6)]
     private int upgradeLevel = 0;
     public List<AbilityUpgradeLevel> upgradeLevels;
     public int UpgradeLevel
@@ -82,19 +82,17 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
                 Debug.LogWarning("PlayerAbility (" + this.GetType() + ") on " + name + " does not have a particle effect! effectParticleController: " + effectParticleController);
             }
         }
-        //Sound Effects
-        if (soundEffect)
+
+        if (playerController)
         {
-            if (addsOnTeleportSoundEffect)
+            //Sound Effects
+            if (soundEffect)
             {
-                if (playerController)
+                if (addsOnTeleportSoundEffect)
                 {
                     playerController.onPlayTeleportSound += playTeleportSound;
                 }
             }
-        }
-        if (playerController)
-        {
             playerController.abilityActivated(this, true);
         }
     }
@@ -166,7 +164,8 @@ public abstract class PlayerAbility : SavableMonoBehaviour, Setting
         Managers.Sound.playSound(soundEffect, oldPos);
     }
 
-    public override SavableObject CurrentState { 
+    public override SavableObject CurrentState
+    {
         get => new SavableObject(this,
             "upgradeLevel", upgradeLevel
             );

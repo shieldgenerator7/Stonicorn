@@ -67,7 +67,11 @@ public class StickyPadChecker : SavableMonoBehaviour
                 }
                 if (!foundone)
                 {
-                    throw new UnityException("Connected object \"" + objname + "\" not found! StickyPadChecker: " + gameObject.name);
+                    Debug.LogError(
+                        "Connected object \"" + objname 
+                        + "\" not found! StickyPadChecker: " + gameObject.name,
+                        gameObject
+                        );
                     //Find the name's object
                     GameObject conObj = null;
                     for (int i = 0; i < colliderCount; i++)
