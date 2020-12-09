@@ -75,7 +75,7 @@ public class TesterShortcuts : MonoBehaviour
                 wca.Active = enable;
                 break;
             case 3:
-                ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
+                ElectricRingAbility efa = playerObject.GetComponent<ElectricRingAbility>();
                 efa.Active = enable;
                 break;
             case 4:
@@ -104,7 +104,7 @@ public class TesterShortcuts : MonoBehaviour
                 WallClimbAbility wca = playerObject.GetComponent<WallClimbAbility>();
                 return wca.Active;
             case 3:
-                ElectricFieldAbility efa = playerObject.GetComponent<ElectricFieldAbility>();
+                ElectricRingAbility efa = playerObject.GetComponent<ElectricRingAbility>();
                 return efa.Active;
             case 4:
                 SwapAbility sa = playerObject.GetComponent<SwapAbility>();

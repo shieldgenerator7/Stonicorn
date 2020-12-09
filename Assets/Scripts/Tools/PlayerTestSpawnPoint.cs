@@ -10,7 +10,7 @@ public class PlayerTestSpawnPoint : MonoBehaviour
     public bool SwapAbility;
     public bool WallClimbAbility;
     public bool AirSliceAbility;
-    public bool ElectricFieldAbility;
+    public bool ElectricRingAbility;
     public bool LongTeleportAbility;
 
     // Start is called before the first frame update
@@ -37,9 +37,9 @@ public class PlayerTestSpawnPoint : MonoBehaviour
         {
             pc.GetComponent<AirSliceAbility>().enabled = true;
         }
-        if (ElectricFieldAbility)
+        if (ElectricRingAbility)
         {
-            pc.GetComponent<ElectricFieldAbility>().enabled = true;
+            pc.GetComponent<ElectricRingAbility>().enabled = true;
         }
         if (LongTeleportAbility)
         {
