@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
 using Debug = UnityEngine.Debug;
 using System.Linq;
+using UnityEditor.SceneManagement;
 
 public class CustomMenu
 {
@@ -278,6 +279,76 @@ public class CustomMenu
         foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
         {
             rrp.Active = !anyOn;
+        }
+    }
+
+    [MenuItem("SG7/Editor/Load or Unload Level Scenes %&S")]
+    public static void loadOrUnloadLevelScenes()
+    {
+        //Assumes that the level scenes make up the tail of the scene list
+        int firstLevelIndex = 3;
+        //Find out if any of the scenes are loaded
+        bool anyLoaded = false;
+        for (int i = firstLevelIndex; i < EditorBuildSettings.scenes.Length; i++)
+        {
+            if (EditorSceneManager.GetSceneByBuildIndex(i).isLoaded)
+            {
+                anyLoaded = true;
+                break;
+            }
+        }
+        //If any are loaded, unload them all.
+        //Else, load them all.
+        for (int i = firstLevelIndex; i < EditorBuildSettings.scenes.Length; i++)
+        {
+            Scene scene = EditorSceneManager.GetSceneByBuildIndex(i);
+            if (anyLoaded)
+            {
+                EditorSceneManager.CloseScene(scene, false);
+            }
+            else
+            {
+                EditorSceneManager.OpenScene(
+                    "Assets/Scenes/Levels/" + scene.name + ".unity",
+                    OpenSceneMode.Additive
+                    );
+                SetExpanded(scene, false);
+            }
+        }
+    }
+
+    //2020-12-09: copied from https://forum.unity.com/threads/how-to-collapse-hierarchy-scene-nodes-via-script.605245/#post-6551890
+    private static void SetExpanded(Scene scene, bool expand)
+    {
+        foreach (var window in Resources.FindObjectsOfTypeAll<SearchableEditorWindow>())
+        {
+            if (window.GetType().Name != "SceneHierarchyWindow")
+                continue;
+
+            var method = window.GetType().GetMethod("SetExpandedRecursive",
+                System.Reflection.BindingFlags.Public |
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Instance, null,
+                new[] { typeof(int), typeof(bool) }, null);
+
+            if (method == null)
+            {
+                Debug.LogError(
+                    "Could not find method 'UnityEditor.SceneHierarchyWindow.SetExpandedRecursive(int, bool)'.");
+                return;
+            }
+
+            var field = scene.GetType().GetField("m_Handle",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+            if (field == null)
+            {
+                Debug.LogError("Could not find field 'int UnityEngine.SceneManagement.Scene.m_Handle'.");
+                return;
+            }
+
+            var sceneHandle = field.GetValue(scene);
+            method.Invoke(window, new[] { sceneHandle, expand });
         }
     }
 
