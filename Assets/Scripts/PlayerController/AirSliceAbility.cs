@@ -15,8 +15,14 @@ public class AirSliceAbility : PlayerAbility
     public int AirPortsUsed
     {
         get => airPorts;
-        private set => airPorts = Mathf.Max(0, value);
+        private set
+        {
+            airPorts = Mathf.Max(0, value);
+            onAirPortsUsedChanged?.Invoke(airPorts, maxAirPorts);
+        }
     }
+    public delegate void OnAirPortsUsedChanged(int airPortsUsed, int maxAirPorts);
+    public event OnAirPortsUsedChanged onAirPortsUsedChanged;
 
     private SwapAbility swapAbility;
 
