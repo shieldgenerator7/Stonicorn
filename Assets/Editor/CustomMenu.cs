@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
 using Debug = UnityEngine.Debug;
+using System.Linq;
 
 public class CustomMenu
 {
@@ -65,6 +66,35 @@ public class CustomMenu
         foreach (Transform childT in g.transform)
         {
             FindInGO(childT.gameObject);
+        }
+    }
+    [MenuItem("SG7/Editor/Refactor/Check Ability Activators")]
+    private static void CheckMileStoneActivatorAbility()
+    {
+        int errorCount = 0;
+        PlayerController pc = GameObject.FindObjectOfType<PlayerController>();
+        GameObject.FindObjectsOfType<MilestoneActivatorAbility>(true).ToList()
+            .ForEach(
+            maa =>
+            {
+                PlayerAbility pa = (PlayerAbility)pc.GetComponent(
+                    maa.abilityTypeName
+                    );
+                if (!pa)
+                {
+                    errorCount++;
+                    Debug.LogError(
+                        "Player does not have an ability called "
+                            + maa.abilityTypeName + "!",
+                        maa
+                        );
+                }
+            }
+        );
+
+        if (errorCount == 0)
+        {
+            Debug.Log("All Ability Activators are ok");
         }
     }
 
