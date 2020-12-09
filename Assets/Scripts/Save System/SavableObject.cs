@@ -143,8 +143,8 @@ public class SavableObject
                 return typeof(WallClimbAbility);
             case "AirSliceAbility":
                 return typeof(AirSliceAbility);
-            case "ElectricFieldAbility":
-                return typeof(ElectricFieldAbility);
+            case "ElectricRingAbility":
+                return typeof(ElectricRingAbility);
             case "LongTeleportAbility":
                 return typeof(LongTeleportAbility);
             case "AfterWind":

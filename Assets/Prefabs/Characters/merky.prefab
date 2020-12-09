@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 1792176473}
   - component: {fileID: 1792176480}
   - component: {fileID: 8071823167986652926}
-  - component: {fileID: 1792176478}
   - component: {fileID: 1792176481}
   - component: {fileID: 1792176475}
   - component: {fileID: 1792176466}
@@ -579,69 +578,7 @@ MonoBehaviour:
   slowSpeed: 1
   energy: 0
   activated: 0
---- !u!114 &1792176478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100086}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 670c03aa95d882441947eec5e28c0854, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teleportRangeSegment: {fileID: 11400000, guid: 1402f0d20ef5d8e4b99fd7da54e88abf,
-    type: 2}
-  effectParticleController: {fileID: 0}
-  addsOnTeleportVisualEffect: 0
-  soundEffect: {fileID: 0}
-  addsOnTeleportSoundEffect: 0
-  unlocked: 0
-  upgradeLevel: 0
-  upgradeLevels:
-  - stat1: 2
-    stat2: 15
-    stat3: 0.1
-    stat4: 0
-    featureLevel: 0
-  - stat1: 3
-    stat2: 25
-    stat3: 0.25
-    stat4: 0
-    featureLevel: 0
-  - stat1: 4
-    stat2: 50
-    stat3: 0.5
-    stat4: 0
-    featureLevel: 0
-  - stat1: 4
-    stat2: 50
-    stat3: 0.5
-    stat4: 0
-    featureLevel: 1
-  - stat1: 5
-    stat2: 75
-    stat3: 0.7
-    stat4: 0
-    featureLevel: 1
-  - stat1: 6
-    stat2: 100
-    stat3: 0.9
-    stat4: 0
-    featureLevel: 1
-  - stat1: 6
-    stat2: 100
-    stat3: 0.9
-    stat4: 0
-    featureLevel: 2
-  maxRange: 2.5
-  maxEnergy: 100
-  maxSlowPercent: 0.2
-  maxChargeTime: 1
-  electricFieldPrefab: {fileID: 1181304595248282, guid: 25877458e6750fe4588a4006a6457d5d,
-    type: 3}
-  shieldBubbleSound: {fileID: 8300000, guid: 7cc20f2c19ae91c4586dbb566fa52622, type: 3}
+  range: 0
 --- !u!114 &1792176481
 MonoBehaviour:
   m_ObjectHideFlags: 0
