@@ -5,15 +5,21 @@ using UnityEngine;
 public class TeleportRangeUpdater : MonoBehaviour
 {
     [Header("Settings")]
+    [Range(0, 5)]
     public float suggestedSpacing = 3;//radial distance between fragments, not guaranteed
     [Range(0, 1)]
     public float transparency = 1.0f;
     [Range(0, 1)]
     public float timeTransparency = 0.5f;
+    [Range(0, 1)]
     public float normalLength = 0.5f;
+    [Range(0, 1)]
     public float timeLength = 0.8f;
+    [Range(0, 60)]
     public float timeLeftShake = 10;//when this much time is left, it starts shaking
+    [Range(0, 1)]
     public float maxShakeDistance = 0.2f;//how far it moves left and right when shaking
+    [Range(0, 0.5f)]
     public float maxShakeAlpha = 0.3f;//the max diff between the timeTransparency and the random alpha
 
     [Header("Components")]
@@ -42,6 +48,16 @@ public class TeleportRangeUpdater : MonoBehaviour
         updateRange(pc.Teleport.Range);
         //rb2dParent
         rb2dParent = parentObj.GetComponent<Rigidbody2D>();
+        //Camera delegate
+        Managers.Camera.onRotated +=
+            (up) => transform.up = up;
+        //Rewind delegates
+        Managers.Rewind.onRewindStarted +=
+            (gss, gs) => this.enabled = false;
+        Managers.Rewind.onRewindState +=
+            (gss, gs) => transform.position = parentObj.transform.position;
+        Managers.Rewind.onRewindFinished +=
+            (gss, gs) => this.enabled = true;
     }
 
     private void Update()
@@ -58,7 +74,6 @@ public class TeleportRangeUpdater : MonoBehaviour
         }
         //Update position and rotation
         transform.position = parentObj.transform.position + (Vector3)offset;
-        transform.up = Managers.Camera.transform.up;
         //Decrease offset
         offset = Vector2.Lerp(offset, Vector2.zero, bounceBackSpeed * Time.deltaTime);
     }

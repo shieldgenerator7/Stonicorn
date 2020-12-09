@@ -540,13 +540,11 @@ public class TeleportAbility : PlayerAbility
 
     public override SavableObject CurrentState
     {
-        get => base.CurrentState.more(
-            "range", Range
-            );
+        get => base.CurrentState;
         set
         {
             base.CurrentState = value;
-            Range = value.Float("range");
+            Range = baseRange;
         }
     }
 }

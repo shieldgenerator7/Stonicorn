@@ -257,6 +257,7 @@ public class CameraController : MonoBehaviour
             {
                 float deltaTime = 3 * Time.unscaledDeltaTime;
                 transform.up = Vector3.Lerp(transform.up, Up, deltaTime);
+                onRotated?.Invoke(transform.up);
             }
 
             //Scale Orthographic Size
@@ -283,6 +284,9 @@ public class CameraController : MonoBehaviour
 
     public bool RotationFinished
         => transform.up == Up;
+
+    public delegate void OnRotated(Vector2 up);
+    public event OnRotated onRotated;
 
 
     /// <summary>
