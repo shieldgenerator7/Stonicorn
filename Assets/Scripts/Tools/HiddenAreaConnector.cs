@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 public class HiddenAreaConnector : MonoBehaviour
 {
     public HiddenArea hiddenArea;
@@ -45,3 +46,4 @@ public class HiddenAreaConnector : MonoBehaviour
             );
     }
 }
+#endif
