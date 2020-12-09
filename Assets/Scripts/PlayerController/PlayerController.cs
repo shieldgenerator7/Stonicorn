@@ -41,7 +41,8 @@ public class PlayerController : MonoBehaviour
     public float Speed
         => rb2d.velocity.magnitude;
 
-    public GravityAccepter Gravity { get; private set; }
+    public GravityAccepter GravityAccepter { get; private set; }
+    public Vector2 GravityDir => GravityAccepter.Gravity;
 
     public GroundChecker Ground { get; private set; }
 
@@ -67,7 +68,7 @@ public class PlayerController : MonoBehaviour
         //Retrieve components
         rb2d = GetComponent<Rigidbody2D>();
         Ground = GetComponent<GroundChecker>();
-        Gravity = GetComponent<GravityAccepter>();
+        GravityAccepter = GetComponent<GravityAccepter>();
         //Register the delegates
         Managers.Rewind.onRewindFinished += pauseMovementAfterRewind;
         //Estimate the halfWidth
@@ -135,7 +136,7 @@ public class PlayerController : MonoBehaviour
             groundedTrigger.isTrigger = true;
         }
         //Move ground trigger to its new position based on the current gravity
-        Vector3 offset = Gravity.Gravity.normalized * Ground.groundTestDistance;
+        Vector3 offset = GravityDir.normalized * Ground.groundTestDistance;
         groundedTrigger.offset = transform.InverseTransformDirection(offset);
     }
 
@@ -212,7 +213,7 @@ public class PlayerController : MonoBehaviour
     public float getNextRotation(float angleZ)
     {
         //Convert given angle to current gravity space
-        float gravityRot = Utility.RotationZ(Gravity.Gravity, Vector3.down);
+        float gravityRot = Utility.RotationZ(GravityDir, Vector3.down);
         float givenRotation = angleZ - gravityRot;
         givenRotation = Utility.loopValue(givenRotation, 0, 360);
         //Figure out which default rotation is closest to given

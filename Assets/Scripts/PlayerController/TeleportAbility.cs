@@ -105,7 +105,7 @@ public class TeleportAbility : PlayerAbility
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
             float upAmount = Vector3.Dot(
                 (targetPos - transform.position).normalized,
-                -playerController.Gravity.Gravity.normalized
+                -playerController.GravityDir.normalized
                 );
             exhaustCoolDownTime = baseExhaustCoolDownTime * upAmount;
         }

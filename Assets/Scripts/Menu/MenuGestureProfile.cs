@@ -12,7 +12,7 @@ public class MenuGestureProfile : GestureProfile
     public override void deactivate()
     {
         MenuManager.Open = false;
-        Managers.Camera.Up = -Managers.Player.Gravity.Gravity;
+        Managers.Camera.Up = -Managers.Player.GravityDir;
     }
     public override void processTapGesture(Vector3 curMPWorld)
     {

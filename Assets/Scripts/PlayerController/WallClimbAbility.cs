@@ -28,12 +28,12 @@ public class WallClimbAbility : PlayerAbility
             if (value)
             {
                 magnetStartTime = Managers.Time.Time;
-                gravityAccepter.gravityScale = 1 - wallMagnetAntiGravity;
+                playerController.GravityAccepter.gravityScale = 1 - wallMagnetAntiGravity;
             }
             else
             {
                 magnetStartTime = -1;
-                gravityAccepter.gravityScale = 1;
+                playerController.GravityAccepter.gravityScale = 1;
             }
             onMagnetChanged?.Invoke(value);
         }
@@ -41,14 +41,11 @@ public class WallClimbAbility : PlayerAbility
     public delegate void OnMagnetChanged(bool on);
     public event OnMagnetChanged onMagnetChanged;
 
-    private GravityAccepter gravityAccepter;
-
     protected override void init()
     {
         base.init();
         playerController.Ground.isGroundedCheck += isGroundedAbility;
         playerController.Teleport.onTeleport += processTeleport;
-        gravityAccepter = playerController.Gravity;
         onMagnetChanged -= updateClimbSpikeEffect;
         onMagnetChanged += updateClimbSpikeEffect;
     }
@@ -70,7 +67,7 @@ public class WallClimbAbility : PlayerAbility
     bool isGroundedWall()
     {
         groundedLeft = groundedRight = false;
-        Vector2 gravity = gravityAccepter.Gravity;
+        Vector2 gravity = playerController.GravityDir;
         //Test left side
         groundedLeft = playerController.Ground.isGroundedInDirection(
             -gravity.PerpendicularLeft()
@@ -85,7 +82,7 @@ public class WallClimbAbility : PlayerAbility
     {
         groundedCeiling = false;
         groundedCeiling = playerController.Ground.isGroundedInDirection(
-            -gravityAccepter.Gravity
+            -playerController.GravityDir
             );
         return groundedCeiling;
     }
@@ -205,7 +202,7 @@ public class WallClimbAbility : PlayerAbility
         if (playerController.Ground.GroundedAbilityPrev)
         {
             //Get the gravity direction
-            Vector2 gravity = playerController.Gravity.Gravity;
+            Vector2 gravity = playerController.GravityDir;
             if (groundedLeft)
             {
                 //Look left
@@ -252,7 +249,7 @@ public class WallClimbAbility : PlayerAbility
         if (!tooClose)
         {
             GameObject stickyPad = Utility.Instantiate(stickyPadPrefab);
-            stickyPad.GetComponent<StickyPadChecker>().init(playerController.Gravity.Gravity);
+            stickyPad.GetComponent<StickyPadChecker>().init(playerController.GravityDir);
             stickyPad.transform.position = stickyPos;
             //Update Stats
             Managers.Stats.addOne("WallClimbSticky");
