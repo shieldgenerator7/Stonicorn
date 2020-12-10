@@ -51,6 +51,8 @@ public class GroundChecker : SavableMonoBehaviour
         }
     }
 
+    private List<PlayerAbility> groundedAbilities = new List<PlayerAbility>();
+
     //
     //Grounded state variables
     //
@@ -69,9 +71,6 @@ public class GroundChecker : SavableMonoBehaviour
     /// such as to a wall or after a swap
     /// </summary>
     public bool GroundedAbility { get; private set; }
-
-    public delegate bool IsGroundedCheck();
-    public event IsGroundedCheck isGroundedCheck;
 
     //Grounded Previously
     public bool GroundedPrev { get; private set; }
@@ -109,14 +108,20 @@ public class GroundChecker : SavableMonoBehaviour
     private void checkGroundedStateAbility()
     {
         GroundedAbilityPrev = GroundedAbility;
+        groundedAbilities.Clear();
         if (isGroundedCheck != null)
         {
             //If at least 1 delegate returns true,
             //Merky is grounded
-            GroundedAbility = isGroundedCheck.GetInvocationList().ToList()
-                .Any(del => ((IsGroundedCheck)del).Invoke());
+            isGroundedCheck.GetInvocationList()
+                .Cast<IsGroundedCheck>().ToList()
+                .FindAll(igc => igc.Invoke())
+                .ForEach(igc => groundedAbilities.Add((PlayerAbility)igc.Target));
+            GroundedAbility = groundedAbilities.Count > 0;
         }
     }
+    public delegate bool IsGroundedCheck();
+    public event IsGroundedCheck isGroundedCheck;
 
     /// <summary>
     /// Returns true if there is ground in the given direction relative to Merky
@@ -143,6 +148,15 @@ public class GroundChecker : SavableMonoBehaviour
         //Else, There is no ground in the given direction
         return false;
     }
+
+    /// <summary>
+    /// Returns true if there was a reason for being grounded 
+    /// other than the given ability
+    /// </summary>
+    /// <param name="ability"></param>
+    /// <returns></returns>
+    public bool isGroundedWithoutAbility(PlayerAbility ability)
+        => GroundedNormal || groundedAbilities.Any(gpa => gpa != ability);
 
     public override SavableObject CurrentState
     {
