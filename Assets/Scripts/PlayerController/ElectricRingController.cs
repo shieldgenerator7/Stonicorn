@@ -47,4 +47,13 @@ public class ElectricRingController : MonoBehaviour
             placer = Utility.RotateZ(placer, angleSpacing);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        electricRingAbility.addObject(collision.gameObject);
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        electricRingAbility.removeObject(collision.gameObject);
+    }
 }

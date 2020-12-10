@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ElectricRingAbility : PlayerAbility
@@ -45,6 +46,9 @@ public class ElectricRingAbility : PlayerAbility
     public float Range
         => maxRange * energy / maxEnergy;
 
+    HashSet<Rigidbody2D> rb2ds = new HashSet<Rigidbody2D>();
+    HashSet<PowerConduit> conduits = new HashSet<PowerConduit>();
+
     protected override void init()
     {
         base.init();
@@ -69,6 +73,60 @@ public class ElectricRingAbility : PlayerAbility
         else if (energy > 0)
         {
             Energy -= energyPerSecond * Time.fixedDeltaTime;
+        }
+
+        //Power
+        //2020-12-08: copied from ElectricFieldController.FixedUpdate()
+        foreach (PowerConduit conduit in conduits)
+        {
+            if (conduit.convertsToEnergy)
+            {
+                float amountTaken = conduit.convertSourceToEnergy(
+                    energy,
+                    Time.fixedDeltaTime
+                    );
+                Energy += -amountTaken;
+            }
+        }
+        //Slow
+        foreach (Rigidbody2D rb2d in rb2ds)
+        {
+            if (rb2d.isMoving())
+            {
+                rb2d.velocity += -rb2d.velocity.normalized
+                    * slowSpeed * Time.fixedDeltaTime;
+            }
+            else
+            {
+                rb2d.nullifyMovement();
+            }
+        }
+    }
+
+    public void addObject(GameObject go)
+    {
+        Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
+        if (rb2d)
+        {
+            rb2ds.Add(rb2d);
+        }
+        PowerConduit conduit = go.GetComponent<PowerConduit>();
+        if (conduit)
+        {
+            conduits.Add(conduit);
+        }
+    }
+    public void removeObject(GameObject go)
+    {
+        Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
+        if (rb2d)
+        {
+            rb2ds.Remove(rb2d);
+        }
+        PowerConduit conduit = go.GetComponent<PowerConduit>();
+        if (conduit)
+        {
+            conduits.Remove(conduit);
         }
     }
 
