@@ -89,16 +89,19 @@ public class ElectricRingAbility : PlayerAbility
             }
         }
         //Slow
-        foreach (Rigidbody2D rb2d in rb2ds)
+        if (FeatureLevel >= 1)
         {
-            if (rb2d.isMoving())
+            foreach (Rigidbody2D rb2d in rb2ds)
             {
-                rb2d.velocity += -rb2d.velocity.normalized
-                    * slowSpeed * Time.fixedDeltaTime;
-            }
-            else
-            {
-                rb2d.nullifyMovement();
+                if (rb2d.isMoving())
+                {
+                    rb2d.velocity += -rb2d.velocity.normalized
+                        * slowSpeed * Time.fixedDeltaTime;
+                }
+                else
+                {
+                    rb2d.nullifyMovement();
+                }
             }
         }
     }
