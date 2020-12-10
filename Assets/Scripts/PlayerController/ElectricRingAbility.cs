@@ -11,8 +11,6 @@ public class ElectricRingAbility : PlayerAbility
     public float slowSpeed = 1;//how much to decrease velocity by each second
 
     //State variables
-    [Header("State Variables")]
-    [SerializeField]
     private float energy = 0;
     public float Energy
     {
@@ -26,7 +24,6 @@ public class ElectricRingAbility : PlayerAbility
     public delegate void OnEnergyChanged(float energy);
     public event OnEnergyChanged onEnergyChanged;
 
-    [SerializeField]
     private bool activated = false;
     public bool Activated
     {
@@ -45,8 +42,6 @@ public class ElectricRingAbility : PlayerAbility
 
     private bool tapOnPlayer = false;
 
-    [SerializeField]
-    private float range = 0;
     public float Range
         => maxRange * energy / maxEnergy;
 
@@ -75,7 +70,6 @@ public class ElectricRingAbility : PlayerAbility
         {
             Energy -= energyPerSecond * Time.fixedDeltaTime;
         }
-        range = Range;
     }
 
     #region Input Handling

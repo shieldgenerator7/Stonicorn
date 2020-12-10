@@ -8,14 +8,12 @@ public class ElectricRingController : MonoBehaviour
     [Header("Settings")]
     public float pointSpacing = 1;//distance between two points
 
-    private SpriteShapeController ssc;
     private Spline spline;
     private ElectricRingAbility electricRingAbility;
 
     private void Start()
     {
-        ssc = GetComponent<SpriteShapeController>();
-        spline = ssc.spline;
+        spline = GetComponent<SpriteShapeController>().spline;
         electricRingAbility = Managers.Player.GetComponent<ElectricRingAbility>();
         electricRingAbility.onEnergyChanged += energyChanged;
         gameObject.SetActive(false);
