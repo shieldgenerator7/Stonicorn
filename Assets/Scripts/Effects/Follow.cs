@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -48,13 +47,22 @@ public class Follow : MonoBehaviour
                 (up) => transform.up = up;
         }
         //Rewind delegates
-        Managers.Rewind.onRewindStarted +=
-            (gss, gs) => this.enabled = false;
-        Managers.Rewind.onRewindState +=
-            (gss, gs) => updateTransform(false, orientToCamera);
-        Managers.Rewind.onRewindFinished +=
-            (gss, gs) => this.enabled = true;
+        Managers.Rewind.onRewindStarted += rewindStarted;
+        Managers.Rewind.onRewindState += rewindState;
+        Managers.Rewind.onRewindFinished += rewindFinished;
     }
+
+    private void OnDestroy()
+    {
+        Managers.Rewind.onRewindStarted -= rewindStarted;
+        Managers.Rewind.onRewindState -= rewindState;
+        Managers.Rewind.onRewindFinished -= rewindFinished;
+    }
+
+    void rewindStarted(List<GameState> gss, int gs) => this.enabled = false;
+    void rewindState(List<GameState> gss, int gs)
+        => updateTransform(false, orientToCamera);
+    void rewindFinished(List<GameState> gss, int gs) => this.enabled = true;
 
     private void LateUpdate()
     {
