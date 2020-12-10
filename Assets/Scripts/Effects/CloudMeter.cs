@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class CloudMeter : MonoBehaviour
 {
-    public AirSliceAbility airSliceAbility;
     public GameObject cloudPrefab;
     public Sprite availableSprite;
     public Sprite usedSprite;
+
+    private AirSliceAbility airSliceAbility;
 
     private List<SpriteRenderer> clouds = new List<SpriteRenderer>();
 
@@ -15,13 +16,8 @@ public class CloudMeter : MonoBehaviour
     void Start()
     {
         Managers.Player.onAbilityActivated += abilityEnableChanged;
+        airSliceAbility = Managers.Player.GetComponent<AirSliceAbility>();
         abilityEnableChanged(airSliceAbility, airSliceAbility.enabled);
-    }
-
-    private void Update()
-    {
-        transform.position = airSliceAbility.transform.position;
-        transform.up = Managers.Camera.Up;
     }
 
     private void abilityEnableChanged(PlayerAbility ability, bool active)
@@ -44,7 +40,7 @@ public class CloudMeter : MonoBehaviour
     private void groundStateChanged(bool grounded, bool groundedNormal)
     {
         //Show when in the air
-        gameObject.SetActive(!groundedNormal);
+        showClouds(!groundedNormal);
     }
 
     private void airPortsUsedChanged(int airPortsUsed, int maxAirPorts)
@@ -52,36 +48,40 @@ public class CloudMeter : MonoBehaviour
         arrangeClouds(maxAirPorts - airPortsUsed, maxAirPorts);
         if (airPortsUsed > 0)
         {
-            gameObject.SetActive(true);
+            showClouds(true);
         }
+    }
+
+    private void showClouds(bool show)
+    {
+        clouds.ForEach(sr => sr.gameObject.SetActive(show));
     }
 
     private void arrangeClouds(int available, int max)
     {
+        //Assure the right amount of clouds
         while (clouds.Count < max)
         {
             clouds.Add(createCloud());
         }
-        for (int i = 0; i < clouds.Count; i++)
+        while (clouds.Count > max)
+        {
+            Destroy(clouds[0]);
+            clouds.RemoveAt(0);
+        }
+        //Process clouds
+        for (int i = 0; i < max; i++)
         {
             SpriteRenderer sr = clouds[i];
-            if (i < max)
-            {
-                sr.gameObject.SetActive(true);
-                sr.sprite = (i < available) ? availableSprite : usedSprite;
-                float percent = (max - 1 > 0)
-                    ? ((float)i / (max - 1)) * 2 - 1
-                    : 0;
-                percent *= Mathf.PI / 2;
-                sr.transform.localPosition = new Vector2(
-                    Mathf.Sin(percent),
-                    -Mathf.Cos(percent)
-                    );
-            }
-            else
-            {
-                sr.gameObject.SetActive(false);
-            }
+            sr.sprite = (i < available) ? availableSprite : usedSprite;
+            float percent = (max - 1 > 0)
+                ? ((float)i / (max - 1)) * 2 - 1
+                : 0;
+            percent *= Mathf.PI / 2;
+            sr.transform.localPosition = new Vector2(
+                Mathf.Sin(percent),
+                -Mathf.Cos(percent)
+                );
         }
     }
 

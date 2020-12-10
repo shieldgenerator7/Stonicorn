@@ -24,16 +24,10 @@ public class TeleportRangeUpdater : MonoBehaviour
 
     [Header("Components")]
     public GameObject fragmentPrefab;
-    public GameObject parentObj;
     public Timer timer;
 
     private List<GameObject> fragments = new List<GameObject>();
     private float range;//cached range, gets updated in updateRange()
-
-    public float bounceBackSpeed = 2;
-    private Vector2 prevVelocity;
-    private Rigidbody2D rb2dParent;
-    private Vector2 offset = Vector2.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -42,40 +36,9 @@ public class TeleportRangeUpdater : MonoBehaviour
         timer.onTimeLeftChanged += updateTimer;
         timer.onTimeLeftChanged += updateTimerAlpha;
         //Register range update delegate
-        PlayerController pc = parentObj.GetComponent<PlayerController>();
-        pc.Teleport.onRangeChanged += updateRange;
-        pc.onAbilityActivated += abilityActivated;
-        updateRange(pc.Teleport.Range);
-        //rb2dParent
-        rb2dParent = parentObj.GetComponent<Rigidbody2D>();
-        //Camera delegate
-        Managers.Camera.onRotated +=
-            (up) => transform.up = up;
-        //Rewind delegates
-        Managers.Rewind.onRewindStarted +=
-            (gss, gs) => this.enabled = false;
-        Managers.Rewind.onRewindState +=
-            (gss, gs) => transform.position = parentObj.transform.position;
-        Managers.Rewind.onRewindFinished +=
-            (gss, gs) => this.enabled = true;
-    }
-
-    private void Update()
-    {
-        //Check if needs to shake
-        if (rb2dParent)
-        {
-            if (rb2dParent.velocity != prevVelocity
-                && rb2dParent.velocity.magnitude < 0.1f)
-            {
-                offset += (prevVelocity - rb2dParent.velocity) * 0.1f;
-            }
-            prevVelocity = rb2dParent.velocity;
-        }
-        //Update position and rotation
-        transform.position = parentObj.transform.position + (Vector3)offset;
-        //Decrease offset
-        offset = Vector2.Lerp(offset, Vector2.zero, bounceBackSpeed * Time.deltaTime);
+        Managers.Player.Teleport.onRangeChanged += updateRange;
+        Managers.Player.onAbilityActivated += abilityActivated;
+        updateRange(Managers.Player.Teleport.Range);
     }
 
     public void updateRange(float range)
@@ -116,7 +79,7 @@ public class TeleportRangeUpdater : MonoBehaviour
             fragment.GetComponent<SpriteRenderer>().color = Color.white;
         }
         //Segment consulting
-        foreach (PlayerAbility ability in parentObj.GetComponents<PlayerAbility>())
+        foreach (PlayerAbility ability in Managers.Player.GetComponents<PlayerAbility>())
         {
             if (ability.enabled)
             {
