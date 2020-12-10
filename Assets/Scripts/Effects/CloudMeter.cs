@@ -37,10 +37,10 @@ public class CloudMeter : MonoBehaviour
         }
     }
 
-    private void groundStateChanged(bool grounded, bool groundedNormal)
+    private void groundStateChanged(GroundChecker grounder)
     {
         //Show when in the air
-        showClouds(!groundedNormal);
+        showClouds(!grounder.isGroundedWithoutAbility(airSliceAbility));
     }
 
     private void airPortsUsedChanged(int airPortsUsed, int maxAirPorts)

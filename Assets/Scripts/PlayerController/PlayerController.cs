@@ -288,9 +288,9 @@ public class PlayerController : MonoBehaviour
     {
         Ground.checkGroundedState();
         //Grounded delegates
-        onGroundedStateUpdated?.Invoke(Ground.Grounded, Ground.GroundedNormal);
+        onGroundedStateUpdated?.Invoke(Ground);
     }
-    public delegate void OnGroundedStateUpdated(bool grounded, bool groundedNormal);
+    public delegate void OnGroundedStateUpdated(GroundChecker grounder);
     public event OnGroundedStateUpdated onGroundedStateUpdated;//called when grounded becomes true
 
     private void onTeleported(Vector2 oldPos, Vector2 newPos)

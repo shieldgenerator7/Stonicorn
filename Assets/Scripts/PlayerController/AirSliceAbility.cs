@@ -48,9 +48,9 @@ public class AirSliceAbility : PlayerAbility
     bool airGroundedCheck()
         => (AirPortsUsed < maxAirPorts);
 
-    void resetAirPorts(bool grounded, bool groundedNormal)
+    void resetAirPorts(GroundChecker grounder)
     {
-        if (playerController.Ground.isGroundedWithoutAbility(this))
+        if (grounder.isGroundedWithoutAbility(this))
         {
             //Refresh air teleports
             AirPortsUsed = 0;

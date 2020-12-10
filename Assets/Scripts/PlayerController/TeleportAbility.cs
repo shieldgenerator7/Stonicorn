@@ -505,10 +505,10 @@ public class TeleportAbility : PlayerAbility
     }
     #endregion
 
-    private void onGroundedChanged(bool grounded, bool groundedNormal)
+    private void onGroundedChanged(GroundChecker grounder)
     {
         //If Merky is grounded,
-        if (grounded)
+        if (grounder.Grounded)
         {
             //Refresh teleport range
             //Check to see if it's less than base range,
