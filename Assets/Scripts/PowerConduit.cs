@@ -75,11 +75,19 @@ public class PowerConduit : SavableMonoBehaviour
         if (takesEnergy && currentEnergyLevel < maxEnergyPerSecond)
         {
             PowerConduit pc = coll.gameObject.GetComponent<PowerConduit>();
-            if (pc != null)
+            if (pc)
             {
-                if (pc.givesEnergy && (!pc.takesEnergy || pc.currentEnergyLevel > currentEnergyLevel || usesEnergy))
+                if (pc.givesEnergy
+                    && (!pc.takesEnergy
+                        || pc.currentEnergyLevel > currentEnergyLevel
+                        || usesEnergy
+                        )
+                    )
                 {
-                    float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond, Time.fixedDeltaTime);
+                    float amountGiven = pc.giveEnergyToObject(
+                        maxEnergyPerSecond,
+                        Time.fixedDeltaTime
+                        );
                     adjustEnergy(amountGiven);
                 }
             }
