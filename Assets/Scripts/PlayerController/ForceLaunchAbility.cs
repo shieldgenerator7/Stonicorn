@@ -108,7 +108,8 @@ public class ForceLaunchAbility : PlayerAbility
     }
 
     bool dashGroundedCheck()
-        => playerController.Ground.isGroundedInDirection(rb2d.velocity);
+        => affectingVelocity 
+            || playerController.Ground.isGroundedInDirection(rb2d.velocity);
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -173,7 +174,7 @@ public class ForceLaunchAbility : PlayerAbility
     /// or hasn't teleported since not being grounded
     /// </summary>
     bool CanLaunch =>
-        (playerController.Ground.Grounded
+        (playerController.Ground.isGroundedWithoutAbility(this)
         || rb2d.velocity.sqrMagnitude < 0.1f)
         && !Managers.Player.gestureOnPlayer(dragPos);
 
