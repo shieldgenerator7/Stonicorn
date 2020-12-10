@@ -89,7 +89,7 @@ public class RewindManager : MonoBehaviour
     /// Load the game state with the given id
     /// </summary>
     /// <param name="gamestateId">The ID of the game state to load</param>
-    public void Load(int gamestateId)
+    private void Load(int gamestateId)
     {
         //Update chosenId to game-state-now
         chosenId = Mathf.Clamp(gamestateId, -1, gameStates.Count - 1);
@@ -194,6 +194,16 @@ public class RewindManager : MonoBehaviour
     /// <param name="gamestateId">The game state id to rewind to</param>
     public void RewindTo(int gamestateId, bool playerInitiated = true)
     {
+        //If already at the state you want to rewind to,
+        if (gamestateId == chosenId)
+        {
+            //Just load it
+            onRewindStarted?.Invoke(gameStates, gamestateId);
+            Load(gamestateId);
+            onRewindFinished?.Invoke(gameStates, gamestateId);
+            //And don't actually rewind
+            return;
+        }
         //Set interruptable
         rewindInterruptableByPlayer = playerInitiated;
         //Set the game state tracker vars

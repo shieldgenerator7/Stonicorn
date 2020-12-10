@@ -270,19 +270,8 @@ public class PlayerRewindController : MonoBehaviour
         GameState final = getGameStateAtPosition(curMPWorld);
         if (final != null)
         {
-            //Process tapped game state
-            //If the tapped one is already the current one,
-            if (final.id == Managers.Rewind.GameStateId)
-            {
-                //Reload the current one
-                Managers.Rewind.Load(final.id);
-            }
-            //Else if a past one was tapped,
-            else
-            {
-                //Rewind back to it
-                Managers.Rewind.RewindTo(final.id);
-            }
+            //Rewind back to the selected game state
+            Managers.Rewind.RewindTo(final.id);
             //Update Stats
             Managers.Stats.addOne("RewindPlayer");
         }
