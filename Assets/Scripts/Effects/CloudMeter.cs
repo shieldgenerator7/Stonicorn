@@ -40,7 +40,7 @@ public class CloudMeter : MonoBehaviour
     private void groundStateChanged(GroundChecker grounder)
     {
         //Show when in the air
-        showClouds(!grounder.isGroundedWithoutAbility(airSliceAbility));
+        showClouds(!airSliceAbility.canReset(grounder));
     }
 
     private void airPortsUsedChanged(int airPortsUsed, int maxAirPorts)
