@@ -6,15 +6,21 @@ using UnityEngine.UI;
 
 public class Fader : MonoBehaviour
 {
-
+    [Range(0, 1)]
     public float startfade = 1.0f;
+    [Range(0, 1)]
     public float endfade = 0.0f;
+    [Range(0, 10)]
     public float duration = 1;
+    [Range(0, 10)]
     public float delayTime = 0f;
+    [Tooltip("True: destroys all colliders on Start()")]
     public bool destroyColliders = true;
     public bool destroyObjectOnFinish = true;
     public bool destroyScriptOnFinish = true;
-    public bool isEffectOnly = true;//the object this fader is attached to is only a special effect and not a time-bound object
+    [Tooltip("True: the object this Fader is attached to " +
+        "is only a special effect and not a time-bound object")]
+    public bool isEffectOnly = true;
     public bool ignorePause = true;
 
     private float CurrentTime
