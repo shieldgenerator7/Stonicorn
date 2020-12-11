@@ -97,16 +97,16 @@ public static class Utility
     public static Vector3 setZ(this Vector3 v, float z)
         => new Vector3(v.x, v.y, z);
 
-public static Vector2 travelAlongCircle(this Vector2 pos, Vector2 center, float distance)
-{
-    //2020-12-05: copied from http://answers.unity.com/answers/572675/view.html
-    Vector3 axis = Vector3.back;
-    Vector2 dir = pos - center;
-    float circumference = 2.0f * Mathf.PI * dir.magnitude;
-    float angle = distance / circumference * 360.0f;
-    dir = Quaternion.AngleAxis(angle, axis) * dir;
-    return dir + center;
-}
+    public static Vector2 travelAlongCircle(this Vector2 pos, Vector2 center, float distance)
+    {
+        //2020-12-05: copied from http://answers.unity.com/answers/572675/view.html
+        Vector3 axis = Vector3.back;
+        Vector2 dir = pos - center;
+        float circumference = 2.0f * Mathf.PI * dir.magnitude;
+        float angle = distance / circumference * 360.0f;
+        dir = Quaternion.AngleAxis(angle, axis) * dir;
+        return dir + center;
+    }
     #endregion
 
     #region Rigidbody2D Extension Methods
@@ -135,7 +135,7 @@ public static Vector2 travelAlongCircle(this Vector2 pos, Vector2 center, float 
     /// <param name="expPosition"></param>
     /// <param name="expRadius"></param>
     /// <param name="maxForce">The maximum amount of force that can be applied</param>
-    public static void AddWeightedExplosionForce(this Rigidbody2D body, float expForce, Vector2 expPosition, float expRadius, float maxForce)
+    public static void AddWeightedExplosionForce(this Rigidbody2D body, float expForce, Vector2 expPosition, float expRadius, float maxForce = float.MaxValue)
     {
         Vector2 dir = ((Vector2)body.transform.position - expPosition).normalized;
         float distanceToEdge = expRadius - expPosition.distanceToObject(body.gameObject);
@@ -151,6 +151,17 @@ public static Vector2 travelAlongCircle(this Vector2 pos, Vector2 center, float 
         float force = body.mass * distanceToEdge * calc * expForce / Time.fixedDeltaTime;
         force = Mathf.Min(force, maxForce);
         body.AddForce(dir * force);
+    }
+    /// <summary>
+    /// Sets the velocity of the RigidBody2D to move away from the explosion position at the given speed
+    /// </summary>
+    /// <param name="body"></param>
+    /// <param name="expSpeed"></param>
+    /// <param name="expPosition"></param>
+    public static void SetExplosionVelocity(this Rigidbody2D body, float expSpeed, Vector2 expPosition)
+    {
+        Vector2 dir = ((Vector2)body.transform.position - expPosition).normalized;
+        body.velocity = dir * expSpeed;
     }
     public static bool isMoving(this Rigidbody2D rb2d)
     {
@@ -193,7 +204,7 @@ public static Vector2 travelAlongCircle(this Vector2 pos, Vector2 center, float 
     public static bool isSpawnedObject(this GameObject go)
     {
         return go.isSpawnedObjectImpl()
-            || (go.transform.parent 
+            || (go.transform.parent
                 && go.transform.parent.gameObject.isSpawnedObjectImpl()
                 );
     }
@@ -418,15 +429,8 @@ public static Vector2 travelAlongCircle(this Vector2 pos, Vector2 center, float 
     public static GameObject Instantiate(GameObject prefab)
     {
         //Checks to make sure it's rewindable
-        bool foundValidSavable = false;
-        foreach (SavableMonoBehaviour smb in prefab.GetComponents<SavableMonoBehaviour>())
-        {
-            if (smb.IsSpawnedObject)
-            {
-                foundValidSavable = true;
-                break;
-            }
-        }
+        bool foundValidSavable = prefab.GetComponents<SavableMonoBehaviour>()
+            .Any(smb => smb.IsSpawnedObject);
         if (!foundValidSavable)
         {
             throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have a SavableMonoBehaviour attached that is says it is a spawned object.");

@@ -12,6 +12,8 @@ public class ForceLaunchAbility : PlayerAbility
     public float accelerationBoostPercent = 0.5f;//how much speed to add when tapping in the direction of movement
     public float speedMinimum = 0.5f;//if this speed isn't maintained, bounciness will be lost
     public float bouncinessLossDelay = 0.5f;//after this amount of time of being under speed, bounciness will be lost
+    public float minimumExplodeSpeed = 5;
+    public float maxEplodeRange = 3;
 
 
     public Color unavailableColor = Color.white;//the color the arrow will be when this ability's requirements are not met
@@ -24,6 +26,7 @@ public class ForceLaunchAbility : PlayerAbility
     private float originalAlpha;
     public GameObject bouncinessIndicatorPrefab;//prefab
     private GameObject bouncinessIndicator;
+    public GameObject explosionPrefab;
 
     private bool launching = false;//true: player is getting ready to launch
     public bool Launching
@@ -108,7 +111,7 @@ public class ForceLaunchAbility : PlayerAbility
             Managers.Rewind.Save();
             //Actually launch
             launch();
-            if (FeatureLevel >= 2)
+            if (CanShoot)
             {
                 shootProjectile();
             }
@@ -146,6 +149,12 @@ public class ForceLaunchAbility : PlayerAbility
             currentVelocity = rb2d.velocity;
             //Save the game state
             Managers.Rewind.Save();
+            //Explode if able
+            if (CanExplode)
+            {
+                Vector2 contactPoint = collision.GetContact(0).point;
+                explode(contactPoint);
+            }
         }
     }
 
@@ -201,6 +210,41 @@ public class ForceLaunchAbility : PlayerAbility
     public delegate void OnLaunch();
     public event OnLaunch onLaunch;
 
+    bool CanExplode =>
+        FeatureLevel >= 1 && rb2d.velocity.magnitude >= minimumExplodeSpeed;
+    void explode(Vector2 pos)
+    {
+        float range = maxEplodeRange;// * rb2d.velocity.magnitude / maxLaunchSpeed;
+        float forceAmount = rb2d.velocity.magnitude;
+        //Force things away
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            GameObject hgo = hitColliders[i].gameObject;
+            if (gameObject == hgo)
+            {
+                //don't explode yourself
+                continue;
+            }
+            Rigidbody2D orb2d = hgo.GetComponent<Rigidbody2D>();
+            if (orb2d != null)
+            {
+                orb2d.SetExplosionVelocity(forceAmount, pos);
+            }
+            foreach (Blastable b in hgo.GetComponents<Blastable>())
+            {
+                float force = forceAmount;
+                Vector2 dir = ((Vector2)hgo.transform.position - pos).normalized;
+                b.checkForce(force, dir);
+            }
+        }
+        //Visual Effects
+        GameObject explosion = Instantiate(explosionPrefab);
+        explosion.transform.position = pos;
+    }
+
+    bool CanShoot =>
+        FeatureLevel >= 2;
     void shootProjectile()
     {
         GameObject projectile = Utility.Instantiate(projectilePrefab);
