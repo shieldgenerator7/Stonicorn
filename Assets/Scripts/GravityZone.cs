@@ -12,13 +12,12 @@ public class GravityZone : MonoBehaviour
     private Vector2 gravityVector;
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
 
-    private Collider2D coll2d;
+    public Collider2D coll2d;
 
     // Use this for initialization
     void Start()
     {
         gravityVector = -transform.up.normalized * gravityScale;
-        coll2d = GetComponent<Collider2D>();
     }
 
     void OnTriggerEnter2D(Collider2D coll)
