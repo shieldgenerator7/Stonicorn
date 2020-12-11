@@ -247,12 +247,20 @@ public class ForceLaunchAbility : PlayerAbility
         FeatureLevel >= 2;
     void shootProjectile()
     {
-        GameObject projectile = Utility.Instantiate(projectilePrefab);
-        projectile.transform.position = (Vector2)transform.position
+        Vector2 startPos = (Vector2)transform.position
             + launchDirection.normalized * -1.5f;
-        projectile.GetComponent<Rigidbody2D>().velocity = -LaunchVelocity;
-        //Update Stats
-        //Managers.Stats.addOne("WallClimbSticky");
+        //If there's space to spawn it
+        if (!playerController.Teleport.isOccupied(startPos))
+        {
+            //Spawn it
+            GameObject projectile = Utility.Instantiate(projectilePrefab);
+            projectile.transform.position = startPos;
+            projectile.transform.up = transform.up;
+            projectile.transform.localScale = transform.localScale;
+            projectile.GetComponent<Rigidbody2D>().velocity = -LaunchVelocity;
+            //Update Stats
+            //Managers.Stats.addOne("WallClimbSticky");
+        }
     }
 
     /// <summary>
