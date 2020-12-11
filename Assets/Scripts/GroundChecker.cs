@@ -67,7 +67,7 @@ public class GroundChecker : SavableMonoBehaviour
     /// You might want to use isGroundedWithoutAbility() instead
     /// if you want to detect if grounded by other abilities
     /// </summary>
-    private bool GroundedNormal { get;  set; }
+    public bool GroundedNormal { get; private set; }
 
     /// <summary>
     /// True if an ability says it's grounded,
@@ -82,7 +82,7 @@ public class GroundChecker : SavableMonoBehaviour
     /// You might want to use isGroundedWithoutAbility() instead
     /// if you want to detect if grounded by other abilities
     /// </summary>
-    private bool GroundedNormalPrev { get;  set; }
+    public bool GroundedNormalPrev { get; private set; }
     //Grounded Previously by an ability
     public bool GroundedAbilityPrev { get; private set; }
 
