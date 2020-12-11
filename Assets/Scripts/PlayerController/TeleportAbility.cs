@@ -211,11 +211,11 @@ public class TeleportAbility : PlayerAbility
         //Determine if you can teleport to the position
         //(i.e. is it occupied or not?)
         //If the new position is occupied,
-        if (isOccupied(newPos, targetPos))
+        if (isOccupied(newPos))
         {
             //Try to adjust it first
             Vector2 adjustedPos = adjustForOccupant(newPos);
-            if (!isOccupied(adjustedPos, targetPos))
+            if (!isOccupied(adjustedPos))
             {
                 return adjustedPos;
             }
@@ -242,12 +242,12 @@ public class TeleportAbility : PlayerAbility
                 {
                     Vector2 testPos = (norm * percent) + oldPos;
                     //If the test position is occupied,
-                    if (isOccupied(testPos, targetPos))
+                    if (isOccupied(testPos))
                     {
                         //Adjust position based on occupant
                         testPos = adjustForOccupant(testPos);
                         //If the test position is no longer occupied,
-                        if (!isOccupied(testPos, targetPos))
+                        if (!isOccupied(testPos))
                         {
                             //Possible option found
                             possibleOptions.Add(testPos);
@@ -299,7 +299,7 @@ public class TeleportAbility : PlayerAbility
     /// </summary>
     /// <param name="testPos">The position to test</param>
     /// <returns>True if something (besides Merky) is in the space, False if the space is clear</returns>
-    private bool isOccupied(Vector3 testPos, Vector3 tapPos)
+    public bool isOccupied(Vector3 testPos)
     {
         bool occupied = false;
         Vector3 testOffset = testPos - transform.position;
@@ -308,7 +308,7 @@ public class TeleportAbility : PlayerAbility
         if (scoutColliderMax)
         {
             //Test with max scout collider
-            occupied = isOccupiedImpl(scoutColliderMax, testOffset, testPos, tapPos);
+            occupied = isOccupiedImpl(scoutColliderMax, testOffset);
         }
         else
         {
@@ -320,13 +320,13 @@ public class TeleportAbility : PlayerAbility
         {
             //There's something in or around merky, so
             //Test with min scout collider
-            occupied = isOccupiedImpl(scoutColliderMin, testOffset, testPos, tapPos);
+            occupied = isOccupiedImpl(scoutColliderMin, testOffset);
             //If the min scout collider is not occupied,
             if (!occupied)
             {
                 //There's a possibility the space is clear
                 //Test with actual collider
-                occupied = isOccupiedImpl(pc2d, testOffset, testPos, tapPos);
+                occupied = isOccupiedImpl(pc2d, testOffset);
             }
         }
         return occupied;
@@ -334,7 +334,7 @@ public class TeleportAbility : PlayerAbility
     /// <summary>
     /// isOccupied Step 2. Only meant to be called by isOccupied(Vector3).
     /// </summary>
-    private bool isOccupiedImpl(Collider2D coll, Vector3 testOffset, Vector3 testPos, Vector3 tapPos)
+    private bool isOccupiedImpl(Collider2D coll, Vector3 testOffset)
     {
         //Find out what objects could be occupying the space
         Vector3 savedOffset = coll.offset;
