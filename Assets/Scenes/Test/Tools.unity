@@ -32808,7 +32808,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578159050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9843452, y: 0.30612895, z: 0}
+  m_LocalPosition: {x: 2.2427118, y: 1.9925399, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 942494484}
@@ -33135,7 +33135,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942494481}
   m_LocalRotation: {x: 0, y: 0, z: 0.06306359, w: 0.99800956}
-  m_LocalPosition: {x: 139.21216, y: 208.62827, z: 0}
+  m_LocalPosition: {x: 233.6003, y: 90.1379, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 578159051}
@@ -34281,12 +34281,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e4a228c3d54c3c4cb8506b66be89bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ForceLaunchAbility: 0
-  SwapAbility: 0
-  WallClimbAbility: 0
-  AirSliceAbility: 0
-  ElectricRingAbility: 0
-  LongTeleportAbility: 0
+  ForceLaunchAbility: 5
+  SwapAbility: -1
+  WallClimbAbility: -1
+  AirSliceAbility: 6
+  ElectricRingAbility: -1
+  LongTeleportAbility: -1
 --- !u!4 &1963506858
 Transform:
   m_ObjectHideFlags: 0

@@ -6,12 +6,18 @@ using UnityEngine;
 
 public class PlayerTestSpawnPoint : MonoBehaviour
 {
-    public bool ForceLaunchAbility;
-    public bool SwapAbility;
-    public bool WallClimbAbility;
-    public bool AirSliceAbility;
-    public bool ElectricRingAbility;
-    public bool LongTeleportAbility;
+    [Range(-1, 6)]
+    public int ForceLaunchAbility = -1;
+    [Range(-1, 6)]
+    public int SwapAbility = -1;
+    [Range(-1, 6)]
+    public int WallClimbAbility = -1;
+    [Range(-1, 6)]
+    public int AirSliceAbility = -1;
+    [Range(-1, 6)]
+    public int ElectricRingAbility = -1;
+    [Range(-1, 6)]
+    public int LongTeleportAbility = -1;
 
     private void Awake()
     {
@@ -26,30 +32,13 @@ public class PlayerTestSpawnPoint : MonoBehaviour
         PlayerController pc = FindObjectOfType<PlayerController>();
         pc.transform.position = transform.position;
         //Activate abilities
-        if (ForceLaunchAbility)
-        {
-            pc.GetComponent<ForceLaunchAbility>().enabled = true;
-        }
-        if (SwapAbility)
-        {
-            pc.GetComponent<SwapAbility>().enabled = true;
-        }
-        if (WallClimbAbility)
-        {
-            pc.GetComponent<WallClimbAbility>().enabled = true;
-        }
-        if (AirSliceAbility)
-        {
-            pc.GetComponent<AirSliceAbility>().enabled = true;
-        }
-        if (ElectricRingAbility)
-        {
-            pc.GetComponent<ElectricRingAbility>().enabled = true;
-        }
-        if (LongTeleportAbility)
-        {
-            pc.GetComponent<LongTeleportAbility>().enabled = true;
-        }
+        checkAbility(ForceLaunchAbility, pc.GetComponent<ForceLaunchAbility>());
+        checkAbility(SwapAbility, pc.GetComponent<SwapAbility>());
+        checkAbility(WallClimbAbility, pc.GetComponent<WallClimbAbility>());
+        checkAbility(AirSliceAbility, pc.GetComponent<AirSliceAbility>());
+        checkAbility(ElectricRingAbility, pc.GetComponent<ElectricRingAbility>());
+        checkAbility(LongTeleportAbility, pc.GetComponent<LongTeleportAbility>());
+
         //Destroy object
         //If it's under a ruler displayer,
         RulerDisplayer rd = GetComponentInParent<RulerDisplayer>();
@@ -64,6 +53,15 @@ public class PlayerTestSpawnPoint : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    void checkAbility(int level, PlayerAbility ability)
+    {
+        if (level >= 0)
+        {
+            ability.enabled = true;
+            ability.UpgradeLevel = level;
+        }
+    }
 }
+
 
 #endif
