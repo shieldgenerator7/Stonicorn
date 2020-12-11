@@ -68,7 +68,7 @@ public class AirSliceAbility : PlayerAbility
 
     void sliceThings(Vector2 oldPos, Vector2 newPos)
     {
-        if (!playerController.Ground.GroundedNormalPrev)
+        if (!playerController.Ground.isGroundedPrevWithoutAbility(this))
         {
             //Update Stats
             Managers.Stats.addOne("AirSlice");

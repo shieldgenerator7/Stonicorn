@@ -52,6 +52,7 @@ public class GroundChecker : SavableMonoBehaviour
     }
 
     private List<PlayerAbility> groundedAbilities = new List<PlayerAbility>();
+    private List<PlayerAbility> groundedAbilitiesPrev = new List<PlayerAbility>();
 
     //
     //Grounded state variables
@@ -62,9 +63,11 @@ public class GroundChecker : SavableMonoBehaviour
     public bool Grounded { get; private set; }
 
     /// <summary>
-    /// True if grounded in the direction of gravity
+    /// True if grounded in the direction of gravity.
+    /// You might want to use isGroundedWithoutAbility() instead
+    /// if you want to detect if grounded by other abilities
     /// </summary>
-    public bool GroundedNormal { get; private set; }
+    private bool GroundedNormal { get;  set; }
 
     /// <summary>
     /// True if an ability says it's grounded,
@@ -74,8 +77,12 @@ public class GroundChecker : SavableMonoBehaviour
 
     //Grounded Previously
     public bool GroundedPrev { get; private set; }
-    //Grounded Previously in gravity direction
-    public bool GroundedNormalPrev { get; private set; }
+    /// <summary>
+    /// Grounded Previously in gravity direction
+    /// You might want to use isGroundedWithoutAbility() instead
+    /// if you want to detect if grounded by other abilities
+    /// </summary>
+    private bool GroundedNormalPrev { get;  set; }
     //Grounded Previously by an ability
     public bool GroundedAbilityPrev { get; private set; }
 
@@ -108,6 +115,8 @@ public class GroundChecker : SavableMonoBehaviour
     private void checkGroundedStateAbility()
     {
         GroundedAbilityPrev = GroundedAbility;
+        groundedAbilitiesPrev.Clear();
+        groundedAbilitiesPrev.AddRange(groundedAbilities);
         groundedAbilities.Clear();
         if (isGroundedCheck != null)
         {
@@ -157,6 +166,15 @@ public class GroundChecker : SavableMonoBehaviour
     /// <returns></returns>
     public bool isGroundedWithoutAbility(PlayerAbility ability)
         => GroundedNormal || groundedAbilities.Any(gpa => gpa != ability);
+
+    /// <summary>
+    /// Returns true if there was a reason for being grounded previously
+    /// other than the given ability
+    /// </summary>
+    /// <param name="ability"></param>
+    /// <returns></returns>
+    public bool isGroundedPrevWithoutAbility(PlayerAbility ability)
+        => GroundedNormalPrev || groundedAbilitiesPrev.Any(gpa => gpa != ability);
 
     public override SavableObject CurrentState
     {
