@@ -110,6 +110,11 @@ public class ForceLaunchAbility : PlayerAbility
             //Save the game state
             Managers.Rewind.Save();
             //Actually launch
+            if (CanExplode)
+            {
+                explode((Vector2)transform.position
+                    - (launchDirection.normalized * 0.5f));
+            }
             launch();
             if (CanShoot)
             {
@@ -211,11 +216,15 @@ public class ForceLaunchAbility : PlayerAbility
     public event OnLaunch onLaunch;
 
     bool CanExplode =>
-        FeatureLevel >= 1 && rb2d.velocity.magnitude >= minimumExplodeSpeed;
+        FeatureLevel >= 1
+        && (playerController.Ground.GroundedNormal
+        || rb2d.velocity.magnitude >= minimumExplodeSpeed);
     void explode(Vector2 pos)
     {
         float range = maxEplodeRange;// * rb2d.velocity.magnitude / maxLaunchSpeed;
-        float forceAmount = rb2d.velocity.magnitude;
+        float forceAmount = (rb2d.isMoving())
+            ? rb2d.velocity.magnitude
+            : maxLaunchSpeed;
         //Force things away
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
         for (int i = 0; i < hitColliders.Length; i++)
