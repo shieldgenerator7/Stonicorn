@@ -13,6 +13,11 @@ public class PlayerTestSpawnPoint : MonoBehaviour
     public bool ElectricRingAbility;
     public bool LongTeleportAbility;
 
+    private void Awake()
+    {
+        Managers.DemoMode.DemoMode = true;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

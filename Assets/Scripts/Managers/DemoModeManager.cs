@@ -9,7 +9,11 @@ public class DemoModeManager : MonoBehaviour
     [Header("Demo Mode")]
     [SerializeField]
     private bool demoBuild = false;//true to not load on open or save with date/timestamp in filename
-    public bool DemoMode => demoBuild;
+    public bool DemoMode
+    {
+        get => demoBuild;
+        set => demoBuild = value;
+    }
     [SerializeField]
     private float restartDemoDelay = 10;//how many seconds before the game can reset after the demo ends
     [SerializeField]
