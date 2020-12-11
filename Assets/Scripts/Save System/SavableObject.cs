@@ -147,6 +147,8 @@ public class SavableObject
                 return typeof(ElectricRingAbility);
             case "LongTeleportAbility":
                 return typeof(LongTeleportAbility);
+            case "ForceLaunchProjectile":
+                return typeof(ForceLaunchProjectile);
             case "AfterWind":
                 return typeof(AfterWind);
             case "StickyPadChecker":

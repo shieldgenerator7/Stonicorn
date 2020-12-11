@@ -17,6 +17,7 @@ public class ForceLaunchAbility : PlayerAbility
     public Color unavailableColor = Color.white;//the color the arrow will be when this ability's requirements are not met
 
     [Header("Components")]
+    public GameObject projectilePrefab;
     public GameObject directionIndicatorPrefab;//prefab
     private GameObject directionIndicator;
     private SpriteRenderer directionSR;
@@ -59,6 +60,10 @@ public class ForceLaunchAbility : PlayerAbility
             }
         }
     }
+
+    public Vector2 LaunchVelocity
+        => launchDirection.normalized
+            * (maxLaunchSpeed * launchDirection.magnitude / maxPullBackDistance);
 
     private Vector2 currentVelocity;//used to recover the velocity when hitting a wall
     private bool affectingVelocity = false;//true if recently launched
@@ -103,12 +108,16 @@ public class ForceLaunchAbility : PlayerAbility
             Managers.Rewind.Save();
             //Actually launch
             launch();
+            if (FeatureLevel >= 2)
+            {
+                shootProjectile();
+            }
         }
         updateDirectionVisuals();
     }
 
     bool dashGroundedCheck()
-        => affectingVelocity 
+        => affectingVelocity
             || playerController.Ground.isGroundedInDirection(rb2d.velocity);
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -182,8 +191,7 @@ public class ForceLaunchAbility : PlayerAbility
     {
         //Launch in indicated direction
         rb2d.nullifyMovement();
-        float chargePercent = launchDirection.magnitude / maxPullBackDistance;
-        rb2d.velocity += launchDirection.normalized * (maxLaunchSpeed * chargePercent);
+        rb2d.velocity += LaunchVelocity;
         //Indicate effect on velocity
         affectingVelocity = true;
         updateBouncingVisuals();
@@ -192,6 +200,16 @@ public class ForceLaunchAbility : PlayerAbility
     }
     public delegate void OnLaunch();
     public event OnLaunch onLaunch;
+
+    void shootProjectile()
+    {
+        GameObject projectile = Utility.Instantiate(projectilePrefab);
+        projectile.transform.position = (Vector2)transform.position
+            + launchDirection.normalized * -1.5f;
+        projectile.GetComponent<Rigidbody2D>().velocity = -LaunchVelocity;
+        //Update Stats
+        //Managers.Stats.addOne("WallClimbSticky");
+    }
 
     /// <summary>
     /// Speed up in the direction of movement
