@@ -21,7 +21,10 @@ public class PlayerTestSpawnPoint : MonoBehaviour
 
     private void Awake()
     {
-        Managers.DemoMode.DemoMode = true;
+        if (enabled)
+        {
+            Managers.DemoMode.DemoMode = true;
+        }
     }
 
     // Start is called before the first frame update
