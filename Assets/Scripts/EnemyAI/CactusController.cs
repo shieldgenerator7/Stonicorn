@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CactusController : Hazard
+public class CactusController : Hazard, Blastable
 {
     [SerializeField]
     private bool rooted = true;
@@ -29,6 +29,15 @@ public class CactusController : Hazard
             Rooted = false;
         }
     }
+
+    public float checkForce(float force, Vector2 direction)
+    {
+        Rooted = false;
+        return 0;
+    }
+
+    public float getDistanceFromExplosion(Vector2 explosionPos)
+        => ((Vector2)transform.position - explosionPos).magnitude;
 
     public override SavableObject CurrentState
     {
