@@ -250,7 +250,7 @@ public class ForceLaunchAbility : PlayerAbility
         Vector2 startPos = (Vector2)transform.position
             + launchDirection.normalized * -1.5f;
         //If there's space to spawn it
-        if (!playerController.Teleport.isOccupied(startPos))
+        if (!playerController.isOccupied(startPos))
         {
             //Spawn it
             GameObject projectile = Utility.Instantiate(projectilePrefab);

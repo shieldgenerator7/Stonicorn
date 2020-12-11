@@ -20,10 +20,6 @@ public class TeleportAbility : PlayerAbility
     public float exhaustCoolDownTime { get; set; }//the current cool down time (sec) for teleporting while exhausted
     private float teleportTime;//the earliest time that Merky can teleport. To be set only in TeleportReady
 
-    [Header("Components")]
-    public BoxCollider2D scoutColliderMin;//small collider (inside Merky) used to scout the level for teleportable spots
-    public BoxCollider2D scoutColliderMax;//big collider (outside Merky) used to scout the level for teleportable spots
-
     [Header("Sound Effects")]
     public AudioClip teleportUnavailableSound;
 
@@ -211,11 +207,11 @@ public class TeleportAbility : PlayerAbility
         //Determine if you can teleport to the position
         //(i.e. is it occupied or not?)
         //If the new position is occupied,
-        if (isOccupied(newPos))
+        if (playerController.isOccupied(newPos))
         {
             //Try to adjust it first
             Vector2 adjustedPos = adjustForOccupant(newPos);
-            if (!isOccupied(adjustedPos))
+            if (!playerController.isOccupied(adjustedPos))
             {
                 return adjustedPos;
             }
@@ -242,12 +238,12 @@ public class TeleportAbility : PlayerAbility
                 {
                     Vector2 testPos = (norm * percent) + oldPos;
                     //If the test position is occupied,
-                    if (isOccupied(testPos))
+                    if (playerController.isOccupied(testPos))
                     {
                         //Adjust position based on occupant
                         testPos = adjustForOccupant(testPos);
                         //If the test position is no longer occupied,
-                        if (!isOccupied(testPos))
+                        if (!playerController.isOccupied(testPos))
                         {
                             //Possible option found
                             possibleOptions.Add(testPos);
@@ -293,87 +289,6 @@ public class TeleportAbility : PlayerAbility
     public delegate Vector2 FindTeleportablePositionOverride(Vector2 rangedPos, Vector2 tapPos);
     public event FindTeleportablePositionOverride overrideTeleportPosition;
     public event FindTeleportablePositionOverride findTeleportablePositionOverride;
-
-    /// <summary>
-    /// Determines whether the given position is occupied or not
-    /// </summary>
-    /// <param name="testPos">The position to test</param>
-    /// <returns>True if something (besides Merky) is in the space, False if the space is clear</returns>
-    public bool isOccupied(Vector3 testPos)
-    {
-        bool occupied = false;
-        Vector3 testOffset = testPos - transform.position;
-        testOffset = transform.InverseTransformDirection(testOffset);
-        //If there's a max scout collider,
-        if (scoutColliderMax)
-        {
-            //Test with max scout collider
-            occupied = isOccupiedImpl(scoutColliderMax, testOffset);
-        }
-        else
-        {
-            //Else, assume the space is occupied so that it processes with the other colliders
-            occupied = true;
-        }
-        //If the max scout collider is occupied,
-        if (occupied)
-        {
-            //There's something in or around merky, so
-            //Test with min scout collider
-            occupied = isOccupiedImpl(scoutColliderMin, testOffset);
-            //If the min scout collider is not occupied,
-            if (!occupied)
-            {
-                //There's a possibility the space is clear
-                //Test with actual collider
-                occupied = isOccupiedImpl(pc2d, testOffset);
-            }
-        }
-        return occupied;
-    }
-    /// <summary>
-    /// isOccupied Step 2. Only meant to be called by isOccupied(Vector3).
-    /// </summary>
-    private bool isOccupiedImpl(Collider2D coll, Vector3 testOffset)
-    {
-        //Find out what objects could be occupying the space
-        Vector3 savedOffset = coll.offset;
-        coll.offset = testOffset;
-        Utility.RaycastAnswer answer;
-        answer = coll.CastAnswer(Vector2.zero, 0, true);
-        coll.offset = savedOffset;
-
-        //Go through the found objects and see if any actually occupy the space
-        for (int i = 0; i < answer.count; i++)
-        {
-            RaycastHit2D rh2d = answer.rch2ds[i];
-            GameObject go = rh2d.collider.gameObject;
-            //If the object is not this gameobject,
-            if (go != gameObject)
-            {
-                //And if the object is not a trigger,
-                if (!rh2d.collider.isTrigger)
-                {
-                    //It's occupied!
-                    //Yep, it's occupied by an object
-                    return true;
-                }
-                //Else if it is a trigger,
-                else
-                {
-                    //And if it's a hidden area,
-                    if (go.CompareTag("NonTeleportableArea"))
-                    {
-                        //Yep, it's occupied by a hidden area
-                        return true;
-                    }
-                }
-            }
-        }
-        //There were no occupying objects or hidden areas, so
-        //Nope, it's not occupied
-        return false;
-    }
 
     /// <summary>
     /// Adjusts the given Vector3 to avoid collision with the objects that it collides with

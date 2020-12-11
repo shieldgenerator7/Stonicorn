@@ -201,6 +201,8 @@ MonoBehaviour:
   autoTeleportDelay: 0.1
   pauseMovementDuration: 0.3
   hitStunDuration: 0.75
+  scoutColliderMin: {fileID: 530089677}
+  scoutColliderMax: {fileID: 1809435738}
 --- !u!114 &7835665536134532039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,8 +243,6 @@ MonoBehaviour:
   exhaustRange: 1
   coolDownTime: 0.1
   baseExhaustCoolDownTime: 0.5
-  scoutColliderMin: {fileID: 530089677}
-  scoutColliderMax: {fileID: 1809435738}
   teleportUnavailableSound: {fileID: 8300000, guid: 90ef9b97e3f00ea46933e6605e9cb380,
     type: 3}
   futureProjection: {fileID: 2593851138179183123}
