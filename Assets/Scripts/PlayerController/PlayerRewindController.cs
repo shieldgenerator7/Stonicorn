@@ -175,13 +175,25 @@ public class PlayerRewindController : MonoBehaviour
 
     public bool checkRepresentation(GameState gs, Vector3 touchPoint, bool checkSprite = true)
     {
-        if (checkSprite)
+        GameObject rep = getRepresentation(gs);
+        if (rep)
         {
-            return getRepresentation(gs).GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
+            if (checkSprite)
+            {
+                return rep.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
+            }
+            else
+            {
+                return rep.GetComponent<Collider2D>().OverlapPoint(touchPoint);
+            }
         }
         else
         {
-            return getRepresentation(gs).GetComponent<Collider2D>().OverlapPoint(touchPoint);
+            Debug.Log(
+                "ERROR: PlayerRewindController cant find rep for gamestate: " + gs,
+                gameObject
+                );
+            return false;
         }
     }
     private void hideOldRepresentations(List<GameState> gameStates, int gameStateId)
