@@ -10,7 +10,7 @@ public class AirSliceAbility : PlayerAbility
     public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
     [Header("Components")]
     public GameObject streakPrefab;
-    public PlayerAbility excludeAbilityFromGrounding;
+    public PlayerAbility[] excludeAbilityFromGrounding;
 
     private int airPorts = 0;//"air teleports": how many airports Merky has used since touching the ground
     public int AirPortsUsed
@@ -50,8 +50,7 @@ public class AirSliceAbility : PlayerAbility
         => (AirPortsUsed < maxAirPorts);
 
     public bool canReset(GroundChecker grounder) =>
-        grounder.isGroundedWithoutAbility(this)
-            && grounder.isGroundedWithoutAbility(excludeAbilityFromGrounding);
+        grounder.isGroundedWithoutAbility(excludeAbilityFromGrounding);
 
     void resetAirPorts(GroundChecker grounder)
     {

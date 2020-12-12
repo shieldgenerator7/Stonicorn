@@ -164,8 +164,9 @@ public class GroundChecker : SavableMonoBehaviour
     /// </summary>
     /// <param name="ability"></param>
     /// <returns></returns>
-    public bool isGroundedWithoutAbility(PlayerAbility ability)
-        => GroundedNormal || groundedAbilities.Any(gpa => gpa != ability);
+    public bool isGroundedWithoutAbility(params PlayerAbility[] abilities)
+        => GroundedNormal
+        || groundedAbilities.Any(gpa => !abilities.Contains(gpa));
 
     /// <summary>
     /// Returns true if there was a reason for being grounded previously

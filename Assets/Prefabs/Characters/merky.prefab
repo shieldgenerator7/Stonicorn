@@ -522,7 +522,10 @@ MonoBehaviour:
   sliceDamage: 100
   maxAirPorts: 2
   streakPrefab: {fileID: 133468, guid: a76ac723dbf060e4fae65f29bcb058d9, type: 3}
-  excludeAbilityFromGrounding: {fileID: 4077093240442266713}
+  excludeAbilityFromGrounding:
+  - {fileID: 1792176480}
+  - {fileID: 4077093240442266713}
+  - {fileID: 8071823167986652926}
 --- !u!114 &8071823167986652926
 MonoBehaviour:
   m_ObjectHideFlags: 0
