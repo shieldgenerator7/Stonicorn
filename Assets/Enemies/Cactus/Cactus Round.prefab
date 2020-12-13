@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8065252916601358878}
   - component: {fileID: 7247480195070084561}
   - component: {fileID: 371579580021135082}
-  - component: {fileID: 3081780321253746651}
+  - component: {fileID: 6145771056189224701}
+  - component: {fileID: 8689349500921764453}
   m_Layer: 0
   m_Name: Cactus Round
   m_TagString: Untagged
@@ -123,7 +124,7 @@ CircleCollider2D:
   m_Offset: {x: 0.015, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
---- !u!114 &3081780321253746651
+--- !u!114 &6145771056189224701
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,11 +133,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 2286914107042205133}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d845dbda6dc9eb94fabd7ddf2ae4415e, type: 3}
+  m_Script: {fileID: 11500000, guid: beaad298723faa5448af3d1020e2afdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rooted: 1
+--- !u!114 &8689349500921764453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2286914107042205133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 256136996d958014895bd9f14138ed23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damageDealt: 2
-  rooted: 1
 --- !u!1 &2739078107567698751
 GameObject:
   m_ObjectHideFlags: 0

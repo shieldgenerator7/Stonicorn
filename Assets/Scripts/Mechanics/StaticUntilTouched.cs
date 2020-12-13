@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CactusController : Hazard, Blastable
+public class StaticUntilTouched : SavableMonoBehaviour, Blastable
 {
     [SerializeField]
     private bool rooted = true;
@@ -24,7 +24,7 @@ public class CactusController : Hazard, Blastable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Rigidbody2D>())
+        if (collision.collider.isSolid())
         {
             Rooted = false;
         }
@@ -41,12 +41,11 @@ public class CactusController : Hazard, Blastable
 
     public override SavableObject CurrentState
     {
-        get => base.CurrentState.more(
+        get => new SavableObject(this,
             "rooted", rooted
             );
         set
         {
-            base.CurrentState = value;
             Rooted = value.Bool("rooted");
         }
     }
