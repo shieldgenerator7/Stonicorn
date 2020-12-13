@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.U2D;
-using UnityEngine.Experimental.U2D;
+
 using UnityEngine.UI;
 
 public class Fader : MonoBehaviour
