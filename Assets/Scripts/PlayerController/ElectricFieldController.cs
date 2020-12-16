@@ -60,7 +60,7 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
             addEnergy(0);
         }
     }
-    
+
     public override bool IsSpawnedObject => true;
 
     public override string PrefabName => "ElectricField";
@@ -74,10 +74,10 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
             GameObject hc = rch2dsPowerable[i].collider.gameObject;
 
             //Power objects
-            PowerConduit pc = hc.GetComponent<PowerConduit>();
-            if (pc != null && pc.convertsToEnergy)
+            IPowerable pwr = hc.GetComponent<IPowerable>();
+            if (pwr != null)
             {
-                float amountTaken = pc.convertSourceToEnergy(energy, Time.fixedDeltaTime);
+                float amountTaken = pwr.acceptPower(energy * Time.fixedDeltaTime);
                 addEnergy(-amountTaken);
             }
 
