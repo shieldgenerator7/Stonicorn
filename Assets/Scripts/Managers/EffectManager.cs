@@ -16,13 +16,11 @@ public class EffectManager : MonoBehaviour
     public float particleAmount = 50.0f;
     [Header("Tap Target Highlighting")]
     public ParticleSystem tapTargetHighlight;
-    [Header("Force Wave Shadows")]
     [Header("Rewind Stripe Effect")]
     public GameObject rewindCanvas;
     //Supporting Lists
     private List<TeleportStarUpdater> teleportStarList = new List<TeleportStarUpdater>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
-    private Dictionary<GameObject, GameObject> forceWaveShadows = new Dictionary<GameObject, GameObject>();
 
     public void processEffects()
     {
@@ -152,49 +150,6 @@ public class EffectManager : MonoBehaviour
         }
         effect.SetActive(play);
         effect.transform.position = pos;
-    }
-
-    /// <summary>
-    /// Shows a force wave shadow for the given projectile from the given center
-    /// </summary>
-    /// <param name="center">The center of the force wave</param>
-    /// <param name="range">The range of the force wave</param>
-    /// <param name="projectile">The projectile about to be forced away</param>
-    public void showForceWaveShadows(Vector2 center, float range, GameObject projectile)
-    {
-        GameObject forceWaveShadow;
-        if (forceWaveShadows.ContainsKey(projectile))
-        {
-            forceWaveShadow = forceWaveShadows[projectile];
-        }
-        else
-        {
-            forceWaveShadow = new GameObject();
-            forceWaveShadow.name = "ForceWaveShadow of " + projectile.name;
-            forceWaveShadow.AddComponent<SpriteRenderer>();
-            forceWaveShadows.Add(projectile, forceWaveShadow);
-            SpriteRenderer sr = forceWaveShadow.GetComponent<SpriteRenderer>();
-            SpriteRenderer psr = projectile.GetComponent<SpriteRenderer>();
-            sr.sprite = psr.sprite;
-            sr.color = psr.color.adjustAlpha(0.7f);
-        }
-        Vector2 ppos = (Vector2)projectile.transform.position;
-        Vector2 dir = ppos - center;
-        float magnitude = Mathf.Max(0, range - dir.magnitude);
-        forceWaveShadow.transform.position = ppos + magnitude * dir.normalized;
-        forceWaveShadow.transform.rotation = projectile.transform.rotation;
-        forceWaveShadow.transform.localScale = projectile.transform.localScale;
-    }
-    /// <summary>
-    /// Deletes all currently existing force wave shadows
-    /// </summary>
-    public void clearForceWaveShadows()
-    {
-        foreach (GameObject shadow in forceWaveShadows.Values)
-        {
-            Destroy(shadow);
-        }
-        forceWaveShadows.Clear();
     }
 
     public void showRewindEffect(bool show)
