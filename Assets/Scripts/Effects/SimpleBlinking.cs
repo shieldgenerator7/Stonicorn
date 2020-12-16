@@ -82,9 +82,7 @@ public class SimpleBlinking : MonoBehaviour
         float newAlpha = (blinkState == BlinkState.ON) ? 0 + percent : 1 - percent;
         foreach (SpriteRenderer tsr in GetComponentsInChildren<SpriteRenderer>())
         {
-            Color c = tsr.color;
-            c.a = newAlpha;
-            tsr.color = c;
+            tsr.color = tsr.color.adjustAlpha(newAlpha);
         }
     }
 }

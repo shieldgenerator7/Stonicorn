@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ExplosionEffectUpdater : MonoBehaviour {//2016-04-18: copied from TeleportStarUpdater
+public class ExplosionEffectUpdater : MonoBehaviour
+{//2016-04-18: copied from TeleportStarUpdater
 
     //2016-03-03 copied from TeleportStreakUpdater
     public float maxTimeShown = 50;
@@ -25,7 +26,8 @@ public class ExplosionEffectUpdater : MonoBehaviour {//2016-04-18: copied from T
     void Start()
     {
     }
-    public void init() { 
+    public void init()
+    {
         sr = GetComponent<SpriteRenderer>();
         Vector3 bsize = sr.bounds.size;
         baseWidth = bsize.x;
@@ -51,9 +53,8 @@ public class ExplosionEffectUpdater : MonoBehaviour {//2016-04-18: copied from T
             }
             timeShown = Time.time - startTime;
             ratio = timeShown / maxTimeShown;
-            Color prevColor = sr.color;
-            sr.color = new Color(prevColor.r, prevColor.g, prevColor.b, -ratio*ratio*0.7f+1);
-            setSize((ratio*(finalSize-startSize))+startSize);
+            sr.color = sr.color.adjustAlpha(-ratio * ratio * 0.7f + 1);
+            setSize((ratio * (finalSize - startSize)) + startSize);
             if (timeShown >= maxTimeShown)
             {
                 Destroy(gameObject);

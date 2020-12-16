@@ -264,9 +264,7 @@ public class HardMaterial : SavableMonoBehaviour, IBlastable, ICuttable
                     alpha = (baseAlpha - thresholdLower) * crackStages.Count;
                 }
                 SpriteRenderer sr = crackStages[i];
-                Color c = sr.color;
-                c.a = alpha;
-                sr.color = c;
+                sr.color = sr.color.adjustAlpha(alpha);
             }
         }
         else
@@ -281,9 +279,7 @@ public class HardMaterial : SavableMonoBehaviour, IBlastable, ICuttable
                     alpha = (thresholdUpper - baseAlpha) * crackStages.Count;
                 }
                 SpriteRenderer sr = crackStages[i];
-                Color c = sr.color;
-                c.a = alpha;
-                sr.color = c;
+                sr.color = sr.color.adjustAlpha(alpha);
             }
         }
     }

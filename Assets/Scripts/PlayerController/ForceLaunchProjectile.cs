@@ -37,12 +37,7 @@ public class ForceLaunchProjectile : SavableMonoBehaviour
             bouncinessIndicator.transform.localPosition = Vector2.zero;
             SpriteRenderer bounceSR = bouncinessIndicator.GetComponent<SpriteRenderer>();
             SpriteRenderer sr = GetComponent<SpriteRenderer>();
-            bounceSR.color = new Color(
-                sr.color.r,
-                sr.color.g,
-                sr.color.b,
-                bounceSR.color.a
-                );
+            bounceSR.color = sr.color.adjustAlpha(bounceSR.color.a);
             //Fixes error when Force Launch not used before rewind in a session
             if (!rb2d)
             {

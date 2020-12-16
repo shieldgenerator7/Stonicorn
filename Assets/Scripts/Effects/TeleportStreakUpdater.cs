@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TeleportStreakUpdater : MonoBehaviour {
+public class TeleportStreakUpdater : MonoBehaviour
+{
 
     public int maxTimeShown = 50;
     public Vector3 start;
@@ -13,8 +14,9 @@ public class TeleportStreakUpdater : MonoBehaviour {
     private int timeShown = 0;
     private bool turnedOn = false;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         //position();
         turnOn(turnedOn);
     }
@@ -22,20 +24,21 @@ public class TeleportStreakUpdater : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (turnedOn) {
+        if (turnedOn)
+        {
             //if (timeShown == 0)
             //{
             //    position();
             //}
             timeShown++;
             Color prevColor = GetComponent<SpriteRenderer>().color;
-            GetComponent<SpriteRenderer>().color = new Color(prevColor.r, prevColor.g, prevColor.b, prevColor.a - 0.05f);
+            GetComponent<SpriteRenderer>().color = prevColor.adjustAlpha(prevColor.a - 0.05f);
             if (timeShown == maxTimeShown)
             {
                 Destroy(gameObject);
             }
         }
-	}
+    }
 
     public void position()
     {
@@ -43,7 +46,7 @@ public class TeleportStreakUpdater : MonoBehaviour {
         transform.position = new Vector3(start.x, start.y, 1);
 
         //Set the size
-         distance = Vector3.Distance(start, end);
+        distance = Vector3.Distance(start, end);
         Vector3 size = GetComponent<SpriteRenderer>().bounds.size;
         float baseWidth = size.x;
         float baseHeight = size.y;
@@ -52,8 +55,8 @@ public class TeleportStreakUpdater : MonoBehaviour {
         transform.localScale = newV;
 
         //Set the angle
-        float angle = AngleSigned(end-start, Vector3.left, Vector3.back);
-        transform.rotation = Quaternion.Euler(0,0,angle);
+        float angle = AngleSigned(end - start, Vector3.left, Vector3.back);
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     public void turnOn(bool tO)

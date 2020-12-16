@@ -20,20 +20,19 @@ public class FaderProximity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (proximityObject.transform.position.inRange(transform.position, fadeInStartRange))
+        float distance = Vector2.Distance(
+            proximityObject.transform.position,
+            transform.position
+            );
+        if (distance <= fadeInStartRange)
         {
-            Color c = sr.color;
-            c.a = 1 - (
-                (((Vector2)proximityObject.transform.position - (Vector2)transform.position).magnitude - fullInRadius)
-                / (fadeInStartRange - fullInRadius)
+            sr.color = sr.color.adjustAlpha(
+                1 - ((distance - fullInRadius) / (fadeInStartRange - fullInRadius))
                 );
-            sr.color = c;
         }
         else
         {
-            Color c = sr.color;
-            c.a = 0;
-            sr.color = c;
+            sr.color = sr.color.adjustAlpha(0);
         }
     }
 }

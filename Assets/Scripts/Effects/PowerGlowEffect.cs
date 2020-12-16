@@ -11,7 +11,6 @@ public class PowerGlowEffect : MonoBehaviour
 
     private IPowerConduit conduit;
     private SpriteRenderer lightEffectRenderer;
-    private Color lightEffectColor;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,12 +32,7 @@ public class PowerGlowEffect : MonoBehaviour
         float curHigh = maxPower;
         float curLow = 0;
         float newAlpha = ((power - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
-        lightEffectRenderer.color = new Color(
-            lightEffectColor.r,
-            lightEffectColor.g,
-            lightEffectColor.b,
-            newAlpha
-            );
+        lightEffectRenderer.color = lightEffectRenderer.color.adjustAlpha(newAlpha);
     }
 
     public void initLightEffectRenderer()
@@ -51,7 +45,6 @@ public class PowerGlowEffect : MonoBehaviour
         if (lightEffectRenderer)
         {
             lightEffectRenderer.size = GetComponent<SpriteRenderer>().size;
-            lightEffectColor = lightEffectRenderer.color;
         }
         else
         {

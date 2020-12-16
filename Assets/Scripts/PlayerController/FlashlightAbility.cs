@@ -58,10 +58,7 @@ public class FlashlightAbility : PlayerAbility
             }
             flashlight.SetActive(true);
             flashlight.transform.up = flashlightDirection;
-            flashlightSR.color = new Color(
-                    flashlightSR.color.r,
-                    flashlightSR.color.g,
-                    flashlightSR.color.b,
+            flashlightSR.color = flashlightSR.color.adjustAlpha(
                     (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance
                     );
         }

@@ -108,17 +108,17 @@ public class PlayerRewindController : MonoBehaviour
 
         if (mostRecentId - gs.id < 10)
         {
-            sr.color = new Color(c.r, c.g, c.b, 1.0f);
+            sr.color = c.adjustAlpha(1.0f);
             ps.Play();
         }
         else if (mostRecentId - gs.id < 100)
         {
-            sr.color = new Color(c.r, c.g, c.b, 0.9f);
+            sr.color = c.adjustAlpha(0.9f);
             ps.Stop();
         }
         else
         {
-            sr.color = new Color(c.r, c.g, c.b, 0.5f);
+            sr.color = c.adjustAlpha(0.5f);
             ps.Stop();
         }
         //Do special processing for the first one

@@ -176,12 +176,7 @@ public class WallClimbAbility : PlayerAbility
                 climbSpikesEffect.transform.parent = transform;
                 climbSpikesEffect.GetComponentsInChildren<SpriteRenderer>().ToList()
                     .ForEach(cseSR =>
-                        cseSR.color = new Color(
-                            this.EffectColor.r,
-                            this.EffectColor.g,
-                            this.EffectColor.b,
-                            cseSR.color.a
-                            )
+                        cseSR.color = this.EffectColor.adjustAlpha(cseSR.color.a)
                         );
             }
             climbSpikesEffect.SetActive(true);

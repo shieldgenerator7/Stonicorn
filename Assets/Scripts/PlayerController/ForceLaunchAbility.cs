@@ -303,12 +303,7 @@ public class ForceLaunchAbility : PlayerAbility
                 );
             if (CanLaunch)
             {
-                directionSR.color = new Color(
-                    this.EffectColor.r,
-                    this.EffectColor.g,
-                    this.EffectColor.b,
-                    originalAlpha
-                    );
+                directionSR.color = this.EffectColor.adjustAlpha(originalAlpha);
             }
             else
             {
@@ -331,12 +326,7 @@ public class ForceLaunchAbility : PlayerAbility
                 bouncinessIndicator.transform.parent = transform;
                 bouncinessIndicator.transform.localPosition = Vector2.zero;
                 SpriteRenderer sr = bouncinessIndicator.GetComponent<SpriteRenderer>();
-                sr.color = new Color(
-                    this.EffectColor.r,
-                    this.EffectColor.g,
-                    this.EffectColor.b,
-                    sr.color.a
-                    );
+                sr.color = this.EffectColor.adjustAlpha(sr.color.a);
                 //Fixes error when Force Launch not used before rewind in a session
                 if (!rb2d)
                 {

@@ -36,9 +36,9 @@ public class RippleEffect : MonoBehaviour
             1
             );
         //Alpha
-        Color color = sr.color;
-        color.a = (alpha2 - alpha1) * percent + alpha1;
-        sr.color = color;
+        sr.color = sr.color.adjustAlpha(
+            (alpha2 - alpha1) * percent + alpha1
+            );
         //Size
         transform.localScale = Vector2.one * ((size2 - size1) * percent + size1);
         //Time

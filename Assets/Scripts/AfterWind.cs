@@ -77,8 +77,7 @@ public class AfterWind : SavableMonoBehaviour
             }
         }
         //Fade the sprite
-        Color prevColor = sr.color;
-        sr.color = new Color(prevColor.r, prevColor.g, prevColor.b, Mathf.SmoothStep(0, 1, fadeFactor));
+        sr.color = sr.color.adjustAlpha(Mathf.SmoothStep(0, 1, fadeFactor));
         if (fadeFactor <= 0 || Mathf.Approximately(fadeFactor, 0))
         {
             Managers.Object.destroyObject(gameObject);

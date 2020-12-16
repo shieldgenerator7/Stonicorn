@@ -91,9 +91,7 @@ public class TeleportRangeUpdater : MonoBehaviour
         {
             //Set the fragment transparency
             SpriteRenderer sr = fragment.GetComponent<SpriteRenderer>();
-            Color color = sr.color;
-            color.a = transparency;
-            sr.color = color;
+            sr.color = sr.color.adjustAlpha(transparency);
         }
     }
 
@@ -146,8 +144,7 @@ public class TeleportRangeUpdater : MonoBehaviour
         {
             //Set the alpha to standard
             SpriteRenderer sr = fragment.GetComponent<SpriteRenderer>();
-            Color color = sr.color;
-            color.a = transparency;
+            float newAlpha = transparency;
             if (timeLeft > 0)
             {
                 //Check to see if it's in the timer range
@@ -159,7 +156,7 @@ public class TeleportRangeUpdater : MonoBehaviour
                     )
                 {
                     //If so, set the length to the time length
-                    color.a = timeTransparency;
+                    newAlpha = timeTransparency;
                 }
                 else
                 {
@@ -168,12 +165,12 @@ public class TeleportRangeUpdater : MonoBehaviour
                     {
                         //Shake each fragment alpha individually
                         float randomRange = Random.Range(-maxShake, maxShake);
-                        color.a = transparency + randomRange;
+                        newAlpha = transparency + randomRange;
                     }
                 }
             }
             //Put the color back in the fragment
-            sr.color = color;
+            sr.color = sr.color.adjustAlpha(newAlpha);
         }
     }
 

@@ -176,7 +176,7 @@ public class EffectManager : MonoBehaviour
             SpriteRenderer sr = forceWaveShadow.GetComponent<SpriteRenderer>();
             SpriteRenderer psr = projectile.GetComponent<SpriteRenderer>();
             sr.sprite = psr.sprite;
-            sr.color = new Color(psr.color.r, psr.color.g, psr.color.b, 0.7f);
+            sr.color = psr.color.adjustAlpha(0.7f);
         }
         Vector2 ppos = (Vector2)projectile.transform.position;
         Vector2 dir = ppos - center;

@@ -65,44 +65,35 @@ public class Fader : MonoBehaviour
         if (startTime <= CurrentTime)
         {
             float t = Mathf.Min(duration, (CurrentTime - startTime) / duration);//2016-03-17: copied from an answer by treasgu (http://answers.unity3d.com/questions/654836/unity2d-sprite-fade-in-and-out.html)
+            float alpha = Mathf.SmoothStep(startfade, endfade, t);
             foreach (Object o in srs)
             {
                 if (!o)
                 {
                     continue;//skip null values
                 }
-                if (o is SpriteRenderer)
+                else if (o is SpriteRenderer)
                 {
                     SpriteRenderer sr = (SpriteRenderer)o;
-                    Color prevColor = sr.color;
-                    sr.color = new Color(prevColor.r, prevColor.g, prevColor.b, Mathf.SmoothStep(startfade, endfade, t));
-                    checkDestroy(sr.color.a);
+                    sr.color = sr.color.adjustAlpha(alpha);
                 }
-                if (o is SpriteShapeRenderer)
+                else if (o is SpriteShapeRenderer)
                 {//2019-01-12: copied from section for SpriteRenderer
-                    SpriteShapeRenderer sr = (SpriteShapeRenderer)o;
-                    Color color = sr.color;
-                    color.a = Mathf.SmoothStep(startfade, endfade, t);
-                    sr.color = color;
-                    checkDestroy(sr.color.a);
+                    SpriteShapeRenderer ssr = (SpriteShapeRenderer)o;
+                    ssr.color = ssr.color.adjustAlpha(alpha);
                 }
-                if (o is CanvasRenderer)
+                else if (o is CanvasRenderer)
                 {
-                    CanvasRenderer sr = (CanvasRenderer)o;
-                    float newAlpha = Mathf.SmoothStep(startfade, endfade, t);
-                    sr.SetAlpha(newAlpha);
-                    checkDestroy(newAlpha);
+                    CanvasRenderer cr = (CanvasRenderer)o;
+                    cr.SetAlpha(alpha);
                 }
-                if (o is Image)
+                else if (o is Image)
                 {
-                    Image sr = (Image)o;
-                    float newAlpha = Mathf.SmoothStep(startfade, endfade, t);
-                    Color c = sr.color;
-                    c.a = newAlpha;
-                    sr.color = c;
-                    checkDestroy(newAlpha);
+                    Image img = (Image)o;
+                    img.color = img.color.adjustAlpha(alpha);
                 }
             }
+            checkDestroy(alpha);
         }
     }
 
@@ -110,10 +101,7 @@ public class Fader : MonoBehaviour
     {
         if (currentFade == endfade)
         {
-            if (onFadeFinished != null)
-            {
-                onFadeFinished();
-            }
+            onFadeFinished?.Invoke();
             if (destroyObjectOnFinish)
             {
                 if (isEffectOnly)

@@ -550,6 +550,9 @@ public static class Utility
             || (value >= bound2 && value <= bound1);
     }
 
+    public static Color adjustAlpha(this Color c, float alpha)
+        => new Color(c.r, c.g, c.b, alpha);
+
     public static Plane raycastPlane = new Plane(Vector3.forward, Vector3.zero);
     public static Vector2 ScreenToWorldPoint(Vector3 worldPoint)
     {
