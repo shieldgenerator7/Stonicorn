@@ -417,7 +417,6 @@ GameObject:
   - component: {fileID: 178457407}
   - component: {fileID: 178457412}
   - component: {fileID: 178457406}
-  - component: {fileID: 178457411}
   - component: {fileID: 178457405}
   m_Layer: 0
   m_Name: NPC Vibrance the Metalcorn
@@ -538,7 +537,6 @@ MonoBehaviour:
   interruptDistance: 10
   currentVoiceLineIndex: -1
   lastPlayedCheckPointLineIndex: -1
-  powerCube: {fileID: 817229138}
   powerConsumptionRate: 1
 --- !u!60 &178457407
 PolygonCollider2D:
@@ -695,23 +693,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -277.456}
---- !u!114 &178457411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 178457404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb302b0412c80e44bb4b4e3bfd1d998d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lightEffect: {fileID: 1821018826}
-  useAlpha: 1
-  maxEnergyLevel: 1
-  maxEnergyPerSecond: 1
-  currentEnergyLevel: 0
 --- !u!61 &178457412
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2273,11 +2254,6 @@ PrefabInstance:
 --- !u!4 &817229137 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4972664890768416, guid: 412cab80aa75c3f4c8c0b9b8749b2248, type: 3}
-  m_PrefabInstance: {fileID: 817229136}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &817229138 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1332349059410604, guid: 412cab80aa75c3f4c8c0b9b8749b2248, type: 3}
   m_PrefabInstance: {fileID: 817229136}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &862395014
