@@ -7,8 +7,6 @@ public class PowerConduit : SavableMonoBehaviour
     //2017-06-20: copied from PowerCubeController
     //These wires transfer energy from a source (such as a Shield Bubble) and convert it to energy to power other objects (such as doors)
 
-    public GameObject lightEffect;//the object attached to it that it uses to show it is lit up
-    public bool useAlpha = true;//whether to update the lightEffect with alpha value. If false, it uses height (used for power cubes)
     public float maxEnergyLevel = 3;//how much energy this conduit can store
     public float maxEnergyPerSecond = 2;//(energy units per second) the max amount of energy that it can produce/move per second
     [SerializeField]
@@ -18,40 +16,18 @@ public class PowerConduit : SavableMonoBehaviour
         get { return currentEnergyLevel; }
         private set { }
     }
-    public virtual bool givesEnergy => true;//whether this can give power to other PowerConduits
+    public bool givesEnergy = true;//whether this can give power to other PowerConduits
     public virtual bool takesEnergy => true;//whether this can take power from other PowerConduits
     public virtual bool convertsToEnergy => false;//whether this can convert other sources to energy
-    public virtual bool usesEnergy => false;//whether this uses energy to power some mechanism
+    public virtual bool usesEnergy => true;//whether this uses energy to power some mechanism
 
-    private SpriteRenderer lightEffectRenderer;
-    private Color lightEffectColor;
     private BoxCollider2D bc2d;
     private RaycastHit2D[] rh2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for detection of other PowerConduits
 
     // Use this for initialization
     protected virtual void Start()
     {
-        initLightEffectRenderer();
         bc2d = GetComponent<BoxCollider2D>();
-    }
-
-    public void initLightEffectRenderer()
-    {
-        if (useAlpha)
-        {
-            lightEffectRenderer = lightEffect.GetComponent<SpriteRenderer>();
-            if (lightEffectRenderer)
-            {
-                lightEffectRenderer.size = GetComponent<SpriteRenderer>().size;
-                lightEffectColor = lightEffectRenderer.color;
-            }
-            else
-            {
-                Debug.LogError("UseAlpha was set but there is no SpriteRenderer on the lightEffect ("
-                    + lightEffect.name + "), so switching to not use alpha. GameObject: " + gameObject.name);
-                useAlpha = false;
-            }
-        }
     }
 
     public override SavableObject CurrentState
@@ -62,10 +38,6 @@ public class PowerConduit : SavableMonoBehaviour
         set
         {
             currentEnergyLevel = value.Float("currentEnergyLevel");
-            if (!lightEffectRenderer)
-            {
-                initLightEffectRenderer();
-            }
             adjustEnergy(0);
         }
     }
@@ -176,34 +148,7 @@ public class PowerConduit : SavableMonoBehaviour
         currentEnergyLevel += delta;
         //Clamp the value
         currentEnergyLevel = Mathf.Clamp(currentEnergyLevel, 0, maxEnergyLevel);
-        //Update the visuals
-        if (useAlpha)
-        {
-            //2017-01-24: copied from my project: https://github.com/shieldgenerator7/GGJ-2017-Wave/blob/master/Assets/Script/CatTongueController.cs
-            float newHigh = 2.0f;//opaque
-            float newLow = 0.0f;//transparent
-            float curHigh = maxEnergyLevel;
-            float curLow = 0;
-            float newAlpha = ((currentEnergyLevel - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
-            if (Mathf.Abs(lightEffectRenderer.color.a - newAlpha) > 0.01f)
-            {
-                lightEffectRenderer.color = new Color(lightEffectColor.r, lightEffectColor.g, lightEffectColor.b, newAlpha);
-            }
-        }
-        else
-        {//use mask height
-            //2017-12-23: copied from the section above for useAlpha == true
-            float newHigh = 1.0f;//full height
-            float newLow = 0.0f;//no height
-            float curHigh = maxEnergyLevel;
-            float curLow = 0;
-            float newHeight = ((currentEnergyLevel - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
-            if (Mathf.Abs(lightEffect.transform.localScale.y - newHeight) > 0.0001f)
-            {
-                Vector3 curScale = lightEffect.transform.localScale;
-                lightEffect.transform.localScale = new Vector3(curScale.x, newHeight, curScale.z);
-            }
-        }
+        //Return its current energy
         return currentEnergyLevel;
     }
 }

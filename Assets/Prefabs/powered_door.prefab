@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4207052891273436}
   - component: {fileID: 212651165076125044}
+  - component: {fileID: 38668982853028765}
   m_Layer: 0
   m_Name: powered_door_glow
   m_TagString: Untagged
@@ -82,6 +83,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &38668982853028765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242605026810654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c766c9a3273cc49b677fd86639b698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightEffect: {fileID: 1242605026810654}
+  useAlpha: 1
 --- !u!1 &1730926824740668
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,6 +110,7 @@ GameObject:
   - component: {fileID: 50807335411491470}
   - component: {fileID: 61984506029502820}
   - component: {fileID: 114527848667787086}
+  - component: {fileID: 9103324433197971687}
   m_Layer: 0
   m_Name: powered_door
   m_TagString: Untagged
@@ -227,9 +243,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564c703b08430ed45a0a38bf1fc59a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightEffect: {fileID: 1242605026810654}
-  useAlpha: 1
+  efficiency: 1100
+  maxEnergyPerSecond: 3
+--- !u!114 &9103324433197971687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730926824740668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d9e88ebc3576e4197ee8379882afb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   maxEnergyLevel: 3
   maxEnergyPerSecond: 3
   currentEnergyLevel: 0
-  efficiency: 1100
+  givesEnergy: 0
