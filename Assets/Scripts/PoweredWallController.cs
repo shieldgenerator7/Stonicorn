@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoweredWallController : MonoBehaviour
+public class PoweredWallController : PowerConduit
 {
     //2017-01-24: several things copied from FloatCubeController
 
@@ -11,21 +11,21 @@ public class PoweredWallController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector3 upDirection;//used to determine the up direction of the powered door
 
-    private PowerConduit pc;
+    public override bool givesEnergy => false;
+    public override bool usesEnergy => true;
 
     // Use this for initialization
     void Start()
     {
         upDirection = transform.up;
         rb = GetComponent<Rigidbody2D>();
-        pc = GetComponent<PowerConduit>();
     }
 
     void FixedUpdate()
     {
-        if (pc.Energy > 0)
+        if (Energy > 0)
         {
-            float energyToUse = pc.useEnergy(pc.maxEnergyPerSecond, Time.fixedDeltaTime);
+            float energyToUse = useEnergy(maxEnergyPerSecond, Time.fixedDeltaTime);
             if (energyToUse > 0)
             {
                 Vector3 forceVector = energyToUse * efficiency * 9.81f * upDirection;

@@ -18,10 +18,10 @@ public class PowerConduit : SavableMonoBehaviour
         get { return currentEnergyLevel; }
         private set { }
     }
-    public bool givesEnergy = true;//whether this can give power to other PowerConduits
-    public bool takesEnergy = true;//whether this can take power from other PowerConduits
-    public bool convertsToEnergy = false;//whether this can convert other sources to energy
-    public bool usesEnergy = false;//whether this uses energy to power some mechanism
+    public virtual bool givesEnergy => true;//whether this can give power to other PowerConduits
+    public virtual bool takesEnergy => true;//whether this can take power from other PowerConduits
+    public virtual bool convertsToEnergy => false;//whether this can convert other sources to energy
+    public virtual bool usesEnergy => false;//whether this uses energy to power some mechanism
 
     private SpriteRenderer lightEffectRenderer;
     private Color lightEffectColor;
