@@ -70,7 +70,7 @@ public class Follow : MonoBehaviour
         {
             //Check if needs to shake
             if (rb2dParent.velocity != prevVelocity
-                && rb2dParent.velocity.magnitude < 0.1f)
+                && !rb2dParent.isMoving())
             {
                 offset += (prevVelocity - rb2dParent.velocity) * 0.1f;
             }

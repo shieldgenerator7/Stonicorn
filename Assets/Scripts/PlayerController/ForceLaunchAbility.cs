@@ -193,7 +193,7 @@ public class ForceLaunchAbility : PlayerAbility
     /// </summary>
     bool CanLaunch =>
         (playerController.Ground.isGroundedWithoutAbility(this)
-        || rb2d.velocity.sqrMagnitude < 0.1f)
+        || !rb2d.isMoving())
         && !Managers.Player.gestureOnPlayer(dragPos);
 
     void launch()
@@ -214,7 +214,7 @@ public class ForceLaunchAbility : PlayerAbility
         FeatureLevel >= 1 && rb2d.velocity.magnitude >= minimumExplodeSpeed;
     void explode(Vector2 pos)
     {
-        float range = maxEplodeRange;// * rb2d.velocity.magnitude / maxLaunchSpeed;
+        float range = maxEplodeRange;
         float forceAmount = rb2d.velocity.magnitude;
         //Force things away
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
