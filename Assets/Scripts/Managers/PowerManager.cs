@@ -86,27 +86,26 @@ public class PowerManager : MonoBehaviour
 
     public void generateConnectionMap()
     {
-        Debug.Log("=== Generating Connection Map ===");
         generatePowerConduitList();
         connectionMap.Clear();
         List<IPowerer> powerers = powerConduits
            .FindAll(ipc => ipc is IPowerer)
            .ConvertAll(ipc => (IPowerer)ipc);
-        //List<IPowerConduit> conduits = FindObjectsOfType<GameObject>().ToList()
-        //   .FindAll(go => go.GetComponent<IPowerConduit>() != null)
-        //   .ConvertAll(go => go.GetComponent<IPowerConduit>());
-        Debug.Log("Found powerers: " + powerers.Count);
         powerers.ForEach(ipr =>
         {
-            generateConnections(ipr);//, conduits);
+            generateConnections(ipr);
         });
     }
-    private void generateConnections(IPowerConduit ipc)//, List<IPowerConduit> allConduits)
+    private void generateConnections(IPowerConduit ipc)
     {
         //Don't process a conduit twice
         if (connectionMap.ContainsKey(ipc))
         {
             return;
+        }
+        else
+        {
+            connectionMap.Add(ipc, new HashSet<IPowerConduit>());
         }
         //Get list of connecting conduits
         List<IPowerConduit> connectingConduits = getConnectingConduits(ipc);
