@@ -15,8 +15,9 @@ public class PoweredWallController : PowerConduit
     public override bool usesEnergy => true;
 
     // Use this for initialization
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         upDirection = transform.up;
         rb = GetComponent<Rigidbody2D>();
     }

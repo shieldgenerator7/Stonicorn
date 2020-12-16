@@ -29,7 +29,7 @@ public class PowerConduit : SavableMonoBehaviour
     private RaycastHit2D[] rh2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];//used for detection of other PowerConduits
 
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
     {
         initLightEffectRenderer();
         bc2d = GetComponent<BoxCollider2D>();
