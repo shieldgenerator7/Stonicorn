@@ -13,6 +13,7 @@ public class PoweredWallController : MonoBehaviour, IPowerable
     private Vector3 upDirection;//used to determine the up direction of the powered door
 
     public float ThroughPut => maxEnergyPerSecond;
+    public GameObject GameObject => gameObject;
 
     private OnPowerFlowed onPowerGiven;
     public OnPowerFlowed OnPowerFlowed

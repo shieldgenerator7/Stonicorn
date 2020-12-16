@@ -9,6 +9,8 @@ public class PowerBattery : PowerConduit, IPowerer
 
     public float ThroughPut => maxEnergyPerSecond;
 
+    public GameObject GameObject => gameObject;
+
     private OnPowerFlowed onPowerFlowed;
     public OnPowerFlowed OnPowerFlowed
     {

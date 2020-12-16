@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerWire : PowerConduit, IPowerTransferer, ICuttable
+public class PowerWire : MonoBehaviour, IPowerTransferer, ICuttable
 {
     public float throughPut;
 
     public float ThroughPut => throughPut;
+    public GameObject GameObject => gameObject;
 
     private OnPowerFlowed onPowerFlowed;
     public OnPowerFlowed OnPowerFlowed

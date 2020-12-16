@@ -24,4 +24,9 @@ public interface IPowerConduit
         get;
         set;
     }
+
+    GameObject GameObject
+    {
+        get;
+    }
 }
