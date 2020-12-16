@@ -121,11 +121,11 @@ public class PowerManager : MonoBehaviour
     public List<IPowerConduit> getConnectingConduits(IPowerConduit ipc)
     {
         Collider2D coll2d = ipc.GameObject.GetComponent<Collider2D>();
-        Collider2D[] colls = new Collider2D[70];//[Utility.MAX_HIT_COUNT];
+        Collider2D[] colls = new Collider2D[Utility.MAX_HIT_COUNT];
         ContactFilter2D filter = new ContactFilter2D();
         filter.NoFilter();
         int count = coll2d.OverlapCollider(filter, colls);
-        //Utility.checkMaxReturnedList("getConnectingConduits", count);
+        Utility.checkMaxReturnedList("getConnectingConduits", count);
         List<IPowerConduit> conduits = new List<IPowerConduit>();
         for (int i = 0; i < count; i++)
         {

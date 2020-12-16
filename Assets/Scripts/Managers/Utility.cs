@@ -523,7 +523,7 @@ public static class Utility
         return solidCount;
     }
 
-    private static void checkMaxReturnedList(string methodName, int count)
+    public static void checkMaxReturnedList(string methodName, int count)
     {
 #if UNITY_EDITOR
         if (count > maxReturnedList)
