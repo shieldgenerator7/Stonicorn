@@ -8,9 +8,6 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
     public Color EffectColor => teleportRangeSegment.color;
 
     public TeleportRangeSegment teleportRangeSegment;
-    public ParticleSystemController effectParticleController;
-    private ParticleSystem effectParticleSystem;
-    public bool addsOnTeleportVisualEffect = true;
     public AudioClip soundEffect;
     public bool addsOnTeleportSoundEffect = true;
 
@@ -66,22 +63,6 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
         playerController = GetComponent<PlayerController>();
         //Upgrade Levels
         acceptUpgradeLevel(upgradeLevel);
-        //Visual Effects
-        if (addsOnTeleportVisualEffect)
-        {
-            if (effectParticleController)
-            {
-                effectParticleSystem = effectParticleController.GetComponent<ParticleSystem>();
-                if (playerController)
-                {
-                    playerController.onShowTeleportEffect += showTeleportEffect;
-                }
-            }
-            else
-            {
-                Debug.LogWarning("PlayerAbility (" + this.GetType() + ") on " + name + " does not have a particle effect! effectParticleController: " + effectParticleController);
-            }
-        }
 
         if (playerController)
         {
@@ -103,10 +84,6 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
     {
         if (playerController)
         {
-            if (addsOnTeleportVisualEffect)
-            {
-                playerController.onShowTeleportEffect -= showTeleportEffect;
-            }
             if (addsOnTeleportSoundEffect)
             {
                 playerController.onPlayTeleportSound -= playTeleportSound;
@@ -122,8 +99,18 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
         init();
     }
 
-    protected abstract void processTeleport(Vector2 oldPos, Vector2 newPos);
     protected abstract bool isGrounded();
+    protected abstract void processTeleport(Vector2 oldPos, Vector2 newPos);
+    /// <summary>
+    /// To be called by subtypes after they have influenced a teleport
+    /// </summary>
+    /// <param name="oldPos"></param>
+    /// <param name="newPos"></param>
+    protected void effectTeleport(Vector2 oldPos, Vector2 newPos)
+    {
+        onEffectedTeleport?.Invoke(oldPos, newPos);
+    }
+    public event TeleportAbility.OnTeleport onEffectedTeleport;
 
     public virtual void stopGestureEffects() { }
 
@@ -138,35 +125,6 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
 
     protected int FeatureLevel
         => upgradeLevels[upgradeLevel].featureLevel;
-
-    protected void playEffect(Vector2 playPos)
-    {
-        playEffect(playPos, true);
-    }
-
-    protected void playEffect(bool play = true)
-    {
-        playEffect(effectParticleSystem.transform.position, play);
-    }
-
-    protected void playEffect(Vector2 playPos, bool play)
-    {
-        effectParticleSystem.transform.position = playPos;
-        if (play)
-        {
-            effectParticleSystem.Play();
-        }
-        else
-        {
-            effectParticleSystem.Pause();
-            effectParticleSystem.Clear();
-        }
-    }
-
-    protected virtual void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
-    {
-        playEffect(oldPos);
-    }
 
     protected virtual void playTeleportSound(Vector2 oldPos, Vector2 newPos)
     {

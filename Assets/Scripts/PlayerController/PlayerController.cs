@@ -255,13 +255,7 @@ public class PlayerController : MonoBehaviour
     public void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
         Managers.Effect.showTeleportStar(oldPos);
-        //Process on show teleport effect delegates
-        if (onShowTeleportEffect != null)
-        {
-            onShowTeleportEffect(oldPos, newPos);
-        }
     }
-    public event TeleportAbility.OnTeleport onShowTeleportEffect;
 
     /// <summary>
     /// Plays a teleport sound at the previous position

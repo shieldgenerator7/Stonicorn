@@ -105,15 +105,8 @@ public class AirSliceAbility : PlayerAbility
                 rb2d.nullifyMovement();
                 playerController.MovementPaused = true;
             }
-        }
-    }
-
-    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
-    {
-        if (!playerController.Ground.GroundedPrev)
-        {
-            base.showTeleportEffect(oldPos, newPos);
-            showStreak(oldPos, newPos);
+            //Effect Teleport
+            effectTeleport(oldPos, newPos);
         }
     }
     void showStreak(Vector3 oldPos, Vector3 newPos)

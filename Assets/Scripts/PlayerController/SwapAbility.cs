@@ -200,6 +200,8 @@ public class SwapAbility : PlayerAbility
             Managers.Stats.addOne("SwapObject");
             //Update Stats
             Managers.Stats.addOne("Swap");
+            //Effect teleport
+            effectTeleport(oldPos, newPos);
         }
     }
 
@@ -225,14 +227,6 @@ public class SwapAbility : PlayerAbility
             {
                 swapTarget = rch2dGO;
             }
-        }
-    }
-
-    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
-    {
-        if (swappedSomething)
-        {
-            base.showTeleportEffect(oldPos, newPos);
         }
     }
 

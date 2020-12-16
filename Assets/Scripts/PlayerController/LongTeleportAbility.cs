@@ -34,20 +34,14 @@ public class LongTeleportAbility : PlayerAbility
             );
     }
 
-    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
-    {
-        if (playerController.Teleport.Range > playerController.Teleport.baseRange)
-        {
-            base.showTeleportEffect(oldPos, newPos);
-        }
-    }
-
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         if (playerController.Teleport.Range > playerController.Teleport.baseRange)
         {
             //Update Stats
             Managers.Stats.addOne("LongTeleport");
+            //Effect teleport
+            effectTeleport(oldPos, newPos);
         }
     }
 

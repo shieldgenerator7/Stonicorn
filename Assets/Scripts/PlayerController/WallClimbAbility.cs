@@ -101,6 +101,8 @@ public class WallClimbAbility : PlayerAbility
             {
                 plantSticky(oldPos);
             }
+            //Effect Teleport
+            effectTeleport(oldPos, newPos);
         }
     }
 
@@ -143,14 +145,6 @@ public class WallClimbAbility : PlayerAbility
                 //Stop magnet
                 Magneted = false;
             }
-        }
-    }
-
-    protected override void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
-    {
-        if (playerController.Ground.GroundedAbilityPrev)
-        {
-            base.showTeleportEffect(oldPos, newPos);
         }
     }
 
