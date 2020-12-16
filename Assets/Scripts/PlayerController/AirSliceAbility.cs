@@ -6,7 +6,6 @@ public class AirSliceAbility : PlayerAbility
 {
 
     [Header("Settings")]
-    public float sliceDamage = 100f;//how much force damage to do to objects that get cut
     public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
     [Header("Components")]
     public GameObject streakPrefab;
@@ -84,13 +83,14 @@ public class AirSliceAbility : PlayerAbility
             for (int i = 0; i < answer.count; i++)
             {
                 RaycastHit2D rch2d = answer.rch2ds[i];
-                if (rch2d.collider.gameObject != gameObject
-                    && rch2d.collider.gameObject != swapAbility.SwapTarget)
+                GameObject rchGO = rch2d.collider.gameObject;
+                if (rchGO != gameObject
+                    && rchGO != swapAbility.SwapTarget)
                 {
-                    HardMaterial hm = rch2d.collider.gameObject.GetComponent<HardMaterial>();
-                    if (hm)
+                    ICuttable cuttable = rchGO.GetComponent<ICuttable>();
+                    if (cuttable != null && cuttable.Cuttable)
                     {
-                        hm.addIntegrity(-sliceDamage);
+                        cuttable.cut(oldPos, newPos);
                         slicedSomething = true;
                         Managers.Stats.addOne("AirSliceObject");
                     }
