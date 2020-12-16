@@ -47,7 +47,7 @@ public class ElectricRingAbility : PlayerAbility
         => maxRange * energy / maxEnergy;
 
     HashSet<Rigidbody2D> rb2ds = new HashSet<Rigidbody2D>();
-    HashSet<PowerConduit> conduits = new HashSet<PowerConduit>();
+    HashSet<IPowerConduit> conduits = new HashSet<IPowerConduit>();
 
     protected override void init()
     {
@@ -77,13 +77,12 @@ public class ElectricRingAbility : PlayerAbility
 
         //Power
         //2020-12-08: copied from ElectricFieldController.FixedUpdate()
-        foreach (PowerConduit conduit in conduits)
+        foreach (IPowerConduit conduit in conduits)
         {
-            if (conduit.convertsToEnergy)
+            if (conduit is IPowerer)
             {
-                float amountTaken = conduit.convertSourceToEnergy(
-                    energy,
-                    Time.fixedDeltaTime
+                float amountTaken = ((IPowerer)conduit).givePower(
+                    -energy * Time.fixedDeltaTime
                     );
                 Energy += -amountTaken;
             }
@@ -113,8 +112,8 @@ public class ElectricRingAbility : PlayerAbility
         {
             rb2ds.Add(rb2d);
         }
-        PowerConduit conduit = go.GetComponent<PowerConduit>();
-        if (conduit)
+        IPowerConduit conduit = go.GetComponent<IPowerConduit>();
+        if (conduit != null)
         {
             conduits.Add(conduit);
         }
@@ -126,8 +125,8 @@ public class ElectricRingAbility : PlayerAbility
         {
             rb2ds.Remove(rb2d);
         }
-        PowerConduit conduit = go.GetComponent<PowerConduit>();
-        if (conduit)
+        IPowerConduit conduit = go.GetComponent<IPowerConduit>();
+        if (conduit != null)
         {
             conduits.Remove(conduit);
         }
