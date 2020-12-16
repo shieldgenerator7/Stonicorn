@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PowerMeterEffect : MonoBehaviour
 {
-    public GameObject lightEffect;//the object attached to it that it uses to show it is lit up
-
     public float maxHeight = 1;
     public float minHeight = 0;
 
@@ -13,7 +11,6 @@ public class PowerMeterEffect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        initLightEffect();
         conduit = GetComponent<IPowerConduit>();
         if (conduit == null)
         {
@@ -32,18 +29,10 @@ public class PowerMeterEffect : MonoBehaviour
         float curHigh = maxPower;
         float curLow = 0;
         float newHeight = ((power - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
-        if (Mathf.Abs(lightEffect.transform.localScale.y - newHeight) > 0.0001f)
+        if (Mathf.Abs(transform.localScale.y - newHeight) > 0.0001f)
         {
-            Vector3 curScale = lightEffect.transform.localScale;
-            lightEffect.transform.localScale = new Vector3(curScale.x, newHeight, curScale.z);
-        }
-    }
-
-    public void initLightEffect()
-    {
-        if (lightEffect == null)
-        {
-            lightEffect = gameObject;
+            Vector3 curScale = transform.localScale;
+            transform.localScale = new Vector3(curScale.x, newHeight, curScale.z);
         }
     }
 }

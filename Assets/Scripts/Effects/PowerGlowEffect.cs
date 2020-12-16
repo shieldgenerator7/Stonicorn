@@ -7,8 +7,6 @@ using UnityEngine;
 /// </summary>
 public class PowerGlowEffect : MonoBehaviour
 {
-    public GameObject lightEffect;//the object attached to it that it uses to show it is lit up
-
     private IPowerConduit conduit;
     private SpriteRenderer lightEffectRenderer;
     // Start is called before the first frame update
@@ -37,11 +35,7 @@ public class PowerGlowEffect : MonoBehaviour
 
     public void initLightEffectRenderer()
     {
-        if (lightEffect == null)
-        {
-            lightEffect = gameObject;
-        }
-        lightEffectRenderer = lightEffect.GetComponent<SpriteRenderer>();
+        lightEffectRenderer = GetComponent<SpriteRenderer>();
         if (lightEffectRenderer)
         {
             lightEffectRenderer.size = GetComponent<SpriteRenderer>().size;
@@ -50,7 +44,7 @@ public class PowerGlowEffect : MonoBehaviour
         {
             Debug.LogError(
                 "UseAlpha was set but there is no SpriteRenderer on the lightEffect ("
-                + lightEffect.name + "), so switching to not use alpha.",
+                + name + "), so switching to not use alpha.",
                 gameObject
                 );
         }
