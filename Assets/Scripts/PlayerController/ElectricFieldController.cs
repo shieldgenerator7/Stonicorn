@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElectricFieldController : SavableMonoBehaviour, Blastable
+public class ElectricFieldController : SavableMonoBehaviour, IBlastable
 {//2018-01-07: copied from ShieldBubbleController
     public float range = 3;//how big the shield is
 

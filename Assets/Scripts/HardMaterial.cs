@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HardMaterial : SavableMonoBehaviour, Blastable
+public class HardMaterial : SavableMonoBehaviour, IBlastable
 {
 
     public static float MINIMUM_CRACKSOUND_THRESHOLD = 1.0f;//the minimum percent of damage done to make a sound

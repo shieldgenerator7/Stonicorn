@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class PlayerAbility : SavableMonoBehaviour, Setting
+public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
 {
     //the color used for the particle system upon activation
     public Color EffectColor => teleportRangeSegment.color;

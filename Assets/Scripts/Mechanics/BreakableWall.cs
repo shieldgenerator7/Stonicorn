@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakableWall : SavableMonoBehaviour, Blastable
+public class BreakableWall : SavableMonoBehaviour, IBlastable
 {
     public float minForceThreshold = 2.5f;//the minimum amount of force required to crack it
     public float maxForceThreshold = 50;//the maximum amount of force consumed per damage

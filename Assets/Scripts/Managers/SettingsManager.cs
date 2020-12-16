@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SettingsManager : MonoBehaviour, Setting
+public class SettingsManager : MonoBehaviour, ISetting
 {
     [SerializeField]
     private string fileName = "merky_settings.txt";

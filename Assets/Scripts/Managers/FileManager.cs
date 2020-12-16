@@ -38,7 +38,7 @@ public class FileManager : MonoBehaviour
         Managers.Settings.saveSettings();
         //Save file settings
         List<SettingObject> settings = new List<SettingObject>();
-        foreach (Setting setting in FindObjectsOfType<MonoBehaviour>().OfType<Setting>())
+        foreach (ISetting setting in FindObjectsOfType<MonoBehaviour>().OfType<ISetting>())
         {
             if (setting.Scope == SettingScope.SAVE_FILE)
             {
@@ -63,7 +63,7 @@ public class FileManager : MonoBehaviour
             Managers.Settings.loadSettings();
             //Load file settings
             List<SettingObject> settings = ES3.Load<List<SettingObject>>("settings", filename);
-            foreach (Setting setting in FindObjectsOfType<MonoBehaviour>().OfType<Setting>())
+            foreach (ISetting setting in FindObjectsOfType<MonoBehaviour>().OfType<ISetting>())
             {
                 if (setting.Scope == SettingScope.SAVE_FILE)
                 {

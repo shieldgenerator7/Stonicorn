@@ -10,7 +10,7 @@ using UnityEngine;
 /// Only one object of each type may save its settings with this interface
 /// (unless you override the ID property to make the ID unique amogn members of the same class).
 /// </summary>
-public interface Setting
+public interface ISetting
 {
     SettingScope Scope
     {

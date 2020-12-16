@@ -231,7 +231,7 @@ public class ForceLaunchAbility : PlayerAbility
             {
                 orb2d.SetExplosionVelocity(forceAmount, pos);
             }
-            foreach (Blastable b in hgo.GetComponents<Blastable>())
+            foreach (IBlastable b in hgo.GetComponents<IBlastable>())
             {
                 float force = forceAmount;
                 Vector2 dir = ((Vector2)hgo.transform.position - pos).normalized;

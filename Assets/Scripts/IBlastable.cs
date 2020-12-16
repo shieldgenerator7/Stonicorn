@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Blastable {
+public interface IBlastable {
     /// <summary>
     /// Tells the Blastable object to react to being blasted by an explosion
     /// </summary>

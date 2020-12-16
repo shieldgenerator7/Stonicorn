@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StaticUntilTouched : SavableMonoBehaviour, Blastable
+public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
 {
     [SerializeField]
     private bool rooted = true;
