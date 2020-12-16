@@ -96,7 +96,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightEffect: {fileID: 1242605026810654}
-  useAlpha: 1
 --- !u!1 &1730926824740668
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +109,6 @@ GameObject:
   - component: {fileID: 50807335411491470}
   - component: {fileID: 61984506029502820}
   - component: {fileID: 114527848667787086}
-  - component: {fileID: 9103324433197971687}
   m_Layer: 0
   m_Name: powered_door
   m_TagString: Untagged
@@ -245,19 +243,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   efficiency: 1100
   maxEnergyPerSecond: 3
---- !u!114 &9103324433197971687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730926824740668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45d9e88ebc3576e4197ee8379882afb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxEnergyLevel: 3
-  maxEnergyPerSecond: 3
-  currentEnergyLevel: 0
-  givesEnergy: 0

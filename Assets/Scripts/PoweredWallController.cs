@@ -29,13 +29,6 @@ public class PoweredWallController : MonoBehaviour, IPowerable
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
-    {
-        PowerConduit pc = GetComponent<PowerConduit>();
-        float energyToUse = pc.useEnergy(maxEnergyPerSecond, Time.fixedDeltaTime);
-        acceptPower(energyToUse);
-    }
-
     public float acceptPower(float power)
     {
         float maxEnergy = maxEnergyPerSecond * Time.fixedDeltaTime;

@@ -18,6 +18,10 @@ public class PowerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        powerConduits
+              .FindAll(ipc => ipc is PowerWire)
+              .ConvertAll(ipc => (PowerWire)ipc)
+              .ForEach(pw => pw.reset());
         List<IPowerer> powerers = powerConduits
            .FindAll(ipc => ipc is IPowerer)
            .ConvertAll(ipc => (IPowerer)ipc);

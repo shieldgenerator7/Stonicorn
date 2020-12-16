@@ -24,11 +24,6 @@ public class PowerWire : MonoBehaviour, IPowerTransferer, ICuttable
 
     bool ICuttable.Cuttable => true;
 
-    private void FixedUpdate()
-    {
-        reset();
-    }
-
     public float transferPower(float power)
     {
         float energyLeftToTransfer = (ThroughPut * Time.fixedDeltaTime) - energyThisFrame;
