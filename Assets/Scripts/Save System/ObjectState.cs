@@ -67,7 +67,8 @@ public class ObjectState
         }
         foreach (SavableObject so in this.soList)
         {
-            SavableMonoBehaviour smb = (SavableMonoBehaviour)go.GetComponent(so.getSavableMonobehaviourType());
+            SavableMonoBehaviour smb =
+                (SavableMonoBehaviour)go.GetComponent(so.ScriptType);
             if (smb == null)
             {
                 if (so.isSpawnedScript)

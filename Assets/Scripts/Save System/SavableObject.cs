@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 /// <summary>
@@ -99,88 +100,12 @@ public class SavableObject
         return (GameObject)prefab;
     }
 
-    public System.Type getSavableMonobehaviourType()
-        => getSavableMonobehaviourType(scriptType);
-
-    /// <summary>
-    /// The definitive list of known savable types
-    /// </summary>
-    /// <param name="typeName"></param>
-    /// <returns></returns>
-    public static System.Type getSavableMonobehaviourType(string typeName)
+    public System.Type ScriptType
     {
-        switch (typeName)
+        get
         {
-            case "HardMaterial":
-                return typeof(HardMaterial);
-            case "BreakableWall":
-                return typeof(BreakableWall);
-            case "GravityAccepter":
-                return typeof(GravityAccepter);
-            case "GestureManager":
-                return typeof(GestureManager);
-            case "TimeManager":
-                return typeof(TimeManager);
-            case "GameEventManager":
-                return typeof(GameEventManager);
-            case "GameStatistics":
-                return typeof(GameStatistics);
-            case "SceneLoader":
-                return typeof(SceneLoader);
-            case "GroundChecker":
-                return typeof(GroundChecker);
-            case "PlayerAbility":
-                return typeof(PlayerAbility);
-            case "TeleportAbility":
-                return typeof(TeleportAbility);
-            case "FlashlightAbility":
-                return typeof(FlashlightAbility);
-            case "ForceLaunchAbility":
-                return typeof(ForceLaunchAbility);
-            case "SwapAbility":
-                return typeof(SwapAbility);
-            case "WallClimbAbility":
-                return typeof(WallClimbAbility);
-            case "AirSliceAbility":
-                return typeof(AirSliceAbility);
-            case "ElectricRingAbility":
-                return typeof(ElectricRingAbility);
-            case "LongTeleportAbility":
-                return typeof(LongTeleportAbility);
-            case "ForceLaunchProjectile":
-                return typeof(ForceLaunchProjectile);
-            case "AfterWind":
-                return typeof(AfterWind);
-            case "StickyPadChecker":
-                return typeof(StickyPadChecker);
-            case "ElectricFieldController":
-                return typeof(ElectricFieldController);
-            case "PowerConduit":
-                return typeof(PowerConduit);
-            case "CrackedPiece":
-                return typeof(CrackedPiece);
-            case "BalloonController":
-                return typeof(BalloonController);
-            case "NPCController":
-                return typeof(NPCController);
-            case "NPCMetalController":
-                return typeof(NPCMetalController);
-            case "NPCVoiceLine":
-                return typeof(NPCVoiceLine);
-            case "StaticUntilTouched":
-                return typeof(StaticUntilTouched);
-            case "SnailController":
-                return typeof(SnailController);
-            case "StaticHazard":
-                return typeof(StaticHazard);
-            case "CrabController":
-                return typeof(CrabController);
-            default:
-                throw new KeyNotFoundException(
-                    "The type name \"" + typeName + "\" was not found. "
-                    + "It might not be a SavableMonoBehaviour or might not exist. "
-                    + "You might have to add it to this list."
-                    );
+            Assembly asm = typeof(SavableObject).Assembly;
+            return asm.GetType(scriptType);
         }
     }
 
@@ -190,6 +115,6 @@ public class SavableObject
     ///<param name="go">The GameObject to add the script to</param>
     public virtual Component addScript(GameObject go)
     {
-        return go.AddComponent(getSavableMonobehaviourType());
+        return go.AddComponent(ScriptType);
     }
 }
