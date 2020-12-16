@@ -7940,6 +7940,50 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 100086, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
   m_PrefabInstance: {fileID: 2593150204304020503}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1792176468 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1792176481, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+  m_PrefabInstance: {fileID: 2593150204304020503}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792176465}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 269fed651aae3aa46b098c87eef62b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1792176470 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1792176480, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+  m_PrefabInstance: {fileID: 2593150204304020503}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792176465}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88db6bedd5001924db272ba11bdcf23f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1792176471 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1792176473, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+  m_PrefabInstance: {fileID: 2593150204304020503}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792176465}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3980e2864f72af245abafc8456ae413b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1792176472 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1792176479, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+  m_PrefabInstance: {fileID: 2593150204304020503}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792176465}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d918f1c25ebee8a47a7dfe60967db1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1846738820
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8719,6 +8763,10 @@ PrefabInstance:
       propertyPath: timer
       value: 
       objectReference: {fileID: 94021260}
+    - target: {fileID: 644455257598791475, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: playerAbility
+      value: 
+      objectReference: {fileID: 1792176472}
     - target: {fileID: 2592284711590913630, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: m_Name
       value: Player Effects
@@ -8767,6 +8815,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3214059311545126608, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: playerAbility
+      value: 
+      objectReference: {fileID: 1792176471}
+    - target: {fileID: 3915830671258936401, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: playerAbility
+      value: 
+      objectReference: {fileID: 1792176468}
+    - target: {fileID: 6253390994195550591, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: playerAbility
+      value: 
+      objectReference: {fileID: 1792176470}
     - target: {fileID: 7246242757795531718, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: followObject
       value: 
