@@ -18,13 +18,18 @@ public class PowerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Reset all power wires
         powerConduits
               .FindAll(ipc => ipc is PowerWire)
               .ConvertAll(ipc => (PowerWire)ipc)
               .ForEach(pw => pw.reset());
+        //Have powerers dish out their power
         List<IPowerer> powerers = powerConduits
            .FindAll(ipc => ipc is IPowerer)
            .ConvertAll(ipc => (IPowerer)ipc);
+        List<IPowerable> noPowerPowerables = powerConduits
+           .FindAll(ipc => ipc is IPowerable)
+           .ConvertAll(ipc => (IPowerable)ipc);
         powerers.ForEach(ipr =>
         {
             List<IPowerable> powerables = getPowerables(ipr);
@@ -32,8 +37,11 @@ public class PowerManager : MonoBehaviour
             powerables.ForEach(pwr => ipr.givePower(
                 -pwr.acceptPower(ipr.givePower(powerToEach))
                 ));
+            powerables.ForEach(pwr => noPowerPowerables.Remove(pwr));
         }
             );
+        //Process powerables with no power
+        noPowerPowerables.ForEach(pwr => pwr.acceptPower(0));
     }
 
     private List<IPowerable> getPowerables(IPowerer source)

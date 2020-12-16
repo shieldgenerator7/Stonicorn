@@ -37,4 +37,13 @@ public class PowerWire : MonoBehaviour, IPowerTransferer, ICuttable
     {
         Debug.Log("PowerWire " + name + " cut! " + start + ", " + end);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Managers.Power.generateConnectionMap();
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Managers.Power.generateConnectionMap();
+    }
 }
