@@ -13,6 +13,8 @@ public class TeleportAbility : PlayerAbility
     public float baseRange = 3;//the range after touching the ground
     [Range(0, 10)]
     public float exhaustRange = 1;//the range after teleporting into the air (and being exhausted)
+    [Range(0, 10)]
+    public float dampenSpeed = 1;//how much velocity to dampen when teleporting
     [Range(0, 1)]
     public float coolDownTime = 0.1f;//the minimum time between teleports
     [Range(0, 1)]
@@ -123,35 +125,17 @@ public class TeleportAbility : PlayerAbility
         if (rb2d.isMoving())
         {
             //Reduce momentum that is going in opposite direction
-            Vector3 direction = newPos - oldPos;
-            float newX = rb2d.velocity.x;//the new velocity x
-            float newY = rb2d.velocity.y;
-            //If velocity x is moving opposite of the teleport direction x,
-            if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(direction.x))
+            Vector3 direction = (newPos - oldPos).normalized;
+            Vector2 normVel = rb2d.velocity.normalized;
+            float magnitude = rb2d.velocity.magnitude;
+            float dot = Vector2.Dot(normVel, direction);
+            //If velocity moving opposite of the teleport direction x,
+            if (dot < 0)
             {
-                //Add teleport direction x to velocity x
-                newX = rb2d.velocity.x + direction.x;
-                //If the addition brought velocity x past 0,
-                if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(newX))
-                {
-                    //Keep from exploiting boost in opposite direction
-                    newX = 0;
-                }
+                //Add teleport direction to velocity
+                //dot is going to be a number between -1 and 0
+                rb2d.velocity += normVel * dot * dampenSpeed;
             }
-            //If velocity y is moving opposite of the teleport direction y,
-            if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(direction.y))
-            {
-                //Add teleport direction y to velocity y
-                newY = rb2d.velocity.y + direction.y;
-                //If the addition brought velocity y past 0,
-                if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(newY))
-                {
-                    //Keep from exploiting boost in opposite direction
-                    newY = 0;
-                }
-            }
-            //Update velocity
-            rb2d.velocity = new Vector2(newX, newY);
         }
 
         //Check grounded state
