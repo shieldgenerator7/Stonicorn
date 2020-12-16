@@ -79,10 +79,10 @@ public class ElectricRingAbility : PlayerAbility
         //2020-12-08: copied from ElectricFieldController.FixedUpdate()
         foreach (IPowerConduit conduit in conduits)
         {
-            if (conduit is IPowerer)
+            if (conduit is IPowerable)
             {
-                float amountTaken = ((IPowerer)conduit).givePower(
-                    -energy * Time.fixedDeltaTime
+                float amountTaken = ((IPowerable)conduit).acceptPower(
+                    energy * Time.fixedDeltaTime
                     );
                 Energy += -amountTaken;
             }

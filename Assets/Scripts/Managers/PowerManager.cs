@@ -48,7 +48,7 @@ public class PowerManager : MonoBehaviour
             connectionMap[wires[i]].ToList().ForEach(
                 ipc =>
                 {
-                    if (ipc is IPowerable)
+                    if (ipc is IPowerable && ipc.GameObject != source.GameObject)
                     {
                         powerables.Add((IPowerable)ipc);
                     }

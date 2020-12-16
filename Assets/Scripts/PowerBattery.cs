@@ -2,11 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerBattery : SavableMonoBehaviour, IPowerer
+public class PowerBattery : SavableMonoBehaviour, IPowerer, IPowerable
 {
 
     [SerializeField]
     private float energy = 0;
+    public float Energy
+    {
+        get => energy;
+        set
+        {
+            energy = Mathf.Clamp(value, 0, maxEnergy);
+            onPowerFlowed?.Invoke(energy, maxEnergy);
+        }
+    }
 
     public float maxEnergy;
     public float maxEnergyPerSecond;
@@ -25,8 +34,15 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer
     {
         float maxAmount = maxEnergyPerSecond * Time.fixedDeltaTime;
         float amount = Mathf.Min(requestedPower, maxAmount, energy);
-        energy -= amount;
-        onPowerFlowed?.Invoke(energy, maxEnergy);
+        Energy -= amount;
+        return amount;
+    }
+
+    public float acceptPower(float power)
+    {
+        float maxAmount = maxEnergyPerSecond * Time.fixedDeltaTime;
+        float amount = Mathf.Min(power, maxAmount);
+        Energy += amount;
         return amount;
     }
 
@@ -35,6 +51,6 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer
         get => new SavableObject(this,
             "energy", energy
             );
-        set => energy = value.Float("energy");
+        set => Energy = value.Float("energy");
     }
 }
