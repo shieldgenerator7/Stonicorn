@@ -79,6 +79,8 @@ public class TeleportAbility : PlayerAbility
         base.init();
         pc2d = GetComponent<PolygonCollider2D>();
         playerController.onGroundedStateUpdated += onGroundedChanged;
+        //TeleportAbility doesn't need an onTeleport delegate
+        onTeleport -= processTeleport;
         //Initialize the range
         Range = baseRange;
     }
@@ -87,6 +89,12 @@ public class TeleportAbility : PlayerAbility
     {
         base.OnDisable();
         playerController.onGroundedStateUpdated -= onGroundedChanged;
+    }
+
+    protected override bool isGrounded() => false;
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
+    {
+        throw new System.NotImplementedException();
     }
 
     #region Teleport

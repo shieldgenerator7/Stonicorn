@@ -54,14 +54,12 @@ public class ElectricRingAbility : PlayerAbility
         base.init();
         playerController.Teleport.findTeleportablePositionOverride
             += findTeleportablePosition;
-        playerController.Teleport.onTeleport += onTeleport;
     }
     public override void OnDisable()
     {
         base.OnDisable();
         playerController.Teleport.findTeleportablePositionOverride
             -= findTeleportablePosition;
-        playerController.Teleport.onTeleport -= onTeleport;
     }
 
     void FixedUpdate()
@@ -142,7 +140,7 @@ public class ElectricRingAbility : PlayerAbility
         return Vector2.zero;
     }
 
-    void onTeleport(Vector2 oldPos, Vector2 newPos)
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         if (tapOnPlayer)
         {
@@ -150,6 +148,7 @@ public class ElectricRingAbility : PlayerAbility
         }
         tapOnPlayer = false;
     }
+    protected override bool isGrounded() => false;
     #endregion
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)

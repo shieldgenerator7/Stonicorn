@@ -30,22 +30,18 @@ public class AirSliceAbility : PlayerAbility
     protected override void init()
     {
         base.init();
-        playerController.Ground.isGroundedCheck += airGroundedCheck;
         playerController.onGroundedStateUpdated += resetAirPorts;
-        playerController.Teleport.onTeleport += sliceThings;
         swapAbility = GetComponent<SwapAbility>();
         GetComponent<ForceLaunchAbility>().onLaunch += useAirPort;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.Ground.isGroundedCheck -= airGroundedCheck;
         playerController.onGroundedStateUpdated -= resetAirPorts;
-        playerController.Teleport.onTeleport -= sliceThings;
         GetComponent<ForceLaunchAbility>().onLaunch -= useAirPort;
     }
 
-    bool airGroundedCheck()
+    protected override bool isGrounded()
         => (AirPortsUsed < maxAirPorts);
 
     public bool canReset(GroundChecker grounder) =>
@@ -69,7 +65,7 @@ public class AirSliceAbility : PlayerAbility
         }
     }
 
-    void sliceThings(Vector2 oldPos, Vector2 newPos)
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         if (!playerController.Ground.isGroundedPrevWithoutAbility(this))
         {

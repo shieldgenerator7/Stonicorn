@@ -25,23 +25,17 @@ public class SwapAbility : PlayerAbility
     protected override void init()
     {
         base.init();
-        playerController.Ground.isGroundedCheck += hasSwapped;
         playerController.Teleport.findTeleportablePositionOverride += findSwapPosition;
-        playerController.Teleport.onTeleport += swapObjects;
         pc2d = GetComponent<PolygonCollider2D>();
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.Ground.isGroundedCheck -= hasSwapped;
         playerController.Teleport.findTeleportablePositionOverride -= findSwapPosition;
-        playerController.Teleport.onTeleport -= swapObjects;
     }
 
-    bool hasSwapped()
-    {
-        return swappedSomething;
-    }
+    protected override bool isGrounded()
+        => swappedSomething;
 
     bool isColliderSwappable(Collider2D coll, Vector3 tapPos)
     {
@@ -170,7 +164,7 @@ public class SwapAbility : PlayerAbility
         return extents;
     }
 
-    void swapObjects(Vector2 oldPos, Vector2 newPos)
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         swappedSomething = false;
         if (swapTarget)

@@ -94,6 +94,9 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
                 }
             }
             playerController.abilityActivated(this, true);
+            //Delegates
+            playerController.Teleport.onTeleport += processTeleport;
+            playerController.Ground.isGroundedCheck += isGrounded;
         }
     }
     public virtual void OnDisable()
@@ -109,12 +112,18 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
                 playerController.onPlayTeleportSound -= playTeleportSound;
             }
             playerController.abilityActivated(this, false);
+            //Delegates
+            playerController.Teleport.onTeleport -= processTeleport;
+            playerController.Ground.isGroundedCheck -= isGrounded;
         }
     }
     public void OnEnable()
     {
         init();
     }
+
+    protected abstract void processTeleport(Vector2 oldPos, Vector2 newPos);
+    protected abstract bool isGrounded();
 
     public virtual void stopGestureEffects() { }
 

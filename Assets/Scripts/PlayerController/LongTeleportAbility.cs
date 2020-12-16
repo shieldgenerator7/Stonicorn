@@ -12,13 +12,11 @@ public class LongTeleportAbility : PlayerAbility
     {
         base.init();
         Managers.Camera.onOffsetChange += adjustRange;
-        Managers.Player.Teleport.onTeleport += longTeleport;
     }
     public override void OnDisable()
     {
         base.OnDisable();
         Managers.Camera.onOffsetChange -= adjustRange;
-        Managers.Player.Teleport.onTeleport -= longTeleport;
     }
 
     /// <summary>
@@ -44,7 +42,7 @@ public class LongTeleportAbility : PlayerAbility
         }
     }
 
-    void longTeleport(Vector2 oldPos, Vector2 newPos)
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         if (playerController.Teleport.Range > playerController.Teleport.baseRange)
         {
@@ -52,6 +50,8 @@ public class LongTeleportAbility : PlayerAbility
             Managers.Stats.addOne("LongTeleport");
         }
     }
+
+    protected override bool isGrounded() => false;
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {

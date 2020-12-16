@@ -44,19 +44,15 @@ public class WallClimbAbility : PlayerAbility
     protected override void init()
     {
         base.init();
-        playerController.Ground.isGroundedCheck += isGroundedAbility;
-        playerController.Teleport.onTeleport += processTeleport;
         onMagnetChanged -= updateClimbSpikeEffect;
         onMagnetChanged += updateClimbSpikeEffect;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.Ground.isGroundedCheck -= isGroundedAbility;
-        playerController.Teleport.onTeleport -= processTeleport;
     }
 
-    bool isGroundedAbility()
+    protected override bool isGrounded()
     {
         //Make sure to check all possible directions
         bool grounded = isGroundedWall();
@@ -92,7 +88,7 @@ public class WallClimbAbility : PlayerAbility
     /// </summary>
     /// <param name="oldPos"></param>
     /// <param name="newPos"></param>
-    void processTeleport(Vector2 oldPos, Vector2 newPos)
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         if (groundedLeft || groundedRight || groundedCeiling)
         {
@@ -118,7 +114,7 @@ public class WallClimbAbility : PlayerAbility
                 if (groundedLeft || groundedRight || groundedCeiling)
                 {
                     //Update grounding variables
-                    isGroundedAbility();
+                    isGrounded();
                     //If no longer grounded
                 }
                 if (!groundedLeft && !groundedRight && !groundedCeiling)
@@ -140,7 +136,7 @@ public class WallClimbAbility : PlayerAbility
         if (Active)
         {
             //Updated grounded variables
-            isGroundedAbility();
+            isGrounded();
             //If no longer grounded
             if (!groundedLeft && !groundedRight)
             {

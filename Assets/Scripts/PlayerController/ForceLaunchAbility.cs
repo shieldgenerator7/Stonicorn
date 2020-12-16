@@ -76,19 +76,15 @@ public class ForceLaunchAbility : PlayerAbility
     protected override void init()
     {
         base.init();
-        playerController.Teleport.onTeleport += processTap;
         playerController.onDragGesture += processDrag;
-        playerController.Ground.isGroundedCheck += dashGroundedCheck;
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.Teleport.onTeleport -= processTap;
         playerController.onDragGesture -= processDrag;
-        playerController.Ground.isGroundedCheck -= dashGroundedCheck;
     }
-    void processTap(Vector2 oldPos, Vector2 newPos)
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         if (affectingVelocity)
         {
@@ -119,7 +115,7 @@ public class ForceLaunchAbility : PlayerAbility
         updateDirectionVisuals();
     }
 
-    bool dashGroundedCheck()
+    protected override bool isGrounded()
         => affectingVelocity
             || playerController.Ground.isGroundedInDirection(rb2d.velocity);
 

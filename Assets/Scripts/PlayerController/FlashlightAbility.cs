@@ -36,6 +36,10 @@ public class FlashlightAbility : PlayerAbility
     }
 
     #region Input Processing
+
+    protected override bool isGrounded() => false;
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos) { }
+
     public void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
     {
         flashlightOn = !finished;
