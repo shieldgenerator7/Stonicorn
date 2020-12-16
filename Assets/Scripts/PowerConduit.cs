@@ -56,10 +56,21 @@ public class PowerConduit : SavableMonoBehaviour
                         )
                     )
                 {
-                    float amountGiven = pc.giveEnergyToObject(
-                        maxEnergyPerSecond,
-                        Time.fixedDeltaTime
-                        );
+                    float amountGiven;
+                    IPowerer ipc = coll.gameObject.GetComponent<IPowerer>();
+                    if (ipc != null)
+                    {
+                        amountGiven = ipc.givePower(
+                            maxEnergyPerSecond * Time.fixedDeltaTime
+                            );
+                    }
+                    else
+                    {
+                        amountGiven = pc.giveEnergyToObject(
+                           maxEnergyPerSecond,
+                           Time.fixedDeltaTime
+                           );
+                    }
                     adjustEnergy(amountGiven);
                 }
             }

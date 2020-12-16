@@ -229,11 +229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaaf74a53bfd9294fa1621b079f327a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightEffect: {fileID: 1928185688918408}
-  useAlpha: 0
   maxEnergyLevel: 100
   maxEnergyPerSecond: 6
   currentEnergyLevel: 0
+  givesEnergy: 1
 --- !u!210 &210334717473605912
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -255,6 +254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4103340481148458}
   - component: {fileID: 331421472515276914}
+  - component: {fileID: 7267372227656146379}
   m_Layer: 0
   m_Name: powercube_lightning_fill
   m_TagString: Untagged
@@ -326,3 +326,16 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7267372227656146379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928185688918408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e36f5204ca08cca4bb2a1b718e85ea61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightEffect: {fileID: 1928185688918408}
