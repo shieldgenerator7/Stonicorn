@@ -81,6 +81,9 @@ public class Managers : MonoBehaviour
     //Demo Mode
     public static DemoModeManager DemoMode { get; private set; }
 
+    //Power Manager
+    public static PowerManager Power { get; private set; }
+
     //
     // Controllers
     //
@@ -153,6 +156,7 @@ public class Managers : MonoBehaviour
         Settings = FindObjectOfType<SettingsManager>();
         File = FindObjectOfType<FileManager>();
         DemoMode = FindObjectOfType<DemoModeManager>();
+        Power = FindObjectOfType<PowerManager>();
         Player = FindObjectOfType<PlayerController>();
         PlayerRewind = FindObjectOfType<PlayerRewindController>();
         Camera = FindObjectOfType<CameraController>();

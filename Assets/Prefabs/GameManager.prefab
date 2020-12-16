@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 2859978935190022876}
   - component: {fileID: 8383923072451418251}
   - component: {fileID: 2859978935190022868}
+  - component: {fileID: 8527496253138998994}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -71,7 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16f178c2a67a674a90713d2858d7da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveWithTimeStamp: 0
 --- !u!114 &5270741036896818801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,6 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75608092fd41454c87f62adeeb96f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fileName: merky
+  fileExtension: .txt
+  saveWithTimeStamp: 0
 --- !u!114 &2859978935190022868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,3 +287,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 0
+--- !u!114 &8527496253138998994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2859978935190022699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4104680f2a35e8f48a03dcbdc51d3686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
