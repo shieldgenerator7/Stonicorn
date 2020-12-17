@@ -8,7 +8,9 @@ public class EffectManager : MonoBehaviour
 
     //Effects
     [Header("Teleport Star Effect")]
-    public GameObject teleportStarPrefab;//the object that holds the special effect for collision
+    public GameObject teleportStarPrefab;
+    [Header("Teleport Streak Effect")]
+    public GameObject teleportStreakPrefab;
     [Header("Collision Effect")]
     public GameObject collisionEffectPrefab;//the object that holds the special effect for collision
     public float particleStartSpeed = 7.0f;
@@ -19,6 +21,7 @@ public class EffectManager : MonoBehaviour
     public GameObject rewindCanvas;
     //Supporting Lists
     private List<Fader> teleportStarList = new List<Fader>();
+    private List<Fader> teleportStreakList = new List<Fader>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
 
     /// <summary>
@@ -42,6 +45,37 @@ public class EffectManager : MonoBehaviour
             chosenTSU = newTSU;
         }
         chosenTSU.transform.position = pos;
+        chosenTSU.enabled = true;
+    }
+
+    /// <summary>
+    /// Shows the teleport streak effect
+    /// 2020-12-16: copied from showTeleportStar()
+    /// </summary>
+    /// <param name="pos"></param>
+    public void showTeleportStreak(Vector2 startPos, Vector2 endPos)
+    {
+        //Find existing particle system
+        Fader chosenTSU = teleportStreakList.FirstOrDefault(
+            tsu => !tsu.enabled
+            );
+        //Else make a new one
+        if (chosenTSU == null)
+        {
+            GameObject newTS = GameObject.Instantiate(teleportStreakPrefab);
+            newTS.transform.parent = transform;
+            Fader newTSU = newTS.GetComponent<Fader>();
+            teleportStreakList.Add(newTSU);
+            chosenTSU = newTSU;
+        }
+        //Set position
+        chosenTSU.transform.position = startPos;
+        //Set angle
+        Vector2 dir = endPos - startPos;
+        chosenTSU.transform.up = dir;
+        //Set size
+        chosenTSU.transform.localScale = Vector2.one * dir.magnitude;
+        //Enable
         chosenTSU.enabled = true;
     }
 

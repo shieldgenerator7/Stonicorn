@@ -97,6 +97,7 @@ public class AirSliceAbility : PlayerAbility
             {
                 //Allow them to teleport more in the air
                 AirPortsUsed--;
+                Managers.Effect.showTeleportStreak(oldPos, newPos);
             }
             //Give player time to tap again after teleporting in the air
             //Also nullify velocity
@@ -108,15 +109,6 @@ public class AirSliceAbility : PlayerAbility
             //Effect Teleport
             effectTeleport(oldPos, newPos);
         }
-    }
-    void showStreak(Vector3 oldPos, Vector3 newPos)
-    {
-        GameObject newTS = Instantiate(streakPrefab);
-        TeleportStreakUpdater tsu = newTS.GetComponent<TeleportStreakUpdater>();
-        tsu.start = oldPos;
-        tsu.end = newPos;
-        tsu.position();
-        tsu.turnOn(true);
     }
 
     public override SavableObject CurrentState
