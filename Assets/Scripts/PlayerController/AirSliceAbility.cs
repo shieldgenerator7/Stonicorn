@@ -8,7 +8,6 @@ public class AirSliceAbility : PlayerAbility
     [Header("Settings")]
     public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
     [Header("Components")]
-    public GameObject streakPrefab;
     public PlayerAbility[] excludeAbilityFromGrounding;
 
     private int airPorts = 0;//"air teleports": how many airports Merky has used since touching the ground
