@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AfterWind : SavableMonoBehaviour
+public class AfterWind : SavableMonoBehaviour, ICuttable
 {//2018-01-25: copied from GravityZone
 
     public Vector2 windVector;//direction
@@ -37,6 +37,7 @@ public class AfterWind : SavableMonoBehaviour
 
     public override string PrefabName => "AfterWind";
 
+    public bool Cuttable => true;
 
     void FixedUpdate()
     {
@@ -68,5 +69,10 @@ public class AfterWind : SavableMonoBehaviour
                 }
             }
         }
+    }
+
+    public void cut(Vector2 start, Vector2 end)
+    {
+        Managers.Object.destroyObject(gameObject);
     }
 }
