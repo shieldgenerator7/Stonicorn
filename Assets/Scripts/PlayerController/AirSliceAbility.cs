@@ -140,10 +140,11 @@ public class AirSliceAbility : PlayerAbility
         afterWind.transform.position = oldPos;
         Vector2 dir = newPos - oldPos;
         afterWind.transform.up = dir;
-        afterWind.transform.localScale =
-            afterWind.transform.localScale.setY(dir.magnitude);
         SpriteRenderer awsr = afterWind.GetComponent<SpriteRenderer>();
         awsr.color = EffectColor.adjustAlpha(awsr.color.a);
+        awsr.size = new Vector2(awsr.size.x, dir.magnitude);
+        BoxCollider2D bc2d = afterWind.GetComponent<BoxCollider2D>();
+        bc2d.size = new Vector2(bc2d.size.x, dir.magnitude);
     }
 
     public override SavableObject CurrentState
