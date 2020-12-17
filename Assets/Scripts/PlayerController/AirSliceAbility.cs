@@ -64,6 +64,14 @@ public class AirSliceAbility : PlayerAbility
             playerController.updateGroundedState();
         }
     }
+    public void grantAirPort()
+    {
+        AirPortsUsed--;
+        if (AirPortsUsed < maxAirPorts)
+        {
+            playerController.updateGroundedState();
+        }
+    }
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
