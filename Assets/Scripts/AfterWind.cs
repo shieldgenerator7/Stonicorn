@@ -35,7 +35,7 @@ public class AfterWind : SavableMonoBehaviour
     }
     public override bool IsSpawnedObject => true;
 
-    public override string PrefabName => "ForceChargeAfterWind";
+    public override string PrefabName => "AfterWind";
 
 
     void FixedUpdate()
