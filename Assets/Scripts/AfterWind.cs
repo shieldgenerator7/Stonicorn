@@ -59,9 +59,13 @@ public class AfterWind : SavableMonoBehaviour
                     }
                 }
                 //Reduce velocity in whatever direction it's moving
-                rb2d.velocity *= 0.5f;
+                rb2d.velocity -= rb2d.velocity * 0.9f * Time.fixedDeltaTime;
                 //Reinforce movement in intended direction
                 rb2d.velocity += pushVector;
+                if (rb2d.velocity.magnitude > windForce)
+                {
+                    rb2d.velocity = rb2d.velocity.normalized * windForce;
+                }
             }
         }
     }
