@@ -129,7 +129,8 @@ public class AirSliceAbility : PlayerAbility
     }
 
     bool CanAfterWind
-        => FeatureLevel >= 2;
+        => FeatureLevel >= 2 &&
+        (playerController.Ground.GroundedAbility || playerController.Ground.GroundedAbilityPrev);
 
     void makeAfterWind(Vector2 oldPos, Vector2 newPos)
     {
