@@ -67,7 +67,8 @@ public class AirSliceAbility : PlayerAbility
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        if (!playerController.Ground.isGroundedPrevWithoutAbility(this))
+        if (!playerController.Ground.isGroundedPrevWithoutAbility(this)
+            && playerController.Ground.GroundedPrev)
         {
             //Update Stats
             Managers.Stats.addOne("AirSlice");
@@ -97,7 +98,8 @@ public class AirSliceAbility : PlayerAbility
     }
 
     bool CanSlice
-        => FeatureLevel >= 1;
+        => FeatureLevel >= 1 &&
+        (playerController.Ground.GroundedAbility || playerController.Ground.GroundedAbilityPrev);
 
     void sliceThings(Vector2 oldPos, Vector2 newPos)
     {
