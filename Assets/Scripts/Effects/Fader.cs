@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.U2D;
 
 using UnityEngine.UI;
+using System.Linq;
+using System.Collections.Generic;
 
 public class Fader : MonoBehaviour
 {
@@ -28,35 +30,32 @@ public class Fader : MonoBehaviour
         get => (ignorePause) ? Time.unscaledTime : Time.time;
     }
 
-    private ArrayList srs;
+    private List<Component> srs;
     private float startTime;
 
     // Use this for initialization
-    void Start()
+    void OnEnable()
     {
         startTime = CurrentTime + delayTime;
         if (duration <= 0)
         {
             duration = Mathf.Abs(startfade - endfade);
         }
-        srs = new ArrayList();
+        srs = new List<Component>();
         srs.Add(GetComponent<SpriteRenderer>());
         srs.Add(GetComponent<SpriteShapeRenderer>());
         srs.Add(GetComponent<CanvasRenderer>());
         srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
         srs.AddRange(GetComponentsInChildren<SpriteShapeRenderer>());
         srs.AddRange(GetComponentsInChildren<Image>());
+        srs.RemoveAll(sr => sr == null);
         if (destroyColliders)
         {
-            foreach (Collider2D bc in GetComponentsInChildren<Collider2D>())
+            foreach (Collider2D bc in GetComponentsInChildren<Collider2D>().ToList())
             {
                 Destroy(bc);
             }
         }
-        //foreach (Renderer r in GetComponentsInChildren<Renderer>())
-        //{
-        //    r.sortingOrder = -1;
-        //}
     }
 
     // Update is called once per frame
@@ -66,13 +65,9 @@ public class Fader : MonoBehaviour
         {
             float t = Mathf.Min(duration, (CurrentTime - startTime) / duration);//2016-03-17: copied from an answer by treasgu (http://answers.unity3d.com/questions/654836/unity2d-sprite-fade-in-and-out.html)
             float alpha = Mathf.SmoothStep(startfade, endfade, t);
-            foreach (Object o in srs)
+            foreach (Component o in srs)
             {
-                if (!o)
-                {
-                    continue;//skip null values
-                }
-                else if (o is SpriteRenderer)
+                if (o is SpriteRenderer)
                 {
                     SpriteRenderer sr = (SpriteRenderer)o;
                     sr.color = sr.color.adjustAlpha(alpha);
@@ -116,6 +111,10 @@ public class Fader : MonoBehaviour
             else if (destroyScriptOnFinish)
             {
                 Destroy(this);
+            }
+            else
+            {
+                enabled = false;
             }
         }
     }
