@@ -82,8 +82,6 @@ public class GameManager : MonoBehaviour
                 }
                 //Music Fade
                 Managers.Music.processFade();
-                //Visual Effects
-                Managers.Effect.processEffects();
             }
             Managers.Camera.Up = GravityZone.getUpDirection(Managers.Camera.transform.position);
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EffectManager : MonoBehaviour
@@ -8,8 +9,6 @@ public class EffectManager : MonoBehaviour
     //Effects
     [Header("Teleport Star Effect")]
     public GameObject teleportStarPrefab;//the object that holds the special effect for collision
-    public float teleportStarDuration = 2.0f;//how long the teleport star will stay on screen (in sec)
-    public Color teleportStarColor = new Color(1, 1, 1);
     [Header("Collision Effect")]
     public GameObject collisionEffectPrefab;//the object that holds the special effect for collision
     public float particleStartSpeed = 7.0f;
@@ -19,19 +18,9 @@ public class EffectManager : MonoBehaviour
     [Header("Rewind Stripe Effect")]
     public GameObject rewindCanvas;
     //Supporting Lists
-    private List<TeleportStarUpdater> teleportStarList = new List<TeleportStarUpdater>();
+    private List<Fader> teleportStarList = new List<Fader>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
 
-    public void processEffects()
-    {
-        for (int i = 0; i < teleportStarList.Count; i++)
-        {
-            if (teleportStarList[i].TurnedOn)
-            {
-                teleportStarList[i].updateStar();
-            }
-        }
-    }
     /// <summary>
     /// Shows the teleport star effect
     /// 2017-10-31: copied from PlayerController.showTeleportStar()
@@ -39,31 +28,21 @@ public class EffectManager : MonoBehaviour
     /// <param name="pos"></param>
     public void showTeleportStar(Vector3 pos)
     {
-        TeleportStarUpdater chosenTSU = null;
         //Find existing particle system
-        foreach (TeleportStarUpdater tsu in teleportStarList)
-        {
-            if (tsu != null && !tsu.TurnedOn)
-            {
-                chosenTSU = tsu;
-                break;
-            }
-        }
+        Fader chosenTSU = teleportStarList.FirstOrDefault(
+            tsu => !tsu.enabled
+            );
         //Else make a new one
         if (chosenTSU == null)
         {
             GameObject newTS = GameObject.Instantiate(teleportStarPrefab);
             newTS.transform.parent = transform;
-            TeleportStarUpdater newTSU = newTS.GetComponent<TeleportStarUpdater>();
-            newTSU.init();
-            newTSU.duration = teleportStarDuration;
-            newTSU.baseColor = teleportStarColor;
+            Fader newTSU = newTS.GetComponent<Fader>();
             teleportStarList.Add(newTSU);
             chosenTSU = newTSU;
         }
-        //Set values
-        chosenTSU.position(pos);
-        chosenTSU.TurnedOn = true;
+        chosenTSU.transform.position = pos;
+        chosenTSU.enabled = true;
     }
 
     /// <summary>
