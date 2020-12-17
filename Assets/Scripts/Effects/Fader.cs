@@ -16,13 +16,18 @@ public class Fader : MonoBehaviour
     public float duration = 1;
     [Range(0, 10)]
     public float delayTime = 0f;
-    [Tooltip("True: destroys all colliders on Start()")]
+    [Tooltip("True: destroys all colliders when enabled")]
     public bool destroyColliders = true;
-    public bool destroyObjectOnFinish = true;
-    public bool destroyScriptOnFinish = true;
-    [Tooltip("True: the object this Fader is attached to " +
-        "is only a special effect and not a time-bound object")]
-    public bool isEffectOnly = true;
+    public enum FinishAction
+    {
+        DESTROY_GAMEOBJECT,
+        DESTROY_SCRIPT,
+        DISABLE_GAMEOBJECT,
+        DISABLE_SCRIPT
+    }
+    public FinishAction finishAction = FinishAction.DESTROY_GAMEOBJECT;
+    private bool isEffectOnly = true;
+    [Tooltip("True to use unscaled time, false to use scaled time")]
     public bool ignorePause = true;
 
     private float CurrentTime
@@ -56,6 +61,8 @@ public class Fader : MonoBehaviour
                 Destroy(bc);
             }
         }
+        //It's an effect if there are no savable components on the game object
+        isEffectOnly = !gameObject.isSavable();
     }
 
     // Update is called once per frame
@@ -97,24 +104,29 @@ public class Fader : MonoBehaviour
         if (currentFade == endfade)
         {
             onFadeFinished?.Invoke();
-            if (destroyObjectOnFinish)
+            switch (finishAction)
             {
-                if (isEffectOnly)
-                {
-                    Destroy(gameObject);
-                }
-                else
-                {
-                    Managers.Object.destroyObject(gameObject);
-                }
-            }
-            else if (destroyScriptOnFinish)
-            {
-                Destroy(this);
-            }
-            else
-            {
-                enabled = false;
+                case FinishAction.DESTROY_GAMEOBJECT:
+                    if (isEffectOnly)
+                    {
+                        Destroy(gameObject);
+                    }
+                    else
+                    {
+                        Managers.Object.destroyObject(gameObject);
+                    }
+                    break;
+                case FinishAction.DESTROY_SCRIPT:
+                    Destroy(this);
+                    break;
+                case FinishAction.DISABLE_GAMEOBJECT:
+                    gameObject.SetActive(false);
+                    break;
+                case FinishAction.DISABLE_SCRIPT:
+                    enabled = false;
+                    break;
+                default:
+                    throw new System.Exception("Invalid option!: " + finishAction);
             }
         }
     }

@@ -53,9 +53,7 @@ public class LoadingScreen : MonoBehaviour
             {
                 Fader f = transform.parent.gameObject.AddComponent<Fader>();
                 f.ignorePause = true;
-                f.destroyObjectOnFinish = false;
-                f.destroyScriptOnFinish = true;
-                f.isEffectOnly = true;
+                f.finishAction = Fader.FinishAction.DESTROY_SCRIPT;
                 f.onFadeFinished += loadingFinished;
                 this.enabled = false;
                 //Switch camera to main camera
