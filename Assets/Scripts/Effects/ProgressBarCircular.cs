@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProgressBarCircular : MonoBehaviour
 {//2017-07-29: copied from AbilityGainEffect
-    
+
     private new ParticleSystem particleSystem;
     private float originalEmission;
     private float originalArc = 0;
@@ -45,8 +45,11 @@ public class ProgressBarCircular : MonoBehaviour
     {
         ParticleSystem.ShapeModule pssm = particleSystem.shape;
         pssm.arc = newArc;
-        particleSystem.emissionRate = newArc * arcEmissionRatio;
-        particleSystem.gameObject.transform.localRotation = Quaternion.Euler(originalQuat.eulerAngles + new Vector3(0, 0, originalArc - newArc));
+        ParticleSystem.EmissionModule psem = particleSystem.emission;
+        psem.rateOverTime = newArc * arcEmissionRatio;
+        particleSystem.gameObject.transform.localRotation = Quaternion.Euler(
+                originalQuat.eulerAngles + new Vector3(0, 0, originalArc - newArc)
+                );
     }
 }
 

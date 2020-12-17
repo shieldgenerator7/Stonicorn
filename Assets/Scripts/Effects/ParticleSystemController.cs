@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleSystemController : MonoBehaviour {
+public class ParticleSystemController : MonoBehaviour
+{
     //2017-03-09 used to control an object with a ParticleSystem thats used for circular ranges
 
     private ParticleSystem teleportParticles;
@@ -11,7 +12,7 @@ public class ParticleSystemController : MonoBehaviour {
     private bool activated = false;
 
     // Use this for initialization
-    void Awake ()
+    void Awake()
     {
         teleportParticles = GetComponent<ParticleSystem>();
         activateTeleportParticleSystem(false);
@@ -106,8 +107,8 @@ public class ParticleSystemController : MonoBehaviour {
             if (andRate)//whether or not to change the rate too
             {
                 //Number of particles
-                //2017-03-14 I know it's deprecated but it doesn't give me any other option
-                teleportParticles.emissionRate = newRange * 100 / 3;
+                ParticleSystem.EmissionModule psem = teleportParticles.emission;
+                psem.rateOverTime = newRange * 100 / 3;
                 //Reset
                 if (teleportParticles.isPlaying)
                 {

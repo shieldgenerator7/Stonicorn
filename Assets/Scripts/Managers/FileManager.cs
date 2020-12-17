@@ -79,7 +79,7 @@ public class FileManager : MonoBehaviour
                 }
             }
         }
-        catch (System.Exception e)
+        catch (System.Exception)
         {
             if (ES3.FileExists("merky.txt"))
             {

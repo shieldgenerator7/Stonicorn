@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityGainEffect : MonoBehaviour {
+public class AbilityGainEffect : MonoBehaviour
+{
 
     public float animSpeed = 0;//arc degrees per second
     public float animTime = 1.0f;//how many seconds to complete one section of anim
@@ -20,8 +21,9 @@ public class AbilityGainEffect : MonoBehaviour {
     private float arcEmissionRatio;
     private bool isDisengaging = false;//true when the anim should wind down
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         particleSystem = GetComponent<ParticleSystem>();
         originalEmission = particleSystem.emission.rateOverTime.constant;
         originalArc = particleSystem.shape.arc;
@@ -40,9 +42,10 @@ public class AbilityGainEffect : MonoBehaviour {
         //Sorting Order
         particleSystem.GetComponent<Renderer>().sortingOrder = originalSpriteOrder + 1;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         float currentArc = particleSystem.shape.arc;
         setArc(particleSystem.shape.arc + animSpeed * Time.deltaTime);
         if (particleSystem.shape.arc <= 0 || particleSystem.shape.arc >= 360)
@@ -63,19 +66,23 @@ public class AbilityGainEffect : MonoBehaviour {
                 isDisengaging = true;
             }
         }
-	}
+    }
 
     void setArc(float newArc)
     {
         ParticleSystem.ShapeModule pssm = particleSystem.shape;
         pssm.arc = newArc;
-        particleSystem.emissionRate = newArc * arcEmissionRatio * 100;
-        particleSystem.gameObject.transform.localRotation = Quaternion.Euler(originalQuat.eulerAngles + new Vector3(0, 0, originalArc - newArc));
+        ParticleSystem.EmissionModule psem = particleSystem.emission;
+        psem.rateOverTime = newArc * arcEmissionRatio * 100;
+        particleSystem.gameObject.transform.localRotation = Quaternion.Euler(
+                originalQuat.eulerAngles + new Vector3(0, 0, originalArc - newArc)
+                );
     }
     void disengage()
     {
         setArc(originalArc);
-        particleSystem.emissionRate = originalEmission;
+        ParticleSystem.EmissionModule psem = particleSystem.emission;
+        psem.rateOverTime = originalEmission;
         ParticleSystem.MainModule psmm = particleSystem.main;
         psmm.startLifetime = originalStartLifetime;
         particleSystem.GetComponent<Renderer>().sortingOrder = originalSpriteOrder;

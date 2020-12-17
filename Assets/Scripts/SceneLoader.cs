@@ -190,7 +190,10 @@ public class SceneLoader : SavableMonoBehaviour
         }
         catch (System.ArgumentException ae)
         {
-            Debug.LogError("Trying to move " + go.name + " into scene " + s.name);
+            Debug.LogError(
+                "Trying to move " + go.name + " into scene " + s.name
+                + ": " + ae
+                );
         }
     }
 

@@ -81,7 +81,7 @@ public class PlayerRewindController : MonoBehaviour
             rep.transform.localScale = merky.localScale;
             rep.transform.rotation = merky.rotation;
         }
-        catch (System.NullReferenceException nre)
+        catch (System.NullReferenceException)
         {
             Debug.LogError("GameState (" + gs.id + ") does not have a Merky! merky: " + gs.Merky);
         }

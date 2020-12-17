@@ -402,7 +402,9 @@ public class CustomMenu
     [MenuItem("SG7/Build/Build Linux")]
     public static void buildLinux()
     {
-        build(BuildTarget.StandaloneLinux, "x86");
+        Debug.LogError(
+            "Building Linux has not been readded yet after Unity removed it in 2019.2"
+            );
     }
     [MenuItem("SG7/Build/Build Mac OS X")]
     public static void buildMacOSX()

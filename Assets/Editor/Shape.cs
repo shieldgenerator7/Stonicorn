@@ -63,7 +63,7 @@ public class Shape
                         points[i3] - points[i2]
                         );
                 }
-                Debug.Log("angleSum = "+angleSum);
+                Debug.Log("angleSum = " + angleSum);
                 if (angleSum < 0)
                 {
                     direction = ColliderDirection.LEFT;
@@ -105,7 +105,7 @@ public class Shape
         Direction = ColliderDirection.RIGHT;
     }
 
-    public Shape(SpriteShapeController ssc):this(ssc.polygonCollider)
+    public Shape(SpriteShapeController ssc) : this(ssc.polygonCollider)
     {
         this.ssc = ssc;
     }
@@ -403,7 +403,7 @@ public class Shape
         {
             GlobalPoints.InsertRange(index, vectors);
         }
-        catch (System.ArgumentOutOfRangeException aoore)
+        catch (System.ArgumentOutOfRangeException)
         {
             Debug.LogError("AOORE! Global Points Count: " + GlobalPoints.Count + ", index: " + index);
         }

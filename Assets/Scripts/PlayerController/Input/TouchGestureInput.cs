@@ -8,7 +8,6 @@ public class TouchGestureInput : GestureInput
     public float dragThreshold = 50;
     public float holdThreshold = 0.2f;
 
-    private int touchCount = 0;//how many touches to process, usually only 0 or 1, only 2 if zoom
     private int maxTouchCount = 0;//the max amount of touches involved in this gesture at any one time
 
     //Camera Drag processing variables
