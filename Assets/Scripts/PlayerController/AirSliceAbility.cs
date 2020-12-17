@@ -73,30 +73,10 @@ public class AirSliceAbility : PlayerAbility
             Managers.Stats.addOne("AirSlice");
             //Update air ports
             useAirPort();
-            //Check if sliced something
-            bool slicedSomething = false;
-            Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, (newPos - oldPos), Vector2.Distance(oldPos, newPos));
-            for (int i = 0; i < answer.count; i++)
+            //Slice things
+            if (CanSlice)
             {
-                RaycastHit2D rch2d = answer.rch2ds[i];
-                GameObject rchGO = rch2d.collider.gameObject;
-                if (rchGO != gameObject
-                    && rchGO != swapAbility.SwapTarget)
-                {
-                    ICuttable cuttable = rchGO.GetComponent<ICuttable>();
-                    if (cuttable != null && cuttable.Cuttable)
-                    {
-                        cuttable.cut(oldPos, newPos);
-                        slicedSomething = true;
-                        Managers.Stats.addOne("AirSliceObject");
-                    }
-                }
-            }
-            //if the player slices something, 
-            if (slicedSomething)
-            {
-                //Allow them to teleport more in the air
-                AirPortsUsed--;
+                sliceThings(oldPos, newPos);
                 Managers.Effect.showTeleportStreak(oldPos, newPos);
             }
             //Give player time to tap again after teleporting in the air
@@ -108,6 +88,38 @@ public class AirSliceAbility : PlayerAbility
             }
             //Effect Teleport
             effectTeleport(oldPos, newPos);
+        }
+    }
+
+    bool CanSlice
+        => FeatureLevel >= 1;
+
+    void sliceThings(Vector2 oldPos, Vector2 newPos)
+    {
+        //Check if sliced something
+        bool slicedSomething = false;
+        Utility.RaycastAnswer answer = Utility.RaycastAll(oldPos, (newPos - oldPos), Vector2.Distance(oldPos, newPos));
+        for (int i = 0; i < answer.count; i++)
+        {
+            RaycastHit2D rch2d = answer.rch2ds[i];
+            GameObject rchGO = rch2d.collider.gameObject;
+            if (rchGO != gameObject
+                && rchGO != swapAbility.SwapTarget)
+            {
+                ICuttable cuttable = rchGO.GetComponent<ICuttable>();
+                if (cuttable != null && cuttable.Cuttable)
+                {
+                    cuttable.cut(oldPos, newPos);
+                    slicedSomething = true;
+                    Managers.Stats.addOne("AirSliceObject");
+                }
+            }
+        }
+        //if the player slices something, 
+        if (slicedSomething)
+        {
+            //Allow them to teleport more in the air
+            AirPortsUsed--;
         }
     }
 
