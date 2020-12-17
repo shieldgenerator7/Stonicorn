@@ -9,6 +9,7 @@ public class AirSliceAbility : PlayerAbility
     public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
     [Header("Components")]
     public PlayerAbility[] excludeAbilityFromGrounding;
+    public GameObject afterWindPrefab;
 
     private int airPorts = 0;//"air teleports": how many airports Merky has used since touching the ground
     public int AirPortsUsed
@@ -78,6 +79,11 @@ public class AirSliceAbility : PlayerAbility
                 sliceThings(oldPos, newPos);
                 Managers.Effect.showTeleportStreak(oldPos, newPos);
             }
+            //After wind
+            if (CanAfterWind)
+            {
+                makeAfterWind(oldPos, newPos);
+            }
             //Give player time to tap again after teleporting in the air
             //Also nullify velocity
             if (AirPortsUsed <= maxAirPorts)
@@ -120,6 +126,21 @@ public class AirSliceAbility : PlayerAbility
             //Allow them to teleport more in the air
             AirPortsUsed--;
         }
+    }
+
+    bool CanAfterWind
+        => FeatureLevel >= 2;
+
+    void makeAfterWind(Vector2 oldPos, Vector2 newPos)
+    {
+        GameObject afterWind = Utility.Instantiate(afterWindPrefab);
+        afterWind.transform.position = oldPos;
+        Vector2 dir = newPos - oldPos;
+        afterWind.transform.up = dir;
+        afterWind.transform.localScale =
+            afterWind.transform.localScale.setY(dir.magnitude);
+        SpriteRenderer awsr = afterWind.GetComponent<SpriteRenderer>();
+        awsr.color = EffectColor.adjustAlpha(awsr.color.a);
     }
 
     public override SavableObject CurrentState

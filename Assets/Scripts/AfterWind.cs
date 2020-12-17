@@ -5,43 +5,32 @@ using UnityEngine;
 public class AfterWind : SavableMonoBehaviour
 {//2018-01-25: copied from GravityZone
 
-    public Vector2 windVector;//direction and magnitude
-    public float fadeOutDuration = 1.0f;//how long (sec) it will take for this to fade away
+    public Vector2 windVector;//direction
+    public float windForce = 10;//magnitude
 
     private BoxCollider2D coll;
-    private SpriteRenderer sr;
     private RaycastHit2D[] rch2dStartup = new RaycastHit2D[Utility.MAX_HIT_COUNT];
-    private float fadeStartTime = 0f;//when the fade out started
-    private float fadeEndTime = 0f;//when the fade out will end and this GameObject will be deleted
 
     // Use this for initialization
     void Start()
     {
         coll = GetComponent<BoxCollider2D>();
-        sr = GetComponent<SpriteRenderer>();
-        init();
-    }
-    private void init()
-    {
-        if (Mathf.Approximately(fadeStartTime, 0))
+        if (windVector == Vector2.zero)
         {
-            fadeStartTime = Time.time;
+            windVector = transform.up;
         }
-        fadeEndTime = fadeStartTime + fadeOutDuration;
+        windVector.Normalize();
     }
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
             "windVector", windVector,
-            "fadeOutDuration", fadeOutDuration,
-            "fadeTime", (Time.time - fadeStartTime)
+            "windForce", windForce
             );
         set
         {
             windVector = value.Vector2("windVector");
-            fadeOutDuration = value.Float("fadeOutDuration");
-            fadeStartTime = Time.time - value.Float("fadeTime");
-            init();
+            windForce = value.Float("windForce");
         }
     }
     public override bool IsSpawnedObject => true;
@@ -52,8 +41,7 @@ public class AfterWind : SavableMonoBehaviour
     void FixedUpdate()
     {
         //Decrease push force as the zone fades
-        float fadeFactor = (fadeEndTime - Time.time) / fadeOutDuration;
-        Vector2 pushVector = windVector * fadeFactor;
+        Vector2 pushVector = windVector * windForce;
 
         //Push objects in zone
         int count = Utility.Cast(coll, Vector2.zero, rch2dStartup);
@@ -65,22 +53,16 @@ public class AfterWind : SavableMonoBehaviour
                 GravityAccepter ga = rb2d.gameObject.GetComponent<GravityAccepter>();
                 if (ga)
                 {
-                    if (ga.AcceptsGravity)
+                    if (!ga.AcceptsGravity)
                     {
-                        rb2d.AddForce(pushVector);
+                        continue;
                     }
                 }
-                else
-                {
-                    rb2d.AddForce(pushVector);
-                }
+                //Reduce velocity in whatever direction it's moving
+                rb2d.velocity *= 0.5f;
+                //Reinforce movement in intended direction
+                rb2d.velocity += pushVector;
             }
-        }
-        //Fade the sprite
-        sr.color = sr.color.adjustAlpha(Mathf.SmoothStep(0, 1, fadeFactor));
-        if (fadeFactor <= 0 || Mathf.Approximately(fadeFactor, 0))
-        {
-            Managers.Object.destroyObject(gameObject);
         }
     }
 }
