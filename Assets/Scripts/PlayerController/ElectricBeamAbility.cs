@@ -8,6 +8,7 @@ public class ElectricBeamAbility : PlayerAbility
     [Header("Settings")]
     public float range = 2.5f;
     public float energyPerSecond = 100;//how much energy it generates each second
+    public float rangeBuffer = 1;//how much more outside the range a target can be before being disconnected
 
     private bool activated = false;
     public bool Activated
@@ -121,7 +122,7 @@ public class ElectricBeamAbility : PlayerAbility
     void checkTarget()
     {
         //If it's in range
-        if (target.transform.position.inRange(transform.position, range))
+        if (target.transform.position.inRange(transform.position, range + rangeBuffer))
         {
             //all good
         }
