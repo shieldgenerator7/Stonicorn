@@ -24,6 +24,12 @@ public class PowerWire : MonoBehaviour, IPowerTransferer, ICuttable
 
     bool ICuttable.Cuttable => true;
 
+    private void Start()
+    {
+        //Autoset BoxCollider2D size
+        GetComponent<BoxCollider2D>().size = GetComponent<SpriteRenderer>().size;
+    }
+
     public float transferPower(float power)
     {
         float energyLeftToTransfer = (ThroughPut * Time.fixedDeltaTime) - energyThisFrame;
