@@ -13,12 +13,9 @@ public class ElectricBeamEffect : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         sr.enabled = false;
-        electricBeamAbility.onActivatedChanged += (active) =>
-        {
-            this.enabled = active;
-            sr.enabled = false;
-        };
-        this.enabled = electricBeamAbility.Activated;
+        electricBeamAbility.onActivatedChanged += processActivated;
+        electricBeamAbility.onTargetChanged += updateStaticEffect;
+        processActivated(electricBeamAbility.Activated);
     }
 
     // Update is called once per frame
@@ -42,5 +39,28 @@ public class ElectricBeamEffect : MonoBehaviour
         Vector2 dir = endPos - startPos;
         transform.up = dir;
         sr.size = new Vector2(sr.size.x, dir.magnitude);
+    }
+
+    void processActivated(bool active)
+    {
+        this.enabled = active;
+        sr.enabled = false;
+        if (active)
+        {
+            Managers.Effect.showLightningStatic(electricBeamAbility.gameObject);
+        }
+    }
+
+    void updateStaticEffect(GameObject oldGO, GameObject newGO)
+    {
+        if (newGO)
+        {
+            Managers.Effect.showLightningStatic(newGO);
+            sr.enabled = true;
+        }
+        else
+        {
+            sr.enabled = false;
+        }
     }
 }

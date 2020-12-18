@@ -11,6 +11,8 @@ public class EffectManager : MonoBehaviour
     public GameObject teleportStarPrefab;
     [Header("Teleport Streak Effect")]
     public GameObject teleportStreakPrefab;
+    [Header("Lightning Static Effect")]
+    public GameObject lightningStaticPrefab;
     [Header("Collision Effect")]
     public GameObject collisionEffectPrefab;//the object that holds the special effect for collision
     public float particleStartSpeed = 7.0f;
@@ -22,6 +24,7 @@ public class EffectManager : MonoBehaviour
     //Supporting Lists
     private List<Fader> teleportStarList = new List<Fader>();
     private List<Fader> teleportStreakList = new List<Fader>();
+    private List<SpriteRenderer> lightningStaticList = new List<SpriteRenderer>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
 
     /// <summary>
@@ -76,6 +79,33 @@ public class EffectManager : MonoBehaviour
         //Set size
         chosenTSU.transform.localScale = Vector2.one * dir.magnitude;
         //Enable
+        chosenTSU.enabled = true;
+    }
+
+    /// <summary>
+    /// Shows the lightning static effect on the given GameObject
+    /// 2020-12-17: copied from showTeleportStar()
+    /// </summary>
+    /// <param name="pos"></param>
+    public void showLightningStatic(GameObject go)
+    {
+        //Find existing effect
+        SpriteRenderer chosenTSU = lightningStaticList.FirstOrDefault(
+            tsu => !tsu.enabled
+            );
+        //Else make a new one
+        if (chosenTSU == null)
+        {
+            GameObject newLS = GameObject.Instantiate(lightningStaticPrefab);
+            SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
+            lightningStaticList.Add(newSR);
+            chosenTSU = newSR;
+        }
+        chosenTSU.transform.parent = go.transform;
+        chosenTSU.transform.localPosition = Vector2.zero;
+        SpriteRenderer goSR = go.GetComponent<SpriteRenderer>();
+        Bounds b = goSR.bounds;
+        chosenTSU.size = b.size;
         chosenTSU.enabled = true;
     }
 

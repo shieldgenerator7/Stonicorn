@@ -36,6 +36,7 @@ public class ElectricBeamAbility : PlayerAbility
         get => target;
         private set
         {
+            GameObject oldTarget = target;
             target = value;
             if (target)
             {
@@ -48,8 +49,11 @@ public class ElectricBeamAbility : PlayerAbility
                 targetRB2D = null;
                 applyStatic(false);
             }
+            onTargetChanged?.Invoke(oldTarget, target);
         }
     }
+    public delegate void OnTargetChanged(GameObject oldGO, GameObject newGO);
+    public event OnTargetChanged onTargetChanged;
 
     protected override void init()
     {
