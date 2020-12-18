@@ -74,13 +74,20 @@ public class ObjectManager : MonoBehaviour
     /// <param name="objectName">The name of the object</param>
     /// <returns></returns>
     public GameObject getObject(string sceneName, string objectName)
+        => getObject(Utility.getKey(sceneName, objectName));
+
+    /// <summary>
+    /// Retrieves the GameObject from the gameObjects list with the given key
+    /// </summary>
+    /// <param name="goKey">The unique inter-scene key of the object</param>
+    /// <returns></returns>
+    public GameObject getObject(string goKey)
     {
-        string key = Utility.getKey(sceneName, objectName);
         //If the gameObjects list has the game object,
-        if (gameObjects.ContainsKey(key))
+        if (gameObjects.ContainsKey(goKey))
         {
             //Return it
-            return gameObjects[key];
+            return gameObjects[goKey];
         }
         //Otherwise, sorry, you're out of luck
         return null;

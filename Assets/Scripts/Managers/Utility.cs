@@ -230,6 +230,10 @@ public static class Utility
     /// <returns></returns>
     public static string getKey(this GameObject go)
     {
+        if (!go)
+        {
+            return "";
+        }
         return getKey(go.scene.name, go.name);
     }
     public static string getKey(string sceneName, string objectName)
