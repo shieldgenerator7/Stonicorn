@@ -46,6 +46,7 @@ public class ElectricBeamAbility : PlayerAbility
             {
                 targetPowerable = null;
                 targetRB2D = null;
+                applyStatic(false);
             }
         }
     }
@@ -91,9 +92,14 @@ public class ElectricBeamAbility : PlayerAbility
     bool CanStatic =>
         FeatureLevel >= 1 && Target != null;
 
-    void applyStatic()
+    void applyStatic(bool apply = true)
     {
-        rb2d.velocity = (targetRB2D) ? targetRB2D.velocity : Vector2.zero;
+        playerController.GravityAccepter.AcceptsGravity = !apply;
+        if (apply)
+        {
+            rb2d.velocity = (targetRB2D) ? targetRB2D.velocity : Vector2.zero;
+            playerController.GravityAccepter.AcceptsGravity = false;
+        }
     }
 
     void selectTarget()
