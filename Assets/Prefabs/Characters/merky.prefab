@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 1792176473}
   - component: {fileID: 1792176480}
   - component: {fileID: 6141120829055656747}
-  - component: {fileID: 8071823167986652926}
   - component: {fileID: 1792176481}
   - component: {fileID: 1792176475}
   - component: {fileID: 1792176466}
@@ -500,7 +499,7 @@ MonoBehaviour:
   excludeAbilityFromGrounding:
   - {fileID: 1792176480}
   - {fileID: 4077093240442266713}
-  - {fileID: 8071823167986652926}
+  - {fileID: 0}
   afterWindPrefab: {fileID: 1706305049858728, guid: 5d5f3c3ecac31234687d4055a32ad921, type: 3}
 --- !u!114 &6141120829055656747
 MonoBehaviour:
@@ -557,63 +556,6 @@ MonoBehaviour:
     featureLevel: 2
   range: 1.5
   energyPerSecond: 10
---- !u!114 &8071823167986652926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100086}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f510429724f6307439f6e266d153d440, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teleportRangeSegment: {fileID: 11400000, guid: 142b6736c840b404386de08944e395e2, type: 2}
-  soundEffect: {fileID: 0}
-  addsOnTeleportSoundEffect: 0
-  unlocked: 0
-  upgradeLevel: 0
-  upgradeLevels:
-  - stat1: 1
-    stat2: 10
-    stat3: 10
-    stat4: 0
-    featureLevel: 0
-  - stat1: 1.25
-    stat2: 30
-    stat3: 30
-    stat4: 0
-    featureLevel: 0
-  - stat1: 1.5
-    stat2: 50
-    stat3: 50
-    stat4: 0
-    featureLevel: 0
-  - stat1: 1.5
-    stat2: 50
-    stat3: 50
-    stat4: 2
-    featureLevel: 1
-  - stat1: 1.75
-    stat2: 80
-    stat3: 80
-    stat4: 5
-    featureLevel: 1
-  - stat1: 2
-    stat2: 100
-    stat3: 100
-    stat4: 10
-    featureLevel: 1
-  - stat1: 2
-    stat2: 100
-    stat3: 100
-    stat4: 10
-    featureLevel: 2
-  maxRange: 2
-  maxEnergy: 100
-  energyPerSecond: 100
-  slowSpeed: 1
 --- !u!114 &1792176481
 MonoBehaviour:
   m_ObjectHideFlags: 0

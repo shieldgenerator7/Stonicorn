@@ -15,7 +15,7 @@ public class PlayerTestSpawnPoint : MonoBehaviour
     [Range(-1, 6)]
     public int AirSliceAbility = -1;
     [Range(-1, 6)]
-    public int ElectricRingAbility = -1;
+    public int ElectricBeamAbility = -1;
     [Range(-1, 6)]
     public int LongTeleportAbility = -1;
 
@@ -39,7 +39,7 @@ public class PlayerTestSpawnPoint : MonoBehaviour
         checkAbility(SwapAbility, pc.GetComponent<SwapAbility>());
         checkAbility(WallClimbAbility, pc.GetComponent<WallClimbAbility>());
         checkAbility(AirSliceAbility, pc.GetComponent<AirSliceAbility>());
-        checkAbility(ElectricRingAbility, pc.GetComponent<ElectricRingAbility>());
+        checkAbility(ElectricBeamAbility, pc.GetComponent<ElectricBeamAbility>());
         checkAbility(LongTeleportAbility, pc.GetComponent<LongTeleportAbility>());
 
         //Destroy object
