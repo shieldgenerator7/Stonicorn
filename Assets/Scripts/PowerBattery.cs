@@ -19,7 +19,7 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer, IPowerable
 
     public float maxEnergy;
     public float maxEnergyPerSecond;
-    public float ThroughPut => maxEnergyPerSecond;
+    public float ThroughPut => Mathf.Min(energy, maxEnergyPerSecond);
 
     public GameObject GameObject => gameObject;
 

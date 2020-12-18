@@ -32,12 +32,19 @@ public class PowerManager : MonoBehaviour
            .ConvertAll(ipc => (IPowerable)ipc);
         powerers.ForEach(ipr =>
         {
-            List<IPowerable> powerables = getPowerables(ipr);
-            float powerToEach = ipr.ThroughPut * Time.fixedDeltaTime / powerables.Count;
-            powerables.ForEach(pwr => ipr.givePower(
-                -pwr.acceptPower(ipr.givePower(powerToEach))
-                ));
-            powerables.ForEach(pwr => noPowerPowerables.Remove(pwr));
+            if (ipr.ThroughPut > 0)
+            {
+                List<IPowerable> powerables = getPowerables(ipr);
+                float powerToEach = ipr.ThroughPut * Time.fixedDeltaTime / powerables.Count;
+                powerables.ForEach(pwr =>
+                {
+                    ipr.givePower(
+                        -pwr.acceptPower(ipr.givePower(powerToEach))
+                        );
+                    transferPower(ipr, pwr, powerToEach);
+                });
+                powerables.ForEach(pwr => noPowerPowerables.Remove(pwr));
+            }
         }
             );
         //Process powerables with no power
@@ -72,6 +79,54 @@ public class PowerManager : MonoBehaviour
             i++;
         }
         return powerables.ToList();
+    }
+
+    /// <summary>
+    /// Tells the wires between these two conduits that power is transferring through them
+    /// </summary>
+    /// <param name="ipr"></param>
+    /// <param name="pwr"></param>
+    void transferPower(IPowerer source, IPowerable usage, float power)
+    {
+        Stack<IPowerTransferer> path = new Stack<IPowerTransferer>();
+        Stack<IPowerTransferer> stack = new Stack<IPowerTransferer>(
+            connectionMap[source].ToList()
+            .FindAll(ipc => ipc is IPowerTransferer)
+            .ConvertAll(ipc => (IPowerTransferer)ipc)
+            );
+        HashSet<IPowerTransferer> tried = new HashSet<IPowerTransferer>();
+        bool foundPath = false;
+        IPowerTransferer currentNode;
+        while (!foundPath)
+        {
+            currentNode = stack.Pop();
+            path.Push(currentNode);
+            tried.Add(currentNode);
+            bool foundBranch = false;
+            connectionMap[currentNode].ToList().ForEach(
+                ipc =>
+                {
+                    if (ipc is IPowerable && ipc == usage)
+                    {
+                        foundPath = true;
+                    }
+                    if (ipc is IPowerTransferer)
+                    {
+                        if (!tried.Contains(ipc))
+                        {
+                            foundBranch = true;
+                            stack.Push((IPowerTransferer)ipc);
+                        }
+                    }
+                }
+                );
+            if (!foundBranch && !foundPath)
+            {
+                path.Pop();
+            }
+        }
+        //Transfer power through the found wires
+        path.ToList().ForEach(wire => wire.transferPower(power));
     }
 
     private void generatePowerConduitList()

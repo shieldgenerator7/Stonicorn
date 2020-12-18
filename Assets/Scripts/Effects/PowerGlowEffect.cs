@@ -12,7 +12,7 @@ public class PowerGlowEffect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        initLightEffectRenderer();
+        lightEffectRenderer = GetComponent<SpriteRenderer>();
         conduit = GetComponent<IPowerConduit>();
         if (conduit == null)
         {
@@ -31,23 +31,6 @@ public class PowerGlowEffect : MonoBehaviour
         float curLow = 0;
         float newAlpha = ((power - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
         lightEffectRenderer.color = lightEffectRenderer.color.adjustAlpha(newAlpha);
-    }
-
-    public void initLightEffectRenderer()
-    {
-        lightEffectRenderer = GetComponent<SpriteRenderer>();
-        if (lightEffectRenderer)
-        {
-            lightEffectRenderer.size = GetComponent<SpriteRenderer>().size;
-        }
-        else
-        {
-            Debug.LogError(
-                "UseAlpha was set but there is no SpriteRenderer on the lightEffect ("
-                + name + "), so switching to not use alpha.",
-                gameObject
-                );
-        }
     }
 
 }

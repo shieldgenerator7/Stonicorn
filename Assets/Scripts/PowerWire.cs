@@ -20,6 +20,7 @@ public class PowerWire : MonoBehaviour, IPowerTransferer, ICuttable
     public void reset()
     {
         energyThisFrame = 0;
+        onPowerFlowed?.Invoke(0, ThroughPut * Time.fixedDeltaTime);
     }
 
     bool ICuttable.Cuttable => true;
