@@ -52,7 +52,10 @@ public class ElectricBeamAbility : PlayerAbility
             {
                 targetPowerable = null;
                 targetRB2D = null;
-                applyStatic(false);
+                if (enabled)
+                {
+                    applyStatic(false);
+                }
             }
             onTargetChanged?.Invoke(oldTarget, target);
         }
