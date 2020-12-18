@@ -64,13 +64,23 @@ public class ElectricBeamAbility : PlayerAbility
 
     void FixedUpdate()
     {
-        //Power
-        targetPowerable.acceptPower(energyPerSecond * Time.fixedDeltaTime);
-
-        //Move relative to the target
-        if (CanStatic)
+        if (Activated)
         {
-            applyStatic();
+            if (target)
+            {
+                //Power
+                targetPowerable.acceptPower(energyPerSecond * Time.fixedDeltaTime);
+
+                //Move relative to the target
+                if (CanStatic)
+                {
+                    applyStatic();
+                }
+            }
+            else
+            {
+                selectTarget();
+            }
         }
     }
 
