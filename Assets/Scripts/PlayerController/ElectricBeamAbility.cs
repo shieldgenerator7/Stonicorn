@@ -88,9 +88,16 @@ public class ElectricBeamAbility : PlayerAbility
             .FindAll(coll => coll.GetComponent<IPowerable>() != null)
             .OrderBy(coll => (coll.transform.position - transform.position).sqrMagnitude).ToList()
             .ConvertAll(coll => coll.gameObject);
-        int index = (target) ? powerables.IndexOf(target) : -1;
-        int newIndex = index + 1 % powerables.Count;
-        Target = powerables[newIndex];
+        if (powerables.Count > 0)
+        {
+            int index = (target) ? powerables.IndexOf(target) : -1;
+            int newIndex = (index + 1) % powerables.Count;
+            Target = powerables[newIndex];
+        }
+        else
+        {
+            Target = null;
+        }
     }
 
     #region Input Handling
@@ -109,6 +116,10 @@ public class ElectricBeamAbility : PlayerAbility
         if (Activated)
         {
             selectTarget();
+        }
+        else
+        {
+            Target = null;
         }
         tapOnPlayer = false;
     }
