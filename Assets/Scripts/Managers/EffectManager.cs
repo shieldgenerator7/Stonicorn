@@ -105,9 +105,8 @@ public class EffectManager : MonoBehaviour
             }
             chosenTSU.transform.parent = go.transform;
             chosenTSU.transform.localPosition = Vector2.zero;
-            SpriteRenderer goSR = go.GetComponent<SpriteRenderer>();
-            Bounds b = goSR.bounds;
-            chosenTSU.size = b.size;
+            chosenTSU.transform.up = go.transform.up;
+            chosenTSU.size = go.getSize();
             chosenTSU.enabled = true;
         }
         else

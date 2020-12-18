@@ -236,6 +236,22 @@ public static class Utility
     {
         return sceneName + "|" + objectName;
     }
+
+    /// <summary>
+    /// Returns the size of the GameObject based on its sprite
+    /// </summary>
+    /// <param name="go"></param>
+    /// <returns></returns>
+    public static Vector2 getSize(this GameObject go)
+    {
+        Vector2 prevUp = go.transform.up;
+        go.transform.up = Vector2.up;
+        SpriteRenderer goSR = go.GetComponent<SpriteRenderer>();
+        Bounds b = goSR.bounds;
+        go.transform.up = prevUp;
+        return b.size;
+    }
+
     /// <summary>
     /// Sums the centers of all non-trigger colliders
     /// </summary>
