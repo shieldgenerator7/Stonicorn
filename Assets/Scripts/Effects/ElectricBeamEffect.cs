@@ -16,6 +16,7 @@ public class ElectricBeamEffect : MonoBehaviour
         electricBeamAbility.onActivatedChanged += processActivated;
         electricBeamAbility.onTargetChanged += updateStaticEffect;
         processActivated(electricBeamAbility.Activated);
+        updateStaticEffect(null, electricBeamAbility.Target);
     }
 
     // Update is called once per frame
@@ -45,14 +46,15 @@ public class ElectricBeamEffect : MonoBehaviour
     {
         this.enabled = active;
         sr.enabled = false;
-        if (active)
-        {
-            Managers.Effect.showLightningStatic(electricBeamAbility.gameObject);
-        }
+        Managers.Effect.showLightningStatic(electricBeamAbility.gameObject, active);
     }
 
     void updateStaticEffect(GameObject oldGO, GameObject newGO)
     {
+        if (oldGO)
+        {
+            Managers.Effect.showLightningStatic(oldGO, false);
+        }
         if (newGO)
         {
             Managers.Effect.showLightningStatic(newGO);

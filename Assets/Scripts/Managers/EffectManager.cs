@@ -87,26 +87,49 @@ public class EffectManager : MonoBehaviour
     /// 2020-12-17: copied from showTeleportStar()
     /// </summary>
     /// <param name="pos"></param>
-    public void showLightningStatic(GameObject go)
+    public void showLightningStatic(GameObject go, bool show = true)
     {
-        //Find existing effect
-        SpriteRenderer chosenTSU = lightningStaticList.FirstOrDefault(
-            tsu => !tsu.enabled
-            );
-        //Else make a new one
-        if (chosenTSU == null)
+        if (show)
         {
-            GameObject newLS = GameObject.Instantiate(lightningStaticPrefab);
-            SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
-            lightningStaticList.Add(newSR);
-            chosenTSU = newSR;
+            //Find existing effect
+            SpriteRenderer chosenTSU = lightningStaticList.FirstOrDefault(
+                tsu => !tsu.enabled
+                );
+            //Else make a new one
+            if (chosenTSU == null)
+            {
+                GameObject newLS = GameObject.Instantiate(lightningStaticPrefab);
+                SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
+                lightningStaticList.Add(newSR);
+                chosenTSU = newSR;
+            }
+            chosenTSU.transform.parent = go.transform;
+            chosenTSU.transform.localPosition = Vector2.zero;
+            SpriteRenderer goSR = go.GetComponent<SpriteRenderer>();
+            Bounds b = goSR.bounds;
+            chosenTSU.size = b.size;
+            chosenTSU.enabled = true;
         }
-        chosenTSU.transform.parent = go.transform;
-        chosenTSU.transform.localPosition = Vector2.zero;
-        SpriteRenderer goSR = go.GetComponent<SpriteRenderer>();
-        Bounds b = goSR.bounds;
-        chosenTSU.size = b.size;
-        chosenTSU.enabled = true;
+        else
+        {
+            SpriteRenderer sr = go.GetComponentsInChildren<SpriteRenderer>().ToList()
+                .FirstOrDefault(sr1 => lightningStaticList.Contains(sr1));
+            if (sr)
+            {
+                //Parent it under EffectManager
+                sr.transform.parent = transform;
+                //Hide it
+                sr.enabled = false;
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "Tried to remove lightning static effect from GameObject " + go.name
+                    + " that does not have such aneffect on it.",
+                    go
+                    );
+            }
+        }
     }
 
     /// <summary>
