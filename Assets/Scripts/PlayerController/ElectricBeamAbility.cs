@@ -76,6 +76,9 @@ public class ElectricBeamAbility : PlayerAbility
                 {
                     applyStatic();
                 }
+
+                //Make sure target is still in range
+                checkTarget();
             }
             else
             {
@@ -106,6 +109,25 @@ public class ElectricBeamAbility : PlayerAbility
         }
         else
         {
+            Target = null;
+        }
+    }
+
+    /// <summary>
+    /// Checks to make sure the target is still valid
+    /// The target can be invalid if it moves out of range
+    /// Assumes there is a target already
+    /// </summary>
+    void checkTarget()
+    {
+        //If it's in range
+        if (target.transform.position.inRange(transform.position, range))
+        {
+            //all good
+        }
+        else
+        {
+            //disconnect from target
             Target = null;
         }
     }
