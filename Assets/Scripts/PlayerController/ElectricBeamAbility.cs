@@ -123,7 +123,6 @@ public class ElectricBeamAbility : PlayerAbility
     void checkTarget()
     {
         //If it's in range
-        if (target.transform.position.inRange(transform.position, range + rangeBuffer))
         if (inRange(Target, range + rangeBuffer))
         {
             //all good
