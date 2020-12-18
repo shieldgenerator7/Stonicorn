@@ -30,10 +30,10 @@ public class ElectricBeamAbility : PlayerAbility
     GameObject target;
     IPowerable targetPowerable;
     Rigidbody2D targetRB2D;
-    GameObject Target
+    public GameObject Target
     {
         get => target;
-        set
+        private set
         {
             target = value;
             if (target)
