@@ -27,7 +27,12 @@ public class PowerWire : MonoBehaviour, IPowerTransferer, ICuttable
     private void Start()
     {
         //Autoset BoxCollider2D size
-        GetComponent<BoxCollider2D>().size = GetComponent<SpriteRenderer>().size;
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        GetComponent<BoxCollider2D>().size = sr.size;
+        foreach (SpriteRenderer sr1 in GetComponentsInChildren<SpriteRenderer>())
+        {
+            sr1.size = sr.size;
+        }
     }
 
     public float transferPower(float power)
