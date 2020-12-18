@@ -100,6 +100,7 @@ public class ElectricBeamAbility : PlayerAbility
     {
         List<GameObject> powerables = Physics2D.OverlapCircleAll(transform.position, range).ToList()
             .FindAll(coll => coll.GetComponent<IPowerable>() != null)
+            .FindAll(coll => inRange(coll.gameObject))
             .OrderBy(coll => (coll.transform.position - transform.position).sqrMagnitude).ToList()
             .ConvertAll(coll => coll.gameObject);
         if (powerables.Count > 0)
@@ -123,6 +124,7 @@ public class ElectricBeamAbility : PlayerAbility
     {
         //If it's in range
         if (target.transform.position.inRange(transform.position, range + rangeBuffer))
+        if (inRange(Target, range + rangeBuffer))
         {
             //all good
         }
@@ -131,6 +133,12 @@ public class ElectricBeamAbility : PlayerAbility
             //disconnect from target
             Target = null;
         }
+    }
+
+    bool inRange(GameObject go, float range = 0)
+    {
+        range = (range > 0) ? range : this.range;
+        return go.transform.position.inRange(transform.position, range);
     }
 
     #region Input Handling
