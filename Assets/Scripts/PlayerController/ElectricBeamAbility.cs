@@ -11,6 +11,9 @@ public class ElectricBeamAbility : PlayerAbility
     public float staticSpeed = 2;//how fast it converges your velocity into your target's velocity
     public float rangeBuffer = 1;//how much more outside the range a target can be before being disconnected
 
+    [Header("Components")]
+    public GameObject wirePrefab;
+
     private bool activated = false;
     public bool Activated
     {
@@ -28,6 +31,7 @@ public class ElectricBeamAbility : PlayerAbility
     public event OnActivatedChanged onActivatedChanged;
 
     private bool tapOnPlayer = false;
+    private bool wiredThisInput = false;//true if it has wired since the last user input
 
     GameObject target;
     IPowerable targetPowerable;
@@ -84,6 +88,12 @@ public class ElectricBeamAbility : PlayerAbility
                     applyStatic();
                 }
 
+                //Make wire
+                if (CanWire)
+                {
+                    applyWire();
+                }
+
                 //Make sure target is still in range
                 checkTarget();
             }
@@ -106,6 +116,22 @@ public class ElectricBeamAbility : PlayerAbility
             rb2d.velocity = Vector2.Lerp(rb2d.velocity, targetVelocity, Time.fixedDeltaTime * staticSpeed);
             playerController.GravityAccepter.AcceptsGravity = false;
         }
+    }
+
+    bool CanWire =>
+        !wiredThisInput && Target != null && FeatureLevel >= 2 && !(targetRB2D && targetRB2D.isMoving());
+
+    void applyWire()
+    {
+        Vector2 startPos = transform.position;
+        Vector2 endPos = Target.transform.position;
+        Vector2 dir = endPos - startPos;
+        GameObject newWire = Utility.Instantiate(wirePrefab);
+        newWire.transform.right = dir;
+        newWire.transform.position = (startPos + endPos) / 2;
+        SpriteRenderer sr = newWire.GetComponent<SpriteRenderer>();
+        sr.size = new Vector2(dir.magnitude, sr.size.y);
+        wiredThisInput = true;
     }
 
     void selectTarget()
@@ -175,6 +201,7 @@ public class ElectricBeamAbility : PlayerAbility
             Target = null;
         }
         tapOnPlayer = false;
+        wiredThisInput = false;
     }
     protected override bool isGrounded() => Activated && CanStatic;
 
