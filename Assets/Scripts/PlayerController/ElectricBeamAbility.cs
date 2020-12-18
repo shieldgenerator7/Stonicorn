@@ -196,12 +196,14 @@ public class ElectricBeamAbility : PlayerAbility
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
-            "activated", activated
+            "activated", activated,
+            "target", target.getKey()
             );
         set
         {
             base.CurrentState = value;
             Activated = value.Bool("activated");
+            Target = Managers.Object.getObject(value.String("target"));
         }
     }
 }
