@@ -40,7 +40,15 @@ class LevelerGuideLineTool : EditorTool
         yPos = Tools.handlePosition;
         clickPos = Tools.handlePosition;
         yPointDir = (clickPos - center).normalized;
+        if (yPointDir == Vector2.zero)
+        {
+            yPointDir = Vector2.up;
+        }
         xPointDir = yPointDir.PerpendicularRight();
+        if (xPointDir == Vector2.zero)
+        {
+            xPointDir = Vector2.right;
+        }
     }
 
     public override GUIContent toolbarIcon
