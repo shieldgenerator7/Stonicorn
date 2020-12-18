@@ -20331,6 +20331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1068067297889320528}
   - component: {fileID: 5269192668063053564}
+  - component: {fileID: 8287156980038296298}
   - component: {fileID: 4478485853228275118}
   m_Layer: 8
   m_Name: Electric Beam
@@ -20404,6 +20405,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8287156980038296298
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136451927075959317}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d091df606e6f55c49b55f3e874c49435, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &4478485853228275118
 MonoBehaviour:
   m_ObjectHideFlags: 0
