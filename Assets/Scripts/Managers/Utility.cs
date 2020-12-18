@@ -456,6 +456,7 @@ public static class Utility
             throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have a SavableMonoBehaviour attached that is says it is a spawned object.");
         }
         GameObject newObj = GameObject.Instantiate(prefab);
+        newObj.GetComponent<GeneratedObject>()?.init();
         newObj.name += System.DateTime.Now.Ticks;
         SceneLoader.moveToCurrentScene(newObj);
         Managers.Object.addObject(newObj);
