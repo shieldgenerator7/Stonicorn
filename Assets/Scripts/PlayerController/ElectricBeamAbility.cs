@@ -170,6 +170,15 @@ public class ElectricBeamAbility : PlayerAbility
         tapOnPlayer = false;
     }
     protected override bool isGrounded() => Activated && CanStatic;
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.isSolid() && collision.collider.gameObject != Target)
+        {
+            Activated = false;
+            Target = null;
+        }
+    }
     #endregion
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
