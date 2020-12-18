@@ -114,6 +114,7 @@ public class ElectricBeamAbility : PlayerAbility
             int index = (target) ? powerables.IndexOf(target) : -1;
             int newIndex = (index + 1) % powerables.Count;
             Target = powerables[newIndex];
+            playerController.updateGroundedState();
         }
         else
         {
