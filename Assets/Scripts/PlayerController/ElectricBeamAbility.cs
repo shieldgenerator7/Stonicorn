@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ElectricBeamAbility : PlayerAbility
 {
     [Header("Settings")]
-    public float maxRange = 2.5f;
+    public float range = 2.5f;
     public float energyPerSecond = 100;//how much energy it generates each second
 
     private bool activated = false;
@@ -26,17 +27,19 @@ public class ElectricBeamAbility : PlayerAbility
 
     private bool tapOnPlayer = false;
 
+    GameObject target;
     IPowerable targetPowerable;
     Rigidbody2D targetRB2D;
     GameObject Target
     {
-        get => targetRB2D?.gameObject;
+        get => target;
         set
         {
-            if (value)
+            target = value;
+            if (target)
             {
-                targetPowerable = value.GetComponent<IPowerable>();
-                targetRB2D = value.GetComponent<Rigidbody2D>();
+                targetPowerable = target.GetComponent<IPowerable>();
+                targetRB2D = target.GetComponent<Rigidbody2D>();
             }
             else
             {
@@ -76,7 +79,18 @@ public class ElectricBeamAbility : PlayerAbility
 
     void applyStatic()
     {
-        rb2d.velocity = targetRB2D.velocity;
+        rb2d.velocity = (targetRB2D) ? targetRB2D.velocity : Vector2.zero;
+    }
+
+    void selectTarget()
+    {
+        List<GameObject> powerables = Physics2D.OverlapCircleAll(transform.position, range).ToList()
+            .FindAll(coll => coll.GetComponent<IPowerable>() != null)
+            .OrderBy(coll => (coll.transform.position - transform.position).sqrMagnitude).ToList()
+            .ConvertAll(coll => coll.gameObject);
+        int index = (target) ? powerables.IndexOf(target) : -1;
+        int newIndex = index + 1 % powerables.Count;
+        Target = powerables[newIndex];
     }
 
     #region Input Handling
@@ -92,6 +106,10 @@ public class ElectricBeamAbility : PlayerAbility
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
         Activated = tapOnPlayer;
+        if (Activated)
+        {
+            selectTarget();
+        }
         tapOnPlayer = false;
     }
     protected override bool isGrounded() => Activated && CanStatic;
@@ -99,7 +117,7 @@ public class ElectricBeamAbility : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        maxRange = aul.stat1;
+        range = aul.stat1;
         energyPerSecond = aul.stat2;
     }
     public override SavableObject CurrentState
