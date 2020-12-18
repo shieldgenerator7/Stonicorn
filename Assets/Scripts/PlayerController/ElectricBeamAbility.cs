@@ -8,6 +8,7 @@ public class ElectricBeamAbility : PlayerAbility
     [Header("Settings")]
     public float range = 2.5f;
     public float energyPerSecond = 100;//how much energy it generates each second
+    public float staticSpeed = 2;//how fast it converges your velocity into your target's velocity
     public float rangeBuffer = 1;//how much more outside the range a target can be before being disconnected
 
     private bool activated = false;
@@ -101,7 +102,8 @@ public class ElectricBeamAbility : PlayerAbility
         playerController.GravityAccepter.AcceptsGravity = !apply;
         if (apply)
         {
-            rb2d.velocity = (targetRB2D) ? targetRB2D.velocity : Vector2.zero;
+            Vector2 targetVelocity = (targetRB2D) ? targetRB2D.velocity : Vector2.zero;
+            rb2d.velocity = Vector2.Lerp(rb2d.velocity, targetVelocity, Time.fixedDeltaTime * staticSpeed);
             playerController.GravityAccepter.AcceptsGravity = false;
         }
     }

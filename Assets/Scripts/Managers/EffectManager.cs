@@ -124,7 +124,7 @@ public class EffectManager : MonoBehaviour
             {
                 Debug.LogWarning(
                     "Tried to remove lightning static effect from GameObject " + go.name
-                    + " that does not have such aneffect on it.",
+                    + " that does not have the effect on it.",
                     go
                     );
             }
