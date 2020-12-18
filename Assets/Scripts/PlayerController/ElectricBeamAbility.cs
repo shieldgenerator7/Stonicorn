@@ -131,6 +131,7 @@ public class ElectricBeamAbility : PlayerAbility
         newWire.transform.position = (startPos + endPos) / 2;
         SpriteRenderer sr = newWire.GetComponent<SpriteRenderer>();
         sr.size = new Vector2(dir.magnitude, sr.size.y);
+        Managers.Power.generateConnectionMap();
         wiredThisInput = true;
     }
 
