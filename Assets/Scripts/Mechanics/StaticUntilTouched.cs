@@ -39,6 +39,8 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
     public float getDistanceFromExplosion(Vector2 explosionPos)
         => ((Vector2)transform.position - explosionPos).magnitude;
 
+    public override bool IsSpawnedScript => true;
+
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

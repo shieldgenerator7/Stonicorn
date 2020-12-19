@@ -194,6 +194,16 @@ public class SwapAbility : PlayerAbility
             }
             swapTarget.transform.position = swapPos;
             swappedSomething = true;
+            //Upgrade 1: Rotate
+            if (CanRotate)
+            {
+                applyRotate();
+            }
+            //Upgrade 2: Stasis
+            if (CanStasis)
+            {
+                applyStasis();
+            }
             //Give player time to tap again after swapping
             playerController.MovementPaused = true;
             //Update Stats
@@ -228,6 +238,24 @@ public class SwapAbility : PlayerAbility
                 swapTarget = rch2dGO;
             }
         }
+    }
+
+    bool CanRotate =>
+        FeatureLevel >= 1;
+
+    void applyRotate()
+    {
+        Vector2 swapUp = transform.up;
+        transform.up = swapTarget.transform.up;
+        swapTarget.transform.up = swapUp;
+    }
+
+    bool CanStasis =>
+        FeatureLevel >= 2;
+
+    void applyStasis()
+    {
+        swapTarget.AddComponent<StaticUntilTouched>();
     }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
