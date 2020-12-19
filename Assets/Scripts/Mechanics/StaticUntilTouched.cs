@@ -13,8 +13,11 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
         {
             rooted = value;
             GetComponent<Rigidbody2D>().isKinematic = rooted;
+            onRootedChanged?.Invoke(rooted);
         }
     }
+    public delegate void OnRootedChanged(bool rooted);
+    public event OnRootedChanged onRootedChanged;
 
     private void Start()
     {

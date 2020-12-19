@@ -15,6 +15,8 @@ public class EffectManager : MonoBehaviour
     public GameObject lightningStaticPrefab;
     [Header("Swap Rotate Effect")]
     public GameObject swapRotatePrefab;
+    [Header("Swap Stasis Effect")]
+    public GameObject swapStasisPrefab;
     [Header("Collision Effect")]
     public GameObject collisionEffectPrefab;//the object that holds the special effect for collision
     public float particleStartSpeed = 7.0f;
@@ -28,6 +30,7 @@ public class EffectManager : MonoBehaviour
     private List<Fader> teleportStreakList = new List<Fader>();
     private List<SpriteRenderer> lightningStaticList = new List<SpriteRenderer>();
     private List<SpriteRenderer> swapRotateList = new List<SpriteRenderer>();
+    private List<SpriteRenderer> swapStasisList = new List<SpriteRenderer>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
 
     /// <summary>
@@ -170,6 +173,61 @@ public class EffectManager : MonoBehaviour
         rot.turnSpeed = Mathf.Abs(rot.turnSpeed) * ((flip) ? 1 : -1);
         chosenTSU.GetComponent<Fader>().enabled = true;
         chosenTSU.enabled = true;
+    }
+
+    /// <summary>
+    /// Shows the swap stasis effect on the given GameObject
+    /// 2020-12-18: copied from showLightningStatic()
+    /// </summary>
+    /// <param name="pos"></param>
+    public void showSwapStasis(GameObject go, bool show = true)
+    {
+        if (show)
+        {
+            //Clean null values from list
+            //(in case an object takes the effect with it when it unloads)
+            swapStasisList.RemoveAll(tsu => tsu == null);
+            //Find existing effect
+            SpriteRenderer chosenTSU = swapStasisList.FirstOrDefault(
+                tsu => !tsu.enabled
+                );
+            //Else make a new one
+            if (chosenTSU == null)
+            {
+                GameObject newLS = GameObject.Instantiate(swapStasisPrefab);
+                SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
+                swapStasisList.Add(newSR);
+                chosenTSU = newSR;
+            }
+            chosenTSU.transform.parent = go.transform;
+            chosenTSU.transform.localPosition = Vector2.zero;
+            chosenTSU.transform.up = go.transform.up;
+            Vector2 size = go.getSize();
+            Vector3 scale = chosenTSU.transform.localScale;
+            scale = Vector3.one * Mathf.Max(size.x, size.y);
+            chosenTSU.transform.localScale = scale;
+            chosenTSU.enabled = true;
+        }
+        else
+        {
+            SpriteRenderer sr = go.GetComponentsInChildren<SpriteRenderer>().ToList()
+                .FirstOrDefault(sr1 => swapStasisList.Contains(sr1));
+            if (sr)
+            {
+                //Parent it under EffectManager
+                sr.transform.parent = transform;
+                //Hide it
+                sr.enabled = false;
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "Tried to remove swap stasis effect from GameObject " + go.name
+                    + " that does not have the effect on it.",
+                    go
+                    );
+            }
+        }
     }
 
     /// <summary>

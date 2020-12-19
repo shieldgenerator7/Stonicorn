@@ -260,8 +260,11 @@ public class SwapAbility : PlayerAbility
 
     void applyStasis()
     {
-        swapTarget.AddComponent<StaticUntilTouched>();
+        StaticUntilTouched sut = swapTarget.AddComponent<StaticUntilTouched>();
+        sut.onRootedChanged += (rooted) => { if (!rooted) { Destroy(sut); } };
+        onStasis?.Invoke(playerController.gameObject, swapTarget);
     }
+    public event OnSwap onStasis;
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
