@@ -13,6 +13,8 @@ public class EffectManager : MonoBehaviour
     public GameObject teleportStreakPrefab;
     [Header("Lightning Static Effect")]
     public GameObject lightningStaticPrefab;
+    [Header("Swap Rotate Effect")]
+    public GameObject swapRotatePrefab;
     [Header("Collision Effect")]
     public GameObject collisionEffectPrefab;//the object that holds the special effect for collision
     public float particleStartSpeed = 7.0f;
@@ -25,6 +27,7 @@ public class EffectManager : MonoBehaviour
     private List<Fader> teleportStarList = new List<Fader>();
     private List<Fader> teleportStreakList = new List<Fader>();
     private List<SpriteRenderer> lightningStaticList = new List<SpriteRenderer>();
+    private List<SpriteRenderer> swapRotateList = new List<SpriteRenderer>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
 
     /// <summary>
@@ -129,6 +132,44 @@ public class EffectManager : MonoBehaviour
                     );
             }
         }
+    }
+
+    /// <summary>
+    /// Shows the swap rotate effect on the given GameObject
+    /// 2020-12-18: copied from showLightningStatic()
+    /// </summary>
+    /// <param name="pos"></param>
+    public void showSwapRotate(GameObject go, bool flip = false)
+    {
+        //Clean null values from list
+        //(in case an object takes the effect with it when it unloads)
+        swapRotateList.RemoveAll(tsu => tsu == null);
+        //Find existing effect
+        SpriteRenderer chosenTSU = swapRotateList.FirstOrDefault(
+            tsu => !tsu.enabled
+            );
+        //Else make a new one
+        if (chosenTSU == null)
+        {
+            GameObject newLS = GameObject.Instantiate(swapRotatePrefab);
+            SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
+            swapRotateList.Add(newSR);
+            chosenTSU = newSR;
+            newLS.GetComponent<Fader>().onFadeFinished +=
+                () => newLS.transform.parent = transform;
+        }
+        chosenTSU.transform.parent = go.transform;
+        chosenTSU.transform.localPosition = Vector2.zero;
+        chosenTSU.transform.up = go.transform.up;
+        Vector2 size = go.getSize();
+        Vector3 scale = chosenTSU.transform.localScale;
+        scale = Vector3.one * Mathf.Max(size.x, size.y);
+        scale.x = Mathf.Abs(scale.x) * ((flip) ? -1 : 1);
+        chosenTSU.transform.localScale = scale;
+        SimpleRotation rot = chosenTSU.GetComponent<SimpleRotation>();
+        rot.turnSpeed = Mathf.Abs(rot.turnSpeed) * ((flip) ? 1 : -1);
+        chosenTSU.GetComponent<Fader>().enabled = true;
+        chosenTSU.enabled = true;
     }
 
     /// <summary>

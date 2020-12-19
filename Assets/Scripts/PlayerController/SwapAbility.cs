@@ -210,10 +210,13 @@ public class SwapAbility : PlayerAbility
             Managers.Stats.addOne("SwapObject");
             //Update Stats
             Managers.Stats.addOne("Swap");
-            //Effect teleport
+            //Delegates
             effectTeleport(oldPos, newPos);
+            onSwap?.Invoke(playerController.gameObject, swapTarget);
         }
     }
+    public delegate void OnSwap(GameObject go1, GameObject go2);
+    public event OnSwap onSwap;
 
     private Vector2 findSwapPosition(Vector2 targetPos, Vector2 tapPos)
     {
@@ -248,7 +251,9 @@ public class SwapAbility : PlayerAbility
         Vector2 swapUp = transform.up;
         transform.up = swapTarget.transform.up;
         swapTarget.transform.up = swapUp;
+        onRotate?.Invoke(playerController.gameObject, swapTarget);
     }
+    public event OnSwap onRotate;
 
     bool CanStasis =>
         FeatureLevel >= 2;
