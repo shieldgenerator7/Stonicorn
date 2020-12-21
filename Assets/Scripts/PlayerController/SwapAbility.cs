@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SwapAbility : PlayerAbility
@@ -194,6 +195,9 @@ public class SwapAbility : PlayerAbility
             }
             swapTarget.transform.position = swapPos;
             swappedSomething = true;
+            //Swappables
+            swapTarget.GetComponents<ISwappable>().ToList()
+                .ForEach(swappee => swappee.nowSwapped());
             //Upgrade 1: Rotate
             if (CanRotate)
             {
