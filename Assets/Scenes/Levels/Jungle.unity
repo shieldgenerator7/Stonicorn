@@ -9703,7 +9703,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 5.0728836, y: 2.509491, z: 0}
+    - position: {x: 6.5799427, y: -0.46119502, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -10123,7 +10123,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -23.687353, y: -98.7029, z: 0}
+    - position: {x: -23.68734, y: -98.70287, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -10133,7 +10133,47 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 5.142267, y: -2.200596, z: 0}
+    - position: {x: 2.212809, y: -12.006518, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: -5.395048, y: -8.537494, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: -4.885017, y: -6.842509, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 2.8559535, y: -9.853721, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 5.1422906, y: -2.2005515, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -10212,8 +10252,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: beebf2a339a4e974086a926d87a68f91, type: 3}
   - {fileID: 21300000, guid: 6b12de92672a3424ca7cb744a7083a65, type: 3}
   m_LocalAABB:
-    m_Center: {x: 94.532616, y: -61.524673, z: -0.00225}
-    m_Extent: {x: 118.330154, y: 118.55354, z: 0.00225}
+    m_Center: {x: 94.5326, y: -61.524673, z: -0.00245}
+    m_Extent: {x: 118.330124, y: 118.55354, z: 0.00245}
 --- !u!60 &587903991
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -10239,9 +10279,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -12.564859, y: 17.46969}
-      - {x: 5.0727634, y: 2.5092945}
-      - {x: 43.588646, y: -21.018747}
+    - - {x: -12.5635395, y: 17.468222}
+      - {x: 6.579831, y: -0.46139607}
+      - {x: 43.588657, y: -21.018755}
       - {x: 47.95938, y: -15.910324}
       - {x: 21.883062, y: -1.7412819}
       - {x: -11.12091, y: 22.256172}
@@ -10282,10 +10322,14 @@ PolygonCollider2D:
       - {x: 186.70578, y: -144.8279}
       - {x: 187.37386, y: -154.5914}
       - {x: 71.515625, y: -179.89711}
-      - {x: -23.687227, y: -98.702705}
-      - {x: 5.1424885, y: -2.2006602}
+      - {x: -23.687191, y: -98.702705}
+      - {x: 2.2130294, y: -12.006585}
+      - {x: -5.394828, y: -8.53756}
+      - {x: -4.8851, y: -6.8427234}
+      - {x: 2.8561738, y: -9.853787}
+      - {x: 5.1424613, y: -2.2003977}
       - {x: -12.341524, y: 17.221596}
-      - {x: -12.564861, y: 17.469692}
+      - {x: -12.563544, y: 17.468227}
 --- !u!1 &590281778
 GameObject:
   m_ObjectHideFlags: 0
@@ -11186,7 +11230,67 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 138.90634, y: 19.235058, z: 0}
+    - position: {x: 138.90634, y: 19.235054, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 140.65337, y: 29.385172, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 143.43613, y: 28.431505, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 146.23769, y: 41.693047, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 160.88943, y: 37.896935, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 160.3937, y: 36.014847, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      bevelCutoff: 0
+      bevelSize: 0
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 148.74332, y: 39.12834, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -11485,8 +11589,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: beebf2a339a4e974086a926d87a68f91, type: 3}
   - {fileID: 21300000, guid: 6b12de92672a3424ca7cb744a7083a65, type: 3}
   m_LocalAABB:
-    m_Center: {x: 64.6722, y: -12.55481, z: -0.0031500498}
-    m_Extent: {x: 102.96414, y: 47.28692, z: 0.0031500498}
+    m_Center: {x: 64.6722, y: -9.018677, z: -0.00345005}
+    m_Extent: {x: 102.96414, y: 50.82305, z: 0.00345005}
 --- !u!60 &664798574
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -11552,7 +11656,13 @@ PolygonCollider2D:
       - {x: 28.583454, y: 30.898794}
       - {x: 51.190212, y: 34.617397}
       - {x: 128.3015, y: 27.236076}
-      - {x: 138.9064, y: 19.234837}
+      - {x: 138.9062, y: 19.23487}
+      - {x: 140.65329, y: 29.384954}
+      - {x: 143.43636, y: 28.431458}
+      - {x: 146.23763, y: 41.692825}
+      - {x: 160.8892, y: 37.896996}
+      - {x: 160.3938, y: 36.015205}
+      - {x: 148.74341, y: 39.1287}
       - {x: 142.88898, y: 20.408287}
       - {x: 146.98224, y: 12.006803}
       - {x: 146.4265, y: 5.6944613}
