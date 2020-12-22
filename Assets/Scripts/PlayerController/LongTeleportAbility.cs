@@ -164,4 +164,16 @@ public class LongTeleportAbility : PlayerAbility
     {
         maxRangeIncreaseFactor = aul.stat1;
     }
+
+    public override SavableObject CurrentState
+    {
+        get => base.CurrentState.more(
+            "shielded", shielded
+            );
+        set
+        {
+            base.CurrentState = value;
+            Shielded = value.Bool("shielded");
+        }
+    }
 }
