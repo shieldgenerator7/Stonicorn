@@ -111,7 +111,13 @@ public class PlayerController : MonoBehaviour
             updateGroundedState();
             //If collided with a Hazard,
             Hazard hazard = collision.gameObject.GetComponent<Hazard>();
-            if (hazard && hazard.Hazardous)
+            bool hazardous = hazard && hazard.Hazardous;
+            //If any delegate says yes there is an exception,
+            //it's no longer a hazard
+            hazardous = hazardous && onHazardHitException != null
+                && !onHazardHitException.GetInvocationList().ToList()
+                .Any(ohhe => (bool)ohhe.DynamicInvoke(collision.contacts[0].point));
+            if (hazardous)
             {
                 //Take damage (and rewind)
                 forceRewindHazard(hazard.DamageDealt, collision.contacts[0].point);
@@ -123,6 +129,11 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    public delegate bool OnHazardHitException(Vector2 contactPoint);
+    /// <summary>
+    /// Returns true if there is an exception and the hazard does not hit
+    /// </summary>
+    public event OnHazardHitException onHazardHitException;
 
     /// <summary>
     /// Updates the position of the copycat collider that hits the ground before Merky does
