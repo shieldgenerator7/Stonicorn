@@ -89,6 +89,39 @@ public class EffectManager : MonoBehaviour
         chosenTSU.enabled = true;
     }
 
+    /// <summary>
+    /// Returns true if there's already an effect from this list on this game object
+    /// </summary>
+    /// <param name="srs"></param>
+    /// <param name="go"></param>
+    /// <returns></returns>
+    bool isEffectOnObject(List<SpriteRenderer> srs, GameObject go)
+        => go.GetComponentsInChildren<SpriteRenderer>().ToList()
+            .FirstOrDefault(sr1 => srs.Contains(sr1));
+
+    SpriteRenderer getAvailableEffect(List<SpriteRenderer> srs, GameObject prefab)
+    {
+        //Find existing effect
+        SpriteRenderer sr = srs.FirstOrDefault(
+            tsu => !tsu.enabled
+            );
+        //Else make a new one
+        if (sr == null)
+        {
+            GameObject newLS = GameObject.Instantiate(prefab);
+            SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
+            srs.Add(newSR);
+            sr = newSR;
+            //Fader (if any)
+            Fader fader = newLS.GetComponent<Fader>();
+            if (fader)
+            {
+                fader.onFadeFinished += () => newLS.transform.parent = transform;
+            }
+        }
+        return sr;
+    }
+
     void parentSpriteRendererToObject(SpriteRenderer sr, GameObject go, bool useSizeSR = false)
     {
         sr.transform.parent = go.transform;
@@ -120,20 +153,18 @@ public class EffectManager : MonoBehaviour
     {
         if (show)
         {
-            //Find existing effect
-            SpriteRenderer chosenTSU = lightningStaticList.FirstOrDefault(
-                tsu => !tsu.enabled
-                );
-            //Else make a new one
-            if (chosenTSU == null)
+            //Check to make sure there isn't already an effect on it
+            if (isEffectOnObject(lightningStaticList, go))
             {
-                GameObject newLS = GameObject.Instantiate(lightningStaticPrefab);
-                SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
-                lightningStaticList.Add(newSR);
-                chosenTSU = newSR;
+                return;
             }
-            parentSpriteRendererToObject(chosenTSU, go, true);
-            chosenTSU.enabled = true;
+            //Process effect
+            SpriteRenderer sr = getAvailableEffect(
+                lightningStaticList,
+                lightningStaticPrefab
+                );
+            parentSpriteRendererToObject(sr, go, true);
+            sr.enabled = true;
         }
         else
         {
@@ -167,27 +198,17 @@ public class EffectManager : MonoBehaviour
         if (show)
         {
             //Check to make sure there isn't already an effect on it
-            SpriteRenderer sr = go.GetComponentsInChildren<SpriteRenderer>().ToList()
-                   .FirstOrDefault(sr1 => swapCircleList.Contains(sr1));
-            if (sr)
+            if (isEffectOnObject(swapCircleList, go))
             {
-                //do nothing
                 return;
             }
-            //Find existing effect
-            SpriteRenderer chosenTSU = swapCircleList.FirstOrDefault(
-                tsu => !tsu.enabled
+            //Process effect
+            SpriteRenderer sr = getAvailableEffect(
+                swapCircleList,
+                swapCirclePrefab
                 );
-            //Else make a new one
-            if (chosenTSU == null)
-            {
-                GameObject newLS = GameObject.Instantiate(swapCirclePrefab);
-                SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
-                swapCircleList.Add(newSR);
-                chosenTSU = newSR;
-            }
-            parentSpriteRendererToObject(chosenTSU, go);
-            chosenTSU.enabled = true;
+            parentSpriteRendererToObject(sr, go);
+            sr.enabled = true;
         }
         else
         {
@@ -234,28 +255,24 @@ public class EffectManager : MonoBehaviour
         //Clean null values from list
         //(in case an object takes the effect with it when it unloads)
         swapRotateList.RemoveAll(tsu => tsu == null);
-        //Find existing effect
-        SpriteRenderer chosenTSU = swapRotateList.FirstOrDefault(
-            tsu => !tsu.enabled
-            );
-        //Else make a new one
-        if (chosenTSU == null)
+        //Check to make sure there isn't already an effect on it
+        if (isEffectOnObject(swapRotateList, go))
         {
-            GameObject newLS = GameObject.Instantiate(swapRotatePrefab);
-            SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
-            swapRotateList.Add(newSR);
-            chosenTSU = newSR;
-            newLS.GetComponent<Fader>().onFadeFinished +=
-                () => newLS.transform.parent = transform;
+            return;
         }
-        parentSpriteRendererToObject(chosenTSU, go);
-        Vector3 scale = chosenTSU.transform.localScale;
+        //Process effect
+        SpriteRenderer sr = getAvailableEffect(
+            lightningStaticList,
+            lightningStaticPrefab
+            );
+        parentSpriteRendererToObject(sr, go);
+        Vector3 scale = sr.transform.localScale;
         scale.x = Mathf.Abs(scale.x) * ((flip) ? -1 : 1);
-        chosenTSU.transform.localScale = scale;
-        SimpleRotation rot = chosenTSU.GetComponent<SimpleRotation>();
+        sr.transform.localScale = scale;
+        SimpleRotation rot = sr.GetComponent<SimpleRotation>();
         rot.turnSpeed = Mathf.Abs(rot.turnSpeed) * ((flip) ? 1 : -1);
-        chosenTSU.GetComponent<Fader>().enabled = true;
-        chosenTSU.enabled = true;
+        sr.GetComponent<Fader>().enabled = true;
+        sr.enabled = true;
     }
 
     /// <summary>
@@ -270,20 +287,18 @@ public class EffectManager : MonoBehaviour
             //Clean null values from list
             //(in case an object takes the effect with it when it unloads)
             swapStasisList.RemoveAll(tsu => tsu == null);
-            //Find existing effect
-            SpriteRenderer chosenTSU = swapStasisList.FirstOrDefault(
-                tsu => !tsu.enabled
-                );
-            //Else make a new one
-            if (chosenTSU == null)
+            //Check to make sure there isn't already an effect on it
+            if (isEffectOnObject(swapStasisList, go))
             {
-                GameObject newLS = GameObject.Instantiate(swapStasisPrefab);
-                SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
-                swapStasisList.Add(newSR);
-                chosenTSU = newSR;
+                return;
             }
-            parentSpriteRendererToObject(chosenTSU, go);
-            chosenTSU.enabled = true;
+            //Process effect
+            SpriteRenderer sr = getAvailableEffect(
+                lightningStaticList,
+                lightningStaticPrefab
+                );
+            parentSpriteRendererToObject(sr, go);
+            sr.enabled = true;
         }
         else
         {
