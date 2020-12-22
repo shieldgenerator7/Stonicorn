@@ -42,7 +42,9 @@ public class TeleportPortal : MonoBehaviour
 
     Vector2 checkPortal(Vector2 oldPos, Vector2 tapPos)
     {
-        if (containsPoint(tapPos))
+        if (containsPoint(tapPos)
+            && oldPos.inRange(tapPos, Managers.Player.Teleport.Range)
+            )
         {
             return otherEnd.transform.position;
         }
