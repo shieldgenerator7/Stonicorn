@@ -37,7 +37,7 @@ public class TeleportPortal : MonoBehaviour
         other.otherEnd = this;
     }
 
-    bool containsPoint(Vector2 point)
+    public bool containsPoint(Vector2 point)
         => coll2d.OverlapPoint(point);
 
     Vector2 checkPortal(Vector2 oldPos, Vector2 tapPos)

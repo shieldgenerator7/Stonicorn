@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LongTeleportAbility : PlayerAbility
@@ -118,8 +119,14 @@ public class LongTeleportAbility : PlayerAbility
 
     bool canPortal(Vector2 oldPos, Vector2 newPos)
     {
+        List<TeleportPortal> portalList = FindObjectsOfType<TeleportPortal>().ToList();
         //Require max upgrade level
-        return FeatureLevel >= 2;
+        return FeatureLevel >= 2
+            //Require certain distance apart
+            && !oldPos.inRange(newPos, playerController.Teleport.baseRange)
+            //Don't overlap portals
+            && !portalList.Any(portal => portal.containsPoint(oldPos))
+            && !portalList.Any(portal => portal.containsPoint(newPos));
     }
 
     void applyPortal(Vector2 oldPos, Vector2 newPos)
