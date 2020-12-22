@@ -8,6 +8,7 @@ public class LongTeleportAbility : PlayerAbility
     public float maxRangeIncreaseFactor = 2;
     public float maxDragDistance = 6;//how far out to drag the camera to get max range
     public float postShieldKnockbackSpeed = 10;
+    public float postShieldGracePeriodDuration = 1;//how long it takes for the shield to actually disappear
 
     [SerializeField]
     private bool shielded = false;
@@ -20,11 +21,30 @@ public class LongTeleportAbility : PlayerAbility
         }
     }
 
+    float postShieldStartTime = -1;
+    bool ShouldUnshield
+    {
+        get => postShieldStartTime >= 0
+            && Time.time >= postShieldStartTime + postShieldGracePeriodDuration;
+        set
+        {
+            if (value)
+            {
+                postShieldStartTime = Time.time;
+            }
+            else
+            {
+                postShieldStartTime = -1;
+            }
+        }
+    }
+
 
     protected override void init()
     {
         base.init();
         Managers.Camera.onOffsetChange += adjustRange;
+        playerController.onHazardHitException += onHitException;
     }
     public override void OnDisable()
     {
@@ -32,6 +52,14 @@ public class LongTeleportAbility : PlayerAbility
         Managers.Camera.onOffsetChange -= adjustRange;
         playerController.onHazardHitException -= onHitException;
     }
+
+    private void FixedUpdate()
+    {
+        if (ShouldUnshield)
+        {
+            Shielded = false;
+            ShouldUnshield = false;
+        }
     }
 
     /// <summary>
@@ -76,18 +104,17 @@ public class LongTeleportAbility : PlayerAbility
     }
     bool onHitException(Vector2 contactPoint)
     {
-        bool prevShielded = shielded;
         if (shielded)
         {
-            //Remove shield
-            Shielded = false;
+            //Remove shield after grace period
+            ShouldUnshield = true;
             //Stop merky
             rb2d.nullifyMovement();
             //Move merky away from hazard
             rb2d.velocity += ((Vector2)transform.position - contactPoint)
                 * postShieldKnockbackSpeed;
         }
-        return prevShielded;
+        return shielded;
     }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
