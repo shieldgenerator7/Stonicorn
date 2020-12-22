@@ -13,9 +13,9 @@ public class EffectManager : MonoBehaviour
     public GameObject teleportStreakPrefab;
     [Header("Lightning Static Effect")]
     public GameObject lightningStaticPrefab;
-    [Header("Swap Rotate Effect")]
+    [Header("Swap Effects")]
+    public GameObject swapCirclePrefab;
     public GameObject swapRotatePrefab;
-    [Header("Swap Stasis Effect")]
     public GameObject swapStasisPrefab;
     [Header("Collision Effect")]
     public GameObject collisionEffectPrefab;//the object that holds the special effect for collision
@@ -29,6 +29,7 @@ public class EffectManager : MonoBehaviour
     private List<Fader> teleportStarList = new List<Fader>();
     private List<Fader> teleportStreakList = new List<Fader>();
     private List<SpriteRenderer> lightningStaticList = new List<SpriteRenderer>();
+    private List<SpriteRenderer> swapCircleList = new List<SpriteRenderer>();
     private List<SpriteRenderer> swapRotateList = new List<SpriteRenderer>();
     private List<SpriteRenderer> swapStasisList = new List<SpriteRenderer>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
@@ -135,6 +136,69 @@ public class EffectManager : MonoBehaviour
                     );
             }
         }
+    }
+
+    /// <summary>
+    /// Shows the swap circle effect on the given GameObject
+    /// 2020-12-21: copied from showSwapStasis()
+    /// </summary>
+    /// <param name="pos"></param>
+    public void showSwapCircle(GameObject go, bool show = true)
+    {
+        if (show)
+        {
+            //Find existing effect
+            SpriteRenderer chosenTSU = swapCircleList.FirstOrDefault(
+                tsu => !tsu.enabled
+                );
+            //Else make a new one
+            if (chosenTSU == null)
+            {
+                GameObject newLS = GameObject.Instantiate(swapCirclePrefab);
+                SpriteRenderer newSR = newLS.GetComponent<SpriteRenderer>();
+                swapCircleList.Add(newSR);
+                chosenTSU = newSR;
+            }
+            chosenTSU.transform.parent = go.transform;
+            chosenTSU.transform.localPosition = Vector2.zero;
+            chosenTSU.transform.up = go.transform.up;
+            Vector2 size = go.getSize();
+            Vector3 scale = chosenTSU.transform.localScale;
+            scale = Vector3.one * Mathf.Max(size.x, size.y);
+            chosenTSU.transform.localScale = scale;
+            chosenTSU.enabled = true;
+        }
+        else
+        {
+            SpriteRenderer sr = go.GetComponentsInChildren<SpriteRenderer>().ToList()
+                .FirstOrDefault(sr1 => swapCircleList.Contains(sr1));
+            if (sr)
+            {
+                //Parent it under EffectManager
+                sr.transform.parent = transform;
+                //Hide it
+                sr.enabled = false;
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "Tried to remove swap circle effect from GameObject " + go.name
+                    + " that does not have the effect on it.",
+                    go
+                    );
+            }
+        }
+    }
+
+    public void hideSwapCircleEffects()
+    {
+        swapCircleList.ForEach(sr =>
+        {
+            //Parent it under EffectManager
+            sr.transform.parent = transform;
+            //Hide it
+            sr.enabled = false;
+        });
     }
 
     /// <summary>

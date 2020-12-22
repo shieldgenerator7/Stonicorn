@@ -35,36 +35,40 @@ public class SwapAbility : PlayerAbility
         playerController.Teleport.findTeleportablePositionOverride -= findSwapPosition;
     }
 
+    private void Update()
+    {
+        //Hide current effects
+        Managers.Effect.hideSwapCircleEffects();
+        //Show which game objects are swappable
+        Physics2D.OverlapCircleAll(transform.position, playerController.Teleport.Range).ToList()
+            .FindAll(coll => isObjectSwappable(coll.gameObject))
+            .ForEach(coll => Managers.Effect.showSwapCircle(coll.gameObject));
+    }
+
     protected override bool isGrounded()
         => swappedSomething;
 
+    bool isObjectSwappable(GameObject go)
+        => go != this.gameObject
+        && go.GetComponent<Rigidbody2D>()
+        && go.getSize().magnitude <= playerController.halfWidth * 2 * swapSizeScaleLimit;
+
     bool isColliderSwappable(Collider2D coll, Vector3 tapPos)
-    {
-        bool swappable =
-            coll.gameObject != this.gameObject
-            && coll.OverlapPoint(tapPos)
-            && isColliderSwappableImpl(coll, tapPos);
-        return swappable;
-    }
+        => isObjectSwappable(coll.gameObject)
+        && coll.OverlapPoint(tapPos)
+        && isColliderSwappableImpl(coll, tapPos);
 
     bool isColliderSwappableImpl(Collider2D coll, Vector3 testPos)
     {
         Vector3 swapPos = transform.position;
-        if (coll.gameObject.GetComponent<Rigidbody2D>() != null)
-        {
-            if (coll.bounds.size.magnitude <= playerController.halfWidth * 2 * swapSizeScaleLimit)
-            {
-                return true;
-            }
-            //bool occupied = isOccupiedForObject(coll, swapPos);
-            //if (occupied)
-            //{
-            //    Vector2 newPos = adjustForOccupant(coll, swapPos);
-            //    occupied = isOccupiedForObject(coll, newPos);
-            //}
-            //return !occupied;
-        }
-        return false;
+        return true;
+        //bool occupied = isOccupiedForObject(coll, swapPos);
+        //if (occupied)
+        //{
+        //    Vector2 newPos = adjustForOccupant(coll, swapPos);
+        //    occupied = isOccupiedForObject(coll, newPos);
+        //}
+        //return !occupied;
     }
 
     /// <summary>
