@@ -33,7 +33,10 @@ public class LongTeleportAbility : PlayerAbility
         {
             if (value)
             {
-                postShieldStartTime = Time.time;
+                if (postShieldStartTime < 0)
+                {
+                    postShieldStartTime = Time.time;
+                }
             }
             else
             {
