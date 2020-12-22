@@ -10,7 +10,9 @@ public class LongTeleportAbility : PlayerAbility
     public float postShieldKnockbackSpeed = 10;
     public float postShieldGracePeriodDuration = 1;//how long it takes for the shield to actually disappear
 
-    [SerializeField]
+    [Header("Components")]
+    public GameObject portalPrefab;
+
     private bool shielded = false;
     public bool Shielded
     {
@@ -94,6 +96,11 @@ public class LongTeleportAbility : PlayerAbility
             {
                 applyShield();
             }
+            //Upgrade 2
+            if (canPortal(oldPos, newPos))
+            {
+                applyPortal(oldPos, newPos);
+            }
             //Effect teleport
             effectTeleport(oldPos, newPos);
         }
@@ -108,6 +115,29 @@ public class LongTeleportAbility : PlayerAbility
     {
         Shielded = true;
     }
+
+    bool canPortal(Vector2 oldPos, Vector2 newPos)
+    {
+        //Require max upgrade level
+        return FeatureLevel >= 2;
+    }
+
+    void applyPortal(Vector2 oldPos, Vector2 newPos)
+    {
+        TeleportPortal portal1 = makePortal(oldPos);
+        TeleportPortal portal2 = makePortal(newPos);
+        portal1.connectTo(portal2);
+    }
+
+    TeleportPortal makePortal(Vector2 pos)
+    {
+        GameObject portal = Utility.Instantiate(portalPrefab);
+        portal.transform.position = pos;
+        SpriteRenderer sr = portal.GetComponent<SpriteRenderer>();
+        sr.color = EffectColor.adjustAlpha(sr.color.a);
+        return portal.GetComponent<TeleportPortal>();
+    }
+
     bool onHitException(Vector2 contactPoint)
     {
         if (shielded)
