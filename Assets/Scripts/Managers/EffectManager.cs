@@ -262,8 +262,8 @@ public class EffectManager : MonoBehaviour
         }
         //Process effect
         SpriteRenderer sr = getAvailableEffect(
-            lightningStaticList,
-            lightningStaticPrefab
+            swapRotateList,
+            swapRotatePrefab
             );
         parentSpriteRendererToObject(sr, go);
         Vector3 scale = sr.transform.localScale;
@@ -294,8 +294,8 @@ public class EffectManager : MonoBehaviour
             }
             //Process effect
             SpriteRenderer sr = getAvailableEffect(
-                lightningStaticList,
-                lightningStaticPrefab
+                swapStasisList,
+                swapStasisPrefab
                 );
             parentSpriteRendererToObject(sr, go);
             sr.enabled = true;
