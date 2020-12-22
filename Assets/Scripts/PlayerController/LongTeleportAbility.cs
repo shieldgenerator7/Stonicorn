@@ -18,8 +18,11 @@ public class LongTeleportAbility : PlayerAbility
         set
         {
             shielded = value;
+            onShieldedChanged?.Invoke(shielded);
         }
     }
+    public delegate void OnShieldedChanged(bool shielded);
+    public event OnShieldedChanged onShieldedChanged;
 
     float postShieldStartTime = -1;
     bool ShouldUnshield
