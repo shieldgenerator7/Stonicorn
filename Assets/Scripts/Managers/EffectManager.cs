@@ -89,6 +89,28 @@ public class EffectManager : MonoBehaviour
         chosenTSU.enabled = true;
     }
 
+    void parentSpriteRendererToObject(SpriteRenderer sr, GameObject go, bool useSizeSR = false)
+    {
+        sr.transform.parent = go.transform;
+        sr.transform.localPosition = Vector2.zero;
+        sr.transform.up = go.transform.up;
+        Vector2 size = go.getSize();
+        if (useSizeSR)
+        {
+            sr.size = size;
+        }
+        else
+        {
+            Vector3 scale = Vector3.one * Mathf.Max(size.x, size.y);
+            Vector3 goScale = go.transform.localScale;
+            sr.transform.localScale = new Vector3(
+                scale.x / goScale.x,
+                scale.y / goScale.y,
+                scale.z / goScale.z
+                );
+        }
+    }
+
     /// <summary>
     /// Shows the lightning static effect on the given GameObject
     /// 2020-12-17: copied from showTeleportStar()
@@ -110,10 +132,7 @@ public class EffectManager : MonoBehaviour
                 lightningStaticList.Add(newSR);
                 chosenTSU = newSR;
             }
-            chosenTSU.transform.parent = go.transform;
-            chosenTSU.transform.localPosition = Vector2.zero;
-            chosenTSU.transform.up = go.transform.up;
-            chosenTSU.size = go.getSize();
+            parentSpriteRendererToObject(chosenTSU, go, true);
             chosenTSU.enabled = true;
         }
         else
@@ -167,13 +186,7 @@ public class EffectManager : MonoBehaviour
                 swapCircleList.Add(newSR);
                 chosenTSU = newSR;
             }
-            chosenTSU.transform.parent = go.transform;
-            chosenTSU.transform.localPosition = Vector2.zero;
-            chosenTSU.transform.up = go.transform.up;
-            Vector2 size = go.getSize();
-            Vector3 scale = chosenTSU.transform.localScale;
-            scale = Vector3.one * Mathf.Max(size.x, size.y);
-            chosenTSU.transform.localScale = scale;
+            parentSpriteRendererToObject(chosenTSU, go);
             chosenTSU.enabled = true;
         }
         else
@@ -235,12 +248,8 @@ public class EffectManager : MonoBehaviour
             newLS.GetComponent<Fader>().onFadeFinished +=
                 () => newLS.transform.parent = transform;
         }
-        chosenTSU.transform.parent = go.transform;
-        chosenTSU.transform.localPosition = Vector2.zero;
-        chosenTSU.transform.up = go.transform.up;
-        Vector2 size = go.getSize();
+        parentSpriteRendererToObject(chosenTSU, go);
         Vector3 scale = chosenTSU.transform.localScale;
-        scale = Vector3.one * Mathf.Max(size.x, size.y);
         scale.x = Mathf.Abs(scale.x) * ((flip) ? -1 : 1);
         chosenTSU.transform.localScale = scale;
         SimpleRotation rot = chosenTSU.GetComponent<SimpleRotation>();
@@ -273,13 +282,7 @@ public class EffectManager : MonoBehaviour
                 swapStasisList.Add(newSR);
                 chosenTSU = newSR;
             }
-            chosenTSU.transform.parent = go.transform;
-            chosenTSU.transform.localPosition = Vector2.zero;
-            chosenTSU.transform.up = go.transform.up;
-            Vector2 size = go.getSize();
-            Vector3 scale = chosenTSU.transform.localScale;
-            scale = Vector3.one * Mathf.Max(size.x, size.y);
-            chosenTSU.transform.localScale = scale;
+            parentSpriteRendererToObject(chosenTSU, go);
             chosenTSU.enabled = true;
         }
         else
