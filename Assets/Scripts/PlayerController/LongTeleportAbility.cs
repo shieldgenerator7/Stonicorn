@@ -10,6 +10,7 @@ public class LongTeleportAbility : PlayerAbility
     public float maxDragDistance = 6;//how far out to drag the camera to get max range
     public float postShieldKnockbackSpeed = 10;
     public float postShieldGracePeriodDuration = 1;//how long it takes for the shield to actually disappear
+    public float portalRequiredRangeFactor = 3;//how much further than the standard range you have to teleport in order to make a portal
 
     [Header("Components")]
     public GameObject portalPrefab;
@@ -123,7 +124,10 @@ public class LongTeleportAbility : PlayerAbility
         //Require max upgrade level
         return FeatureLevel >= 2
             //Require certain distance apart
-            && !oldPos.inRange(newPos, playerController.Teleport.baseRange)
+            && !oldPos.inRange(
+                newPos,
+                playerController.Teleport.baseRange * portalRequiredRangeFactor
+                )
             //Don't overlap portals
             && !portalList.Any(portal => portal.containsPoint(oldPos))
             && !portalList.Any(portal => portal.containsPoint(newPos));
