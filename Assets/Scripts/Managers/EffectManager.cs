@@ -147,6 +147,14 @@ public class EffectManager : MonoBehaviour
     {
         if (show)
         {
+            //Check to make sure there isn't already an effect on it
+            SpriteRenderer sr = go.GetComponentsInChildren<SpriteRenderer>().ToList()
+                   .FirstOrDefault(sr1 => swapCircleList.Contains(sr1));
+            if (sr)
+            {
+                //do nothing
+                return;
+            }
             //Find existing effect
             SpriteRenderer chosenTSU = swapCircleList.FirstOrDefault(
                 tsu => !tsu.enabled
@@ -190,15 +198,17 @@ public class EffectManager : MonoBehaviour
         }
     }
 
-    public void hideSwapCircleEffects()
+    public void hideSwapCircleEffects(List<GameObject> exceptions)
     {
-        swapCircleList.ForEach(sr =>
-        {
-            //Parent it under EffectManager
-            sr.transform.parent = transform;
-            //Hide it
-            sr.enabled = false;
-        });
+        swapCircleList
+            .FindAll(sr => !exceptions.Contains(sr.transform.parent.gameObject))
+            .ForEach(sr =>
+            {
+                //Parent it under EffectManager
+                sr.transform.parent = transform;
+                //Hide it
+                sr.enabled = false;
+            });
     }
 
     /// <summary>

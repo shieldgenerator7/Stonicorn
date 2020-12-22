@@ -37,12 +37,16 @@ public class SwapAbility : PlayerAbility
 
     private void Update()
     {
-        //Hide current effects
-        Managers.Effect.hideSwapCircleEffects();
-        //Show which game objects are swappable
-        Physics2D.OverlapCircleAll(transform.position, playerController.Teleport.Range).ToList()
+        List<GameObject> swappables = Physics2D.OverlapCircleAll(
+            transform.position,
+            playerController.Teleport.Range
+            ).ToList()
             .FindAll(coll => isObjectSwappable(coll.gameObject))
-            .ForEach(coll => Managers.Effect.showSwapCircle(coll.gameObject));
+            .ConvertAll(coll => coll.gameObject);
+        //Hide current effects
+        Managers.Effect.hideSwapCircleEffects(swappables);
+        //Show which game objects are swappable
+        swappables.ForEach(go => Managers.Effect.showSwapCircle(go));
     }
 
     protected override bool isGrounded()
