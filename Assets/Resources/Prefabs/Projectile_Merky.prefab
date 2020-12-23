@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6331572983030962032}
   - component: {fileID: 5326414188585529379}
   - component: {fileID: 2383179362203139129}
+  - component: {fileID: 2852189982173079654}
   m_Layer: 0
   m_Name: Projectile_Merky
   m_TagString: Untagged
@@ -183,5 +184,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8bad403efeed4943a7447a92052b891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bouncinessIndicatorPrefab: {fileID: 5411689275469518566, guid: d53754db496b2a84398bb0ba24fbc7ba,
-    type: 3}
+  bouncinessIndicatorPrefab: {fileID: 5411689275469518566, guid: d53754db496b2a84398bb0ba24fbc7ba, type: 3}
+--- !u!114 &2852189982173079654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861052362794606830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabName: Projectile_Merky
