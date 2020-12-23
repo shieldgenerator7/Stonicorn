@@ -96,7 +96,7 @@ public class ObjectState
             if (scene.IsValid() && scene.isLoaded)
             {
                 //First Pass: get GO from ObjectManager list
-                go = Managers.Object.getObject(sceneName, objectName);
+                go = Managers.Object.getObject(objectName);
                 //Second Pass: get GO from ObjectManager Forgotten Object list
                 if (go == null)
                 {

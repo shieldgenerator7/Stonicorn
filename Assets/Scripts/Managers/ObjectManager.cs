@@ -68,15 +68,6 @@ public class ObjectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Retrieves the GameObject from the gameObjects list with the given scene and object names
-    /// </summary>
-    /// <param name="sceneName">The scene name of the object</param>
-    /// <param name="objectName">The name of the object</param>
-    /// <returns></returns>
-    public GameObject getObject(string sceneName, string objectName)
-        => getObject(Utility.getKey(sceneName, objectName));
-
-    /// <summary>
     /// Retrieves the GameObject from the gameObjects list with the given key
     /// </summary>
     /// <param name="goKey">The unique inter-scene key of the object</param>

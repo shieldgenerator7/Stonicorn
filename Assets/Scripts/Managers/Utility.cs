@@ -236,11 +236,11 @@ public static class Utility
         {
             return "";
         }
-        return getKey(go.scene.name, go.name);
+        return getKey(go.name);
     }
-    public static string getKey(string sceneName, string objectName)
+    public static string getKey(string objectName)
     {
-        return sceneName + "|" + objectName;
+        return objectName;
     }
 
     /// <summary>
