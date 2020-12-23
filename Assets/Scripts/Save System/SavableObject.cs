@@ -15,7 +15,6 @@ public class SavableObject
     /// </summary>
     public bool isSpawnedScript;//whether this SO's script was attached to its game object during run time
     public string scriptType;//the type of script that saved this SavableObject
-    public string spawnTag = "";//if isSpawnedObject, the unique tag applied to it to give it a unique name
 
     public SavableObject() { }
 
@@ -30,8 +29,6 @@ public class SavableObject
         this.scriptType = smb.GetType().Name;
 
         more(pairs);
-
-        spawnTag = smb.SpawnTag;
 
         if (smb.IsSpawnedScript)
         {
@@ -77,23 +74,13 @@ public class SavableObject
     /// precondition: the game object does not already exist (or at least has not been found)
     /// </summary>
     /// <returns></returns>
-    public GameObject spawnObject(string prefabName)
+    public GameObject spawnObject(string goName, string prefabName)
     {
-        GameObject prefab = (GameObject)GameObject.Instantiate(
+        GameObject newGO = (GameObject)GameObject.Instantiate(
             Resources.Load("Prefabs/" + prefabName)
             );
-        if (spawnTag != null && spawnTag != "")
-        {
-            prefab.name += spawnTag;
-            foreach (Transform t in prefab.transform)
-            {
-                if (!t.gameObject.name.Contains(spawnTag))
-                {
-                    t.gameObject.name += spawnTag;
-                }
-            }
-        }
-        return (GameObject)prefab;
+        newGO.name = goName;
+        return newGO;
     }
 
     public System.Type ScriptType

@@ -107,7 +107,7 @@ public class ObjectState
                     foreach (SavableObject so in soList)
                     {
                         //Make it
-                        GameObject spawned = so.spawnObject(prefabName);
+                        GameObject spawned = so.spawnObject(objectName, prefabName);
                         if (spawned.scene.name != sceneName)
                         {
                             SceneManager.MoveGameObjectToScene(spawned, scene);

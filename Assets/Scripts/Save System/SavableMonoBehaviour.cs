@@ -18,11 +18,4 @@ public abstract class SavableMonoBehaviour : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public virtual bool IsSpawnedScript => false;
-
-    /// <summary>
-    /// The unique identifier added to the game object's name,
-    /// if this game object was spawned during runtime 
-    /// </summary>
-    /// <returns></returns>
-    public virtual string SpawnTag => "";
 }
