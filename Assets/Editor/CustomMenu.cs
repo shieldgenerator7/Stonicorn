@@ -157,7 +157,7 @@ public class CustomMenu
         }
     }
 
-    [MenuItem("SG7/Editor/Refactor/Connect selected Lantern and HiddenArea %#H")]
+    [MenuItem("SG7/Editor/Connect selected Lantern and HiddenArea %#H")]
     public static void connectLanternToHiddenArea()
     {
         HiddenAreaConnector hac = GameObject.FindObjectOfType<HiddenAreaConnector>();
@@ -392,6 +392,12 @@ public class CustomMenu
             );
             Selection.activeObject = logger;
         }
+    }
+    [MenuItem("SG7/Editor/Pre-Build/Refresh Scene Savable Object Lists")]
+    public static void refreshSceneSavableObjectLists()
+    {
+        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
+            .ForEach(ssl => ssl.refreshList());
     }
 
     [MenuItem("SG7/Build/Build Windows %w")]
