@@ -178,9 +178,7 @@ public static class Utility
 
     public static bool isPlayer(this GameObject go)
     {
-        return go == Managers.Player.gameObject
-            || (go.transform.parent
-                && go.transform.parent.gameObject == Managers.Player.gameObject);
+        return go.layer == LayerMask.NameToLayer("Merky");
     }
     /// <summary>
     /// Returns true if the collider is of the player's and is not a trigger

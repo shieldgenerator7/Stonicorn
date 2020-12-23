@@ -672,7 +672,7 @@ GameObject:
   m_Component:
   - component: {fileID: 517078328}
   - component: {fileID: 517078330}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: white overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -754,7 +754,7 @@ GameObject:
   m_Component:
   - component: {fileID: 530089678}
   - component: {fileID: 530089677}
-  m_Layer: 2
+  m_Layer: 8
   m_Name: MinTestCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -810,7 +810,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 681276371}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ScoutColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +845,7 @@ GameObject:
   - component: {fileID: 756930642}
   - component: {fileID: 756930644}
   - component: {fileID: 756930643}
-  m_Layer: 2
+  m_Layer: 8
   m_Name: Explorer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -924,7 +924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1809435739}
   - component: {fileID: 1809435738}
-  m_Layer: 2
+  m_Layer: 8
   m_Name: MaxTestCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -979,8 +979,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 464668}
     m_Modifications:
     - target: {fileID: 1000011127396842, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011127396842, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1908884555096836, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4000010763420298, guid: 2cd2e83879898834a97f3b302ee30fdc, type: 3}
       propertyPath: m_RootOrder
