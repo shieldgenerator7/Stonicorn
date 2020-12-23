@@ -8,6 +8,7 @@ using UnityEngine.U2D;
 using Debug = UnityEngine.Debug;
 using System.Linq;
 using UnityEditor.SceneManagement;
+using System;
 
 public class CustomMenu
 {
@@ -402,10 +403,12 @@ public class CustomMenu
         }
     }
 
-    [MenuItem("SG7/Editor/Pre-Build/Perform all Pre-Build Tasks")]
+    [MenuItem("SG7/Editor/Pre-Build/Perform all Pre-Build Tasks &W")]
     public static void performAllPreBuildTasks()
     {
+        Debug.Log("Running all Pre-Build Tasks");
         //Setup
+        EditorSceneManager.SaveOpenScenes();
         loadAllLevelScenes(false);
         loadAllLevelScenes(true);
         while (!allLevelScenesLoaded())
@@ -416,7 +419,9 @@ public class CustomMenu
         //Checklist
         bool keepScenesOpen = false;
         refreshSceneSavableObjectLists();
-        keepScenesOpen = ensureUniqueObjectIDs();
+        //(new List<Func<bool>>()).ForEach(func => keepScenesOpen = keepScenesOpen || func);
+        keepScenesOpen = keepScenesOpen || ensureUniqueObjectIDs();
+        keepScenesOpen = keepScenesOpen || ensureSavableObjectsHaveObjectInfo();
 
         //Cleanup
         EditorSceneManager.SaveOpenScenes();
@@ -470,6 +475,20 @@ public class CustomMenu
             savableIDs.Add(go.getKey());
         });
         return duplicateFound;
+    }
+
+    [MenuItem("SG7/Editor/Pre-Build/Ensure savable objects have ObjectInfo")]
+    public static bool ensureSavableObjectsHaveObjectInfo()
+    {
+        List<GameObject> savables = new List<GameObject>();
+        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
+            .ForEach(ssl => savables.AddRange(ssl.savables));
+        List<GameObject> missingInfo = savables
+            .FindAll(go => !go.GetComponent<ObjectInfo>());
+        missingInfo.ForEach(
+            go => Debug.LogError(go.name + " does not have an ObjectInfo!", go)
+            );
+        return missingInfo.Count > 0;
     }
 
     [MenuItem("SG7/Build/Build Windows %w")]
