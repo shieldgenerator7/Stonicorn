@@ -169,8 +169,8 @@ public class ObjectManager : MonoBehaviour
     /// </summary>
     public void refreshGameObjects()
     {
-        //Make a new dictionary for the list
-        gameObjects = new Dictionary<string, GameObject>();
+        //Clear the list
+        gameObjects.Clear();
         //Add objects that can move
         foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
         {

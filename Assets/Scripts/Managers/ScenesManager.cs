@@ -149,7 +149,6 @@ public class ScenesManager : MonoBehaviour
         lastStateSeen = Mathf.Min(lastStateSeen, Managers.Rewind.GameStateId);
         //Load the objects
         Managers.Rewind.LoadObjects(
-            scene.name,
             lastStateSeen,
             go => go.scene == scene
             );

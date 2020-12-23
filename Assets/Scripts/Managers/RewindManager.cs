@@ -146,10 +146,8 @@ public class RewindManager : MonoBehaviour
         onRewindState?.Invoke(gameStates, chosenId);
     }
 
-    public void LoadObjects(string sceneName, int lastStateSeen, Predicate<GameObject> filter)
+    public void LoadObjects(int lastStateSeen, Predicate<GameObject> filter)
     {
-        int newObjectsFound = 0;
-        int objectsLoaded = 0;
         foreach (GameObject go in Managers.Object.GameObjects)
         {
             if (filter(go))
@@ -162,20 +160,17 @@ public class RewindManager : MonoBehaviour
                     {
                         //Great! It's loaded,
                         //Let's move onto the next object
-                        objectsLoaded++;
                         break;
                     }
                     //Else,
                     else
                     {
-                        //Continue until you find the game state that has the most recent information about this object
+                        //Continue until you find the game state 
+                        //that has the most recent information about this object
                     }
                 }
             }
         }
-#if UNITY_EDITOR
-        Logger.log(this, "LOFS: Scene " + sceneName + ": objects found: " + newObjectsFound + ", objects loaded: " + objectsLoaded);
-#endif
     }
 
     /// <summary>
