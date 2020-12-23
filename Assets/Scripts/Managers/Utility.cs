@@ -450,7 +450,6 @@ public static class Utility
         }
         //Instantiate
         GameObject newObj = GameObject.Instantiate(prefab);
-        newObj.GetComponent<GeneratedObject>()?.init();
         newObj.name += System.DateTime.Now.Ticks;
         SceneLoader.moveToCurrentScene(newObj);
         Managers.Object.addObject(newObj);
