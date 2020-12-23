@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 21226854}
   - component: {fileID: 6118004}
   - component: {fileID: 114211760357809054}
+  - component: {fileID: 4810951936090488046}
   m_Layer: 0
   m_Name: cracked ground
   m_TagString: Untagged
@@ -49,6 +50,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -129,8 +132,7 @@ MonoBehaviour:
   integrity: 1
   dealsDamage: 0
   disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 1943429488560524, guid: 796582492798f234bb1d953535aa505f,
-    type: 3}
+  crackedPrefab: {fileID: 1943429488560524, guid: 796582492798f234bb1d953535aa505f, type: 3}
   crackedOverlay: 1
   crackStages:
   - {fileID: 212290543182429606}
@@ -140,6 +142,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   - {fileID: 8300000, guid: bb2a37bffb821394d87697e4f3740389, type: 3}
   secretHiders: []
+--- !u!114 &4810951936090488046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabName: cracked ground
 --- !u!1 &1327082797259746
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,6 +200,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -265,6 +282,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 60003048183987478}
   - component: {fileID: 58809783363468240}
   - component: {fileID: 114370823603228556}
+  - component: {fileID: 1543727375412940081}
   m_Layer: 0
   m_Name: NPC Shield Flux
   m_TagString: Untagged
@@ -206,6 +207,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightSound: {fileID: 8300000, guid: e994d77e8af350640bd6830608ced75c, type: 3}
   secretHider: {fileID: 0}
+--- !u!114 &1543727375412940081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206053639004962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabName: NPC Shield Flux
 --- !u!1 &1441563261309446
 GameObject:
   m_ObjectHideFlags: 0

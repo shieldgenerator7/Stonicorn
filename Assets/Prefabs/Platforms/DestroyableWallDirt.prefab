@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1758209678862501833}
   - component: {fileID: 2634418173269644042}
   - component: {fileID: 2691955003973334858}
+  - component: {fileID: 3778158878888956802}
   m_Layer: 0
   m_Name: DestroyableWallDirt
   m_TagString: Untagged
@@ -48,6 +49,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -135,6 +137,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 278dce238ac89cd49aca14a2784270d2, type: 3}
   soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
   soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673,
-    type: 3}
+  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
+--- !u!114 &3778158878888956802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8346307271648853251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabName: DestroyableWallDirt

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 21247086}
   - component: {fileID: 6116290}
   - component: {fileID: 114544592810200564}
+  - component: {fileID: 2101270653855458794}
   m_Layer: 0
   m_Name: boulder
   m_TagString: Untagged
@@ -50,6 +51,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -130,8 +133,7 @@ MonoBehaviour:
   integrity: 0
   dealsDamage: 0
   disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 1758183149841368, guid: 1d011da68b2bea944aefdb41e3cbb59f,
-    type: 3}
+  crackedPrefab: {fileID: 1758183149841368, guid: 1d011da68b2bea944aefdb41e3cbb59f, type: 3}
   crackedOverlay: 1
   crackStages:
   - {fileID: 212201878288532706}
@@ -142,6 +144,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
+--- !u!114 &2101270653855458794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabName: boulder
 --- !u!1 &1098610337102486
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,6 +202,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -267,6 +284,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -347,6 +366,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:

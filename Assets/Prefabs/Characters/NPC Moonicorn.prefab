@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 60147997120370232}
   - component: {fileID: 114265895427675804}
   - component: {fileID: 82447050062699248}
+  - component: {fileID: 3313426794538360978}
   m_Layer: 0
-  m_Name: NPC
+  m_Name: NPC Moonicorn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -286,3 +287,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &3313426794538360978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698906043408544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabName: NPC
