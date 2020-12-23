@@ -20,9 +20,8 @@ public class ObjectInfoEditor : Editor
 
     bool isPrefab(GameObject go)
     {
-        Debug.Log("" + go.name + ".scene: " + go.scene.name);
-        //2020-12-22: copied from http://answers.unity.com/comments/220033/view.html
-        return go.scene == null || go.scene.name == go.name
-            || go.scene.name == null || go.scene.name == "";
+        return PrefabUtility.IsPartOfPrefabAsset(go);
+        //return go.scene == null || go.scene.name == go.name
+        //    || go.scene.name == null || go.scene.name == "";
     }
 }
