@@ -13,45 +13,41 @@ public class ObjectState
     public Vector2 velocity;
     public float angularVelocity;
     //Saveable Object
-    public List<SavableObject> soList;
+    public List<SavableObject> soList = new List<SavableObject>();
     //Name
     public string objectName;
     public string sceneName;
-
-    private Rigidbody2D rb2d;
-    private GameObject go;
-    private List<SavableMonoBehaviour> smbList;
+    public string prefabName;
 
     public ObjectState() { }
-    public ObjectState(GameObject goIn)
+    public ObjectState(GameObject go)
     {
-        go = goIn;
         objectName = go.name;
         sceneName = go.scene.name;
-        rb2d = go.GetComponent<Rigidbody2D>();
-        smbList = new List<SavableMonoBehaviour>();
-        smbList.AddRange(go.GetComponents<SavableMonoBehaviour>());
+        prefabName = go.GetComponent<ObjectInfo>().PrefabName;
+        saveState(go);
     }
 
-    public void saveState()
+    private void saveState(GameObject go)
     {
         position = go.transform.localPosition;
         localScale = go.transform.localScale;
         rotation = go.transform.localRotation;
+        Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
             velocity = rb2d.velocity;
             angularVelocity = rb2d.angularVelocity;
         }
         soList = new List<SavableObject>();
-        foreach (SavableMonoBehaviour smb in smbList)
+        foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
         {
             this.soList.Add(smb.CurrentState);
         }
     }
     public void loadState()
     {
-        getGameObject();//finds and sets the game object
+        GameObject go = getGameObject();//finds and sets the game object
         if (go == null)
         {
             return;//don't load the state if go is null
@@ -59,7 +55,7 @@ public class ObjectState
         go.transform.localPosition = position;
         go.transform.localScale = localScale;
         go.transform.localRotation = rotation;
-        rb2d = go.GetComponent<Rigidbody2D>();
+        Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
             rb2d.velocity = velocity;
@@ -90,6 +86,7 @@ public class ObjectState
     //
     public GameObject getGameObject()
     {
+        GameObject go = null;
         if (go == null || ReferenceEquals(go, null))//2016-11-20: reference equals test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
         {
             Scene scene = SceneManager.GetSceneByName(sceneName);
@@ -146,7 +143,7 @@ public class ObjectState
                     {
                         if (sceneGo.name == objectName)
                         {
-                            this.go = sceneGo;
+                            go = sceneGo;
                             break;
                         }
                         else
@@ -156,7 +153,7 @@ public class ObjectState
                                 GameObject childGo = childTransform.gameObject;
                                 if (childGo.name == objectName)
                                 {
-                                    this.go = childGo;
+                                    go = childGo;
                                     break;
                                 }
                             }
