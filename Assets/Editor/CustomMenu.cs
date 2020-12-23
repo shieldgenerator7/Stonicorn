@@ -414,12 +414,16 @@ public class CustomMenu
         }
 
         //Checklist
+        bool keepScenesOpen = false;
         refreshSceneSavableObjectLists();
-        ensureUniqueObjectIDs();
+        keepScenesOpen = ensureUniqueObjectIDs();
 
         //Cleanup
         EditorSceneManager.SaveOpenScenes();
-        //loadAllLevelScenes(false);
+        if (!keepScenesOpen)
+        {
+            loadAllLevelScenes(false);
+        }
     }
 
     static bool allLevelScenesLoaded()
@@ -442,16 +446,18 @@ public class CustomMenu
             .ForEach(ssl => ssl.refreshList());
     }
     [MenuItem("SG7/Editor/Pre-Build/Ensure unique object IDs among open scenes")]
-    public static void ensureUniqueObjectIDs()
+    public static bool ensureUniqueObjectIDs()
     {
         List<GameObject> savables = new List<GameObject>();
         GameObject.FindObjectsOfType<SceneSavableList>().ToList()
             .ForEach(ssl => savables.AddRange(ssl.savables));
         List<string> savableIDs = new List<string>();
+        bool duplicateFound = false;
         savables.ForEach(go =>
         {
             if (savableIDs.Contains(go.getKey()))
             {
+                duplicateFound = true;
                 //Make it unique
                 string oldName = go.name;
                 go.name = ObjectNames.GetUniqueName(savableIDs.ToArray(), go.name);
@@ -463,6 +469,7 @@ public class CustomMenu
             //Add it to the list
             savableIDs.Add(go.getKey());
         });
+        return duplicateFound;
     }
 
     [MenuItem("SG7/Build/Build Windows %w")]
