@@ -13,10 +13,8 @@ public class SavableObject
     /// <summary>
     /// True if it's an object that spawned during runtime
     /// </summary>
-    public bool isSpawnedObject;//whether this SO's game object was spawned during run time
     public bool isSpawnedScript;//whether this SO's script was attached to its game object during run time
     public string scriptType;//the type of script that saved this SavableObject
-    public string prefabName = "";//if isSpawnedObject, what the prefab name is. Prefab must be in the Resources folder
     public string spawnTag = "";//if isSpawnedObject, the unique tag applied to it to give it a unique name
 
     public SavableObject() { }
@@ -33,12 +31,8 @@ public class SavableObject
 
         more(pairs);
 
-        if (smb.IsSpawnedObject)
-        {
-            isSpawnedObject = true;
-            prefabName = smb.PrefabName;
-            spawnTag = smb.SpawnTag;
-        }
+        spawnTag = smb.SpawnTag;
+
         if (smb.IsSpawnedScript)
         {
             isSpawnedScript = true;
@@ -83,9 +77,11 @@ public class SavableObject
     /// precondition: the game object does not already exist (or at least has not been found)
     /// </summary>
     /// <returns></returns>
-    public GameObject spawnObject()
+    public GameObject spawnObject(string prefabName)
     {
-        GameObject prefab = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/" + prefabName));
+        GameObject prefab = (GameObject)GameObject.Instantiate(
+            Resources.Load("Prefabs/" + prefabName)
+            );
         if (spawnTag != null && spawnTag != "")
         {
             prefab.name += spawnTag;

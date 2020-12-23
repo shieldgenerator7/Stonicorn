@@ -105,17 +105,12 @@ public class RewindManager : MonoBehaviour
         {
             foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
             {
-                //If the game object was spawned during run time
-                //(versus pre-placed at edit time)
-                if (smb.IsSpawnedObject)
+                //And if the game object is not in the game state,
+                if (!gameStates[gamestateId].hasGameObject(go))
                 {
-                    //And if the game object is not in the game state,
-                    if (!gameStates[gamestateId].hasGameObject(go))
-                    {
-                        //remove it from game objects list
-                        //by adding it to the list of game objects to be destroyed
-                        destroyObjectList.Add(go);
-                    }
+                    //remove it from game objects list
+                    //by adding it to the list of game objects to be destroyed
+                    destroyObjectList.Add(go);
                 }
             }
         }

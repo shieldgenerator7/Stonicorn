@@ -40,20 +40,10 @@ public class ObjectManager : MonoBehaviour
             && !(gameObjects[key] == null
             || ReferenceEquals(gameObjects[key], null)))
         {
-            if (go.isSpawnedObject())
-            {
-                Debug.LogWarning("ObjectManager.addObject(): replacing " +
-                    gameObjects[key] + " with " + go);
-                gameObjects[key] = go;
-                return;
-            }
-            else
-            {
-                throw new System.ArgumentException(
-                      "GameObject (" + key + ") is already inside the gameObjects dictionary! "
-                      + "Check for 2 or more objects with the same name."
-                      );
-            }
+            throw new System.ArgumentException(
+                  "GameObject (" + key + ") is already inside the gameObjects dictionary! "
+                  + "Check for 2 or more objects with the same name."
+                  );
         }
         //If the game object doesn't have any state to save...
         if (!go.isSavable())

@@ -203,19 +203,6 @@ public static class Utility
         return !coll2d.isTrigger;
     }
 
-    public static bool isSpawnedObject(this GameObject go)
-    {
-        return go.isSpawnedObjectImpl()
-            || (go.transform.parent
-                && go.transform.parent.gameObject.isSpawnedObjectImpl()
-                );
-    }
-    private static bool isSpawnedObjectImpl(this GameObject go)
-    {
-        return go.GetComponents<SavableMonoBehaviour>().ToList()
-            .Any(smb => smb.IsSpawnedObject);
-    }
-
     /// <summary>
     /// Returns true if the game object has state to save
     /// </summary>
@@ -451,12 +438,17 @@ public static class Utility
     public static GameObject Instantiate(GameObject prefab)
     {
         //Checks to make sure it's rewindable
-        bool foundValidSavable = prefab.GetComponents<SavableMonoBehaviour>()
-            .Any(smb => smb.IsSpawnedObject);
-        if (!foundValidSavable)
+        bool savable = prefab.isSavable();
+        if (!savable)
         {
-            throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have a SavableMonoBehaviour attached that is says it is a spawned object.");
+            throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
         }
+        bool hasInfo = prefab.GetComponent<ObjectInfo>();
+        if (!hasInfo)
+        {
+            throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
+        }
+        //Instantiate
         GameObject newObj = GameObject.Instantiate(prefab);
         newObj.GetComponent<GeneratedObject>()?.init();
         newObj.name += System.DateTime.Now.Ticks;

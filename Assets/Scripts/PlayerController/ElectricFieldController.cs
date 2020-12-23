@@ -61,10 +61,6 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
         }
     }
 
-    public override bool IsSpawnedObject => true;
-
-    public override string PrefabName => "ElectricField";
-
     void FixedUpdate()
     {
         //2017-01-24: copied from WeightSwitchActivator.FixedUpdate()

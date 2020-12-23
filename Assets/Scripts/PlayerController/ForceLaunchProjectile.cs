@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ForceLaunchProjectile : SavableMonoBehaviour
+public class ForceLaunchProjectile : MonoBehaviour
 {
 
     public GameObject bouncinessIndicatorPrefab;//prefab
@@ -46,15 +46,6 @@ public class ForceLaunchProjectile : SavableMonoBehaviour
             bouncinessIndicator.SetActive(true);
         }
         bouncinessIndicator.transform.up = -rb2d.velocity;
-    }
-
-    public override bool IsSpawnedObject => true;
-    public override string PrefabName => "Projectile_Merky";
-
-    public override SavableObject CurrentState
-    {
-        get => new SavableObject(this);
-        set { }
     }
 
 }

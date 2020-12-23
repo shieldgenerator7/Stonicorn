@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class GeneratedObject : SavableMonoBehaviour
 {
-    [SerializeField]
-    private string prefabName;
-
     private string spawnTag;
-
-    public override bool IsSpawnedObject => true;
-
-    public override string PrefabName => prefabName;
 
     public override string SpawnTag => spawnTag;
 

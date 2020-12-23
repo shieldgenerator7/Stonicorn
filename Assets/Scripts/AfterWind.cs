@@ -33,9 +33,6 @@ public class AfterWind : SavableMonoBehaviour, ICuttable
             windForce = value.Float("windForce");
         }
     }
-    public override bool IsSpawnedObject => true;
-
-    public override string PrefabName => "AfterWind";
 
     public bool Cuttable => true;
 

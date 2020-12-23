@@ -13,10 +13,6 @@ public class CrackedPiece : SavableMonoBehaviour
 
     public override bool IsSpawnedScript => true;
 
-    public override bool IsSpawnedObject => true;
-
-    public override string PrefabName => prefabName;
-
     public override string SpawnTag => spawnTag;
 
     public override SavableObject CurrentState

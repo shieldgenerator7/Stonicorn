@@ -87,9 +87,6 @@ public class StickyPadChecker : SavableMonoBehaviour
             }
         }
     }
-   
-    public override bool IsSpawnedObject => true;
-    public override string PrefabName => "StickyPad";
     
     private void OnCollisionEnter2D(Collision2D collision)
     {

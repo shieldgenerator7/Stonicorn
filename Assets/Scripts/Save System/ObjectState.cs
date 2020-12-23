@@ -106,34 +106,30 @@ public class ObjectState
                 {
                     foreach (SavableObject so in soList)
                     {
-                        //If it is a spawned object
-                        if (so.isSpawnedObject)
+                        //Make it
+                        GameObject spawned = so.spawnObject(prefabName);
+                        if (spawned.scene.name != sceneName)
                         {
-                            //Make it
-                            GameObject spawned = so.spawnObject();
-                            if (spawned.scene.name != sceneName)
+                            SceneManager.MoveGameObjectToScene(spawned, scene);
+                        }
+                        foreach (Transform t in spawned.transform)
+                        {
+                            if (t.gameObject.isSavable())
                             {
-                                SceneManager.MoveGameObjectToScene(spawned, scene);
-                            }
-                            foreach (Transform t in spawned.transform)
-                            {
-                                if (t.gameObject.isSavable())
+                                Managers.Object.addObject(t.gameObject);
+                                if (t.gameObject.name == this.objectName)
                                 {
-                                    Managers.Object.addObject(t.gameObject);
-                                    if (t.gameObject.name == this.objectName)
-                                    {
-                                        go = t.gameObject;
-                                    }
+                                    go = t.gameObject;
                                 }
                             }
-                            if (go == null)
-                            {
-                                go = spawned;
-                                go.name = this.objectName;
-                            }
-                            Managers.Object.addObject(spawned);
-                            break;
                         }
+                        if (go == null)
+                        {
+                            go = spawned;
+                            go.name = this.objectName;
+                        }
+                        Managers.Object.addObject(spawned);
+                        break;
                     }
                 }
                 //Fourth Pass: get GO by searching all the scene objects
