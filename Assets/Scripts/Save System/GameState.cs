@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System;
 
 public class GameState
 {
@@ -35,11 +36,21 @@ public class GameState
         //Object States
         foreach (GameObject go in list)
         {
-            ObjectState os = new ObjectState(go);
-            states.Add(os);
-            if (go.name == "merky")
+            try
             {
-                Merky = os;
+                ObjectState os = new ObjectState(go);
+                states.Add(os);
+                if (go.name == "merky")
+                {
+                    Merky = os;
+                }
+            }
+            catch (NullReferenceException)
+            {
+                Debug.LogError(
+                    "Object " + go.name + " does not have an ObjectInfo.",
+                    go
+                    );
             }
         }
     }

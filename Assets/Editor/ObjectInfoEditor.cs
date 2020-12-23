@@ -20,8 +20,8 @@ public class ObjectInfoEditor : Editor
 
     bool isPrefab(GameObject go)
     {
-        return PrefabUtility.IsPartOfPrefabAsset(go);
-        //return go.scene == null || go.scene.name == go.name
-        //    || go.scene.name == null || go.scene.name == "";
+        //return PrefabUtility.IsPartOfPrefabAsset(go);
+        return go.scene == null || go.scene.name == go.name
+            || go.scene.name == null || go.scene.name == "";
     }
 }

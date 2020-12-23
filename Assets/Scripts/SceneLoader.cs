@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class SceneLoader : SavableMonoBehaviour
+public class SceneLoader : MonoBehaviour, ISetting
 {
     private static SceneLoader currentScene;//the scene that Merky is currently in
 
@@ -225,16 +225,23 @@ public class SceneLoader : SavableMonoBehaviour
 
     #endregion
 
-    public override SavableObject CurrentState
+    public SettingObject Setting
     {
-        get => new SavableObject(this,
+        get => new SettingObject(ID,
             "firstOpenGameStateId", firstOpenGameStateId,
             "lastOpenGameStateId", lastOpenGameStateId
             );
         set
         {
-            firstOpenGameStateId = value.Int("firstOpenGameStateId");
-            lastOpenGameStateId = value.Int("lastOpenGameStateId");
+            firstOpenGameStateId = (int)value.data["firstOpenGameStateId"];
+            lastOpenGameStateId = (int)value.data["lastOpenGameStateId"];
         }
+    }
+
+    public SettingScope Scope => SettingScope.SAVE_FILE;
+
+    public string ID
+    {
+        get => GetType().Name;
     }
 }
