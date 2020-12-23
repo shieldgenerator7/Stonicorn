@@ -160,6 +160,32 @@ public class SceneLoader : SavableMonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D coll2D)
+    {
+        //Move objects that enter your scene into it
+        if (!coll2D.gameObject.isPlayer() && coll2D.gameObject.scene != Scene)
+        {
+            GameObject go = coll2D.gameObject;
+            if (coll2D.transform.parent != null)
+            {
+                Rigidbody2D rb2d = coll2D.GetComponent<Rigidbody2D>();
+                if (!rb2d)
+                {
+                    rb2d = coll2D.GetComponentInParent<Rigidbody2D>();
+                }
+                if (rb2d)
+                {
+                    go = rb2d.gameObject;
+                }
+                if (go.transform.parent != null)
+                {
+                    go.transform.SetParent(null);
+                }
+            }
+            SceneManager.MoveGameObjectToScene(go, Scene);
+        }
+    }
+
     #region Static Helper Methods
 
     public static Scene getCurrentScene()
