@@ -299,15 +299,23 @@ public class CustomMenu
         }
         //If any are loaded, unload them all.
         //Else, load them all.
+        loadAllLevelScenes(!anyLoaded);
+    }
+    public static void loadAllLevelScenes(bool load)
+    {
+        int firstLevelIndex = 3;
+        //Load or unload all the level scenes
         for (int i = firstLevelIndex; i < EditorBuildSettings.scenes.Length; i++)
         {
             Scene scene = EditorSceneManager.GetSceneByBuildIndex(i);
-            if (anyLoaded)
+            if (!load)
             {
+                //Unload
                 EditorSceneManager.CloseScene(scene, false);
             }
             else
             {
+                //Load
                 EditorSceneManager.OpenScene(
                     "Assets/Scenes/Levels/" + scene.name + ".unity",
                     OpenSceneMode.Additive
@@ -392,6 +400,38 @@ public class CustomMenu
             );
             Selection.activeObject = logger;
         }
+    }
+
+    [MenuItem("SG7/Editor/Pre-Build/Perform all Pre-Build Tasks")]
+    public static void performAllPreBuildTasks()
+    {
+        //Setup
+        loadAllLevelScenes(false);
+        loadAllLevelScenes(true);
+        while (!allLevelScenesLoaded())
+        {
+            new WaitForSecondsRealtime(0.1f);
+        }
+
+        //Checklist
+        refreshSceneSavableObjectLists();
+
+        //Cleanup
+        loadAllLevelScenes(false);
+    }
+
+    static bool allLevelScenesLoaded()
+    {
+        int firstLevelIndex = 3;
+        for (int i = firstLevelIndex; i < EditorBuildSettings.scenes.Length; i++)
+        {
+            Scene scene = EditorSceneManager.GetSceneByBuildIndex(i);
+            if (!scene.isLoaded)
+            {
+                return false;
+            }
+        }
+        return true;
     }
     [MenuItem("SG7/Editor/Pre-Build/Refresh Scene Savable Object Lists")]
     public static void refreshSceneSavableObjectLists()
