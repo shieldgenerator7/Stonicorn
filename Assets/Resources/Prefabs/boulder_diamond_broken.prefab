@@ -9893,7 +9893,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4806767686556778}
-  - component: {fileID: 114699963429876650}
   - component: {fileID: -6441217185553498063}
   m_Layer: 0
   m_Name: boulder_diamond_broken
@@ -9920,20 +9919,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114699963429876650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1250430273124142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deb113523b733e742b0c810b8cab995b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefabName: boulder_diamond_broken
-  spawnTag: 
 --- !u!114 &-6441217185553498063
 MonoBehaviour:
   m_ObjectHideFlags: 0

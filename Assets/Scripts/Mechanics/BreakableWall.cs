@@ -46,16 +46,9 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
                         SceneLoader.moveToScene(pieces, gameObject.scene);
                         string tag = "" + System.DateTime.Now.Ticks;
                         pieces.name = gameObject.name + "---" + tag;
-                        CrackedPiece cp = pieces.GetComponent<CrackedPiece>();
-                        cp.spawnTag = tag;
+                        ObjectInfo cp = pieces.GetComponent<ObjectInfo>();
                         foreach (Transform t in pieces.transform)
                         {
-                            if (t.gameObject.GetComponent<CrackedPiece>() == null)
-                            {
-                                CrackedPiece tcp = t.gameObject.AddComponent<CrackedPiece>();
-                                tcp.prefabName = cp.prefabName;
-                                tcp.spawnTag = cp.spawnTag;
-                            }
                             t.gameObject.name += tag;
                             t.localScale = transform.localScale;
                             t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
