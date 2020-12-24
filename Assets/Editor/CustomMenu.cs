@@ -483,12 +483,24 @@ public class CustomMenu
         List<GameObject> savables = new List<GameObject>();
         GameObject.FindObjectsOfType<SceneSavableList>().ToList()
             .ForEach(ssl => savables.AddRange(ssl.savables));
+        //Missing ObjectInfo
         List<GameObject> missingInfo = savables
             .FindAll(go => !go.GetComponent<ObjectInfo>());
         missingInfo.ForEach(
             go => Debug.LogError(go.name + " does not have an ObjectInfo!", go)
             );
-        return missingInfo.Count > 0;
+        //Null info in ObjectInfo
+        List<GameObject> nullInfo = savables
+            .FindAll(go =>
+            {
+                ObjectInfo info = go.GetComponent<ObjectInfo>();
+                return info && (info.PrefabGUID == null || info.PrefabGUID == "");
+            }
+            );
+        nullInfo.ForEach(
+            go => Debug.LogError(go.name + " has ObjectInfo with missing prefabGUID!", go)
+            );
+        return missingInfo.Count > 0 || nullInfo.Count > 0;
     }
 
     [MenuItem("SG7/Build/Build Windows %w")]

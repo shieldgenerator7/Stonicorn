@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 /// <summary>
 /// Contains information about a GameObject
@@ -11,13 +15,17 @@ using UnityEngine;
 public class ObjectInfo : MonoBehaviour
 {
     [SerializeField]
-    private string prefabName;
-    public string PrefabName => prefabName;
+    private AssetReference prefabAddress;
+    public string PrefabGUID => prefabAddress.AssetGUID;
 
 #if UNITY_EDITOR
     public void autoset()
     {
-        prefabName = gameObject.name;
+        prefabAddress = new AssetReference(
+            AssetDatabase.AssetPathToGUID(
+            AssetDatabase.GetAssetPath(gameObject)
+            )
+            );
     }
 #endif
 }
