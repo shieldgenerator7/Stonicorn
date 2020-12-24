@@ -17,14 +17,14 @@ public class ObjectState
     //Name
     public string objectName;
     public string sceneName;
-    public string prefabName;
+    public string prefabGUID;
 
     public ObjectState() { }
     public ObjectState(GameObject go)
     {
         objectName = go.name;
         sceneName = go.scene.name;
-        prefabName = go.GetComponent<ObjectInfo>().PrefabName;
+        prefabGUID = go.GetComponent<ObjectInfo>().PrefabGUID;
         saveState(go);
     }
 
@@ -45,13 +45,8 @@ public class ObjectState
             this.soList.Add(smb.CurrentState);
         }
     }
-    public void loadState()
+    public void loadState(GameObject go)
     {
-        GameObject go = getGameObject();//finds and sets the game object
-        if (go == null)
-        {
-            return;//don't load the state if go is null
-        }
         go.transform.localPosition = position;
         go.transform.localScale = localScale;
         go.transform.localRotation = rotation;
@@ -78,85 +73,5 @@ public class ObjectState
             }
             smb.CurrentState = so;
         }
-    }
-
-    //
-    //Retrieves the variable, go,
-    //and if go is null, it finds the correct GameObject and sets go
-    //
-    public GameObject getGameObject()
-    {
-        GameObject go = null;
-        if (go == null || ReferenceEquals(go, null))//2016-11-20: reference equals test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
-        {
-            Scene scene = SceneManager.GetSceneByName(sceneName);
-            if (scene.IsValid() && scene.isLoaded)
-            {
-                //First Pass: get GO from ObjectManager list
-                go = Managers.Object.getObject(objectName);
-                //Second Pass: try spawning it
-                if (go == null || ReferenceEquals(go, null))
-                {
-                    foreach (SavableObject so in soList)
-                    {
-                        //Make it
-                        GameObject spawned = so.spawnObject(objectName, prefabName);
-                        if (spawned.scene.name != sceneName)
-                        {
-                            SceneManager.MoveGameObjectToScene(spawned, scene);
-                        }
-                        foreach (Transform t in spawned.transform)
-                        {
-                            if (t.gameObject.isSavable())
-                            {
-                                Managers.Object.addObject(t.gameObject);
-                                if (t.gameObject.name == this.objectName)
-                                {
-                                    go = t.gameObject;
-                                }
-                            }
-                        }
-                        if (go == null)
-                        {
-                            go = spawned;
-                            go.name = this.objectName;
-                        }
-                        Managers.Object.addObject(spawned);
-                        break;
-                    }
-                }
-                //Third Pass: get GO by searching all the scene objects
-                if (go == null)
-                {
-                    foreach (GameObject sceneGo in scene.GetRootGameObjects())
-                    {
-                        if (sceneGo.name == objectName)
-                        {
-                            go = sceneGo;
-                            break;
-                        }
-                        else
-                        {
-                            foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
-                            {
-                                GameObject childGo = childTransform.gameObject;
-                                if (childGo.name == objectName)
-                                {
-                                    go = childGo;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            //Else if the scene is not loaded,
-            else
-            {
-                //Don't find the object
-                go = null;
-            }
-        }
-        return go;
     }
 }

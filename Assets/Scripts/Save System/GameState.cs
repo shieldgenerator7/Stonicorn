@@ -31,7 +31,7 @@ public class GameState
         id = nextid;
         nextid++;
     }
-    public GameState(ICollection<GameObject> list) : this()
+    public GameState(List<GameObject> list) : this()
     {
         //Object States
         foreach (GameObject go in list)
@@ -57,7 +57,28 @@ public class GameState
     //Loading
     public void load()
     {
-        states.ForEach(os => os.loadState());
+        states.ForEach(os =>
+        {
+            GameObject go = Managers.Object.getObject(os.objectName);
+            if (go != null && !ReferenceEquals(go, null))
+            {
+                os.loadState(go);
+            }
+            else
+            {
+                Scene scene = SceneManager.GetSceneByName(os.sceneName);
+                if (scene.IsValid() && scene.isLoaded)
+                {
+                    //If scene is valid, Create the GameObject
+                    Managers.Object.createObject(os.objectName, os.prefabGUID)
+                        .Completed += (op) =>
+                        {
+                            os.loadState(op.Result);
+                            SceneLoader.moveToScene(op.Result, os.sceneName);
+                        };
+                }
+            }
+        });
     }
     public bool loadObject(GameObject go)
     {
@@ -66,20 +87,11 @@ public class GameState
             );
         if (state != null)
         {
-            state.loadState();
+            state.loadState(go);
             return true;
         }
         return false;
     }
-    //
-    //Spawned Objects
-    //
-
-    //
-    //Gets the list of the game objects that have object states in this game state
-    //
-    public List<GameObject> getGameObjects()
-        => states.ConvertAll(os => os.getGameObject());
 
     //Returns true IFF the given GameObject has an ObjectState in this GameState
     public bool hasGameObject(GameObject go)

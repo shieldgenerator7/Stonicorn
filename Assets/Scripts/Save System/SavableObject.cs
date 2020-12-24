@@ -68,21 +68,6 @@ public class SavableObject
     public Vector2 Vector2(string name)
         => (Vector2)data[name];
 
-    /// <summary>
-    /// Spawn this saved object's game object
-    /// This method is used during load
-    /// precondition: the game object does not already exist (or at least has not been found)
-    /// </summary>
-    /// <returns></returns>
-    public GameObject spawnObject(string goName, string prefabName)
-    {
-        GameObject newGO = (GameObject)GameObject.Instantiate(
-            Resources.Load("Prefabs/" + prefabName)
-            );
-        newGO.name = goName;
-        return newGO;
-    }
-
     public System.Type ScriptType
     {
         get
