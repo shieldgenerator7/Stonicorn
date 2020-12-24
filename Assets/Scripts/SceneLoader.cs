@@ -182,7 +182,7 @@ public class SceneLoader : MonoBehaviour, ISetting
                     go.transform.SetParent(null);
                 }
             }
-            SceneManager.MoveGameObjectToScene(go, Scene);
+            moveToScene(go, Scene);
         }
     }
 
