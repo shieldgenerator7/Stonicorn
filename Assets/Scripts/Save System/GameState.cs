@@ -45,10 +45,10 @@ public class GameState
                     Merky = os;
                 }
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException nre)
             {
                 Debug.LogError(
-                    "Object " + go.name + " does not have an ObjectInfo.",
+                    "Object " + go.name + " does not have an ObjectInfo. NRE: " + nre,
                     go
                     );
             }
