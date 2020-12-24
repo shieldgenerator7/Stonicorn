@@ -208,6 +208,10 @@ public class SceneLoader : MonoBehaviour, ISetting
         }
         moveToScene(go, getCurrentScene());
     }
+    public static void moveToScene(GameObject go, string sceneName)
+    {
+        moveToScene(go, SceneManager.GetSceneByName(sceneName));
+    }
     public static void moveToScene(GameObject go, Scene s)
     {
         try
