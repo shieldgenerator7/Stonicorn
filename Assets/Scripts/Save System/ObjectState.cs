@@ -30,16 +30,18 @@ public class ObjectState
 
     private void saveState(GameObject go)
     {
+        //Transform
         position = go.transform.position;
         localScale = go.transform.localScale;
         rotation = go.transform.rotation;
+        //Rigidbody2D
         Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
             velocity = rb2d.velocity;
             angularVelocity = rb2d.angularVelocity;
         }
-        soList = new List<SavableObject>();
+        //SavableMonoBehaviours
         foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
         {
             this.soList.Add(smb.CurrentState);
