@@ -68,10 +68,15 @@ public class ObjectManager : MonoBehaviour
             && !(gameObjects[key] == null
             || ReferenceEquals(gameObjects[key], null)))
         {
-            throw new System.ArgumentException(
-                  "GameObject (" + key + ") is already inside the gameObjects dictionary! "
-                  + "Check for 2 or more objects with the same name."
-                  );
+            if (gameObjects[key] == go)
+            {
+                //Just the same object being added twice, not a big deal
+                return;
+            }
+            //throw new System.ArgumentException(
+            //      "GameObject (" + key + ") is already inside the gameObjects dictionary! "
+            //      + "Check for 2 or more objects with the same name."
+            //      );
         }
         //If the game object doesn't have any state to save...
         if (!go.isSavable())
@@ -81,8 +86,17 @@ public class ObjectManager : MonoBehaviour
                 + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
                 );
         }
-        //Else if all good, add the object
-        gameObjects.Add(key, go);
+        if (gameObjects.ContainsKey(key))
+        {
+            Debug.LogError("Replacing object: " + gameObjects[key], gameObjects[key]);
+            Debug.LogError("Replacing with: " + go, go);
+            gameObjects[key] = go;
+        }
+        else
+        {
+            //Else if all good, add the object
+            gameObjects.Add(key, go);
+        }
     }
 
     /// <summary>
@@ -121,6 +135,7 @@ public class ObjectManager : MonoBehaviour
     /// <param name="go">The GameObject to destroy</param>
     public void destroyObject(GameObject go)
     {
+        Debug.Log("Destroying object: " + go.name);
         removeObject(go);
         Destroy(go);
     }
