@@ -97,31 +97,15 @@ public class RewindManager : MonoBehaviour
         {
             return;
         }
+        GameState gameState = gameStates[gamestateId];
         //Remove null objects from the list
         Managers.Object.cleanObjects();
         //Destroy objects not spawned yet in the new selected state
-        List<GameObject> destroyObjectList = new List<GameObject>();
-        foreach (GameObject go in Managers.Object.GameObjects)
-        {
-            foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
-            {
-                //And if the game object is not in the game state,
-                if (!gameStates[gamestateId].hasGameObject(go))
-                {
-                    //remove it from game objects list
-                    //by adding it to the list of game objects to be destroyed
-                    destroyObjectList.Add(go);
-                }
-            }
-        }
-        //Actually destroy the objects that need destroyed
-        for (int i = destroyObjectList.Count - 1; i >= 0; i--)
-        {
-            //Work around to avoid deleting objects from a list that's being iterated over
-            Managers.Object.destroyObject(destroyObjectList[i]);
-        }
+        Managers.Object.GameObjects
+            .FindAll(go => !gameState.hasGameObject(go))
+            .ForEach(go => Managers.Object.destroyObject(go));
         //Actually load the game state
-        gameStates[gamestateId].load();
+        gameState.load();
 
         //Destroy game states in game-state-future
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
