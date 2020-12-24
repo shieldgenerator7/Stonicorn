@@ -9,14 +9,18 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class BrokenPiece : MonoBehaviour, ISavableContainer
 {
+    private List<GameObject> savables;
     public List<GameObject> Savables
     {
         get
         {
-            List<GameObject> savables = new List<GameObject>();
-            foreach (Transform t in transform)
+            if (savables == null)
             {
-                savables.Add(t.gameObject);
+                savables = new List<GameObject>();
+                foreach (Transform t in transform)
+                {
+                    savables.Add(t.gameObject);
+                }
             }
             return savables;
         }
@@ -33,9 +37,11 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
         //Initialize child objects
         Vector3 origScale = original.transform.localScale;
         SpriteRenderer origSR = original.GetComponent<SpriteRenderer>();
-        foreach (Transform t in transform)
+        foreach (GameObject go in Savables)
+        //foreach (Transform t in transform)
         {
-            GameObject go = t.gameObject;
+            Transform t = go.transform;
+            //GameObject go = t.gameObject;
             //Scale and Position
             t.localScale = new Vector3(
                 t.localScale.x * origScale.x,

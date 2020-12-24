@@ -28,8 +28,6 @@ public class ObjectManager : MonoBehaviour
             throw new System.ArgumentNullException("GameObject (" + go + ") cannot be null!");
         }
 
-        //getKey() returns a string containing
-        //the object's name and scene name
         string key = go.getKey();
 
         //If the game object's name is already in the dictionary,
