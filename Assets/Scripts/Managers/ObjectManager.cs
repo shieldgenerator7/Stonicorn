@@ -27,7 +27,7 @@ public class ObjectManager : MonoBehaviour
     {
         AssetReference assetRef = new AssetReference(prefabGUID);
         //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
-        var op = Addressables.LoadAssetAsync<GameObject>(assetRef);
+        var op = Addressables.InstantiateAsync(assetRef);
         op.Completed += (operation) =>
         {
             GameObject newGO = operation.Result;
