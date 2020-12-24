@@ -234,6 +234,7 @@ public class EffectManager : MonoBehaviour
 
     public void hideSwapCircleEffects(List<GameObject> exceptions)
     {
+        swapCircleList.RemoveAll(sr => sr == null);
         swapCircleList
             .FindAll(sr => !exceptions.Contains(sr.transform.parent.gameObject))
             .ForEach(sr =>
