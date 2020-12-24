@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakableWall : SavableMonoBehaviour, IBlastable
+public class BreakableWall : SavableMonoBehaviour, IBlastable, ICopyable
 {
     public float minForceThreshold = 2.5f;//the minimum amount of force required to crack it
     public float maxForceThreshold = 50;//the maximum amount of force consumed per damage
@@ -17,79 +18,29 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
         set
         {
             integrity = Mathf.Clamp(value, 0, maxIntegrity);
-            if (sr == null)
-            {
-                sr = GetComponent<SpriteRenderer>();
-            }
+
             if (integrity > 0)
             {
+                if (sr == null)
+                {
+                    sr = GetComponent<SpriteRenderer>();
+                }
                 sr.sprite = crackStages[maxIntegrity - integrity];
             }
             else
             {
-                if (gameObject.activeSelf)
-                {
-                    Managers.Object.destroyObject(gameObject);
-                    //
-                    //Break into pieces
-                    //
-                    if (crackedPieces == null || ReferenceEquals(crackedPieces, null))
-                    {
-                        GameObject pieces = Instantiate(crackedPrefab);
-                        this.crackedPieces = pieces;
-                        pieces.transform.position = transform.position;
-                        pieces.transform.rotation = transform.rotation;
-                        SceneLoader.moveToScene(pieces, gameObject.scene);
-                        string tag = "" + System.DateTime.Now.Ticks;
-                        pieces.name = gameObject.name + "---" + tag;
-                        ObjectInfo cp = pieces.GetComponent<ObjectInfo>();
-                        foreach (Transform t in pieces.transform)
-                        {
-                            t.gameObject.name += tag;
-                            t.localScale = transform.localScale;
-                            t.localPosition = new Vector2(t.localPosition.x * t.localScale.x, t.localPosition.y * t.localScale.y);
-                            //Sprite Renderer Copying
-                            SpriteRenderer tsr = t.gameObject.GetComponent<SpriteRenderer>();
-                            try
-                            {
-                                tsr.color = sr.color;
-                                tsr.sortingLayerID = sr.sortingLayerID;
-                                tsr.sortingOrder = sr.sortingOrder;
-                            }
-                            catch (MissingComponentException mce)
-                            {
-                                throw new MissingComponentException(
-                                    "HardMaterial (" + gameObject.name + ") broken prefab piece (" + t.gameObject.name + ") is missing a SpriteRenderer: sr: " + tsr,
-                                    mce);
-                            }
-                            //Breakable Wall Copying
-                            BreakableWall bw = t.gameObject.GetComponent<BreakableWall>();
-                            if (bw)
-                            {
-                                bw.minForceThreshold = this.minForceThreshold;
-                                bw.maxForceThreshold = this.maxForceThreshold;
-                                bw.maxIntegrity = this.maxIntegrity;
-                                if (bw.integrity == 0)
-                                {
-                                    bw.integrity = this.maxIntegrity / pieces.transform.childCount;
-                                }
-                            }
-                            //Register new object
-                            Managers.Object.addObject(t.gameObject);
-                        }
-                        Managers.Object.addObject(pieces);
-                    }
-                    //
-                    //Reveal hidden areas
-                    //
-                    foreach (HiddenArea ha in secretHiders)
-                    {
-                        if (ha != null && !ReferenceEquals(ha, null))
-                        {
-                            ha.Discovered = true;
-                        }
-                    }
-                }
+                //Break into pieces
+                GameObject pieces = Utility.Instantiate(crackedPrefab);
+                BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
+                brokenPiece.init(gameObject);
+
+                //Reveal hidden areas
+                secretHiders
+                    .FindAll(ha => ha != null && !ReferenceEquals(ha, null))
+                    .ForEach(ha => ha.Discovered = true);
+
+                //Destory object
+                Managers.Object.destroyObject(gameObject);
             }
         }
     }
@@ -101,8 +52,6 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
     public AudioClip soundDamageOne;
     public AudioClip soundDamageTwoOrMore;
     public List<HiddenArea> secretHiders;
-
-    private GameObject crackedPieces = null;//Not null while broken
 
     //Components
     private SpriteRenderer sr;
@@ -157,13 +106,6 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
         {
             int damage = Mathf.Max(1, Mathf.FloorToInt(force / maxForceThreshold));
             Integrity -= damage;
-            if (integrity == 0)
-            {
-                foreach (Rigidbody2D rb2d in crackedPieces.GetComponentsInChildren<Rigidbody2D>())
-                {
-                    rb2d.AddForce(direction.normalized * force);
-                }
-            }
             return damage;
         }
         return 0;
@@ -174,26 +116,26 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
         return explosionPos.distanceToObject(gameObject);
     }
 
+    public Type CopyableType => typeof(BreakableWall);
+
+    public void copyFrom(GameObject original)
+    {
+        BreakableWall bw = original.GetComponent<BreakableWall>();
+        minForceThreshold = bw.minForceThreshold;
+        maxForceThreshold = bw.maxForceThreshold;
+        maxIntegrity = bw.maxIntegrity;
+        if (integrity == 0)
+        {
+            integrity = maxIntegrity;
+        }
+    }
+
     public override SavableObject CurrentState
     {
         get => new SavableObject(this, "integrity", integrity);
         set
         {
             Integrity = value.Int("integrity");
-            //If it doesnt have a reference to its cracked pieces,
-            if (crackedPieces == null || ReferenceEquals(crackedPieces, null))
-            {
-                //Find the object
-                List<GameObject> gos = Managers.Object.getObjectsWithName(gameObject.name + "---");
-                if (gos.Count > 0)
-                {
-                    crackedPieces = gos[0];
-                }
-                else
-                {
-                    crackedPieces = null;
-                }
-            }
         }
     }
 }

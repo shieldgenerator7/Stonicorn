@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Breaks apart a spawned prefab into its child pieces
 /// </summary>
+[DisallowMultipleComponent]
 public class BrokenPiece : MonoBehaviour
 {
     public void init(GameObject original)
