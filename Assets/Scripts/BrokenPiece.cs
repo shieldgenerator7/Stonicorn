@@ -7,15 +7,25 @@ using UnityEngine.SceneManagement;
 /// Breaks apart a spawned prefab into its child pieces
 /// </summary>
 [DisallowMultipleComponent]
-public class BrokenPiece : MonoBehaviour
+public class BrokenPiece : MonoBehaviour, ISavableContainer
 {
-    public void init(GameObject original)
+    public List<GameObject> Savables
     {
-        string spawnTag = "---" + System.DateTime.Now.Ticks;
-        Scene scene = original.scene;
+        get
+        {
+            List<GameObject> savables = new List<GameObject>();
+            foreach (Transform t in transform)
+            {
+                savables.Add(t.gameObject);
+            }
+            return savables;
+        }
+    }
 
+    public void unpack(GameObject original)
+    {
         //Initialize this object
-        name += spawnTag;
+        Scene scene = original.scene;
         transform.position = original.transform.position;
         transform.rotation = original.transform.rotation;
         SceneLoader.moveToScene(gameObject, scene);
@@ -26,8 +36,6 @@ public class BrokenPiece : MonoBehaviour
         foreach (Transform t in transform)
         {
             GameObject go = t.gameObject;
-            //Spawn Tag
-            go.name += spawnTag;
             //Scale and Position
             t.localScale = new Vector3(
                 t.localScale.x * origScale.x,
@@ -56,8 +64,8 @@ public class BrokenPiece : MonoBehaviour
             t.SetParent(null);
             //Put it in the scene
             SceneLoader.moveToScene(go, scene);
-            //Register it
-            Managers.Object.addObject(go);
         }
+        //Delete this object
+        Destroy(gameObject);
     }
 }

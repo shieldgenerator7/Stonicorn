@@ -32,7 +32,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ICopyable
                 //Break into pieces
                 GameObject pieces = Utility.Instantiate(crackedPrefab);
                 BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
-                brokenPiece.init(gameObject);
+                brokenPiece.unpack(gameObject);
 
                 //Reveal hidden areas
                 secretHiders

@@ -436,21 +436,39 @@ public static class Utility
     public static GameObject Instantiate(GameObject prefab)
     {
         //Checks to make sure it's rewindable
-        bool savable = prefab.isSavable();
-        if (!savable)
+        ISavableContainer container = prefab.GetComponent<ISavableContainer>();
+        bool isSavable = prefab.isSavable();
+        if (container == null)
         {
-            throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
-        }
-        bool hasInfo = prefab.GetComponent<ObjectInfo>();
-        if (!hasInfo)
-        {
-            throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
+            if (!isSavable)
+            {
+                throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
+            }
+            bool hasInfo = prefab.GetComponent<ObjectInfo>();
+            if (!hasInfo)
+            {
+                throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
+            }
         }
         //Instantiate
         GameObject newObj = GameObject.Instantiate(prefab);
-        newObj.name += System.DateTime.Now.Ticks;
+        string spawnTag = "---" + System.DateTime.Now.Ticks;
+        newObj.name += spawnTag;
         SceneLoader.moveToCurrentScene(newObj);
-        Managers.Object.addObject(newObj);
+        if (isSavable)
+        {
+            Managers.Object.addObject(newObj);
+        }
+        //Container children
+        if (container != null)
+        {
+            container.Savables.ForEach(savable =>
+            {
+                savable.name += spawnTag;
+                Managers.Object.addObject(savable);
+            });
+        }
+        //Return spawned object
         return newObj;
     }
 
