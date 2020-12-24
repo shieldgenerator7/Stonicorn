@@ -30,9 +30,9 @@ public class ObjectState
 
     private void saveState(GameObject go)
     {
-        position = go.transform.localPosition;
+        position = go.transform.position;
         localScale = go.transform.localScale;
-        rotation = go.transform.localRotation;
+        rotation = go.transform.rotation;
         Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
@@ -47,9 +47,9 @@ public class ObjectState
     }
     public void loadState(GameObject go)
     {
-        go.transform.localPosition = position;
+        go.transform.position = position;
         go.transform.localScale = localScale;
-        go.transform.localRotation = rotation;
+        go.transform.rotation = rotation;
         Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
