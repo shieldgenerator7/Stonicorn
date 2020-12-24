@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class ObjectManager : MonoBehaviour
 {
@@ -11,6 +13,36 @@ public class ObjectManager : MonoBehaviour
 
     //Memories
     private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
+
+    /// <summary>
+    /// Spawn a GameObject with the given name from the given prefab GUID
+    /// This method is used during load.
+    /// Precondition: the game object does not already exist
+    /// (or at least has not been found).
+    /// </summary>
+    /// <param name="goName"></param>
+    /// <param name="prefabGUID"></param>
+    /// <returns></returns>
+    public AsyncOperationHandle<GameObject> createObject(string goName, string prefabGUID)
+    {
+        AssetReference assetRef = new AssetReference(prefabGUID);
+        //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
+        var op = Addressables.LoadAssetAsync<GameObject>(assetRef);
+        op.Completed += (operation) =>
+        {
+            GameObject newGO = operation.Result;
+            newGO.name = goName;
+            addObject(newGO);
+            foreach (Transform t in newGO.transform)
+            {
+                if (t.gameObject.isSavable())
+                {
+                    addObject(t.gameObject);
+                }
+            }
+        };
+        return op;
+    }
 
     /// <summary>
     /// Adds an object to list of objects that have state to save
