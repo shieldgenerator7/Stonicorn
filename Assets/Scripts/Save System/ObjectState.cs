@@ -94,14 +94,7 @@ public class ObjectState
             {
                 //First Pass: get GO from ObjectManager list
                 go = Managers.Object.getObject(objectName);
-                //Second Pass: get GO from ObjectManager Forgotten Object list
-                if (go == null)
-                {
-                    go = Managers.Object.ForgottenObjects.Find(
-                        lgo => lgo != null && lgo.name == objectName && lgo.scene.name == sceneName
-                        );
-                }
-                //Third Pass: try spawning it, if applicable
+                //Second Pass: try spawning it
                 if (go == null || ReferenceEquals(go, null))
                 {
                     foreach (SavableObject so in soList)
@@ -132,7 +125,7 @@ public class ObjectState
                         break;
                     }
                 }
-                //Fourth Pass: get GO by searching all the scene objects
+                //Third Pass: get GO by searching all the scene objects
                 if (go == null)
                 {
                     foreach (GameObject sceneGo in scene.GetRootGameObjects())

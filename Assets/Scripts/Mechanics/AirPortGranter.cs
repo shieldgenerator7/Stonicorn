@@ -11,8 +11,11 @@ public class AirPortGranter : SavableMonoBehaviour
         set
         {
             used = value;
-            Managers.Object.saveForgottenObject(gameObject, used);
-            if (!used)
+            if (used)
+            {
+                Managers.Object.destroyObject(gameObject);
+            }
+            else
             {
                 GetComponent<SpriteRenderer>().color =
                     GetComponent<SpriteRenderer>().color.adjustAlpha(1);

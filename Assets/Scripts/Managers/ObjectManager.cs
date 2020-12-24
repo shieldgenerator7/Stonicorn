@@ -8,8 +8,6 @@ public class ObjectManager : MonoBehaviour
     private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();//list of current objects that have state to save
     public List<GameObject> GameObjects => gameObjects.Values.ToList();
     public int GameObjectCount => gameObjects.Count;
-    private List<GameObject> forgottenObjects = new List<GameObject>();//a list of objects that are inactive and thus unfindable, but still have state to save
-    public List<GameObject> ForgottenObjects => forgottenObjects;
 
     //Memories
     private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
@@ -103,7 +101,6 @@ public class ObjectManager : MonoBehaviour
     private void removeObject(GameObject go)
     {
         gameObjects.Remove(go.getKey());
-        forgottenObjects.Remove(go);
         //If go is not null and has children,
         if (go && go.transform.childCount > 0)
         {
@@ -112,8 +109,6 @@ public class ObjectManager : MonoBehaviour
             {
                 //Remove it from the gameObjects list
                 gameObjects.Remove(t.gameObject.getKey());
-                //And from the forgotten objects list
-                forgottenObjects.Remove(t.gameObject);
             }
         }
     }
@@ -150,7 +145,6 @@ public class ObjectManager : MonoBehaviour
     public void clearObjects()
     {
         gameObjects.Clear();
-        forgottenObjects.Clear();
         memories.Clear();
     }
 
@@ -174,14 +168,6 @@ public class ObjectManager : MonoBehaviour
                 addObject(smb.gameObject);
             }
         }
-        //Forgotten Objects
-        foreach (GameObject fgo in forgottenObjects)
-        {
-            if (fgo != null)
-            {
-                addObject(fgo);
-            }
-        }
         //Memories
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
@@ -198,35 +184,6 @@ public class ObjectManager : MonoBehaviour
                 //Save the memory
                 memories.Add(key, mmb.getMemoryObject());
             }
-        }
-    }
-
-    /// <summary>
-    /// Stores the given object before it gets set inactive
-    /// </summary>
-    /// <param name="obj"></param>
-    public void saveForgottenObject(GameObject obj, bool forget = true)
-    {
-        //Error checking
-        if (obj == null)
-        {
-            throw new System.ArgumentNullException("GameManager.saveForgottenObject() cannot accept null for obj! obj: " + obj);
-        }
-        //If it's about to be set inactive,
-        if (forget)
-        {
-            //Add it to the list,
-            forgottenObjects.Add(obj);
-            //And set it inactive
-            obj.SetActive(false);
-        }
-        //Else,
-        else
-        {
-            //Remove it from the list,
-            forgottenObjects.Remove(obj);
-            //And set it active again
-            obj.SetActive(true);
         }
     }
 

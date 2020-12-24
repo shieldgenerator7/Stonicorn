@@ -24,16 +24,12 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
             if (integrity > 0)
             {
                 sr.sprite = crackStages[maxIntegrity - integrity];
-                if (!gameObject.activeSelf)
-                {
-                    Managers.Object.saveForgottenObject(gameObject, false);
-                }
             }
             else
             {
                 if (gameObject.activeSelf)
                 {
-                    Managers.Object.saveForgottenObject(gameObject, true);
+                    Managers.Object.destroyObject(gameObject);
                     //
                     //Break into pieces
                     //

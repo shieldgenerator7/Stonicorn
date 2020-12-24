@@ -140,11 +140,6 @@ public class HardMaterial : SavableMonoBehaviour, IBlastable, ICuttable
         {
             //Display cracked sprites
             updateCrackingDisplay(integrity);
-            //Forgotten Objects
-            if (alreadyBroken || !gameObject.activeInHierarchy || oldIntegrity < 0)
-            {
-                Managers.Object.saveForgottenObject(gameObject, false);
-            }
         }
         else if (oldIntegrity > 0 || gameObject.activeInHierarchy)
         {
@@ -221,7 +216,7 @@ public class HardMaterial : SavableMonoBehaviour, IBlastable, ICuttable
             }
             if (crackedPrefab != null || disappearsIfNoBrokenPrefab)
             {
-                Managers.Object.saveForgottenObject(gameObject);
+                Managers.Object.destroyObject(gameObject);
                 shouldRefresh = true;
             }
             if (!Managers.Rewind.Rewinding)
