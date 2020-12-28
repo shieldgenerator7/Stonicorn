@@ -12,7 +12,7 @@ using UnityEngine.AddressableAssets;
 /// </summary>
 /// 
 [DisallowMultipleComponent]
-public class ObjectInfo : MonoBehaviour
+public abstract class ObjectInfo : MonoBehaviour
 {
     [SerializeField]
     private int id = -1;
