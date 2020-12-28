@@ -14,6 +14,9 @@ public class ObjectManager : MonoBehaviour
     //Memories
     private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
 
+    //Create queue
+    private Dictionary<string, AsyncOperationHandle<GameObject>> createQueue = new Dictionary<string, AsyncOperationHandle<GameObject>>();
+
     /// <summary>
     /// Spawn a GameObject with the given name from the given prefab GUID
     /// This method is used during load.
@@ -25,23 +28,28 @@ public class ObjectManager : MonoBehaviour
     /// <returns></returns>
     public AsyncOperationHandle<GameObject> createObject(string goName, string prefabGUID)
     {
-        AssetReference assetRef = new AssetReference(prefabGUID);
-        //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
-        var op = Addressables.InstantiateAsync(assetRef);
-        op.Completed += (operation) =>
+        if (!createQueue.ContainsKey(goName))
         {
-            GameObject newGO = operation.Result;
-            newGO.name = goName;
-            addObject(newGO);
-            foreach (Transform t in newGO.transform)
+            AssetReference assetRef = new AssetReference(prefabGUID);
+            //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
+            var op = Addressables.InstantiateAsync(assetRef);
+            createQueue.Add(goName, op);
+            op.Completed += (operation) =>
             {
-                if (t.gameObject.isSavable())
+                GameObject newGO = operation.Result;
+                newGO.name = goName;
+                addObject(newGO);
+                foreach (Transform t in newGO.transform)
                 {
-                    addObject(t.gameObject);
+                    if (t.gameObject.isSavable())
+                    {
+                        addObject(t.gameObject);
+                    }
                 }
-            }
-        };
-        return op;
+                createQueue.Remove(goName);
+            };
+        }
+        return createQueue[goName];
     }
 
     /// <summary>
