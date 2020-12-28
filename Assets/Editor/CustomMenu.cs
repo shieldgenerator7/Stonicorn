@@ -421,6 +421,7 @@ public class CustomMenu
         refreshSceneSavableObjectLists();
         //(new List<Func<bool>>()).ForEach(func => keepScenesOpen = keepScenesOpen || func);
         keepScenesOpen = keepScenesOpen || ensureSavableObjectsHaveObjectInfo();
+        keepScenesOpen = keepScenesOpen || ensureMemoryObjectsHaveObjectInfo();
         keepScenesOpen = keepScenesOpen || ensureUniqueObjectIDs();
 
         //Cleanup
@@ -455,7 +456,11 @@ public class CustomMenu
     {
         List<GameObject> savables = new List<GameObject>();
         GameObject.FindObjectsOfType<SceneSavableList>().ToList()
-            .ForEach(ssl => savables.AddRange(ssl.savables));
+            .ForEach(ssl =>
+            {
+                savables.AddRange(ssl.savables);
+                savables.AddRange(ssl.memories);
+            });
         List<ObjectInfo> infos = savables.ConvertAll(go => go.GetComponent<ObjectInfo>());
         int nextID = 10;
         bool changedId = false;
@@ -487,22 +492,38 @@ public class CustomMenu
             .ForEach(ssl => savables.AddRange(ssl.savables));
         //Missing ObjectInfo
         List<GameObject> missingInfo = savables
-            .FindAll(go => !go.GetComponent<ObjectInfo>());
+            .FindAll(go => !go.GetComponent<SavableObjectInfo>())
+            .FindAll(go => !go.GetComponent<SingletonObjectInfo>());
         missingInfo.ForEach(
-            go => Debug.LogError(go.name + " does not have an ObjectInfo!", go)
+            go => Debug.LogError(go.name + " does not have an SavableObjectInfo!", go)
             );
         //Null info in ObjectInfo
         List<GameObject> nullInfo = savables
             .FindAll(go =>
             {
-                ObjectInfo info = go.GetComponent<ObjectInfo>();
+                SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
                 return info && (info.PrefabGUID == null || info.PrefabGUID == "");
             }
             );
         nullInfo.ForEach(
-            go => Debug.LogError(go.name + " has ObjectInfo with missing prefabGUID!", go)
+            go => Debug.LogError(go.name + " has SavableObjectInfo with missing prefabGUID!", go)
             );
         return missingInfo.Count > 0 || nullInfo.Count > 0;
+    }
+
+    [MenuItem("SG7/Editor/Pre-Build/Ensure memory objects have ObjectInfo")]
+    public static bool ensureMemoryObjectsHaveObjectInfo()
+    {
+        List<GameObject> memories = new List<GameObject>();
+        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
+            .ForEach(ssl => memories.AddRange(ssl.memories));
+        //Missing ObjectInfo
+        List<GameObject> missingInfo = memories
+            .FindAll(go => !go.GetComponent<MemoryObjectInfo>());
+        missingInfo.ForEach(
+            go => Debug.LogError(go.name + " does not have an MemoryObjectInfo!", go)
+            );
+        return missingInfo.Count > 0;
     }
 
     [MenuItem("SG7/Build/Build Windows %w")]

@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingletonObjectInfo : ObjectInfo
+public class MemoryObjectInfo : ObjectInfo
 {
 }

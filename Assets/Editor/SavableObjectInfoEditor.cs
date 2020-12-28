@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(ObjectInfo))]
-public class ObjectInfoEditor : Editor
+[CustomEditor(typeof(SavableObjectInfo))]
+public class SavableObjectInfoEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        ObjectInfo info = (ObjectInfo)target;
+        SavableObjectInfo info = (SavableObjectInfo)target;
         GUI.enabled = isPrefab(info.gameObject);
         if (GUILayout.Button("Autoset (Prefab Only)"))
         {

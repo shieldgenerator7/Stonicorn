@@ -22,7 +22,7 @@ public class ObjectState
     public ObjectState() { }
     public ObjectState(GameObject go)
     {
-        ObjectInfo info = go.GetComponent<ObjectInfo>();
+        SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
         //objectName = info.Id;
         sceneName = go.scene.name;
         prefabGUID = info.PrefabGUID;

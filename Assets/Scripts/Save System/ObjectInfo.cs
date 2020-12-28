@@ -21,18 +21,4 @@ public class ObjectInfo : MonoBehaviour
         get => id;
         set => id = value;
     }
-    [SerializeField]
-    private AssetReference prefabAddress;
-    public virtual string PrefabGUID => prefabAddress.AssetGUID;
-
-#if UNITY_EDITOR
-    public virtual void autoset()
-    {
-        prefabAddress = new AssetReference(
-            AssetDatabase.AssetPathToGUID(
-            AssetDatabase.GetAssetPath(gameObject)
-            )
-            );
-    }
-#endif
 }
