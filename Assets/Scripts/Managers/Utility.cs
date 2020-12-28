@@ -452,26 +452,33 @@ public static class Utility
         }
         //Instantiate
         GameObject newObj = GameObject.Instantiate(prefab);
-        string spawnTag = "---" + System.DateTime.Now.Ticks;
+        int baseId = (int)System.DateTime.Now.Ticks;
+        string spawnTag = "---" + baseId;
         newObj.name += spawnTag;
         SceneLoader.moveToCurrentScene(newObj);
         if (isSavable)
         {
+            newObj.GetComponent<ObjectInfo>().Id = getUniqueId(baseId, 0);
             Managers.Object.addObject(newObj);
         }
         //Container children
         if (isContainer)
         {
             ISavableContainer container = newObj.GetComponent<ISavableContainer>();
+            int nextId = 1;
             container.Savables.ForEach(savable =>
             {
                 savable.name += spawnTag;
+                savable.GetComponent<ObjectInfo>().Id = getUniqueId(baseId, nextId);
+                nextId++;
                 Managers.Object.addObject(savable);
             });
         }
         //Return spawned object
         return newObj;
     }
+    static int getUniqueId(int baseId, int index)
+        => Mathf.Abs(Mathf.Abs(baseId * 10) + index);
 
 
 
