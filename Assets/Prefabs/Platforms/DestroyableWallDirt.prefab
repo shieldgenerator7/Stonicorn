@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1758209678862501833}
   - component: {fileID: 2634418173269644042}
   - component: {fileID: 2691955003973334858}
-  - component: {fileID: 3778158878888956802}
+  - component: {fileID: -6306489784304676480}
   m_Layer: 0
   m_Name: DestroyableWallDirt
   m_TagString: Untagged
@@ -139,7 +139,7 @@ MonoBehaviour:
   soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
---- !u!114 &3778158878888956802
+--- !u!114 &-6306489784304676480
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,9 +148,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8346307271648853251}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: -1
   prefabAddress:
     m_AssetGUID: def9afd975c159e4688d02f926bfff3b
     m_SubObjectName: 

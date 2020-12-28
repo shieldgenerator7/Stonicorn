@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1021631929940538423}
   - component: {fileID: 8449197622075681100}
   - component: {fileID: 5424422690625631310}
-  - component: {fileID: 939565626263634595}
+  - component: {fileID: -7442230501063552991}
   m_Layer: 0
   m_Name: cloud in sky
   m_TagString: Untagged
@@ -143,7 +143,7 @@ MonoBehaviour:
   destroyColliders: 0
   finishAction: 3
   ignorePause: 1
---- !u!114 &939565626263634595
+--- !u!114 &-7442230501063552991
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,9 +152,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1021631929940538422}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: -1
   prefabAddress:
     m_AssetGUID: f1c26d3af0b60294dba087a63f7a5ed8
     m_SubObjectName: 

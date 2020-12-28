@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 3118900764096104388}
   - component: {fileID: 3318912744836079946}
   - component: {fileID: 1521082661794283007}
-  - component: {fileID: 3123995863137665473}
+  - component: {fileID: -3234076151460085041}
   m_Layer: 0
   m_Name: Snail
   m_TagString: Untagged
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundTestDistance: 0.25
   coll2d: {fileID: 8435740046917698784}
---- !u!114 &3123995863137665473
+--- !u!114 &-3234076151460085041
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -282,9 +282,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2897467820420327007}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: -1
   prefabAddress:
     m_AssetGUID: 637afb672a3bb264c9c5f724c9d0b739
     m_SubObjectName: 
