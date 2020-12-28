@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 2545532929247830732}
   - component: {fileID: 2545532929247830733}
   - component: {fileID: 2545532929247830731}
+  - component: {fileID: 2594623838951335886}
   m_Layer: 0
   m_Name: Electric Field Ability Granter
   m_TagString: Untagged
@@ -407,6 +408,19 @@ MonoBehaviour:
   abilityTypeName: ElectricBeamAbility
   canGrantAbility: 1
   canGrantUpgrade: 0
+--- !u!114 &2594623838951335886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2545532929247830728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d8de977453a5e44809362e2d1792a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
 --- !u!1 &2545532929698089931
 GameObject:
   m_ObjectHideFlags: 0

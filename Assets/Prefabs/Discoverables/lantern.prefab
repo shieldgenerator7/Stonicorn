@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 21213562}
   - component: {fileID: 58894557988786028}
   - component: {fileID: 114789097613457408}
+  - component: {fileID: -6270669640547664158}
   m_Layer: 2
   m_Name: lantern
   m_TagString: Untagged
@@ -116,6 +117,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightSound: {fileID: 8300000, guid: e994d77e8af350640bd6830608ced75c, type: 3}
   secretHider: {fileID: 0}
+--- !u!114 &-6270669640547664158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d8de977453a5e44809362e2d1792a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
 --- !u!1 &1265229560948102
 GameObject:
   m_ObjectHideFlags: 0
