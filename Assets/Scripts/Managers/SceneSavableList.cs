@@ -9,6 +9,7 @@ using UnityEngine;
 public class SceneSavableList : MonoBehaviour
 {
     public List<GameObject> savables = new List<GameObject>();
+    public List<GameObject> memories = new List<GameObject>();
 
 #if UNITY_EDITOR
     public void refreshList()
@@ -29,9 +30,26 @@ public class SceneSavableList : MonoBehaviour
                 }
             }
         }
+        memories.Clear();
+        foreach (GameObject rgo in gameObject.scene.GetRootGameObjects())
+        {
+            if (rgo.isMemory())
+            {
+                memories.Add(rgo);
+            }
+            foreach (Transform t in rgo.transform)
+            {
+                GameObject go = t.gameObject;
+                if (go.isMemory())
+                {
+                    memories.Add(go);
+                }
+            }
+        }
         EditorUtility.SetDirty(gameObject);
         Debug.Log(
-            "Found " + savables.Count + " savables in scene " + gameObject.scene.name,
+            "Found " + savables.Count + " savables and " + memories.Count
+            + " memories in scene " + gameObject.scene.name,
             gameObject
             );
     }

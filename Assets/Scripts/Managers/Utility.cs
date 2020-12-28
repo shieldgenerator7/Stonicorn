@@ -208,6 +208,8 @@ public static class Utility
     /// <returns></returns>
     public static bool isSavable(this GameObject go)
         => go.GetComponent<Rigidbody2D>() || go.GetComponent<SavableMonoBehaviour>();
+    public static bool isMemory(this GameObject go)
+        => go.GetComponent<MemoryMonoBehaviour>();
 
     public static bool containsSavables(this GameObject go)
         => go.GetComponent<ISavableContainer>() != null;
