@@ -217,17 +217,13 @@ public static class Utility
     /// </summary>
     /// <param name="go"></param>
     /// <returns></returns>
-    public static string getKey(this GameObject go)
+    public static int getKey(this GameObject go)
     {
         if (!go)
         {
-            return "";
+            return -1;
         }
-        return getKey(go.name);
-    }
-    public static string getKey(string objectName)
-    {
-        return objectName;
+        return go.GetComponent<ObjectInfo>().Id;
     }
 
     /// <summary>

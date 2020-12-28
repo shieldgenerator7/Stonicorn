@@ -464,7 +464,7 @@ public class CustomMenu
             int id = nextID;
             nextID++;
             int prevID = info.Id;
-            info.setId(id);
+            info.Id = id;
             if (id != prevID)
             {
                 Debug.Log(

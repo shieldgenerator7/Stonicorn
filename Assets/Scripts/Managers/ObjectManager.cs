@@ -7,15 +7,15 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class ObjectManager : MonoBehaviour
 {
-    private Dictionary<string, GameObject> gameObjects = new Dictionary<string, GameObject>();//list of current objects that have state to save
+    private Dictionary<int, GameObject> gameObjects = new Dictionary<int, GameObject>();//list of current objects that have state to save
     public List<GameObject> GameObjects => gameObjects.Values.ToList();
     public int GameObjectCount => gameObjects.Count;
 
     //Memories
-    private Dictionary<string, MemoryObject> memories = new Dictionary<string, MemoryObject>();//memories that once turned on, don't get turned off
+    private Dictionary<int, MemoryObject> memories = new Dictionary<int, MemoryObject>();//memories that once turned on, don't get turned off
 
     //Create queue
-    private Dictionary<string, AsyncOperationHandle<GameObject>> createQueue = new Dictionary<string, AsyncOperationHandle<GameObject>>();
+    private Dictionary<int, AsyncOperationHandle<GameObject>> createQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
 
     /// <summary>
     /// Spawn a GameObject with the given name from the given prefab GUID
@@ -23,21 +23,21 @@ public class ObjectManager : MonoBehaviour
     /// Precondition: the game object does not already exist
     /// (or at least has not been found).
     /// </summary>
-    /// <param name="goName"></param>
+    /// <param name="goId"></param>
     /// <param name="prefabGUID"></param>
     /// <returns></returns>
-    public AsyncOperationHandle<GameObject> createObject(string goName, string prefabGUID)
+    public AsyncOperationHandle<GameObject> createObject(int goId, string prefabGUID)
     {
-        if (!createQueue.ContainsKey(goName))
+        if (!createQueue.ContainsKey(goId))
         {
             AssetReference assetRef = new AssetReference(prefabGUID);
             //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
             var op = Addressables.InstantiateAsync(assetRef);
-            createQueue.Add(goName, op);
+            createQueue.Add(goId, op);
             op.Completed += (operation) =>
             {
                 GameObject newGO = operation.Result;
-                newGO.name = goName;
+                newGO.GetComponent<ObjectInfo>().Id = goId;
                 addObject(newGO);
                 foreach (Transform t in newGO.transform)
                 {
@@ -46,10 +46,10 @@ public class ObjectManager : MonoBehaviour
                         addObject(t.gameObject);
                     }
                 }
-                createQueue.Remove(goName);
+                createQueue.Remove(goId);
             };
         }
-        return createQueue[goName];
+        return createQueue[goId];
     }
 
     /// <summary>
@@ -68,7 +68,15 @@ public class ObjectManager : MonoBehaviour
             throw new System.ArgumentNullException("GameObject (" + go + ") cannot be null!");
         }
 
-        string key = go.getKey();
+        int key = go.getKey();
+
+        //If the key is invalid,
+        if (key < 0)
+        {
+            throw new System.ArgumentException(
+                  "GameObject " + go.name + " has an invalid key: " + key + "!"
+                  );
+        }
 
         //If the game object's name is already in the dictionary,
         if (gameObjects.ContainsKey(key)
@@ -81,10 +89,10 @@ public class ObjectManager : MonoBehaviour
                 //Just the same object being added twice, not a big deal
                 return;
             }
-            //throw new System.ArgumentException(
-            //      "GameObject (" + key + ") is already inside the gameObjects dictionary! "
-            //      + "Check for 2 or more objects with the same name."
-            //      );
+            throw new System.ArgumentException(
+                  "GameObject " + go.name + " with key (" + key + ") is already inside the gameObjects dictionary! "
+                  + "Check for 2 or more objects with the same Id."
+                  );
         }
         //If the game object doesn't have any state to save...
         if (!go.isSavable())
@@ -112,7 +120,7 @@ public class ObjectManager : MonoBehaviour
     /// </summary>
     /// <param name="goKey">The unique inter-scene key of the object</param>
     /// <returns></returns>
-    public GameObject getObject(string goKey)
+    public GameObject getObject(int goKey)
     {
         //If the gameObjects list has the game object,
         if (gameObjects.ContainsKey(goKey))
@@ -172,9 +180,9 @@ public class ObjectManager : MonoBehaviour
     {
         string cleanedKeys = "";
         //Copy the game object keys
-        List<string> keys = new List<string>(gameObjects.Keys);
+        List<int> keys = new List<int>(gameObjects.Keys);
         //Loop over copy list
-        foreach (string key in keys)
+        foreach (int key in keys)
         {
             //If the key's value is null,
             if (gameObjects[key] == null
@@ -224,7 +232,7 @@ public class ObjectManager : MonoBehaviour
         //Memories
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
-            string key = mmb.gameObject.getKey();
+            int key = mmb.gameObject.getKey();
             //If the memory has already been stored,
             if (memories.ContainsKey(key))
             {
@@ -247,7 +255,7 @@ public class ObjectManager : MonoBehaviour
     /// <param name="mmb"></param>
     public void saveMemory(MemoryMonoBehaviour mmb)
     {
-        string key = mmb.gameObject.getKey();
+        int key = mmb.gameObject.getKey();
         MemoryObject mo = mmb.getMemoryObject();
         //If the memory is already stored,
         if (memories.ContainsKey(key))
@@ -270,7 +278,7 @@ public class ObjectManager : MonoBehaviour
         //Find all the game objects that can have memories
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
-            string key = mmb.gameObject.getKey();
+            int key = mmb.gameObject.getKey();
             //If there's a memory saved for this object,
             if (memories.ContainsKey(key))
             {
@@ -283,7 +291,7 @@ public class ObjectManager : MonoBehaviour
 
     public void saveToFile(string fileName)
     {
-        ES3.Save<Dictionary<string, MemoryObject>>(
+        ES3.Save<Dictionary<int, MemoryObject>>(
             "memories",
             memories,
             fileName
@@ -292,7 +300,7 @@ public class ObjectManager : MonoBehaviour
     public void loadFromFile(string fileName)
     {
         //Load memories
-        memories = ES3.Load<Dictionary<string, MemoryObject>>(
+        memories = ES3.Load<Dictionary<int, MemoryObject>>(
             "memories",
             fileName
             );

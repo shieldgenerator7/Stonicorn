@@ -19,7 +19,7 @@ public class ObjectInfo : MonoBehaviour
     public int Id
     {
         get => id;
-        private set => id = value;
+        set => id = value;
     }
     [SerializeField]
     private AssetReference prefabAddress;
@@ -33,10 +33,6 @@ public class ObjectInfo : MonoBehaviour
             AssetDatabase.GetAssetPath(gameObject)
             )
             );
-    }
-    public void setId(int id)
-    {
-        this.id = id;
     }
 #endif
 }

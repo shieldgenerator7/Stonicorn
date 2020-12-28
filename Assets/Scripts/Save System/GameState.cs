@@ -17,7 +17,7 @@ public class GameState
         {
             if (merky == null)
             {
-                merky = states.Find(os => os.objectName == "merky");
+                merky = states.Find(os => os.objectId == 0);
             }
             return merky;
         }
@@ -60,7 +60,7 @@ public class GameState
     {
         states.ForEach(os =>
         {
-            GameObject go = Managers.Object.getObject(os.objectName);
+            GameObject go = Managers.Object.getObject(os.objectId);
             if (go != null && !ReferenceEquals(go, null))
             {
                 os.loadState(go);
@@ -72,7 +72,7 @@ public class GameState
                 {
                     //If scene is valid, Create the GameObject
                     AsyncOperationHandle<GameObject> op = Managers.Object.createObject(
-                        os.objectName,
+                        os.objectId,
                         os.prefabGUID
                         );
                     //2020-12-28: Potential error: 
@@ -90,15 +90,15 @@ public class GameState
     private void loadState(AsyncOperationHandle<GameObject> op)
     {
         GameObject go = op.Result;
-        ObjectState os = states.Find(os1 => os1.objectName == go.name);
+        int key = go.getKey();
+        ObjectState os = states.Find(os1 => os1.objectId == key);
         os.loadState(op.Result);
         SceneLoader.moveToScene(op.Result, os.sceneName);
     }
     public void loadObject(GameObject go)
     {
-        ObjectState state = states.Find(
-            os => os.sceneName == go.scene.name && os.objectName == go.name
-            );
+        int key = go.getKey();
+        ObjectState state = states.Find(os => os.objectId == key);
         state.loadState(go);
     }
 
@@ -109,8 +109,7 @@ public class GameState
         {
             throw new System.ArgumentNullException("GameState.hasGameObject() cannot accept null for go! go: " + go);
         }
-        return states.Any(
-            os => os.objectName == go.name && os.sceneName == go.scene.name
-            );
+        int key = go.getKey();
+        return states.Any(os => os.objectId == key);
     }
 }

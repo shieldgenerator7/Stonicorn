@@ -15,16 +15,17 @@ public class ObjectState
     //Saveable Object
     public List<SavableObject> soList = new List<SavableObject>();
     //Name
-    public string objectName;
+    public int objectId;
     public string sceneName;
     public string prefabGUID;
 
     public ObjectState() { }
     public ObjectState(GameObject go)
     {
-        objectName = go.name;
+        ObjectInfo info = go.GetComponent<ObjectInfo>();
+        //objectName = info.Id;
         sceneName = go.scene.name;
-        prefabGUID = go.GetComponent<ObjectInfo>().PrefabGUID;
+        prefabGUID = info.PrefabGUID;
         saveState(go);
     }
 
