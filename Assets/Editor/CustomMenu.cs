@@ -483,7 +483,7 @@ public class CustomMenu
             info.Id = id;
             if (id != prevID)
             {
-                Debug.Log(
+                Debug.LogWarning(
                     "Changed Id: " + prevID + " -> " + id,
                     info.gameObject
                     );
