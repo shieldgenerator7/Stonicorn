@@ -9893,7 +9893,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4806767686556778}
-  - component: {fileID: -6441217185553498063}
+  - component: {fileID: -8339470554253899025}
   m_Layer: 0
   m_Name: boulder_diamond_broken
   m_TagString: Untagged
@@ -9919,7 +9919,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-6441217185553498063
+--- !u!114 &-8339470554253899025
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9928,10 +9928,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1250430273124142}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabName: boulder_diamond_broken
+  id: -1
+  prefabAddress:
+    m_AssetGUID: f3e323cb39b043a46809e20665ea034f
+    m_SubObjectName: 
+    m_SubObjectType: 
 --- !u!1 &1897429010630138
 GameObject:
   m_ObjectHideFlags: 0

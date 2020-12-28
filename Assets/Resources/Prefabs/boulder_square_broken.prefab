@@ -486,7 +486,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4207345476605562}
-  - component: {fileID: 883234336895738169}
+  - component: {fileID: -8506792466312643149}
   m_Layer: 0
   m_Name: boulder_square_broken
   m_TagString: Untagged
@@ -512,7 +512,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &883234336895738169
+--- !u!114 &-8506792466312643149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -521,10 +521,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1758183149841368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabName: boulder_square_broken
+  id: -1
+  prefabAddress:
+    m_AssetGUID: 1d011da68b2bea944aefdb41e3cbb59f
+    m_SubObjectName: 
+    m_SubObjectType: 
 --- !u!1 &1802405716489514
 GameObject:
   m_ObjectHideFlags: 0

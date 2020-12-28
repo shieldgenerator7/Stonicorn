@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 114313554404233820}
   - component: {fileID: 114180512292895914}
   - component: {fileID: 58536659489285504}
-  - component: {fileID: -438856120355013662}
+  - component: {fileID: 4452441191344866091}
   m_Layer: 0
   m_Name: ElectricField
   m_TagString: Untagged
@@ -150,7 +150,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.54
---- !u!114 &-438856120355013662
+--- !u!114 &4452441191344866091
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,10 +159,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1181304595248282}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabName: ElectricField
+  id: -1
+  prefabAddress:
+    m_AssetGUID: 25877458e6750fe4588a4006a6457d5d
+    m_SubObjectName: 
+    m_SubObjectType: 
 --- !u!1 &1835831099262210
 GameObject:
   m_ObjectHideFlags: 0

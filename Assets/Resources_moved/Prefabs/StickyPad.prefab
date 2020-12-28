@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 50991189634170040}
   - component: {fileID: 114770365651407806}
   - component: {fileID: 114994015825358654}
-  - component: {fileID: -5387475688078268745}
+  - component: {fileID: 6337450156750792949}
   m_Layer: 0
   m_Name: StickyPad
   m_TagString: Untagged
@@ -170,7 +170,7 @@ MonoBehaviour:
   crackStages: []
   crackSounds: []
   secretHiders: []
---- !u!114 &-5387475688078268745
+--- !u!114 &6337450156750792949
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,7 +179,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1097801133131608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93919b7e8b34ebb4f9806787d287fd91, type: 3}
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabName: StickyPad
+  id: -1
+  prefabAddress:
+    m_AssetGUID: 19e25460a3d23d54da8b46ccd9b9225d
+    m_SubObjectName: 
+    m_SubObjectType: 
