@@ -420,8 +420,8 @@ public class CustomMenu
         bool keepScenesOpen = false;
         refreshSceneSavableObjectLists();
         //(new List<Func<bool>>()).ForEach(func => keepScenesOpen = keepScenesOpen || func);
-        keepScenesOpen = keepScenesOpen || ensureUniqueObjectIDs();
         keepScenesOpen = keepScenesOpen || ensureSavableObjectsHaveObjectInfo();
+        keepScenesOpen = keepScenesOpen || ensureUniqueObjectIDs();
 
         //Cleanup
         EditorSceneManager.SaveOpenScenes();
@@ -456,25 +456,27 @@ public class CustomMenu
         List<GameObject> savables = new List<GameObject>();
         GameObject.FindObjectsOfType<SceneSavableList>().ToList()
             .ForEach(ssl => savables.AddRange(ssl.savables));
-        List<string> savableIDs = new List<string>();
-        bool duplicateFound = false;
-        savables.ForEach(go =>
+        List<ObjectInfo> infos = savables.ConvertAll(go => go.GetComponent<ObjectInfo>());
+        int nextID = 0;
+        bool changedId = false;
+        infos.ForEach(info =>
         {
-            if (savableIDs.Contains(go.getKey()))
+            int id = nextID;
+            nextID++;
+            int prevID = info.Id;
+            info.setId(id);
+            if (id != prevID)
             {
-                duplicateFound = true;
-                //Make it unique
-                string oldName = go.name;
-                go.name = ObjectNames.GetUniqueName(savableIDs.ToArray(), go.name);
                 Debug.Log(
-                    "Renamed: " + oldName + " -> " + go.name,
-                    go
+                    "Changed Id: " + prevID + " -> " + id,
+                    info.gameObject
                     );
+                EditorUtility.SetDirty(info);
+                EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
+                changedId = true;
             }
-            //Add it to the list
-            savableIDs.Add(go.getKey());
         });
-        return duplicateFound;
+        return changedId;
     }
 
     [MenuItem("SG7/Editor/Pre-Build/Ensure savable objects have ObjectInfo")]

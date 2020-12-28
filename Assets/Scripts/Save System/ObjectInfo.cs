@@ -15,6 +15,13 @@ using UnityEngine.AddressableAssets;
 public class ObjectInfo : MonoBehaviour
 {
     [SerializeField]
+    private int id = -1;
+    public int Id
+    {
+        get => id;
+        private set => id = value;
+    }
+    [SerializeField]
     private AssetReference prefabAddress;
     public string PrefabGUID => prefabAddress.AssetGUID;
 
@@ -26,6 +33,10 @@ public class ObjectInfo : MonoBehaviour
             AssetDatabase.GetAssetPath(gameObject)
             )
             );
+    }
+    public void setId(int id)
+    {
+        this.id = id;
     }
 #endif
 }
