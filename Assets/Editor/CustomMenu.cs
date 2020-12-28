@@ -9,6 +9,7 @@ using Debug = UnityEngine.Debug;
 using System.Linq;
 using UnityEditor.SceneManagement;
 using System;
+using System.Reflection;
 
 public class CustomMenu
 {
@@ -403,9 +404,19 @@ public class CustomMenu
         }
     }
 
+    public static void ClearLog()
+    {
+        //2020-12-28: copied from https://stackoverflow.com/a/40578161/2336212
+        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
+        var type = assembly.GetType("UnityEditor.LogEntries");
+        var method = type.GetMethod("Clear");
+        method.Invoke(new object(), null);
+    }
+
     [MenuItem("SG7/Editor/Pre-Build/Perform all Pre-Build Tasks &W")]
     public static void performAllPreBuildTasks()
     {
+        ClearLog();
         Debug.Log("Running all Pre-Build Tasks");
         //Setup
         EditorSceneManager.SaveOpenScenes();
