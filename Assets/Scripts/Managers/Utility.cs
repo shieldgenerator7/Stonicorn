@@ -207,9 +207,11 @@ public static class Utility
     /// <param name="go"></param>
     /// <returns></returns>
     public static bool isSavable(this GameObject go)
-    {
-        return go.GetComponent<Rigidbody2D>() || go.GetComponent<SavableMonoBehaviour>();
-    }
+        => go.GetComponent<Rigidbody2D>() || go.GetComponent<SavableMonoBehaviour>();
+
+    public static bool containsSavables(this GameObject go)
+        => go.GetComponent<ISavableContainer>() != null;
+
     /// <summary>
     /// Returns the unique inter-scene identifier for the object
     /// </summary>
@@ -436,9 +438,9 @@ public static class Utility
     public static GameObject Instantiate(GameObject prefab)
     {
         //Checks to make sure it's rewindable
-        ISavableContainer container = prefab.GetComponent<ISavableContainer>();
+        bool isContainer = prefab.containsSavables();
         bool isSavable = prefab.isSavable();
-        if (container == null)
+        if (!isContainer)
         {
             if (!isSavable)
             {
@@ -460,8 +462,9 @@ public static class Utility
             Managers.Object.addObject(newObj);
         }
         //Container children
-        if (container != null)
+        if (isContainer)
         {
+            ISavableContainer container = newObj.GetComponent<ISavableContainer>();
             container.Savables.ForEach(savable =>
             {
                 savable.name += spawnTag;
