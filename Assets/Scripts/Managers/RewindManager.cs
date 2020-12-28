@@ -135,8 +135,9 @@ public class RewindManager : MonoBehaviour
                 for (int stateid = lastStateSeen; stateid >= 0; stateid--)
                 {
                     //If the game object was last saved in this game state,
-                    if (gameStates[stateid].loadObject(go))
+                    if (gameStates[stateid].hasGameObject(go))
                     {
+                        gameStates[stateid].loadObject(go);
                         //Great! It's loaded,
                         //Let's move onto the next object
                         break;

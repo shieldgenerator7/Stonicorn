@@ -94,17 +94,12 @@ public class GameState
         os.loadState(op.Result);
         SceneLoader.moveToScene(op.Result, os.sceneName);
     }
-    public bool loadObject(GameObject go)
+    public void loadObject(GameObject go)
     {
         ObjectState state = states.Find(
             os => os.sceneName == go.scene.name && os.objectName == go.name
             );
-        if (state != null)
-        {
-            state.loadState(go);
-            return true;
-        }
-        return false;
+        state.loadState(go);
     }
 
     //Returns true IFF the given GameObject has an ObjectState in this GameState
