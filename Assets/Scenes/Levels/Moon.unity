@@ -209,6 +209,10 @@ PrefabInstance:
       propertyPath: id
       value: 255
       objectReference: {fileID: 0}
+    - target: {fileID: 4964175138820517124, guid: 2ad61e15f4bda9547ad320b12063fb6f, type: 3}
+      propertyPath: id
+      value: 445
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ad61e15f4bda9547ad320b12063fb6f, type: 3}
 --- !u!1 &335941917 stripped
@@ -282,6 +286,10 @@ PrefabInstance:
     - target: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Name
       value: abilityorb LT
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836647533041297036, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: id
+      value: 446
       objectReference: {fileID: 0}
     - target: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Color.b
@@ -463,6 +471,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1637791364 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 820494840}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1849891221
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,6 +507,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   savables:
   - {fileID: 335941917}
+  memories:
+  - {fileID: 1637791364}
 --- !u!4 &1849891223
 Transform:
   m_ObjectHideFlags: 0

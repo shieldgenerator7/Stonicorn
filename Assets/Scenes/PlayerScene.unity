@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: MechFactory_SaveStone_Entrance
@@ -426,6 +430,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Well_SaveStone
@@ -494,7 +502,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2859978935190022873, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
   m_PrefabInstance: {fileID: 2859978935247260757}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1273588997}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68e74116196545f4d8a0243a83262c22, type: 3}
@@ -660,6 +668,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &193127917 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 1949682551}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &362776815
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +832,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &534039100
 GameObject:
@@ -5649,6 +5662,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Cave_SaveStone_Start
@@ -5786,6 +5803,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Jungle_SaveStone_Entrance
@@ -5853,6 +5874,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4188424702584116, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
   m_PrefabInstance: {fileID: 608282894}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &618410101 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 1859315024}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &641817963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5860,6 +5886,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 22
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Moon_SaveStone
@@ -5925,6 +5955,11 @@ PrefabInstance:
 --- !u!4 &641817964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4188424702584116, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 641817963}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &647664406 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
   m_PrefabInstance: {fileID: 641817963}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &670661345
@@ -6085,6 +6120,65 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
+--- !u!1 &710464823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 710464825}
+  - component: {fileID: 710464824}
+  m_Layer: 0
+  m_Name: SavableObjectList
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &710464824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710464823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8ab59dbd7704f04989e1f1cb1924580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  savables:
+  - {fileID: 1273588997}
+  - {fileID: 1792176465}
+  memories:
+  - {fileID: 1202816896}
+  - {fileID: 1973003378}
+  - {fileID: 1866114931}
+  - {fileID: 1218383588}
+  - {fileID: 618410101}
+  - {fileID: 1028783307}
+  - {fileID: 1766132997}
+  - {fileID: 193127917}
+  - {fileID: 1932115898}
+  - {fileID: 1642934760}
+  - {fileID: 647664406}
+  - {fileID: 1785649811}
+--- !u!4 &710464825
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710464823}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &779602607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6092,6 +6186,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Cave_SaveStone_Stairs
@@ -6522,6 +6620,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 21
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Tundra_SaveStone_Mountain
@@ -6588,6 +6690,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4188424702584116, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
   m_PrefabInstance: {fileID: 979312360}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1028783307 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 93952866}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1062584714
 GameObject:
@@ -6776,6 +6883,11 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 2052918, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 3}
   m_PrefabInstance: {fileID: 1113871235}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1202816896 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 585277876}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1216784141
 GameObject:
   m_ObjectHideFlags: 0
@@ -6852,6 +6964,11 @@ Transform:
   m_Father: {fileID: 362776816}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1218383588 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 2067669764}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1267262431
 GameObject:
   m_ObjectHideFlags: 0
@@ -6910,6 +7027,11 @@ RectTransform:
   m_AnchoredPosition: {x: 96.5, y: 275.4}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1273588997 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2859978935190022699, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
+  m_PrefabInstance: {fileID: 2859978935247260757}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1385001677 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2592284710092542991, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
@@ -7333,6 +7455,11 @@ Transform:
   m_Father: {fileID: 362776816}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1642934760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 979312360}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1644062408
 GameObject:
   m_ObjectHideFlags: 0
@@ -7460,8 +7587,18 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1766132997 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 608282894}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1785649811 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 1786972379}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1786972379
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7469,6 +7606,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 23
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Core_SaveStone
@@ -7599,6 +7740,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Cave_SaveStone_Secret
@@ -7677,6 +7822,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Desert_SaveStone_End
@@ -7755,6 +7904,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4188424702584116, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
   m_PrefabInstance: {fileID: 1859315024}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1866114931 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 1846738820}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1894727107
 GameObject:
@@ -7844,6 +7998,11 @@ PolygonCollider2D:
       - {x: 124.26918, y: -21.99041}
       - {x: 140.41197, y: 37.62178}
       - {x: 39.346237, y: 83.27667}
+--- !u!1 &1932115898 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 19714175}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1949682551
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7851,6 +8010,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 19
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Jungle_SaveStone_Exit
@@ -7917,6 +8080,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4188424702584116, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
   m_PrefabInstance: {fileID: 1949682551}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1973003378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 779602607}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2034127421
 GameObject:
@@ -8007,6 +8175,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1062584715}
     m_Modifications:
+    - target: {fileID: -1662812523384759020, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: id
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_Name
       value: Cave_SaveStone_Transition
@@ -8322,6 +8494,10 @@ PrefabInstance:
       propertyPath: teleportPreviewPointer
       value: 
       objectReference: {fileID: 1385001677}
+    - target: {fileID: 3807953469792525793, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: id
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 7835665536134532039, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
       propertyPath: ghostFolder
       value: 
@@ -8408,10 +8584,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2995129134111674952, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
-      propertyPath: sceneLoaders.Array.size
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2995129134111674952, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
       propertyPath: sceneLoaders.Array.data[0]
       value: 
       objectReference: {fileID: 1216784142}
@@ -8447,6 +8619,10 @@ PrefabInstance:
       propertyPath: sceneLoaders.Array.data[8]
       value: 
       objectReference: {fileID: 838574609}
+    - target: {fileID: 4795780357477204615, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
+      propertyPath: id
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5270741036896818801, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
       propertyPath: txtDemoTimer
       value: 

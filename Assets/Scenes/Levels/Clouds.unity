@@ -484,6 +484,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: abilityorb (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4836647533041297036, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: id
+      value: 412
+      objectReference: {fileID: 0}
     - target: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -502,6 +506,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1193524872285762181, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
   m_PrefabInstance: {fileID: 46424263}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &144536034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 1753073526}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &158555767
 GameObject:
@@ -534,6 +543,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   savables:
   - {fileID: 776605906}
+  memories:
+  - {fileID: 749133637}
+  - {fileID: 1975525603}
+  - {fileID: 144536034}
+  - {fileID: 1763621760}
+  - {fileID: 683340766}
+  - {fileID: 920085140}
+  - {fileID: 1637791364}
 --- !u!4 &158555769
 Transform:
   m_ObjectHideFlags: 0
@@ -1513,6 +1530,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: abilityorb (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4836647533041297036, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: id
+      value: 413
+      objectReference: {fileID: 0}
     - target: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -2136,6 +2157,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
   m_PrefabInstance: {fileID: 603334399}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &683340766 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 46424263}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &749133637
 GameObject:
   m_ObjectHideFlags: 0
@@ -2147,6 +2173,7 @@ GameObject:
   - component: {fileID: 749133638}
   - component: {fileID: 749133640}
   - component: {fileID: 749133639}
+  - component: {fileID: 749133641}
   m_Layer: 0
   m_Name: Wall Jump Ability Granter
   m_TagString: Untagged
@@ -2209,6 +2236,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1, y: 1.1}
   m_EdgeRadius: 0
+--- !u!114 &749133641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749133637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d8de977453a5e44809362e2d1792a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 408
 --- !u!1001 &776605904
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2216,6 +2256,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -986511111547633234, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
+      propertyPath: id
+      value: 407
+      objectReference: {fileID: 0}
     - target: {fileID: 115800, guid: 5b5d6906f6733ca4e9263170af5e1c82, type: 3}
       propertyPath: m_Name
       value: NPC Clyde the Cloudicorn
@@ -2921,6 +2965,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
   m_PrefabInstance: {fileID: 820864587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &920085140 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 377381530}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &986504623
 PrefabInstance:
@@ -3887,6 +3936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: abilityorb (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4836647533041297036, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: id
+      value: 411
+      objectReference: {fileID: 0}
     - target: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -4000,6 +4053,10 @@ PrefabInstance:
     - target: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Name
       value: abilityorb (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836647533041297036, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: id
+      value: 414
       objectReference: {fileID: 0}
     - target: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Color.b
@@ -4975,6 +5032,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1637791364 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 1355576229}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1746611538
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5336,6 +5398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: abilityorb (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4836647533041297036, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: id
+      value: 410
+      objectReference: {fileID: 0}
     - target: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -5354,6 +5420,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1193524872285762181, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
   m_PrefabInstance: {fileID: 1753073526}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1763621760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 1264230328}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1778069768
 PrefabInstance:
@@ -6018,6 +6089,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: abilityorb
       objectReference: {fileID: 0}
+    - target: {fileID: 4836647533041297036, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: id
+      value: 409
+      objectReference: {fileID: 0}
     - target: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -6035,6 +6110,11 @@ PrefabInstance:
 --- !u!4 &1938225730 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1193524872285762181, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 1938225729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1975525603 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
   m_PrefabInstance: {fileID: 1938225729}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2089297816

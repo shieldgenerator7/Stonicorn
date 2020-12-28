@@ -1053,6 +1053,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: abilityorb LT
       objectReference: {fileID: 0}
+    - target: {fileID: 4836647533041297036, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: id
+      value: 444
+      objectReference: {fileID: 0}
     - target: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Color.b
       value: 0.9411765
@@ -1663,6 +1667,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1412547608324624326, guid: a90188812f53ad349bb1e7be78df2f11, type: 3}
   m_PrefabInstance: {fileID: 1623563289}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1637791364 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 1212759011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1823247405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2180,6 +2189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savables: []
+  memories:
+  - {fileID: 1637791364}
 --- !u!4 &1849891223
 Transform:
   m_ObjectHideFlags: 0

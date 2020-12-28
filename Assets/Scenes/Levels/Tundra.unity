@@ -14075,6 +14075,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5137417976300061006, guid: 3e63c3b2fff98dc4282cbc7524015a15, type: 3}
+      propertyPath: id
+      value: 417
+      objectReference: {fileID: 0}
     - target: {fileID: 4690871554865805580, guid: 3e63c3b2fff98dc4282cbc7524015a15, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -14214,6 +14218,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3532953189133953545, guid: 412cab80aa75c3f4c8c0b9b8749b2248, type: 3}
+      propertyPath: id
+      value: 416
+      objectReference: {fileID: 0}
     - target: {fileID: 1332349059410604, guid: 412cab80aa75c3f4c8c0b9b8749b2248, type: 3}
       propertyPath: m_Name
       value: powercube (4)
@@ -14284,6 +14292,7 @@ GameObject:
   - component: {fileID: 1087926705}
   - component: {fileID: 1087926707}
   - component: {fileID: 1087926706}
+  - component: {fileID: 1087926708}
   m_Layer: 0
   m_Name: LongTeleportAbilityGranter
   m_TagString: Untagged
@@ -14346,6 +14355,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1, y: 1.1}
   m_EdgeRadius: 0
+--- !u!114 &1087926708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087926704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d8de977453a5e44809362e2d1792a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 419
 --- !u!1001 &1357365033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14353,6 +14375,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5137417976300061006, guid: 3e63c3b2fff98dc4282cbc7524015a15, type: 3}
+      propertyPath: id
+      value: 418
+      objectReference: {fileID: 0}
     - target: {fileID: 4690871554865805580, guid: 3e63c3b2fff98dc4282cbc7524015a15, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -14608,6 +14634,10 @@ PrefabInstance:
       propertyPath: id
       value: 235
       objectReference: {fileID: 0}
+    - target: {fileID: 3866408409265745748, guid: 59cfe7455ddf98745a2ef92bafc53e65, type: 3}
+      propertyPath: id
+      value: 415
+      objectReference: {fileID: 0}
     - target: {fileID: 5181119415636397966, guid: 59cfe7455ddf98745a2ef92bafc53e65, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -14706,6 +14736,8 @@ MonoBehaviour:
   - {fileID: 999471885}
   - {fileID: 887484497}
   - {fileID: 1357365034}
+  memories:
+  - {fileID: 1087926704}
 --- !u!4 &1849891223
 Transform:
   m_ObjectHideFlags: 0
