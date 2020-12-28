@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class GameState
 {
@@ -70,15 +71,28 @@ public class GameState
                 if (scene.IsValid() && scene.isLoaded)
                 {
                     //If scene is valid, Create the GameObject
-                    Managers.Object.createObject(os.objectName, os.prefabGUID)
-                        .Completed += (op) =>
-                        {
-                            os.loadState(op.Result);
-                            SceneLoader.moveToScene(op.Result, os.sceneName);
-                        };
+                    AsyncOperationHandle<GameObject> op = Managers.Object.createObject(
+                        os.objectName,
+                        os.prefabGUID
+                        );
+                    //2020-12-28: Potential error: 
+                    //if multiple game states try to create the gameobject,
+                    //then they all will hook into the op's Completed handle,
+                    //and if the handles get called in the wrong order,
+                    //then the object might stop rewinding and be in the wrong state.
+                    //This heavily relies on delegates being called in the order they're added.
+                    op.Completed -= loadState;
+                    op.Completed += loadState;
                 }
             }
         });
+    }
+    private void loadState(AsyncOperationHandle<GameObject> op)
+    {
+        GameObject go = op.Result;
+        ObjectState os = states.Find(os1 => os1.objectName == go.name);
+        os.loadState(op.Result);
+        SceneLoader.moveToScene(op.Result, os.sceneName);
     }
     public bool loadObject(GameObject go)
     {
