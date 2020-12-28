@@ -8,10 +8,10 @@ public class SavableObjectInfo : ObjectInfo
 {
     [SerializeField]
     private AssetReference prefabAddress;
-    public string PrefabGUID => prefabAddress.AssetGUID;
+    public virtual string PrefabGUID => prefabAddress.AssetGUID;
 
 #if UNITY_EDITOR
-    public void autoset()
+    public virtual void autoset()
     {
         prefabAddress = new AssetReference(
             AssetDatabase.AssetPathToGUID(

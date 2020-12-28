@@ -503,8 +503,7 @@ public class CustomMenu
             .ForEach(ssl => savables.AddRange(ssl.savables));
         //Missing ObjectInfo
         List<GameObject> missingInfo = savables
-            .FindAll(go => !go.GetComponent<SavableObjectInfo>())
-            .FindAll(go => !go.GetComponent<SingletonObjectInfo>());
+            .FindAll(go => !go.GetComponent<SavableObjectInfo>());
         missingInfo.ForEach(
             go => Debug.LogError(go.name + " does not have an SavableObjectInfo!", go)
             );
