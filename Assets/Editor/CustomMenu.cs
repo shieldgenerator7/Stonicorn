@@ -457,7 +457,7 @@ public class CustomMenu
         GameObject.FindObjectsOfType<SceneSavableList>().ToList()
             .ForEach(ssl => savables.AddRange(ssl.savables));
         List<ObjectInfo> infos = savables.ConvertAll(go => go.GetComponent<ObjectInfo>());
-        int nextID = 0;
+        int nextID = 10;
         bool changedId = false;
         infos.ForEach(info =>
         {
