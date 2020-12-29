@@ -127,7 +127,10 @@ public class ObjectManager : MonoBehaviour
             //Return it
             return gameObjects[goKey];
         }
-        Debug.LogWarning("No object with key found: " + goKey);
+        Debug.LogWarning(
+            "No object with key found: " + goKey + ",\n But "
+            + "this might be normal if the object was previously destroyed or unloaded."
+            );
         //Otherwise, sorry, you're out of luck
         return null;
     }
@@ -156,7 +159,7 @@ public class ObjectManager : MonoBehaviour
             //don't destroy the game manager or merky
             return;
         }
-        Debug.Log("Destroying object: " + go.name);
+        Debug.Log("Destroying object (" + go.getKey() + "): " + go.name);
         removeObject(go);
         Destroy(go);
     }
