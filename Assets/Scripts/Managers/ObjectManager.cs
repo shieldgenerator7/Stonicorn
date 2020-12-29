@@ -135,19 +135,6 @@ public class ObjectManager : MonoBehaviour
         return null;
     }
 
-    public List<GameObject> getObjectsWithName(string startsWith)
-    {
-        List<GameObject> matchingGOs = new List<GameObject>();
-        //Search for GameObjects that start with the given string
-        foreach (GameObject go in gameObjects.Values)
-        {
-            if (go.name.StartsWith(startsWith))
-            {
-                matchingGOs.Add(go);
-            }
-        }
-        return matchingGOs;
-    }
     /// <summary>
     /// Destroys the given GameObject and updates lists
     /// </summary>
