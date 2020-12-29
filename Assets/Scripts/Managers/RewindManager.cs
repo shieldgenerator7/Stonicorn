@@ -125,29 +125,26 @@ public class RewindManager : MonoBehaviour
         onRewindState?.Invoke(gameStates, chosenId);
     }
 
-    public void LoadObjects(int lastStateSeen, Predicate<GameObject> filter)
+    public void LoadObjects(List<GameObject> goList, int lastStateSeen)
     {
-        foreach (GameObject go in Managers.Object.GameObjects)
+        foreach (GameObject go in goList)
         {
-            if (filter(go))
+            //Search through the game states to see when it was last saved
+            for (int stateid = lastStateSeen; stateid >= 0; stateid--)
             {
-                //Search through the game states to see when it was last saved
-                for (int stateid = lastStateSeen; stateid >= 0; stateid--)
+                //If the game object was last saved in this game state,
+                if (gameStates[stateid].hasGameObject(go))
                 {
-                    //If the game object was last saved in this game state,
-                    if (gameStates[stateid].hasGameObject(go))
-                    {
-                        gameStates[stateid].loadObject(go);
-                        //Great! It's loaded,
-                        //Let's move onto the next object
-                        break;
-                    }
-                    //Else,
-                    else
-                    {
-                        //Continue until you find the game state 
-                        //that has the most recent information about this object
-                    }
+                    gameStates[stateid].loadObject(go);
+                    //Great! It's loaded,
+                    //Let's move onto the next object
+                    break;
+                }
+                //Else,
+                else
+                {
+                    //Continue until you find the game state 
+                    //that has the most recent information about this object
                 }
             }
         }

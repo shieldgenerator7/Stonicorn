@@ -115,20 +115,14 @@ public class GameManager : MonoBehaviour
                 Managers.Effect.showRewindEffect(false);
             }
         }
-        //Update the list of objects with state to save
-#if UNITY_EDITOR
-        Logger.log(this, "sceneLoaded: " + scene.name + ", old object count: " + Managers.Object.GameObjectCount);
-#endif
-        Managers.Object.refreshGameObjects();
-#if UNITY_EDITOR
-        Logger.log(this, "sceneLoaded: " + scene.name + ", new object count: " + Managers.Object.GameObjectCount);
-#endif
+
         //If time is moving forward,
         if (!Managers.Rewind.Rewinding)
         {
             //Load the previous state of the objects in the scene
             Managers.Scene.LoadObjectsFromScene(scene);
         }
+
         //If the game has just begun,
         if (Managers.Rewind.GameStateCount == 0)
         {

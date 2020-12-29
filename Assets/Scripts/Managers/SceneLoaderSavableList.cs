@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Contains list of movable objects that are last known to be in this scene.
@@ -33,4 +35,11 @@ public class SceneLoaderSavableList : MonoBehaviour
             datas.Remove(info.Data);
         }
     }
+
+    public bool contains(GameObject go)
+        => datas.Contains(go.GetComponent<SavableObjectInfo>().Data);
+
+    public static SceneLoaderSavableList getFromScene(Scene s)
+        => FindObjectsOfType<SceneLoaderSavableList>().ToList()
+            .Find(slsl => slsl.sceneLoader.Scene == s);
 }

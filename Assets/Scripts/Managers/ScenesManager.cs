@@ -147,10 +147,24 @@ public class ScenesManager : MonoBehaviour
         //If the scene was last seen after gamestate-now,
         //The scene is now last seen gamestate-now
         lastStateSeen = Mathf.Min(lastStateSeen, Managers.Rewind.GameStateId);
+        //Get list of savables
+        List<GameObject> sceneGOs = SceneSavableList.getFromScene(scene).savables;
+        List<GameObject> unsceneGOs = sceneGOs.FindAll(
+            //If an object is already in the game object list,
+            go => Managers.Object.hasObject(go)
+            //or is known to no longer be in this scene,
+            || !SceneLoaderSavableList.getFromScene(scene).contains(go)
+            );
+        //Remove it from being processed, and
+        sceneGOs.RemoveAll(go => unsceneGOs.Contains(go));
+        //Destroy it before it gets put into the game object list
+        unsceneGOs.ForEach(go => Destroy(go));
+        //Add objects to list
+        sceneGOs.ForEach(go => Managers.Object.addObject(go));
         //Load the objects
         Managers.Rewind.LoadObjects(
-            lastStateSeen,
-            go => go.scene == scene
+            sceneGOs,
+            lastStateSeen
             );
     }
 
