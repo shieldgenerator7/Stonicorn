@@ -10,6 +10,9 @@ public class SavableObjectInfo : ObjectInfo
     private AssetReference prefabAddress;
     public virtual string PrefabGUID => prefabAddress.AssetGUID;
 
+    public SavableObjectInfoData Data
+        => new SavableObjectInfoData(this);
+
 #if UNITY_EDITOR
     public virtual void autoset()
     {
