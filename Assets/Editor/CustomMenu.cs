@@ -475,23 +475,24 @@ public class CustomMenu
         List<ObjectInfo> infos = savables.ConvertAll(go => go.GetComponent<ObjectInfo>());
         int nextID = 10;
         bool changedId = false;
-        infos.ForEach(info =>
-        {
-            int id = nextID;
-            nextID++;
-            int prevID = info.Id;
-            info.Id = id;
-            if (id != prevID)
+        infos.FindAll(info => !(info is SingletonObjectInfo))
+            .ForEach(info =>
             {
-                Debug.LogWarning(
-                    "Changed Id: " + prevID + " -> " + id,
-                    info.gameObject
-                    );
-                EditorUtility.SetDirty(info);
-                EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
-                changedId = true;
-            }
-        });
+                int id = nextID;
+                nextID++;
+                int prevID = info.Id;
+                info.Id = id;
+                if (id != prevID)
+                {
+                    Debug.LogWarning(
+                        "Changed Id: " + prevID + " -> " + id,
+                        info.gameObject
+                        );
+                    EditorUtility.SetDirty(info);
+                    EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
+                    changedId = true;
+                }
+            });
         return changedId;
     }
 
