@@ -125,17 +125,24 @@ public class PlayerRewindController : MonoBehaviour
         if (gs.id == 0)
         {
             //Make sure it's always on screen
-            if (!Managers.Camera.inView(rep.transform.position))
+            try
             {
-                rep.transform.position =
-                    Managers.Camera.getInViewPosition(
-                        gs.Merky.position,
-                        0.9f
-                    );
+                if (!Managers.Camera.inView(rep.transform.position))
+                {
+                    rep.transform.position =
+                        Managers.Camera.getInViewPosition(
+                            gs.Merky.position,
+                            0.9f
+                        );
+                }
+                else
+                {
+                    rep.transform.position = gs.Merky.position;
+                }
             }
-            else
+            catch (System.NullReferenceException)
             {
-                rep.transform.position = gs.Merky.position;
+                Debug.LogError("GameState (" + gs.id + ") does not have a Merky! merky: " + gs.Merky);
             }
         }
     }
