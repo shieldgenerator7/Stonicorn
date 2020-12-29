@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SavableObjectInfoData
+public struct SavableObjectInfoData
 {
     public int id;
     public string prefabGUID;
