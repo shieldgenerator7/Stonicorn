@@ -214,19 +214,19 @@ public static class Utility
     public static bool containsSavables(this GameObject go)
         => go.GetComponent<ISavableContainer>() != null;
 
+    public static bool hasKey(this GameObject go)
+        => (go != null)
+            ? go.GetComponent<ObjectInfo>() != null
+            : false;
     /// <summary>
     /// Returns the unique inter-scene identifier for the object
     /// </summary>
     /// <param name="go"></param>
     /// <returns></returns>
     public static int getKey(this GameObject go)
-    {
-        if (!go)
-        {
-            return -1;
-        }
-        return go.GetComponent<ObjectInfo>().Id;
-    }
+        => (go != null)
+            ? go.GetComponent<ObjectInfo>().Id
+            : -1;
 
     /// <summary>
     /// Returns the size of the GameObject based on its sprite

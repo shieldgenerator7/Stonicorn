@@ -151,6 +151,11 @@ public class ObjectManager : MonoBehaviour
     /// <param name="go">The GameObject to destroy</param>
     public void destroyObject(GameObject go)
     {
+        if (go.GetComponent<ObjectInfo>() is SingletonObjectInfo)
+        {
+            //don't destroy the game manager or merky
+            return;
+        }
         Debug.Log("Destroying object: " + go.name);
         removeObject(go);
         Destroy(go);
@@ -168,8 +173,11 @@ public class ObjectManager : MonoBehaviour
             //For each of its children,
             foreach (Transform t in go.transform)
             {
-                //Remove it from the gameObjects list
-                gameObjects.Remove(t.gameObject.getKey());
+                if (t.gameObject.hasKey())
+                {
+                    //Remove it from the gameObjects list
+                    gameObjects.Remove(t.gameObject.getKey());
+                }
             }
         }
     }
