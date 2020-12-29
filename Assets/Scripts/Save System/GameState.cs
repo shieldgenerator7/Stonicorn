@@ -40,11 +40,11 @@ public class GameState
             try
             {
                 ObjectState os = new ObjectState(go);
-                states.Add(os);
-                if (go.name == "merky")
+                if (os.objectId < 0)
                 {
-                    Merky = os;
+                    throw new UnityException("Object state object id is " + os.objectId + " for object: " + go);
                 }
+                states.Add(os);
             }
             catch (NullReferenceException nre)
             {

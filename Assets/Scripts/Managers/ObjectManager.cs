@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,24 +31,31 @@ public class ObjectManager : MonoBehaviour
     {
         if (!createQueue.ContainsKey(goId))
         {
-            AssetReference assetRef = new AssetReference(prefabGUID);
-            //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
-            var op = Addressables.InstantiateAsync(assetRef);
-            createQueue.Add(goId, op);
-            op.Completed += (operation) =>
+            try
             {
-                GameObject newGO = operation.Result;
-                newGO.GetComponent<ObjectInfo>().Id = goId;
-                addObject(newGO);
-                foreach (Transform t in newGO.transform)
+                AssetReference assetRef = new AssetReference(prefabGUID);
+                //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
+                var op = Addressables.InstantiateAsync(assetRef);
+                createQueue.Add(goId, op);
+                op.Completed += (operation) =>
                 {
-                    if (t.gameObject.isSavable())
+                    GameObject newGO = operation.Result;
+                    newGO.GetComponent<ObjectInfo>().Id = goId;
+                    addObject(newGO);
+                    foreach (Transform t in newGO.transform)
                     {
-                        addObject(t.gameObject);
+                        if (t.gameObject.isSavable())
+                        {
+                            addObject(t.gameObject);
+                        }
                     }
-                }
-                createQueue.Remove(goId);
-            };
+                    createQueue.Remove(goId);
+                };
+            }
+            catch (InvalidKeyException ike)
+            {
+                throw new InvalidKeyException("InvalidKey: (" + prefabGUID + ")", ike);
+            }
         }
         return createQueue[goId];
     }
@@ -102,17 +110,8 @@ public class ObjectManager : MonoBehaviour
                 + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
                 );
         }
-        if (gameObjects.ContainsKey(key))
-        {
-            Debug.LogError("Replacing object: " + gameObjects[key], gameObjects[key]);
-            Debug.LogError("Replacing with: " + go, go);
-            gameObjects[key] = go;
-        }
-        else
-        {
-            //Else if all good, add the object
-            gameObjects.Add(key, go);
-        }
+        //Else if all good, add the object
+        gameObjects.Add(key, go);
     }
 
     /// <summary>
@@ -128,6 +127,7 @@ public class ObjectManager : MonoBehaviour
             //Return it
             return gameObjects[goKey];
         }
+        Debug.LogWarning("No object with key found: " + goKey);
         //Otherwise, sorry, you're out of luck
         return null;
     }
@@ -224,10 +224,7 @@ public class ObjectManager : MonoBehaviour
         //Add objects that have other variables that can get rewound
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
         {
-            if (!gameObjects.ContainsValue(smb.gameObject))
-            {
-                addObject(smb.gameObject);
-            }
+            addObject(smb.gameObject);
         }
         //Memories
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
