@@ -39,7 +39,6 @@ public class SceneLoaderSavableList : MonoBehaviour
     public bool contains(GameObject go)
         => datas.Contains(go.GetComponent<SavableObjectInfo>().Data);
 
-    public static SceneLoaderSavableList getFromScene(Scene s)
-        => FindObjectsOfType<SceneLoaderSavableList>().ToList()
-            .Find(slsl => slsl.sceneLoader.Scene == s);
+    public Scene Scene
+        => sceneLoader.Scene;
 }

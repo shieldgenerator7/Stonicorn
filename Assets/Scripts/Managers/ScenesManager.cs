@@ -7,6 +7,8 @@ public class ScenesManager : MonoBehaviour
 {
     [SerializeField]
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
+    [SerializeField]
+    private List<SceneLoaderSavableList> sceneLoaderSavableLists = new List<SceneLoaderSavableList>();
 
     private string pauseForLoadingSceneName = null;//the name of the scene that needs the game to pause while it's loading
     public string PauseForLoadingSceneName
@@ -150,15 +152,16 @@ public class ScenesManager : MonoBehaviour
         //Get list of savables
         List<GameObject> sceneGOs = SceneSavableList.getFromScene(scene).savables;
         List<GameObject> unsceneGOs = sceneGOs.FindAll(
-            //If an object is already in the game object list,
-            go => Managers.Object.hasObject(go)
-            //or is known to no longer be in this scene,
-            || !SceneLoaderSavableList.getFromScene(scene).contains(go)
+            go => !isObjectInScene(go, scene)
             );
         //Remove it from being processed, and
         sceneGOs.RemoveAll(go => unsceneGOs.Contains(go));
         //Destroy it before it gets put into the game object list
-        unsceneGOs.ForEach(go => Destroy(go));
+        unsceneGOs.ForEach(go =>
+        {
+            Debug.Log("Destroying now duplicate: " + go);
+            Destroy(go);
+        });
         //Add objects to list
         sceneGOs.ForEach(go => Managers.Object.addObject(go));
         //Load the objects
@@ -238,5 +241,16 @@ public class ScenesManager : MonoBehaviour
                 sl.lastOpenGameStateId = -1;
             }
         }
+    }
+
+    public bool isObjectInScene(GameObject go, Scene scene)
+    {
+        if (go.getKey() == 63)
+        {
+            int i = 0;
+        }
+        SceneLoaderSavableList slslist = sceneLoaderSavableLists
+            .Find(slsl => slsl.contains(go));
+        return slslist == null || slslist.Scene == scene;
     }
 }
