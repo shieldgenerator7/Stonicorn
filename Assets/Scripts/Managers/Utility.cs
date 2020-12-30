@@ -561,6 +561,32 @@ public static class Utility
         return solidCount;
     }
 
+    /// <summary>
+    /// Returns true if the two colliders overlap
+    /// </summary>
+    /// <param name=""></param>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public static bool OverlapsCollider(this Collider2D coll, Collider2D other)
+    {
+        //If the bounds don't overlap
+        if (!coll.bounds.Intersects(other.bounds))
+        {
+            //then these colliders definitely don't overlap
+            return false;
+        }
+        //Cast the first one to find if it has it
+        RaycastAnswer answer = coll.CastAnswer(Vector2.zero, 0, false);
+        for (int i = 0; i < answer.count; i++)
+        {
+            if (answer.rch2ds[i].collider == other)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void checkMaxReturnedList(string methodName, int count)
     {
 #if UNITY_EDITOR

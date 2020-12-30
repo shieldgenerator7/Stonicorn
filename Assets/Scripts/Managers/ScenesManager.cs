@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -55,6 +56,13 @@ public class ScenesManager : MonoBehaviour
         //Register scene loading delegates
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
+
+        //Register SceneLoaderSavableList delegates
+        sceneLoaderSavableLists.ForEach(slsl =>
+        {
+            slsl.onObjectEntered += registerObjectInScene;
+            slsl.onObjectExited += registerObjectInScene;
+        });
     }
 
     #region Space Management
@@ -245,12 +253,36 @@ public class ScenesManager : MonoBehaviour
 
     public bool isObjectInScene(GameObject go, Scene scene)
     {
-        if (go.getKey() == 63)
-        {
-            int i = 0;
-        }
         SceneLoaderSavableList slslist = sceneLoaderSavableLists
             .Find(slsl => slsl.contains(go));
         return slslist == null || slslist.Scene == scene;
+    }
+
+    public void registerObjectInScene(GameObject go)
+    {
+        //Remove the object from all lists
+        sceneLoaderSavableLists.ForEach(slsl => slsl.remove(go));
+        //Add it to the list that contains the position
+        SceneLoaderSavableList slslist = sceneLoaderSavableLists.Find(
+            slsl => slsl.overlapsPosition(go)
+            );
+        if (!slslist)
+        {
+            slslist = sceneLoaderSavableLists.Find(
+                slsl => slsl.overlapsCollider(go)
+            );
+        }
+        try
+        {
+            slslist.add(go);
+        }
+        catch (NullReferenceException nre)
+        {
+            throw new NullReferenceException(
+                "No SLSL found when trying to register object " + go.name
+                + " at position " + go.transform.position,
+                nre
+                );
+        }
     }
 }
