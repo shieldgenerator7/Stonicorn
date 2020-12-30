@@ -177,19 +177,20 @@ public class ScenesManager : MonoBehaviour
             sceneGOs,
             lastStateSeen
             );
+        //Create foreign objects that are not here
+        getSceneLoaderSavableList(scene).getMissingObjects(sceneGOs)
+            .FindAll(soid => !Managers.Object.hasObject(soid.id))
+            .ForEach(soid =>
+                Managers.Object.createObject(soid.id, soid.prefabGUID)
+                    .Completed += (op) =>
+                    {
+                        Managers.Rewind.LoadObject(op.Result, lastStateSeen);
+                    }
+            );
     }
 
     private SceneLoader getSceneLoaderByName(string sceneName)
-    {
-        foreach (SceneLoader sl in sceneLoaders)
-        {
-            if (sl.sceneName == sceneName)
-            {
-                return sl;
-            }
-        }
-        return null;
-    }
+        => sceneLoaders.Find(sl => sl.sceneName == sceneName);
     #endregion
 
     public void updateSceneLoadersForward(int gameStateId)
@@ -290,4 +291,7 @@ public class ScenesManager : MonoBehaviour
                 );
         }
     }
+
+    private SceneLoaderSavableList getSceneLoaderSavableList(Scene scene)
+        => sceneLoaderSavableLists.Find(slsl => slsl.Scene == scene);
 }

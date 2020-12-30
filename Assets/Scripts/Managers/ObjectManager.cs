@@ -114,8 +114,8 @@ public class ObjectManager : MonoBehaviour
         gameObjects.Add(key, go);
     }
 
-    public bool hasObject(GameObject go)
-        => gameObjects.ContainsKey(go.getKey());
+    public bool hasObject(int goKey)
+        => gameObjects.ContainsKey(goKey);
 
     /// <summary>
     /// Retrieves the GameObject from the gameObjects list with the given key

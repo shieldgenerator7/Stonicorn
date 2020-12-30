@@ -61,4 +61,12 @@ public class SceneLoaderSavableList : MonoBehaviour
 
     public Scene Scene
         => sceneLoader.Scene;
+
+    public List<SavableObjectInfoData> getMissingObjects(List<GameObject> gos)
+    {
+        List<SavableObjectInfoData> hereSoids = gos.ConvertAll(
+            go => go.GetComponent<SavableObjectInfo>().Data
+            );
+        return datas.ToList().FindAll(soid => !hereSoids.Contains(soid));
+    }
 }

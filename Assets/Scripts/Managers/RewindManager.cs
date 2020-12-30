@@ -125,6 +125,11 @@ public class RewindManager : MonoBehaviour
         onRewindState?.Invoke(gameStates, chosenId);
     }
 
+    /// <summary>
+    /// Slightly more efficient than calling LoadObject() on individual objects
+    /// </summary>
+    /// <param name="goList"></param>
+    /// <param name="lastStateSeen"></param>
     public void LoadObjects(List<GameObject> goList, int lastStateSeen)
     {
         foreach (GameObject go in goList)
@@ -146,6 +151,33 @@ public class RewindManager : MonoBehaviour
                     //Continue until you find the game state 
                     //that has the most recent information about this object
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Load an object's most recent state, 
+    /// with lastStateSeen being a hint as to when that state was
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="lastStateSeen"></param>
+    public void LoadObject(GameObject go, int lastStateSeen)
+    {
+        //Search through the game states to see when it was last saved
+        for (int stateid = lastStateSeen; stateid >= 0; stateid--)
+        {
+            //If the game object was last saved in this game state,
+            if (gameStates[stateid].hasGameObject(go))
+            {
+                gameStates[stateid].loadObject(go);
+                //Great! It's loaded
+                break;
+            }
+            //Else,
+            else
+            {
+                //Continue until you find the game state 
+                //that has the most recent information about this object
             }
         }
     }
