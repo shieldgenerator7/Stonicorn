@@ -21,14 +21,14 @@ public class SceneLoaderSavableList : MonoBehaviour
         coll2d = GetComponent<Collider2D>();
     }
 
-    public void add(GameObject go)
-        => datas.Add(go.GetComponent<SavableObjectInfo>().Data);
+    public void add(SavableObjectInfoData data)
+        => datas.Add(data);
 
     public bool contains(GameObject go)
         => datas.Contains(go.GetComponent<SavableObjectInfo>().Data);
 
-    public void remove(GameObject go)
-        => datas.Remove(go.GetComponent<SavableObjectInfo>().Data);
+    public void remove(SavableObjectInfoData data)
+        => datas.Remove(data);
 
     public bool overlapsPosition(GameObject go)
         => coll2d.OverlapPoint(go.transform.position);

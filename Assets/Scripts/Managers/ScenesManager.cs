@@ -263,8 +263,9 @@ public class ScenesManager : MonoBehaviour
         {
             return;
         }
+        SavableObjectInfoData data = soi.Data;
         //Remove the object from all lists
-        sceneLoaderSavableLists.ForEach(slsl => slsl.remove(go));
+        sceneLoaderSavableLists.ForEach(slsl => slsl.remove(data));
         //Add it to the list that contains the position
         SceneLoaderSavableList slslist = sceneLoaderSavableLists.Find(
             slsl => slsl.overlapsPosition(go)
@@ -277,7 +278,7 @@ public class ScenesManager : MonoBehaviour
         }
         try
         {
-            slslist.add(go);
+            slslist.add(data);
         }
         catch (NullReferenceException nre)
         {
