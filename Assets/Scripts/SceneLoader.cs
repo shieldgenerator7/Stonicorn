@@ -160,31 +160,47 @@ public class SceneLoader : MonoBehaviour, ISetting
         }
     }
 
+    public delegate void OnObjectMoved(GameObject go);
+
     private void OnTriggerEnter2D(Collider2D coll2D)
     {
+        GameObject go = coll2D.gameObject;
         //Move objects that enter your scene into it
-        if (!coll2D.gameObject.isPlayer() && coll2D.gameObject.scene != Scene)
+        if (!go.isPlayer())
         {
-            GameObject go = coll2D.gameObject;
-            if (coll2D.transform.parent != null)
+            if (go.scene != Scene)
             {
-                Rigidbody2D rb2d = coll2D.GetComponent<Rigidbody2D>();
-                if (!rb2d)
+                if (coll2D.transform.parent != null)
                 {
-                    rb2d = coll2D.GetComponentInParent<Rigidbody2D>();
+                    Rigidbody2D rb2d = coll2D.GetComponent<Rigidbody2D>();
+                    if (!rb2d)
+                    {
+                        rb2d = coll2D.GetComponentInParent<Rigidbody2D>();
+                    }
+                    if (rb2d)
+                    {
+                        go = rb2d.gameObject;
+                    }
+                    if (go.transform.parent != null)
+                    {
+                        go.transform.SetParent(null);
+                    }
                 }
-                if (rb2d)
-                {
-                    go = rb2d.gameObject;
-                }
-                if (go.transform.parent != null)
-                {
-                    go.transform.SetParent(null);
-                }
+                moveToScene(go, Scene);
             }
-            moveToScene(go, Scene);
+            onObjectEntered?.Invoke(go);
         }
     }
+    public event OnObjectMoved onObjectEntered;
+    private void OnTriggerExit2D(Collider2D coll2D)
+    {
+        GameObject go = coll2D.gameObject;
+        if (!go.isPlayer())
+        {
+            onObjectExited?.Invoke(go);
+        }
+    }
+    public event OnObjectMoved onObjectExited;
 
     #region Static Helper Methods
 

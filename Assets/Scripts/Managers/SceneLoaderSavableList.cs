@@ -21,29 +21,6 @@ public class SceneLoaderSavableList : MonoBehaviour
         coll2d = GetComponent<Collider2D>();
     }
 
-    public delegate void OnObjectMoved(GameObject go);
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        SavableObjectInfo info = collision.gameObject.GetComponent<SavableObjectInfo>();
-        if (info)
-        {
-            //ScenesManager will determine if this SLSL should register this object
-            onObjectEntered?.Invoke(info.gameObject);
-        }
-    }
-    public event OnObjectMoved onObjectEntered;
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        SavableObjectInfo info = collision.gameObject.GetComponent<SavableObjectInfo>();
-        if (info)
-        {
-            //ScenesManager will determine if this SLSL should deregister this object
-            onObjectExited?.Invoke(info.gameObject);
-        }
-    }
-    public event OnObjectMoved onObjectExited;
-
     public void add(GameObject go)
         => datas.Add(go.GetComponent<SavableObjectInfo>().Data);
 

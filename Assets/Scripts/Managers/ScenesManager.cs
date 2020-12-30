@@ -58,10 +58,10 @@ public class ScenesManager : MonoBehaviour
         SceneManager.sceneUnloaded += sceneUnloaded;
 
         //Register SceneLoaderSavableList delegates
-        sceneLoaderSavableLists.ForEach(slsl =>
+        sceneLoaders.ForEach(sl =>
         {
-            slsl.onObjectEntered += registerObjectInScene;
-            slsl.onObjectExited += registerObjectInScene;
+            sl.onObjectEntered += registerObjectInScene;
+            sl.onObjectExited += registerObjectInScene;
         });
     }
 
@@ -257,8 +257,9 @@ public class ScenesManager : MonoBehaviour
 
     public void registerObjectInScene(GameObject go)
     {
-        //Don't add Singleton objects ever
-        if (go.GetComponent<ObjectInfo>() is SingletonObjectInfo)
+        SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
+        //Don't add non-Savable or Singleton objects ever
+        if (!soi || soi is SingletonObjectInfo)
         {
             return;
         }
