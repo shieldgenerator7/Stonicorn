@@ -28,8 +28,8 @@ public class SceneLoaderSavableList : MonoBehaviour
         SavableObjectInfo info = collision.gameObject.GetComponent<SavableObjectInfo>();
         if (info)
         {
+            //ScenesManager will determine if this SLSL should register this object
             onObjectEntered?.Invoke(info.gameObject);
-            datas.Add(info.Data);
         }
     }
     public event OnObjectMoved onObjectEntered;
@@ -38,8 +38,8 @@ public class SceneLoaderSavableList : MonoBehaviour
         SavableObjectInfo info = collision.gameObject.GetComponent<SavableObjectInfo>();
         if (info)
         {
+            //ScenesManager will determine if this SLSL should deregister this object
             onObjectExited?.Invoke(info.gameObject);
-            datas.Remove(info.Data);
         }
     }
     public event OnObjectMoved onObjectExited;

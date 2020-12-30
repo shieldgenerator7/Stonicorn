@@ -260,6 +260,11 @@ public class ScenesManager : MonoBehaviour
 
     public void registerObjectInScene(GameObject go)
     {
+        //Don't add Singleton objects ever
+        if (go.GetComponent<ObjectInfo>() is SingletonObjectInfo)
+        {
+            return;
+        }
         //Remove the object from all lists
         sceneLoaderSavableLists.ForEach(slsl => slsl.remove(go));
         //Add it to the list that contains the position
