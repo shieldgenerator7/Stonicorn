@@ -181,11 +181,7 @@ public class ScenesManager : MonoBehaviour
         getSceneLoaderSavableList(scene).getMissingObjects(sceneGOs)
             .FindAll(soid => !Managers.Object.hasObject(soid.id))
             .ForEach(soid =>
-                Managers.Object.createObject(soid.id, soid.prefabGUID)
-                    .Completed += (op) =>
-                    {
-                        Managers.Rewind.LoadObject(op.Result, lastStateSeen);
-                    }
+                Managers.Object.createObject(soid.id, soid.prefabGUID, lastStateSeen)
             );
     }
 

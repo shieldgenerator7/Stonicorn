@@ -19,15 +19,15 @@ public class ObjectManager : MonoBehaviour
     private Dictionary<int, AsyncOperationHandle<GameObject>> createQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
 
     /// <summary>
-    /// Spawn a GameObject with the given name from the given prefab GUID
-    /// This method is used during load.
-    /// Precondition: the game object does not already exist
-    /// (or at least has not been found).
+    /// Used when an object that existed previously
+    /// has also previously been destroyed or unloaded,
+    /// and now must be reinstated.
+    /// Precondition: the game object does not already exist (has not been found).
     /// </summary>
     /// <param name="goId"></param>
     /// <param name="prefabGUID"></param>
     /// <returns></returns>
-    public AsyncOperationHandle<GameObject> createObject(int goId, string prefabGUID)
+    public void /*AsyncOperationHandle<GameObject>*/ createObject(int goId, string prefabGUID, int lastStateSeen = -1)
     {
         if (!createQueue.ContainsKey(goId))
         {
@@ -42,11 +42,13 @@ public class ObjectManager : MonoBehaviour
                     GameObject newGO = operation.Result;
                     newGO.GetComponent<ObjectInfo>().Id = goId;
                     addObject(newGO);
+                    Managers.Rewind.LoadObject(newGO, lastStateSeen);
                     foreach (Transform t in newGO.transform)
                     {
                         if (t.gameObject.isSavable())
                         {
                             addObject(t.gameObject);
+                            Managers.Rewind.LoadObject(t.gameObject, lastStateSeen);
                         }
                     }
                     createQueue.Remove(goId);
@@ -57,7 +59,7 @@ public class ObjectManager : MonoBehaviour
                 throw new InvalidKeyException("InvalidKey: (" + prefabGUID + ")", ike);
             }
         }
-        return createQueue[goId];
+        //return createQueue[goId];
     }
 
     /// <summary>

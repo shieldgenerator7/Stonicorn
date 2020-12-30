@@ -157,12 +157,16 @@ public class RewindManager : MonoBehaviour
 
     /// <summary>
     /// Load an object's most recent state, 
-    /// with lastStateSeen being a hint as to when that state was
+    /// with lastStateSeen as a hint as to which state has the most recent state
     /// </summary>
     /// <param name="go"></param>
     /// <param name="lastStateSeen"></param>
-    public void LoadObject(GameObject go, int lastStateSeen)
+    public void LoadObject(GameObject go, int lastStateSeen = -1)
     {
+        if (lastStateSeen < 0)
+        {
+            lastStateSeen = gameStates.Count - 1;
+        }
         //Search through the game states to see when it was last saved
         for (int stateid = lastStateSeen; stateid >= 0; stateid--)
         {
