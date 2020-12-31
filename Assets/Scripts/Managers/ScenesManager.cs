@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -155,7 +156,11 @@ public class ScenesManager : MonoBehaviour
         });
         //Add objects to object list
         sceneGOs.ForEach(go => Managers.Object.addObject(go));
-
+        //Init the savables
+        sceneGOs.ForEach(
+            go => go.GetComponents<SavableMonoBehaviour>().ToList()
+                .ForEach(smb => smb.init())
+            );
         //Find the last state that this scene was saved in
         int lastStateSeen = -1;
         SceneLoader sceneLoader = sceneLoaders.Find(sl => sl.Scene == scene);
