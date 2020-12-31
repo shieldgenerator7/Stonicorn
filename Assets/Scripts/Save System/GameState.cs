@@ -67,7 +67,7 @@ public class GameState
             }
             else
             {
-                Scene scene = SceneManager.GetSceneByName(os.sceneName);
+                Scene scene = SceneManager.GetSceneByBuildIndex(os.sceneId);
                 if (scene.IsValid() && scene.isLoaded)
                 {
                     //If scene is valid, Create the GameObject
