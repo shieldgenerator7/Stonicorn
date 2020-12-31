@@ -435,6 +435,8 @@ public class CustomMenu
         keepScenesOpen = keepScenesOpen || ensureMemoryObjectsHaveObjectInfo();
         keepScenesOpen = keepScenesOpen || ensureUniqueObjectIDs();
 
+        populateObjectManagerKnownObjectsList();
+
         //Cleanup
         EditorSceneManager.SaveOpenScenes();
         if (!keepScenesOpen)
@@ -535,6 +537,34 @@ public class CustomMenu
                 }
             });
         return changedId;
+    }
+
+    [MenuItem("SG7/Editor/Pre-Build/Populate ObjectManager known objects list")]
+    public static void populateObjectManagerKnownObjectsList()
+    {
+        ObjectManager objectManager = GameObject.FindObjectOfType<ObjectManager>();
+        int prevCount = objectManager.knownObjects.Count;
+        objectManager.knownObjects = new List<SavableObjectInfoData>();
+        List<GameObject> savables = new List<GameObject>();
+        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
+            .ForEach(ssl =>
+            {
+                objectManager.knownObjects.AddRange(
+                    ssl.savables.ConvertAll(
+                        go => go.GetComponent<SavableObjectInfo>().Data
+                        )
+                    );
+            });
+        int newCount = objectManager.knownObjects.Count;
+        if (prevCount != newCount)
+        {
+            EditorUtility.SetDirty(objectManager);
+            EditorSceneManager.MarkSceneDirty(objectManager.gameObject.scene);
+            Debug.LogWarning(
+                "ObjectManager known objects count: " + prevCount + " -> " + newCount,
+                objectManager.gameObject
+                );
+        }
     }
 
     [MenuItem("SG7/Build/Build Windows %w")]

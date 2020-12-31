@@ -17,6 +17,7 @@ public class ObjectManager : MonoBehaviour
 
     //Create queue
     private Dictionary<int, AsyncOperationHandle<GameObject>> createQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
+    public List<SavableObjectInfoData> knownObjects;
 
     /// <summary>
     /// Used when an object that existed previously
