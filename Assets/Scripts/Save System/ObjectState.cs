@@ -17,7 +17,6 @@ public class ObjectState
     //Name
     public int objectId = -1;
     public string sceneName;
-    public string prefabGUID;
 
     public ObjectState() { }
     public ObjectState(GameObject go)
@@ -25,7 +24,6 @@ public class ObjectState
         SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
         objectId = info.Id;
         sceneName = go.scene.name;
-        prefabGUID = info.PrefabGUID;
         saveState(go);
     }
 

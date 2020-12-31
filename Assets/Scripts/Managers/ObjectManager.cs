@@ -19,6 +19,19 @@ public class ObjectManager : MonoBehaviour
     private Dictionary<int, AsyncOperationHandle<GameObject>> createQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
     public List<SavableObjectInfoData> knownObjects;
 
+    public void createObject(int goId, int lastStateSeen = -1)
+    {
+        if (goId > 0)
+        {
+            string prefabGUID = knownObjects.Find(soid => soid.id == goId).prefabGUID;
+            createObject(goId, prefabGUID, lastStateSeen);
+        }
+        else
+        {
+            throw new ArgumentException("Id must be 0 or greater! id: " + goId);
+        }
+    }
+
     /// <summary>
     /// Used when an object that existed previously
     /// has also previously been destroyed or unloaded,
@@ -28,7 +41,7 @@ public class ObjectManager : MonoBehaviour
     /// <param name="goId"></param>
     /// <param name="prefabGUID"></param>
     /// <returns></returns>
-    public void /*AsyncOperationHandle<GameObject>*/ createObject(int goId, string prefabGUID, int lastStateSeen = -1)
+    private void /*AsyncOperationHandle<GameObject>*/ createObject(int goId, string prefabGUID, int lastStateSeen = -1)
     {
         if (!createQueue.ContainsKey(goId))
         {

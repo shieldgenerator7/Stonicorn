@@ -71,7 +71,7 @@ public class GameState
                 if (scene.IsValid() && scene.isLoaded)
                 {
                     //If scene is valid, Create the GameObject
-                    Managers.Object.createObject(os.objectId, os.prefabGUID);
+                    Managers.Object.createObject(os.objectId);
                 }
             }
         });
