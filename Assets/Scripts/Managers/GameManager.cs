@@ -172,7 +172,15 @@ public class GameManager : MonoBehaviour
     void processRewindEnd(List<GameState> gameStates, int rewindStateId)
     {
         //Refresh the game object list
-        Managers.Object.refreshGameObjects();
+        if (Managers.Object.CreatingObjects)
+        {
+            Managers.Object.onAllObjectsCreated -= Managers.Object.refreshGameObjects;
+            Managers.Object.onAllObjectsCreated += Managers.Object.refreshGameObjects;
+        }
+        else
+        {
+            Managers.Object.refreshGameObjects();
+        }
         //Put the music back to normal
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
         //Stop rewind visual effect

@@ -75,6 +75,10 @@ public class ObjectManager : MonoBehaviour
         }
         //return createQueue[goId];
     }
+    public delegate void OnAllObjectsCreated();
+    public event OnAllObjectsCreated onAllObjectsCreated;
+
+    public bool CreatingObjects => createQueue.Count > 0;
 
     /// <summary>
     /// Adds a newly created object to the list
@@ -111,6 +115,10 @@ public class ObjectManager : MonoBehaviour
         //If the key is invalid,
         if (key < 0)
         {
+            Debug.LogError(
+                "GameObject " + go.name + " has an invalid key: " + key + "!",
+                go
+                );
             throw new System.ArgumentException(
                   "GameObject " + go.name + " has an invalid key: " + key + "!"
                   );
