@@ -115,19 +115,21 @@ public class GameManager : MonoBehaviour
                 Managers.Effect.showRewindEffect(false);
             }
         }
-
-        //If time is moving forward,
-        if (!Managers.Rewind.Rewinding)
+        if (Managers.Scene.isLevelScene(scene))
         {
-            //Load the previous state of the objects in the scene
-            Managers.Scene.LoadObjectsFromScene(scene);
-        }
+            //If time is moving forward,
+            if (!Managers.Rewind.Rewinding)
+            {
+                //Load the previous state of the objects in the scene
+                Managers.Scene.LoadObjectsFromScene(scene);
+            }
 
-        //If the game has just begun,
-        if (Managers.Rewind.GameStateCount == 0)
-        {
-            //Create the initial save state
-            Managers.Rewind.Save();
+            //If the game has just begun,
+            if (Managers.Rewind.GameStateCount == 0)
+            {
+                //Create the initial save state
+                Managers.Rewind.Save();
+            }
         }
     }
     void sceneUnloaded(Scene scene)

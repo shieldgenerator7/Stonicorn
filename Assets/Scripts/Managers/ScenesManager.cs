@@ -74,6 +74,9 @@ public class ScenesManager : MonoBehaviour
         }
     }
 
+    public bool isLevelScene(Scene s)
+        => getSceneLoaderByName(s.name) != null;
+
     void sceneLoaded(Scene scene, LoadSceneMode m)
     {
         if (scene.name == "PlayerScene")
@@ -85,9 +88,9 @@ public class ScenesManager : MonoBehaviour
         //Scene Loaded Delegate
         onSceneLoaded?.Invoke(scene);
         //If its a level scene,
-        SceneLoader sceneLoader = getSceneLoaderByName(scene.name);
-        if (sceneLoader)
+        if (isLevelScene(scene))
         {
+            //And it's the scene that we paused the game for,
             if (scene.name == PauseForLoadingSceneName)
             {
                 //Unpause the game
@@ -136,6 +139,23 @@ public class ScenesManager : MonoBehaviour
     /// <param name="scene">The scene whose objects need their state stored</param>
     public void LoadObjectsFromScene(Scene scene)
     {
+        //Get list of savables
+        List<GameObject> sceneGOs = SceneSavableList.getFromScene(scene).savables;
+        //If an object from this scene is known not to be currently in this scene,
+        List<GameObject> unsceneGOs = sceneGOs.FindAll(
+            go => !isObjectInScene(go, scene)
+            );
+        //Remove it from being processed, and
+        sceneGOs.RemoveAll(go => unsceneGOs.Contains(go));
+        //Destroy it before it gets put into the game object list.
+        unsceneGOs.ForEach(go =>
+        {
+            Debug.Log("Destroying now duplicate: " + go);
+            Destroy(go);
+        });
+        //Add objects to object list
+        sceneGOs.ForEach(go => Managers.Object.addObject(go));
+
         //Find the last state that this scene was saved in
         int lastStateSeen = -1;
         SceneLoader sceneLoader = sceneLoaders.Find(sl => sl.Scene == scene);
@@ -143,40 +163,18 @@ public class ScenesManager : MonoBehaviour
         {
             lastStateSeen = sceneLoader.lastOpenGameStateId;
         }
-
-#if UNITY_EDITOR
-        Logger.log(this, "LOFS: Scene " + scene.name + ": last state seen: " + lastStateSeen);
-#endif
-        //If the scene was never seen,
-        if (lastStateSeen < 0)
-        {
-            //Don't restore its objects' states,
-            //because there's nothing to restore
-            return;
-        }
         //If the scene was last seen after gamestate-now,
         //The scene is now last seen gamestate-now
         lastStateSeen = Mathf.Min(lastStateSeen, Managers.Rewind.GameStateId);
-        //Get list of savables
-        List<GameObject> sceneGOs = SceneSavableList.getFromScene(scene).savables;
-        List<GameObject> unsceneGOs = sceneGOs.FindAll(
-            go => !isObjectInScene(go, scene)
-            );
-        //Remove it from being processed, and
-        sceneGOs.RemoveAll(go => unsceneGOs.Contains(go));
-        //Destroy it before it gets put into the game object list
-        unsceneGOs.ForEach(go =>
+        //If this scene has been open before,
+        if (lastStateSeen > 0)
         {
-            Debug.Log("Destroying now duplicate: " + go);
-            Destroy(go);
-        });
-        //Add objects to list
-        sceneGOs.ForEach(go => Managers.Object.addObject(go));
-        //Load the objects
-        Managers.Rewind.LoadObjects(
-            sceneGOs,
-            lastStateSeen
-            );
+            //Load the objects
+            Managers.Rewind.LoadObjects(
+                sceneGOs,
+                lastStateSeen
+                );
+        }
         //Create foreign objects that are not here
         getSceneLoaderSavableList(scene).getMissingObjects(sceneGOs)
             .FindAll(soid => !Managers.Object.hasObject(soid.id))
