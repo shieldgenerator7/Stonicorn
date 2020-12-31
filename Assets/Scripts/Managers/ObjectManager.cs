@@ -66,6 +66,10 @@ public class ObjectManager : MonoBehaviour
                         }
                     }
                     createQueue.Remove(goId);
+                    if (!CreatingObjects)
+                    {
+                        onAllObjectsCreated?.Invoke();
+                    }
                 };
             }
             catch (InvalidKeyException ike)
