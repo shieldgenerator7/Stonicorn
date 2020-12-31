@@ -27,29 +27,7 @@ public class GroundChecker : SavableMonoBehaviour
         }
     }
 
-    private float lastGroundedTime = 0;
-    /// <summary>
-    /// Returns the last time that the Grounded check succeeded.
-    /// Note that if the Grounded check was not done, this value may be old
-    /// </summary>
-    public float LastGroundedTime
-    {
-        get
-        {
-            return lastGroundedTime;
-        }
-        private set
-        {
-            lastGroundedTime = Mathf.Clamp(value, 0, Managers.Time.Time);
-        }
-    }
-    void updateLastGroundedTime(bool groundedCheckSuccess)
-    {
-        if (groundedCheckSuccess)
-        {
-            LastGroundedTime = Managers.Time.Time;
-        }
-    }
+
 
     private List<PlayerAbility> groundedAbilities = new List<PlayerAbility>();
     private List<PlayerAbility> groundedAbilitiesPrev = new List<PlayerAbility>();
@@ -105,7 +83,6 @@ public class GroundChecker : SavableMonoBehaviour
             checkGroundedStateAbility();
             Grounded = GroundedAbility;
         }
-        updateLastGroundedTime(Grounded);
     }
     private void checkGroundedStateNormal()
     {
