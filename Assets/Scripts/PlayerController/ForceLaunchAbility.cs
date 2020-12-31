@@ -73,7 +73,7 @@ public class ForceLaunchAbility : PlayerAbility
     private float lastSpeedMetTime = 0;//the last time Merky had met the minimum bounciness speed requirement
     private Vector2 dragPos;
 
-    protected override void init()
+    public override void init()
     {
         base.init();
         playerController.onDragGesture += processDrag;

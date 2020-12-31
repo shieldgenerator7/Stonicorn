@@ -41,6 +41,10 @@ public class CrabController : Hazard
     // Start is called before the first frame update
     void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         rb2d = GetComponent<Rigidbody2D>();
     }
 

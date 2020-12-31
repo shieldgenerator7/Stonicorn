@@ -59,6 +59,10 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ICopyable
     // Start is called before the first frame update
     void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         //Components
         sr = GetComponent<SpriteRenderer>();
         //Initialize integrity

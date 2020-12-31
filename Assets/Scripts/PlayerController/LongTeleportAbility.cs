@@ -50,7 +50,7 @@ public class LongTeleportAbility : PlayerAbility
     }
 
 
-    protected override void init()
+    public override void init()
     {
         base.init();
         Managers.Camera.onOffsetChange += adjustRange;

@@ -70,6 +70,10 @@ public class TimeManager : SavableMonoBehaviour
 
     private void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         if (time <= 0)
         {
             Time = 0;

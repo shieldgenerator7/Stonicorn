@@ -23,6 +23,10 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer, IPowerable
 
     public GameObject GameObject => gameObject;
 
+    public override void init()
+    {
+    }
+
     private OnPowerFlowed onPowerFlowed;
     public OnPowerFlowed OnPowerFlowed
     {

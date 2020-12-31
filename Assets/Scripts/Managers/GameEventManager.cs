@@ -11,6 +11,10 @@ public class GameEventManager : SavableMonoBehaviour
 
     private void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         if (instance == null)
         {
             instance = this;

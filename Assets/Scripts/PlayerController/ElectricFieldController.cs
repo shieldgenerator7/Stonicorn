@@ -30,7 +30,7 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
         }
     }
 
-    public void init()
+    public override void init()
     {
         effectColor = GetComponent<SpriteRenderer>().color;
         effectColor.a = 1;

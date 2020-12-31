@@ -14,23 +14,25 @@ public class GroundChecker : SavableMonoBehaviour
     [SerializeField]
     private Collider2D coll2d;
 
-    private GravityAccepter gravity;
-    public GravityAccepter Gravity
-    {
-        get
-        {
-            if (gravity == null)
-            {
-                gravity = GetComponent<GravityAccepter>();
-            }
-            return gravity;
-        }
-    }
-
-
+    public GravityAccepter Gravity;
 
     private List<PlayerAbility> groundedAbilities = new List<PlayerAbility>();
     private List<PlayerAbility> groundedAbilitiesPrev = new List<PlayerAbility>();
+
+    private void Start()
+    {
+        init();
+    }
+    public override void init()
+    {
+        Gravity = GetComponent<GravityAccepter>();
+        Grounded = false;
+        GroundedNormal = false;
+        GroundedAbility = false;
+        GroundedPrev = false;
+        GroundedNormalPrev = false;
+        GroundedAbilityPrev = false;
+    }
 
     //
     //Grounded state variables

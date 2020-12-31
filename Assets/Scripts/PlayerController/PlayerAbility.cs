@@ -57,7 +57,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
     protected Rigidbody2D rb2d;
 
     // Use this for initialization
-    protected virtual void init()
+    public override void init()
     {
         rb2d = GetComponent<Rigidbody2D>();
         playerController = GetComponent<PlayerController>();

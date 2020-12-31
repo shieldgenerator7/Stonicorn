@@ -41,7 +41,7 @@ public class WallClimbAbility : PlayerAbility
     public delegate void OnMagnetChanged(bool on);
     public event OnMagnetChanged onMagnetChanged;
 
-    protected override void init()
+    public override void init()
     {
         base.init();
         onMagnetChanged -= updateClimbSpikeEffect;

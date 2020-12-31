@@ -7,4 +7,7 @@ using UnityEngine;
 /// </summary>
 public class StaticHazard : Hazard
 {
+    public override void init()
+    {
+    }
 }

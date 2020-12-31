@@ -35,6 +35,10 @@ public class HardMaterial : SavableMonoBehaviour, IBlastable, ICuttable
 
     void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         if (integrity == 0)
         {
             setIntegrity(maxIntegrity);

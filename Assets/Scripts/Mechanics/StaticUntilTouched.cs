@@ -21,6 +21,10 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
 
     private void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         //Initialize state
         Rooted = rooted;
     }

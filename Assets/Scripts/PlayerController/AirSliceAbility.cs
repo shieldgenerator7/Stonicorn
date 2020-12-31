@@ -27,7 +27,7 @@ public class AirSliceAbility : PlayerAbility
     private SwapAbility swapAbility;
 
     // Use this for initialization
-    protected override void init()
+    public override void init()
     {
         base.init();
         playerController.onGroundedStateUpdated += resetAirPorts;

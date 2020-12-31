@@ -42,6 +42,10 @@ public class NPCController : SavableMonoBehaviour
     // Use this for initialization
     protected virtual void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         //Read in the NPC's lines
         if (voiceLines == null)
         {

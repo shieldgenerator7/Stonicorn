@@ -23,6 +23,10 @@ public class StaticUntilSwapped : SavableMonoBehaviour, ISwappable
 
     private void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         //Initialize state
         Rooted = rooted;
     }

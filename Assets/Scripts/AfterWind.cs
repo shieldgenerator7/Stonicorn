@@ -14,6 +14,10 @@ public class AfterWind : SavableMonoBehaviour, ICuttable
     // Use this for initialization
     void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         coll = GetComponent<BoxCollider2D>();
         if (windVector == Vector2.zero)
         {

@@ -74,6 +74,10 @@ public class GravityAccepter : SavableMonoBehaviour
     }
     Vector2 prevGravityVector;
     Vector2 prevSideVector;
+
+    public override void init()
+    {
+    }
     private void LateUpdate()
     {
         if (prevGravityVector != gravityVector

@@ -23,6 +23,10 @@ public class AirPortGranter : SavableMonoBehaviour
         }
     }
 
+    public override void init()
+    {
+    }
+
     private void OnTriggerEnter2D(Collider2D coll2d)
     {
         if (coll2d.isSolid())

@@ -24,7 +24,7 @@ public class FlashlightAbility : PlayerAbility
         }
     }
 
-    protected override void init()
+    public override void init()
     {
         base.init();
         playerController.onDragGesture += processDrag;

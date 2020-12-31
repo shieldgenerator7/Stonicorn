@@ -63,7 +63,7 @@ public class ElectricBeamAbility : PlayerAbility
     public delegate void OnTargetChanged(GameObject oldGO, GameObject newGO);
     public event OnTargetChanged onTargetChanged;
 
-    protected override void init()
+    public override void init()
     {
         base.init();
         playerController.Teleport.findTeleportablePositionOverride

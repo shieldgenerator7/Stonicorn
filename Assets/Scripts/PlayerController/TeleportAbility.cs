@@ -74,7 +74,7 @@ public class TeleportAbility : PlayerAbility
 
     private PolygonCollider2D pc2d;
 
-    protected override void init()
+    public override void init()
     {
         base.init();
         pc2d = GetComponent<PolygonCollider2D>();

@@ -30,6 +30,10 @@ public class GameStatistics : SavableMonoBehaviour
         { "RewindPlayer", 0}//how many times the player used the rewind ability
     };
 
+    public override void init()
+    {
+    }
+
     public override SavableObject CurrentState
     {
         get

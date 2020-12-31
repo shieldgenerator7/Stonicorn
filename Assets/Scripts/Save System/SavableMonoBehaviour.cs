@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class SavableMonoBehaviour : MonoBehaviour
 {
+    public abstract void init();
+
     /// <summary>
     /// The SavableObject that contains this object's configuration state
     /// </summary>

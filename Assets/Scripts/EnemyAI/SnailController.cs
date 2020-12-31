@@ -63,6 +63,10 @@ public class SnailController : Hazard
     // Start is called before the first frame update
     void Start()
     {
+        init();
+    }
+    public override void init()
+    {
         animator = GetComponentInChildren<Animator>();
         ground = GetComponent<GroundChecker>();
         gravity = GetComponent<GravityAccepter>();

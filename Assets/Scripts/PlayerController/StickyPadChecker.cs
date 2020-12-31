@@ -13,6 +13,10 @@ public class StickyPadChecker : SavableMonoBehaviour
     // Use this for initialization
     void OnEnable()
     {
+        init();
+    }
+    public override void init()
+    {
         rb2d = GetComponent<Rigidbody2D>();
         coll2d = GetComponent<Collider2D>();
     }
