@@ -462,39 +462,6 @@ public class CustomMenu
         GameObject.FindObjectsOfType<SceneSavableList>().ToList()
             .ForEach(ssl => ssl.refreshList());
     }
-    [MenuItem("SG7/Editor/Pre-Build/Ensure unique object IDs among open scenes")]
-    public static bool ensureUniqueObjectIDs()
-    {
-        List<GameObject> savables = new List<GameObject>();
-        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
-            .ForEach(ssl =>
-            {
-                savables.AddRange(ssl.savables);
-                savables.AddRange(ssl.memories);
-            });
-        List<ObjectInfo> infos = savables.ConvertAll(go => go.GetComponent<ObjectInfo>());
-        int nextID = 10;
-        bool changedId = false;
-        infos.FindAll(info => !(info is SingletonObjectInfo))
-            .ForEach(info =>
-            {
-                int id = nextID;
-                nextID++;
-                int prevID = info.Id;
-                info.Id = id;
-                if (id != prevID)
-                {
-                    Debug.LogWarning(
-                        "Changed Id: " + prevID + " -> " + id,
-                        info.gameObject
-                        );
-                    EditorUtility.SetDirty(info);
-                    EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
-                    changedId = true;
-                }
-            });
-        return changedId;
-    }
 
     [MenuItem("SG7/Editor/Pre-Build/Ensure savable objects have ObjectInfo")]
     public static bool ensureSavableObjectsHaveObjectInfo()
@@ -535,6 +502,39 @@ public class CustomMenu
             go => Debug.LogError(go.name + " does not have an MemoryObjectInfo!", go)
             );
         return missingInfo.Count > 0;
+    }
+    [MenuItem("SG7/Editor/Pre-Build/Ensure unique object IDs among open scenes")]
+    public static bool ensureUniqueObjectIDs()
+    {
+        List<GameObject> savables = new List<GameObject>();
+        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
+            .ForEach(ssl =>
+            {
+                savables.AddRange(ssl.savables);
+                savables.AddRange(ssl.memories);
+            });
+        List<ObjectInfo> infos = savables.ConvertAll(go => go.GetComponent<ObjectInfo>());
+        int nextID = 10;
+        bool changedId = false;
+        infos.FindAll(info => !(info is SingletonObjectInfo))
+            .ForEach(info =>
+            {
+                int id = nextID;
+                nextID++;
+                int prevID = info.Id;
+                info.Id = id;
+                if (id != prevID)
+                {
+                    Debug.LogWarning(
+                        "Changed Id: " + prevID + " -> " + id,
+                        info.gameObject
+                        );
+                    EditorUtility.SetDirty(info);
+                    EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
+                    changedId = true;
+                }
+            });
+        return changedId;
     }
 
     [MenuItem("SG7/Build/Build Windows %w")]
