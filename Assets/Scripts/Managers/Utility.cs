@@ -459,7 +459,7 @@ public static class Utility
         if (isSavable)
         {
             newObj.GetComponent<ObjectInfo>().Id = getUniqueId(baseId, 0);
-            Managers.Object.addObject(newObj);
+            Managers.Object.addNewObject(newObj);
         }
         //Container children
         if (isContainer)
@@ -471,7 +471,7 @@ public static class Utility
                 savable.name += spawnTag;
                 savable.GetComponent<ObjectInfo>().Id = getUniqueId(baseId, nextId);
                 nextId++;
-                Managers.Object.addObject(savable);
+                Managers.Object.addNewObject(savable);
             });
         }
         //Return spawned object

@@ -77,6 +77,20 @@ public class ObjectManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Adds a newly created object to the list
+    /// </summary>
+    /// <param name="go"></param>
+    public void addNewObject(GameObject go)
+    {
+        SavableObjectInfoData soid = go.GetComponent<SavableObjectInfo>().Data;
+        if (!knownObjects.Contains(soid))
+        {
+            knownObjects.Add(soid);
+        }
+        addObject(go);
+    }
+
+    /// <summary>
     /// Adds an object to list of objects that have state to save
     /// </summary>
     /// <param name="go">The GameObject to add to the list</param>
