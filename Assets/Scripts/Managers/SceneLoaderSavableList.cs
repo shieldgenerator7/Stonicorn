@@ -30,12 +30,6 @@ public class SceneLoaderSavableList : MonoBehaviour
     public void remove(SavableObjectInfoData data)
         => datas.Remove(data);
 
-    public bool overlapsPosition(GameObject go)
-        => coll2d.OverlapPoint(go.transform.position);
-
-    public bool overlapsCollider(GameObject go)
-        => coll2d.OverlapsCollider(go.GetComponent<Collider2D>());
-
     public Scene Scene
         => sceneLoader.Scene;
 

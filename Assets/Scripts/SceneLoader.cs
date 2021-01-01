@@ -203,6 +203,8 @@ public class SceneLoader : MonoBehaviour, ISetting
     public event OnObjectMoved onObjectExited;
 
     #region Static Helper Methods
+    public bool overlapsPosition(GameObject go)
+        => Collider.OverlapPoint(go.transform.position);
 
     public static Scene getCurrentScene()
     {
@@ -244,6 +246,8 @@ public class SceneLoader : MonoBehaviour, ISetting
     }
 
     #endregion
+    public bool overlapsCollider(GameObject go)
+        => Collider.OverlapsCollider(go.GetComponent<Collider2D>());
 
     public SettingObject Setting
     {
