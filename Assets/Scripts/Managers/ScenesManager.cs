@@ -9,8 +9,6 @@ public class ScenesManager : SavableMonoBehaviour
 {
     [SerializeField]
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
-    [SerializeField]
-    private List<SceneLoaderSavableList> sceneLoaderSavableLists = new List<SceneLoaderSavableList>();
     /// <summary>
     /// Stores the object's id and the scene id of the scene that it's in
     /// </summary>
@@ -88,7 +86,7 @@ public class ScenesManager : SavableMonoBehaviour
     }
 
     public bool isLevelScene(Scene s)
-        => getSceneLoaderByName(s.name) != null;
+        => getSceneLoader(s) != null;
 
     void sceneLoaded(Scene scene, LoadSceneMode m)
     {
@@ -193,15 +191,15 @@ public class ScenesManager : SavableMonoBehaviour
                 );
         }
         //Create foreign objects that are not here
-        getSceneLoaderSavableList(scene).getMissingObjects(sceneGOs)
-            .FindAll(soid => !Managers.Object.hasObject(soid.id))
-            .ForEach(soid =>
-                Managers.Object.createObject(soid.id, lastStateSeen)
-            );
+        getObjectsInScene(scene)
+            .FindAll(go => !sceneGOs.Contains(go))
+            .ConvertAll(go => go.getKey())
+            .FindAll(id => !Managers.Object.hasObject(id))
+            .ForEach(id => Managers.Object.createObject(id, lastStateSeen));
     }
 
-    private SceneLoader getSceneLoaderByName(string sceneName)
-        => sceneLoaders.Find(sl => sl.sceneName == sceneName);
+    private SceneLoader getSceneLoader(Scene scene)
+        => sceneLoaders.Find(sl => sl.Scene == scene);
     #endregion
 
     public void updateSceneLoadersForward(int gameStateId)
@@ -263,12 +261,16 @@ public class ScenesManager : SavableMonoBehaviour
         }
     }
 
-    public bool isObjectInScene(GameObject go, Scene scene)
+    public List<GameObject> getObjectsInScene(Scene scene)
     {
-        SceneLoaderSavableList slslist = sceneLoaderSavableLists
-            .Find(slsl => slsl.contains(go));
-        return slslist == null || slslist.Scene == scene;
+        int sceneId = scene.buildIndex;
+        return objectSceneList.ToList()
+            .FindAll(entry => entry.Value == sceneId)
+            .ConvertAll(entry => Managers.Object.getObject(entry.Key));
     }
+
+    public bool isObjectInScene(GameObject go, Scene scene)
+        => objectSceneList[go.getKey()] == scene.buildIndex;
 
     public void registerObjectInScene(GameObject go)
     {
@@ -278,22 +280,26 @@ public class ScenesManager : SavableMonoBehaviour
         {
             return;
         }
-        SavableObjectInfoData data = soi.Data;
-        //Remove the object from all lists
-        sceneLoaderSavableLists.ForEach(slsl => slsl.remove(data));
         //Add it to the list that contains the position
-        SceneLoaderSavableList slslist = sceneLoaderSavableLists.Find(
-            slsl => slsl.overlapsPosition(go)
-            );
-        if (!slslist)
+        int objectId = soi.Id;
+        SceneLoader loader = sceneLoaders.Find(sl => sl.overlapsPosition(go));
+        if (!loader)
         {
-            slslist = sceneLoaderSavableLists.Find(
-                slsl => slsl.overlapsCollider(go)
-            );
+            loader = sceneLoaders.Find(sl => sl.overlapsCollider(go));
         }
         try
         {
-            slslist.add(data);
+            Scene scene = loader.Scene;
+            int sceneId = scene.buildIndex;
+            if (!objectSceneList.ContainsKey(objectId))
+            {
+                objectSceneList.Add(objectId, sceneId);
+            }
+            else
+            {
+                objectSceneList[objectId] = sceneId;
+            }
+            moveToScene(go, scene);
         }
         catch (NullReferenceException nre)
         {
@@ -305,8 +311,6 @@ public class ScenesManager : SavableMonoBehaviour
         }
     }
 
-    private SceneLoaderSavableList getSceneLoaderSavableList(Scene scene)
-        => sceneLoaderSavableLists.Find(slsl => slsl.Scene == scene);
     public void moveToScene(GameObject go, Scene s)
     {
         try
