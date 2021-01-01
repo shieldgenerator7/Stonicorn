@@ -53,9 +53,9 @@ public class FileManager : MonoBehaviour
     /// </summary>
     public void loadFromFile()
     {
+        string filename = getFileName(false);
         try
         {
-            string filename = getFileName(false);
             //Load game states and memories
             Managers.Rewind.loadFromFile(filename);
             Managers.Object.loadFromFile(filename);
@@ -79,12 +79,13 @@ public class FileManager : MonoBehaviour
                 }
             }
         }
-        catch (System.Exception)
+        catch (System.Exception e)
         {
-            if (ES3.FileExists("merky.txt"))
+            if (ES3.FileExists(filename))
             {
-                ES3.DeleteFile("merky.txt");
+                ES3.DeleteFile(filename);
             }
+            Debug.LogError("Error loading file: " + filename + "; error: " + e);
             Managers.Game.resetGame(false);
         }
     }
