@@ -311,16 +311,35 @@ public class ScenesManager : SavableMonoBehaviour
         }
     }
 
-    public void moveToScene(GameObject go, Scene s)
+    public void moveToScene(GameObject go, Scene scene)
     {
         try
         {
-            SceneManager.MoveGameObjectToScene(go, s);
+            if (go.transform.parent != null)
+            {
+                Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
+                if (!rb2d)
+                {
+                    rb2d = go.GetComponentInParent<Rigidbody2D>();
+                }
+                if (rb2d)
+                {
+                    go = rb2d.gameObject;
+                }
+                if (go.transform.parent != null)
+                {
+                    go.transform.SetParent(null);
+                }
+            }
+            if (go.scene != scene)
+            {
+                SceneManager.MoveGameObjectToScene(go, scene);
+            }
         }
         catch (System.ArgumentException ae)
         {
             Debug.LogError(
-                "Trying to move " + go.name + " into scene " + s.name
+                "Trying to move " + go.name + " into scene " + scene.name
                 + ": " + ae
                 );
         }

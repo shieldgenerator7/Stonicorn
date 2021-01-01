@@ -165,40 +165,13 @@ public class SceneLoader : MonoBehaviour, ISetting
     private void OnTriggerEnter2D(Collider2D coll2D)
     {
         GameObject go = coll2D.gameObject;
-        //Move objects that enter your scene into it
-        if (!go.isPlayer())
-        {
-            if (go.scene != Scene)
-            {
-                if (coll2D.transform.parent != null)
-                {
-                    Rigidbody2D rb2d = coll2D.GetComponent<Rigidbody2D>();
-                    if (!rb2d)
-                    {
-                        rb2d = coll2D.GetComponentInParent<Rigidbody2D>();
-                    }
-                    if (rb2d)
-                    {
-                        go = rb2d.gameObject;
-                    }
-                    if (go.transform.parent != null)
-                    {
-                        go.transform.SetParent(null);
-                    }
-                }
-                Managers.Scene.moveToScene(go, Scene);
-            }
-            onObjectEntered?.Invoke(go);
-        }
+        onObjectEntered?.Invoke(go);
     }
     public event OnObjectMoved onObjectEntered;
     private void OnTriggerExit2D(Collider2D coll2D)
     {
         GameObject go = coll2D.gameObject;
-        if (!go.isPlayer())
-        {
-            onObjectExited?.Invoke(go);
-        }
+        onObjectExited?.Invoke(go);
     }
     public event OnObjectMoved onObjectExited;
 
