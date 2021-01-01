@@ -307,6 +307,20 @@ public class ScenesManager : SavableMonoBehaviour
 
     private SceneLoaderSavableList getSceneLoaderSavableList(Scene scene)
         => sceneLoaderSavableLists.Find(slsl => slsl.Scene == scene);
+    public void moveToScene(GameObject go, Scene s)
+    {
+        try
+        {
+            SceneManager.MoveGameObjectToScene(go, s);
+        }
+        catch (System.ArgumentException ae)
+        {
+            Debug.LogError(
+                "Trying to move " + go.name + " into scene " + s.name
+                + ": " + ae
+                );
+        }
+    }
 
     public override SavableObject CurrentState
     {

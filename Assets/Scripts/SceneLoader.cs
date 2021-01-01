@@ -186,7 +186,7 @@ public class SceneLoader : MonoBehaviour, ISetting
                         go.transform.SetParent(null);
                     }
                 }
-                moveToScene(go, Scene);
+                Managers.Scene.moveToScene(go, Scene);
             }
             onObjectEntered?.Invoke(go);
         }
@@ -202,50 +202,9 @@ public class SceneLoader : MonoBehaviour, ISetting
     }
     public event OnObjectMoved onObjectExited;
 
-    #region Static Helper Methods
     public bool overlapsPosition(GameObject go)
         => Collider.OverlapPoint(go.transform.position);
 
-    public static Scene getCurrentScene()
-    {
-        return currentScene.Scene;
-    }
-    /// <summary>
-    /// Moves the given object to the current scene
-    /// </summary>
-    /// <param name="go"></param>
-    public static void moveToCurrentScene(GameObject go)
-    {
-        if (currentScene == null)
-        {
-            Managers.Scene.checkScenes();
-        }
-        else if (currentScene.Scene == null)
-        {
-            Debug.LogError("Current SceneLoader " + currentScene.sceneName + " has a null scene!");
-        }
-        moveToScene(go, getCurrentScene());
-    }
-    public static void moveToScene(GameObject go, string sceneName)
-    {
-        moveToScene(go, SceneManager.GetSceneByName(sceneName));
-    }
-    public static void moveToScene(GameObject go, Scene s)
-    {
-        try
-        {
-            SceneManager.MoveGameObjectToScene(go, s);
-        }
-        catch (System.ArgumentException ae)
-        {
-            Debug.LogError(
-                "Trying to move " + go.name + " into scene " + s.name
-                + ": " + ae
-                );
-        }
-    }
-
-    #endregion
     public bool overlapsCollider(GameObject go)
         => Collider.OverlapsCollider(go.GetComponent<Collider2D>());
 
