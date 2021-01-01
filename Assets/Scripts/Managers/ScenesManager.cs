@@ -281,6 +281,11 @@ public class ScenesManager : SavableMonoBehaviour
 
     public void registerObjectInScene(GameObject go)
     {
+        if (go == null || ReferenceEquals(go, null))
+        {
+            //don't register null or destroyed objects
+            return;
+        }
         SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
         //Don't add non-Savable or Singleton objects ever
         if (!soi || soi is SingletonObjectInfo)
@@ -348,7 +353,9 @@ public class ScenesManager : SavableMonoBehaviour
             }
             if (go.scene != scene)
             {
+                Debug.Log("Moving " + go.name + " into scene " + scene.name, go);
                 SceneManager.MoveGameObjectToScene(go, scene);
+                Debug.Log("Moved " + go.name + " is now in scene " + go.scene.name, go);
             }
         }
         catch (System.ArgumentException ae)
