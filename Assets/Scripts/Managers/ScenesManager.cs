@@ -5,12 +5,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ScenesManager : MonoBehaviour
+public class ScenesManager : SavableMonoBehaviour
 {
     [SerializeField]
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     [SerializeField]
     private List<SceneLoaderSavableList> sceneLoaderSavableLists = new List<SceneLoaderSavableList>();
+    /// <summary>
+    /// Stores the object's id and the scene id of the scene that it's in
+    /// </summary>
+    private Dictionary<int, int> objectSceneList = new Dictionary<int, int>();
 
     private string pauseForLoadingSceneName = null;//the name of the scene that needs the game to pause while it's loading
     public string PauseForLoadingSceneName
@@ -40,13 +44,17 @@ public class ScenesManager : MonoBehaviour
     private List<Scene> openScenes = new List<Scene>();//the list of the scenes that are open
     public bool playerSceneLoaded { get; private set; } = false;
 
-    public void init()
+    public override void init()
     {
 #if UNITY_EDITOR
         //Add list of already open scenes to open scene list (for editor)
         for (int i = 0; i < SceneManager.sceneCount; i++)
         {
-            openScenes.Add(SceneManager.GetSceneAt(i));
+            Scene scene = SceneManager.GetSceneAt(i);
+            if (!openScenes.Contains(scene))
+            {
+                openScenes.Add(scene);
+            }
         }
         if (openScenes.Find(scene => scene.name == "PlayerScene") != null)
         {
@@ -55,13 +63,17 @@ public class ScenesManager : MonoBehaviour
 #endif
 
         //Register scene loading delegates
+        SceneManager.sceneLoaded -= sceneLoaded;
         SceneManager.sceneLoaded += sceneLoaded;
+        SceneManager.sceneUnloaded -= sceneUnloaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
 
         //Register SceneLoaderSavableList delegates
         sceneLoaders.ForEach(sl =>
         {
+            sl.onObjectEntered -= registerObjectInScene;
             sl.onObjectEntered += registerObjectInScene;
+            sl.onObjectExited -= registerObjectInScene;
             sl.onObjectExited += registerObjectInScene;
         });
     }
@@ -295,4 +307,16 @@ public class ScenesManager : MonoBehaviour
 
     private SceneLoaderSavableList getSceneLoaderSavableList(Scene scene)
         => sceneLoaderSavableLists.Find(slsl => slsl.Scene == scene);
+
+    public override SavableObject CurrentState
+    {
+        get => new SavableObject(this)
+            .addDictionary(
+            "objectSceneList", objectSceneList
+            );
+        set
+        {
+            objectSceneList = value.Dictionary<int, int>("objectSceneList");
+        }
+    }
 }
