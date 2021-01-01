@@ -270,7 +270,14 @@ public class ScenesManager : SavableMonoBehaviour
     }
 
     public bool isObjectInScene(GameObject go, Scene scene)
-        => objectSceneList[go.getKey()] == scene.buildIndex;
+    {
+        int objectId = go.getKey();
+        if (objectSceneList.ContainsKey(objectId))
+        {
+            return objectSceneList[objectId] == scene.buildIndex;
+        }
+        return true;
+    }
 
     public void registerObjectInScene(GameObject go)
     {
