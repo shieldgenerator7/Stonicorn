@@ -32,7 +32,7 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
         Scene scene = original.scene;
         transform.position = original.transform.position;
         transform.rotation = original.transform.rotation;
-        SceneLoader.moveToScene(gameObject, scene);
+        Managers.Scene.moveToScene(gameObject, scene);
 
         //Initialize child objects
         Vector3 origScale = original.transform.localScale;
@@ -69,7 +69,7 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
             //Unparent it
             t.SetParent(null);
             //Put it in the scene
-            SceneLoader.moveToScene(go, scene);
+            Managers.Scene.moveToScene(go, scene);
         }
         //Delete this object
         Destroy(gameObject);

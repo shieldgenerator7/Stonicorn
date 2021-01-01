@@ -455,7 +455,6 @@ public static class Utility
         int baseId = (int)System.DateTime.Now.Ticks;
         string spawnTag = "---" + baseId;
         newObj.name += spawnTag;
-        SceneLoader.moveToCurrentScene(newObj);
         if (isSavable)
         {
             newObj.GetComponent<ObjectInfo>().Id = getUniqueId(baseId, 0);
