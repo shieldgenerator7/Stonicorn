@@ -289,6 +289,14 @@ public class ScenesManager : SavableMonoBehaviour
         }
         //Add it to the list that contains the position
         int objectId = soi.Id;
+        if (objectId < 0)
+        {
+            Debug.LogError(
+                "Object " + go.name + " Id is less than 0! id: " + objectId,
+                go
+                );
+            return;
+        }
         SceneLoader loader = sceneLoaders.Find(sl => sl.overlapsPosition(go));
         if (!loader)
         {
