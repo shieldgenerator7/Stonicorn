@@ -339,7 +339,6 @@ public class ScenesManager : SavableMonoBehaviour
                 );
         }
     }
-    }
 
     public void moveToScene(GameObject go, Scene scene)
     {
