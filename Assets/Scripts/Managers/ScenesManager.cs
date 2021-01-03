@@ -324,11 +324,21 @@ public class ScenesManager : SavableMonoBehaviour
         catch (NullReferenceException nre)
         {
             throw new NullReferenceException(
-                "No SLSL found when trying to register object " + go.name
+                "No SL found when trying to register object " + go.name
                 + " at position " + go.transform.position,
                 nre
                 );
         }
+        catch (ArgumentException ae)
+        {
+            Debug.LogError(
+                "No scene found when trying to register object " + go.name
+                + " at position " + go.transform.position
+                + "\nArgumentException: " + ae,
+                go
+                );
+        }
+    }
     }
 
     public void moveToScene(GameObject go, Scene scene)
