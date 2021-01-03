@@ -159,6 +159,14 @@ public class CustomMenu
         }
     }
 
+    [MenuItem("SG7/Editor/Toggle Editor Camera AutoRotate %R")]
+    public static void toggleEditorCameraAutoRotate()
+    {
+        EditorCameraRotatorObject ecro =
+            GameObject.FindObjectOfType<EditorCameraRotatorObject>();
+        ecro.toggle();
+    }
+
     [MenuItem("SG7/Editor/Connect selected Lantern and HiddenArea %#H")]
     public static void connectLanternToHiddenArea()
     {

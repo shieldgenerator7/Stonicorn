@@ -19,47 +19,27 @@ public class EditorCameraRotator : Editor
     {
         if (ecro.autoRotate)
         {
-            foreach (GravityZone gz in GameObject.FindObjectsOfType<GravityZone>())
+            GravityZone gz = GravityZone.getGravityZone(sceneview.camera.transform.position);
+            Vector2 up = sceneview.camera.transform.up;
+            if (gz.radialGravity)
             {
-                if (gz.mainGravityZone)
-                {
-                    if (gz.radialGravity)
-                    {
-                        if (gz.GetComponent<CircleCollider2D>().OverlapPoint(sceneview.camera.transform.position))
-                        {
-                            if (sceneview.camera.transform.localRotation != gz.gameObject.transform.localRotation)
-                            {
-                                sceneview.isRotationLocked = false;
-                                sceneview.camera.transform.up = sceneview.camera.transform.position - gz.transform.position;
-                                sceneview.camera.Render();
-                                ecro.rotZ = Vector3.SignedAngle(
-                                    Vector3.up,
-                                    sceneview.camera.transform.position - gz.transform.position,
-                                    Vector3.forward
-                                    );
-                                //ecro.rotZ = sceneview.camera.transform.eulerAngles.z;
-                            }
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (gz.GetComponent<PolygonCollider2D>().OverlapPoint(sceneview.camera.transform.position))
-                        {
-                            if (sceneview.camera.transform.localRotation != gz.gameObject.transform.localRotation)
-                            {
-                                sceneview.isRotationLocked = false;
-                                sceneview.camera.transform.localRotation = gz.gameObject.transform.localRotation;
-                                sceneview.camera.Render();
-                                ecro.rotZ = gz.transform.eulerAngles.z;
-                            }
-                            break;
-                        }
-                    }
-                }
+                up = sceneview.camera.transform.position - gz.transform.position;
+            }
+            else
+            {
+                up = gz.transform.up;
+            }
+            if ((Vector2)sceneview.camera.transform.up != up)
+            {
+                sceneview.isRotationLocked = false;
+                sceneview.camera.transform.up = up;
+                sceneview.camera.Render();
+                //sceneview.cameraSettings.
+                ecro.rotZ = sceneview.camera.transform.eulerAngles.z;
             }
         }
-        else {
+        else
+        {
             Quaternion angle = Quaternion.AngleAxis(ecro.rotZ, Vector3.forward);
             if (sceneview.camera.transform.localRotation != angle)
             {
@@ -67,6 +47,15 @@ public class EditorCameraRotator : Editor
                 sceneview.camera.transform.localRotation = angle;
                 sceneview.camera.Render();
             }
+        }
+    }
+
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+        if (GUILayout.Button("Toggle"))
+        {
+            ecro.toggle();
         }
     }
 }
