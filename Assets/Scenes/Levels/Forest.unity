@@ -20260,6 +20260,8 @@ GameObject:
   m_Component:
   - component: {fileID: 667333091}
   - component: {fileID: 667333090}
+  - component: {fileID: 667333093}
+  - component: {fileID: 667333092}
   - component: {fileID: 667333089}
   m_Layer: 2
   m_Name: ActivationTrigger ZOGH 1
@@ -20277,30 +20279,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 667333088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb142b27c2edc524888a745711b29515, type: 3}
+  m_Script: {fileID: 11500000, guid: 6754536a67518cd4cbd9547a3917d5ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerName: 
-  triggerEnterAction: 0
-  triggerExitAction: 1
-  objectsToActivate:
-  - {fileID: 2121064118}
-  forPlayerOnly: 1
-  zoomLevelEnterAction: 0
-  zoomLevelExitAction: 1
-  zoomLevelEnterStayAction: 0
-  zoomLevelExitStayAction: 1
-  zoomRequireTrigger: 1
-  triggerRequireZoom: 1
   minZoomScalePoint: 0
   maxZoomScalePoint: 3
   minZoomClusivity: 1
   maxZoomClusivity: 1
-  cameraPositionCollider: {fileID: 0}
-  cameraEnterAction: 0
-  cameraExitAction: 1
-  cameraPositionRequireTrigger: 1
-  cameraSnapAnchor: {fileID: 0}
 --- !u!61 &667333090
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20341,6 +20326,36 @@ Transform:
   m_Father: {fileID: 1359851885}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &667333092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667333088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2900472a9252b82458b24e1d9ad8ee2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forPlayerOnly: 1
+--- !u!114 &667333093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667333088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b75a3bc5004b31f46acba56c773d5743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsToActivate:
+  - {fileID: 2121064118}
+  requiredTriggers:
+  - {fileID: 667333092}
+  - {fileID: 667333089}
 --- !u!1001 &668517033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76547,6 +76562,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1885864318}
   - component: {fileID: 1885864320}
+  - component: {fileID: 1885864322}
+  - component: {fileID: 1885864321}
   - component: {fileID: 1885864319}
   m_Layer: 2
   m_Name: ActivationTrigger ZOGH 1
@@ -76578,30 +76595,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1885864317}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb142b27c2edc524888a745711b29515, type: 3}
+  m_Script: {fileID: 11500000, guid: 6754536a67518cd4cbd9547a3917d5ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerName: 
-  triggerEnterAction: 0
-  triggerExitAction: 1
-  objectsToActivate:
-  - {fileID: 156878337}
-  forPlayerOnly: 1
-  zoomLevelEnterAction: 0
-  zoomLevelExitAction: 1
-  zoomLevelEnterStayAction: 0
-  zoomLevelExitStayAction: 1
-  zoomRequireTrigger: 1
-  triggerRequireZoom: 1
   minZoomScalePoint: 0
   maxZoomScalePoint: 3
   minZoomClusivity: 1
   maxZoomClusivity: 1
-  cameraPositionCollider: {fileID: 0}
-  cameraEnterAction: 0
-  cameraExitAction: 1
-  cameraPositionRequireTrigger: 1
-  cameraSnapAnchor: {fileID: 0}
 --- !u!61 &1885864320
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -76628,6 +76628,36 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.3587475, y: 2.4648786}
   m_EdgeRadius: 0
+--- !u!114 &1885864321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885864317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2900472a9252b82458b24e1d9ad8ee2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forPlayerOnly: 1
+--- !u!114 &1885864322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885864317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b75a3bc5004b31f46acba56c773d5743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsToActivate:
+  - {fileID: 156878337}
+  requiredTriggers:
+  - {fileID: 1885864321}
+  - {fileID: 1885864319}
 --- !u!1 &1886953228 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
