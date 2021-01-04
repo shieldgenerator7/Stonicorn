@@ -34,6 +34,16 @@ public class TutorialActivatorEditor : Editor
                     ta.requiredTriggers.Add(czat);
                 }
             }
+            //If it doesnt have a CameraPosition trigger yet,
+            if (!ta.requiredTriggers.Any(trigger => trigger is CameraPositionActivatorTrigger))
+            {
+                //Add button to do so
+                if (GUILayout.Button("Add CameraPositionActivatorTrigger"))
+                {
+                    CameraPositionActivatorTrigger cpat = ta.gameObject.AddComponent<CameraPositionActivatorTrigger>();
+                    ta.requiredTriggers.Add(cpat);
+                }
+            }
         }
     }
 }
