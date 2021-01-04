@@ -12,6 +12,10 @@ public class TutorialActivatorEditor : Editor
         DrawDefaultInspector();
 
         TutorialActivator ta = (TutorialActivator)target;
+        if (ta.requiredTriggers == null)
+        {
+            ta.requiredTriggers = new List<ActivatorTrigger>();
+        }
         if (ta)
         {
             //If it doesnt have a Trigger trigger yet,
