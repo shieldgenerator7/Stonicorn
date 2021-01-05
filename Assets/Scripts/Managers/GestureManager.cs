@@ -9,14 +9,26 @@ public class GestureManager : MonoBehaviour
     private GestureProfile currentGP;//the current gesture profile
     private Dictionary<GestureProfileType, GestureProfile> gestureProfiles = new Dictionary<GestureProfileType, GestureProfile>();//dict of valid gesture profiles
 
-    //Gesture Event Methods
-    //public TapGesture tapGesture;
-    public event OnInputDeviceSwitched onInputDeviceSwitched;
-
     /// <summary>
     /// The input that is currently providing input or that has most recently provided input
     /// </summary>
     private GestureInput activeInput;
+    public GestureInput ActiveInput
+    {
+        get => activeInput;
+        set
+        {
+            GestureInput prevInput = activeInput;
+            activeInput = value ?? prevInput;
+            if (activeInput != prevInput)
+            {
+                onInputDeviceSwitched?.Invoke(activeInput.InputType);
+                Debug.Log("ActiveInput is now: " + activeInput.InputType);
+            }
+        }
+    }
+    public delegate void OnInputDeviceSwitched(InputDeviceMethod inputDevice);
+    public event OnInputDeviceSwitched onInputDeviceSwitched;
     private List<GestureInput> gestureInputs;
 
     // Use this for initialization
@@ -38,38 +50,24 @@ public class GestureManager : MonoBehaviour
         gestureInputs.Add(new TouchGestureInput());
         gestureInputs.Add(new MouseGestureInput());
         gestureInputs.Add(new KeyboardGestureInput());
-        activeInput = gestureInputs[0];
+        //Default active input
+        ActiveInput = gestureInputs.Find(input => input.InputSupported);
     }
 
     // Update is called once per frame
     public void processGestures()
     {
         //
-        //Input Device Scouting
-        //
-        if (onInputDeviceSwitched != null)
-        {
-            InputDeviceMethod idm = activeInput.InputType;
-            if (!activeInput.InputOngoing)
-            {
-                //TODO: Check other inputs for being active
-            }
-        }
-
-        //
         //Input Processing
         //
         bool processed = activeInput.processInput(currentGP);
         if (!processed)
         {
-            foreach (GestureInput input in gestureInputs)
+            GestureInput prevInput = activeInput;
+            ActiveInput = gestureInputs.Find(input => input.InputOngoing);
+            if (activeInput != prevInput)
             {
-                if (input.InputOngoing)
-                {
-                    activeInput = input;
-                    activeInput.processInput(currentGP);
-                    break;
-                }
+                activeInput.processInput(currentGP);
             }
         }
 
@@ -115,15 +113,4 @@ public class GestureManager : MonoBehaviour
     {
         currentGP.processZoomLevelChange(newZoomLevel);
     }
-
-    /// <summary>
-    /// Gets called when a tap gesture is processed
-    /// </summary>
-    //public delegate void TapGesture();
-
-    /// <summary>
-    /// Gets called when the currently used input device is different than the last used input device
-    /// </summary>
-    /// <param name="inputDevice"></param>
-    public delegate void OnInputDeviceSwitched(InputDeviceMethod inputDevice);
 }
