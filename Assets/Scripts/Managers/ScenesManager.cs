@@ -276,6 +276,21 @@ public class ScenesManager : SavableMonoBehaviour
             .ConvertAll(entry => entry.Key);
     }
 
+    public Scene getObjectScene(int objectId)
+    {
+        if (objectSceneList.ContainsKey(objectId))
+        {
+            if (objectId >= 0)
+            {
+                return SceneManager.GetSceneByBuildIndex(objectSceneList[objectId]);
+            }
+        }
+        throw new ArgumentException(
+            "Cannot get scene of object with id " + objectId
+            + " because it is either not in the list or it is less than 0"
+            );
+    }
+
     public bool isObjectInScene(GameObject go, Scene scene)
     {
         int objectId = go.getKey();

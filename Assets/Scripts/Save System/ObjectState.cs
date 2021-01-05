@@ -16,14 +16,12 @@ public class ObjectState
     public List<SavableObject> soList = new List<SavableObject>();
     //Name
     public int objectId = -1;
-    public int sceneId = -1;
 
     public ObjectState() { }
     public ObjectState(GameObject go)
     {
         SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
         objectId = info.Id;
-        sceneId = go.scene.buildIndex;
         saveState(go);
     }
 
