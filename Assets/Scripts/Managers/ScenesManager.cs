@@ -320,6 +320,13 @@ public class ScenesManager : SavableMonoBehaviour
             int sceneId = scene.buildIndex;
             if (!objectSceneList.ContainsKey(objectId))
             {
+                if (objectId == 0)
+                {
+                    Debug.LogError(
+                        "Trying to add object Id " + objectId + " to the objectScenesList!",
+                        go
+                        );
+                }
                 objectSceneList.Add(objectId, sceneId);
             }
             else
@@ -378,7 +385,8 @@ public class ScenesManager : SavableMonoBehaviour
         {
             Debug.LogError(
                 "Trying to move " + go.name + " into scene " + scene.name
-                + ": " + ae
+                + " at position: " + go.transform.position
+                + "\nArgumentException: " + ae
                 );
         }
     }

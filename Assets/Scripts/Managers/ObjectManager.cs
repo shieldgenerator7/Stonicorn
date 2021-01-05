@@ -139,6 +139,19 @@ public class ObjectManager : MonoBehaviour
                 //Just the same object being added twice, not a big deal
                 return;
             }
+            if (gameObjects[key].name == go.name)
+            {
+                Debug.LogError(
+                    "GameObject " + gameObjects[key].name + " with key (" + key
+                    + ") has two instances:" + "\nInstance 1:",
+                    gameObjects[key]
+                    );
+                Debug.LogError(
+                    "GameObject " + go.name + " with key (" + key
+                    + ") has two instances:" + "\nInstance 2:",
+                    go
+                    );
+            }
             throw new System.ArgumentException(
                   "GameObject " + go.name + " with key (" + key + ") is already inside the gameObjects dictionary! "
                   + "Check for 2 or more objects with the same Id."
