@@ -292,18 +292,25 @@ public class ScenesManager : SavableMonoBehaviour
         {
             //don't register null or destroyed objects
             Debug.LogWarning("GameObject " + go.name + " is destroyed and will not be processed.");
+            removeObject(go);
             return;
         }
         if (!go.activeInHierarchy)
         {
             //don't register inactive (possibly null or destroyed) objects
             Debug.LogWarning("GameObject " + go.name + " is inactive and will not be processed.");
+            removeObject(go);
             return;
         }
         SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
-        //Don't add non-Savable or Singleton objects ever
-        if (!soi || soi is SingletonObjectInfo)
+        if (!soi)
         {
+            return;
+        }
+        //Don't add non-Savable or Singleton objects ever
+        if (soi is SingletonObjectInfo)
+        {
+            removeObject(go);
             return;
         }
         //Add it to the list that contains the position
@@ -314,6 +321,7 @@ public class ScenesManager : SavableMonoBehaviour
                 "Object " + go.name + " Id is less than 0! id: " + objectId,
                 go
                 );
+            removeObject(go);
             return;
         }
         SceneLoader loader = sceneLoaders.Find(sl => sl.overlapsPosition(go));
