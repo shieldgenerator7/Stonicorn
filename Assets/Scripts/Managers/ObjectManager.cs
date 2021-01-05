@@ -192,6 +192,7 @@ public class ObjectManager : MonoBehaviour
             return;
         }
         Debug.Log("Destroying object (" + go.getKey() + "): " + go.name);
+        go.SetActive(false);
         removeObject(go);
         Managers.Scene.removeObject(go);
         Destroy(go);

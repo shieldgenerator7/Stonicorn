@@ -287,6 +287,12 @@ public class ScenesManager : SavableMonoBehaviour
             Debug.LogWarning("GameObject " + go.name + " is destroyed and will not be processed.");
             return;
         }
+        if (!go.activeInHierarchy)
+        {
+            //don't register inactive (possibly null or destroyed) objects
+            Debug.LogWarning("GameObject " + go.name + " is inactive and will not be processed.");
+            return;
+        }
         SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
         //Don't add non-Savable or Singleton objects ever
         if (!soi || soi is SingletonObjectInfo)
