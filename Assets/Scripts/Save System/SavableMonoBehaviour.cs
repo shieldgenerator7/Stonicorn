@@ -20,4 +20,10 @@ public abstract class SavableMonoBehaviour : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public virtual bool IsSpawnedScript => false;
+
+    /// <summary>
+    /// The priority for loading this SMB's state,
+    /// higher priority gets loaded first
+    /// </summary>
+    public virtual int Priority => 0;
 }

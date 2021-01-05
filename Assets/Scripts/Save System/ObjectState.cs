@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class ObjectState
 {
@@ -16,6 +17,7 @@ public class ObjectState
     public List<SavableObject> soList = new List<SavableObject>();
     //Name
     public int objectId = -1;
+    public int priority = 0;//higher priority gets loaded first
 
     public ObjectState() { }
     public ObjectState(GameObject go)
@@ -39,9 +41,11 @@ public class ObjectState
             angularVelocity = rb2d.angularVelocity;
         }
         //SavableMonoBehaviours
-        foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
+        List<SavableMonoBehaviour> smbs = go.GetComponents<SavableMonoBehaviour>().ToList();
+        smbs.ForEach(smb => soList.Add(smb.CurrentState));
+        if (smbs.Count > 0)
         {
-            this.soList.Add(smb.CurrentState);
+            priority = smbs.Max(smb => smb.Priority);
         }
     }
     public void loadState(GameObject go)

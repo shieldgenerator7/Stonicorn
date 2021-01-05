@@ -433,6 +433,8 @@ public class ScenesManager : SavableMonoBehaviour
         objectSceneList.Remove(go.getKey());
     }
 
+    public override int Priority => 100;
+
     public override SavableObject CurrentState
     {
         get => new SavableObject(this)
