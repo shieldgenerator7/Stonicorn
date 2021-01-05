@@ -7,7 +7,8 @@ using UnityEngine.AddressableAssets;
 public class SavableObjectInfo : ObjectInfo
 {
     [SerializeField]
-    public AssetReference prefabAddress;
+    private AssetReference prefabAddress;
+    public AssetReference PrefabAddress => prefabAddress;
     public virtual string PrefabGUID => prefabAddress.AssetGUID;
 
     public SavableObjectInfoData Data

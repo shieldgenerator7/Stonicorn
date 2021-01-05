@@ -175,6 +175,17 @@ public class CustomMenu
         hac.connect();
     }
 
+    [MenuItem("SG7/Editor/List Prefabs")]
+    public static void listPrefabs()
+    {
+        GameObject.FindObjectsOfType<SavableObjectInfo>().ToList()
+            .FindAll(soi => soi.PrefabAddress.editorAsset != null)
+            .OrderBy(soi => soi.PrefabAddress.editorAsset.name).ToList()
+            .ForEach(soi =>
+                Debug.Log("Prefab: " + soi.PrefabAddress.editorAsset.name, soi.gameObject)
+            );
+    }
+
     [MenuItem("SG7/Editor/Spawn Point/Toggle Merky Spawn Point %#`")]
     public static void callMerky()
     {
