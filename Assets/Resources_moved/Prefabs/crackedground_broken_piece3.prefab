@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8865534436038405953}
   - component: {fileID: 8741013342656665615}
   - component: {fileID: 8728484159590041089}
-  - component: {fileID: 8678406060877112561}
+  - component: {fileID: 6632439152772456095}
   - component: {fileID: 5317865181423161768}
   m_Layer: 0
   m_Name: crackedground_broken_piece3
@@ -133,7 +133,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.1953125, y: 1.015625}
   m_EdgeRadius: 0
---- !u!114 &8678406060877112561
+--- !u!114 &6632439152772456095
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,23 +142,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 8790653269180136899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: 
-  hardness: 0.5
-  forceThreshold: 2
-  maxIntegrity: 3
-  integrity: 3
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  minForceThreshold: 1
+  maxForceThreshold: 50
+  maxIntegrity: 1
+  integrity: 0
+  crackedPrefab: {fileID: 1943429488560524, guid: 796582492798f234bb1d953535aa505f, type: 3}
+  crackStages:
+  - {fileID: 21300000, guid: 883dc9444eaf46d4f95a39cf275a52dc, type: 3}
+  - {fileID: 21300000, guid: 65a72482c0cccdf4d8bf3f81a035d751, type: 3}
+  soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
 --- !u!114 &5317865181423161768
 MonoBehaviour:
