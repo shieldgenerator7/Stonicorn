@@ -329,6 +329,13 @@ public class ScenesManager : SavableMonoBehaviour
         {
             loader = sceneLoaders.Find(sl => sl.overlapsCollider(go));
         }
+        //If it can't find the scene it's in,
+        if (!loader)
+        {
+            //just remove it
+            removeObject(go);
+            return;
+        }
         try
         {
             Scene scene = loader.Scene;

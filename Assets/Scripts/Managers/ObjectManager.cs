@@ -151,6 +151,8 @@ public class ObjectManager : MonoBehaviour
                     + ") has two instances:" + "\nInstance 2:",
                     go
                     );
+                gameObjects[key] = go;
+                return;
             }
             throw new System.ArgumentException(
                   "GameObject " + go.name + " with key (" + key + ") is already inside the gameObjects dictionary! "
