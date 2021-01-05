@@ -226,7 +226,15 @@ public class ElectricBeamAbility : PlayerAbility
         {
             base.CurrentState = value;
             Activated = value.Bool("activated");
-            Target = Managers.Object.getObject(value.Int("target"));
+            int targetId = value.Int("target");
+            if (targetId >= 0)
+            {
+                Target = Managers.Object.getObject(targetId);
+            }
+            else
+            {
+                Target = null;
+            }
         }
     }
 }
