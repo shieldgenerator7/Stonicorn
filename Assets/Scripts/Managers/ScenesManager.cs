@@ -284,6 +284,7 @@ public class ScenesManager : SavableMonoBehaviour
         if (go == null || ReferenceEquals(go, null))
         {
             //don't register null or destroyed objects
+            Debug.LogWarning("GameObject " + go.name + " is destroyed and will not be processed.");
             return;
         }
         SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
