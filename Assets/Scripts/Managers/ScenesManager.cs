@@ -377,6 +377,11 @@ public class ScenesManager : SavableMonoBehaviour
         }
     }
 
+    public void removeObject(GameObject go)
+    {
+        objectSceneList.Remove(go.getKey());
+    }
+
     public override SavableObject CurrentState
     {
         get => new SavableObject(this)
