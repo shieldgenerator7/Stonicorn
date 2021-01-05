@@ -30,7 +30,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ICopyable
                     int index = Mathf.Clamp(
                         maxIntegrity - integrity,
                         0,
-                        crackStages.Count
+                        crackStages.Count - 1
                         );
                     sr.sprite = crackStages[index];
                 }
