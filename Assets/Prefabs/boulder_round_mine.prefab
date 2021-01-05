@@ -31,19 +31,6 @@ MonoBehaviour:
   peakMax: 0.02
   peakMin: -0.02
   cycleLength: 2
---- !u!114 &3706183531131014218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3686006692625689020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 256136996d958014895bd9f14138ed23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageDealt: 2
 --- !u!114 &2972093496672233049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,6 +53,19 @@ MonoBehaviour:
   soundDamageOne: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
+--- !u!114 &3706183531131014218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3686006692625689020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 256136996d958014895bd9f14138ed23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageDealt: 2
 --- !u!1001 &3686006692625543864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -136,6 +136,10 @@ PrefabInstance:
     - target: {fileID: 21229248, guid: 57170385b5ed646499dfd174766a0779, type: 3}
       propertyPath: m_SortingOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335996721853891950, guid: 57170385b5ed646499dfd174766a0779, type: 3}
+      propertyPath: prefabAddress.m_AssetGUID
+      value: 83946c275caee914d833a47206bcd7bf
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57170385b5ed646499dfd174766a0779, type: 3}

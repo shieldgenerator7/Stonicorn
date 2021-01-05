@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 212589576844105208}
   - component: {fileID: 50277222824608712}
   - component: {fileID: 60891270078048196}
-  - component: {fileID: 114122574151972214}
+  - component: {fileID: 4540162720753464887}
   m_Layer: 0
   m_Name: boulder_broken_piece1
   m_TagString: Untagged
@@ -140,7 +140,7 @@ PolygonCollider2D:
       - {x: -0.6956482, y: 0.4803009}
       - {x: -0.7573395, y: 0.23506165}
       - {x: -0.7052002, y: 0.05317688}
---- !u!114 &114122574151972214
+--- !u!114 &4540162720753464887
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,23 +149,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1378120763068876}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: stone
-  hardness: 1
-  forceThreshold: 50
-  maxIntegrity: 25
-  integrity: 25
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  minForceThreshold: 2.5
+  maxForceThreshold: 50
+  maxIntegrity: 3
+  integrity: 0
+  crackedPrefab: {fileID: 1636803068010556}
+  crackStages:
+  - {fileID: 21300000, guid: fe67933e248c9e044996474b1ec236e8, type: 3}
+  - {fileID: 21300000, guid: 6ac5cfc5506af1e4f8c3dd6b922ca6c4, type: 3}
+  - {fileID: 21300000, guid: 0d794a5cd05917f4c9a4eb24515020cf, type: 3}
+  soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
 --- !u!1 &1636803068010556
 GameObject:
@@ -176,6 +174,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4791164215433706}
+  - component: {fileID: 3455034704882171774}
   - component: {fileID: 7006158885616800225}
   m_Layer: 0
   m_Name: boulder_broken
@@ -203,6 +202,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3455034704882171774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636803068010556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d477728d15803642998bdf74e911b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7006158885616800225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,7 +243,7 @@ GameObject:
   - component: {fileID: 212333636970043816}
   - component: {fileID: 50075049224761610}
   - component: {fileID: 60223578344562864}
-  - component: {fileID: 114076693424569032}
+  - component: {fileID: 1877189307925449282}
   m_Layer: 0
   m_Name: boulder_broken_piece3
   m_TagString: Untagged
@@ -360,7 +371,7 @@ PolygonCollider2D:
       - {x: -0.66088814, y: -0.59241456}
       - {x: -0.098098196, y: -0.6182019}
       - {x: 0.004105176, y: -0.5753247}
---- !u!114 &114076693424569032
+--- !u!114 &1877189307925449282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -369,23 +380,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1701665121971418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: stone
-  hardness: 1
-  forceThreshold: 50
-  maxIntegrity: 25
-  integrity: 25
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  minForceThreshold: 2.5
+  maxForceThreshold: 50
+  maxIntegrity: 3
+  integrity: 0
+  crackedPrefab: {fileID: 1636803068010556}
+  crackStages:
+  - {fileID: 21300000, guid: fe67933e248c9e044996474b1ec236e8, type: 3}
+  - {fileID: 21300000, guid: 6ac5cfc5506af1e4f8c3dd6b922ca6c4, type: 3}
+  - {fileID: 21300000, guid: 0d794a5cd05917f4c9a4eb24515020cf, type: 3}
+  soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
 --- !u!1 &1793249499516750
 GameObject:
@@ -399,7 +408,7 @@ GameObject:
   - component: {fileID: 212331654898508690}
   - component: {fileID: 50938259488656840}
   - component: {fileID: 60778716724373102}
-  - component: {fileID: 114098903076806566}
+  - component: {fileID: 3084270053094540141}
   m_Layer: 0
   m_Name: boulder_broken_piece2
   m_TagString: Untagged
@@ -526,7 +535,7 @@ PolygonCollider2D:
       - {x: 0.13023376, y: 0.57577515}
       - {x: 0.053985596, y: 0.5080185}
       - {x: 0.063186646, y: 0.10229492}
---- !u!114 &114098903076806566
+--- !u!114 &3084270053094540141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -535,23 +544,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1793249499516750}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: stone
-  hardness: 1
-  forceThreshold: 50
-  maxIntegrity: 25
-  integrity: 25
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  minForceThreshold: 2.5
+  maxForceThreshold: 50
+  maxIntegrity: 3
+  integrity: 0
+  crackedPrefab: {fileID: 1636803068010556}
+  crackStages:
+  - {fileID: 21300000, guid: fe67933e248c9e044996474b1ec236e8, type: 3}
+  - {fileID: 21300000, guid: 6ac5cfc5506af1e4f8c3dd6b922ca6c4, type: 3}
+  - {fileID: 21300000, guid: 0d794a5cd05917f4c9a4eb24515020cf, type: 3}
+  soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
 --- !u!1 &1826332867965560
 GameObject:
@@ -565,7 +572,7 @@ GameObject:
   - component: {fileID: 212828666669555654}
   - component: {fileID: 50290098418834486}
   - component: {fileID: 60909317913185992}
-  - component: {fileID: 114212772861358408}
+  - component: {fileID: 1531092795820321064}
   m_Layer: 0
   m_Name: boulder_broken_piece4
   m_TagString: Untagged
@@ -692,7 +699,7 @@ PolygonCollider2D:
       - {x: 0.108032785, y: -0.060294837}
       - {x: 0.04650935, y: -0.118903846}
       - {x: 0.04451045, y: -0.5338513}
---- !u!114 &114212772861358408
+--- !u!114 &1531092795820321064
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -701,23 +708,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1826332867965560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: stone
-  hardness: 1
-  forceThreshold: 50
-  maxIntegrity: 25
-  integrity: 25
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  minForceThreshold: 2.5
+  maxForceThreshold: 50
+  maxIntegrity: 3
+  integrity: 0
+  crackedPrefab: {fileID: 1636803068010556}
+  crackStages:
+  - {fileID: 21300000, guid: fe67933e248c9e044996474b1ec236e8, type: 3}
+  - {fileID: 21300000, guid: 6ac5cfc5506af1e4f8c3dd6b922ca6c4, type: 3}
+  - {fileID: 21300000, guid: 0d794a5cd05917f4c9a4eb24515020cf, type: 3}
+  soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
 --- !u!1 &1977211547003878
 GameObject:

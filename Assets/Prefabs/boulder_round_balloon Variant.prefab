@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   usesSideVector: 0
+  saveValues: 1
   gravityScale: 1
   acceptsGravity: 1
 --- !u!114 &1013786527
@@ -27,7 +28,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac15051a4e9b9eb469ed29ace2e2a03e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  peak: 0.02
+  peakMax: 0.02
+  peakMin: -0.02
   cycleLength: 2
 --- !u!1001 &3686006692625543864
 PrefabInstance:
@@ -38,7 +40,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 187140, guid: 57170385b5ed646499dfd174766a0779, type: 3}
       propertyPath: m_Name
-      value: boulder_round_balloon
+      value: boulder_round_balloon Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 435398, guid: 57170385b5ed646499dfd174766a0779, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435398, guid: 57170385b5ed646499dfd174766a0779, type: 3}
       propertyPath: m_LocalPosition.x
@@ -53,6 +59,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435398, guid: 57170385b5ed646499dfd174766a0779, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 435398, guid: 57170385b5ed646499dfd174766a0779, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
@@ -63,14 +73,6 @@ PrefabInstance:
     - target: {fileID: 435398, guid: 57170385b5ed646499dfd174766a0779, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.00024837255
-      objectReference: {fileID: 0}
-    - target: {fileID: 435398, guid: 57170385b5ed646499dfd174766a0779, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 435398, guid: 57170385b5ed646499dfd174766a0779, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 435398, guid: 57170385b5ed646499dfd174766a0779, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -88,11 +90,14 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7335996721853891950, guid: 57170385b5ed646499dfd174766a0779, type: 3}
+      propertyPath: prefabAddress.m_AssetGUID
+      value: 84d295b4c0ba3dc4c8afa8f5fcf2b7cb
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57170385b5ed646499dfd174766a0779, type: 3}
 --- !u!1 &3686006692625689020 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 187140, guid: 57170385b5ed646499dfd174766a0779,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 187140, guid: 57170385b5ed646499dfd174766a0779, type: 3}
   m_PrefabInstance: {fileID: 3686006692625543864}
   m_PrefabAsset: {fileID: 0}
