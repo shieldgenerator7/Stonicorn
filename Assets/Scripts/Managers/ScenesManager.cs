@@ -191,9 +191,9 @@ public class ScenesManager : SavableMonoBehaviour
                 );
         }
         //Create foreign objects that are not here
-        getObjectsInScene(scene)
-            .FindAll(go => !sceneGOs.Contains(go))
-            .ConvertAll(go => go.getKey())
+        List<int> sceneIds = sceneGOs.ConvertAll(go => go.getKey());
+        getObjectsIdsInScene(scene)
+            .FindAll(id => !sceneIds.Contains(id))
             .FindAll(id => !Managers.Object.hasObject(id))
             .ForEach(id => Managers.Object.createObject(id, lastStateSeen));
     }
@@ -267,6 +267,13 @@ public class ScenesManager : SavableMonoBehaviour
         return objectSceneList.ToList()
             .FindAll(entry => entry.Value == sceneId)
             .ConvertAll(entry => Managers.Object.getObject(entry.Key));
+    }
+    public List<int> getObjectsIdsInScene(Scene scene)
+    {
+        int sceneId = scene.buildIndex;
+        return objectSceneList.ToList()
+            .FindAll(entry => entry.Value == sceneId)
+            .ConvertAll(entry => entry.Key);
     }
 
     public bool isObjectInScene(GameObject go, Scene scene)
