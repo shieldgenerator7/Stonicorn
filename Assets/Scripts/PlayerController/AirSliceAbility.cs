@@ -66,10 +66,13 @@ public class AirSliceAbility : PlayerAbility
     }
     public void grantAirPort()
     {
-        AirPortsUsed--;
-        if (AirPortsUsed < maxAirPorts)
+        if (enabled)
         {
-            playerController.updateGroundedState();
+            AirPortsUsed--;
+            if (AirPortsUsed < maxAirPorts)
+            {
+                playerController.updateGroundedState();
+            }
         }
     }
 
