@@ -21,25 +21,31 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ICopyable
 
             if (integrity > 0)
             {
-                if (sr == null)
+                if (crackStages.Count > 0)
                 {
-                    sr = GetComponent<SpriteRenderer>();
+                    if (sr == null)
+                    {
+                        sr = GetComponent<SpriteRenderer>();
+                    }
+                    sr.sprite = crackStages[maxIntegrity - integrity];
                 }
-                sr.sprite = crackStages[maxIntegrity - integrity];
             }
             else
             {
                 //Break into pieces
-                GameObject pieces = Utility.Instantiate(crackedPrefab);
-                BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
-                brokenPiece.unpack(gameObject);
+                if (crackedPrefab)
+                {
+                    GameObject pieces = Utility.Instantiate(crackedPrefab);
+                    BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
+                    brokenPiece.unpack(gameObject);
+                }
 
                 //Reveal hidden areas
                 secretHiders
                     .FindAll(ha => ha != null && !ReferenceEquals(ha, null))
                     .ForEach(ha => ha.Discovered = true);
 
-                //Destory object
+                //Destroy object
                 Managers.Object.destroyObject(gameObject);
             }
         }
