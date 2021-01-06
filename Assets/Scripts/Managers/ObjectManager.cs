@@ -54,6 +54,12 @@ public class ObjectManager : MonoBehaviour
                 op.Completed += (operation) =>
                 {
                     GameObject newGO = operation.Result;
+                    //Remove "(Clone)" at the end of the name
+                    if (newGO.name.Contains("(Clone)"))
+                    {
+                        newGO.name = newGO.name.Split('(')[0];
+                    }
+                    //Init the New Game Object
                     newGO.GetComponent<ObjectInfo>().Id = goId;
                     addObject(newGO);
                     Managers.Rewind.LoadObject(newGO, lastStateSeen);
