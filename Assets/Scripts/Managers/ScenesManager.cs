@@ -352,11 +352,13 @@ public class ScenesManager : SavableMonoBehaviour
             int sceneId = scene.buildIndex;
             if (sceneId < 0)
             {
-                Debug.LogError(
+                Debug.LogWarning(
                     "SceneLoader " + loader.gameObject.name + " has bad scene (" + scene + ")! " +
                     "sceneId: " + sceneId,
                     loader.gameObject
                     );
+                //Don't process it
+                return;
             }
             if (!objectSceneList.ContainsKey(objectId))
             {

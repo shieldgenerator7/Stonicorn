@@ -11,7 +11,7 @@ public class SceneLoader : MonoBehaviour, ISetting
     {
         get
         {
-            if (!scene.IsValid())
+            if (scene.buildIndex < 0)
             {
                 scene = SceneManager.GetSceneByBuildIndex(sceneId);
             }
