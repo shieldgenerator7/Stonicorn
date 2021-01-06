@@ -187,9 +187,9 @@ public class ObjectManager : MonoBehaviour
             //Return it
             return gameObjects[goKey];
         }
-        Debug.LogWarning(
-            "No object with key found: " + goKey + ",\n But "
-            + "this might be normal if the object was previously destroyed or unloaded."
+        Debug.LogError(
+            "No object with key found: " + goKey + "!\n"
+            + "Check with hasObject() before getting the object."
             );
         //Otherwise, sorry, you're out of luck
         return null;
@@ -207,9 +207,7 @@ public class ObjectManager : MonoBehaviour
             return;
         }
         Debug.Log("Destroying object (" + go.getKey() + "): " + go.name);
-        go.SetActive(false);
         removeObject(go);
-        Managers.Scene.removeObject(go);
         Destroy(go);
     }
     /// <summary>

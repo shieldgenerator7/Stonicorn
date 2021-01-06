@@ -61,19 +61,13 @@ public class GameState
     {
         states.ForEach(os =>
         {
-            GameObject go = Managers.Object.getObject(os.objectId);
-            if (go != null && !ReferenceEquals(go, null))
+            if (Managers.Object.hasObject(os.objectId))
             {
-                os.loadState(go);
+                os.loadState(Managers.Object.getObject(os.objectId));
             }
             else
             {
-                Scene scene = Managers.Scene.getObjectScene(os.objectId);
-                if (scene.IsValid() && scene.isLoaded)
-                {
-                    //If scene is valid, Create the GameObject
-                    Managers.Object.createObject(os.objectId);
-                }
+                Managers.Object.createObject(os.objectId);
             }
         });
     }

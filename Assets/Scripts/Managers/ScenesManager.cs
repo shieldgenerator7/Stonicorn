@@ -310,13 +310,6 @@ public class ScenesManager : SavableMonoBehaviour
             removeObject(go);
             return;
         }
-        if (!go.activeInHierarchy)
-        {
-            //don't register inactive (possibly null or destroyed) objects
-            Debug.LogWarning("GameObject " + go.name + " is inactive and will not be processed.");
-            removeObject(go);
-            return;
-        }
         SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
         if (!soi)
         {
@@ -347,14 +340,24 @@ public class ScenesManager : SavableMonoBehaviour
         //If it can't find the scene it's in,
         if (!loader)
         {
-            //just remove it
-            removeObject(go);
+            //just don't process it
+            Debug.LogWarning("Can't find a scene for object (" + objectId + ") " + go
+                + " at position " + go.transform.position,
+                go);
             return;
         }
         try
         {
             Scene scene = loader.Scene;
             int sceneId = scene.buildIndex;
+            if (sceneId < 0)
+            {
+                Debug.LogError(
+                    "SceneLoader " + loader.gameObject.name + " has bad scene (" + scene + ")! " +
+                    "sceneId: " + sceneId,
+                    loader.gameObject
+                    );
+            }
             if (!objectSceneList.ContainsKey(objectId))
             {
                 if (objectId == 0)
@@ -428,7 +431,7 @@ public class ScenesManager : SavableMonoBehaviour
         }
     }
 
-    public void removeObject(GameObject go)
+    private void removeObject(GameObject go)
     {
         objectSceneList.Remove(go.getKey());
     }
