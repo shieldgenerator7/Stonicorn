@@ -14,14 +14,14 @@ public class ScenesManager : SavableMonoBehaviour
     /// </summary>
     private Dictionary<int, int> objectSceneList = new Dictionary<int, int>();
 
-    private string pauseForLoadingSceneName = null;//the name of the scene that needs the game to pause while it's loading
-    public string PauseForLoadingSceneName
+    private int pauseForLoadingSceneId = -1;//the name of the scene that needs the game to pause while it's loading
+    public int PauseForLoadingSceneId
     {
-        get => pauseForLoadingSceneName;
+        get => pauseForLoadingSceneId;
         set
         {
-            pauseForLoadingSceneName = value;
-            if (pauseForLoadingSceneName == null || pauseForLoadingSceneName == "")
+            pauseForLoadingSceneId = value;
+            if (pauseForLoadingSceneId < 0)
             {
                 //Resume if the scene is done loading
                 Managers.Time.setPause(this, false);
@@ -102,10 +102,10 @@ public class ScenesManager : SavableMonoBehaviour
         if (isLevelScene(scene))
         {
             //And it's the scene that we paused the game for,
-            if (scene.name == PauseForLoadingSceneName)
+            if (scene.buildIndex == PauseForLoadingSceneId)
             {
                 //Unpause the game
-                PauseForLoadingSceneName = null;
+                PauseForLoadingSceneId = -1;
             }
         }
     }
@@ -132,11 +132,11 @@ public class ScenesManager : SavableMonoBehaviour
         return false;
     }
 
-    public bool isSceneOpen(string sceneName)
+    public bool isSceneOpen(int sceneId)
     {
         foreach (Scene s in openScenes)
         {
-            if (sceneName == s.name)
+            if (sceneId == s.buildIndex)
             {
                 return true;
             }

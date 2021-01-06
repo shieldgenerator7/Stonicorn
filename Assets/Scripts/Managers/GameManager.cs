@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
     #region Scene Load delegates
     void sceneLoaded(Scene scene)
     {
-        if (scene.name == "MainMenu")
+        if (scene.buildIndex == MenuManager.MENU_SCENE_ID)
         {
             Managers.Menu.opened();
             if (Managers.Rewind.Rewinding)
@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
     }
     void sceneUnloaded(Scene scene)
     {
-        if (scene.name == "MainMenu")
+        if (scene.buildIndex == MenuManager.MENU_SCENE_ID)
         {
             if (Managers.Rewind.Rewinding)
             {

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
+    public static int MENU_SCENE_ID = 2;
 
     public MenuFrame startFrame;
 
@@ -65,7 +66,7 @@ public class MenuManager : MonoBehaviour
             bool show = value;
             if (show)
             {
-                LoadingScreen.LoadScene("MainMenu");
+                LoadingScreen.LoadScene(MENU_SCENE_ID);
                 //Pause
                 if (LoadingScreen.FinishedLoading)
                 {
@@ -75,7 +76,7 @@ public class MenuManager : MonoBehaviour
             }
             else
             {
-                SceneManager.UnloadSceneAsync("MainMenu");
+                SceneManager.UnloadSceneAsync(MENU_SCENE_ID);
                 //Unpause
                 Managers.Time.setPause(Managers.Game, false);
             }

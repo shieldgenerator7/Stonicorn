@@ -84,9 +84,9 @@ public class LoadingScreen : MonoBehaviour
             yield return null;
         }
     }
-    public static void LoadScene(string sceneName)
+    public static void LoadScene(int sceneId)
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneId, LoadSceneMode.Additive);
 
         if (instance)
         {

@@ -4,9 +4,8 @@ using System.Collections;
 
 public class SceneLoader : MonoBehaviour, ISetting
 {
-    private static SceneLoader currentScene;//the scene that Merky is currently in
-
-    public string sceneName;//the name of the scene to load
+    public string sceneName;//the name of the scene to load, not actually used in code
+    public int sceneId = -1;//the build index of the scene
     private Scene scene;
     public Scene Scene
     {
@@ -14,7 +13,7 @@ public class SceneLoader : MonoBehaviour, ISetting
         {
             if (!scene.IsValid())
             {
-                scene = SceneManager.GetSceneByName(sceneName);
+                scene = SceneManager.GetSceneByBuildIndex(sceneId);
             }
             return scene;
         }
@@ -61,7 +60,7 @@ public class SceneLoader : MonoBehaviour, ISetting
             //2019-12-31: copied from https://forum.unity.com/threads/loading-an-additive-scene-once-and-only-once.395653/#post-2581612
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
-                if (SceneManager.GetSceneAt(i).name == sceneName)
+                if (SceneManager.GetSceneAt(i).buildIndex == sceneId)
                 {
                     return true;
                 }
@@ -99,10 +98,6 @@ public class SceneLoader : MonoBehaviour, ISetting
         }
         bool isLoaded = IsLoaded;
         bool overlaps = Collider.OverlapPoint(ExplorerObject.transform.position);
-        if (overlaps)
-        {
-            currentScene = this;
-        }
         //Unload when player leaves
         if (isLoaded)
         {
@@ -127,10 +122,10 @@ public class SceneLoader : MonoBehaviour, ISetting
             }
         }
         //If the player is in the level before it's done loading,
-        if (overlaps && isLoaded && !Managers.Scene.isSceneOpen(sceneName))
+        if (overlaps && isLoaded && !Managers.Scene.isSceneOpen(sceneId))
         {
             //Pause the game.
-            Managers.Scene.PauseForLoadingSceneName = sceneName;
+            Managers.Scene.PauseForLoadingSceneId = sceneId;
         }
     }
     public bool isPositionInScene(Vector2 pos)
@@ -139,11 +134,11 @@ public class SceneLoader : MonoBehaviour, ISetting
     }
     void loadLevel()
     {
-        LoadingScreen.LoadScene(sceneName);
+        LoadingScreen.LoadScene(sceneId);
     }
     void unloadLevel()
     {
-        SceneManager.UnloadSceneAsync(sceneName);
+        SceneManager.UnloadSceneAsync(sceneId);
     }
     public void loadLevelIfUnLoaded()
     {
