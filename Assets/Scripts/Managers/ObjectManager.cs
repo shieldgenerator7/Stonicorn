@@ -155,8 +155,8 @@ public class ObjectManager : MonoBehaviour
                 return;
             }
             throw new System.ArgumentException(
-                  "GameObject " + go.name + " with key (" + key + ") is already inside the gameObjects dictionary! "
-                  + "Check for 2 or more objects with the same Id."
+                  "Key (" + key + ") is already inside the gameObjects dictionary! "
+                  + "GameObject " + go.name + " wants to override " + gameObjects[key] + "!"
                   );
         }
         //If the game object doesn't have any state to save...
