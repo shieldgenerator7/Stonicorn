@@ -67,7 +67,7 @@ public class GameState
             }
             else
             {
-                Managers.Object.createObject(os.objectId);
+                Managers.Object.recreateObject(os.objectId);
             }
         });
     }

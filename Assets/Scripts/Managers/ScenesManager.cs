@@ -195,7 +195,7 @@ public class ScenesManager : SavableMonoBehaviour
         getObjectsIdsInScene(scene)
             .FindAll(id => !sceneIds.Contains(id))
             .FindAll(id => !Managers.Object.hasObject(id))
-            .ForEach(id => Managers.Object.createObject(id, lastStateSeen));
+            .ForEach(id => Managers.Object.recreateObject(id, lastStateSeen));
     }
 
     private SceneLoader getSceneLoader(Scene scene)

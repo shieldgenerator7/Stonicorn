@@ -16,15 +16,15 @@ public class ObjectManager : MonoBehaviour
     private Dictionary<int, MemoryObject> memories = new Dictionary<int, MemoryObject>();//memories that once turned on, don't get turned off
 
     //Create queue
-    private Dictionary<int, AsyncOperationHandle<GameObject>> createQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
+    private Dictionary<int, AsyncOperationHandle<GameObject>> recreateQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
     public List<SavableObjectInfoData> knownObjects;
 
-    public void createObject(int goId, int lastStateSeen = -1)
+    public void recreateObject(int goId, int lastStateSeen = -1)
     {
         if (goId > 0)
         {
             string prefabGUID = knownObjects.Find(soid => soid.id == goId).prefabGUID;
-            createObject(goId, prefabGUID, lastStateSeen);
+            recreateObject(goId, prefabGUID, lastStateSeen);
         }
         else
         {
@@ -41,16 +41,16 @@ public class ObjectManager : MonoBehaviour
     /// <param name="goId"></param>
     /// <param name="prefabGUID"></param>
     /// <returns></returns>
-    private void /*AsyncOperationHandle<GameObject>*/ createObject(int goId, string prefabGUID, int lastStateSeen = -1)
+    private void /*AsyncOperationHandle<GameObject>*/ recreateObject(int goId, string prefabGUID, int lastStateSeen = -1)
     {
-        if (!createQueue.ContainsKey(goId))
+        if (!recreateQueue.ContainsKey(goId))
         {
             try
             {
                 AssetReference assetRef = new AssetReference(prefabGUID);
                 //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
                 var op = Addressables.InstantiateAsync(assetRef);
-                createQueue.Add(goId, op);
+                recreateQueue.Add(goId, op);
                 op.Completed += (operation) =>
                 {
                     GameObject newGO = operation.Result;
@@ -71,7 +71,7 @@ public class ObjectManager : MonoBehaviour
                             Managers.Rewind.LoadObject(t.gameObject, lastStateSeen);
                         }
                     }
-                    createQueue.Remove(goId);
+                    recreateQueue.Remove(goId);
                     if (!CreatingObjects)
                     {
                         onAllObjectsCreated?.Invoke();
@@ -88,7 +88,7 @@ public class ObjectManager : MonoBehaviour
     public delegate void OnAllObjectsCreated();
     public event OnAllObjectsCreated onAllObjectsCreated;
 
-    public bool CreatingObjects => createQueue.Count > 0;
+    public bool CreatingObjects => recreateQueue.Count > 0;
 
     /// <summary>
     /// Adds a newly created object to the list
