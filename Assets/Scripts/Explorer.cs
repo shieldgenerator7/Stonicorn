@@ -26,12 +26,8 @@ public class Explorer : MonoBehaviour
     }
 
     public bool canSee(Collider2D c2d)
-    {
-        return coll2d.IsTouching(c2d);
-    }
+        => coll2d.bounds.Intersects(c2d.bounds);
 
     public bool canSeeBehind(Collider2D c2d)
-    {
-        return behindColl2d.IsTouching(c2d);
-    }
+        => behindColl2d.bounds.Intersects(c2d.bounds);
 }
