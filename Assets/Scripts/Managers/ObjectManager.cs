@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class ObjectManager : MonoBehaviour
+public class ObjectManager : SavableMonoBehaviour
 {
     private Dictionary<int, GameObject> gameObjects = new Dictionary<int, GameObject>();//list of current objects that have state to save
     public List<GameObject> GameObjects => gameObjects.Values.ToList();
@@ -80,7 +80,11 @@ public class ObjectManager : MonoBehaviour
             }
             catch (InvalidKeyException ike)
             {
-                throw new InvalidKeyException("InvalidKey: (" + prefabGUID + ")", ike);
+                throw new Exception("InvalidKey: (" + prefabGUID + ") for object (" + goId + "):", ike);
+            }
+            catch (Exception ike)
+            {
+                throw new Exception("InvalidKey: (" + prefabGUID + ") for object (" + goId + "):", ike);
             }
         }
         //return createQueue[goId];
@@ -90,6 +94,13 @@ public class ObjectManager : MonoBehaviour
 
     public bool CreatingObjects => recreateQueue.Count > 0;
 
+    public override SavableObject CurrentState
+    {
+        get => new SavableObject(this).addList(
+            "knownObjects", knownObjects
+            );
+        set => knownObjects = value.List<SavableObjectInfoData>("knownObjects");
+    }
     /// <summary>
     /// Adds a newly created object to the list
     /// </summary>
@@ -352,5 +363,9 @@ public class ObjectManager : MonoBehaviour
             "memories",
             fileName
             );
+    }
+
+    public override void init()
+    {
     }
 }
