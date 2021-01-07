@@ -103,7 +103,6 @@ public class SceneLoader : MonoBehaviour, ISetting
         {
             bool shouldUnload =
                 (explorer)
-                ? (Managers.Scene.playerSceneLoaded && !explorer.canSeeBehind(Collider))
                 : !overlaps;
             if (shouldUnload)
             {

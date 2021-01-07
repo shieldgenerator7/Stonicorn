@@ -40,7 +40,6 @@ public class ScenesManager : SavableMonoBehaviour
 
     //Scene Loading
     private List<Scene> openScenes = new List<Scene>();//the list of the scenes that are open
-    public bool playerSceneLoaded { get; private set; } = false;
 
     public override void init()
     {
@@ -53,10 +52,6 @@ public class ScenesManager : SavableMonoBehaviour
             {
                 openScenes.Add(scene);
             }
-        }
-        if (openScenes.Find(scene => scene.name == "PlayerScene") != null)
-        {
-            playerSceneLoaded = true;
         }
 #endif
 
@@ -90,10 +85,6 @@ public class ScenesManager : SavableMonoBehaviour
 
     void sceneLoaded(Scene scene, LoadSceneMode m)
     {
-        if (scene.name == "PlayerScene")
-        {
-            playerSceneLoaded = true;
-        }
         //Add the given scene to list of open scenes
         openScenes.Add(scene);
         //Scene Loaded Delegate
