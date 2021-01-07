@@ -124,6 +124,8 @@ public class GameManager : MonoBehaviour
                 Managers.Scene.LoadObjectsFromScene(scene);
             }
 
+            //Refresh Memory Objects
+            Managers.Object.refreshMemoryObjects();
             //If the game has just begun,
             if (Managers.Rewind.GameStateCount == 0)
             {

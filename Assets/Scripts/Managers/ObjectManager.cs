@@ -274,6 +274,10 @@ public class ObjectManager : MonoBehaviour
             addObject(smb.gameObject);
         }
         //Memories
+        refreshMemoryObjects();
+    }
+    public void refreshMemoryObjects()
+    {
         foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
             int key = mmb.gameObject.getKey();
