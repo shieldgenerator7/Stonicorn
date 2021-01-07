@@ -67,7 +67,10 @@ public class GameState
             }
             else
             {
-                Managers.Object.recreateObject(os.objectId);
+                if (Managers.Scene.isObjectSceneOpen(os.objectId))
+                {
+                    Managers.Object.recreateObject(os.objectId);
+                }
             }
         });
     }

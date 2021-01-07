@@ -294,6 +294,15 @@ public class ScenesManager : SavableMonoBehaviour
         return true;
     }
 
+    public bool isObjectSceneOpen(int objectId)
+    {
+        if (objectSceneList.ContainsKey(objectId))
+        {
+            return isSceneOpen(objectSceneList[objectId]);
+        }
+        return false;
+    }
+
     public void registerObjectInScene(GameObject go)
     {
         if (go == null || ReferenceEquals(go, null))
@@ -429,6 +438,16 @@ public class ScenesManager : SavableMonoBehaviour
     private void removeObject(GameObject go)
     {
         objectSceneList.Remove(go.getKey());
+    }
+
+    public void printObjectSceneList()
+    {
+        Debug.Log(
+            "=== ScenesManager Object Scene List (" + objectSceneList.Count + ")===",
+            gameObject
+            );
+        objectSceneList.ToList()
+            .ForEach(entry => Debug.Log(entry.Key + " => " + entry.Value));
     }
 
     public override int Priority => 100;
