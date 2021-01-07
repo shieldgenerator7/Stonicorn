@@ -62,6 +62,8 @@ public class ScenesManager : SavableMonoBehaviour
         SceneManager.sceneUnloaded += sceneUnloaded;
 
         //Register SceneLoaderSavableList delegates
+        SceneLoader.ExplorerObject = Managers.Player.gameObject;
+        sceneLoaders.RemoveAll(sl => !sl.enabled || !sl.gameObject.activeSelf);
         sceneLoaders.ForEach(sl =>
         {
             sl.onObjectEntered -= registerObjectInScene;

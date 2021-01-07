@@ -23,14 +23,7 @@ public class SceneLoader : MonoBehaviour, ISetting
     private static GameObject explorerObj;//object that enters and exits triggers, causing scenes to load / unload
     public static GameObject ExplorerObject
     {
-        get
-        {
-            if (explorerObj == null)
-            {
-                ExplorerObject = Managers.Player.gameObject;
-            }
-            return explorerObj;
-        }
+        get => explorerObj;
         set
         {
             explorerObj = value;
@@ -92,18 +85,12 @@ public class SceneLoader : MonoBehaviour, ISetting
 
     public void check()
     {
-        if (!gameObject.activeSelf)
-        {
-            return;
-        }
         bool isLoaded = IsLoaded;
         bool overlaps = Collider.OverlapPoint(ExplorerObject.transform.position);
         //Unload when player leaves
         if (isLoaded)
         {
-            bool shouldUnload =
-                (explorer)
-                : !overlaps;
+            bool shouldUnload = !explorer.canSeeBehind(Collider);
             if (shouldUnload)
             {
                 unloadLevel();
