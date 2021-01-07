@@ -129,42 +129,9 @@ public class ObjectManager : MonoBehaviour
                 "GameObject " + go.name + " has an invalid key: " + key + "!",
                 go
                 );
-            throw new System.ArgumentException(
-                  "GameObject " + go.name + " has an invalid key: " + key + "!"
-                  );
+            return;
         }
 
-        //If the game object's name is already in the dictionary,
-        if (gameObjects.ContainsKey(key)
-            //And it's not null...
-            && !(gameObjects[key] == null
-            || ReferenceEquals(gameObjects[key], null)))
-        {
-            if (gameObjects[key] == go)
-            {
-                //Just the same object being added twice, not a big deal
-                return;
-            }
-            if (gameObjects[key].name == go.name)
-            {
-                Debug.LogError(
-                    "GameObject " + gameObjects[key].name + " with key (" + key
-                    + ") has two instances:" + "\nInstance 1:",
-                    gameObjects[key]
-                    );
-                Debug.LogError(
-                    "GameObject " + go.name + " with key (" + key
-                    + ") has two instances:" + "\nInstance 2:",
-                    go
-                    );
-                gameObjects[key] = go;
-                return;
-            }
-            throw new System.ArgumentException(
-                  "Key (" + key + ") is already inside the gameObjects dictionary! "
-                  + "GameObject " + go.name + " wants to override " + gameObjects[key] + "!"
-                  );
-        }
         //If the game object doesn't have any state to save...
         if (!go.isSavable())
         {
@@ -173,8 +140,24 @@ public class ObjectManager : MonoBehaviour
                 + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
                 );
         }
-        //Else if all good, add the object
-        gameObjects.Add(key, go);
+        //If the game object's name is already in the dictionary,
+        if (gameObjects.ContainsKey(key))
+        {
+            if (go.name != gameObjects[key].name)
+            {
+                Debug.LogWarning(
+                      "Key (" + key + ") is already inside the gameObjects dictionary: "
+                      + "GameObject " + go.name + " replacing " + gameObjects[key],
+                      go
+                      );
+            }
+            gameObjects[key] = go;
+        }
+        else
+        {
+            //Else if all good, add the object
+            gameObjects.Add(key, go);
+        }
     }
 
     public bool hasObject(int goKey)
