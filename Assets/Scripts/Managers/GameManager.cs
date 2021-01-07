@@ -117,13 +117,8 @@ public class GameManager : MonoBehaviour
         }
         if (Managers.Scene.isLevelScene(scene))
         {
-            //If time is moving forward,
-            if (!Managers.Rewind.Rewinding)
-            {
-                //Load the previous state of the objects in the scene
-                Managers.Scene.LoadObjectsFromScene(scene);
-            }
-
+            //Load the previous state of the objects in the scene
+            Managers.Scene.LoadObjectsFromScene(scene);
             //Refresh Memory Objects
             Managers.Object.refreshMemoryObjects();
             //If the game has just begun,
