@@ -159,6 +159,7 @@ public class ScenesManager : SavableMonoBehaviour
         });
         //Add objects to object list
         sceneGOs.ForEach(go => Managers.Object.addObject(go));
+        sceneGOs.ForEach(go => registerObjectInScene(go, scene));
         //Init the savables
         sceneGOs.ForEach(
             go => go.GetComponents<SavableMonoBehaviour>().ToList()
@@ -166,7 +167,7 @@ public class ScenesManager : SavableMonoBehaviour
             );
         //Find the last state that this scene was saved in
         int lastStateSeen = -1;
-        SceneLoader sceneLoader = sceneLoaders.Find(sl => sl.Scene == scene);
+        SceneLoader sceneLoader = getSceneLoader(scene);
         if (sceneLoader)
         {
             lastStateSeen = sceneLoader.lastOpenGameStateId;
@@ -277,10 +278,14 @@ public class ScenesManager : SavableMonoBehaviour
             {
                 return SceneManager.GetSceneByBuildIndex(objectSceneList[objectId]);
             }
+            throw new ArgumentException(
+                "Cannot get scene of object with id " + objectId
+                + " because its id is less than 0"
+                );
         }
         throw new ArgumentException(
             "Cannot get scene of object with id " + objectId
-            + " because it is either not in the list or it is less than 0"
+            + " because it is not in the list"
             );
     }
 
@@ -362,21 +367,7 @@ public class ScenesManager : SavableMonoBehaviour
                 //Don't process it
                 return;
             }
-            if (!objectSceneList.ContainsKey(objectId))
-            {
-                if (objectId == 0)
-                {
-                    Debug.LogError(
-                        "Trying to add object Id " + objectId + " to the objectScenesList!",
-                        go
-                        );
-                }
-                objectSceneList.Add(objectId, sceneId);
-            }
-            else
-            {
-                objectSceneList[objectId] = sceneId;
-            }
+            registerObjectInScene(go, scene);
             moveToScene(go, scene);
         }
         catch (NullReferenceException nre)
@@ -395,6 +386,32 @@ public class ScenesManager : SavableMonoBehaviour
                 + "\nArgumentException: " + ae,
                 go
                 );
+        }
+    }
+
+    private void registerObjectInScene(GameObject go, Scene scene)
+    {
+        Debug.Log(
+            "Registering object " + go.name + " (" + go.getKey()
+            + ") in scene " + scene.name,
+            go
+            );
+        int objectId = go.getKey();
+        int sceneId = scene.buildIndex;
+        if (!objectSceneList.ContainsKey(objectId))
+        {
+            if (objectId == 0)
+            {
+                Debug.LogError(
+                    "Trying to add object Id " + objectId + " to the objectScenesList!",
+                    go
+                    );
+            }
+            objectSceneList.Add(objectId, sceneId);
+        }
+        else
+        {
+            objectSceneList[objectId] = sceneId;
         }
     }
 
