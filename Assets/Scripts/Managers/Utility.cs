@@ -471,6 +471,7 @@ public static class Utility
         {
             newObj.GetComponent<ObjectInfo>().Id = getUniqueId(baseId, 0);
             Managers.Object.addNewObject(newObj);
+            Managers.Scene.registerObjectInScene(newObj);
         }
         //Container children
         if (isContainer)
@@ -483,6 +484,7 @@ public static class Utility
                 savable.GetComponent<ObjectInfo>().Id = getUniqueId(baseId, nextId);
                 nextId++;
                 Managers.Object.addNewObject(savable);
+                Managers.Scene.registerObjectInScene(savable);
             });
         }
         //Return spawned object

@@ -72,6 +72,7 @@ public class ObjectManager : SavableMonoBehaviour
                             Managers.Rewind.LoadObject(t.gameObject, lastStateSeen);
                         }
                     }
+                    Managers.Scene.registerObjectInScene(newGO);
                     recreateQueue.Remove(goId);
                     if (!CreatingObjects)
                     {
