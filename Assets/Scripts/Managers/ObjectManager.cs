@@ -209,9 +209,6 @@ public class ObjectManager : SavableMonoBehaviour
             return;
         }
         Debug.Log("Destroying object (" + go.getKey() + "): " + go.name);
-        Debug.Log("Destroyed object () in knownObject lists? " + knownObjects.Any(soid => soid.id == go.getKey())
-            + "\nIn object scene list? " + Managers.Scene.getObjectScene(go.getKey()),
-            go);
         removeObject(go);
         Destroy(go);
     }
