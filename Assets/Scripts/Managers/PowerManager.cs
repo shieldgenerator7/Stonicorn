@@ -9,6 +9,19 @@ public class PowerManager : MonoBehaviour
         = new Dictionary<IPowerConduit, HashSet<IPowerConduit>>();
     private List<IPowerConduit> powerConduits = new List<IPowerConduit>();
 
+    private struct PowerPath
+    {
+        public IPowerable powerable;
+        public List<IPowerTransferer> path;
+        public PowerPath(IPowerable powerable, List<IPowerTransferer> path)
+        {
+            this.powerable = powerable;
+            this.path = path;
+        }
+    }
+    List<KeyValuePair<IPowerer, List<PowerPath>>> powerPaths = new List<KeyValuePair<IPowerer, List<PowerPath>>>();
+    List<IPowerable> noPowerPowerables = new List<IPowerable>();
+
     private void Start()
     {
         Managers.Scene.onSceneLoaded += (s) => generateConnectionMap();
@@ -23,32 +36,36 @@ public class PowerManager : MonoBehaviour
               .FindAll(ipc => ipc is PowerWire)
               .ConvertAll(ipc => (PowerWire)ipc)
               .ForEach(pw => pw.reset());
+        //Process powerables with no power
+        noPowerPowerables.ForEach(pwr => pwr.acceptPower(0));
         //Have powerers dish out their power
-        List<IPowerer> powerers = powerConduits
-           .FindAll(ipc => ipc is IPowerer)
-           .ConvertAll(ipc => (IPowerer)ipc);
-        List<IPowerable> noPowerPowerables = powerConduits
-           .FindAll(ipc => ipc is IPowerable)
-           .ConvertAll(ipc => (IPowerable)ipc);
-        powerers.ForEach(ipr =>
-        {
-            if (ipr.ThroughPut > 0)
+        powerPaths.ForEach(
+            entry =>
             {
-                List<IPowerable> powerables = getPowerables(ipr);
-                float powerToEach = ipr.ThroughPut * Time.fixedDeltaTime / powerables.Count;
-                powerables.ForEach(pwr =>
+                IPowerer ipr = entry.Key;
+                float powerToEach = ipr.ThroughPut * Time.fixedDeltaTime / entry.Value.Count;
+                entry.Value.ForEach(path =>
                 {
+                    IPowerable pwr = path.powerable;
                     ipr.givePower(
                         -pwr.acceptPower(ipr.givePower(powerToEach))
                         );
-                    transferPower(ipr, pwr, powerToEach);
+                    path.path.ForEach(wire => wire.transferPower(powerToEach));
                 });
-                powerables.ForEach(pwr => noPowerPowerables.Remove(pwr));
-            }
-        }
-            );
-        //Process powerables with no power
-        noPowerPowerables.ForEach(pwr => pwr.acceptPower(0));
+            });
+    }
+
+    private List<PowerPath> getPowerPaths(IPowerer source)
+    {
+        List<PowerPath> paths = new List<PowerPath>();
+        getPowerables(source).ForEach(pwr =>
+        {
+            paths.Add(new PowerPath(
+                pwr,
+                getTransferPath(source, pwr)
+                ));
+        });
+        return paths;
     }
 
     private List<IPowerable> getPowerables(IPowerer source)
@@ -86,7 +103,7 @@ public class PowerManager : MonoBehaviour
     /// </summary>
     /// <param name="ipr"></param>
     /// <param name="pwr"></param>
-    void transferPower(IPowerer source, IPowerable usage, float power)
+    List<IPowerTransferer> getTransferPath(IPowerer source, IPowerable usage)
     {
         Stack<IPowerTransferer> path = new Stack<IPowerTransferer>();
         Stack<IPowerTransferer> stack = new Stack<IPowerTransferer>(
@@ -125,8 +142,8 @@ public class PowerManager : MonoBehaviour
                 path.Pop();
             }
         }
-        //Transfer power through the found wires
-        path.ToList().ForEach(wire => wire.transferPower(power));
+        //Return the found wires
+        return path.ToList();
     }
 
     private void generatePowerConduitList()
@@ -143,13 +160,25 @@ public class PowerManager : MonoBehaviour
     {
         generatePowerConduitList();
         connectionMap.Clear();
+        powerPaths.Clear();
         List<IPowerer> powerers = powerConduits
            .FindAll(ipc => ipc is IPowerer)
            .ConvertAll(ipc => (IPowerer)ipc);
+        noPowerPowerables = powerConduits
+           .FindAll(ipc => ipc is IPowerable)
+           .ConvertAll(ipc => (IPowerable)ipc);
+        Dictionary<IPowerer, List<PowerPath>> dictPaths = new Dictionary<IPowerer, List<PowerPath>>();
         powerers.ForEach(ipr =>
         {
             generateConnections(ipr);
+            List<PowerPath> paths = new List<PowerPath>();
+            paths.AddRange(getPowerPaths(ipr));
+            dictPaths.Add(ipr, paths);
+            //Remove its powerable from the non powered list
+            paths.ForEach(path => noPowerPowerables.Remove(path.powerable));
         });
+        powerPaths = dictPaths.ToList();
+
     }
     private void generateConnections(IPowerConduit ipc)
     {
