@@ -154,7 +154,7 @@ public class ScenesManager : SavableMonoBehaviour
         //Destroy it before it gets put into the game object list.
         unsceneGOs.ForEach(go =>
         {
-            Debug.Log("Destroying now duplicate: " + go);
+            Debug.Log("Destroying now duplicate: " + go + " (" + go.getKey() + ")");
             Destroy(go);
         });
         //Add objects to object list
@@ -303,8 +303,10 @@ public class ScenesManager : SavableMonoBehaviour
     {
         if (objectSceneList.ContainsKey(objectId))
         {
+            Debug.Log("Object's (" + objectId + ") scene id: " + objectSceneList[objectId]);
             return isSceneOpen(objectSceneList[objectId]);
         }
+        Debug.Log("Can't get scene for object (" + objectId + ") because it's not in the list");
         return false;
     }
 
@@ -454,6 +456,7 @@ public class ScenesManager : SavableMonoBehaviour
 
     private void removeObject(GameObject go)
     {
+        Debug.Log("Removing object " + go + " (" + go.getKey() + ") from list", go);
         objectSceneList.Remove(go.getKey());
     }
 

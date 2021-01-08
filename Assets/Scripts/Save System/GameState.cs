@@ -67,9 +67,14 @@ public class GameState
             }
             else
             {
+                Debug.Log("Object (" + os.objectId + ") not found");
                 if (Managers.Scene.isObjectSceneOpen(os.objectId))
                 {
                     Managers.Object.recreateObject(os.objectId);
+                }
+                else
+                {
+                    Debug.Log("Object (" + os.objectId + ") scene not open, so ignoring");
                 }
             }
         });

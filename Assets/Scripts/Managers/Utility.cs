@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -224,9 +225,20 @@ public static class Utility
     /// <param name="go"></param>
     /// <returns></returns>
     public static int getKey(this GameObject go)
-        => (go != null)
-            ? go.GetComponent<ObjectInfo>().Id
-            : -1;
+    {
+        if (!go)
+        {
+            return -1;
+        }
+        ObjectInfo info = go.GetComponent<ObjectInfo>();
+        if (!info)
+        {
+            throw new ArgumentException(
+                "Object " + go.name + " does not have an ObjectInfo!"
+                );
+        }
+        return info.Id;
+    }
 
     /// <summary>
     /// Returns the size of the GameObject based on its sprite

@@ -51,6 +51,7 @@ public class ObjectManager : SavableMonoBehaviour
                 //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
                 var op = Addressables.InstantiateAsync(assetRef);
                 recreateQueue.Add(goId, op);
+                Debug.Log("Recreating object (" + goId + ")");
                 op.Completed += (operation) =>
                 {
                     GameObject newGO = operation.Result;
@@ -207,6 +208,9 @@ public class ObjectManager : SavableMonoBehaviour
             return;
         }
         Debug.Log("Destroying object (" + go.getKey() + "): " + go.name);
+        Debug.Log("Destroyed object () in knownObject lists? " + knownObjects.Any(soid => soid.id == go.getKey())
+            + "\nIn object scene list? " + Managers.Scene.getObjectScene(go.getKey()),
+            go);
         removeObject(go);
         Destroy(go);
     }
