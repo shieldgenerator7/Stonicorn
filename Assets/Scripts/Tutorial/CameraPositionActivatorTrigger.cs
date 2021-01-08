@@ -47,12 +47,13 @@ public class CameraPositionActivatorTrigger : ActivatorTrigger
             default: throw new ArgumentException("Invalid BoxSide: " + activeBoxSide);
         }
         triggeredChanged();
-        if (cameraSnapAnchor != null)
-        {
-            Vector3 newCamPos = cameraSnapAnchor.transform.position;
-            newCamPos.z = Camera.main.transform.position.z;
-            Camera.main.transform.position = newCamPos;
-        }
+        //2021-01-07: TODO: refactor
+        //if (cameraSnapAnchor != null)
+        //{
+        //    Vector3 newCamPos = cameraSnapAnchor.transform.position;
+        //    newCamPos.z = Camera.main.transform.position.z;
+        //    Camera.main.transform.position = newCamPos;
+        //}
 
     }
 
