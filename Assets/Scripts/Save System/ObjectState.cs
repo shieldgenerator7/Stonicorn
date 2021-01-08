@@ -71,7 +71,10 @@ public class ObjectState
                 }
                 else
                 {
-                    throw new UnityException("Object " + go + " is missing non-spawnable script " + so.scriptType);
+                    throw new UnityException(
+                        "Object " + go + " (" + go.getKey()
+                        + ") is missing non-spawnable script " + so.scriptType
+                        );
                 }
             }
             smb.CurrentState = so;
