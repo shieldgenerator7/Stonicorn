@@ -137,6 +137,9 @@ public class ScenesManager : SavableMonoBehaviour
         return false;
     }
 
+    public int SceneLoadingCount
+        => sceneLoaders.Count(sl => sl.IsLoading);
+
     /// <summary>
     /// Restores the objects in the scene to their previous state before the scene was unloaded
     /// </summary>

@@ -42,6 +42,10 @@ public class SceneLoader : MonoBehaviour, ISetting
         }
     }
     private static Explorer explorer;
+
+    private bool isLoading = false;
+    public bool IsLoading => isLoading && !IsLoaded;
+
     [SerializeField]
     /// <summary>
     /// True if the level is currently loaded
@@ -120,10 +124,12 @@ public class SceneLoader : MonoBehaviour, ISetting
     }
     void loadLevel()
     {
+        isLoading = true;
         LoadingScreen.LoadScene(sceneId);
     }
     void unloadLevel()
     {
+        isLoading = false;
         SceneManager.UnloadSceneAsync(sceneId);
     }
     public void loadLevelIfUnLoaded()
