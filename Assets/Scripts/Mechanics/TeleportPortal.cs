@@ -2,10 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TeleportPortal : MonoBehaviour
+public class TeleportPortal : SavableMonoBehaviour
 {
+    private int otherEndId;
+
     private TeleportPortal otherEnd;
     private Collider2D coll2d;
+
+    public override SavableObject CurrentState
+    {
+        get => new SavableObject(this,
+            "otherEndId", otherEndId
+            );
+        set
+        {
+            otherEndId = value.Int("otherEndId");
+            if (!otherEnd)
+            {
+                connectTo(Managers.Object.getObject(otherEndId));
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void OnEnable()
@@ -25,7 +42,7 @@ public class TeleportPortal : MonoBehaviour
         Managers.Player.Teleport.findTeleportablePositionOverride -= checkPortal;
     }
 
-    public void connnectTo(GameObject other)
+    public void connectTo(GameObject other)
     {
         TeleportPortal tp = other.GetComponent<TeleportPortal>();
         connectTo(tp);
@@ -34,7 +51,9 @@ public class TeleportPortal : MonoBehaviour
     public void connectTo(TeleportPortal other)
     {
         otherEnd = other;
+        otherEndId = other.GetComponent<SavableObjectInfo>().Id;
         other.otherEnd = this;
+        other.otherEndId = this.GetComponent<SavableObjectInfo>().Id;
     }
 
     public bool containsPoint(Vector2 point)
@@ -49,5 +68,10 @@ public class TeleportPortal : MonoBehaviour
             return otherEnd.transform.position;
         }
         return Vector2.zero;
+    }
+
+    public override void init()
+    {
+        throw new System.NotImplementedException();
     }
 }
