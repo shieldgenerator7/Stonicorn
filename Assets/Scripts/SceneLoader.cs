@@ -44,7 +44,7 @@ public class SceneLoader : MonoBehaviour, ISetting
     private static Explorer explorer;
 
     private bool isLoading = false;
-    public bool IsLoading => isLoading && !IsLoaded;
+    public bool IsLoading => isLoading && !scene.isLoaded;
 
     [SerializeField]
     /// <summary>
