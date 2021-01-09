@@ -27,10 +27,6 @@ public class MilestoneActivatorAbility : MilestoneActivator
 
     protected override void previouslyDiscovered()
     {
-        Fader fader = GetComponent<Fader>();
-        if (fader)
-        {
-            fader.enabled = true;
-        }
+        Destroy(gameObject);
     }
 }
