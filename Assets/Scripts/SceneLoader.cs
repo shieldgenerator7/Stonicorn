@@ -78,15 +78,6 @@ public class SceneLoader : MonoBehaviour, ISetting
         }
     }
 
-    // Use this for initialization
-    void Start()
-    {
-        if (gameObject.name == "Easy Save 3 Loaded Component")
-        {
-            return;
-        }
-    }
-
     public void check()
     {
         bool isLoaded = IsLoaded;
