@@ -344,6 +344,19 @@ public class ScenesManager : SavableMonoBehaviour
             removeObject(go);
             return;
         }
+        //If go is already in a scene,
+        if (go.scene.buildIndex >= 0)
+        {
+            SceneLoader sl = getSceneLoader(go.scene);
+            //And it's already in the right scene,
+            if (sl && sl.overlapsPosition(go))
+            {
+                //Reregister but don't move it
+                registerObjectInScene(go, go.scene);
+                return;
+            }
+        }
+        //Else find the scene it should be in
         SceneLoader loader = sceneLoaders.Find(sl => sl.overlapsPosition(go));
         if (!loader)
         {
