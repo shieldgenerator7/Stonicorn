@@ -52,6 +52,10 @@ public class ScenesManager : SavableMonoBehaviour
             {
                 openScenes.Add(scene);
             }
+            if (isLevelScene(scene))
+            {
+                LoadObjectsFromScene(scene);
+            }
         }
 #endif
 
