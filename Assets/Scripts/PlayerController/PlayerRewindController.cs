@@ -47,6 +47,7 @@ public class PlayerRewindController : MonoBehaviour
             representations.ForEach(
                 rep => rep?.SetActive(false)
                 );
+            selectionHighlighter.SetActive(false);
 #if UNITY_EDITOR
             int count = representations.FindAll(rep => rep == null).Count;
             if (count > 0)
