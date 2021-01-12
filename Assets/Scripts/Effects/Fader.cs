@@ -72,6 +72,7 @@ public class Fader : MonoBehaviour
         {
             float t = Mathf.Min(duration, (CurrentTime - startTime) / duration);//2016-03-17: copied from an answer by treasgu (http://answers.unity3d.com/questions/654836/unity2d-sprite-fade-in-and-out.html)
             float alpha = Mathf.SmoothStep(startfade, endfade, t);
+            srs.RemoveAll(o => o == null);
             foreach (Component o in srs)
             {
                 if (o is SpriteRenderer)
