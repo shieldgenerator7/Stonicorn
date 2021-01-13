@@ -708,4 +708,10 @@ public class CustomMenu
         string buildName = defaultPath + "/" + PlayerSettings.productName + "." + extension;
         return buildName;
     }
+
+    [MenuItem("SG7/Upgrade/Force save all assets")]
+    public static void forceSaveAllAssets()
+    {
+        AssetDatabase.ForceReserializeAssets();
+    }
 }
