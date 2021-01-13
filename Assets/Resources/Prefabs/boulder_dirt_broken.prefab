@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 212366757072909322}
   - component: {fileID: 50539453285672140}
   - component: {fileID: 61848504837765928}
-  - component: {fileID: 114657753395347650}
   m_Layer: 0
   m_Name: boulder_square_piece4
   m_TagString: Untagged
@@ -132,33 +131,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.57588196, y: 0.5727539}
   m_EdgeRadius: 0
---- !u!114 &114657753395347650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1087124160203508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: dirt
-  hardness: 0.75
-  forceThreshold: 37
-  maxIntegrity: 15
-  integrity: 15
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!1 &1248260199409624
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +143,6 @@ GameObject:
   - component: {fileID: 212877607632684078}
   - component: {fileID: 50528208038517438}
   - component: {fileID: 61659389554739876}
-  - component: {fileID: 114884056706233422}
   m_Layer: 0
   m_Name: boulder_square_piece1
   m_TagString: Untagged
@@ -291,33 +262,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.59446716, y: 0.57107544}
   m_EdgeRadius: 0
---- !u!114 &114884056706233422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1248260199409624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: dirt
-  hardness: 0.75
-  forceThreshold: 37
-  maxIntegrity: 15
-  integrity: 15
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!1 &1347209413936586
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,7 +274,6 @@ GameObject:
   - component: {fileID: 212552371614643056}
   - component: {fileID: 50095960484796430}
   - component: {fileID: 61063944526152470}
-  - component: {fileID: 114576011792268738}
   m_Layer: 0
   m_Name: boulder_square_piece3
   m_TagString: Untagged
@@ -450,33 +393,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.55792236, y: 0.5736313}
   m_EdgeRadius: 0
---- !u!114 &114576011792268738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1347209413936586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: dirt
-  hardness: 0.75
-  forceThreshold: 37
-  maxIntegrity: 15
-  integrity: 15
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!1 &1758183149841368
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,7 +457,6 @@ GameObject:
   - component: {fileID: 212069599829363632}
   - component: {fileID: 50150286563636738}
   - component: {fileID: 61812387427306334}
-  - component: {fileID: 114080717645076122}
   m_Layer: 0
   m_Name: boulder_square_piece2
   m_TagString: Untagged
@@ -661,30 +576,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5727844, y: 0.5782623}
   m_EdgeRadius: 0
---- !u!114 &114080717645076122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1802405716489514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: dirt
-  hardness: 0.75
-  forceThreshold: 37
-  maxIntegrity: 15
-  integrity: 15
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []

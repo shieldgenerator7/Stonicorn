@@ -45,6 +45,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -125,6 +127,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -171,7 +175,6 @@ GameObject:
   - component: {fileID: 760320474200433748}
   - component: {fileID: 8554192419774823828}
   - component: {fileID: 7706170780496168624}
-  - component: {fileID: 3443433200792873200}
   m_Layer: 0
   m_Name: DestroyableWallStone
   m_TagString: Untagged
@@ -209,6 +212,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -273,33 +278,3 @@ PolygonCollider2D:
       - {x: -1.754504, y: -0.35781735}
       - {x: 1.725374, y: -0.3646416}
       - {x: 1.7303817, y: 0.36063653}
---- !u!114 &3443433200792873200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8380293484552089179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: stone
-  hardness: 1
-  forceThreshold: 375
-  maxIntegrity: 100
-  integrity: 0
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 126, guid: 535dbb293f0cae545b25237ae5460abb, type: 3}
-  crackedOverlay: 0
-  crackStages:
-  - {fileID: 8554192419774823828}
-  - {fileID: 7084944557462473078}
-  - {fileID: 8076871348027588219}
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []

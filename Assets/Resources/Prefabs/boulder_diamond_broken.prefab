@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 212132553948528072}
   - component: {fileID: 50449041791467076}
   - component: {fileID: 61203654157118504}
-  - component: {fileID: 114358801962736360}
   - component: {fileID: 199303644782422116}
   - component: {fileID: 198593399280744384}
   m_Layer: 0
@@ -134,33 +133,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.34909058, y: 1.236866}
   m_EdgeRadius: 0
---- !u!114 &114358801962736360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029712643137878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: 
-  hardness: 5
-  forceThreshold: 125
-  maxIntegrity: 25
-  integrity: 25
-  dealsDamage: 1
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!199 &199303644782422116
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -182,7 +154,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -235,7 +206,7 @@ ParticleSystem:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1029712643137878}
-  serializedVersion: 6
+  serializedVersion: 7
   lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
@@ -3807,19 +3778,20 @@ ParticleSystem:
     range: {x: 0, y: 1}
   CollisionModule:
     enabled: 0
-    serializedVersion: 3
+    serializedVersion: 4
     type: 0
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    plane0: {fileID: 0}
-    plane1: {fileID: 0}
-    plane2: {fileID: 0}
-    plane3: {fileID: 0}
-    plane4: {fileID: 0}
-    plane5: {fileID: 0}
+    m_Planes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -3993,17 +3965,20 @@ ParticleSystem:
     interiorCollisions: 0
   TriggerModule:
     enabled: 0
-    collisionShape0: {fileID: 0}
-    collisionShape1: {fileID: 0}
-    collisionShape2: {fileID: 0}
-    collisionShape3: {fileID: 0}
-    collisionShape4: {fileID: 0}
-    collisionShape5: {fileID: 0}
+    serializedVersion: 2
     inside: 1
     outside: 0
     enter: 0
     exit: 0
+    colliderQueryMode: 0
     radiusScale: 1
+    primitives:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0
@@ -4954,7 +4929,6 @@ GameObject:
   - component: {fileID: 212898581923779736}
   - component: {fileID: 50467899557095846}
   - component: {fileID: 61034441723024292}
-  - component: {fileID: 114047162629927432}
   - component: {fileID: 199469543856440382}
   - component: {fileID: 198715527098703266}
   m_Layer: 0
@@ -5076,33 +5050,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.40345764, y: 1.2393341}
   m_EdgeRadius: 0
---- !u!114 &114047162629927432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187003177383354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: 
-  hardness: 5
-  forceThreshold: 125
-  maxIntegrity: 25
-  integrity: 25
-  dealsDamage: 1
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!199 &199469543856440382
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -5124,7 +5071,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5177,7 +5123,7 @@ ParticleSystem:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1187003177383354}
-  serializedVersion: 6
+  serializedVersion: 7
   lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
@@ -8749,19 +8695,20 @@ ParticleSystem:
     range: {x: 0, y: 1}
   CollisionModule:
     enabled: 0
-    serializedVersion: 3
+    serializedVersion: 4
     type: 0
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    plane0: {fileID: 0}
-    plane1: {fileID: 0}
-    plane2: {fileID: 0}
-    plane3: {fileID: 0}
-    plane4: {fileID: 0}
-    plane5: {fileID: 0}
+    m_Planes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -8935,17 +8882,20 @@ ParticleSystem:
     interiorCollisions: 0
   TriggerModule:
     enabled: 0
-    collisionShape0: {fileID: 0}
-    collisionShape1: {fileID: 0}
-    collisionShape2: {fileID: 0}
-    collisionShape3: {fileID: 0}
-    collisionShape4: {fileID: 0}
-    collisionShape5: {fileID: 0}
+    serializedVersion: 2
     inside: 1
     outside: 0
     enter: 0
     exit: 0
+    colliderQueryMode: 0
     radiusScale: 1
+    primitives:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0
@@ -9948,7 +9898,6 @@ GameObject:
   - component: {fileID: 212671070002021886}
   - component: {fileID: 50012005713863728}
   - component: {fileID: 61133257789839394}
-  - component: {fileID: 114160478409616802}
   - component: {fileID: 199631178793899502}
   - component: {fileID: 198101016507583650}
   m_Layer: 0
@@ -10070,33 +10019,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.39897156, y: 1.2669144}
   m_EdgeRadius: 0
---- !u!114 &114160478409616802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1897429010630138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: 
-  hardness: 5
-  forceThreshold: 125
-  maxIntegrity: 25
-  integrity: 25
-  dealsDamage: 1
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!199 &199631178793899502
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -10118,7 +10040,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10171,7 +10092,7 @@ ParticleSystem:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897429010630138}
-  serializedVersion: 6
+  serializedVersion: 7
   lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
@@ -13743,19 +13664,20 @@ ParticleSystem:
     range: {x: 0, y: 1}
   CollisionModule:
     enabled: 0
-    serializedVersion: 3
+    serializedVersion: 4
     type: 0
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    plane0: {fileID: 0}
-    plane1: {fileID: 0}
-    plane2: {fileID: 0}
-    plane3: {fileID: 0}
-    plane4: {fileID: 0}
-    plane5: {fileID: 0}
+    m_Planes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -13929,17 +13851,20 @@ ParticleSystem:
     interiorCollisions: 0
   TriggerModule:
     enabled: 0
-    collisionShape0: {fileID: 0}
-    collisionShape1: {fileID: 0}
-    collisionShape2: {fileID: 0}
-    collisionShape3: {fileID: 0}
-    collisionShape4: {fileID: 0}
-    collisionShape5: {fileID: 0}
+    serializedVersion: 2
     inside: 1
     outside: 0
     enter: 0
     exit: 0
+    colliderQueryMode: 0
     radiusScale: 1
+    primitives:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0
@@ -14890,7 +14815,6 @@ GameObject:
   - component: {fileID: 212103658839585536}
   - component: {fileID: 50118108142503552}
   - component: {fileID: 61161185711547400}
-  - component: {fileID: 114535524180740158}
   - component: {fileID: 199659807015854004}
   - component: {fileID: 198995053991843266}
   m_Layer: 0
@@ -15012,33 +14936,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.35961914, y: 1.2532349}
   m_EdgeRadius: 0
---- !u!114 &114535524180740158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937848306619286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: 
-  hardness: 5
-  forceThreshold: 125
-  maxIntegrity: 25
-  integrity: 25
-  dealsDamage: 1
-  disappearsIfNoBrokenPrefab: 1
-  crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds:
-  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!199 &199659807015854004
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -15060,7 +14957,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15113,7 +15009,7 @@ ParticleSystem:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1937848306619286}
-  serializedVersion: 6
+  serializedVersion: 7
   lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
@@ -18685,19 +18581,20 @@ ParticleSystem:
     range: {x: 0, y: 1}
   CollisionModule:
     enabled: 0
-    serializedVersion: 3
+    serializedVersion: 4
     type: 0
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    plane0: {fileID: 0}
-    plane1: {fileID: 0}
-    plane2: {fileID: 0}
-    plane3: {fileID: 0}
-    plane4: {fileID: 0}
-    plane5: {fileID: 0}
+    m_Planes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -18871,17 +18768,20 @@ ParticleSystem:
     interiorCollisions: 0
   TriggerModule:
     enabled: 0
-    collisionShape0: {fileID: 0}
-    collisionShape1: {fileID: 0}
-    collisionShape2: {fileID: 0}
-    collisionShape3: {fileID: 0}
-    collisionShape4: {fileID: 0}
-    collisionShape5: {fileID: 0}
+    serializedVersion: 2
     inside: 1
     outside: 0
     enter: 0
     exit: 0
+    colliderQueryMode: 0
     radiusScale: 1
+    primitives:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0
