@@ -47,6 +47,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -58,6 +60,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -70,8 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 1492054691
   m_SortingLayer: 4
   m_SortingOrder: 1
-  m_Sprite: {fileID: 3286163911610860551, guid: fcdadc4016d88fa428cf42b1be5554a3,
-    type: 3}
+  m_Sprite: {fileID: 3286163911610860551, guid: fcdadc4016d88fa428cf42b1be5554a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -181,6 +183,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -192,6 +196,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -204,8 +209,7 @@ SpriteRenderer:
   m_SortingLayerID: 1659163103
   m_SortingLayer: -2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3286163911610860551, guid: cb0406ef0af186b45a51992058ba4f42,
-    type: 3}
+  m_Sprite: {fileID: 3286163911610860551, guid: cb0406ef0af186b45a51992058ba4f42, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -383,7 +387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ceefcc30cb13142abcfa50f2853724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  discovered: 0
 --- !u!1 &1961081260639018
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,4 +484,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128537886809e74aa580c28186da36e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secretHider: {fileID: 1653855452231732}
