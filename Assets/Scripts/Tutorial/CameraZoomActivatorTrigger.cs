@@ -4,21 +4,7 @@ using UnityEngine;
 
 public class CameraZoomActivatorTrigger : ActivatorTrigger
 {
-    /// <summary>
-    /// The minimum zoom scale point that defines the zoom level activation trigger
-    /// </summary>
-    public CameraController.CameraScalePoints minZoomScalePoint = 0;
-    /// <summary>
-    /// The maximum zoom scale point that defines the zoom level activation trigger
-    /// </summary>
-    public CameraController.CameraScalePoints maxZoomScalePoint = CameraController.CameraScalePoints.TIMEREWIND;
-    public enum ClusivityOption
-    {
-        INCLUSIVE,
-        EXCLUSIVE
-    }
-    public ClusivityOption minZoomClusivity = ClusivityOption.INCLUSIVE;
-    public ClusivityOption maxZoomClusivity = ClusivityOption.INCLUSIVE;
+    public CameraZoomRange zoomRange;
 
     private bool zoomInRange = false;
     public override bool Triggered => zoomInRange;
@@ -40,20 +26,24 @@ public class CameraZoomActivatorTrigger : ActivatorTrigger
     }
     bool scalePointInRange(float zoomLevel)
     {
-        float minZoom = (minZoomScalePoint < 0) ? -1 : Managers.Camera.toZoomLevel(minZoomScalePoint);
-        float maxZoom = (maxZoomScalePoint < 0) ? -1 : Managers.Camera.toZoomLevel(maxZoomScalePoint);
+        float minZoom = (zoomRange.minZoomScalePoint < 0) 
+            ? -1 
+            : Managers.Camera.toZoomLevel(zoomRange.minZoomScalePoint);
+        float maxZoom = (zoomRange.maxZoomScalePoint < 0) 
+            ? -1 
+            : Managers.Camera.toZoomLevel(zoomRange.maxZoomScalePoint);
         return (
-                minZoomScalePoint < 0
-                || (minZoomClusivity == ClusivityOption.INCLUSIVE &&
+                zoomRange.minZoomScalePoint < 0
+                || (zoomRange.minZoomClusivity == CameraZoomRange.ClusivityOption.INCLUSIVE &&
                 zoomLevel >= minZoom)
-                || (minZoomClusivity == ClusivityOption.EXCLUSIVE &&
+                || (zoomRange.minZoomClusivity == CameraZoomRange.ClusivityOption.EXCLUSIVE &&
                 zoomLevel > minZoom)
             )
             && (
-                maxZoomScalePoint < 0
-                || (maxZoomClusivity == ClusivityOption.INCLUSIVE &&
+                zoomRange.maxZoomScalePoint < 0
+                || (zoomRange.maxZoomClusivity == CameraZoomRange.ClusivityOption.INCLUSIVE &&
                 zoomLevel <= maxZoom)
-                || (maxZoomClusivity == ClusivityOption.EXCLUSIVE &&
+                || (zoomRange.maxZoomClusivity == CameraZoomRange.ClusivityOption.EXCLUSIVE &&
                 zoomLevel < maxZoom)
             );
     }
