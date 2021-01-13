@@ -709,6 +709,18 @@ public class CustomMenu
         return buildName;
     }
 
+    [MenuItem("SG7/Session/Begin Session")]
+    public static void beginSession()
+    {
+        Debug.Log("=== Beginning session ===");
+        string oldVersion = PlayerSettings.bundleVersion;
+        string[] split = oldVersion.Split('.');
+        string newVersion = split[0] + "." + (int.Parse(split[1]) + 1);
+        PlayerSettings.bundleVersion = newVersion;
+        EditorSceneManager.SaveOpenScenes();
+        Debug.LogWarning("Updating build version number from " + oldVersion + " to " + newVersion);
+    }
+
     [MenuItem("SG7/Upgrade/Force save all assets")]
     public static void forceSaveAllAssets()
     {
