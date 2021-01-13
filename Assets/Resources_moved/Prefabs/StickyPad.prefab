@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 61564635015083442}
   - component: {fileID: 50991189634170040}
   - component: {fileID: 114770365651407806}
-  - component: {fileID: 114994015825358654}
+  - component: {fileID: 5671425911162057989}
   - component: {fileID: 6337450156750792949}
   m_Layer: 0
   m_Name: StickyPad
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e89b15ed0641eec45bb6cd88f84f1077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114994015825358654
+--- !u!114 &5671425911162057989
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,20 +155,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1097801133131608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: 
-  hardness: 0.5
-  forceThreshold: 10
-  maxIntegrity: 10
+  minForceThreshold: 2.5
+  maxForceThreshold: 50
+  maxIntegrity: 1
   integrity: 0
-  dealsDamage: 0
-  disappearsIfNoBrokenPrefab: 1
   crackedPrefab: {fileID: 0}
-  crackedOverlay: 1
-  crackStages: []
-  crackSounds: []
+  crackStages:
+  - {fileID: 21300000, guid: e6051cbecd6f08e4e9d5e56637472a8e, type: 3}
+  soundDamageNone: {fileID: 0}
+  soundDamageOne: {fileID: 0}
+  soundDamageTwoOrMore: {fileID: 0}
   secretHiders: []
 --- !u!114 &6337450156750792949
 MonoBehaviour:
