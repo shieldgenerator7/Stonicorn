@@ -66,27 +66,27 @@ public class TesterShortcuts : MonoBehaviour
         GameObject playerObject = Managers.Player.gameObject;
         switch (abilityIndex)
         {
-            case 1:
+            case (int)Cheat.FORCE_LAUNCH:
                 ForceLaunchAbility fta = playerObject.GetComponent<ForceLaunchAbility>();
                 fta.Active = enable;
                 break;
-            case 2:
+            case (int)Cheat.WALL_CLIMB:
                 WallClimbAbility wca = playerObject.GetComponent<WallClimbAbility>();
                 wca.Active = enable;
                 break;
-            case 3:
+            case (int)Cheat.ELECTRIC_BEAM:
                 ElectricBeamAbility eba = playerObject.GetComponent<ElectricBeamAbility>();
                 eba.Active = enable;
                 break;
-            case 4:
+            case (int)Cheat.SWAP:
                 SwapAbility sa = playerObject.GetComponent<SwapAbility>();
                 sa.Active = enable;
                 break;
-            case 5:
+            case (int)Cheat.AIR_SLICE:
                 AirSliceAbility asa = playerObject.GetComponent<AirSliceAbility>();
                 asa.Active = enable;
                 break;
-            case 6:
+            case (int)Cheat.LONG_TELEPORT:
                 LongTeleportAbility lta = playerObject.GetComponent<LongTeleportAbility>();
                 lta.Active = enable;
                 break;
@@ -97,22 +97,22 @@ public class TesterShortcuts : MonoBehaviour
         GameObject playerObject = Managers.Player.gameObject;
         switch (abilityIndex)
         {
-            case 1:
+            case (int)Cheat.FORCE_LAUNCH:
                 ForceLaunchAbility fta = playerObject.GetComponent<ForceLaunchAbility>();
                 return fta.Active;
-            case 2:
+            case (int)Cheat.WALL_CLIMB:
                 WallClimbAbility wca = playerObject.GetComponent<WallClimbAbility>();
                 return wca.Active;
-            case 3:
+            case (int)Cheat.ELECTRIC_BEAM:
                 ElectricBeamAbility eba = playerObject.GetComponent<ElectricBeamAbility>();
                 return eba.Active;
-            case 4:
+            case (int)Cheat.SWAP:
                 SwapAbility sa = playerObject.GetComponent<SwapAbility>();
                 return sa.Active;
-            case 5:
+            case (int)Cheat.AIR_SLICE:
                 AirSliceAbility asa = playerObject.GetComponent<AirSliceAbility>();
                 return asa.Active;
-            case 6:
+            case (int)Cheat.LONG_TELEPORT:
                 LongTeleportAbility lta = playerObject.GetComponent<LongTeleportAbility>();
                 return lta.Active;
             default:
@@ -122,10 +122,10 @@ public class TesterShortcuts : MonoBehaviour
 
     public enum Cheat
     {
-        FORCE_CHARGE = 1,
-        WALL_CLIMB = 2,
-        ELECTRIC_FIELD = 3,
-        SWAP = 4,
+        FORCE_LAUNCH = 1,
+        WALL_CLIMB = 4,
+        ELECTRIC_BEAM = 3,
+        SWAP = 2,
         AIR_SLICE = 5,
         LONG_TELEPORT = 6,
         ACTIVATE_ALL_CHECKPOINTS = 7,
