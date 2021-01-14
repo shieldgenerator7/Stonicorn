@@ -717,8 +717,14 @@ public class CustomMenu
         string[] split = oldVersion.Split('.');
         string newVersion = split[0] + "." + (int.Parse(split[1]) + 1);
         PlayerSettings.bundleVersion = newVersion;
+        //Build Info Displayer
+        BuildInfoDisplayer bid = GameObject.FindObjectOfType<BuildInfoDisplayer>();
+        bid.updateBuildInfoTexts();
+        EditorUtility.SetDirty(bid);
+        EditorSceneManager.MarkSceneDirty(bid.gameObject.scene);
+        //Save and Log
         EditorSceneManager.SaveOpenScenes();
-        Debug.LogWarning("Updating build version number from " + oldVersion + " to " + newVersion);
+        Debug.LogWarning("Updated build version number from " + oldVersion + " to " + newVersion);
     }
 
     [MenuItem("SG7/Upgrade/Force save all assets")]
