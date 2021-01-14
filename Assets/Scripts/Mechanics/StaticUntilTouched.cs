@@ -31,9 +31,13 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.isSolid())
+        if (rooted)
         {
-            Rooted = false;
+            if (collision.collider.isSolid())
+            {
+                Rooted = false;
+                GetComponent<Rigidbody2D>().velocity = collision.relativeVelocity;
+            }
         }
     }
 

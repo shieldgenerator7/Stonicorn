@@ -120,13 +120,11 @@ public class PlayerController : MonoBehaviour
                 .Any(ohhe => (bool)ohhe.DynamicInvoke(point));
             if (hazardous && !hazardException)
             {
-                Debug.Log("Hazardous: " + hazardous + ", " + hazardException);
                 //Take damage (and rewind)
                 forceRewindHazard(hazard.DamageDealt, collision.contacts[0].point);
             }
             else
             {
-                Debug.Log("Not hazardous: " + hazardous + ", " + hazardException);
                 //Grant gravity immunity
                 checkMovementPause();//first grounded frame after teleport
             }
