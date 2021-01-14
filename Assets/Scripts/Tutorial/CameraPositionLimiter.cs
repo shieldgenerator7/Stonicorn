@@ -11,20 +11,20 @@ public class CameraPositionLimiter : MonoBehaviour
         newCamPos = transform.position;
         newCamPos.z = Camera.main.transform.position.z;
         limitPosition();
-        Managers.Camera.Locked = true;
+        Managers.Camera.onOffsetChange += offsetChanged;
     }
     private void OnDisable()
     {
-        Managers.Camera.Locked = false;
+        Managers.Camera.onOffsetChange -= offsetChanged;
     }
 
-    //private void Update()
-    //{
-    //    if (Managers.Camera.transform.position != newCamPos)
-    //    {
-    //        limitPosition();
-    //    }
-    //}
+    void offsetChanged(Vector3 offset)
+    {
+        if (Managers.Camera.transform.position != newCamPos)
+        {
+            limitPosition();
+        }
+    }
 
     void limitPosition()
     {
