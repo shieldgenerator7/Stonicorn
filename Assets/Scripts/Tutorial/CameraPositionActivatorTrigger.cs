@@ -14,8 +14,6 @@ public class CameraPositionActivatorTrigger : ActivatorTrigger
     public BoxSide activeBoxSide = BoxSide.OUTSIDE;
     [Tooltip("The collider that checks for the presence of the camera")]
     public Collider2D cameraPositionCollider;
-    [Tooltip("The object the camera snaps to when it enters the trigger")]
-    public GameObject cameraSnapAnchor;
 
     private bool triggered = false;
     public override bool Triggered => triggered;
@@ -36,6 +34,7 @@ public class CameraPositionActivatorTrigger : ActivatorTrigger
     void OnCameraOffsetChanged(Vector3 offset)
     {
         bool inArea = cameraInArea();
+        bool prevTriggered = triggered;
         switch (activeBoxSide)
         {
             case BoxSide.INSIDE:
@@ -46,23 +45,14 @@ public class CameraPositionActivatorTrigger : ActivatorTrigger
                 break;
             default: throw new ArgumentException("Invalid BoxSide: " + activeBoxSide);
         }
-        triggeredChanged();
-        //2021-01-07: TODO: refactor
-        //if (cameraSnapAnchor != null)
-        //{
-        //    Vector3 newCamPos = cameraSnapAnchor.transform.position;
-        //    newCamPos.z = Camera.main.transform.position.z;
-        //    Camera.main.transform.position = newCamPos;
-        //}
-
+        if (prevTriggered != triggered)
+        {
+            triggeredChanged();
+        }
     }
 
     bool cameraInArea()
     {
-        if (cameraPositionCollider == null)
-        {
-            return false;
-        }
         return cameraPositionCollider.OverlapPoint(Camera.main.transform.position);
     }
 
