@@ -9,6 +9,7 @@ public class SimpleScaling : MonoBehaviour
     public float scale = 2f;//the scale to transition to
     public float duration = 0.4f;//in seconds
     public float endDelay = 0.2f;//delay after reaching the end before resetting to the beginning
+    public bool pingPong = true;//come back after going out
 
     //Runtime constants
     private float speed;
@@ -33,6 +34,10 @@ public class SimpleScaling : MonoBehaviour
         forwards = true;
         lastKeyFrame = Time.time;
         pausing = false;
+        if (startScale != Vector3.zero)
+        {
+            transform.localScale = startScale;
+        }
     }
 
     // Update is called once per frame
@@ -59,7 +64,14 @@ public class SimpleScaling : MonoBehaviour
                 if (transform.localScale == endScale)
                 {
                     lastKeyFrame = lastKeyFrame + duration;
-                    pausing = true;
+                    if (pingPong)
+                    {
+                        pausing = true;
+                    }
+                    else
+                    {
+                        transform.localScale = startScale;
+                    }
                 }
             }
             else

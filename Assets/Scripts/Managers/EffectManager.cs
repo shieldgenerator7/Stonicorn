@@ -55,7 +55,7 @@ public class EffectManager : MonoBehaviour
             chosenTSU = newTSU;
         }
         chosenTSU.transform.position = pos;
-        chosenTSU.enabled = true;
+        chosenTSU.gameObject.SetActive(true);
     }
 
     /// <summary>
