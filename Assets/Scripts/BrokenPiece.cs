@@ -37,14 +37,8 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
         //Initialize child objects
         foreach (GameObject go in Savables)
         {
-            Transform t = go.transform;
-            //Position
-            t.localPosition = new Vector2(
-                t.localPosition.x * t.localScale.x,
-                t.localPosition.y * t.localScale.y
-                );
             //Unparent it
-            t.SetParent(null);
+            go.transform.SetParent(null);
             //Put it in the scene
             Managers.Scene.moveToScene(go, scene);
         }

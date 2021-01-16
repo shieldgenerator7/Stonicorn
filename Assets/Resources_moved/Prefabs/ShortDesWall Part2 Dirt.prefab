@@ -64,7 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minForceThreshold: 2.5
   maxForceThreshold: 50
-  maxIntegrity: 1
+  maxIntegrity: 3
   integrity: 0
   crackedPrefab: {fileID: 0}
   crackStages: []
@@ -143,6 +143,18 @@ PrefabInstance:
     - target: {fileID: 1085828703631075227, guid: 48ed6ce18daaa2f4c937633781e66721, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6656318182427682662, guid: 48ed6ce18daaa2f4c937633781e66721, type: 3}
+      propertyPath: m_Color.b
+      value: 0.22352941
+      objectReference: {fileID: 0}
+    - target: {fileID: 6656318182427682662, guid: 48ed6ce18daaa2f4c937633781e66721, type: 3}
+      propertyPath: m_Color.g
+      value: 0.34901962
+      objectReference: {fileID: 0}
+    - target: {fileID: 6656318182427682662, guid: 48ed6ce18daaa2f4c937633781e66721, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5176471
       objectReference: {fileID: 0}
     - target: {fileID: 6656318182427682662, guid: 48ed6ce18daaa2f4c937633781e66721, type: 3}
       propertyPath: m_SortingLayer

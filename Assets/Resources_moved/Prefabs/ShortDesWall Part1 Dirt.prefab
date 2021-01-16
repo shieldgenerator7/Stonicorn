@@ -83,7 +83,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minForceThreshold: 2.5
   maxForceThreshold: 50
-  maxIntegrity: 1
+  maxIntegrity: 3
   integrity: 0
   crackedPrefab: {fileID: 0}
   crackStages: []
@@ -101,10 +101,6 @@ PrefabInstance:
     - target: {fileID: -7913835299818169396, guid: 1d533438bd95adb41b4fcae894fc2ae9, type: 3}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7913835299818169396, guid: 1d533438bd95adb41b4fcae894fc2ae9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.678
       objectReference: {fileID: 0}
     - target: {fileID: -7913835299818169396, guid: 1d533438bd95adb41b4fcae894fc2ae9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -145,6 +141,18 @@ PrefabInstance:
     - target: {fileID: -3535668508043901616, guid: 1d533438bd95adb41b4fcae894fc2ae9, type: 3}
       propertyPath: m_Name
       value: ShortDesWall Part1 Dirt
+      objectReference: {fileID: 0}
+    - target: {fileID: 4605405815453379118, guid: 1d533438bd95adb41b4fcae894fc2ae9, type: 3}
+      propertyPath: m_Color.b
+      value: 0.22352941
+      objectReference: {fileID: 0}
+    - target: {fileID: 4605405815453379118, guid: 1d533438bd95adb41b4fcae894fc2ae9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.34901962
+      objectReference: {fileID: 0}
+    - target: {fileID: 4605405815453379118, guid: 1d533438bd95adb41b4fcae894fc2ae9, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5176471
       objectReference: {fileID: 0}
     - target: {fileID: 4605405815453379118, guid: 1d533438bd95adb41b4fcae894fc2ae9, type: 3}
       propertyPath: m_SortingLayer
