@@ -574,6 +574,7 @@ public class CustomMenu
                         )
                     );
             });
+        objectManager.knownObjects.OrderBy(soid => soid.id);
         int newCount = objectManager.knownObjects.Count;
         if (prevCount != newCount)
         {
