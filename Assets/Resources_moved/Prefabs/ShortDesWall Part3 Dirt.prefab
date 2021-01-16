@@ -1,13 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!50 &606070476284098201
+--- !u!50 &8691855245074870104
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720474255516711087}
+  m_GameObject: {fileID: 6505331611062060901}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -21,13 +21,13 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &2371572204472108082
+--- !u!60 &5773361776646053363
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720474255516711087}
+  m_GameObject: {fileID: 6505331611062060901}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -52,13 +52,13 @@ PolygonCollider2D:
       - {x: 0.10618734, y: -0.4205564}
       - {x: 0.3549266, y: -0.20709041}
       - {x: 0.26253676, y: 0.4209696}
---- !u!114 &7261587683369839782
+--- !u!114 &1454884978869548391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720474255516711087}
+  m_GameObject: {fileID: 6505331611062060901}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
@@ -66,16 +66,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: -1
   prefabAddress:
-    m_AssetGUID: f161e80cafe4db9409bd11c20dd860af
+    m_AssetGUID: 694548ec336694b449bc98a359cea704
     m_SubObjectName: 
     m_SubObjectType: 
---- !u!114 &5068119596254271614
+--- !u!114 &3937006184000700863
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720474255516711087}
+  m_GameObject: {fileID: 6505331611062060901}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
@@ -91,7 +91,7 @@ MonoBehaviour:
   soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
---- !u!1001 &4195726127607704116
+--- !u!1001 &3395317238948926974
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -144,12 +144,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -767578241262759269, guid: 30f12dcd6924b3346a7a99a3a46beb25, type: 3}
       propertyPath: m_Name
-      value: ShortDesWall Part3 Variant
+      value: ShortDesWall Part3 Dirt
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020868461143718705, guid: 30f12dcd6924b3346a7a99a3a46beb25, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020868461143718705, guid: 30f12dcd6924b3346a7a99a3a46beb25, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1837406103
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 7243324766535440047, guid: 30f12dcd6924b3346a7a99a3a46beb25, type: 3}
---- !u!1 &5720474255516711087 stripped
+--- !u!1 &6505331611062060901 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -767578241262759269, guid: 30f12dcd6924b3346a7a99a3a46beb25, type: 3}
-  m_PrefabInstance: {fileID: 4195726127607704116}
+  m_PrefabInstance: {fileID: 3395317238948926974}
   m_PrefabAsset: {fileID: 0}
