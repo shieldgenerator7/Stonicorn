@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakableWall : SavableMonoBehaviour, IBlastable, ICopyable
+public class BreakableWall : SavableMonoBehaviour, IBlastable
 {
     public float minForceThreshold = 2.5f;//the minimum amount of force required to crack it
     public float maxForceThreshold = 50;//the maximum amount of force consumed per damage
@@ -129,20 +129,6 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ICopyable
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {
         return explosionPos.distanceToObject(gameObject);
-    }
-
-    public Type CopyableType => typeof(BreakableWall);
-
-    public void copyFrom(GameObject original)
-    {
-        BreakableWall bw = original.GetComponent<BreakableWall>();
-        minForceThreshold = bw.minForceThreshold;
-        maxForceThreshold = bw.maxForceThreshold;
-        maxIntegrity = bw.maxIntegrity;
-        if (integrity == 0)
-        {
-            integrity = maxIntegrity;
-        }
     }
 
     public override SavableObject CurrentState
