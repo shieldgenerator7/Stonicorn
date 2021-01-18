@@ -102,7 +102,7 @@ public class RewindManager : MonoBehaviour
         Managers.Object.cleanObjects();
         //Destroy objects not spawned yet in the new selected state
         Managers.Object.GameObjects
-            .FindAll(go => !gameState.hasGameObject(go))
+            .FindAll(go => go.GetComponent<SavableObjectInfo>().spawnStateId > gamestateId)
             .ForEach(go => Managers.Object.destroyObject(go));
         //Actually load the game state
         gameState.load();

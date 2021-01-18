@@ -469,7 +469,9 @@ public static class Utility
         newObj.name += spawnTag;
         if (isSavable)
         {
-            newObj.GetComponent<ObjectInfo>().Id = getUniqueId(baseId, 0);
+            SavableObjectInfo soi = newObj.GetComponent<SavableObjectInfo>();
+            soi.Id = getUniqueId(baseId, 0);
+            soi.spawnStateId = Managers.Rewind.GameStateId;
             Managers.Object.addNewObject(newObj);
             Managers.Scene.registerObjectInScene(newObj);
         }
@@ -481,7 +483,9 @@ public static class Utility
             container.Savables.ForEach(savable =>
             {
                 savable.name += spawnTag;
-                savable.GetComponent<ObjectInfo>().Id = getUniqueId(baseId, nextId);
+                SavableObjectInfo soi = savable.GetComponent<SavableObjectInfo>();
+                soi.Id = getUniqueId(baseId, nextId);
+                soi.spawnStateId = Managers.Rewind.GameStateId;
                 nextId++;
                 Managers.Object.addNewObject(savable);
                 Managers.Scene.registerObjectInScene(savable);

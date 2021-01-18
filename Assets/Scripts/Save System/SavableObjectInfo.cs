@@ -10,6 +10,7 @@ public class SavableObjectInfo : ObjectInfo
     private AssetReference prefabAddress;
     public AssetReference PrefabAddress => prefabAddress;
     public virtual string PrefabGUID => prefabAddress.AssetGUID;
+    public int spawnStateId = 0;
 
     public SavableObjectInfoData Data
         => new SavableObjectInfoData(this);

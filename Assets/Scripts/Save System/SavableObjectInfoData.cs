@@ -11,12 +11,14 @@ public struct SavableObjectInfoData
     [SerializeField]
     [ES3NonSerializable]
     private AssetReference prefabAddress;
+    public int spawnStateId;//the game state id in which this object was spawned
 
     public SavableObjectInfoData(SavableObjectInfo soi)
     {
         this.id = soi.Id;
         this.prefabGUID = soi.PrefabGUID;
         this.prefabAddress = soi.PrefabAddress;
+        this.spawnStateId = soi.spawnStateId;
     }
 
     public override bool Equals(object obj)
