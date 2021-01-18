@@ -1,17 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 [System.Serializable]
 public struct SavableObjectInfoData
 {
     public int id;
     public string prefabGUID;
+    [SerializeField]
+    [ES3NonSerializable]
+    private AssetReference prefabAddress;
 
     public SavableObjectInfoData(SavableObjectInfo soi)
     {
         this.id = soi.Id;
         this.prefabGUID = soi.PrefabGUID;
+        this.prefabAddress = soi.PrefabAddress;
     }
 
     public override bool Equals(object obj)
