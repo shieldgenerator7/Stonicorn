@@ -23,6 +23,7 @@ public class ObjectManager : MonoBehaviour, ISetting
     {
         if (goId > 0)
         {
+            Debug.Log("Recreating goId: " + goId);
             string prefabGUID = knownObjects.Find(soid => soid.id == goId).prefabGUID;
             recreateObject(goId, prefabGUID, lastStateSeen);
         }
@@ -200,6 +201,18 @@ public class ObjectManager : MonoBehaviour, ISetting
             );
         //Otherwise, sorry, you're out of luck
         return null;
+    }
+
+    public void destroyAndForgetObject(GameObject go)
+    {
+        SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
+        if (soi is SingletonObjectInfo)
+        {
+            //don't destroy the game manager or merky
+            return;
+        }
+        destroyObject(go);
+        knownObjects.RemoveAll(soid => soid.id == soi.Id);
     }
 
     /// <summary>
