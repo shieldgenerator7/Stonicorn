@@ -52,23 +52,6 @@ PolygonCollider2D:
       - {x: 0.10618734, y: -0.4205564}
       - {x: 0.3549266, y: -0.20709041}
       - {x: 0.26253676, y: 0.4209696}
---- !u!114 &7261587683369839782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720474255516711087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: -1
-  prefabAddress:
-    m_AssetGUID: f161e80cafe4db9409bd11c20dd860af
-    m_SubObjectName: 
-    m_SubObjectType: 
 --- !u!114 &5068119596254271614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,6 +74,24 @@ MonoBehaviour:
   soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
+--- !u!114 &7261587683369839782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5720474255516711087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  prefabAddress:
+    m_AssetGUID: f161e80cafe4db9409bd11c20dd860af
+    m_SubObjectName: 
+    m_SubObjectType: 
+  spawnStateId: 0
 --- !u!1001 &4195726127607704116
 PrefabInstance:
   m_ObjectHideFlags: 0
