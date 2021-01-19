@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.AddressableAssets;
 
 /// <summary>
 /// GameManager in charge of Time and Space
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
         Managers.initInstance();
         Managers.Player.init();
         Managers.Camera.init();
+        Addressables.InitializeAsync();
     }
 
     // Use this for initialization
