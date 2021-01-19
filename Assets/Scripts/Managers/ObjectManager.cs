@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class ObjectManager : SavableMonoBehaviour
+public class ObjectManager : MonoBehaviour, ISetting
 {
     private Dictionary<int, GameObject> gameObjects = new Dictionary<int, GameObject>();//list of current objects that have state to save
     public List<GameObject> GameObjects => gameObjects.Values.ToList();
@@ -96,13 +96,18 @@ public class ObjectManager : SavableMonoBehaviour
 
     public bool CreatingObjects => recreateQueue.Count > 0;
 
-    public override SavableObject CurrentState
+    public SettingObject Setting
     {
-        get => new SavableObject(this).addList(
+        get => new SettingObject(ID).addList(
             "knownObjects", knownObjects
             );
         set => knownObjects = value.List<SavableObjectInfoData>("knownObjects");
     }
+
+    public SettingScope Scope => SettingScope.SAVE_FILE;
+
+    public string ID => "ObjectManager";
+
     /// <summary>
     /// Adds a newly created object to the list
     /// </summary>
@@ -365,9 +370,5 @@ public class ObjectManager : SavableMonoBehaviour
             "memories",
             fileName
             );
-    }
-
-    public override void init()
-    {
     }
 }
