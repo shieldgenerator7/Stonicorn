@@ -507,7 +507,29 @@ public class CustomMenu
         nullInfo.ForEach(
             go => Debug.LogError(go.name + " has SavableObjectInfo with missing prefabGUID!", go)
             );
-        return missingInfo.Count > 0 || nullInfo.Count > 0;
+        //Spawn State 0
+        List<GameObject> spawn0 = savables
+            .FindAll(go =>
+            {
+                SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
+                return info && info.spawnStateId != 0;
+            }
+            );
+        spawn0.ForEach(
+            go =>
+            {
+                SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
+                Debug.LogWarning(
+                    go.name + " has non-zero spawn state; zeroing it out..."
+                    + info.spawnStateId,
+                    go
+                    );
+                info.spawnStateId = 0;
+                EditorUtility.SetDirty(info);
+                EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
+            }
+            );
+        return missingInfo.Count > 0 || nullInfo.Count > 0 || spawn0.Count > 0;
     }
 
     [MenuItem("SG7/Editor/Pre-Build/Ensure memory objects have ObjectInfo")]

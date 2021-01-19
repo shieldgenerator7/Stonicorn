@@ -10,7 +10,7 @@ public class SavableObjectInfo : ObjectInfo
     private AssetReference prefabAddress;
     public AssetReference PrefabAddress => prefabAddress;
     public virtual string PrefabGUID => prefabAddress.AssetGUID;
-    public int spawnStateId = 0;
+    public int spawnStateId = -1;//-1 is an invalid Id but it forces save on new objects
 
     public SavableObjectInfoData Data
         => new SavableObjectInfoData(this);
