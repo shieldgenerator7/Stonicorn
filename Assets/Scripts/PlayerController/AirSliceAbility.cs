@@ -173,5 +173,6 @@ public class AirSliceAbility : PlayerAbility
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
         maxAirPorts = (int)aul.stat1;
+        AirPortsUsed = 0;
     }
 }
