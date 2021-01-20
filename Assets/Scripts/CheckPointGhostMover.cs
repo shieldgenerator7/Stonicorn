@@ -64,7 +64,12 @@ public class CheckPointGhostMover : MonoBehaviour
         Vector2 offset = (Vector2)transform.position - this.epicenter;
         this.epicenter = epicenter;
         transform.position = epicenter + offset;
-        enabled = false;
+        //If it's not on the initial move out step,
+        if (moveOutSpeed <= 0)
+        {
+            //Stop updating the position
+            enabled = false;
+        }
     }
 
     internal void readjustPosition(Vector2 epicenter)
