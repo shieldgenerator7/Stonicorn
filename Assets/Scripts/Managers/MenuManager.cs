@@ -60,9 +60,26 @@ public class MenuManager : MonoBehaviour
 
     public static bool Open
     {
-        get { return Managers.Menu != null; }
+        get
+        {
+            //2021-01-20: copied from SceneLoader.IsLoaded
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                if (SceneManager.GetSceneAt(i).buildIndex == MENU_SCENE_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         set
         {
+            //Don't open menu twice
+            if (value == Open)
+            {
+                return;
+            }
+            //
             bool show = value;
             if (show)
             {
