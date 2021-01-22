@@ -82,7 +82,7 @@ public class AirSliceAbility : PlayerAbility
             && playerController.Ground.GroundedPrev)
         {
             //Update Stats
-            Managers.Stats.addOne("AirSlice");
+            Managers.Stats.addOne(Stat.AIR_SLICE);
             //Update air ports
             useAirPort();
             //Slice things
@@ -129,7 +129,7 @@ public class AirSliceAbility : PlayerAbility
                 {
                     cuttable.cut(oldPos, newPos);
                     slicedSomething = true;
-                    Managers.Stats.addOne("AirSliceObject");
+                    Managers.Stats.addOne(Stat.AIR_SLICE_OBJECT);
                 }
             }
         }

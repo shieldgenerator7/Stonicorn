@@ -219,9 +219,9 @@ public class SwapAbility : PlayerAbility
             //Give player time to tap again after swapping
             playerController.MovementPaused = true;
             //Update Stats
-            Managers.Stats.addOne("SwapObject");
+            Managers.Stats.addOne(Stat.SWAP_OBJECT);
             //Update Stats
-            Managers.Stats.addOne("Swap");
+            Managers.Stats.addOne(Stat.SWAP);
             //Delegates
             effectTeleport(oldPos, newPos);
             onSwap?.Invoke(playerController.gameObject, swapTarget);

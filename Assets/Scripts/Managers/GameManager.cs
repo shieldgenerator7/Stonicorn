@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
         //Pause time
         Managers.Time.setPause(this, true);
         //Update Stats
-        Managers.Stats.addOne("Rewind");
+        Managers.Stats.addOne(Stat.REWIND);
         //Prepare scenes
         Managers.Scene.prepareForRewind(gameStates, rewindStateId);
     }

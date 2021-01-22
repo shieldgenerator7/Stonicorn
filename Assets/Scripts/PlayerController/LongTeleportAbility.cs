@@ -92,7 +92,7 @@ public class LongTeleportAbility : PlayerAbility
         if (playerController.Teleport.Range > playerController.Teleport.baseRange)
         {
             //Update Stats
-            Managers.Stats.addOne("LongTeleport");
+            Managers.Stats.addOne(Stat.LONG_TELEPORT);
             //Upgrade 1
             if (CanShield)
             {

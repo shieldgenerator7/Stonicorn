@@ -338,7 +338,7 @@ public class PlayerController : MonoBehaviour
             //Mark hit
             hazardHit = true;
             //Increment damaged counter
-            Managers.Stats.addOne("Damaged");
+            Managers.Stats.addOne(Stat.DAMAGED);
             //Start hit timer
             Timer.startTimer(hitStunDuration, () => hitTimerUp(damageToSelf));
             //Highlight impact area

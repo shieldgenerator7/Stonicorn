@@ -126,7 +126,7 @@ public class TeleportAbility : PlayerAbility
         transform.position = newPos;
 
         //Update Stats
-        Managers.Stats.addOne("Teleport");
+        Managers.Stats.addOne(Stat.TELEPORT);
 
         //Momentum Dampening
         //If Merky is moving,
