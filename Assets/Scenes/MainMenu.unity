@@ -733,6 +733,14 @@ PrefabInstance:
       propertyPath: url
       value: https://www.patreon.com/fawndawnstudios
       objectReference: {fileID: 0}
+    - target: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.45
+      objectReference: {fileID: 0}
     - target: {fileID: 6426424778442638647, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1022,6 +1030,7 @@ GameObject:
   - component: {fileID: 169835818}
   - component: {fileID: 169835817}
   - component: {fileID: 169835816}
+  - component: {fileID: 169835820}
   m_Layer: 5
   m_Name: ui_play
   m_TagString: Untagged
@@ -1041,8 +1050,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a60c2d08176ef4c83adee9d58f4587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frame: {fileID: 953011635}
-  mab: {fileID: 0}
+  frame: {fileID: 0}
+  mab: {fileID: 169835820}
 --- !u!61 &169835817
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1134,6 +1143,18 @@ Transform:
   m_Father: {fileID: 11584384}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.24200001}
+--- !u!114 &169835820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169835815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7fd390a7a82c5b45bb87ca07906c7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &250662982
 GameObject:
   m_ObjectHideFlags: 0
@@ -2511,17 +2532,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 6.439752, y: 3.18772}
   m_EdgeRadius: 0
---- !u!114 &953011635 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1068222168337467603, guid: 80e962128177c044d8ecde95cd161ebc, type: 3}
-  m_PrefabInstance: {fileID: 1068222169265079648}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caf051ab1fa725846bb57c0e3d70a564, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &953011637 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1068222168337467605, guid: 80e962128177c044d8ecde95cd161ebc, type: 3}
@@ -4089,6 +4099,14 @@ PrefabInstance:
       propertyPath: url
       value: https://discord.gg/D4zx3ef
       objectReference: {fileID: 0}
+    - target: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.37
+      objectReference: {fileID: 0}
     - target: {fileID: 6426424778442638647, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -4436,6 +4454,14 @@ PrefabInstance:
     - target: {fileID: 1586827436746985989, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
       propertyPath: url
       value: https://www.youtube.com/channel/UCQTcfT5Jq7cQFjgk8zyEhNQ
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.44
       objectReference: {fileID: 0}
     - target: {fileID: 6426424778442638647, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
       propertyPath: m_Sprite
