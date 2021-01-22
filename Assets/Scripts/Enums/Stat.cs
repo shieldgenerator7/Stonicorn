@@ -42,6 +42,10 @@ public enum Stat
     #region Rewind
     DAMAGED,//how many times the player has been damaged
     REWIND,//how many times the rewind ability has been activated
-    REWIND_PLAYER//how many times the player used the rewind ability
+    REWIND_PLAYER,//how many times the player used the rewind ability
+    #endregion
+
+    #region Menu Buttons
+    MENU_BUTTON_PLAY//how many times the player pressed the play button
     #endregion
 }
