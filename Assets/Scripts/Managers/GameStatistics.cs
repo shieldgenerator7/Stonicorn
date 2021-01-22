@@ -33,6 +33,10 @@ public class GameStatistics : MonoBehaviour, ISetting
 
     public int get(Stat stat)
     {
+        if (!stats.ContainsKey(stat))
+        {
+            stats[stat] = 0;
+        }
         return stats[stat];
     }
 
