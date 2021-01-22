@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameStatistics : SavableMonoBehaviour
+public class GameStatistics : MonoBehaviour, ISetting
 {
 
     private Dictionary<string, int> stats = new Dictionary<string, int>() {
@@ -30,29 +30,17 @@ public class GameStatistics : SavableMonoBehaviour
         { "RewindPlayer", 0}//how many times the player used the rewind ability
     };
 
-    public override void init()
-    {
-    }
+    public string ID => "GameStatistics";
+    public SettingScope Scope => SettingScope.SAVE_FILE;
 
-    public override SavableObject CurrentState
+    public SettingObject Setting
     {
-        get
-        {
-            List<object> statParams = new List<object>();
-            foreach (KeyValuePair<string, int> stat in stats)
-            {
-                statParams.Add(stat.Key);
-                statParams.Add(stat.Value);
-            }
-            return new SavableObject(this, statParams.ToArray());
-        }
+        get =>
+            new SettingObject(ID)
+            .addDictionary("stats", stats);
         set
         {
-            List<string> statNames = new List<string>(stats.Keys);
-            foreach (string statName in statNames)
-            {
-                stats[statName] = Mathf.Max(stats[statName], value.Int(statName));
-            }
+            stats = value.Dictionary<string, int>("stats");
             printStats(false);
         }
     }
@@ -85,6 +73,7 @@ public class GameStatistics : SavableMonoBehaviour
     }
     public void printStats(bool all)
     {
+        Debug.Log("=== Printing stats ===");
         foreach (KeyValuePair<string, int> stat in stats)
         {
             if (all || stat.Value > 0)
