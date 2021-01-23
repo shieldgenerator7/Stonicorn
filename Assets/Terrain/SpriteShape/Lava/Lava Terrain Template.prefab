@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1851265064766431218}
   - component: {fileID: 9219530379030733595}
   - component: {fileID: 5130203872402043878}
+  - component: {fileID: 4456121901482026344}
+  - component: {fileID: 78801215876192918}
   m_Layer: 0
   m_Name: Lava Terrain Template
   m_TagString: Untagged
@@ -87,8 +89,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: b96e900581a8f044984058fad5b5358f, type: 3}
   - {fileID: 21300000, guid: 0d81846638868934c8db36b92dbf985b, type: 3}
   m_LocalAABB:
-    m_Center: {x: 0, y: -0.02000022, z: -0.005}
-    m_Extent: {x: 2.1150002, y: 2.145, z: 0.005}
+    m_Center: {x: 0, y: -0.02000022, z: -0.00040035}
+    m_Extent: {x: 2.1150002, y: 2.145, z: 0.00040035}
 --- !u!114 &9219530379030733595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +115,7 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: -2, y: -1, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -123,7 +125,7 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: -2, y: 1, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -133,7 +135,7 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: -1, y: 2, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -143,7 +145,7 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: 1, y: 2, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -153,7 +155,7 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: 2, y: 1, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -163,7 +165,7 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: 2, y: -1, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -173,7 +175,7 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: 1, y: -2, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -183,7 +185,7 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
   m_SpriteShape: {fileID: 11400000, guid: 34e53b1e0c4bc2b4588fe3c262e34d88, type: 2}
   m_FillPixelPerUnit: 100
   m_StretchTiling: 1
@@ -236,3 +238,34 @@ PolygonCollider2D:
       - {x: -0.97451854, y: -2.04059}
       - {x: -1, y: -2.04059}
       - {x: -1.020004, y: -2.0200043}
+--- !u!114 &4456121901482026344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4843397919859313427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 256136996d958014895bd9f14138ed23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageDealt: 2
+--- !u!114 &78801215876192918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4843397919859313427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  prefabAddress:
+    m_AssetGUID: 8e47bc4434b26784cab33cf7d26684c7
+    m_SubObjectName: 
+    m_SubObjectType: 
+  spawnStateId: -1
