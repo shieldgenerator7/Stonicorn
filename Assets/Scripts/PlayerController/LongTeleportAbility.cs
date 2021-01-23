@@ -23,6 +23,12 @@ public class LongTeleportAbility : PlayerAbility
         {
             shielded = value;
             onShieldedChanged?.Invoke(shielded);
+            //OnHitException delegate registering
+            playerController.onHazardHitException -= onHitException;
+            if (shielded)
+            {
+                playerController.onHazardHitException += onHitException;
+            }
         }
     }
     public delegate void OnShieldedChanged(bool shielded);
@@ -54,13 +60,11 @@ public class LongTeleportAbility : PlayerAbility
     {
         base.init();
         Managers.Camera.onOffsetChange += adjustRange;
-        playerController.onHazardHitException += onHitException;
     }
     public override void OnDisable()
     {
         base.OnDisable();
         Managers.Camera.onOffsetChange -= adjustRange;
-        playerController.onHazardHitException -= onHitException;
     }
 
     private void FixedUpdate()
@@ -151,16 +155,13 @@ public class LongTeleportAbility : PlayerAbility
 
     bool onHitException(Vector2 contactPoint)
     {
-        if (shielded)
-        {
-            //Remove shield after grace period
-            ShouldUnshield = true;
-            //Stop merky
-            rb2d.nullifyMovement();
-            //Move merky away from hazard
-            rb2d.velocity += ((Vector2)transform.position - contactPoint)
-                * postShieldKnockbackSpeed;
-        }
+        //Remove shield after grace period
+        ShouldUnshield = true;
+        //Stop merky
+        rb2d.nullifyMovement();
+        //Move merky away from hazard
+        rb2d.velocity += ((Vector2)transform.position - contactPoint)
+            * postShieldKnockbackSpeed;
         return shielded;
     }
 
