@@ -308,19 +308,19 @@ public class CustomMenu
     {
         //Assumes that the level scenes make up the tail of the scene list
         int firstLevelIndex = 3;
-        //Find out if any of the scenes are loaded
-        bool anyLoaded = false;
+        //Find out if all of the scenes are loaded
+        bool allLoaded = true;
         for (int i = firstLevelIndex; i < EditorBuildSettings.scenes.Length; i++)
         {
-            if (EditorSceneManager.GetSceneByBuildIndex(i).isLoaded)
+            if (!EditorSceneManager.GetSceneByBuildIndex(i).isLoaded)
             {
-                anyLoaded = true;
+                allLoaded = false;
                 break;
             }
         }
         //If any are loaded, unload them all.
         //Else, load them all.
-        loadAllLevelScenes(!anyLoaded);
+        loadAllLevelScenes(!allLoaded);
     }
     public static void loadAllLevelScenes(bool load)
     {
