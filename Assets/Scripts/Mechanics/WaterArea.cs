@@ -5,8 +5,8 @@ using UnityEngine;
 public class WaterArea : MonoBehaviour
 {
     public float minSpeed;//the minimum speed in order to apply dampen
-    [Range(0, 1)]
-    public float dampenFactor;//how much to dampen momentum by
+    public float maxSpeed;//the maximum speed allowed underwater
+    public float slowDuration;//how long it takes the water to slow something from maxSpeed to minSpeed
 
     private Collider2D coll2d;
 
@@ -29,10 +29,17 @@ public class WaterArea : MonoBehaviour
                     float speed = rb2d.velocity.magnitude;
                     if (speed >= minSpeed)
                     {
+                        Vector2 dir = rb2d.velocity.normalized;
+                        if (speed > maxSpeed)
+                        {
+                            rb2d.velocity = dir * maxSpeed;
+                        }
+                        float durationLeft = (speed - minSpeed) / (maxSpeed - minSpeed);
+                        durationLeft = Mathf.Max(durationLeft, 1);
                         rb2d.velocity = Vector2.Lerp(
                             rb2d.velocity,
-                            rb2d.velocity * (1 - dampenFactor),
-                            Time.deltaTime
+                            dir * minSpeed,
+                            Time.deltaTime / durationLeft
                             );
                     }
                 }
