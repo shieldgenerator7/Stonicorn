@@ -115,8 +115,8 @@ public class PlayerController : MonoBehaviour
             //If any delegate says yes there is an exception,
             //it's no longer a hazard
             Vector2 point = collision.contacts[0].point;
-            bool hazardException = onHazardHitException != null
-                && !onHazardHitException.GetInvocationList().ToList()
+            bool hazardException = hazardous && onHazardHitException != null
+                && onHazardHitException.GetInvocationList().ToList()
                 .Any(ohhe => (bool)ohhe.DynamicInvoke(point));
             if (hazardous && !hazardException)
             {
