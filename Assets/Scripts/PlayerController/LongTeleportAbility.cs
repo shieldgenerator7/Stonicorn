@@ -23,12 +23,6 @@ public class LongTeleportAbility : PlayerAbility
         {
             shielded = value;
             onShieldedChanged?.Invoke(shielded);
-            //OnHitException delegate registering
-            playerController.onHazardHitException -= onHitException;
-            if (shielded)
-            {
-                playerController.onHazardHitException += onHitException;
-            }
         }
     }
     public delegate void OnShieldedChanged(bool shielded);
@@ -60,11 +54,13 @@ public class LongTeleportAbility : PlayerAbility
     {
         base.init();
         Managers.Camera.onOffsetChange += adjustRange;
+        onShieldedChanged += shieldedChanged;
     }
     public override void OnDisable()
     {
         base.OnDisable();
         Managers.Camera.onOffsetChange -= adjustRange;
+        onShieldedChanged -= shieldedChanged;
     }
 
     private void FixedUpdate()
@@ -73,6 +69,16 @@ public class LongTeleportAbility : PlayerAbility
         {
             Shielded = false;
             ShouldUnshield = false;
+        }
+    }
+
+    private void shieldedChanged(bool isShielded)
+    {
+        //OnHitException delegate registering
+        playerController.onHazardHitException -= onHitException;
+        if (isShielded)
+        {
+            playerController.onHazardHitException += onHitException;
         }
     }
 
