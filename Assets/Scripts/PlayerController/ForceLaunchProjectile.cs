@@ -13,6 +13,7 @@ public class ForceLaunchProjectile : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         updateBouncingVisuals();
+        GetComponent<ForceLaunchAbility>().setOnFire();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

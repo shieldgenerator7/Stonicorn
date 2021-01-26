@@ -260,6 +260,16 @@ public class ForceLaunchAbility : PlayerAbility
     }
 
     /// <summary>
+    /// Set on fire without launching
+    /// Used for projectile
+    /// </summary>
+    public void setOnFire()
+    {
+        affectingVelocity = true;
+        updateBouncingVisuals();
+    }
+
+    /// <summary>
     /// Speed up in the direction of movement
     /// </summary>
     void speedUp()

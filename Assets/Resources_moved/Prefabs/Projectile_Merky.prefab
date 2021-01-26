@@ -13,6 +13,11 @@ GameObject:
   - component: {fileID: 6331572983030962032}
   - component: {fileID: 5326414188585529379}
   - component: {fileID: 2383179362203139129}
+  - component: {fileID: 439012610715115051}
+  - component: {fileID: -4868601944940776909}
+  - component: {fileID: 5887216383974312283}
+  - component: {fileID: -7019585274277617807}
+  - component: {fileID: 2245492183899647457}
   - component: {fileID: 889445966994130150}
   m_Layer: 0
   m_Name: Projectile_Merky
@@ -185,6 +190,146 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bouncinessIndicatorPrefab: {fileID: 5411689275469518566, guid: d53754db496b2a84398bb0ba24fbc7ba, type: 3}
+--- !u!114 &439012610715115051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861052362794606830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d907fc9b0f7ddb3478984e80eecd7d67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoTeleportDelay: 0.1
+  pauseMovementDuration: 0.2
+  hitStunDuration: 1
+  scoutColliderMin: {fileID: 0}
+  scoutColliderMax: {fileID: 0}
+--- !u!114 &-4868601944940776909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861052362794606830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 133a0fa65996aab42b3cedf42663522e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportRangeSegment: {fileID: 0}
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 1
+  unlocked: 0
+  upgradeLevel: 0
+  upgradeLevels: []
+  baseRange: 3
+  exhaustRange: 1
+  dampenSpeed: 1
+  coolDownTime: 0.1
+  baseExhaustCoolDownTime: 0.5
+  teleportUnavailableSound: {fileID: 0}
+  futureProjection: {fileID: 0}
+  teleportPreviewPointer: {fileID: 0}
+--- !u!114 &5887216383974312283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861052362794606830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb861a1759711424783a1cfec9fec1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportRangeSegment: {fileID: 11400000, guid: 0a96e2874f60cf3498b0ec0550706c39, type: 2}
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  upgradeLevel: 6
+  upgradeLevels:
+  - stat1: 3
+    stat2: 10
+    stat3: 0.5
+    stat4: 0.5
+    featureLevel: 0
+  - stat1: 3.75
+    stat2: 12.5
+    stat3: 0.5
+    stat4: 0.75
+    featureLevel: 0
+  - stat1: 4.5
+    stat2: 15
+    stat3: 0.6
+    stat4: 0.75
+    featureLevel: 0
+  - stat1: 4.5
+    stat2: 15
+    stat3: 0.7
+    stat4: 1
+    featureLevel: 1
+  - stat1: 5.25
+    stat2: 17.5
+    stat3: 0.8
+    stat4: 1
+    featureLevel: 1
+  - stat1: 6
+    stat2: 20
+    stat3: 0.9
+    stat4: 1
+    featureLevel: 1
+  - stat1: 6
+    stat2: 20
+    stat3: 0.9
+    stat4: 1
+    featureLevel: 2
+  maxPullBackDistance: 3
+  maxLaunchSpeed: 20
+  bounceEnergyConservationPercent: 0.9
+  accelerationBoostPercent: 1
+  speedMinimum: 0
+  bouncinessLossDelay: 10
+  minimumExplodeSpeed: 0
+  maxEplodeRange: 3
+  unavailableColor: {r: 1, g: 1, b: 1, a: 0.33333334}
+  projectilePrefab: {fileID: 0}
+  directionIndicatorPrefab: {fileID: 0}
+  bouncinessIndicatorPrefab: {fileID: 5411689275469518566, guid: d53754db496b2a84398bb0ba24fbc7ba, type: 3}
+  explosionPrefab: {fileID: 7543689717031921071, guid: b2ea97994fe062e43925621a69a0a3aa, type: 3}
+--- !u!114 &-7019585274277617807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861052362794606830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usesSideVector: 0
+  saveValues: 1
+  gravityScale: 1
+  acceptsGravity: 1
+--- !u!114 &2245492183899647457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861052362794606830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d277e46ec8930334dbe52a86dc8fa717, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundTestDistance: 0.25
+  coll2d: {fileID: 5326414188585529379}
+  Gravity: {fileID: -7019585274277617807}
 --- !u!114 &889445966994130150
 MonoBehaviour:
   m_ObjectHideFlags: 0
