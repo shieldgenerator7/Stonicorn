@@ -143,6 +143,10 @@ public class TeleportAbility : PlayerAbility
                 //Add teleport direction to velocity
                 //dot is going to be a number between -1 and 0
                 rb2d.velocity += normVel * dot * dampenSpeed;
+                if (rb2d.velocity.magnitude > magnitude)
+                {
+                    rb2d.velocity = normVel * magnitude;
+                }
             }
         }
 
