@@ -179,7 +179,7 @@ public static class Utility
 
     public static bool isPlayer(this GameObject go)
     {
-        return go.layer == LayerMask.NameToLayer("Merky");
+        return go.GetComponent<PlayerController>();
     }
     /// <summary>
     /// Returns true if the collider is of the player's and is not a trigger
@@ -188,7 +188,7 @@ public static class Utility
     /// <returns></returns>
     public static bool isPlayerSolid(this Collider2D coll2d)
     {
-        return coll2d.gameObject == Managers.Player.gameObject
+        return coll2d.gameObject.GetComponent<PlayerController>()
             && !coll2d.isTrigger;
     }
     /// <summary>
