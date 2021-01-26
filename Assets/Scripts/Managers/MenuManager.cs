@@ -11,6 +11,11 @@ public class MenuManager : MonoBehaviour
 
     public List<MenuFrame> frames = new List<MenuFrame>();
 
+    private void Awake()
+    {
+        GetComponent<Follow>().followObject = Managers.Player.gameObject;
+    }
+
     private void Start()
     {
         foreach (MenuFrame mf in FindObjectsOfType<MenuFrame>())

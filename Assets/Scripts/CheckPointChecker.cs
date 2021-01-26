@@ -317,13 +317,9 @@ public class CheckPointChecker : MemoryMonoBehaviour
         cpGhostMover.goHome();
         if (first)
         {
-            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
-            {
-                if (!go.Equals(this.gameObject))
-                {
-                    go.GetComponent<CheckPointChecker>().clearPostTeleport(false);
-                }
-            }
+            Managers.ActiveCheckPoints
+                .FindAll(cpc => cpc != this)
+                .ForEach(cpc => cpc.clearPostTeleport(false));
         }
     }
     protected override void nowDiscovered()

@@ -10,7 +10,6 @@ public class Follow : MonoBehaviour
 {
 
     public GameObject followObject;
-    public string followObjectTag;
     public bool orientToCamera = false;
     public bool shakeOnStop = true;
 
@@ -21,14 +20,6 @@ public class Follow : MonoBehaviour
 
     private void Awake()
     {
-        if (followObject == null)
-        {
-            followObject = findFollowObject();
-        }
-        else
-        {
-            followObjectTag = followObject.tag;
-        }
         if (shakeOnStop)
         {
             rb2dParent = followObject.GetComponent<Rigidbody2D>();
@@ -103,10 +94,5 @@ public class Follow : MonoBehaviour
         }
         //Scale
         transform.localScale = followObject.transform.localScale;
-    }
-
-    GameObject findFollowObject()
-    {
-        return GameObject.FindGameObjectWithTag(followObjectTag);
     }
 }
