@@ -7,20 +7,8 @@ public class TeleportRangeUpdater : MonoBehaviour
     [Header("Settings")]
     [Range(0, 5)]
     public float suggestedSpacing = 3;//radial distance between fragments, not guaranteed
-    [Range(0, 1)]
-    public float transparency = 1.0f;
-    [Range(0, 1)]
-    public float timeTransparency = 0.5f;
-    [Range(0, 1)]
-    public float normalLength = 0.5f;
-    [Range(0, 1)]
-    public float timeLength = 0.8f;
-    [Range(0, 60)]
-    public float timeLeftShake = 10;//when this much time is left, it starts shaking
-    [Range(0, 1)]
-    public float maxShakeDistance = 0.2f;//how far it moves left and right when shaking
-    [Range(0, 0.5f)]
-    public float maxShakeAlpha = 0.3f;//the max diff between the timeTransparency and the random alpha
+
+    public List<TeleportRangeEffect> effects;
 
     [Header("Components")]
     public GameObject fragmentPrefab;
@@ -33,15 +21,14 @@ public class TeleportRangeUpdater : MonoBehaviour
     void Start()
     {
         //Timer
-        timer.onTimeLeftChanged += updateTimer;
-        timer.onTimeLeftChanged += updateTimerAlpha;
+        timer.onTimeLeftChanged += updateEffects;
         //Register range update delegate
         Managers.Player.Teleport.onRangeChanged += updateRange;
         Managers.Player.onAbilityActivated += abilityActivated;
         updateRange(Managers.Player.Teleport.Range);
     }
 
-    public void updateRange(float range)
+    private void updateRange(float range)
     {
         clear();
         this.range = range;
@@ -64,122 +51,22 @@ public class TeleportRangeUpdater : MonoBehaviour
             //Update placer
             placer = Utility.RotateZ(placer, angleSpacing);
         }
-        //Update colors
-        updateColors();
-        //Update timers
-        updateTimer(timer.TimeLeft, timer.Duration);
-        updateTimerAlpha(timer.TimeLeft, timer.Duration);
+        //Update effects
+        updateEffects(timer.TimeLeft, timer.Duration);
     }
 
-    public void updateColors()
+    private void updateEffects(float timeLeft, float duration)
     {
-        //Set the color to white
-        foreach (GameObject fragment in fragments)
-        {
-            fragment.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-        //Segment consulting
-        foreach (PlayerAbility ability in Managers.Player.GetComponents<PlayerAbility>())
-        {
-            if (ability.enabled)
-            {
-                ability.teleportRangeSegment?.processFragments(fragments, transform.up);
-            }
-        }
-        //Set the transparency
-        foreach (GameObject fragment in fragments)
-        {
-            //Set the fragment transparency
-            SpriteRenderer sr = fragment.GetComponent<SpriteRenderer>();
-            sr.color = sr.color.adjustAlpha(transparency);
-        }
+        effects.ForEach(fx => fx.updateEffect(fragments, timeLeft, duration));
     }
 
-    public void updateTimer(float timeLeft, float duration)
+    private void abilityActivated(PlayerAbility ability, bool active)
     {
-        Vector2 upVector = transform.up;
-        float angleMin = 0;
-        float angleMax = 360 * timeLeft / duration;
-        float maxShake = maxShakeDistance * (timeLeftShake - timeLeft) / timeLeftShake;
-        foreach (GameObject fragment in fragments)
-        {
-            //Set the length to standard
-            Vector3 scale = fragment.transform.localScale;
-            scale.y = normalLength;
-            if (timeLeft > 0)
-            {
-                //Check to see if it's in the timer range
-                if (Utility.between(
-                    Utility.RotationZ(upVector, fragment.transform.up),
-                    angleMin,
-                    angleMax
-                    )
-                    )
-                {
-                    //If so, set the length to the time length
-                    scale.y = timeLength;
-                }
-                else
-                {
-                    //Check to see if it should shake
-                    if (timeLeft <= timeLeftShake)
-                    {
-                        //Shake each fragment individually
-                        float randomRange = Random.Range(-maxShake, maxShake);
-                        fragment.transform.localPosition = fragment.transform.localPosition.normalized * (range + randomRange);
-                    }
-                }
-            }
-            //Put the size back in the fragment
-            fragment.transform.localScale = scale;
-        }
-    }
-    public void updateTimerAlpha(float timeLeft, float duration)
-    {
-        Vector2 upVector = transform.up;
-        float angleMin = 0;
-        float angleMax = 360 * timeLeft / duration;
-        float maxShake = maxShakeAlpha * (timeLeftShake - timeLeft) / timeLeftShake;
-        foreach (GameObject fragment in fragments)
-        {
-            //Set the alpha to standard
-            SpriteRenderer sr = fragment.GetComponent<SpriteRenderer>();
-            float newAlpha = transparency;
-            if (timeLeft > 0)
-            {
-                //Check to see if it's in the timer range
-                if (Utility.between(
-                    Utility.RotationZ(upVector, fragment.transform.up),
-                    angleMin,
-                    angleMax
-                    )
-                    )
-                {
-                    //If so, set the length to the time length
-                    newAlpha = timeTransparency;
-                }
-                else
-                {
-                    //Check to see if it should shake
-                    if (timeLeft <= timeLeftShake)
-                    {
-                        //Shake each fragment alpha individually
-                        float randomRange = Random.Range(-maxShake, maxShake);
-                        newAlpha = transparency + randomRange;
-                    }
-                }
-            }
-            //Put the color back in the fragment
-            sr.color = sr.color.adjustAlpha(newAlpha);
-        }
+        //Update effects
+        updateEffects(timer.TimeLeft, timer.Duration);
     }
 
-    public void abilityActivated(PlayerAbility ability, bool active)
-    {
-        updateColors();
-    }
-
-    public void clear()
+    private void clear()
     {
         foreach (GameObject fragment in fragments)
         {

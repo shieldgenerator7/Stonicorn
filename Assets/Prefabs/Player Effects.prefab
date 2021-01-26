@@ -11,7 +11,10 @@ GameObject:
   - component: {fileID: 40955384309270304}
   - component: {fileID: 7246242757795531718}
   - component: {fileID: 40073705359149296}
-  - component: {fileID: 2892683912633561058}
+  - component: {fileID: 8857824441333027646}
+  - component: {fileID: 4680359136153862722}
+  - component: {fileID: 2579025685106268438}
+  - component: {fileID: 2070641950214406821}
   m_Layer: 8
   m_Name: Effects on Player (Camera)
   m_TagString: Untagged
@@ -29,7 +32,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 7726396922562020265}
   m_Father: {fileID: 2592284711590913631}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46,7 +50,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 0}
-  followObjectTag: 
   orientToCamera: 1
   shakeOnStop: 1
   bounceBackSpeed: 5
@@ -63,16 +66,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   suggestedSpacing: 0.5
-  transparency: 0.3
-  timeTransparency: 0.6
-  normalLength: 0.3
-  timeLength: 0.7
-  timeLeftShake: 10
-  maxShakeDistance: 0.3
-  maxShakeAlpha: 0.5
+  effects: []
   fragmentPrefab: {fileID: 6491032585982812421, guid: b9c52fd9a99b951428ca8f85171044a7, type: 3}
   timer: {fileID: 0}
---- !u!114 &2892683912633561058
+--- !u!114 &8857824441333027646
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -81,12 +78,51 @@ MonoBehaviour:
   m_GameObject: {fileID: 870659559435022119}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2785a2b14b542bc4c85d0ea78ffbead1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f463f13e129783458cf72d8d4167bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cloudPrefab: {fileID: 1036009570883399250, guid: 9c5cc08b4ff4cdd42b9ea31d1b9fee75, type: 3}
-  availableSprite: {fileID: 21300000, guid: 5720e7f931c6f204cb7078967747cc74, type: 3}
-  usedSprite: {fileID: 21300000, guid: 8ab626c028229414f909f46e9fe8e8bc, type: 3}
+  normalLength: 0.3
+  timeLength: 0.7
+--- !u!114 &4680359136153862722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870659559435022119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38603c69ce17c8c438728dd754c5de96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transparency: 0.3
+  timeTransparency: 0.6
+--- !u!114 &2579025685106268438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870659559435022119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d3a04a02ad186e4f921afb87a63e047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeLeftShake: 10
+  maxShakeDistance: 0.3
+--- !u!114 &2070641950214406821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870659559435022119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5b86b19022d0e64c8c74d874b71c80e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2072551788776688989
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +169,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 0}
-  followObjectTag: 
   orientToCamera: 0
   shakeOnStop: 0
   bounceBackSpeed: 0
@@ -20419,6 +20454,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3760853179240469937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7726396922562020265}
+  - component: {fileID: 2816910930106077086}
+  m_Layer: 8
+  m_Name: CloudMeter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7726396922562020265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3760853179240469937}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 40955384309270304}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2816910930106077086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3760853179240469937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2785a2b14b542bc4c85d0ea78ffbead1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cloudPrefab: {fileID: 1036009570883399250, guid: 9c5cc08b4ff4cdd42b9ea31d1b9fee75, type: 3}
+  availableSprite: {fileID: 21300000, guid: 5720e7f931c6f204cb7078967747cc74, type: 3}
+  usedSprite: {fileID: 21300000, guid: 8ab626c028229414f909f46e9fe8e8bc, type: 3}
 --- !u!1 &5170885757247751563
 GameObject:
   m_ObjectHideFlags: 0
