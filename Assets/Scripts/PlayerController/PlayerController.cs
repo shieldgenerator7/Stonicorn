@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
     /// Updates Merky's range when he hits ground
     /// </summary>
     /// <param name="collision"></param>
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.isSolid())
         {

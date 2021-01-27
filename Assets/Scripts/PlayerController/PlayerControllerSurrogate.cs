@@ -16,6 +16,11 @@ public class PlayerControllerSurrogate : PlayerController
     {
         //do nothing
     }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        //do nothing
+    }
 }
 
 
