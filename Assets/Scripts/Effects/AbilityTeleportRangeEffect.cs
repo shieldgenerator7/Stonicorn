@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class AbilityTeleportRangeEffect : TeleportRangeEffect
 {
-    public override void updateEffect(List<GameObject> fragments, float timeLeft, float duration)
+    public override void init(TeleportRangeUpdater updater)
+    {
+        base.init(updater);
+        Managers.Player.onAbilityActivated += abilityActivated;
+    }
+
+    private void abilityActivated(PlayerAbility ability, bool active)
+    {
+        //Update effects
+        updateEffect();
+    }
+
+    public override void updateEffect()
     {
         //Set the color to white
-        foreach (GameObject fragment in fragments)
+        foreach (GameObject fragment in updater.fragments)
         {
             fragment.GetComponent<SpriteRenderer>().color = Color.white;
         }
@@ -16,7 +28,7 @@ public class AbilityTeleportRangeEffect : TeleportRangeEffect
         {
             if (ability.enabled)
             {
-                ability.teleportRangeSegment?.processFragments(fragments, transform.up);
+                ability.teleportRangeSegment?.processFragments(updater.fragments, transform.up);
             }
         }
     }

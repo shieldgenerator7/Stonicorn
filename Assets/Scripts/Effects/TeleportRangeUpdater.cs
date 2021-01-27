@@ -12,19 +12,17 @@ public class TeleportRangeUpdater : MonoBehaviour
 
     [Header("Components")]
     public GameObject fragmentPrefab;
-    public Timer timer;
 
-    private List<GameObject> fragments = new List<GameObject>();
+    internal readonly List<GameObject> fragments = new List<GameObject>();
     private float range;//cached range, gets updated in updateRange()
+    public float Range => range;
 
     // Start is called before the first frame update
     void Start()
     {
-        //Timer
-        timer.onTimeLeftChanged += updateEffects;
+        effects.ForEach(fx => fx.init(this));
         //Register range update delegate
         Managers.Player.Teleport.onRangeChanged += updateRange;
-        Managers.Player.onAbilityActivated += abilityActivated;
         updateRange(Managers.Player.Teleport.Range);
     }
 
@@ -52,18 +50,12 @@ public class TeleportRangeUpdater : MonoBehaviour
             placer = Utility.RotateZ(placer, angleSpacing);
         }
         //Update effects
-        updateEffects(timer.TimeLeft, timer.Duration);
+        updateEffects();
     }
 
-    private void updateEffects(float timeLeft, float duration)
+    private void updateEffects()
     {
-        effects.ForEach(fx => fx.updateEffect(fragments, timeLeft, duration));
-    }
-
-    private void abilityActivated(PlayerAbility ability, bool active)
-    {
-        //Update effects
-        updateEffects(timer.TimeLeft, timer.Duration);
+        effects.ForEach(fx => fx.updateEffect());
     }
 
     private void clear()

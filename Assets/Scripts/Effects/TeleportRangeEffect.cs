@@ -4,6 +4,10 @@ using UnityEngine;
 
 public abstract class TeleportRangeEffect : MonoBehaviour
 {
-
-    public abstract void updateEffect(List<GameObject> fragments, float timeLeft, float duration);
+    protected TeleportRangeUpdater updater;
+    public virtual void init(TeleportRangeUpdater updater)
+    {
+        this.updater = updater;
+    }
+    public abstract void updateEffect();
 }
