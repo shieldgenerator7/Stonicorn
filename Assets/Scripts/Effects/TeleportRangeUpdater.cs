@@ -36,6 +36,9 @@ public class TeleportRangeUpdater : MonoBehaviour
         int fragmentCount = Mathf.RoundToInt(circumference / spacing);
         float angleSpacing = 2 * Mathf.PI / (float)fragmentCount;
         Vector2 placer = Vector2.up * range;
+        //Make it off-center a little to the right
+        placer = Utility.RotateZ(placer, 0.1f);
+        //Generate fragments
         for (int i = 0; i < fragmentCount; i++)
         {
             //Instantiate
