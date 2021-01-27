@@ -120,7 +120,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
         {
             acceptUpgradeLevel(upgradeLevels[level]);
         }
-        playerController.abilityUpgraded(this, level);
+        playerController?.abilityUpgraded(this, level);
     }
     protected abstract void acceptUpgradeLevel(AbilityUpgradeLevel aul);
 
