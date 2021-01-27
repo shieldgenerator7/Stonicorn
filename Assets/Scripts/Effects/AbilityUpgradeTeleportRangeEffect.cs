@@ -5,12 +5,22 @@ using UnityEngine;
 
 public class AbilityUpgradeTeleportRangeEffect : TeleportRangeEffect
 {
+    public override void init(TeleportRangeUpdater updater)
+    {
+        base.init(updater);
+        Managers.Player.onAbilityUpgraded += abilityUpgraded;
+    }
+
+    private void abilityUpgraded(PlayerAbility ability, int upgradeLevel)
+    {
+        updateEffect();
+    }
+
     public override void updateEffect()
     {
         //Get list of all TeleportRangeSegments
         List<List<float>> segmentAngles = Managers.Player.GetComponents<PlayerAbility>().ToList()
-            .FindAll(ability => ability.enabled
-                && ability.teleportRangeSegment && ability.UpgradeLevel > 0)
+            .FindAll(ability => ability.teleportRangeSegment && ability.UpgradeLevel > 0)
             .ConvertAll(ability =>
                 ability.teleportRangeSegment.getAngles(ability.UpgradeLevel)
                 );

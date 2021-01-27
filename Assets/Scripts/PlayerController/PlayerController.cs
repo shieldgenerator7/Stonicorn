@@ -67,6 +67,13 @@ public class PlayerController : MonoBehaviour
     public delegate void OnAbilityActivated(PlayerAbility ability, bool active);
     public event OnAbilityActivated onAbilityActivated;
 
+    public void abilityUpgraded(PlayerAbility ability, int upgradeLevel)
+    {
+        onAbilityUpgraded?.Invoke(ability, upgradeLevel);
+    }
+    public delegate void OnAbilityUpgraded(PlayerAbility ability, int upgradeLevel);
+    public event OnAbilityUpgraded onAbilityUpgraded;
+
     // Use this for initialization
     public void init()
     {
