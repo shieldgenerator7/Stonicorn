@@ -9,7 +9,7 @@ public class TeleportRangeSegment : ScriptableObject
     public int segmentCount;
     public Color color = Color.white;
 
-    public List<float> getAngles(int upgradeLevel)
+    public List<float> getAngles(float upgradeLevel)
     {
         int partCount = segmentCount;
         float angleSpacing = 360 / partCount;
@@ -17,8 +17,8 @@ public class TeleportRangeSegment : ScriptableObject
         float angleMax = angleSpacing * (segmentIndex + 1);
         if (upgradeLevel > 0 && upgradeLevel <= 6)
         {
-            float angleLevel = (upgradeLevel / 6) * (angleMax - angleMin) + angleMin;
-            return new List<float> { angleMin, upgradeLevel, angleMax };
+            float angleLevel = (upgradeLevel / 6.0f) * (angleMax - angleMin) + angleMin;
+            return new List<float> { angleMin, angleLevel, angleMax };
         }
         return new List<float> { angleMin, angleMax };
     }

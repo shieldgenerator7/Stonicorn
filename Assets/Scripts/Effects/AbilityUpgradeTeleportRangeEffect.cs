@@ -23,7 +23,7 @@ public class AbilityUpgradeTeleportRangeEffect : TeleportRangeEffect
             if (sa.Count > 1)
             {
                 //Prevent duplicates in list of angles
-                sa.FindAll(angle => !angles.Any(a => a - angle < 0.5f))
+                sa.FindAll(angle => !angles.Any(a => Mathf.Abs(a - angle) < 0.5f))
                 //And angle to list
                     .ForEach(angle => angles.Add(angle));
             }
