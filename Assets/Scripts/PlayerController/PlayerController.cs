@@ -82,8 +82,6 @@ public class PlayerController : MonoBehaviour
         Ground = GetComponent<GroundChecker>();
         GravityAccepter = GetComponent<GravityAccepter>();
         pc2d = GetComponent<PolygonCollider2D>();
-        //Register the delegates
-        Managers.Rewind.onRewindFinished += pauseMovementAfterRewind;
         //Estimate the halfWidth
         Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
         halfWidth = (extents.x + extents.y) / 2;
@@ -91,6 +89,13 @@ public class PlayerController : MonoBehaviour
         updateGroundTrigger();
         //Teleport Ability
         Teleport = GetComponent<TeleportAbility>();
+        //Register the delegates
+        registerDelegates();
+    }
+
+    protected virtual void registerDelegates()
+    {
+        Managers.Rewind.onRewindFinished += pauseMovementAfterRewind;
         Teleport.onTeleport += onTeleported;
     }
 

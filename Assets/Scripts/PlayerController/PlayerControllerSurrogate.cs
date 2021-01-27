@@ -11,6 +11,11 @@ public class PlayerControllerSurrogate : PlayerController
     {
         init();
     }
+
+    protected override void registerDelegates()
+    {
+        //do nothing
+    }
 }
 
 
