@@ -32,12 +32,19 @@ public class AbilityUpgradeTeleportRangeEffect : TeleportRangeEffect
             sa.RemoveAt(sa.Count - 1);
             if (sa.Count > 1)
             {
-                //Prevent duplicates in list of angles
-                sa.FindAll(angle => !angles.Any(a => Mathf.Abs(a - angle) < 0.5f))
                 //And angle to list
-                    .ForEach(angle => angles.Add(angle));
+                sa.ForEach(angle => angles.Add(angle));
             }
         });
+        //Remove duplicates (merge touching zones)
+        for (int i = angles.Count - 2; i >= 0; i--)
+        {
+            if (Mathf.Abs(angles[i] - angles[i + 1]) < 0.5f)
+            {
+                angles.RemoveAt(i + 1);
+                angles.RemoveAt(i);
+            }
+        }
         //Decrement the value 360 (if any)
         angles = angles.ConvertAll(angle => ((angle == 360) ? 359 : angle));
         //Get list of fragment groups
