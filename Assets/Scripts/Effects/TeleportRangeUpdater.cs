@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TeleportRangeUpdater : MonoBehaviour
@@ -56,6 +57,55 @@ public class TeleportRangeUpdater : MonoBehaviour
     private void updateEffects()
     {
         effects.ForEach(fx => fx.updateEffect());
+    }
+
+    public List<List<GameObject>> getFragmentGroups(params float[] angles)
+    {
+        return getFragmentGroups(angles.ToList());
+    }
+
+    public List<List<GameObject>> getFragmentGroups(List<float> angles)
+    {
+        //Initialize groups list
+        List<List<GameObject>> groups = new List<List<GameObject>>();
+        for (int i = 0; i < angles.Count + 1; i++)
+        {
+            groups.Add(new List<GameObject>());
+        }
+        //Sanitize input
+        if (!angles.Contains(0))
+        {
+            angles.Add(0);
+        }
+        for (int i = 0; i < angles.Count; i++)
+        {
+            while (angles[i] < 0)
+            {
+                angles[i] += 360;
+            }
+            while (angles[i] >= 360)
+            {
+                angles[i] -= 360;
+            }
+        }
+        angles.Sort();
+        angles.Reverse();
+        //
+        Vector2 upVector = transform.up;
+        foreach (GameObject fragment in fragments)
+        {
+            float angle = Utility.RotationZ(upVector, fragment.transform.up);
+            for (int i = 0; i < angles.Count; i++)
+            {
+                if (angle > angles[i])
+                {
+                    groups[i].Add(fragment);
+                    break;
+                }
+            }
+        }
+        //
+        return groups;
     }
 
     private void clear()

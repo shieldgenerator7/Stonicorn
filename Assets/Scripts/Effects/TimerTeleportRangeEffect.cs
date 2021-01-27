@@ -29,26 +29,10 @@ public class TimerTeleportRangeEffect : TeleportRangeEffect
     {
         fragmentsBurned.Clear();
         fragmentsFuse.Clear();
-        Vector2 upVector = transform.up;
-        float angleMin = 0;
         float angleMax = 360 * timer.TimeLeft / timer.Duration;
-        foreach (GameObject fragment in updater.fragments)
-        {
-            //Check to see if it's in the timer range
-            if (Utility.between(
-                Utility.RotationZ(upVector, fragment.transform.up),
-                angleMin,
-                angleMax
-                )
-                )
-            {
-                fragmentsFuse.Add(fragment);
-            }
-            else
-            {
-                fragmentsBurned.Add(fragment);
-            }
-        }
+        List<List<GameObject>> fragmentGroups = updater.getFragmentGroups(angleMax);
+        fragmentsBurned.AddRange(fragmentGroups[0]);
+        fragmentsFuse.AddRange(fragmentGroups[1]);
         effects.ForEach(fx => fx.updateEffect());
     }
 }
