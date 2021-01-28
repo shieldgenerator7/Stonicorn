@@ -203,6 +203,12 @@ public class ObjectManager : MonoBehaviour, ISetting
         return null;
     }
 
+    /// <summary>
+    /// Destroys the object and forgets it so that it cannot be recreated.
+    /// If you want to destroy an object through normal means,
+    /// use destroyObject() instead.
+    /// </summary>
+    /// <param name="go"></param>
     public void destroyAndForgetObject(GameObject go)
     {
         SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
@@ -213,6 +219,15 @@ public class ObjectManager : MonoBehaviour, ISetting
         }
         destroyObject(go);
         knownObjects.RemoveAll(soid => soid.id == soi.Id);
+    }
+
+    public void destroyObject(int goKey)
+    {
+        GameObject go = getObject(goKey);
+        if (go)
+        {
+            destroyObject(go);
+        }
     }
 
     /// <summary>

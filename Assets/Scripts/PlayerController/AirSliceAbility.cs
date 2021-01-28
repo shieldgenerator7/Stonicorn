@@ -24,6 +24,8 @@ public class AirSliceAbility : PlayerAbility
     public delegate void OnAirPortsUsedChanged(int airPortsUsed, int maxAirPorts);
     public event OnAirPortsUsedChanged onAirPortsUsedChanged;
 
+    private List<int> afterWindIds = new List<int>();
+
     private SwapAbility swapAbility;
 
     // Use this for initialization
@@ -53,6 +55,12 @@ public class AirSliceAbility : PlayerAbility
         {
             //Refresh air teleports
             AirPortsUsed = 0;
+        }
+        if (grounder.GroundedNormal)
+        {
+            //Destroy all after winds
+            afterWindIds.ForEach(id => Managers.Object.destroyObject(id));
+            afterWindIds.Clear();
         }
     }
 
@@ -156,17 +164,22 @@ public class AirSliceAbility : PlayerAbility
         awsr.size = new Vector2(awsr.size.x, dir.magnitude);
         BoxCollider2D bc2d = afterWind.GetComponent<BoxCollider2D>();
         bc2d.size = new Vector2(bc2d.size.x, dir.magnitude);
+        afterWindIds.Add(afterWind.getKey());
     }
 
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
             "AirPortsUsed", AirPortsUsed
+            )
+            .addList(
+            "afterWindIds", afterWindIds
             );
         set
         {
             base.CurrentState = value;
             AirPortsUsed = value.Int("AirPortsUsed");
+            afterWindIds = value.List<int>("afterWindIds");
         }
     }
 
