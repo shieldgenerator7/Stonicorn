@@ -2429,7 +2429,7 @@ MonoBehaviour:
   - {fileID: 1402017227}
   - {fileID: 418204987}
   memories:
-  - {fileID: 666835555}
+  - {fileID: 0}
   - {fileID: 1415455976}
   - {fileID: 15683530}
   - {fileID: 967269285}
@@ -3078,11 +3078,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ccb1628833b204e85aa156745c57a6, type: 3}
---- !u!4 &327755003 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1869148012857109533, guid: c4ccb1628833b204e85aa156745c57a6, type: 3}
-  m_PrefabInstance: {fileID: 327755002}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &327755004 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6317144652256997883, guid: c4ccb1628833b204e85aa156745c57a6, type: 3}
@@ -5055,93 +5050,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1338602064295762, guid: f844c8d3ded8047418b2890393ffa110, type: 3}
   m_PrefabInstance: {fileID: 657578919}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &666835555
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 666835559}
-  - component: {fileID: 666835558}
-  - component: {fileID: 666835557}
-  - component: {fileID: 666835556}
-  m_Layer: 0
-  m_Name: Force Launch Ability Granter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &666835556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 666835555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7d8de977453a5e44809362e2d1792a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 243
---- !u!114 &666835557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 666835555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4decc246a7eb3d0438c4436d93d75ec8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityTypeName: ForceLaunchAbility
-  canGrantAbility: 1
-  canGrantUpgrade: 0
---- !u!61 &666835558
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 666835555}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.1, y: 1.1}
-  m_EdgeRadius: 0
---- !u!4 &666835559
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 666835555}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 327755003}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &681987000
 PrefabInstance:
   m_ObjectHideFlags: 0
