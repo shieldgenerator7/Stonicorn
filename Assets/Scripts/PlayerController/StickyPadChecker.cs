@@ -49,7 +49,7 @@ public class StickyPadChecker : SavableMonoBehaviour
             }
             foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
             {
-                if (!connectedObjs.Contains(fj2d.connectedBody.gameObject.name))
+                if (!fj2d.connectedBody || !connectedObjs.Contains(fj2d.connectedBody.gameObject.name))
                 {
                     Destroy(fj2d);
                 }
@@ -91,7 +91,7 @@ public class StickyPadChecker : SavableMonoBehaviour
             }
         }
     }
-    
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.collider.isTrigger)
