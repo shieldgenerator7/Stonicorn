@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1641972778212279884}
   - component: {fileID: 1785769278780891400}
   - component: {fileID: 2864818222284150102}
+  - component: {fileID: 4716076827153991580}
   - component: {fileID: 4836647533041297036}
   m_Layer: 0
   m_Name: abilityorb
@@ -131,11 +132,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startfade: 1
   endfade: 0
-  duration: 3
+  duration: 1.5
   delayTime: 0
   destroyColliders: 1
   finishAction: 0
   ignorePause: 0
+--- !u!114 &4716076827153991580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2201851902467994984}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75e77e5225b54441bed6fab75088081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: 5
+  duration: 1.5
+  endDelay: 0
+  pingPong: 0
 --- !u!114 &4836647533041297036
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -23,6 +23,11 @@ public class MilestoneActivatorAbility : MilestoneActivator
         {
             fader.enabled = true;
         }
+        SimpleScaling scaling = GetComponent<SimpleScaling>();
+        if (scaling)
+        {
+            scaling.enabled = true;
+        }
     }
 
     protected override void previouslyDiscovered()
