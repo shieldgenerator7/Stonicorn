@@ -542,9 +542,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savables:
-  - {fileID: 776721544}
+  - {fileID: 0}
   memories:
-  - {fileID: 1613659934303833407}
+  - {fileID: 0}
   - {fileID: 1975525603}
   - {fileID: 144536034}
   - {fileID: 1763621760}
@@ -2161,11 +2161,6 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
   m_PrefabInstance: {fileID: 46424263}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &776721544 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1613659933863975350, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-  m_PrefabInstance: {fileID: 1613659934303833406}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &792474342
 PrefabInstance:
@@ -3882,6 +3877,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1193524872285762181, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
   m_PrefabInstance: {fileID: 1355576229}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1445924915
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 231892539705843831, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_Name
+      value: NPC Clyde the Cloudicorn
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -266.14655
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -242.24081
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.40428153
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.91463464
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 231892539705935195, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1de96c678fd89bf479e652217951175d, type: 3}
 --- !u!1001 &1556426244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6228,76 +6280,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
   m_PrefabInstance: {fileID: 2113350081}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1613659934303833406
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -265.27084
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -243.18625
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.40264323
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.915357
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863623834, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -336.562
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613659933863975350, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: m_Name
-      value: NPC Clyde the Cloudicorn
-      objectReference: {fileID: 0}
-    - target: {fileID: 7077337319975173159, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: id
-      value: 403
-      objectReference: {fileID: 0}
-    - target: {fileID: 7218120628489264192, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-      propertyPath: id
-      value: 402
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
---- !u!1 &1613659934303833407 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4586482076602167235, guid: 2584f54768775344fb11c74f1c49a504, type: 3}
-  m_PrefabInstance: {fileID: 1613659934303833406}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2891230182186900359
 PrefabInstance:

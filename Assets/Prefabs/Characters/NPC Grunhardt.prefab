@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &8360634215906337475
+--- !u!1001 &2117391915355007855
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,43 +9,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 530554509784456091, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: m_Color.b
-      value: 0.9764706
+      value: 0.9411765
       objectReference: {fileID: 0}
     - target: {fileID: 530554509784456091, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: m_Color.g
-      value: 0.5686275
+      value: 0.17254902
       objectReference: {fileID: 0}
     - target: {fileID: 530554509784456091, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: m_Color.r
-      value: 0.31764707
+      value: 0.654902
       objectReference: {fileID: 0}
     - target: {fileID: 4628389635151928424, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: abilityTypeName
-      value: AirSliceAbility
+      value: LongTeleportAbility
       objectReference: {fileID: 0}
-    - target: {fileID: 8508871312348638768, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: bbc59b8f063a42040914a3545d88b808, type: 3}
     - target: {fileID: 8550035798113553234, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
-      propertyPath: lineFileName
-      value: Blue.txt
-      objectReference: {fileID: 0}
-    - target: {fileID: 8588691648302169872, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 6a5da0f2f51e46c4ea9bf652fa4f9d38, type: 3}
-    - target: {fileID: 8588691648302169872, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
-      propertyPath: m_Color.g
-      value: 0.9370175
-      objectReference: {fileID: 0}
-    - target: {fileID: 8588691648302169872, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
-      propertyPath: m_Color.r
-      value: 0.6179246
+      propertyPath: interruptDistance
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8588691648314606260, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: m_Name
-      value: NPC Clyde the Cloudicorn
+      value: NPC Grunhardt
       objectReference: {fileID: 0}
     - target: {fileID: 8588691648315041688, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: m_RootOrder
@@ -90,10 +74,6 @@ PrefabInstance:
     - target: {fileID: 8588691648315041688, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8640022681880519632, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.99709725
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}

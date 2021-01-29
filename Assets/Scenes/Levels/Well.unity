@@ -686,7 +686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savables:
-  - {fileID: 6317144651205715704}
+  - {fileID: 0}
   - {fileID: 659143296}
   - {fileID: 3686006691851711344}
   - {fileID: 2064429677}
@@ -754,7 +754,7 @@ MonoBehaviour:
   - {fileID: 1688697377}
   - {fileID: 544819473}
   memories:
-  - {fileID: 1930966042867804150}
+  - {fileID: 0}
   - {fileID: 1069462970}
   - {fileID: 1975525603}
   - {fileID: 144536034}
@@ -5435,6 +5435,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3686006692625962622, guid: 84d295b4c0ba3dc4c8afa8f5fcf2b7cb, type: 3}
   m_PrefabInstance: {fileID: 715961528}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1498192202
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3889930745388583109, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_Name
+      value: NPC Goldie the Bronzicorn
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 103.32016
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -95.47636
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.40082493
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.9161547
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889930745388953065, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0526dc7ad52975e42b570709d4effbb3, type: 3}
 --- !u!1001 &1526304622
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10069,76 +10126,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbf989041189c824ca896b2acc25e391, type: 3}
---- !u!1001 &1930966042867804149
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 102.769165
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -96.02649
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.39828962
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.91725975
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 233245260101901547, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -37.507
-      objectReference: {fileID: 0}
-    - target: {fileID: 2477748562529431202, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: id
-      value: 254
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577473897753346317, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: m_Name
-      value: NPC Goldie the Bronzicorn
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919354970321823483, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-      propertyPath: id
-      value: 321
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
---- !u!1 &1930966042867804150 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1131652647532950815, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-  m_PrefabInstance: {fileID: 1930966042867804149}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3686006691851711343
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10294,9 +10281,4 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1193524872285762181, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
   m_PrefabInstance: {fileID: 5492098867128534734}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6317144651205715704 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5577473897753346317, guid: 6f1945cd540c3d74d94564487e1a595e, type: 3}
-  m_PrefabInstance: {fileID: 1930966042867804149}
   m_PrefabAsset: {fileID: 0}
