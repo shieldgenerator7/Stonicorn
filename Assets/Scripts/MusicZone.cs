@@ -22,6 +22,14 @@ public class MusicZone : MonoBehaviour
         }
     }
 
+    public void checkZone(Vector2 pos)
+    {
+        if (GetComponent<Collider2D>().OverlapPoint(pos))
+        {
+            playTrack();
+        }
+    }
+
     public void playTrack()
     {
         Managers.Music.setCurrentSong(music);

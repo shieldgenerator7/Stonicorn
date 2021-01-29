@@ -124,11 +124,14 @@ public class GameManager : MonoBehaviour
             //Refresh Memory Objects
             Managers.Object.refreshMemoryObjects();
             //If the game has just begun,
-            if (Managers.Rewind.GameStateCount == 0
-                && Managers.Scene.SceneLoadingCount == 0)
+            if (Managers.Scene.SceneLoadingCount == 0)
             {
-                //Create the initial save state
-                Managers.Rewind.Save();
+                Managers.Music.playFirstSong();
+                if (Managers.Rewind.GameStateCount == 0)
+                {
+                    //Create the initial save state
+                    Managers.Rewind.Save();
+                }
             }
         }
     }

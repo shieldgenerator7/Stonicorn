@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -79,7 +80,19 @@ public class MusicManager : MonoBehaviour
     public float normalSongSpeed = 1;
     public float rewindSongSpeed = -1.5f;
 
-    // Update is called once per frame
+    public void playFirstSong()
+    {
+        lockCurrentSong = false;
+        //
+        FindObjectsOfType<MusicZone>().ToList()
+            .ForEach(mz => mz.checkZone(Managers.Player.transform.position));
+        //
+        fadeStartTime = 0;
+        fadePercent = 1;
+        currentFadeDuration = 0;
+        updateVolume();
+    }
+
     public void processFade()
     {
         if (fadePercent < 1)
