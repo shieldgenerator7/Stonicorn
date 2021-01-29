@@ -2722,6 +2722,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2590150014431711881, guid: 4b9efe74fd1abe348b7e72e79451cde2, type: 3}
+      propertyPath: id
+      value: 430
+      objectReference: {fileID: 0}
+    - target: {fileID: 3702249681454999907, guid: 4b9efe74fd1abe348b7e72e79451cde2, type: 3}
+      propertyPath: id
+      value: 415
+      objectReference: {fileID: 0}
     - target: {fileID: 4696758697526856121, guid: 4b9efe74fd1abe348b7e72e79451cde2, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2772,6 +2780,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b9efe74fd1abe348b7e72e79451cde2, type: 3}
+--- !u!1 &1472085638 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4696758697527225493, guid: 4b9efe74fd1abe348b7e72e79451cde2, type: 3}
+  m_PrefabInstance: {fileID: 1472085637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1472085639 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9107327769683001709, guid: 4b9efe74fd1abe348b7e72e79451cde2, type: 3}
+  m_PrefabInstance: {fileID: 1472085637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1474106082
 GameObject:
   m_ObjectHideFlags: 0
@@ -3608,7 +3626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savables:
-  - {fileID: 0}
+  - {fileID: 1472085638}
   - {fileID: 1968208317}
   - {fileID: 576265001}
   - {fileID: 256268267}
@@ -3624,7 +3642,7 @@ MonoBehaviour:
   - {fileID: 1020223321}
   - {fileID: 1543760826}
   memories:
-  - {fileID: 0}
+  - {fileID: 1472085639}
   - {fileID: 1408547839}
   - {fileID: 1975525603}
   - {fileID: 144536034}

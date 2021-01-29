@@ -308,6 +308,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1682744915076464055, guid: 43728ada03ed8344bac6a0b8498fd160, type: 3}
+      propertyPath: id
+      value: 488
+      objectReference: {fileID: 0}
     - target: {fileID: 7283862985771169857, guid: 43728ada03ed8344bac6a0b8498fd160, type: 3}
       propertyPath: m_Name
       value: NPC Moonicorn
@@ -358,6 +362,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43728ada03ed8344bac6a0b8498fd160, type: 3}
+--- !u!1 &163068100 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7283862985771169857, guid: 43728ada03ed8344bac6a0b8498fd160, type: 3}
+  m_PrefabInstance: {fileID: 163068099}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &190357930
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5192,7 +5201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savables:
-  - {fileID: 0}
+  - {fileID: 163068100}
   - {fileID: 723934130097318509}
   - {fileID: 755140441}
   - {fileID: 1499685965}

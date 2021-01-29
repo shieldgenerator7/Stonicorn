@@ -130,6 +130,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 616825644131948487, guid: e11d6299586410e44bb8634098aad5c0, type: 3}
+      propertyPath: id
+      value: 414
+      objectReference: {fileID: 0}
+    - target: {fileID: 1737369560196541485, guid: e11d6299586410e44bb8634098aad5c0, type: 3}
+      propertyPath: id
+      value: 410
+      objectReference: {fileID: 0}
     - target: {fileID: 7661561081942920439, guid: e11d6299586410e44bb8634098aad5c0, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -180,6 +188,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e11d6299586410e44bb8634098aad5c0, type: 3}
+--- !u!1 &98230317 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7661561081943091675, guid: e11d6299586410e44bb8634098aad5c0, type: 3}
+  m_PrefabInstance: {fileID: 98230316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &98230318 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6133570958582826019, guid: e11d6299586410e44bb8634098aad5c0, type: 3}
+  m_PrefabInstance: {fileID: 98230316}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &169983685
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14635,12 +14653,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savables:
-  - {fileID: 0}
+  - {fileID: 98230317}
   - {fileID: 999471885}
   - {fileID: 887484497}
   - {fileID: 1357365034}
   memories:
-  - {fileID: 0}
+  - {fileID: 98230318}
 --- !u!4 &1849891223
 Transform:
   m_ObjectHideFlags: 0

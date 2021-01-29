@@ -542,9 +542,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savables:
-  - {fileID: 0}
+  - {fileID: 1445924916}
   memories:
-  - {fileID: 0}
+  - {fileID: 1445924917}
   - {fileID: 1975525603}
   - {fileID: 144536034}
   - {fileID: 1763621760}
@@ -3932,8 +3932,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7055992283094589035, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: id
+      value: 403
+      objectReference: {fileID: 0}
+    - target: {fileID: 8176544984749663617, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+      propertyPath: id
+      value: 402
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+--- !u!1 &1445924916 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 231892539705843831, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+  m_PrefabInstance: {fileID: 1445924915}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1445924917 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4357899447983492495, guid: 1de96c678fd89bf479e652217951175d, type: 3}
+  m_PrefabInstance: {fileID: 1445924915}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1556426244
 PrefabInstance:
   m_ObjectHideFlags: 0
