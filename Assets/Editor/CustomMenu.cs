@@ -462,6 +462,8 @@ public class CustomMenu
         {
             loadAllLevelScenes(false);
         }
+        //Finish
+        Debug.Log("Finished all Pre-Build Tasks");
     }
 
     static bool allLevelScenesLoaded()
