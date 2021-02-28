@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -23,8 +24,10 @@ public class ObjectManager : MonoBehaviour, ISetting
     {
         if (goId > 0)
         {
-            Debug.Log("Recreating goId: " + goId);
             string prefabGUID = knownObjects.Find(soid => soid.id == goId).prefabGUID;
+            Debug.Log("Recreating goId: " + goId + " using prefab "
+                + AssetDatabase.GUIDToAssetPath(prefabGUID)
+                );
             recreateObject(goId, prefabGUID, lastStateSeen);
         }
         else
@@ -52,7 +55,7 @@ public class ObjectManager : MonoBehaviour, ISetting
                 //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
                 var op = Addressables.InstantiateAsync(assetRef);
                 recreateQueue.Add(goId, op);
-                Debug.Log("Recreating object (" + goId + ")");
+                Debug.Log("Recreating object (" + goId + ") using prefab " + assetRef.editorAsset.name);
                 op.Completed += (operation) =>
                 {
                     GameObject newGO = operation.Result;
