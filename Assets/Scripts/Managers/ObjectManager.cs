@@ -26,7 +26,9 @@ public class ObjectManager : MonoBehaviour, ISetting
         {
             string prefabGUID = knownObjects.Find(soid => soid.id == goId).prefabGUID;
             Debug.Log("Recreating goId: " + goId + " using prefab "
+#if UNITY_EDITOR
                 + AssetDatabase.GUIDToAssetPath(prefabGUID)
+#endif
                 );
             recreateObject(goId, prefabGUID, lastStateSeen);
         }
@@ -55,7 +57,11 @@ public class ObjectManager : MonoBehaviour, ISetting
                 //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
                 var op = Addressables.InstantiateAsync(assetRef);
                 recreateQueue.Add(goId, op);
-                Debug.Log("Recreating object (" + goId + ") using prefab " + assetRef.editorAsset.name);
+                Debug.Log("Recreating object (" + goId + ")" 
+#if UNITY_EDITOR
+                    +" using prefab " + assetRef.editorAsset.name
+#endif
+                    );
                 op.Completed += (operation) =>
                 {
                     GameObject newGO = operation.Result;
