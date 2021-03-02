@@ -14,25 +14,18 @@ public class ScenesManager : SavableMonoBehaviour
     /// </summary>
     private Dictionary<int, int> objectSceneList = new Dictionary<int, int>();
 
-    private int pauseForLoadingSceneId = -1;//the name of the scene that needs the game to pause while it's loading
+    private int pauseForLoadingSceneId = -1;//the id of the scene that is currently loading
     public int PauseForLoadingSceneId
     {
         get => pauseForLoadingSceneId;
         set
         {
             pauseForLoadingSceneId = value;
-            if (pauseForLoadingSceneId < 0)
-            {
-                //Resume if the scene is done loading
-                Managers.Time.setPause(this, false);
-            }
-            else
-            {
-                //Pause if the scene is still loading
-                Managers.Time.setPause(this, true);
-            }
+            onPauseForLoadingSceneIdChanged?.Invoke(pauseForLoadingSceneId);
         }
     }
+    public delegate void OnPauseForLoadingSceneIdChanged(int id);
+    public OnPauseForLoadingSceneIdChanged onPauseForLoadingSceneIdChanged;
 
     //
     // Runtime Lists

@@ -92,16 +92,16 @@ public class MenuManager : MonoBehaviour
                 //Pause
                 if (LoadingScreen.FinishedLoading)
                 {
-                    //Register pause with GameManager because MenuManager probably isn't loaded yet
-                    Managers.Time.setPause(Managers.Game, true);
+                    onOpenedChanged?.Invoke(true);
                 }
             }
             else
             {
                 SceneManager.UnloadSceneAsync(MENU_SCENE_ID);
-                //Unpause
-                Managers.Time.setPause(Managers.Game, false);
+                onOpenedChanged?.Invoke(false);
             }
         }
     }
+    public delegate void OnOpenedChanged(bool open);
+    public static OnOpenedChanged onOpenedChanged;
 }

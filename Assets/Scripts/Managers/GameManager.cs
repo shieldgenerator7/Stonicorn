@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine.AddressableAssets;
 
 /// <summary>
-/// GameManager in charge of Time and Space
+/// GameManager in charge of running the other managers
 /// </summary>
 public class GameManager : MonoBehaviour
 {
@@ -48,6 +48,13 @@ public class GameManager : MonoBehaviour
         //Scene delegates
         Managers.Scene.onSceneLoaded += sceneLoaded;
         Managers.Scene.onSceneUnloaded += sceneUnloaded;
+        Managers.Scene.onPauseForLoadingSceneIdChanged += 
+            (id) => Managers.Time.setPause(Managers.Scene, id >= 0);
+        //Menu delegates
+        MenuManager.onOpenedChanged += 
+            (open) => Managers.Time.setPause(this, open);
+        //Time delegates
+        Managers.Time.onPauseChanged += Managers.NPC.pauseCurrentNPC;
         //Register rewind delegates
         Managers.Rewind.onGameStateSaved += Managers.Scene.updateSceneLoadersForward;
         Managers.Rewind.onRewindStarted += processRewindStart;
