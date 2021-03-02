@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class NPCManager : MonoBehaviour
 {
 
-    public GameObject npcTalkEffect;//the particle system for the visual part of NPC talking
-    private static GameObject lastTalkingNPC;//the last NPC to talk
+    public ParticleSystem npcTalkEffect;//the particle system for the visual part of NPC talking
+    private NPCController lastTalkingNPC;//the last NPC to talk
     public Text npcDialogueText;
     public Canvas canvas;
     public GameObject npcQuoteBox;
@@ -46,42 +46,41 @@ public class NPCManager : MonoBehaviour
     /// </summary>
     /// <param name="npc"></param>
     /// <param name="talking">Whether to activate or deactivate the visual effects</param>
-    public static void speakNPC(GameObject npc, bool talking, string message, string eventualMessage)
+    public void speakNPC(NPCController npc, bool talking, string message, string eventualMessage)
     {
-        NPCManager instance = Managers.NPC;
-        instance.canvas.gameObject.SetActive(talking);
-        instance.npcQuoteBox.SetActive(talking);
-        instance.npcDialogueText.text = message;
-        instance.enabled = talking;
+        canvas.gameObject.SetActive(talking);
+        npcQuoteBox.SetActive(talking);
+        npcDialogueText.text = message;
+        enabled = talking;
         if (talking)
         {
-            instance.npcTalkEffect.transform.position = npc.transform.position;
+            npcTalkEffect.transform.position = npc.transform.position;
             //Show text
-            float textHeight = getTextHeight(instance.canvas, instance.npcDialogueText);
+            float textHeight = getTextHeight(canvas, npcDialogueText);
             float buffer = textHeight / 2;
-            int maxTextLength = getMaxTextLength(instance.canvas, instance.npcDialogueText);
-            Vector2 messageDimensions = getMessageDimensions(instance.canvas, instance.npcDialogueText, eventualMessage);
-            maxTextLength = getTextLength(instance.canvas, instance.npcDialogueText, messageDimensions.x);
+            int maxTextLength = getMaxTextLength(canvas, npcDialogueText);
+            Vector2 messageDimensions = getMessageDimensions(canvas, npcDialogueText, eventualMessage);
+            maxTextLength = getTextLength(canvas, npcDialogueText, messageDimensions.x);
             if (messageDimensions.y > textHeight)
             {
-                float textWidth = getTextWidth(instance.canvas, instance.npcDialogueText, eventualMessage);
-                int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(instance.canvas, instance.npcDialogueText));
+                float textWidth = getTextWidth(canvas, npcDialogueText, eventualMessage);
+                int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(canvas, npcDialogueText));
                 maxTextLength = (maxTextLength + (eventualMessage.Length / lineCount)) / 2;
-                messageDimensions = getMessageDimensions(instance.canvas, instance.npcDialogueText, eventualMessage, maxTextLength);
-                maxTextLength = getTextLength(instance.canvas, instance.npcDialogueText, messageDimensions.x);
+                messageDimensions = getMessageDimensions(canvas, npcDialogueText, eventualMessage, maxTextLength);
+                maxTextLength = getTextLength(canvas, npcDialogueText, messageDimensions.x);
             }
             Vector2 textBoxSize = messageDimensions + (Vector2.one * buffer * 2);
-            instance.canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
-            instance.npcDialogueText.text = processMessage(instance.canvas, instance.npcDialogueText, message, maxTextLength);
+            canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
+            npcDialogueText.text = processMessage(canvas, npcDialogueText, message, maxTextLength);
             //Show quote box
-            instance.npcQuoteBox.transform.position = instance.canvas.transform.position;
-            SpriteRenderer quoteSR = instance.npcQuoteBox.GetComponent<SpriteRenderer>();
+            npcQuoteBox.transform.position = canvas.transform.position;
+            SpriteRenderer quoteSR = npcQuoteBox.GetComponent<SpriteRenderer>();
             quoteSR.size = textBoxSize;
-            instance.npcQuoteBoxTail.transform.position = instance.npcQuoteBox.transform.position - (instance.npcQuoteBox.transform.up * quoteSR.size.y / 2);
+            npcQuoteBoxTail.transform.position = npcQuoteBox.transform.position - (npcQuoteBox.transform.up * quoteSR.size.y / 2);
             //Show speaking particles
-            if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
+            if (!npcTalkEffect.isPlaying)
             {
-                instance.npcTalkEffect.GetComponent<ParticleSystem>().Play();
+                npcTalkEffect.Play();
             }
             if (lastTalkingNPC != npc)
             {
@@ -94,7 +93,7 @@ public class NPCManager : MonoBehaviour
             if (npc == lastTalkingNPC)
             {
                 Managers.Music.Quiet = false;
-                instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
+                npcTalkEffect.Stop();
             }
         }
     }
@@ -240,7 +239,7 @@ public class NPCManager : MonoBehaviour
     {
         if (lastTalkingNPC != null && !ReferenceEquals(lastTalkingNPC, null))
         {
-            lastTalkingNPC.GetComponent<NPCController>().pauseDialogue(paused);
+            lastTalkingNPC.pauseDialogue(paused);
         }
     }
 }

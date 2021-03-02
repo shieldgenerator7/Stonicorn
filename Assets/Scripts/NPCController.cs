@@ -210,12 +210,12 @@ public class NPCController : SavableMonoBehaviour
                 {
                     throw new UnityException("Voice line text greater than whole! part: " + voicelinetext.Length + "; whole: " + voicelinetextWhole.Length);
                 }
-                NPCManager.speakNPC(gameObject, true, voicelinetext, voicelinetextWhole);
+                Managers.NPC.speakNPC(this, true, voicelinetext, voicelinetextWhole);
             }
             else if (currentVoiceLineIndex >= 0 && !Managers.Time.Paused)
             {
                 currentVoiceLineIndex = -1;
-                NPCManager.speakNPC(gameObject, false, "", "");
+                Managers.NPC.speakNPC(this, false, "", "");
             }
         }
         catch (System.ArgumentOutOfRangeException aoore)

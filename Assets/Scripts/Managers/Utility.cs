@@ -643,9 +643,4 @@ public static class Utility
         raycastPlane.Raycast(ray, out distance);
         return ray.GetPoint(distance);
     }
-
-    public static void onScreenErrorMessage(string message, bool show = true)
-    {
-        NPCManager.speakNPC(Managers.Player.gameObject, show, message, message);
-    }
 }
