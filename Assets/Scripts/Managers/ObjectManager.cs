@@ -57,9 +57,9 @@ public class ObjectManager : MonoBehaviour, ISetting
                 //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
                 var op = Addressables.InstantiateAsync(assetRef);
                 recreateQueue.Add(goId, op);
-                Debug.Log("Recreating object (" + goId + ")" 
+                Debug.Log("Recreating object (" + goId + ")"
 #if UNITY_EDITOR
-                    +" using prefab " + assetRef.editorAsset.name
+                    + " using prefab " + assetRef.editorAsset.name
 #endif
                     );
                 op.Completed += (operation) =>
@@ -73,20 +73,20 @@ public class ObjectManager : MonoBehaviour, ISetting
                     //Init the New Game Object
                     newGO.GetComponent<ObjectInfo>().Id = goId;
                     addObject(newGO);
-                    Managers.Rewind.LoadObject(newGO, lastStateSeen);
                     foreach (Transform t in newGO.transform)
                     {
                         if (t.gameObject.isSavable())
                         {
                             addObject(t.gameObject);
-                            Managers.Rewind.LoadObject(t.gameObject, lastStateSeen);
                         }
                     }
-                    Managers.Scene.registerObjectInScene(newGO);
+                    //Delegate
+                    onObjectRecreated?.Invoke(newGO, lastStateSeen);
+                    //Finish up
                     recreateQueue.Remove(goId);
-                    if (!CreatingObjects)
+                    if (!RecreatingObjects)
                     {
-                        onAllObjectsCreated?.Invoke();
+                        onAllObjectsRecreated?.Invoke();
                     }
                 };
             }
@@ -101,10 +101,12 @@ public class ObjectManager : MonoBehaviour, ISetting
         }
         //return createQueue[goId];
     }
-    public delegate void OnAllObjectsCreated();
-    public event OnAllObjectsCreated onAllObjectsCreated;
+    public delegate void OnObjectRecreated(GameObject go, int lastStateSeen);
+    public OnObjectRecreated onObjectRecreated;
+    public delegate void OnAllObjectsRecreated();
+    public event OnAllObjectsRecreated onAllObjectsRecreated;
 
-    public bool CreatingObjects => recreateQueue.Count > 0;
+    public bool RecreatingObjects => recreateQueue.Count > 0;
 
     public SettingObject Setting
     {

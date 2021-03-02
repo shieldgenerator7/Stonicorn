@@ -26,16 +26,16 @@ public class SettingsManager : MonoBehaviour, ISetting
     {
     }
 
-    public void saveSettings()
+    public void saveSettings(string filename)
     {
-        ES3.Save<SettingObject>("settings", Setting, fileName);
+        ES3.Save<SettingObject>("settings", Setting, this.fileName);
     }
 
-    public void loadSettings()
+    public void loadSettings(string filename)
     {
-        if (ES3.FileExists(fileName))
+        if (ES3.FileExists(this.fileName))
         {
-            Setting = ES3.Load<SettingObject>("settings", fileName);
+            Setting = ES3.Load<SettingObject>("settings", this.fileName);
         }
     }
 

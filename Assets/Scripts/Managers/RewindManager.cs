@@ -155,6 +155,18 @@ public class RewindManager : MonoBehaviour
         }
     }
 
+    public void LoadObjectAndChildren(GameObject go, int lastStateSeen)
+    {
+        LoadObject(go, lastStateSeen);
+        foreach (Transform t in go.transform)
+        {
+            if (t.gameObject.isSavable())
+            {
+                LoadObject(t.gameObject, lastStateSeen);
+            }
+        }
+    }
+
     /// <summary>
     /// Load an object's most recent state, 
     /// with lastStateSeen as a hint as to which state has the most recent state

@@ -45,20 +45,32 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.init();
         //Load the memories
         Managers.Object.LoadMemories();
+
         //Scene delegates
         Managers.Scene.onSceneLoaded += sceneLoaded;
         Managers.Scene.onSceneUnloaded += sceneUnloaded;
-        Managers.Scene.onPauseForLoadingSceneIdChanged += 
+        Managers.Scene.onPauseForLoadingSceneIdChanged +=
             (id) => Managers.Time.setPause(Managers.Scene, id >= 0);
         //Menu delegates
-        MenuManager.onOpenedChanged += 
+        MenuManager.onOpenedChanged +=
             (open) => Managers.Time.setPause(this, open);
         //Time delegates
         Managers.Time.onPauseChanged += Managers.NPC.pauseCurrentNPC;
-        //Register rewind delegates
+        //Rewind delegates
         Managers.Rewind.onGameStateSaved += Managers.Scene.updateSceneLoadersForward;
         Managers.Rewind.onRewindStarted += processRewindStart;
         Managers.Rewind.onRewindFinished += processRewindEnd;
+        //Object delegates
+        Managers.Object.onObjectRecreated += Managers.Rewind.LoadObjectAndChildren;
+        Managers.Object.onObjectRecreated +=
+            (go, lastStateSeen) => Managers.Scene.registerObjectInScene(go);
+        //File delegates
+        Managers.File.onFileSave += Managers.Rewind.saveToFile;
+        Managers.File.onFileSave += Managers.Object.saveToFile;
+        Managers.File.onFileSave += Managers.Settings.saveSettings;
+        Managers.File.onFileLoad += Managers.Rewind.loadFromFile;
+        Managers.File.onFileLoad += Managers.Object.loadFromFile;
+        Managers.File.onFileLoad += Managers.Settings.loadSettings;
     }
 
     // Update is called once per frame
@@ -184,10 +196,10 @@ public class GameManager : MonoBehaviour
     void processRewindEnd(List<GameState> gameStates, int rewindStateId)
     {
         //Refresh the game object list
-        if (Managers.Object.CreatingObjects)
+        if (Managers.Object.RecreatingObjects)
         {
-            Managers.Object.onAllObjectsCreated -= Managers.Object.refreshGameObjects;
-            Managers.Object.onAllObjectsCreated += Managers.Object.refreshGameObjects;
+            Managers.Object.onAllObjectsRecreated -= Managers.Object.refreshGameObjects;
+            Managers.Object.onAllObjectsRecreated += Managers.Object.refreshGameObjects;
         }
         else
         {

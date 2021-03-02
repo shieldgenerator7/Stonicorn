@@ -9,7 +9,7 @@ public class FileManager : MonoBehaviour
     public string fileExtension = ".txt";
     public bool saveWithTimeStamp = false;//true to save with date/timestamp in filename, even when not in demo build
 
-    private string getFileName(bool useTimeStamp=false)
+    private string getFileName(bool useTimeStamp = false)
     {
         string filename = this.fileName;
         //If saving with time stamp,
@@ -25,17 +25,14 @@ public class FileManager : MonoBehaviour
     }
 
     #region File Management
+    public delegate void OnFileAccess(string filename);
+
     /// <summary>
     /// Saves the memories, game states, and scene cache to a save file
     /// </summary>
     public void saveToFile()
     {
         string filename = getFileName(saveWithTimeStamp);
-        //Save game states and memories
-        Managers.Rewind.saveToFile(filename);
-        Managers.Object.saveToFile(filename);
-        //Save settings
-        Managers.Settings.saveSettings();
         //Save file settings
         List<SettingObject> settings = new List<SettingObject>();
         foreach (ISetting setting in FindObjectsOfType<MonoBehaviour>().OfType<ISetting>())
@@ -46,7 +43,10 @@ public class FileManager : MonoBehaviour
             }
         }
         ES3.Save<List<SettingObject>>("settings", settings, filename);
+        //Delegate
+        onFileSave?.Invoke(filename);
     }
+    public OnFileAccess onFileSave;
     /// <summary>
     /// Loads the game from the save file
     /// It assumes the file already exists
@@ -56,11 +56,6 @@ public class FileManager : MonoBehaviour
         string filename = getFileName(false);
         try
         {
-            //Load game states and memories
-            Managers.Rewind.loadFromFile(filename);
-            Managers.Object.loadFromFile(filename);
-            //Load settings
-            Managers.Settings.loadSettings();
             //Load file settings
             List<SettingObject> settings = ES3.Load<List<SettingObject>>("settings", filename);
             foreach (ISetting setting in FindObjectsOfType<MonoBehaviour>().OfType<ISetting>())
@@ -78,6 +73,8 @@ public class FileManager : MonoBehaviour
                     }
                 }
             }
+            //Delegate
+            onFileLoad?.Invoke(filename);
         }
         catch (System.Exception e)
         {
@@ -89,5 +86,6 @@ public class FileManager : MonoBehaviour
             Managers.Game.resetGame(false);
         }
     }
+    public OnFileAccess onFileLoad;
     #endregion
 }
