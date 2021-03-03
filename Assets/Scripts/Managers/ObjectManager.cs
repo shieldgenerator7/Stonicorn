@@ -20,6 +20,13 @@ public class ObjectManager : MonoBehaviour, ISetting
     private Dictionary<int, AsyncOperationHandle<GameObject>> recreateQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
     public List<SavableObjectInfoData> knownObjects;
 
+    public void LoadSceneObjects(List<GameObject> sceneGOs, List<int> foreignIds, int lastStateSeen)
+    {
+        sceneGOs.ForEach(go => addObject(go));
+        foreignIds.FindAll(id => !hasObject(id))
+            .ForEach(id => recreateObject(id, lastStateSeen));
+    }
+
     public void recreateObject(int goId, int lastStateSeen = -1)
     {
         if (goId > 0)

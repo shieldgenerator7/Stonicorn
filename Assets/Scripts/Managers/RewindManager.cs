@@ -155,6 +155,20 @@ public class RewindManager : MonoBehaviour
         }
     }
 
+    public void LoadSceneObjects(List<GameObject> sceneGOs, List<int> foreignIds, int lastStateSeen)
+    {
+        lastStateSeen = Mathf.Min(lastStateSeen, GameStateId);
+        //If this scene has been open before,
+        if (lastStateSeen > 0)
+        {
+            //Load the objects
+            LoadObjects(
+                sceneGOs,
+                lastStateSeen
+                );
+        }
+    }
+
     public void LoadObjectAndChildren(GameObject go, int lastStateSeen)
     {
         LoadObject(go, lastStateSeen);
@@ -233,10 +247,11 @@ public class RewindManager : MonoBehaviour
     }
     /// <summary>
     /// Rewind the game all the way to the beginning
+    /// without allowing the player to cancel the rewind
     /// </summary>
-    public void RewindToStart(bool playerInitiated = false)
+    public void RewindToStart()
     {
-        RewindTo(0, playerInitiated);
+        RewindTo(0, false);
     }
     /// <summary>
     /// True if time is rewinding

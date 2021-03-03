@@ -157,8 +157,7 @@ public class ScenesManager : SavableMonoBehaviour
             Debug.Log("Destroying now duplicate: " + go + " (" + go.getKey() + ")");
             Destroy(go);
         });
-        //Add objects to object list
-        sceneGOs.ForEach(go => Managers.Object.addObject(go));
+        //Register object in scene
         sceneGOs.ForEach(go => registerObjectInScene(go, scene));
         //Init the savables
         sceneGOs.ForEach(
@@ -172,25 +171,15 @@ public class ScenesManager : SavableMonoBehaviour
         {
             lastStateSeen = sceneLoader.lastOpenGameStateId;
         }
-        //If the scene was last seen after gamestate-now,
-        //The scene is now last seen gamestate-now
-        lastStateSeen = Mathf.Min(lastStateSeen, Managers.Rewind.GameStateId);
-        //If this scene has been open before,
-        if (lastStateSeen > 0)
-        {
-            //Load the objects
-            Managers.Rewind.LoadObjects(
-                sceneGOs,
-                lastStateSeen
-                );
-        }
-        //Create foreign objects that are not here
+        //Find foreign objects that are not here
         List<int> sceneIds = sceneGOs.ConvertAll(go => go.getKey());
-        getObjectsIdsInScene(scene)
-            .FindAll(id => !sceneIds.Contains(id))
-            .FindAll(id => !Managers.Object.hasObject(id))
-            .ForEach(id => Managers.Object.recreateObject(id, lastStateSeen));
+        List<int> foreignIds = getObjectsIdsInScene(scene)
+            .FindAll(id => !sceneIds.Contains(id));
+        //Delegate
+        onSceneObjectsLoaded?.Invoke(sceneGOs, foreignIds, lastStateSeen);
     }
+    public delegate void OnSceneObjectsLoaded(List<GameObject> sceneGOs, List<int> foreignGOs, int lastStateSeen);
+    public OnSceneObjectsLoaded onSceneObjectsLoaded;
 
     private SceneLoader getSceneLoader(Scene scene)
         => sceneLoaders.Find(sl => sl.Scene == scene);

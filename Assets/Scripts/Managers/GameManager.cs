@@ -51,11 +51,14 @@ public class GameManager : MonoBehaviour
         Managers.Scene.onSceneUnloaded += sceneUnloaded;
         Managers.Scene.onPauseForLoadingSceneIdChanged +=
             (id) => Managers.Time.setPause(Managers.Scene, id >= 0);
+        Managers.Scene.onSceneObjectsLoaded += Managers.Rewind.LoadSceneObjects;
+        Managers.Scene.onSceneObjectsLoaded += Managers.Object.LoadSceneObjects;
         //Menu delegates
         MenuManager.onOpenedChanged +=
             (open) => Managers.Time.setPause(this, open);
         //Time delegates
         Managers.Time.onPauseChanged += Managers.NPC.pauseCurrentNPC;
+        Managers.Time.endGameTimer.onTimeFinished += Managers.Rewind.RewindToStart;
         //Rewind delegates
         Managers.Rewind.onGameStateSaved += Managers.Scene.updateSceneLoadersForward;
         Managers.Rewind.onRewindStarted += processRewindStart;
