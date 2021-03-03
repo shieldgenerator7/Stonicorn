@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         Managers.Time.onPauseChanged += Managers.NPC.pauseCurrentNPC;
         Managers.Time.endGameTimer.onTimeFinished += Managers.Rewind.RewindToStart;
         //Rewind delegates
+        Managers.Rewind.onPreGameStateSaved += Managers.Object.onPreGameStateSaved;
         Managers.Rewind.onGameStateSaved += Managers.Scene.updateSceneLoadersForward;
         Managers.Rewind.onRewindStarted += processRewindStart;
         Managers.Rewind.onRewindFinished += processRewindEnd;

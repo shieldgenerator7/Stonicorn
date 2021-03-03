@@ -73,16 +73,21 @@ public class RewindManager : MonoBehaviour
     /// </summary>
     public void Save()
     {
-        //Remove any null objects from the list
-        Managers.Object.cleanObjects();
+        List<GameObject> gameObjects = new List<GameObject>();
+        foreach(OnPreGameStateSaved opgss  in onPreGameStateSaved.GetInvocationList())
+        {
+            gameObjects.AddRange(opgss.Invoke());
+        }
         //Create a new game state
-        gameStates.Add(new GameState(Managers.Object.GameObjects));
+        gameStates.Add(new GameState(gameObjects));
         //Update game state id variables
         chosenId++;
         rewindId++;
         //Save delegate
         onGameStateSaved?.Invoke(chosenId);
     }
+    public delegate List<GameObject> OnPreGameStateSaved();
+    public event OnPreGameStateSaved onPreGameStateSaved;
     public delegate void OnGameStateSaved(int gameStateId);
     public event OnGameStateSaved onGameStateSaved;
     /// <summary>
@@ -97,24 +102,18 @@ public class RewindManager : MonoBehaviour
         {
             return;
         }
-        GameState gameState = gameStates[gamestateId];
-        //Remove null objects from the list
-        Managers.Object.cleanObjects();
-        //Destroy objects not spawned yet in the new selected state
-        Managers.Object.GameObjects
-            .FindAll(go => go.GetComponent<SavableObjectInfo>().spawnStateId > gamestateId)
-            .ForEach(go => Managers.Object.destroyAndForgetObject(go));
         //Actually load the game state
+        GameState gameState = gameStates[chosenId];
         gameState.load();
 
         //Destroy game states in game-state-future
-        for (int i = gameStates.Count - 1; i > gamestateId; i--)
+        for (int i = gameStates.Count - 1; i > chosenId; i--)
         {
             gameStates.RemoveAt(i);
         }
 
         //Update the next game state id
-        GameState.nextid = gamestateId + 1;
+        GameState.nextid = chosenId + 1;
 
         //If the rewind is finished,
         if (chosenId == rewindId)

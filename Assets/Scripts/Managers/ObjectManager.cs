@@ -26,6 +26,23 @@ public class ObjectManager : MonoBehaviour, ISetting
         foreignIds.FindAll(id => !hasObject(id))
             .ForEach(id => recreateObject(id, lastStateSeen));
     }
+    public void LoadObjectsPostRewind(List<GameObject> gos, int gameStateId)
+    {
+        //Remove null objects from the list
+        cleanObjects();
+        //Destroy objects not spawned yet in the new selected state
+        GameObjects
+            .FindAll(go => go.GetComponent<SavableObjectInfo>().spawnStateId > gameStateId)
+            .ForEach(go => destroyAndForgetObject(go));
+    }
+
+    public List<GameObject> onPreGameStateSaved()
+    {
+        //Remove any null objects from the list
+        cleanObjects();
+        //Return game object list
+        return GameObjects;
+    }
 
     public void recreateObject(int goId, int lastStateSeen = -1)
     {

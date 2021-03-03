@@ -244,13 +244,6 @@ public class ScenesManager : SavableMonoBehaviour
         }
     }
 
-    public List<GameObject> getObjectsInScene(Scene scene)
-    {
-        int sceneId = scene.buildIndex;
-        return objectSceneList.ToList()
-            .FindAll(entry => entry.Value == sceneId)
-            .ConvertAll(entry => Managers.Object.getObject(entry.Key));
-    }
     public List<int> getObjectsIdsInScene(Scene scene)
     {
         int sceneId = scene.buildIndex;
