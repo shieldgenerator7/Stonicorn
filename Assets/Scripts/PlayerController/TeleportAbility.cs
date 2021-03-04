@@ -21,7 +21,15 @@ public class TeleportAbility : PlayerAbility
     public float baseExhaustCoolDownTime = 0.5f;//the base cool down time (sec) for teleporting while exhausted
     public float exhaustCoolDownTime { get; set; }//the current cool down time (sec) for teleporting while exhausted
     private float teleportTime;//the earliest time that Merky can teleport. To be set only in TeleportReady
-
+    
+    [Header("Teleport Spot Finding")]
+    [Range(1, 100)]
+    public int pointsToTry = 5;//try this many points along the line
+    [Range(1, 100)]
+    public int anglesToTry = 7;//try this many angles off the line
+    [Range(0.01f, 1)]
+    public float variance = 0.4f;//max amount to adjust angle by
+    
     [Header("Sound Effects")]
     public AudioClip teleportUnavailableSound;
 
@@ -213,11 +221,8 @@ public class TeleportAbility : PlayerAbility
             }
             //Search for a good landing spot
             List<Vector3> possibleOptions = new List<Vector3>();
-            const int pointsToTry = 5;//try 5 points along the line
-            const float difference = 1.00f / pointsToTry;//how much the previous jump was different by
-            const float variance = 0.4f;//max amount to adjust angle by
-            const int anglesToTry = 7;//try 7 angles off the line
-            const float anglesDiff = variance * 2 / (anglesToTry - 1);
+            float difference = 1.00f / pointsToTry;//how much the previous jump was different by
+            float anglesDiff = variance * 2 / (anglesToTry - 1);
             Vector2 normalizedDir = (newPos - oldPos).normalized;
             float oldDist = Vector2.Distance(oldPos, newPos);
             //Vary the angle
