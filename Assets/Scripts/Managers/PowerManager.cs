@@ -24,8 +24,6 @@ public class PowerManager : MonoBehaviour
 
     private void Start()
     {
-        Managers.Scene.onSceneLoaded += (s) => generateConnectionMap();
-        Managers.Scene.onSceneUnloaded += (s) => generateConnectionMap();
         generateConnectionMap();
     }
 

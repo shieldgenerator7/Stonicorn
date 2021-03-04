@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
             (id) => Managers.Time.setPause(Managers.Scene, id >= 0);
         Managers.Scene.onSceneObjectsLoaded += Managers.Rewind.LoadSceneObjects;
         Managers.Scene.onSceneObjectsLoaded += Managers.Object.LoadSceneObjects;
+        Managers.Scene.onSceneLoaded += (s) => Managers.Power.generateConnectionMap();
+        Managers.Scene.onSceneUnloaded += (s) => Managers.Power.generateConnectionMap();
         //Menu delegates
         MenuManager.onOpenedChanged +=
             (open) => Managers.Time.setPause(this, open);
