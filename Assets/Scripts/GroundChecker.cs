@@ -116,11 +116,15 @@ public class GroundChecker : SavableMonoBehaviour
     /// </summary>
     /// <param name="direction">The direction to check for ground in</param>
     /// <returns>True if there is ground in the given direction</returns>
-    public bool isGroundedInDirection(Vector3 direction)
+    public bool isGroundedInDirection(Vector3 direction, float distance = -1)
     {
+        if (distance < 0)
+        {
+            distance = groundTestDistance;
+        }
         //Find objects in the given direction
         Utility.RaycastAnswer answer;
-        answer = coll2d.CastAnswer(direction, groundTestDistance, true);
+        answer = coll2d.CastAnswer(direction, distance, true);
         //Process the found objects
         for (int i = 0; i < answer.count; i++)
         {

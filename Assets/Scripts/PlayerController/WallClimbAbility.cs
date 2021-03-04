@@ -66,11 +66,13 @@ public class WallClimbAbility : PlayerAbility
         Vector2 gravity = playerController.GravityDir;
         //Test left side
         groundedLeft = playerController.Ground.isGroundedInDirection(
-            -gravity.PerpendicularLeft()
+            -gravity.PerpendicularLeft(),
+            wallDetectRange
             );
         //Test right side
         groundedRight = playerController.Ground.isGroundedInDirection(
-            -gravity.PerpendicularRight()
+            -gravity.PerpendicularRight(),
+            wallDetectRange
             );
         return groundedLeft || groundedRight;
     }
@@ -78,7 +80,8 @@ public class WallClimbAbility : PlayerAbility
     {
         groundedCeiling = false;
         groundedCeiling = playerController.Ground.isGroundedInDirection(
-            -playerController.GravityDir
+            -playerController.GravityDir,
+            wallDetectRange
             );
         return groundedCeiling;
     }
