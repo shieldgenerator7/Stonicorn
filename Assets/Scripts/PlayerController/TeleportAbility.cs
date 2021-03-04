@@ -21,7 +21,7 @@ public class TeleportAbility : PlayerAbility
     public float baseExhaustCoolDownTime = 0.5f;//the base cool down time (sec) for teleporting while exhausted
     public float exhaustCoolDownTime { get; set; }//the current cool down time (sec) for teleporting while exhausted
     private float teleportTime;//the earliest time that Merky can teleport. To be set only in TeleportReady
-    
+
     [Header("Teleport Spot Finding")]
     [Range(1, 100)]
     public int pointsToTry = 5;//try this many points along the line
@@ -29,7 +29,7 @@ public class TeleportAbility : PlayerAbility
     public int anglesToTry = 7;//try this many angles off the line
     [Range(0.01f, 1)]
     public float variance = 0.4f;//max amount to adjust angle by
-    
+
     [Header("Sound Effects")]
     public AudioClip teleportUnavailableSound;
 
@@ -80,6 +80,8 @@ public class TeleportAbility : PlayerAbility
     public delegate void OnRangeChanged(float range);
     public event OnRangeChanged onRangeChanged;
 
+    private bool hasFreeTeleport = true;//allow teleporting once in the air
+
     private PolygonCollider2D pc2d;
 
     public override void init()
@@ -87,6 +89,8 @@ public class TeleportAbility : PlayerAbility
         base.init();
         pc2d = GetComponent<PolygonCollider2D>();
         playerController.onGroundedStateUpdated += onGroundedChanged;
+        Managers.Rewind.onRewindFinished +=
+            (gameStates, gameStateId) => hasFreeTeleport = true;
         //TeleportAbility doesn't need an onTeleport delegate
         onTeleport -= processTeleport;
         //Initialize the range
@@ -113,7 +117,7 @@ public class TeleportAbility : PlayerAbility
     private void teleport(Vector3 targetPos)
     {
         //If Merky is teleporting from the air,
-        if (!playerController.Ground.Grounded)
+        if (!playerController.Ground.Grounded && !hasFreeTeleport)
         {
             //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
@@ -125,6 +129,7 @@ public class TeleportAbility : PlayerAbility
         }
         //Put teleport on cooldown
         TeleportReady = false;
+        hasFreeTeleport = false;
 
         //Store old and new positions
         Vector3 oldPos = transform.position;
@@ -436,12 +441,13 @@ public class TeleportAbility : PlayerAbility
             }
             //Refresh teleport exhaust cooldowns
             exhaustCoolDownTime = 0;
+            hasFreeTeleport = true;
         }
         //Else if Merky is in the air,
         else
         {
             //Decrease the teleport range
-            if (range > exhaustRange)
+            if (!hasFreeTeleport && range > exhaustRange)
             {
                 Range = exhaustRange;
             }
