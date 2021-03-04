@@ -89,8 +89,7 @@ public class TeleportAbility : PlayerAbility
         base.init();
         pc2d = GetComponent<PolygonCollider2D>();
         playerController.onGroundedStateUpdated += onGroundedChanged;
-        Managers.Rewind.onRewindFinished +=
-            (gameStates, gameStateId) => hasFreeTeleport = true;
+        Managers.Rewind.onRewindFinished += onRewindFinished;
         //TeleportAbility doesn't need an onTeleport delegate
         onTeleport -= processTeleport;
         //Initialize the range
@@ -101,6 +100,12 @@ public class TeleportAbility : PlayerAbility
     {
         base.OnDisable();
         playerController.onGroundedStateUpdated -= onGroundedChanged;
+        Managers.Rewind.onRewindFinished -= onRewindFinished;
+    }
+
+    private void onRewindFinished(List<GameState> gameStates, int gameStateId)
+    {
+        hasFreeTeleport = true;
     }
 
     protected override bool isGrounded() => false;
@@ -117,7 +122,7 @@ public class TeleportAbility : PlayerAbility
     private void teleport(Vector3 targetPos)
     {
         //If Merky is teleporting from the air,
-        if (!playerController.Ground.Grounded && !hasFreeTeleport)
+        if (!hasFreeTeleport && !playerController.Ground.Grounded)
         {
             //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
@@ -165,6 +170,7 @@ public class TeleportAbility : PlayerAbility
 
         //Check grounded state
         //have to check it again because state has changed
+        Physics2D.SyncTransforms();
         playerController.updateGroundedState();
 
         //On Teleport Effects
