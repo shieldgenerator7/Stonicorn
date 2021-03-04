@@ -25,7 +25,7 @@ public class ScenesManager : SavableMonoBehaviour
         }
     }
     public delegate void OnPauseForLoadingSceneIdChanged(int id);
-    public OnPauseForLoadingSceneIdChanged onPauseForLoadingSceneIdChanged;
+    public event OnPauseForLoadingSceneIdChanged onPauseForLoadingSceneIdChanged;
 
     //
     // Runtime Lists
@@ -179,7 +179,7 @@ public class ScenesManager : SavableMonoBehaviour
         onSceneObjectsLoaded?.Invoke(sceneGOs, foreignIds, lastStateSeen);
     }
     public delegate void OnSceneObjectsLoaded(List<GameObject> sceneGOs, List<int> foreignGOs, int lastStateSeen);
-    public OnSceneObjectsLoaded onSceneObjectsLoaded;
+    public event OnSceneObjectsLoaded onSceneObjectsLoaded;
 
     private SceneLoader getSceneLoader(Scene scene)
         => sceneLoaders.Find(sl => sl.Scene == scene);

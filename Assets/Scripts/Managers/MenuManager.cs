@@ -103,5 +103,5 @@ public class MenuManager : MonoBehaviour
         }
     }
     public delegate void OnOpenedChanged(bool open);
-    public static OnOpenedChanged onOpenedChanged;
+    public static event OnOpenedChanged onOpenedChanged;
 }

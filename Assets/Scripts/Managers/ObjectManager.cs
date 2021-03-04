@@ -126,7 +126,7 @@ public class ObjectManager : MonoBehaviour, ISetting
         //return createQueue[goId];
     }
     public delegate void OnObjectRecreated(GameObject go, int lastStateSeen);
-    public OnObjectRecreated onObjectRecreated;
+    public event OnObjectRecreated onObjectRecreated;
     public delegate void OnAllObjectsRecreated();
     public event OnAllObjectsRecreated onAllObjectsRecreated;
 

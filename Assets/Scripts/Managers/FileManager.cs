@@ -46,7 +46,7 @@ public class FileManager : MonoBehaviour
         //Delegate
         onFileSave?.Invoke(filename);
     }
-    public OnFileAccess onFileSave;
+    public event OnFileAccess onFileSave;
     /// <summary>
     /// Loads the game from the save file
     /// It assumes the file already exists
@@ -86,6 +86,6 @@ public class FileManager : MonoBehaviour
             Managers.Game.resetGame(false);
         }
     }
-    public OnFileAccess onFileLoad;
+    public event OnFileAccess onFileLoad;
     #endregion
 }
