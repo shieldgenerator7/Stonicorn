@@ -83,18 +83,21 @@ public class NPCManager : MonoBehaviour
             if (lastTalkingNPC != npc)
             {
                 lastTalkingNPC = npc;
-                Managers.Music.Quiet = true;
+                onNPCSpeakingChanged?.Invoke(true);
             }
         }
         else
         {
             if (npc == lastTalkingNPC)
             {
-                Managers.Music.Quiet = false;
                 npcTalkEffect.Stop();
+                onNPCSpeakingChanged?.Invoke(false);
             }
         }
     }
+    public delegate void OnNPCSpeakingChanged(bool speaking);
+    public event OnNPCSpeakingChanged onNPCSpeakingChanged;
+
 
     static float getTextWidth(Canvas canvas, Text text, string stringToMeasure)
     {

@@ -75,6 +75,8 @@ public class GameManager : MonoBehaviour
         Managers.File.onFileLoad += Managers.Rewind.loadFromFile;
         Managers.File.onFileLoad += Managers.Object.loadFromFile;
         Managers.File.onFileLoad += Managers.Settings.loadSettings;
+        //NPC delegates
+        Managers.NPC.onNPCSpeakingChanged += (speaking) => Managers.Music.Quiet = !speaking;
     }
 
     // Update is called once per frame
