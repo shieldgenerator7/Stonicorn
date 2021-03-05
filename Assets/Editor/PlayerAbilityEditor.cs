@@ -10,21 +10,28 @@ public class PlayerAbilityEditor : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
+        bool editorPlaying = EditorApplication.isPlaying;
 
-        GUI.enabled = !EditorApplication.isPlaying;
-        GUILayout.Box("Fill out Upgrade Level 0 and Level 5,\nthen press the button below.");
-                if (GUILayout.Button("Auto-Fillout Upgrade Levels (Edit Mode)"))
+        GUI.enabled = editorPlaying;
+        if (editorPlaying)
         {
-            PlayerAbility pa = (PlayerAbility)target;
-            autoFillOutUpgradeLevels(pa);
+            GUILayout.Box("Change the Upgrade Level,\nthen press the button below.");
         }
-
-        GUI.enabled = EditorApplication.isPlaying;
-        GUILayout.Box("Change the Upgrade Level,\nthen press the button below.");
         if (GUILayout.Button("Update Upgrade Level (Play Mode)"))
         {
             PlayerAbility pa = (PlayerAbility)target;
             pa.testUpgradeLevel();
+        }
+
+        GUI.enabled = !editorPlaying;
+        if (!editorPlaying)
+        {
+            GUILayout.Box("Fill out Upgrade Level 0 and Level 5,\nthen press the button below.");
+        }
+        if (GUILayout.Button("Auto-Fillout Upgrade Levels (Edit Mode)"))
+        {
+            PlayerAbility pa = (PlayerAbility)target;
+            autoFillOutUpgradeLevels(pa);
         }
     }
 
