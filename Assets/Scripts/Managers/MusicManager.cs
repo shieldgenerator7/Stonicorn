@@ -123,7 +123,7 @@ public class MusicManager : MonoBehaviour
                 currentSong = newSong;
                 startSongFade();
                 updateVolume();
-                if (currentSong != null)
+                if (currentSong)
                 {
                     currentSong.Play();
                 }
@@ -132,8 +132,11 @@ public class MusicManager : MonoBehaviour
             {
                 prevSong = newSong;
             }
-            currentSong.pitch = songSpeed;
-            if (prevSong != null)
+            if (currentSong)
+            {
+                currentSong.pitch = songSpeed;
+            }
+            if (prevSong)
             {
                 prevSong.pitch = songSpeed;
             }
