@@ -15,17 +15,14 @@ public class ForceLaunchAbility : PlayerAbility
     public float minimumExplodeSpeed = 5;
     public float maxEplodeRange = 3;
 
-
     public Color unavailableColor = Color.white;//the color the arrow will be when this ability's requirements are not met
 
     [Header("Components")]
     public GameObject projectilePrefab;
     public GameObject directionIndicatorPrefab;//prefab
-    private GameObject directionIndicator;
+    private GameObject directionIndicator;//instance
     private SpriteRenderer directionSR;
     private float originalAlpha;
-    public GameObject bouncinessIndicatorPrefab;//prefab
-    private GameObject bouncinessIndicator;
     public GameObject explosionPrefab;
 
     private bool launching = false;//true: player is getting ready to launch
@@ -70,6 +67,17 @@ public class ForceLaunchAbility : PlayerAbility
 
     private Vector2 currentVelocity;//used to recover the velocity when hitting a wall
     private bool affectingVelocity = false;//true if recently launched
+    public bool AffectingVelocity
+    {
+        get => affectingVelocity;
+        set
+        {
+            affectingVelocity = value;
+            onAffectingVelocityChanged?.Invoke(affectingVelocity);
+        }
+    }
+    public delegate void OnAffectingVelocityChanged(bool av);
+    public event OnAffectingVelocityChanged onAffectingVelocityChanged;
     private float lastSpeedMetTime = 0;//the last time Merky had met the minimum bounciness speed requirement
     private Vector2 dragPos;
 
@@ -91,8 +99,7 @@ public class ForceLaunchAbility : PlayerAbility
             //Nullify velocity
             rb2d.nullifyMovement();
             //Cancel effect on velocity
-            affectingVelocity = false;
-            updateBouncingVisuals();
+            AffectingVelocity = false;
         }
     }
 
@@ -174,12 +181,11 @@ public class ForceLaunchAbility : PlayerAbility
                 if (Managers.Time.Time >= lastSpeedMetTime + bouncinessLossDelay)
                 {
                     //End this ability's effect on velocity
-                    affectingVelocity = false;
+                    AffectingVelocity = false;
                     //Save game state
                     Managers.Rewind.Save();
                 }
             }
-            updateBouncingVisuals();
         }
     }
 
@@ -198,8 +204,7 @@ public class ForceLaunchAbility : PlayerAbility
         rb2d.nullifyMovement();
         rb2d.velocity += LaunchVelocity;
         //Indicate effect on velocity
-        affectingVelocity = true;
-        updateBouncingVisuals();
+        AffectingVelocity = true;
         //Delegate
         onLaunch?.Invoke();
     }
@@ -265,8 +270,7 @@ public class ForceLaunchAbility : PlayerAbility
     /// </summary>
     public void setOnFire()
     {
-        affectingVelocity = true;
-        updateBouncingVisuals();
+        AffectingVelocity = true;
     }
 
     /// <summary>
@@ -322,32 +326,6 @@ public class ForceLaunchAbility : PlayerAbility
         }
     }
 
-    void updateBouncingVisuals()
-    {
-        if (affectingVelocity)
-        {
-            if (bouncinessIndicator == null)
-            {
-                bouncinessIndicator = Instantiate(bouncinessIndicatorPrefab);
-                bouncinessIndicator.transform.parent = transform;
-                bouncinessIndicator.transform.localPosition = Vector2.zero;
-                SpriteRenderer sr = bouncinessIndicator.GetComponent<SpriteRenderer>();
-                sr.color = this.EffectColor.adjustAlpha(sr.color.a);
-                //Fixes error when Force Launch not used before rewind in a session
-                if (!rb2d)
-                {
-                    rb2d = GetComponent<Rigidbody2D>();
-                }
-            }
-            bouncinessIndicator.SetActive(true);
-            bouncinessIndicator.transform.up = -rb2d.velocity;
-        }
-        else
-        {
-            bouncinessIndicator?.SetActive(false);
-        }
-    }
-
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
@@ -357,9 +335,8 @@ public class ForceLaunchAbility : PlayerAbility
         set
         {
             base.CurrentState = value;
-            affectingVelocity = value.Bool("affectingVelocity");
+            AffectingVelocity = value.Bool("affectingVelocity");
             currentVelocity = value.Vector2("currentVelocity");
-            updateBouncingVisuals();
         }
     }
 

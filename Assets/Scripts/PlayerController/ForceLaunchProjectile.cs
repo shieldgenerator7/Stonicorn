@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class ForceLaunchProjectile : MonoBehaviour
 {
-
-    public GameObject bouncinessIndicatorPrefab;//prefab
-    private GameObject bouncinessIndicator;
-    private Rigidbody2D rb2d;
-
     private void Start()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-        updateBouncingVisuals();
         GetComponent<ForceLaunchAbility>().setOnFire();
     }
 
@@ -23,30 +16,4 @@ public class ForceLaunchProjectile : MonoBehaviour
             Managers.Object.destroyObject(gameObject);
         }
     }
-
-    private void Update()
-    {
-        updateBouncingVisuals();
-    }
-
-    void updateBouncingVisuals()
-    {
-        if (bouncinessIndicator == null)
-        {
-            bouncinessIndicator = Instantiate(bouncinessIndicatorPrefab);
-            bouncinessIndicator.transform.parent = transform;
-            bouncinessIndicator.transform.localPosition = Vector2.zero;
-            SpriteRenderer bounceSR = bouncinessIndicator.GetComponent<SpriteRenderer>();
-            SpriteRenderer sr = GetComponent<SpriteRenderer>();
-            bounceSR.color = sr.color.adjustAlpha(bounceSR.color.a);
-            //Fixes error when Force Launch not used before rewind in a session
-            if (!rb2d)
-            {
-                rb2d = GetComponent<Rigidbody2D>();
-            }
-            bouncinessIndicator.SetActive(true);
-        }
-        bouncinessIndicator.transform.up = -rb2d.velocity;
-    }
-
 }
