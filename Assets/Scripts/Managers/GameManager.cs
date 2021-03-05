@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.onGameStateSaved += Managers.Scene.updateSceneLoadersForward;
         Managers.Rewind.onRewindStarted += processRewindStart;
         Managers.Rewind.onRewindFinished += processRewindEnd;
+        Managers.Rewind.onRewindFinished += Managers.Object.LoadObjectsPostRewind;
         //Object delegates
         Managers.Object.onObjectRecreated += Managers.Rewind.LoadObjectAndChildren;
         Managers.Object.onObjectRecreated +=

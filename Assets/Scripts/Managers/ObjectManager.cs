@@ -26,7 +26,7 @@ public class ObjectManager : MonoBehaviour, ISetting
         foreignIds.FindAll(id => !hasObject(id))
             .ForEach(id => recreateObject(id, lastStateSeen));
     }
-    public void LoadObjectsPostRewind(List<GameObject> gos, int gameStateId)
+    public void LoadObjectsPostRewind(List<GameState> gameStates, int gameStateId)
     {
         //Remove null objects from the list
         cleanObjects();
