@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerWire : MonoBehaviour, IPowerTransferer, ICuttable
+public class PowerWire : SavableMonoBehaviour, IPowerTransferer, ICuttable
 {
     public float throughPut;
 
@@ -25,7 +25,12 @@ public class PowerWire : MonoBehaviour, IPowerTransferer, ICuttable
 
     bool ICuttable.Cuttable => true;
 
-    private void Start()
+    public override SavableObject CurrentState { 
+        get => new SavableObject(this);
+        set { } 
+    }
+
+    public override void init()
     {
         //Autoset BoxCollider2D size
         SpriteRenderer sr = GetComponent<SpriteRenderer>();

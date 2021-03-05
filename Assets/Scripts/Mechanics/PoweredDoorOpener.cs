@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoweredDoorOpener : MonoBehaviour, IPowerable
+public class PoweredDoorOpener : SavableMonoBehaviour, IPowerable
 {
     public float maxEnergyPerSecond = 3;
     public float moveForce = 10;//magnitude
@@ -19,11 +19,15 @@ public class PoweredDoorOpener : MonoBehaviour, IPowerable
         get => onPowerGiven;
         set => onPowerGiven = value;
     }
+    public override SavableObject CurrentState
+    {
+        get => new SavableObject(this);
+        set { }
+    }
 
     private RaycastHit2D[] rch2dStartup = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
-    // Use this for initialization
-    void Start()
+    public override void init()
     {
         moveVector = transform.up;
         //Error checking

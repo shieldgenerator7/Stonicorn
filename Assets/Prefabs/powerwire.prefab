@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 212363082144642938}
   - component: {fileID: 61718238891493050}
   - component: {fileID: 5854669597366716377}
+  - component: {fileID: 902535317800197822}
   m_Layer: 0
   m_Name: powerwire
   m_TagString: Untagged
@@ -124,6 +125,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throughPut: 3
+--- !u!114 &902535317800197822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056538010247352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  prefabAddress:
+    m_AssetGUID: 51161dbc3420a7547a7df227503043b4
+    m_SubObjectName: 
+    m_SubObjectType: 
+  spawnStateId: -1
 --- !u!1 &1343623926243616
 GameObject:
   m_ObjectHideFlags: 0

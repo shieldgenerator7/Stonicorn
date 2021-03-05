@@ -233,9 +233,11 @@ public static class Utility
         ObjectInfo info = go.GetComponent<ObjectInfo>();
         if (!info)
         {
-            throw new ArgumentException(
-                "Object " + go.name + " does not have an ObjectInfo!"
+            Debug.LogError(
+                "Object " + go.name + " does not have an ObjectInfo!",
+                go
                 );
+            return -1;
         }
         return info.Id;
     }

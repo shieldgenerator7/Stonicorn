@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8740670713521332736}
   - component: {fileID: 7828437178410906457}
   - component: {fileID: 4533428309638366544}
+  - component: {fileID: 706706191733098301}
   m_Layer: 0
   m_Name: powered_door_opener
   m_TagString: Untagged
@@ -180,6 +181,24 @@ MonoBehaviour:
   maxEnergyPerSecond: 3
   moveForce: 10
   moveColl: {fileID: 7828437178410906457}
+--- !u!114 &706706191733098301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3512518495161481246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  prefabAddress:
+    m_AssetGUID: a0858ad444256eb49b2149b733c9007c
+    m_SubObjectName: 
+    m_SubObjectType: 
+  spawnStateId: -1
 --- !u!1 &5903141422275511430
 GameObject:
   m_ObjectHideFlags: 0

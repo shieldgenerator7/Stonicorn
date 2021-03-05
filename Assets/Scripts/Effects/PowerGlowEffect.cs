@@ -21,6 +21,11 @@ public class PowerGlowEffect : MonoBehaviour
         conduit.OnPowerFlowed += onPowerFlowed;
     }
 
+    private void OnDestroy()
+    {
+        conduit.OnPowerFlowed -= onPowerFlowed;
+    }
+
     void onPowerFlowed(float power, float maxPower)
     {
         //Update the visuals
