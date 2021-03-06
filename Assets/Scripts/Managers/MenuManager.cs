@@ -89,6 +89,7 @@ public class MenuManager : MonoBehaviour
             if (show)
             {
                 LoadingScreen.LoadScene(MENU_SCENE_ID);
+                Cursor.lockState = CursorLockMode.None;
                 //Pause
                 if (LoadingScreen.FinishedLoading)
                 {
@@ -98,6 +99,7 @@ public class MenuManager : MonoBehaviour
             else
             {
                 SceneManager.UnloadSceneAsync(MENU_SCENE_ID);
+                Cursor.lockState = CursorLockMode.Confined;
                 onOpenedChanged?.Invoke(false);
             }
         }
