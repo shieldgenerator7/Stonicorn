@@ -45,7 +45,12 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.init();
         //Load the memories
         Managers.Object.LoadMemories();
+        //Register delegates
+        registerDelegates();
+    }
 
+    private void registerDelegates()
+    {
         //Scene delegates
         Managers.Scene.onSceneLoaded += sceneLoaded;
         Managers.Scene.onSceneUnloaded += sceneUnloaded;
