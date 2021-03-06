@@ -133,8 +133,13 @@ public class GroundChecker : SavableMonoBehaviour
             if (!rch2d.collider.isTrigger
                 && !rch2d.collider.gameObject.isPlayer())
             {
-                //There is ground in the given direction
-                return true;
+                //If the object is not a hazard or is not currently hazardous,
+                Hazard hazard = rch2d.collider.gameObject.GetComponent<Hazard>();
+                if (!hazard || !hazard.Hazardous)
+                {
+                    //Then there is ground in the given direction
+                    return true;
+                }
             }
         }
         //Else, There is no ground in the given direction
