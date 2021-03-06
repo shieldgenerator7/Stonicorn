@@ -21,7 +21,11 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //Register delegates
+        registerDelegates();
+        //Init Gesture
         Managers.Gesture.init();
+        //init DemoMode
         Managers.DemoMode.init();
         //If in demo mode,
         if (Managers.DemoMode.DemoMode)
@@ -45,8 +49,6 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.init();
         //Load the memories
         Managers.Object.LoadMemories();
-        //Register delegates
-        registerDelegates();
     }
 
     private void registerDelegates()
