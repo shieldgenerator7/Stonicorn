@@ -551,34 +551,36 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Pre-Build/Ensure unique object IDs among open scenes")]
     public static bool ensureUniqueObjectIDs()
     {
-        List<GameObject> savables = new List<GameObject>();
-        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
-            .ForEach(ssl =>
-            {
-                savables.AddRange(ssl.savables);
-                savables.AddRange(ssl.memories);
-            });
-        List<ObjectInfo> infos = savables.ConvertAll(go => go.GetComponent<ObjectInfo>());
         int nextID = 10;
         bool changedId = false;
-        infos.FindAll(info => !(info is SingletonObjectInfo))
-            .ForEach(info =>
-            {
-                int id = nextID;
-                nextID++;
-                int prevID = info.Id;
-                info.Id = id;
-                if (id != prevID)
+        const int SECTION_SIZE = 1000;
+        foreach (SceneSavableList ssl in GameObject.FindObjectsOfType<SceneSavableList>())
+        {
+            List<GameObject> savables = new List<GameObject>();
+            savables.AddRange(ssl.savables);
+            savables.AddRange(ssl.memories);
+            savables.ConvertAll(go => go.GetComponent<ObjectInfo>())
+                .FindAll(info => !(info is SingletonObjectInfo))
+                .ForEach(info =>
                 {
-                    Debug.LogWarning(
-                        "Changed Id: " + prevID + " -> " + id,
-                        info.gameObject
-                        );
-                    EditorUtility.SetDirty(info);
-                    EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
-                    changedId = true;
-                }
-            });
+                    int id = nextID;
+                    nextID++;
+                    int prevID = info.Id;
+                    info.Id = id;
+                    if (id != prevID)
+                    {
+                        Debug.LogWarning(
+                            "Changed Id: " + prevID + " -> " + id,
+                            info.gameObject
+                            );
+                        EditorUtility.SetDirty(info);
+                        EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
+                        changedId = true;
+                    }
+                });
+            //Make nextID start at the next section
+            nextID = (int)Mathf.Floor(nextID / SECTION_SIZE) * SECTION_SIZE + SECTION_SIZE;
+        }
         return changedId;
     }
 
