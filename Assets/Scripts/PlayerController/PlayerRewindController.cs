@@ -197,7 +197,7 @@ public class PlayerRewindController : MonoBehaviour
         }
         else
         {
-            Debug.Log(
+            Debug.LogError(
                 "ERROR: PlayerRewindController cant find rep for gamestate: " + gs,
                 gameObject
                 );

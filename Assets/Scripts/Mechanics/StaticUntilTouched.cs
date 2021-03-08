@@ -19,6 +19,12 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
     public delegate void OnRootedChanged(bool rooted);
     public event OnRootedChanged onRootedChanged;
 
+#if UNITY_EDITOR
+    [Header("Dev Tools")]
+    [Tooltip("Set this and unset Rooted to allow the object to drop to its natural resting point.")]
+    public bool reverse = false;//used to help determine an object's starting point
+#endif
+
     private void Start()
     {
         init();
@@ -31,6 +37,19 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+#if UNITY_EDITOR
+        if (reverse)
+        {
+            if (collision.collider.isSolid())
+            {
+                Rooted = true;
+                Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+                rb2d.velocity = Vector2.zero;
+                rb2d.angularVelocity = 0;
+                return;
+            }
+        }
+#endif
         if (rooted)
         {
             if (collision.collider.isSolid())
