@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistanceTimer : Timer
+public class DistanceYTimer : Timer
 {
     [Header("Distance Timer Settings")]
     public Transform timerObject;
