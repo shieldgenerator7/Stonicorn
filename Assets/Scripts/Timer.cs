@@ -7,15 +7,19 @@ using UnityEngine;
 /// </summary>
 public class Timer : MonoBehaviour
 {
-    public float maxTime = 10;//in seconds, when it starts
-    public const float minTime = 0;//in seconds, when it stops
     public bool destroyOnFinish = false;
-    public bool useUnscaledTime = false;
-    public bool startFromZeroOnStart = false;
+    [SerializeField]
+    private float maxTime = 10;//in seconds, when it starts
+    [SerializeField]
+    private const float minTime = 0;//in seconds, when it stops
+    [SerializeField]
+    private bool useUnscaledTime = false;
+    [SerializeField]
+    private bool startFromZeroOnStart = false;
 
     private float startTime = -1;
 
-    public float Duration
+    public virtual float Duration
     {
         get => maxTime - minTime;
         set
@@ -25,7 +29,7 @@ public class Timer : MonoBehaviour
         }
     }
 
-    public bool Active
+    public virtual bool Active
     {
         get => startTime >= 0;
         set
@@ -47,7 +51,7 @@ public class Timer : MonoBehaviour
         }
     }
 
-    public float TimeLeft
+    public virtual float TimeLeft
     {
         get => Mathf.Max(0, startTime + Duration - CurrentTime);
         set
@@ -57,7 +61,7 @@ public class Timer : MonoBehaviour
         }
     }
 
-    public float CurrentTime
+    public virtual float CurrentTime
     {
         get => (useUnscaledTime)
             ? Time.unscaledTime
@@ -65,7 +69,7 @@ public class Timer : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         setTimer(Duration);
         if (startFromZeroOnStart)
@@ -75,7 +79,7 @@ public class Timer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         if (Active)
         {
@@ -95,14 +99,23 @@ public class Timer : MonoBehaviour
     public delegate void OnTimeFinished();
     public event OnTimeFinished onTimeFinished;
 
-    public void setTimer(float seconds = 0)
+    protected void callOnTimeLeftChanged(float timeLeft, float duration)
+    {
+        onTimeLeftChanged?.Invoke(timeLeft, duration);
+    }
+    protected void callOnTimeFinished()
+    {
+        onTimeFinished?.Invoke();
+    }
+
+    public virtual void setTimer(float seconds = 0)
     {
         seconds = (seconds > 0) ? seconds : maxTime;
         Duration = seconds;
         Active = true;
     }
 
-    public void overrideStartTime(float startTime)
+    public virtual void overrideStartTime(float startTime)
     {
         this.startTime = startTime;
     }
