@@ -28,12 +28,16 @@ public class ObjectManager : MonoBehaviour, ISetting
     }
     public void LoadObjectsPostRewind(List<GameState> gameStates, int gameStateId)
     {
+        Debug.Log("Checking objects after rewinding to state " + gameStateId);
         //Remove null objects from the list
         cleanObjects();
         //Destroy objects not spawned yet in the new selected state
-        GameObjects
-            .FindAll(go => go.GetComponent<SavableObjectInfo>().spawnStateId > gameStateId)
-            .ForEach(go => destroyAndForgetObject(go));
+        int prevCount = GameObjects.Count;
+        knownObjects
+            .FindAll(soid => soid.spawnStateId > gameStateId)
+            .ForEach(soid => destroyAndForgetObject(soid.id));
+        int nowCount = GameObjects.Count;
+        Debug.Log("Check after rewind complete: " + (prevCount - nowCount) + " objects removed");
     }
 
     public List<GameObject> onPreGameStateSaved()
@@ -252,8 +256,35 @@ public class ObjectManager : MonoBehaviour, ISetting
             //don't destroy the game manager or merky
             return;
         }
+        Debug.Log("Destroying object permanently: " + go.name + " (" + soi.Id + ")", go);
         destroyObject(go);
         knownObjects.RemoveAll(soid => soid.id == soi.Id);
+    }
+
+    /// <summary>
+    /// Destroys the object and forgets it so that it cannot be recreated.
+    /// If you want to destroy an object through normal means,
+    /// use destroyObject() instead.
+    /// </summary>
+    /// <param name="go"></param>
+    public void destroyAndForgetObject(int id)
+    {
+        if (hasObject(id)) {
+            GameObject go = getObject(id);
+            SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
+            if (soi is SingletonObjectInfo)
+            {
+                //don't destroy the game manager or merky
+                return;
+            }
+            Debug.Log("Destroying object permanently: " + go.name + " (" + id + ")", go);
+            destroyObject(go);
+        }
+        else
+        {
+            Debug.Log("Destroying object permanently: [unknown name] (" + id + ")");
+        }
+        knownObjects.RemoveAll(soid => soid.id == id);
     }
 
     public void destroyObject(int goKey)

@@ -78,6 +78,25 @@ public class GameManager : MonoBehaviour
         Managers.Object.onObjectRecreated += Managers.Rewind.LoadObjectAndChildren;
         Managers.Object.onObjectRecreated +=
             (go, lastStateSeen) => Managers.Scene.registerObjectInScene(go);
+        Managers.Object.onObjectRecreated +=
+            (go, lastStateSeen) =>
+            {
+                //Don't load if it should actually not exist anymore
+                SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
+                if (soi.spawnStateId > Managers.Rewind.GameStateId)
+                {
+                    Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
+                        "is too late! Destroying permananetly.", go);
+                    //(it's possible for an object recreation to be finished
+                    //after it should have been rewound out of existence)
+                    Managers.Object.destroyAndForgetObject(go);
+                }
+                else
+                {
+                    Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
+                        "is ok. GameState Id: " + Managers.Rewind.GameStateId, go);
+                }
+            };
         //File delegates
         Managers.File.onFileSave += Managers.Rewind.saveToFile;
         Managers.File.onFileSave += Managers.Object.saveToFile;
