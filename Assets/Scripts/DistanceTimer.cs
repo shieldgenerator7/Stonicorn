@@ -32,7 +32,7 @@ public class DistanceTimer : Timer
     }
     public override float TimeLeft
     {
-        get => Distance / OrigDistance;
+        get => Distance / rb2dTimer.velocity.magnitude;
         set { }
     }
 
