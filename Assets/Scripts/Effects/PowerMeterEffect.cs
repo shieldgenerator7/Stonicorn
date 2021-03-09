@@ -20,7 +20,10 @@ public class PowerMeterEffect : MonoBehaviour
     }
     private void OnDestroy()
     {
-        conduit.OnPowerFlowed -= onPowerFlowed;
+        if (conduit != null)
+        {
+            conduit.OnPowerFlowed -= onPowerFlowed;
+        }
     }
 
     void onPowerFlowed(float power, float maxPower)
