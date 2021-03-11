@@ -12,7 +12,7 @@ public class CameraZoomActivatorTrigger : ActivatorTrigger
     private void Start()
     {
         Managers.Camera.onZoomLevelChanged += OnCameraZoomLevelChanged;
-        zoomInRange = scalePointInRange(Managers.Camera.ZoomLevel);
+        zoomInRange = zoomRange.scalePointInRange(Managers.Camera.ZoomLevel);
         triggeredChanged();
     }
     private void OnDestroy()
@@ -21,30 +21,7 @@ public class CameraZoomActivatorTrigger : ActivatorTrigger
     }
     void OnCameraZoomLevelChanged(float newZoomLevel, float delta)
     {
-        zoomInRange = scalePointInRange(newZoomLevel);
+        zoomInRange = zoomRange.scalePointInRange(newZoomLevel);
         triggeredChanged();
-    }
-    bool scalePointInRange(float zoomLevel)
-    {
-        float minZoom = (zoomRange.minZoomScalePoint < 0) 
-            ? -1 
-            : Managers.Camera.toZoomLevel(zoomRange.minZoomScalePoint);
-        float maxZoom = (zoomRange.maxZoomScalePoint < 0) 
-            ? -1 
-            : Managers.Camera.toZoomLevel(zoomRange.maxZoomScalePoint);
-        return (
-                zoomRange.minZoomScalePoint < 0
-                || (zoomRange.minZoomClusivity == CameraZoomRange.ClusivityOption.INCLUSIVE &&
-                zoomLevel >= minZoom)
-                || (zoomRange.minZoomClusivity == CameraZoomRange.ClusivityOption.EXCLUSIVE &&
-                zoomLevel > minZoom)
-            )
-            && (
-                zoomRange.maxZoomScalePoint < 0
-                || (zoomRange.maxZoomClusivity == CameraZoomRange.ClusivityOption.INCLUSIVE &&
-                zoomLevel <= maxZoom)
-                || (zoomRange.maxZoomClusivity == CameraZoomRange.ClusivityOption.EXCLUSIVE &&
-                zoomLevel < maxZoom)
-            );
-    }
+    }    
 }
