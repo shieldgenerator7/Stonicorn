@@ -12,7 +12,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 50
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -50,28 +50,6 @@ PolygonCollider2D:
       - {x: -0.53604126, y: 0.40984178}
       - {x: -0.53685, y: -0.2854495}
       - {x: 0.54714966, y: -0.41155577}
---- !u!114 &1031163838397416959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3680457563745285134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minForceThreshold: 2.5
-  maxForceThreshold: 50
-  maxIntegrity: 3
-  integrity: 0
-  crackedPrefab: {fileID: 0}
-  crackStages: []
-  soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
 --- !u!114 &8430840503297873047
 MonoBehaviour:
   m_ObjectHideFlags: 0
