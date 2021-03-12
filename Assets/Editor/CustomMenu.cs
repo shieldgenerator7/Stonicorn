@@ -10,6 +10,7 @@ using System.Linq;
 using UnityEditor.SceneManagement;
 using System;
 using System.Reflection;
+using UnityEditor.AddressableAssets.Settings;
 
 public class CustomMenu
 {
@@ -158,8 +159,14 @@ public class CustomMenu
             }
         }
     }
+    [MenuItem("SG7/Editor/Refactor/Rebuild Addressable Asset %&a")]
+    public static void rebuildAddressableAssets()
+    {
+        AddressableAssetSettings.CleanPlayerContent();
+        AddressableAssetSettings.BuildPlayerContent();
+    }
 
-    [MenuItem("SG7/Editor/Toggle Editor Camera AutoRotate %R")]
+        [MenuItem("SG7/Editor/Toggle Editor Camera AutoRotate %R")]
     public static void toggleEditorCameraAutoRotate()
     {
         EditorCameraRotatorObject ecro =
