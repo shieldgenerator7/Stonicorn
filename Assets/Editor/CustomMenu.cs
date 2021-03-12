@@ -410,6 +410,12 @@ public class CustomMenu
         }
     }
 
+    [MenuItem("SG7/Editor/Show or Hide All Colliders %&c")]
+    public static void showHideAllColliders()
+    {
+        Physics2D.alwaysShowColliders = !Physics2D.alwaysShowColliders;
+    }
+
     [MenuItem("SG7/Editor/Log Objects %l")]
     public static void logObjects()
     {
