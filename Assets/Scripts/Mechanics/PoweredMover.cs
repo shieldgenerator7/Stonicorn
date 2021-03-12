@@ -43,8 +43,13 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         if (energyToUse > 0)
         {
             //Move self
-            Vector3 forceVector = (energyToUse / maxEnergy) * moveForce * transform.TransformDirection(moveVector);
-            rb2d.velocity = forceVector;
+            float speed = (energyToUse / maxEnergy) * moveForce;
+            Vector3 forceVector = speed * transform.TransformDirection(moveVector);
+            rb2d.AddForce(forceVector * rb2d.mass);
+            if (rb2d.velocity.magnitude > speed)
+            {
+                rb2d.velocity = rb2d.velocity.normalized * speed;
+            }
         }
         onPowerGiven?.Invoke(energyToUse, maxEnergy);
         return power - energyToUse;
