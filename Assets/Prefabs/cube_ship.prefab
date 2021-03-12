@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 13623271624960870}
   - component: {fileID: 13623271624960888}
   - component: {fileID: 6533004035957060943}
+  - component: {fileID: 680443900504872849}
   m_Layer: 0
   m_Name: cube_ship
   m_TagString: Untagged
@@ -245,6 +246,7 @@ MonoBehaviour:
   maxEnergyPerSecond: 3
   moveForce: 10
   moveVector: {x: 1, y: 0}
+  bumperColl: {fileID: 680443900504872849}
 --- !u!114 &6533004035957060943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +265,32 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
   spawnStateId: -1
+--- !u!61 &680443900504872849
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13623271624960890}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.5429688, y: 1.2734375}
+    newSize: {x: 3.95, y: 3.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.6, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1044935169992265667
 GameObject:
   m_ObjectHideFlags: 0

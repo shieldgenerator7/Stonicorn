@@ -8,6 +8,8 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     public float moveForce = 10;//magnitude
     public Vector2 moveVector;//direction, relative to self
 
+    public Collider2D bumperColl;
+
     private Rigidbody2D rb2d;
 
     public float ThroughPut => maxEnergyPerSecond;
@@ -41,5 +43,13 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         }
         onPowerGiven?.Invoke(energyToUse, maxEnergy);
         return power - energyToUse;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.isTrigger)
+        {
+            moveVector *= -1;
+        }
     }
 }
