@@ -31,7 +31,7 @@ public class PoweredDoorOpener : SavableMonoBehaviour, IPowerable
     {
         moveVector = transform.up;
         //Error checking
-        if (!moveColl.isTrigger)
+        if (!moveColl || !moveColl.isTrigger)
         {
             Debug.LogError("PoweredDoorOpener.moveColl requires a collider that is a trigger!", gameObject);
         }

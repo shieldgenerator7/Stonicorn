@@ -29,6 +29,11 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     public override void init()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        //Error checking
+        if (!bumperColl || !bumperColl.isTrigger)
+        {
+            Debug.LogError("PoweredMover.bumperColl requires a collider that is a trigger!", gameObject);
+        }
     }
 
     public float acceptPower(float power)
