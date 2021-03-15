@@ -50,19 +50,8 @@ public class CrabController : Hazard
 
     void FixedUpdate()
     {
-        if (rb2d.velocity.sqrMagnitude < moveSpeed * moveSpeed)
-        {
-            rb2d.AddForce(
-                transform.right
-                * Mathf.Sign(transform.localScale.x)
-                * rb2d.mass * 2
-                * moveSpeed
-                );
-            if (rb2d.velocity.sqrMagnitude > moveSpeed * moveSpeed)
-            {
-                rb2d.velocity = rb2d.velocity.normalized * moveSpeed;
-            }
-        }
+        moveSelf();
+
         if (holdingObject)
         {
             bool foundValidRB2D = false;
@@ -88,6 +77,22 @@ public class CrabController : Hazard
             {
                 holdingObject = false;
             }
+        }
+    }
+
+    private void moveSelf()
+    {
+        //Move self
+        float speed = moveSpeed;
+        if (rb2d.velocity.magnitude < 0.1f)
+        {
+            speed *= 2;
+        }
+        Vector3 forceVector = speed * transform.right * Mathf.Sign(transform.localScale.x);
+        rb2d.AddForce(forceVector * rb2d.mass);
+        if (rb2d.velocity.magnitude > speed)
+        {
+            rb2d.velocity = rb2d.velocity.normalized * speed;
         }
     }
 
