@@ -158,6 +158,7 @@ public class CrabController : Hazard
         rb2d.nullifyMovement();
         Vector3 scale = transform.localScale;
         transform.localScale = scale.setX(scale.x * -1);
+        Physics2D.SyncTransforms();
     }
 
     void throwObjects()
