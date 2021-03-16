@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
             (open) => Managers.Time.setPause(this, open);
         //Time delegates
         Managers.Time.onPauseChanged += Managers.NPC.pauseCurrentNPC;
+        Managers.Time.onPauseChanged += (paused) =>
+            Cursor.lockState = (paused) ? CursorLockMode.None : CursorLockMode.Confined;
         Managers.Time.endGameTimer.onTimeFinished += Managers.Rewind.RewindToStart;
         //Rewind delegates
         Managers.Rewind.onPreGameStateSaved += Managers.Object.onPreGameStateSaved;
