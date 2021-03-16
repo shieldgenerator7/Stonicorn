@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class Utility
 {
@@ -329,6 +330,23 @@ public static class Utility
         return first == second
             || (first.transform.parent?.gameObject == second)
             || (first == second.transform.parent?.gameObject);
+    }
+
+    public static void doForEachGameObjectInScene(Scene s, Action<GameObject> action)
+    {
+        foreach (GameObject rgo in s.GetRootGameObjects())
+        {
+            doForGameObjectAndChildren(rgo, action);            
+        }
+    }
+    static void doForGameObjectAndChildren(GameObject go, Action<GameObject> action)
+    {
+        action.Invoke(go);
+        foreach (Transform t in go.transform)
+        {
+            GameObject cgo = t.gameObject;
+            doForGameObjectAndChildren(cgo, action);
+        }
     }
     #endregion
 

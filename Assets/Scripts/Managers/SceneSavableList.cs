@@ -22,46 +22,31 @@ public class SceneSavableList : MonoBehaviour
 #if UNITY_EDITOR
     public void refreshList()
     {
+        //Savables
         savables.Clear();
-        foreach (GameObject rgo in gameObject.scene.GetRootGameObjects())
-        {
-            if (rgo.isSavable())
+        Utility.doForEachGameObjectInScene(
+            gameObject.scene,
+            (go) =>
             {
-                savables.Add(rgo);
-            }
-            foreach (Transform t in rgo.transform)
-            {
-                GameObject go = t.gameObject;
                 if (go.isSavable())
                 {
                     savables.Add(go);
                 }
             }
-        }
+            );
+        //Memories
         memories.Clear();
-        foreach (GameObject rgo in gameObject.scene.GetRootGameObjects())
-        {
-            if (rgo.isMemory())
+        Utility.doForEachGameObjectInScene(
+            gameObject.scene,
+            (go) =>
             {
-                memories.Add(rgo);
-            }
-            foreach (Transform t in rgo.transform)
-            {
-                GameObject go = t.gameObject;
                 if (go.isMemory())
                 {
                     memories.Add(go);
                 }
-                foreach (Transform t2 in go.transform)
-                {
-                    GameObject go2 = t2.gameObject;
-                    if (go2.isMemory())
-                    {
-                        memories.Add(go2);
-                    }
-                }
             }
-        }
+            );
+        //Save
         EditorUtility.SetDirty(gameObject);
         Debug.Log(
             "Found " + savables.Count + " savables and " + memories.Count
