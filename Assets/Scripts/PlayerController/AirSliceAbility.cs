@@ -9,7 +9,7 @@ public class AirSliceAbility : PlayerAbility
     public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
     [Header("Components")]
     public PlayerAbility[] excludeAbilityFromGrounding;
-    public GameObject afterWindPrefab;
+    public GameObject cloudPrefab;
 
     private int airPorts = 0;//"air teleports": how many airports Merky has used since touching the ground
     public int AirPortsUsed
@@ -23,8 +23,6 @@ public class AirSliceAbility : PlayerAbility
     }
     public delegate void OnAirPortsUsedChanged(int airPortsUsed, int maxAirPorts);
     public event OnAirPortsUsedChanged onAirPortsUsedChanged;
-
-    private List<int> afterWindIds = new List<int>();
 
     private SwapAbility swapAbility;
 
@@ -55,12 +53,6 @@ public class AirSliceAbility : PlayerAbility
         {
             //Refresh air teleports
             AirPortsUsed = 0;
-        }
-        if (grounder.GroundedNormal)
-        {
-            //Destroy all after winds
-            afterWindIds.ForEach(id => Managers.Object.destroyObject(id));
-            afterWindIds.Clear();
         }
     }
 
@@ -99,10 +91,10 @@ public class AirSliceAbility : PlayerAbility
                 sliceThings(oldPos, newPos);
                 Managers.Effect.showTeleportStreak(oldPos, newPos);
             }
-            //After wind
-            if (CanAfterWind)
+            //Cloud
+            if (CanMakeCloud)
             {
-                makeAfterWind(oldPos, newPos);
+                makeCloud(oldPos);
             }
             //Give player time to tap again after teleporting in the air
             //Also nullify velocity
@@ -149,37 +141,26 @@ public class AirSliceAbility : PlayerAbility
         }
     }
 
-    bool CanAfterWind
+    bool CanMakeCloud
         => FeatureLevel >= 2 &&
         (playerController.Ground.GroundedAbility || playerController.Ground.GroundedAbilityPrev);
 
-    void makeAfterWind(Vector2 oldPos, Vector2 newPos)
+    void makeCloud(Vector2 oldPos)
     {
-        GameObject afterWind = Utility.Instantiate(afterWindPrefab);
-        afterWind.transform.position = oldPos;
-        Vector2 dir = newPos - oldPos;
-        afterWind.transform.up = dir;
-        SpriteRenderer awsr = afterWind.GetComponent<SpriteRenderer>();
-        awsr.color = EffectColor.adjustAlpha(awsr.color.a);
-        awsr.size = new Vector2(awsr.size.x, dir.magnitude);
-        BoxCollider2D bc2d = afterWind.GetComponent<BoxCollider2D>();
-        bc2d.size = new Vector2(bc2d.size.x, dir.magnitude);
-        afterWindIds.Add(afterWind.getKey());
+        GameObject cloud = Utility.Instantiate(cloudPrefab);
+        cloud.transform.position = oldPos;
+        cloud.transform.up = -playerController.GravityAccepter.Gravity;
     }
 
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
             "AirPortsUsed", AirPortsUsed
-            )
-            .addList(
-            "afterWindIds", afterWindIds
             );
         set
         {
             base.CurrentState = value;
             AirPortsUsed = value.Int("AirPortsUsed");
-            afterWindIds = value.List<int>("afterWindIds");
         }
     }
 
