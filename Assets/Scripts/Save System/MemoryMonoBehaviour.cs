@@ -14,9 +14,12 @@ public abstract class MemoryMonoBehaviour : MonoBehaviour
                 discovered = true;
                 Managers.Object.saveMemory(this);
                 nowDiscovered();
+                onDiscovered?.Invoke();
             }
         }
     }
+    public delegate void OnDiscovered();
+    public event OnDiscovered onDiscovered;
 
     /// <summary>
     /// Called when this memory object is discovered for the first time

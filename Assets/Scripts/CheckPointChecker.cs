@@ -43,15 +43,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
         ghost.GetComponent<SpriteRenderer>().sprite = ghostSprite;
     }
 
-    //When a player touches this checkpoint, activate it
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-        if (coll.collider.isPlayerSolid())
-        {
-            Discovered = true;
-        }
-    }
-
     public void activate()
     {
         //Not already activated, go ahead and activate
@@ -67,11 +58,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 ps.Play();
             }
         }
-        //Start the fade-in effect
-        foreach (Fader f in GetComponentsInChildren<Fader>())
-        {
-            f.enabled = true;
-        }
     }
     public void trigger()
     {
@@ -86,7 +72,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
         {
             Debug.LogError("CheckPointChecker " + gameObject.name + " needs to have a ghost sprite!");
         }
-        activate();
         ghost.SetActive(false);
         InCheckPoint = true;
         foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
@@ -324,6 +309,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     }
     protected override void nowDiscovered()
     {
+        activate();
         trigger();
     }
     protected override void previouslyDiscovered()
