@@ -684,8 +684,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9024757283168586282}
   - component: {fileID: 1674174212153035194}
-  - component: {fileID: 754041588190008363}
-  - component: {fileID: 8907086705219090172}
+  - component: {fileID: 7920601458347768352}
+  - component: {fileID: 3219359093056052878}
   m_Layer: 0
   m_Name: Legs
   m_TagString: Untagged
@@ -732,8 +732,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!70 &754041588190008363
-CapsuleCollider2D:
+--- !u!58 &7920601458347768352
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -745,11 +745,11 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.5, y: -0.27}
-  m_Size: {x: 0.15, y: 0.35}
-  m_Direction: 0
---- !u!70 &8907086705219090172
-CapsuleCollider2D:
+  m_Offset: {x: -0.32, y: -0.2}
+  serializedVersion: 2
+  m_Radius: 0.25
+--- !u!58 &3219359093056052878
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -761,9 +761,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: -0.27}
-  m_Size: {x: 0.15, y: 0.35}
-  m_Direction: 0
+  m_Offset: {x: 0.32, y: -0.2}
+  serializedVersion: 2
+  m_Radius: 0.25
 --- !u!1 &3377634209943365381
 GameObject:
   m_ObjectHideFlags: 0
@@ -1779,7 +1779,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.04938966}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1790,5 +1790,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.7}
+  m_Size: {x: 0.2, y: 0.6012207}
   m_EdgeRadius: 0
