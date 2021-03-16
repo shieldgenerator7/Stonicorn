@@ -21,7 +21,10 @@ public class CrabController : Hazard
     //
     // Processing Variables
     //
-    bool holdingObject = false;//true if holding one or more movable objects
+    /// <summary>
+    /// The movable object it is carrying
+    /// </summary>
+    Rigidbody2D heldRB2D = null;
 
     //
     // Properties
@@ -51,33 +54,6 @@ public class CrabController : Hazard
     void FixedUpdate()
     {
         moveSelf();
-
-        if (holdingObject)
-        {
-            bool foundValidRB2D = false;
-            Utility.RaycastAnswer rca = Utility.CastAnswer(holdDetector, Vector2.zero);
-            if (rca.count > 0)
-            {
-                for (int i = 0; i < rca.count; i++)
-                {
-                    RaycastHit2D rch2d = rca.rch2ds[i];
-                    if (!rch2d.collider.isTrigger)
-                    {
-                        Rigidbody2D collRB2D = rch2d.collider.GetComponent<Rigidbody2D>();
-                        if (collRB2D)
-                        {
-                            collRB2D.velocity = rb2d.velocity;
-                            collRB2D.angularVelocity = 0;
-                            foundValidRB2D = true;
-                        }
-                    }
-                }
-            }
-            if (!foundValidRB2D)
-            {
-                holdingObject = false;
-            }
-        }
     }
 
     private void moveSelf()
@@ -94,13 +70,19 @@ public class CrabController : Hazard
         {
             rb2d.velocity = rb2d.velocity.normalized * speed;
         }
+
+        if (heldRB2D)
+        {
+            heldRB2D.velocity = rb2d.velocity;
+            heldRB2D.angularVelocity = 0;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (ObstacleDetected)
         {
-            if (!holdingObject)
+            if (!heldRB2D)
             {
                 GameObject collGO = collision.gameObject;
                 Rigidbody2D collRB2D = collGO.GetComponent<Rigidbody2D>();
@@ -109,6 +91,7 @@ public class CrabController : Hazard
                     rb2d.nullifyMovement();
                     //Pick up object
                     collGO.transform.position = clawCollider.bounds.center;
+                    heldRB2D = collRB2D;
                 }
             }
             changeDirection();
@@ -117,20 +100,16 @@ public class CrabController : Hazard
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (HeldObjectDetected)
+        if (!heldRB2D && HeldObjectDetected)
         {
             GameObject collGO = collision.gameObject;
             Rigidbody2D collRB2D = collGO.GetComponent<Rigidbody2D>();
             if (collRB2D)
             {
-                holdingObject = true;
+                heldRB2D = collRB2D;
                 collRB2D.velocity = rb2d.velocity;
                 collRB2D.angularVelocity = 0;
             }
-        }
-        else
-        {
-            holdingObject = false;
         }
     }
 
@@ -139,17 +118,17 @@ public class CrabController : Hazard
         if (CliffDetected)
         {
             //Let go of any objects
-            if (holdingObject)
+            if (heldRB2D)
             {
-                holdingObject = false;
                 throwObjects();
+                heldRB2D = null;
             }
             //Change direction
             changeDirection();
         }
         if (!HeldObjectDetected)
         {
-            holdingObject = false;
+            heldRB2D = null;
         }
     }
 
@@ -163,24 +142,9 @@ public class CrabController : Hazard
 
     void throwObjects()
     {
-        Utility.RaycastAnswer rca = Utility.CastAnswer(holdDetector, Vector2.zero);
-        if (rca.count > 0)
-        {
-            for (int i = 0; i < rca.count; i++)
-            {
-                RaycastHit2D rch2d = rca.rch2ds[i];
-                if (!rch2d.collider.isTrigger)
-                {
-                    Rigidbody2D collRB2D = rch2d.collider.GetComponent<Rigidbody2D>();
-                    if (collRB2D)
-                    {
-                        //Throw object
-                        collRB2D.velocity =
-                            (throwDirection.position - transform.position)
-                            * throwSpeed;
-                    }
-                }
-            }
-        }
+        //Throw object
+        heldRB2D.velocity =
+            (throwDirection.position - transform.position)
+            * throwSpeed;
     }
 }
