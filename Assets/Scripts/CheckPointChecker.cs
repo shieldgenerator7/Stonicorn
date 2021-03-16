@@ -269,7 +269,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
             ghost.GetComponent<SpriteRenderer>().sprite = createdSprite;
         }
         checkpointCamera.gameObject.SetActive(false);
-        string filename = gameObject.name + ".png";
+        string filename = gameObject.transform.parent.name + ".png";
         ES3.SaveImage(screenShot, filename);
         return filename;
     }
