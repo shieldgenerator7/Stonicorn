@@ -78,6 +78,24 @@ public class CrabController : Hazard
         }
     }
 
+    private void pickupObject(Rigidbody2D collRB2D, bool setPosition)
+    {
+        //StaticUntilTouched
+        StaticUntilTouched sut = collRB2D.GetComponent<StaticUntilTouched>();
+        if (sut)
+        {
+            sut.Rooted = false;
+        }
+        //Pick up object
+        if (setPosition)
+        {
+            collRB2D.transform.position = clawCollider.bounds.center;
+        }
+        collRB2D.velocity = rb2d.velocity;
+        collRB2D.angularVelocity = 0;
+        heldRB2D = collRB2D;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (ObstacleDetected)
@@ -89,9 +107,7 @@ public class CrabController : Hazard
                 if (collRB2D)
                 {
                     rb2d.nullifyMovement();
-                    //Pick up object
-                    collGO.transform.position = clawCollider.bounds.center;
-                    heldRB2D = collRB2D;
+                    pickupObject(collRB2D, true);
                 }
             }
             changeDirection();
@@ -106,9 +122,7 @@ public class CrabController : Hazard
             Rigidbody2D collRB2D = collGO.GetComponent<Rigidbody2D>();
             if (collRB2D)
             {
-                heldRB2D = collRB2D;
-                collRB2D.velocity = rb2d.velocity;
-                collRB2D.angularVelocity = 0;
+                pickupObject(collRB2D, false);
             }
         }
     }
