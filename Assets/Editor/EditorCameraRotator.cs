@@ -21,13 +21,16 @@ public class EditorCameraRotator : Editor
         {
             GravityZone gz = GravityZone.getGravityZone(sceneview.camera.transform.position);
             Vector2 up = sceneview.camera.transform.up;
-            if (gz.radialGravity)
+            if (gz)
             {
-                up = sceneview.camera.transform.position - gz.transform.position;
-            }
-            else
-            {
-                up = gz.transform.up;
+                if (gz.radialGravity)
+                {
+                    up = sceneview.camera.transform.position - gz.transform.position;
+                }
+                else
+                {
+                    up = gz.transform.up;
+                }
             }
             if ((Vector2)sceneview.camera.transform.up != up)
             {
