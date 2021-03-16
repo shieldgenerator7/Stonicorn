@@ -52,6 +52,14 @@ public class SceneSavableList : MonoBehaviour
                 {
                     memories.Add(go);
                 }
+                foreach (Transform t2 in go.transform)
+                {
+                    GameObject go2 = t2.gameObject;
+                    if (go2.isMemory())
+                    {
+                        memories.Add(go2);
+                    }
+                }
             }
         }
         EditorUtility.SetDirty(gameObject);
