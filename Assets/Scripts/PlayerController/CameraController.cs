@@ -418,6 +418,10 @@ public class CameraController : MonoBehaviour
 
     public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, bool finished)
     {
+        if (originalCameraPosition == Vector2.zero)
+        {
+            originalCameraPosition = transform.position - Managers.Player.transform.position;
+        }
         bool canMove = false;
         Vector2 delta = origMPWorld - newMPWorld;
         Vector2 playerPos = Managers.Player.transform.position;
@@ -445,7 +449,7 @@ public class CameraController : MonoBehaviour
         }
         if (finished)
         {
-            originalCameraPosition = Offset;
+            originalCameraPosition = Vector2.zero;
         }
     }
 
