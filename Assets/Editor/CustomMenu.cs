@@ -166,7 +166,7 @@ public class CustomMenu
         AddressableAssetSettings.BuildPlayerContent();
     }
 
-        [MenuItem("SG7/Editor/Toggle Editor Camera AutoRotate %R")]
+    [MenuItem("SG7/Editor/Toggle Editor Camera AutoRotate %R")]
     public static void toggleEditorCameraAutoRotate()
     {
         EditorCameraRotatorObject ecro =
@@ -463,9 +463,10 @@ public class CustomMenu
         bool keepScenesOpen = false;
         refreshSceneSavableObjectLists();
         //(new List<Func<bool>>()).ForEach(func => keepScenesOpen = keepScenesOpen || func);
-        keepScenesOpen = keepScenesOpen || ensureSavableObjectsHaveObjectInfo();
-        keepScenesOpen = keepScenesOpen || ensureMemoryObjectsHaveObjectInfo();
-        keepScenesOpen = keepScenesOpen || ensureUniqueObjectIDs();
+        keepScenesOpen = ensureSavableObjectsHaveObjectInfo() || keepScenesOpen;
+        keepScenesOpen = ensureMemoryObjectsHaveObjectInfo() || keepScenesOpen;
+        keepScenesOpen = ensureUniqueObjectIDs() || keepScenesOpen;
+        keepScenesOpen = ensureHiddenAreasAreNonTeleportable() || keepScenesOpen;
 
         populateObjectManagerKnownObjectsList();
 
@@ -595,6 +596,41 @@ public class CustomMenu
             nextID = (int)Mathf.Floor(nextID / SECTION_SIZE) * SECTION_SIZE + SECTION_SIZE;
         }
         return changedId;
+    }
+
+    [MenuItem("SG7/Editor/Pre-Build/Ensure Hidden Areas are Non-Teleportable")]
+    public static bool ensureHiddenAreasAreNonTeleportable()
+    {
+        int changedCount = 0;
+        string TAG = "NonTeleportableArea";
+        GameObject.FindObjectsOfType<HiddenArea>().ToList()
+            .ForEach(ha =>
+            {
+                Utility.doForGameObjectAndChildren(
+                    ha.gameObject,
+                    (go) =>
+                    {
+                        if (!go.CompareTag(TAG))
+                        {
+                            go.tag = TAG;
+                            EditorUtility.SetDirty(go);
+                            Debug.LogWarning(
+                                "Changed " + go.name + " tag to " + TAG + ".",
+                                go
+                                );
+                            changedCount++;
+                        }
+                    }
+                    );
+            });
+
+        if (changedCount > 0)
+        {
+            Debug.LogWarning(
+                "HiddenArea tags: Changed " + changedCount + " object tags to " + TAG + "."
+                );
+        }
+        return changedCount > 0;
     }
 
     [MenuItem("SG7/Editor/Pre-Build/Populate ObjectManager known objects list")]

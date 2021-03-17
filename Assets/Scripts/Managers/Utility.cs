@@ -339,7 +339,7 @@ public static class Utility
             doForGameObjectAndChildren(rgo, action);            
         }
     }
-    static void doForGameObjectAndChildren(GameObject go, Action<GameObject> action)
+    public static void doForGameObjectAndChildren(GameObject go, Action<GameObject> action)
     {
         action.Invoke(go);
         foreach (Transform t in go.transform)
