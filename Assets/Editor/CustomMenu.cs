@@ -445,7 +445,7 @@ public class CustomMenu
         method.Invoke(new object(), null);
     }
 
-    [MenuItem("SG7/Editor/Pre-Build/Perform all Pre-Build Tasks &W")]
+    [MenuItem("SG7/Build/Pre-Build/Perform all Pre-Build Tasks &W")]
     public static void performAllPreBuildTasks()
     {
         ClearLog();
@@ -493,14 +493,14 @@ public class CustomMenu
         }
         return true;
     }
-    [MenuItem("SG7/Editor/Pre-Build/Refresh Scene Savable Object Lists")]
+    [MenuItem("SG7/Build/Pre-Build/Refresh Scene Savable Object Lists")]
     public static void refreshSceneSavableObjectLists()
     {
         GameObject.FindObjectsOfType<SceneSavableList>().ToList()
             .ForEach(ssl => ssl.refreshList());
     }
 
-    [MenuItem("SG7/Editor/Pre-Build/Ensure savable objects have ObjectInfo")]
+    [MenuItem("SG7/Build/Pre-Build/Ensure savable objects have ObjectInfo")]
     public static bool ensureSavableObjectsHaveObjectInfo()
     {
         List<GameObject> savables = new List<GameObject>();
@@ -548,7 +548,7 @@ public class CustomMenu
         return missingInfo.Count > 0 || nullInfo.Count > 0 || spawn0.Count > 0;
     }
 
-    [MenuItem("SG7/Editor/Pre-Build/Ensure memory objects have ObjectInfo")]
+    [MenuItem("SG7/Build/Pre-Build/Ensure memory objects have ObjectInfo")]
     public static bool ensureMemoryObjectsHaveObjectInfo()
     {
         List<GameObject> memories = new List<GameObject>();
@@ -562,7 +562,7 @@ public class CustomMenu
             );
         return missingInfo.Count > 0;
     }
-    [MenuItem("SG7/Editor/Pre-Build/Ensure unique object IDs among open scenes")]
+    [MenuItem("SG7/Build/Pre-Build/Ensure unique object IDs among open scenes")]
     public static bool ensureUniqueObjectIDs()
     {
         int nextID = 10;
@@ -598,7 +598,7 @@ public class CustomMenu
         return changedId;
     }
 
-    [MenuItem("SG7/Editor/Pre-Build/Ensure Hidden Areas are Non-Teleportable")]
+    [MenuItem("SG7/Build/Pre-Build/Ensure Hidden Areas are Non-Teleportable")]
     public static bool ensureHiddenAreasAreNonTeleportable()
     {
         int changedCount = 0;
@@ -633,7 +633,7 @@ public class CustomMenu
         return changedCount > 0;
     }
 
-    [MenuItem("SG7/Editor/Pre-Build/Populate ObjectManager known objects list")]
+    [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
     public static void populateObjectManagerKnownObjectsList()
     {
         ObjectManager objectManager = GameObject.FindObjectOfType<ObjectManager>();
