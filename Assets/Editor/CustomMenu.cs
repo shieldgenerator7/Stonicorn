@@ -603,6 +603,7 @@ public class CustomMenu
     {
         int changedCount = 0;
         string TAG = "NonTeleportableArea";
+        string UNTAG = "Untagged";
         GameObject.FindObjectsOfType<HiddenArea>().ToList()
             .ForEach(ha =>
             {
@@ -610,15 +611,37 @@ public class CustomMenu
                     ha.gameObject,
                     (go) =>
                     {
+                        //If it doesn't have the correct tag,
                         if (!go.CompareTag(TAG))
                         {
-                            go.tag = TAG;
-                            EditorUtility.SetDirty(go);
-                            Debug.LogWarning(
-                                "Changed " + go.name + " tag to " + TAG + ".",
-                                go
-                                );
-                            changedCount++;
+                            //And it has a renderer,
+                            if (go.GetComponent<Renderer>())
+                            {
+                                //Then it should have the correct tag
+                                go.tag = TAG;
+                                EditorUtility.SetDirty(go);
+                                Debug.LogWarning(
+                                    "Changed " + go.name + " tag to " + TAG + ".",
+                                    go
+                                    );
+                                changedCount++;
+                            }
+                        }
+                        //If it does have the tag,
+                        else
+                        {
+                            //But does not have a renderer,
+                            if (!go.GetComponent<Renderer>())
+                            {
+                                //Then it should not have the tag
+                                go.tag = UNTAG;
+                                EditorUtility.SetDirty(go);
+                                Debug.LogWarning(
+                                    "Changed " + go.name + " tag to " + UNTAG + ".",
+                                    go
+                                    );
+                                changedCount++;
+                            }
                         }
                     }
                     );
