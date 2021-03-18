@@ -78,7 +78,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         {
             if (cpc != this)
             {
-                cpc.showRelativeTo(this.gameObject);
+                cpc.showRelativeTo(this.transform.parent.gameObject);
             }
         }
         calculateTelepadIndex();
