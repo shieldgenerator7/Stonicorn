@@ -310,7 +310,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
     protected override void nowDiscovered()
     {
         activate();
-        trigger();
     }
     protected override void previouslyDiscovered()
     {
