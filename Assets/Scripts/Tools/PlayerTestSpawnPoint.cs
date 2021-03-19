@@ -19,17 +19,10 @@ public class PlayerTestSpawnPoint : MonoBehaviour
     [Range(-1, 6)]
     public int LongTeleportAbility = -1;
 
-    private void Awake()
-    {
-        if (enabled)
-        {
-            Managers.DemoMode.DemoMode = true;
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
+        Managers.DemoMode.DemoMode = true;
         Debug.Log("PlayerTestSpawnPoint activating");
         //Set player position
         PlayerController pc = FindObjectOfType<PlayerController>();
