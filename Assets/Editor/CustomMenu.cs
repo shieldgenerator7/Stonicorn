@@ -670,6 +670,21 @@ public class CustomMenu
                                 changedCount++;
                             }
                         }
+                        //Collider
+                        Collider2D coll2d = go.GetComponent<Collider2D>();
+                        if (coll2d)
+                        {
+                            if (!coll2d.isTrigger)
+                            {
+                                coll2d.isTrigger = true;
+                                EditorUtility.SetDirty(go);
+                                Debug.LogWarning(
+                                    "Changed " + go.name + " collider isTrigger to " + coll2d.isTrigger + ".",
+                                    go
+                                    );
+                                changedCount++;
+                            }
+                        }
                     }
                     );
             });
