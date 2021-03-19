@@ -466,7 +466,7 @@ public class CustomMenu
         keepScenesOpen = ensureSavableObjectsHaveObjectInfo() || keepScenesOpen;
         keepScenesOpen = ensureMemoryObjectsHaveObjectInfo() || keepScenesOpen;
         keepScenesOpen = ensureUniqueObjectIDs() || keepScenesOpen;
-        keepScenesOpen = ensureHiddenAreasAreNonTeleportable() || keepScenesOpen;
+        keepScenesOpen = ensureHiddenAreasAreProperlySetup() || keepScenesOpen;
 
         populateObjectManagerKnownObjectsList();
 
@@ -598,8 +598,8 @@ public class CustomMenu
         return changedId;
     }
 
-    [MenuItem("SG7/Build/Pre-Build/Ensure Hidden Areas are Non-Teleportable")]
-    public static bool ensureHiddenAreasAreNonTeleportable()
+    [MenuItem("SG7/Build/Pre-Build/Ensure Hidden Areas are Properly Setup")]
+    public static bool ensureHiddenAreasAreProperlySetup()
     {
         int changedCount = 0;
         string TAG = "NonTeleportableArea";
@@ -643,6 +643,33 @@ public class CustomMenu
                                 changedCount++;
                             }
                         }
+                        //Position
+                        if (go.transform.position.z != 0)
+                        {
+                            go.transform.position = (Vector2)go.transform.position;
+                            EditorUtility.SetDirty(go);
+                            Debug.LogWarning(
+                                "Changed " + go.name + " pos to " + go.transform.position + ".",
+                                go
+                                );
+                            changedCount++;
+                        }
+                        //Renderer
+                        Renderer renderer = go.GetComponent<Renderer>();
+                        string layerName = "Foreground";
+                        if (renderer)
+                        {
+                            if (renderer.sortingLayerName != layerName)
+                            {
+                                renderer.sortingLayerName = layerName;
+                                EditorUtility.SetDirty(go);
+                                Debug.LogWarning(
+                                    "Changed " + go.name + " layer name to " + layerName + ".",
+                                    go
+                                    );
+                                changedCount++;
+                            }
+                        }
                     }
                     );
             });
@@ -650,7 +677,7 @@ public class CustomMenu
         if (changedCount > 0)
         {
             Debug.LogWarning(
-                "HiddenArea tags: Changed " + changedCount + " object tags to " + TAG + "."
+                "HiddenArea changes: Made " + changedCount + " changes."
                 );
         }
         return changedCount > 0;
