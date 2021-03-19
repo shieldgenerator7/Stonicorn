@@ -654,8 +654,11 @@ public class CustomMenu
                                 );
                             changedCount++;
                         }
-                        //Renderer
+                        //
+                        //Renderer && Collider
+                        //
                         Renderer renderer = go.GetComponent<Renderer>();
+                        Collider2D coll2d = go.GetComponent<Collider2D>();
                         string layerName = "Foreground";
                         if (renderer)
                         {
@@ -669,9 +672,19 @@ public class CustomMenu
                                     );
                                 changedCount++;
                             }
+                            if (!coll2d)
+                            {
+                                Debug.LogError(
+                                    go.name + " has renderer without a collider!",
+                                    go
+                                    );
+                                //Fake a change
+                                if (changedCount == 0)
+                                {
+                                    changedCount++;
+                                }
+                            }
                         }
-                        //Collider
-                        Collider2D coll2d = go.GetComponent<Collider2D>();
                         if (coll2d)
                         {
                             if (!coll2d.isTrigger)
