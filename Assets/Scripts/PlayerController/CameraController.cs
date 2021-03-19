@@ -257,6 +257,12 @@ public class CameraController : MonoBehaviour
             {
                 float deltaTime = 3 * Time.unscaledDeltaTime;
                 transform.up = Vector3.Lerp(transform.up, Up, deltaTime);
+                //Fix special case where screen goes black when Camera goes upside down
+                if (transform.rotation.eulerAngles.y != 0)
+                {
+                    transform.eulerAngles = new Vector3(0, 0, -180);
+                }
+                //Rotation delegate
                 onRotated?.Invoke(transform.up);
             }
 
