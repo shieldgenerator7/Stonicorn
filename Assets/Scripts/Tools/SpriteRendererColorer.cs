@@ -11,10 +11,15 @@ public class SpriteRendererColorer : MonoBehaviour
     public bool colorChildren = true;
     public List<GameObject> selectedObjects = new List<GameObject>();
 
-    public Color Color => (segment) ? segment.color : color;
+    private int coloredCount = 0;
 
     public void colorRenderers()
     {
+        coloredCount = 0;
+        if (segment)
+        {
+            color = segment.color;
+        }
         if (colorParent)
         {
             selectedObjects.ForEach(go => colorRenderer(go));
@@ -34,6 +39,7 @@ public class SpriteRendererColorer : MonoBehaviour
                 )
             );
         }
+        Debug.Log("Colored " + coloredCount + " SpriteRenderers: color: " + color);
     }
 
     public void colorRenderer(GameObject go)
@@ -41,7 +47,8 @@ public class SpriteRendererColorer : MonoBehaviour
         SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
         if (sr)
         {
-            sr.color = Color.adjustAlpha(sr.color.a);
+            sr.color = color.adjustAlpha(sr.color.a);
+            coloredCount++;
         }
     }
 
