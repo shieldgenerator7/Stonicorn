@@ -800,12 +800,12 @@ MonoBehaviour:
   - {fileID: 1445924916}
   memories:
   - {fileID: 1445924917}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1380307778}
+  - {fileID: 2121133756}
+  - {fileID: 1121140609}
+  - {fileID: 580846379}
+  - {fileID: 2076202016}
+  - {fileID: 710815551}
 --- !u!4 &158555769
 Transform:
   m_ObjectHideFlags: 0
@@ -2489,6 +2489,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 144.649
       objectReference: {fileID: 0}
+    - target: {fileID: 7465063215675886226, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
+      propertyPath: id
+      value: 5005
+      objectReference: {fileID: 0}
     - target: {fileID: 7626970149424249431, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -2522,6 +2526,11 @@ PrefabInstance:
 --- !u!4 &580846378 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5550348024257868181, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
+  m_PrefabInstance: {fileID: 580846377}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &580846379 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3354656900978089333, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
   m_PrefabInstance: {fileID: 580846377}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &603334399
@@ -3195,6 +3204,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.31764707
       objectReference: {fileID: 0}
+    - target: {fileID: 5286096776548971571, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
+      propertyPath: id
+      value: 5007
+      objectReference: {fileID: 0}
     - target: {fileID: 5966118208376719431, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -3260,6 +3273,11 @@ PrefabInstance:
 --- !u!4 &710815550 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7188882370455785268, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
+  m_PrefabInstance: {fileID: 710815549}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &710815551 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 21643744468476884, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
   m_PrefabInstance: {fileID: 710815549}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &791799821
@@ -5527,6 +5545,10 @@ PrefabInstance:
       propertyPath: abilityTypeName
       value: AirSliceAbility
       objectReference: {fileID: 0}
+    - target: {fileID: 4658293303359942510, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: id
+      value: 5004
+      objectReference: {fileID: 0}
     - target: {fileID: 5684913358203740075, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -5606,6 +5628,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7654538800173257833, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
   m_PrefabInstance: {fileID: 1121140607}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1121140609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 698775683697440905, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+  m_PrefabInstance: {fileID: 1121140607}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1313202302
 GameObject:
   m_ObjectHideFlags: 0
@@ -5664,6 +5691,10 @@ PrefabInstance:
     - target: {fileID: 4720684113579968359, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
       propertyPath: m_Color.r
       value: 0.31764707
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747286576220698530, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+      propertyPath: id
+      value: 5002
       objectReference: {fileID: 0}
     - target: {fileID: 6076028062837787606, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
       propertyPath: m_Color.b
@@ -5730,6 +5761,11 @@ PrefabInstance:
 --- !u!4 &1380307777 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7304136967046646949, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+  m_PrefabInstance: {fileID: 1380307776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1380307778 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 492422247608197189, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
   m_PrefabInstance: {fileID: 1380307776}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1445924915
@@ -8175,6 +8211,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 85.386
       objectReference: {fileID: 0}
+    - target: {fileID: 2530175796501034835, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+      propertyPath: id
+      value: 5006
+      objectReference: {fileID: 0}
     - target: {fileID: 3268970094390069142, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -8212,6 +8252,11 @@ PrefabInstance:
 --- !u!4 &2076202015 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 685402652797832276, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+  m_PrefabInstance: {fileID: 2076202014}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2076202016 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7641452600076984500, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
   m_PrefabInstance: {fileID: 2076202014}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2098625124 stripped
@@ -8552,6 +8597,10 @@ PrefabInstance:
       propertyPath: abilityTypeName
       value: AirSliceAbility
       objectReference: {fileID: 0}
+    - target: {fileID: 4859005109314047417, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+      propertyPath: id
+      value: 5003
+      objectReference: {fileID: 0}
     - target: {fileID: 5561924543699369340, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -8629,6 +8678,11 @@ PrefabInstance:
 --- !u!4 &2121133755 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7633970841073809086, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+  m_PrefabInstance: {fileID: 2121133754}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2121133756 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 754844123136399966, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
   m_PrefabInstance: {fileID: 2121133754}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2891230182186900359
