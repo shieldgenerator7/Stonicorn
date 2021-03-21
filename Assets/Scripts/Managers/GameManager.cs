@@ -21,6 +21,13 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+#if UNITY_EDITOR
+        PlayerTestSpawnPoint ptsp = FindObjectOfType<PlayerTestSpawnPoint>();
+        if (ptsp && ptsp.enabled)
+        {
+            Managers.DemoMode.DemoMode = true;
+        }
+#endif
         //Register delegates
         registerDelegates();
         //Init Gesture

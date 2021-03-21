@@ -22,7 +22,6 @@ public class PlayerTestSpawnPoint : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Managers.DemoMode.DemoMode = true;
         Debug.Log("PlayerTestSpawnPoint activating");
         //Set player position
         PlayerController pc = FindObjectOfType<PlayerController>();
