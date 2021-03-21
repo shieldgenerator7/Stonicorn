@@ -6,9 +6,12 @@ using UnityEngine;
 public class SpriteRendererColorer : MonoBehaviour
 {
     public Color color = Color.white;
+    public TeleportRangeSegment segment;
     public bool colorParent = true;
     public bool colorChildren = true;
     public List<GameObject> selectedObjects = new List<GameObject>();
+
+    public Color Color => (segment) ? segment.color : color;
 
     public void colorRenderers()
     {
@@ -38,7 +41,7 @@ public class SpriteRendererColorer : MonoBehaviour
         SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
         if (sr)
         {
-            sr.color = color.adjustAlpha(sr.color.a);
+            sr.color = Color.adjustAlpha(sr.color.a);
         }
     }
 
