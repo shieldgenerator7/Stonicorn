@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 #endif
         //Register delegates
         registerDelegates();
+        //Pause time
+        Managers.Time.setPause(FindObjectOfType<LoadingScreen>(), true);
         //Init Gesture
         Managers.Gesture.init();
         //init DemoMode
