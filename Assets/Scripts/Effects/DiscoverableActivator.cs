@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiscoverableActivator : MonoBehaviour
+public class DiscoverableActivator : MonoBehaviour, ISwappable
 {
     public MemoryMonoBehaviour mmb;
 
@@ -25,5 +25,10 @@ public class DiscoverableActivator : MonoBehaviour
         {
             mmb.Discovered = true;
         }
+    }
+
+    public void nowSwapped()
+    {
+        mmb.Discovered = true;
     }
 }
