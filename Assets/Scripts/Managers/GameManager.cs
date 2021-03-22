@@ -58,6 +58,20 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.init();
         //Load the memories
         Managers.Object.LoadMemories();
+        //Load Tutorials scene
+#if UNITY_EDITOR
+        Scene tutorialScene = SceneManager.GetSceneByName("Tutorials");
+        if (tutorialScene.IsValid() && tutorialScene.isLoaded)
+        {
+            //don't do anything
+        }
+        else
+        {
+#endif
+            SceneManager.LoadSceneAsync("Tutorials", LoadSceneMode.Additive);
+#if UNITY_EDITOR
+        }
+#endif
     }
 
     private void registerDelegates()

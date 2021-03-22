@@ -314,7 +314,7 @@ public class CustomMenu
     public static void loadOrUnloadLevelScenes()
     {
         //Assumes that the level scenes make up the tail of the scene list
-        int firstLevelIndex = 3;
+        int firstLevelIndex = 4;
         //Find out if all of the scenes are loaded
         bool allLoaded = true;
         for (int i = firstLevelIndex; i < EditorBuildSettings.scenes.Length; i++)
