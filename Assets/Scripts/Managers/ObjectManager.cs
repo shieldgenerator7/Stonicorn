@@ -82,6 +82,11 @@ public class ObjectManager : MonoBehaviour, ISetting
             try
             {
                 AssetReference assetRef = new AssetReference(prefabGUID);
+                if (assetRef == null)
+                {
+                    Debug.LogError("Asset Ref is null! id: " + goId);
+                    return;
+                }
                 //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
                 var op = Addressables.InstantiateAsync(assetRef);
                 recreateQueue.Add(goId, op);
@@ -269,7 +274,8 @@ public class ObjectManager : MonoBehaviour, ISetting
     /// <param name="go"></param>
     public void destroyAndForgetObject(int id)
     {
-        if (hasObject(id)) {
+        if (hasObject(id))
+        {
             GameObject go = getObject(id);
             SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
             if (soi is SingletonObjectInfo)
