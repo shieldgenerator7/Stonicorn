@@ -730,7 +730,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4023
+      value: 4024
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -830,6 +830,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savables:
+  - {fileID: 684201891}
   - {fileID: 2138659610}
   - {fileID: 1733898252}
   - {fileID: 7333042079316264673}
@@ -873,6 +874,12 @@ MonoBehaviour:
   - {fileID: 863742379}
   - {fileID: 1631651752}
   - {fileID: 1916359011}
+  - {fileID: 1380307779}
+  - {fileID: 1134558923}
+  - {fileID: 1695932593}
+  - {fileID: 1378619970}
+  - {fileID: 307559399}
+  - {fileID: 932718753}
   memories:
   - {fileID: 684201890}
   - {fileID: 2138659611}
@@ -1001,7 +1008,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8183714106218158945, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: id
-      value: 4049
+      value: 4056
       objectReference: {fileID: 0}
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: m_Name
@@ -1109,7 +1116,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4028
+      value: 4029
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -1482,7 +1489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4051
+      value: 4058
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -1553,7 +1560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4060
+      value: 4067
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -1863,7 +1870,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4015
+      value: 4016
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -2268,7 +2275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2530175796501034835, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
       propertyPath: id
-      value: 4071
+      value: 4078
       objectReference: {fileID: 0}
     - target: {fileID: 3268970094390069142, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
       propertyPath: m_Color.b
@@ -2302,6 +2309,14 @@ PrefabInstance:
       propertyPath: abilityTypeName
       value: WallClimbAbility
       objectReference: {fileID: 0}
+    - target: {fileID: 8898606664567096382, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+      propertyPath: id
+      value: 4048
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898606664567096382, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+      propertyPath: spawnStateId
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
 --- !u!4 &307559397 stripped
@@ -2312,6 +2327,11 @@ Transform:
 --- !u!1 &307559398 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7641452600076984500, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+  m_PrefabInstance: {fileID: 307559396}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &307559399 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3684041359857341238, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
   m_PrefabInstance: {fileID: 307559396}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &333987333
@@ -2993,7 +3013,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4037
+      value: 4038
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -3233,7 +3253,7 @@ PrefabInstance:
       objectReference: {fileID: 1197054385}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4058
+      value: 4065
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -3251,7 +3271,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4019
+      value: 4020
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -3330,7 +3350,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4035
+      value: 4036
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -3483,7 +3503,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4005
+      value: 4006
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -3562,7 +3582,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4009
+      value: 4010
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -3641,7 +3661,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4024
+      value: 4025
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -3772,7 +3792,7 @@ PrefabInstance:
       objectReference: {fileID: 669135106}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4052
+      value: 4059
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -6580,7 +6600,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4006
+      value: 4007
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -8339,13 +8359,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1785496873064700931, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: id
+      value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1785496873064700931, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: spawnStateId
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4502633035234811662, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
       propertyPath: abilityTypeName
       value: LongTeleportAbility
       objectReference: {fileID: 0}
     - target: {fileID: 4658293303359942510, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
       propertyPath: id
-      value: 4043
+      value: 4050
       objectReference: {fileID: 0}
     - target: {fileID: 5684913358203740075, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
       propertyPath: m_Color.b
@@ -8424,6 +8452,11 @@ PrefabInstance:
 --- !u!1 &684201890 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 698775683697440905, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+  m_PrefabInstance: {fileID: 684201889}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &684201891 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5807726479844395787, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
   m_PrefabInstance: {fileID: 684201889}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &694623279
@@ -8628,7 +8661,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4025
+      value: 4026
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -8774,7 +8807,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4012
+      value: 4013
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -9045,7 +9078,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4057
+      value: 4064
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -9137,7 +9170,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4036
+      value: 4037
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -9347,7 +9380,7 @@ PrefabInstance:
       objectReference: {fileID: 35242112}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4055
+      value: 4062
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -9432,7 +9465,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8183714106218158945, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: id
-      value: 4046
+      value: 4053
       objectReference: {fileID: 0}
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: m_Name
@@ -9609,7 +9642,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4040
+      value: 4041
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -9688,7 +9721,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4030
+      value: 4031
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -10316,7 +10349,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4039
+      value: 4040
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -10393,6 +10426,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1929929724}
     m_Modifications:
+    - target: {fileID: 1241080230727632734, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
+      propertyPath: id
+      value: 4049
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241080230727632734, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
+      propertyPath: spawnStateId
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000033152286082131, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
       propertyPath: abilityTypeName
       value: WallClimbAbility
@@ -10411,7 +10452,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5286096776548971571, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
       propertyPath: id
-      value: 4072
+      value: 4079
       objectReference: {fileID: 0}
     - target: {fileID: 5966118208376719431, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
       propertyPath: m_Color.b
@@ -10483,6 +10524,11 @@ Transform:
 --- !u!1 &932718752 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 21643744468476884, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
+  m_PrefabInstance: {fileID: 932718750}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &932718753 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6442214964388237398, guid: a4ffd245e7d91b944837e705bbf57f8f, type: 3}
   m_PrefabInstance: {fileID: 932718750}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &946259613 stripped
@@ -10619,7 +10665,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4029
+      value: 4030
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -10881,7 +10927,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4021
+      value: 4022
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -11107,7 +11153,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8183714106218158945, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: id
-      value: 4050
+      value: 4057
       objectReference: {fileID: 0}
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: m_Name
@@ -11524,7 +11570,7 @@ PrefabInstance:
       objectReference: {fileID: 1197054385}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4063
+      value: 4070
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -11547,7 +11593,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4014
+      value: 4015
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -11626,7 +11672,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4016
+      value: 4017
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -11705,7 +11751,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8183714106218158945, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: id
-      value: 4047
+      value: 4054
       objectReference: {fileID: 0}
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: m_Name
@@ -11812,7 +11858,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4031
+      value: 4032
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -11891,7 +11937,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4018
+      value: 4019
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -11968,13 +12014,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1929929724}
     m_Modifications:
+    - target: {fileID: 1949048741696044756, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+      propertyPath: id
+      value: 4045
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949048741696044756, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+      propertyPath: spawnStateId
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4447201898612489689, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
       propertyPath: abilityTypeName
       value: WallClimbAbility
       objectReference: {fileID: 0}
     - target: {fileID: 4859005109314047417, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
       propertyPath: id
-      value: 4068
+      value: 4075
       objectReference: {fileID: 0}
     - target: {fileID: 5561924543699369340, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
       propertyPath: m_Color.b
@@ -12058,6 +12112,11 @@ Transform:
 --- !u!1 &1134558922 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 754844123136399966, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+  m_PrefabInstance: {fileID: 1134558920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1134558923 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6003863475076475356, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
   m_PrefabInstance: {fileID: 1134558920}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1142108480
@@ -12407,7 +12466,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4007
+      value: 4008
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -12560,7 +12619,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4020
+      value: 4021
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -12639,7 +12698,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4034
+      value: 4035
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -12718,7 +12777,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4008
+      value: 4009
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -12942,7 +13001,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4033
+      value: 4034
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -13238,6 +13297,14 @@ PrefabInstance:
       propertyPath: abilityTypeName
       value: WallClimbAbility
       objectReference: {fileID: 0}
+    - target: {fileID: 4610548674462513663, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
+      propertyPath: id
+      value: 4047
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610548674462513663, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
+      propertyPath: spawnStateId
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5550348024257868181, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -13284,7 +13351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7465063215675886226, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
       propertyPath: id
-      value: 4070
+      value: 4077
       objectReference: {fileID: 0}
     - target: {fileID: 7626970149424249431, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
       propertyPath: m_Color.b
@@ -13326,6 +13393,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3354656900978089333, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
   m_PrefabInstance: {fileID: 1378619967}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1378619970 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8621470867146845943, guid: fe24c436aabda9f42a4c97d9feb72326, type: 3}
+  m_PrefabInstance: {fileID: 1378619967}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1380307776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13333,6 +13405,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1929929724}
     m_Modifications:
+    - target: {fileID: 1702563342323762383, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+      propertyPath: id
+      value: 4044
+      objectReference: {fileID: 0}
+    - target: {fileID: 1702563342323762383, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+      propertyPath: spawnStateId
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3538548682406545346, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
       propertyPath: abilityTypeName
       value: WallClimbAbility
@@ -13351,7 +13431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5747286576220698530, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
       propertyPath: id
-      value: 4067
+      value: 4074
       objectReference: {fileID: 0}
     - target: {fileID: 6076028062837787606, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
       propertyPath: m_Color.b
@@ -13425,6 +13505,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 492422247608197189, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
   m_PrefabInstance: {fileID: 1380307776}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1380307779 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6917198979261895623, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+  m_PrefabInstance: {fileID: 1380307776}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1380462678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13434,7 +13519,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4022
+      value: 4023
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -14071,7 +14156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4056
+      value: 4063
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -14094,7 +14179,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4004
+      value: 4005
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -14356,7 +14441,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4032
+      value: 4033
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -16040,7 +16125,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8183714106218158945, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: id
-      value: 4048
+      value: 4055
       objectReference: {fileID: 0}
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: m_Name
@@ -16147,7 +16232,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4038
+      value: 4039
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -16652,7 +16737,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4054
+      value: 4061
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -16670,7 +16755,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4041
+      value: 4042
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -16832,7 +16917,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4059
+      value: 4066
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -16959,7 +17044,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4011
+      value: 4012
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -17110,13 +17195,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1929929724}
     m_Modifications:
+    - target: {fileID: 1785496873064700931, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: id
+      value: 4046
+      objectReference: {fileID: 0}
+    - target: {fileID: 1785496873064700931, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: spawnStateId
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4502633035234811662, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
       propertyPath: abilityTypeName
       value: WallClimbAbility
       objectReference: {fileID: 0}
     - target: {fileID: 4658293303359942510, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
       propertyPath: id
-      value: 4069
+      value: 4076
       objectReference: {fileID: 0}
     - target: {fileID: 5684913358203740075, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
       propertyPath: m_Color.b
@@ -17202,6 +17295,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 698775683697440905, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
   m_PrefabInstance: {fileID: 1695932590}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1695932593 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5807726479844395787, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+  m_PrefabInstance: {fileID: 1695932590}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1709044590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17211,7 +17309,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4010
+      value: 4011
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -17290,7 +17388,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4001
+      value: 4002
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -17526,7 +17624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4065
+      value: 4072
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -18067,7 +18165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4053
+      value: 4060
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -18085,7 +18183,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4017
+      value: 4018
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -18278,7 +18376,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4013
+      value: 4014
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -18575,7 +18673,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4003
+      value: 4004
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -18987,7 +19085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4064
+      value: 4071
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -19005,7 +19103,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4027
+      value: 4028
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -19084,7 +19182,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4042
+      value: 4043
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -19247,7 +19345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4062
+      value: 4069
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -19495,7 +19593,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8183714106218158945, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: id
-      value: 4045
+      value: 4052
       objectReference: {fileID: 0}
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       propertyPath: m_Name
@@ -19641,7 +19739,7 @@ PrefabInstance:
       objectReference: {fileID: 978305468}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4066
+      value: 4073
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -19808,7 +19906,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4026
+      value: 4027
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
@@ -20010,7 +20108,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413930372170237005, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
       propertyPath: id
-      value: 4061
+      value: 4068
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32e4066cd991094c886d7b24d6445ea, type: 3}
@@ -20505,7 +20603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4220948593336760266, guid: 72aecba5487602c47a123cab58b44fe9, type: 3}
       propertyPath: id
-      value: 4044
+      value: 4051
       objectReference: {fileID: 0}
     - target: {fileID: 4920982583380019114, guid: 72aecba5487602c47a123cab58b44fe9, type: 3}
       propertyPath: abilityTypeName
@@ -20513,7 +20611,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7470844103902722977, guid: 72aecba5487602c47a123cab58b44fe9, type: 3}
       propertyPath: id
-      value: 4000
+      value: 4001
       objectReference: {fileID: 0}
     - target: {fileID: 8592519466807459915, guid: 72aecba5487602c47a123cab58b44fe9, type: 3}
       propertyPath: id
@@ -20764,7 +20862,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: id
-      value: 4002
+      value: 4003
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
