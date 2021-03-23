@@ -99,6 +99,13 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.onRewindStarted += processRewindStart;
         Managers.Rewind.onRewindFinished += processRewindEnd;
         Managers.Rewind.onRewindFinished += Managers.Object.LoadObjectsPostRewind;
+        Managers.Rewind.onRewindFinished += (gameStates, gameStateId) =>
+        {
+            if (gameStateId == 0)
+            {
+                Managers.File.saveToFile();
+            }
+        };
         //Object delegates
         Managers.Object.onObjectRecreated += Managers.Rewind.LoadObjectAndChildren;
         Managers.Object.onObjectRecreated +=
