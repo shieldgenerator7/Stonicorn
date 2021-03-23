@@ -14,6 +14,8 @@ using UnityEditor.AddressableAssets.Settings;
 
 public class CustomMenu
 {
+    const int FIRST_LEVEL_INDEX = 4;
+
     [MenuItem("SG7/Editor/Terrain/Focus Terrain Tool %T")]
     public static void levelTerrainPoints()
     {
@@ -313,11 +315,9 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Load or Unload Level Scenes %&S")]
     public static void loadOrUnloadLevelScenes()
     {
-        //Assumes that the level scenes make up the tail of the scene list
-        int firstLevelIndex = 4;
         //Find out if all of the scenes are loaded
         bool allLoaded = true;
-        for (int i = firstLevelIndex; i < EditorBuildSettings.scenes.Length; i++)
+        for (int i = FIRST_LEVEL_INDEX; i < EditorBuildSettings.scenes.Length; i++)
         {
             if (!EditorSceneManager.GetSceneByBuildIndex(i).isLoaded)
             {
@@ -331,9 +331,8 @@ public class CustomMenu
     }
     public static void loadAllLevelScenes(bool load)
     {
-        int firstLevelIndex = 3;
         //Load or unload all the level scenes
-        for (int i = firstLevelIndex; i < EditorBuildSettings.scenes.Length; i++)
+        for (int i = FIRST_LEVEL_INDEX; i < EditorBuildSettings.scenes.Length; i++)
         {
             Scene scene = EditorSceneManager.GetSceneByBuildIndex(i);
             if (!load)
@@ -482,8 +481,7 @@ public class CustomMenu
 
     static bool allLevelScenesLoaded()
     {
-        int firstLevelIndex = 3;
-        for (int i = firstLevelIndex; i < EditorBuildSettings.scenes.Length; i++)
+        for (int i = FIRST_LEVEL_INDEX; i < EditorBuildSettings.scenes.Length; i++)
         {
             Scene scene = EditorSceneManager.GetSceneByBuildIndex(i);
             if (!scene.isLoaded)
