@@ -39,6 +39,13 @@ public class LoadingScreen : MonoBehaviour
         FindObjectOfType<SplashScreenUpdater>().onSplashScreenFinished += splashScreenFinished;
         //Disable this script until splash screen finishes
         this.enabled = false;
+        //Allow app to load in background
+        Application.runInBackground = true;
+    }
+
+    private void OnDestroy()
+    {
+        Application.runInBackground = false;
     }
 
     private void Update()
