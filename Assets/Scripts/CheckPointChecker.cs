@@ -173,12 +173,24 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 Managers.Player.Teleport.overrideTeleportPosition += checkCheckPointGhosts;
                 Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
                 Managers.Player.Teleport.onTeleport += updateCheckPointCheckers;
+                Managers.PlayerRewind.tapProcessed -= checkCheckPointGhostsZoomedOut;
+                Managers.PlayerRewind.tapProcessed += checkCheckPointGhostsZoomedOut;
             }
             else
             {
                 Managers.Player.Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
                 Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
+                Managers.PlayerRewind.tapProcessed -= checkCheckPointGhostsZoomedOut;
             }
+        }
+    }
+    private static void checkCheckPointGhostsZoomedOut(Vector2 pos)
+    {
+        CheckPointChecker checkPoint = Managers.ActiveCheckPoints
+            .Find(cpc => cpc.checkGhostActivation(pos));
+        if (checkPoint)
+        {
+            Managers.Player.Teleport.processTeleport(pos);
         }
     }
     private static Vector2 checkCheckPointGhosts(Vector2 pos, Vector2 tapPos)
