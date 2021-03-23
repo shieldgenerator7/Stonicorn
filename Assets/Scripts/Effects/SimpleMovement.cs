@@ -69,7 +69,8 @@ public class SimpleMovement : MonoBehaviour
                     endPosition,
                     speed * Time.deltaTime
                     );
-                if (Vector2.Distance(transform.position, startPosition) >= direction.magnitude)
+                if (Vector2.Distance(transform.position, startPosition) >= direction.magnitude
+                    || (Vector2)transform.position == endPosition)
                 {
                     paused = true;
                     lastKeyFrame = lastKeyFrame + duration;
@@ -82,7 +83,8 @@ public class SimpleMovement : MonoBehaviour
                     startPosition,
                     speed * Time.deltaTime
                     );
-                if (Vector2.Distance(transform.position, endPosition) >= direction.magnitude)
+                if (Vector2.Distance(transform.position, endPosition) >= direction.magnitude
+                    || (Vector2)transform.position == startPosition)
                 {
                     paused = true;
                     lastKeyFrame = lastKeyFrame + duration;
