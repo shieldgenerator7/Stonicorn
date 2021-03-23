@@ -6,6 +6,7 @@ public class SimpleMovement : MonoBehaviour
 {
 
     //Settings
+    [Tooltip("Direction in Local Coordinates")]
     public Vector2 direction;
     public float duration;//in seconds
     public float endDelay;//delay after reaching the end before resetting to the beginning
@@ -24,7 +25,14 @@ public class SimpleMovement : MonoBehaviour
     // Use this for initialization
     protected virtual void Start()
     {
-        setMovement(transform.position, this.direction, this.direction.magnitude, this.direction.magnitude, false, true);
+        setMovement(
+            transform.position,
+            transform.TransformDirection(this.direction),
+            this.direction.magnitude,
+            this.direction.magnitude,
+            false,
+            true
+            );
     }
     void OnEnable()
     {
