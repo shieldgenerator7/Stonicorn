@@ -33,15 +33,20 @@ public class Launcher : SavableMonoBehaviour, IPowerable
     }
     public override SavableObject CurrentState
     {
-        get => new SavableObject(this);
-        set { }
+        get => new SavableObject(this,
+            "energyStored", energyStored
+            );
+        set
+        {
+            energyStored = value.Float("energyStored");
+        }
     }
     public override void init()
     {
         //Error checking
         if (!launchColl || !launchColl.isTrigger)
         {
-                      Debug.LogError("Launcher.launchColl requires a collider that is a trigger!", gameObject);
+            Debug.LogError("Launcher.launchColl requires a collider that is a trigger!", gameObject);
         }
     }
 
