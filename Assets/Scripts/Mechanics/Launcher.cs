@@ -16,7 +16,7 @@ public class Launcher : SavableMonoBehaviour, IPowerable
         get => energyStored;
         set
         {
-            energyStored = value;
+            energyStored = Mathf.Clamp(value, 0, maxEnergyStore);
             onPowerGiven?.Invoke(energyStored, maxEnergyStore);
         }
     }
@@ -39,7 +39,7 @@ public class Launcher : SavableMonoBehaviour, IPowerable
             );
         set
         {
-            energyStored = value.Float("energyStored");
+            EnergyStored = value.Float("energyStored");
         }
     }
     public override void init()
@@ -65,26 +65,25 @@ public class Launcher : SavableMonoBehaviour, IPowerable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        launch();
+        if (!collision.isSolid() && energyStored > 0)
+        {
+            launch();
+        }
     }
 
     private void launch()
     {
         //Move self
         float speed = (energyStored / maxEnergyStore) * moveForce;
-        Vector2 direction = transform.TransformDirection(moveVector);
+        Vector2 direction = transform.TransformDirection(moveVector).normalized;
         Utility.RaycastAnswer answer = Utility.CastAnswer(launchColl, Vector2.zero, 0, true);
         for (int i = 0; i < answer.count; i++)
         {
             Rigidbody2D rb2d = answer.rch2ds[i].rigidbody;
-            if (rb2d)
+            if (rb2d && answer.rch2ds[i].collider.isSolid())
             {
                 Vector3 forceVector = speed * direction;
-                rb2d.AddForce(forceVector * rb2d.mass);
-                if (rb2d.velocity.magnitude > speed)
-                {
-                    rb2d.velocity = rb2d.velocity.normalized * speed;
-                }
+                rb2d.velocity = forceVector;
             }
         }
         EnergyStored = 0;
