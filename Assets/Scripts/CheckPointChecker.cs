@@ -19,6 +19,23 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public List<Transform> telepads;
     public int telepadIndex { get; private set; } = -1;//the current telepad the player is in
 
+    private bool inWorkingOrder = true;
+    public bool InWorkingOrder
+    {
+        get => inWorkingOrder;
+        set
+        {
+            inWorkingOrder = value;
+            if (ghost)
+            {
+                ghost.GetComponent<SpriteRenderer>().color =
+                    (inWorkingOrder)
+                    ? Color.white
+                    : new Color(1, 0.7929859f, 0);
+            }
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -41,6 +58,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
         cpGhostMover = ghost.GetComponent<CheckPointGhostMover>();
         cpGhostMover.parentCPC = this;
         ghost.GetComponent<SpriteRenderer>().sprite = ghostSprite;
+        //Color ghost sprite
+        InWorkingOrder = InWorkingOrder;
     }
 
     public void activate()
@@ -303,6 +322,12 @@ public class CheckPointChecker : MemoryMonoBehaviour
     /// <returns></returns>
     public bool checkGhostActivation(Vector2 targetPos)
     {
+        //Don't allow activation if not working
+        if (!InWorkingOrder)
+        {
+            return false;
+        }
+        //Check if its ghost overlaps the point
         return ghost.GetComponent<Collider2D>().OverlapPoint(targetPos);
     }
     /// <summary>

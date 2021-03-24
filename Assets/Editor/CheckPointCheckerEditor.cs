@@ -20,11 +20,20 @@ public class CheckPointCheckerEditor : Editor
                 {
                     CheckPointChecker cpc = (CheckPointChecker)c;
                     string filename = cpc.grabCheckPointCameraData();
-                    string srcFolder = Application.persistentDataPath+"/";
+                    string srcFolder = Application.persistentDataPath + "/";
                     string dstFolder = "Assets/Sprites/Checkpoints/";
                     string dstFile = dstFolder + filename;
                     FileUtil.DeleteFileOrDirectory(dstFile);
                     FileUtil.MoveFileOrDirectory(srcFolder + filename, dstFile);
+                });
+        }
+        if (GUILayout.Button("Toggle InWorkingOrder (Play Mode)"))
+        {
+            new List<Object>(targets).ForEach(
+                c =>
+                {
+                    CheckPointChecker cpc = (CheckPointChecker)c;
+                    cpc.InWorkingOrder = !cpc.InWorkingOrder;
                 });
         }
         GUI.enabled = !EditorApplication.isPlaying;
