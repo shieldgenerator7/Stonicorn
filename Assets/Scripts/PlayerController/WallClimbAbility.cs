@@ -216,12 +216,12 @@ public class WallClimbAbility : PlayerAbility
             RaycastHit2D rch2d = answer.rch2ds[i];
             if (!rch2d.collider.isTrigger && rch2d.collider.gameObject != gameObject)
             {
-                spawnSticky(rch2d.point);
+                spawnSticky(rch2d.point, rch2d.normal);
                 break;
             }
         }
     }
-    void spawnSticky(Vector2 stickyPos)
+    void spawnSticky(Vector2 stickyPos, Vector2 normal)
     {
         bool tooClose = false;
         foreach (StickyPadChecker spc in GameObject.FindObjectsOfType<StickyPadChecker>())
@@ -237,7 +237,7 @@ public class WallClimbAbility : PlayerAbility
         if (!tooClose)
         {
             GameObject stickyPad = Utility.Instantiate(stickyPadPrefab);
-            stickyPad.GetComponent<StickyPadChecker>().init(playerController.GravityDir);
+            stickyPad.GetComponent<StickyPadChecker>().init(normal);
             stickyPad.transform.position = stickyPos;
             //Update Stats
             Managers.Stats.addOne(Stat.WALL_CLIMB_STICKY);

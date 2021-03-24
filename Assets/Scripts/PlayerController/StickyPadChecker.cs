@@ -21,9 +21,9 @@ public class StickyPadChecker : SavableMonoBehaviour
         coll2d = GetComponent<Collider2D>();
     }
 
-    public void init(Vector2 gravityDir)
+    public void init(Vector2 normal)
     {
-        transform.up = -gravityDir;
+        transform.right = -normal;
     }
 
     public override SavableObject CurrentState
