@@ -21,4 +21,16 @@ public class SunController : Hazard
         speed = direction.magnitude / travelTimeToTarget;
         GetComponent<Rigidbody2D>().velocity = direction.normalized * speed;
     }
+
+    private void Update()
+    {
+        Managers.ActiveCheckPoints.ForEach(cp =>
+        {
+            bool inSun = cp.transform.position.y - 2 < transform.position.y;
+            if (cp.InWorkingOrder == inSun)
+            {
+                cp.InWorkingOrder = !inSun;
+            }
+        });
+    }
 }
