@@ -7,6 +7,7 @@ public class CrabController : Hazard
     [Header("Settings")]
     public float moveSpeed = 1;
     public float throwSpeed = 5;
+    public float throwDuration = 1;
     [Header("Animators")]
     public Animator legAnimator;
     [Header("Components")]
@@ -25,6 +26,7 @@ public class CrabController : Hazard
     /// The movable object it is carrying
     /// </summary>
     Rigidbody2D heldRB2D = null;
+    private float throwStartTime = -1;
 
     //
     // Properties
@@ -78,6 +80,9 @@ public class CrabController : Hazard
         }
     }
 
+    private bool canPickupObject
+        => throwStartTime < 0 || Managers.Time.Time >= throwStartTime + throwDuration;
+
     private void pickupObject(Rigidbody2D collRB2D, bool setPosition)
     {
         //StaticUntilTouched
@@ -107,7 +112,10 @@ public class CrabController : Hazard
                 if (collRB2D)
                 {
                     rb2d.nullifyMovement();
-                    pickupObject(collRB2D, true);
+                    if (canPickupObject)
+                    {
+                        pickupObject(collRB2D, true);
+                    }
                 }
             }
             changeDirection();
@@ -122,7 +130,10 @@ public class CrabController : Hazard
             Rigidbody2D collRB2D = collGO.GetComponent<Rigidbody2D>();
             if (collRB2D)
             {
-                pickupObject(collRB2D, false);
+                if (canPickupObject)
+                {
+                    pickupObject(collRB2D, false);
+                }
             }
         }
     }
@@ -160,5 +171,6 @@ public class CrabController : Hazard
         heldRB2D.velocity =
             (throwDirection.position - transform.position)
             * throwSpeed;
+        throwStartTime = Managers.Time.Time;
     }
 }
