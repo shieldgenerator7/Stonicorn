@@ -7,6 +7,7 @@ public class Launcher : SavableMonoBehaviour, IPowerable
     public float maxEnergyPerSecond = 3;
     public float maxEnergyStore = 100;
     public float moveForce = 10;//magnitude
+    public float energyEntropy = 1;
     public Vector2 moveVector;//direction, relative to self
 
     private float energyStored = 0;
@@ -87,5 +88,10 @@ public class Launcher : SavableMonoBehaviour, IPowerable
             }
         }
         EnergyStored = 0;
+    }
+
+    private void FixedUpdate()
+    {
+        EnergyStored -= energyEntropy * Time.deltaTime;
     }
 }
