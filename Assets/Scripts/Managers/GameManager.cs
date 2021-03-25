@@ -103,6 +103,12 @@ public class GameManager : MonoBehaviour
         //Menu delegates
         MenuManager.onOpenedChanged +=
             (open) => Managers.Time.setPause(this, open);
+        MenuManager.onOpenedChanged +=
+            (open) =>
+            {
+                Managers.Camera.cameraMoveFactor = (open) ? 5 : 1.5f;
+                Managers.Camera.cameraZoomSpeed = (open) ? 5 : 1.5f;
+            };
         //Time delegates
         Managers.Time.onPauseChanged += Managers.NPC.pauseCurrentNPC;
         Managers.Time.onPauseChanged += (paused) =>

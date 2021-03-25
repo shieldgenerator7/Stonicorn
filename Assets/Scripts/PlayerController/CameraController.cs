@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
     public float screenEdgeThreshold = 0.9f;//the percentage of half the screen that is in the middle, the rest is the edge
     public float autoOffsetScreenEdgeThreshold = 0.7f;//same as screenEdgeThreshold, but used for the purposes of autoOffset
     public float cameraMoveFactor = 1.5f;
+    public float cameraZoomSpeed = 1.5f;
     public float autoOffsetDuration = 1;//how long autoOffset lasts after the latest teleport
     public float autoOffsetAngleThreshold = 15f;//how close two teleport directions have to be to activate auto offset
     public float maxTapDelay = 1;//the maximum amount of time (sec) between two taps that can activate auto offset
@@ -276,7 +277,7 @@ public class CameraController : MonoBehaviour
                     || Mathf.Clamp(ZoomLevel, TargetZoomLevel, preTargetZoomLevel) == ZoomLevel))
                 {
                     //Move current zoom closer to target zoom
-                    ZoomLevel = Mathf.Lerp(ZoomLevel, TargetZoomLevel, Time.unscaledDeltaTime);
+                    ZoomLevel = Mathf.Lerp(ZoomLevel, TargetZoomLevel, Time.unscaledDeltaTime * cameraZoomSpeed);
                     //Close in the zoom area where autozooming will continue
                     preTargetZoomLevel = ZoomLevel;
                 }
