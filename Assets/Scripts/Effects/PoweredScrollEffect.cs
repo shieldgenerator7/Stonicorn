@@ -37,7 +37,7 @@ public class PoweredScrollEffect : MonoBehaviour
 
     void onPowerFlowed(float power, float maxPower)
     {
-        rectTransform.anchoredPosition += Vector2.up * (scrollSpeed * power / maxPower) * Time.deltaTime;
+        rectTransform.anchoredPosition += Vector2.up * scrollSpeed * Time.deltaTime;
         if (rectTransform.anchoredPosition.y > selfHeight)
         {
             resetPosition();

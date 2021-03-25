@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -9,10 +10,12 @@ public class PowerGlowEffect : MonoBehaviour
 {
     private IPowerConduit conduit;
     private SpriteRenderer lightEffectRenderer;
+    private TMP_Text text;
     // Start is called before the first frame update
     void Start()
     {
         lightEffectRenderer = GetComponent<SpriteRenderer>();
+        text = GetComponent<TMP_Text>();
         conduit = GetComponent<IPowerConduit>();
         if (conduit == null)
         {
@@ -35,7 +38,15 @@ public class PowerGlowEffect : MonoBehaviour
         float curHigh = maxPower;
         float curLow = 0;
         float newAlpha = ((power - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
-        lightEffectRenderer.color = lightEffectRenderer.color.adjustAlpha(newAlpha);
+
+        if (lightEffectRenderer)
+        {
+            lightEffectRenderer.color = lightEffectRenderer.color.adjustAlpha(newAlpha);
+        }
+        if (text)
+        {
+            text.color = text.color.adjustAlpha(newAlpha);
+        }
     }
 
 }

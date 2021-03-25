@@ -5273,6 +5273,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.3018868
       objectReference: {fileID: 0}
+    - target: {fileID: 7481295740926076579, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
+      propertyPath: maxEnergyPerSecond
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7659771117124049304, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
       propertyPath: id
       value: 9011
@@ -5508,7 +5512,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 1837406103
+  m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &1775901574
@@ -11024,6 +11028,7 @@ GameObject:
   - component: {fileID: 2129085855}
   - component: {fileID: 2129085854}
   - component: {fileID: 2129085856}
+  - component: {fileID: 2129085857}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -11166,9 +11171,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d979b35c63f8cd042a74b9b413a8b49b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 20
+  scrollSpeed: 10
   parentHeight: 0
   selfHeight: 0
+--- !u!114 &2129085857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129085852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c766c9a3273cc49b677fd86639b698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2134427586
 PrefabInstance:
   m_ObjectHideFlags: 0
