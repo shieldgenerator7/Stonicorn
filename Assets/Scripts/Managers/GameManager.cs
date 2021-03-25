@@ -11,6 +11,8 @@ using UnityEngine.AddressableAssets;
 public class GameManager : MonoBehaviour
 {
     public float CAM_ROTATE_MIN = 5;
+    public AssetReference testAssetRef;
+
     private void Awake()
     {
         Managers.initInstance();
@@ -73,6 +75,18 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
         }
 #endif
+        //Initialize addressables
+        var aoh = Addressables.InitializeAsync();
+        aoh.Completed += (ao) =>
+        {
+            //Create new test object just to make sure it's working
+            var op = Addressables.InstantiateAsync(testAssetRef);
+            op.Completed += (operation) =>
+            {
+                GameObject newGO = operation.Result;
+                Destroy(newGO);
+            };
+        };
     }
 
     private void registerDelegates()
