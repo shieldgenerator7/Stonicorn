@@ -10,6 +10,7 @@ using UnityEngine.AddressableAssets;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    public float CAM_ROTATE_MIN = 5;
     private void Awake()
     {
         Managers.initInstance();
@@ -171,7 +172,15 @@ public class GameManager : MonoBehaviour
                 //Music Fade
                 Managers.Music.processFade();
             }
-            Managers.Camera.Up = GravityZone.getUpDirection(Managers.Camera.transform.position);
+            //Check to see if the camera rotation needs updated
+            Vector2 camPos = Managers.Camera.transform.position;
+            GravityZone gz = GravityZone.getGravityZone(camPos);
+            if (gz && Vector2.Distance(gz.transform.position, camPos) >= CAM_ROTATE_MIN)
+            {
+                Managers.Camera.Up = (gz.radialGravity)
+                    ? (camPos - (Vector2)gz.transform.position)
+                    : (Vector2)gz.transform.up;
+            }
         }
         Managers.Gesture.processGestures();
         Managers.Camera.updateCameraPosition();
