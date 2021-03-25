@@ -247,7 +247,7 @@ public class CameraController : MonoBehaviour
             }
             else
             {
-                if (!inView(Managers.Player.transform.position))
+                if (!inView(Managers.Player.transform.position, 0.1f))
                 {
                     recenter();
                 }
@@ -510,11 +510,12 @@ public class CameraController : MonoBehaviour
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
-    public bool inView(Vector2 position)
+    public bool inView(Vector2 position, float buffer = 0)
     {
         //2017-10-31: copied from an answer by Taylor-Libonati: http://answers.unity3d.com/questions/720447/if-game-object-is-in-cameras-field-of-view.html
         Vector3 screenPoint = Cam.WorldToViewportPoint(position);
-        return screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+        return screenPoint.x > 0 + buffer && screenPoint.x < 1 - buffer
+            && screenPoint.y > 0 + buffer && screenPoint.y < 1 - buffer;
     }
     public Vector2 getInViewPosition(Vector2 position, float distanceFactor)
     {
