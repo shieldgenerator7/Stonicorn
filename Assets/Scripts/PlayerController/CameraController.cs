@@ -43,6 +43,7 @@ public class CameraController : MonoBehaviour
     private Vector2 previousMoveDir;//the direction of the last teleport, used to determine if autoOffset should activate
     private float autoOffsetCancelTime = 0;//the time at which autoOffset will be removed automatically (updated after each teleport)
     private float lastTapTime = 0;//the last time a teleport was processed
+    private bool allowAutoExitPlanMode = true;//true: can auto-exit when near the edge but still on screen
     /// <summary>
     /// How far away the camera is from where it wants to be
     /// </summary>
@@ -247,10 +248,21 @@ public class CameraController : MonoBehaviour
             }
             else
             {
-                if (!inView(Managers.Player.transform.position, 0.1f))
+                if (allowAutoExitPlanMode)
                 {
-                    recenter();
+                    if (!inView(Managers.Player.transform.position, 0.1f))
+                    {
+                        recenter();
+                    }
                 }
+                else
+                {
+                    if (!inView(Managers.Player.transform.position))
+                    {
+                        recenter();
+                    }
+                }
+
             }
 
             //Rotate Transform
@@ -303,6 +315,7 @@ public class CameraController : MonoBehaviour
     /// <param name="newPos">Where merky is now</param>
     public void checkForAutoMovement(Vector2 oldPos, Vector2 newPos)
     {
+        allowAutoExitPlanMode = true;
         //If the player is near the edge of the screen upon teleporting, recenter the screen
         Vector2 screenPos = Cam.WorldToScreenPoint(newPos);
         Vector2 oldScreenPos = Cam.WorldToScreenPoint(oldPos);
@@ -458,6 +471,7 @@ public class CameraController : MonoBehaviour
         {
             originalCameraPosition = Vector2.zero;
         }
+        allowAutoExitPlanMode = false;
     }
 
 
