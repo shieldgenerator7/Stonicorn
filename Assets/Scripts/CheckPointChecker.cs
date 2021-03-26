@@ -28,10 +28,16 @@ public class CheckPointChecker : MemoryMonoBehaviour
             inWorkingOrder = value;
             if (ghost)
             {
-                ghost.GetComponent<SpriteRenderer>().color =
-                    (inWorkingOrder)
-                    ? Color.white
-                    : new Color(1, 0.7929859f, 0);
+                Utility.doForGameObjectAndChildren(
+                    ghost,
+                    go =>
+                    {
+                        go.GetComponent<SpriteRenderer>().color =
+                            (inWorkingOrder)
+                            ? Color.white
+                            : new Color(1, 0.7929859f, 0);
+                    }
+                    );
             }
         }
     }
