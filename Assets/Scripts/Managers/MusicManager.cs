@@ -117,6 +117,10 @@ public class MusicManager : MonoBehaviour
     {
         if (newSong != currentSong || newSong == null)
         {
+            if (prevSong)
+            {
+                prevSong.Stop();
+            }
             if (!lockCurrentSong)
             {
                 prevSong = currentSong;
