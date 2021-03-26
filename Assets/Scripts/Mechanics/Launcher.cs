@@ -91,6 +91,7 @@ public class Launcher : SavableMonoBehaviour, IPowerable
 
     private void FixedUpdate()
     {
-        EnergyStored -= energyEntropy * Time.deltaTime;
+        //Discharge energy based on how much energy is already stored
+        EnergyStored -= energyEntropy * Time.deltaTime * energyStored / maxEnergyStore;
     }
 }
