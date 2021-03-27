@@ -7,24 +7,17 @@ public class CarrotController : MonoBehaviour
 {
     public float moveForce = 3;
 
-    public List<Color> colors = new List<Color>() { Color.white };
+    public bool glowing = false;
+    public Color costumeColor = Color.white;
 
-    public Color Color => sr.color;
-
-    private SpriteRenderer sr;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        sr = GetComponent<SpriteRenderer>();
-    }
+    public GameObject glowEffect;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.isSolid())
         {
             launchObject(collision.rigidbody);
-            changeColor();
+            toggleEffect();
         }
     }
 
@@ -33,18 +26,20 @@ public class CarrotController : MonoBehaviour
         rb2d.velocity = transform.up * moveForce;
     }
 
-    private void changeColor()
+    private void toggleEffect()
     {
-        int index = colors.IndexOf(sr.color);
-        index = (index + colors.Count + 1) % colors.Count;
-        sr.color = colors[index];
-        //If all carrots same color, change Merky's color
-        Color color = Color;
+        glowing = !glowing;
+        glowEffect.SetActive(glowing);
+        //If all carrots are glowing, change Merky's color
         if (FindObjectsOfType<CarrotController>().ToList()
-            .All(cc => cc.Color == color)
-            )
+            .All(cc => cc.glowing))
         {
-            Managers.Player.GetComponent<SpriteRenderer>().color = color;
+            Managers.Player.GetComponent<SpriteRenderer>().color = costumeColor;
+        }
+        else if (FindObjectsOfType<CarrotController>().ToList()
+            .All(cc => !cc.glowing))
+        {
+            Managers.Player.GetComponent<SpriteRenderer>().color = Color.white;
         }
     }
 }
