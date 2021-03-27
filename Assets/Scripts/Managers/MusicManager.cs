@@ -9,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class MusicManager : MonoBehaviour
 {
+    [Range(0, 1)]
+    public float maxVolume = 1;
 
     private AudioSource currentSong;//the current song that is playing
     private AudioSource prevSong;//the previous song that was playing
@@ -196,11 +198,11 @@ public class MusicManager : MonoBehaviour
     {
         if (currentSong)
         {
-            currentSong.volume = Managers.Settings.musicVolume * fadePercent * volumeScaling;
+            currentSong.volume = Managers.Settings.musicVolume * fadePercent * volumeScaling * maxVolume;
         }
         if (prevSong)
         {
-            prevSong.volume = Managers.Settings.musicVolume * (1 - fadePercent) * volumeScaling;
+            prevSong.volume = Managers.Settings.musicVolume * (1 - fadePercent) * volumeScaling * maxVolume;
         }
     }
 }
