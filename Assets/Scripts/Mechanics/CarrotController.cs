@@ -12,6 +12,9 @@ public class CarrotController : MonoBehaviour
 
     public GameObject glowEffect;
 
+    public AudioClip boingOn;
+    public AudioClip boingOff;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.isSolid())
@@ -30,6 +33,14 @@ public class CarrotController : MonoBehaviour
     {
         glowing = !glowing;
         glowEffect.SetActive(glowing);
+        if (glowing)
+        {
+            AudioSource.PlayClipAtPoint(boingOn, transform.position);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(boingOff, transform.position);
+        }
         //If all carrots are glowing, change Merky's color
         if (FindObjectsOfType<CarrotController>().ToList()
             .All(cc => cc.glowing))
