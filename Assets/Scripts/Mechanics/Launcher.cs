@@ -65,7 +65,7 @@ public class Launcher : SavableMonoBehaviour, IPowerable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.isSolid() && energyStored > 0)
+        if (collision.isSolid() && energyStored > 0)
         {
             launch();
         }
