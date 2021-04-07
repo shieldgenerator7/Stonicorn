@@ -54,7 +54,6 @@ public class GameState
                     );
             }
         }
-        states.OrderByDescending(state => state.priority);
     }
     //Loading
     public void load()
