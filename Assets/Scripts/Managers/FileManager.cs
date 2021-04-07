@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FileManager : MonoBehaviour
+public class FileManager : Manager
 {
     public string fileName = "merky";
     public string fileExtension = ".txt";
@@ -43,6 +43,10 @@ public class FileManager : MonoBehaviour
             }
         }
         ES3.Save<List<SettingObject>>("settings", settings, filename);
+
+        //Save Game Data
+        ES3.Save<GameData>("data", data, fileName);
+
         //Delegate
         onFileSave?.Invoke(filename);
     }
@@ -73,6 +77,10 @@ public class FileManager : MonoBehaviour
                     }
                 }
             }
+
+            //Load Game Data
+            data = ES3.Load<GameData>("data", fileName);
+
             //Delegate
             onFileLoad?.Invoke(filename);
         }

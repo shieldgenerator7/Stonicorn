@@ -143,11 +143,7 @@ public class GameManager : MonoBehaviour
                 }
             };
         //File delegates
-        Managers.File.onFileSave += Managers.Rewind.saveToFile;
-        Managers.File.onFileSave += Managers.Object.saveToFile;
         Managers.File.onFileSave += Managers.Settings.saveSettings;
-        Managers.File.onFileLoad += Managers.Rewind.loadFromFile;
-        Managers.File.onFileLoad += Managers.Object.loadFromFile;
         Managers.File.onFileLoad += Managers.Settings.loadSettings;
         //NPC delegates
         Managers.NPC.onNPCSpeakingChanged += (speaking) => Managers.Music.Quiet = !speaking;

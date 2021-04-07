@@ -442,21 +442,4 @@ public class ObjectManager : Manager, ISetting
         }
     }
     #endregion
-
-    public void saveToFile(string fileName)
-    {
-        ES3.Save<Dictionary<int, MemoryObject>>(
-            "memories",
-            data.memories,
-            fileName
-            );
-    }
-    public void loadFromFile(string fileName)
-    {
-        //Load memories
-        data.memories = ES3.Load<Dictionary<int, MemoryObject>>(
-            "memories",
-            fileName
-            );
-    }
 }

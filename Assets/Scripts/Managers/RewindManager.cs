@@ -51,24 +51,6 @@ public class RewindManager : Manager
         }
     }
 
-    public void saveToFile(string fileName)
-    {
-        //Save game states
-        ES3.Save<List<GameState>>(
-            "states",
-            data.gameStates,
-            fileName
-            );
-    }
-    public void loadFromFile(string fileName)
-    {
-        //Load game states
-        data.gameStates = ES3.Load<List<GameState>>(
-            "states",
-            fileName
-            );
-    }
-
     /// <summary>
     /// Saves the current game state
     /// </summary>
