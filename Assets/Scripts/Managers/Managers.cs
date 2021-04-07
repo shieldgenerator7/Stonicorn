@@ -174,7 +174,7 @@ public class Managers : MonoBehaviour
         Camera = FindObjectOfType<CameraController>();
 
         //Init with game data
-        foreach (Manager m in FindObjectsOfTypeAll<Manager>())
+        foreach (Manager m in FindObjectsOfType<Manager>())
         {
             m.init(gameData);
         }
