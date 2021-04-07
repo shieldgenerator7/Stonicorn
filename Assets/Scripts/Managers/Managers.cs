@@ -158,23 +158,25 @@ public class Managers : MonoBehaviour
         Stats = FindObjectOfType<GameStatistics>();
         Time = FindObjectOfType<TimeManager>();
         Rewind = FindObjectOfType<RewindManager>();
-        Rewind.init(gameData);
         Object = FindObjectOfType<ObjectManager>();
-        Object.init(gameData);
         Physics2DSurrogate = GetComponent<Physics2DSurrogate>();
         Music = FindObjectOfType<MusicManager>();
         Sound = FindObjectOfType<SoundManager>();
         Video = FindObjectOfType<VideoManager>();
         Effect = FindObjectOfType<EffectManager>();
         Scene = FindObjectOfType<ScenesManager>();
-        Scene.init(gameData);
         Settings = FindObjectOfType<SettingsManager>();
         File = FindObjectOfType<FileManager>();
         DemoMode = FindObjectOfType<DemoModeManager>();
         Power = FindObjectOfType<PowerManager>();
         Player = FindObjectOfType<PlayerController>();
         PlayerRewind = FindObjectOfType<PlayerRewindController>();
-        PlayerRewind.init(gameData);
         Camera = FindObjectOfType<CameraController>();
+
+        //Init with game data
+        foreach (Manager m in FindObjectsOfTypeAll<Manager>())
+        {
+            m.init(gameData);
+        }
     }
 }
