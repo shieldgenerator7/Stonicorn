@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerRewindController : MonoBehaviour
+public class PlayerRewindController : Manager
 {
     [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
@@ -32,7 +32,7 @@ public class PlayerRewindController : MonoBehaviour
         if (show)
         {
             //Loop through all game states
-            foreach (GameState gs in Managers.Rewind.GameStates)
+            foreach (GameState gs in data.gameStates)
             {
                 //Update its representation
                 updateRepresentation(gs);
@@ -157,7 +157,7 @@ public class PlayerRewindController : MonoBehaviour
     {
         float closestDistance = float.MaxValue;
         GameObject closestObject = null;
-        foreach (GameState gs in Managers.Rewind.GameStates)
+        foreach (GameState gs in data.gameStates)
         {
             GameObject rep = getRepresentation(gs);
             Vector2 gsPos = rep.transform.position;
@@ -170,16 +170,6 @@ public class PlayerRewindController : MonoBehaviour
         }
         return closestObject;
     }
-    /// <summary>
-    /// Used specifically to highlight last saved Merky after the first death
-    /// for tutorial purposes
-    /// </summary>
-    /// <returns></returns>
-    public Vector2 getLatestSafeRewindGhostPosition()
-        => Managers.Rewind.GameStates[
-            Managers.Rewind.GameStateId - 1
-            ]
-            .Merky.position;
 
     public bool checkRepresentation(GameState gs, Vector3 touchPoint, bool checkSprite = true)
     {
@@ -214,7 +204,7 @@ public class PlayerRewindController : MonoBehaviour
         //Update position of first representation
         if (gameStateId >= 0)
         {
-            updateRepresentation(Managers.Rewind.GameStates[0]);
+            updateRepresentation(data.gameStates[0]);
         }
     }
 
@@ -224,14 +214,14 @@ public class PlayerRewindController : MonoBehaviour
         //both precision clicking and fat-fingered tapping
 
         //Sprite detection pass
-        List<GameState> states = Managers.Rewind.GameStates
+        List<GameState> states = data.gameStates
             .FindAll(gs => checkRepresentation(gs, pos))
             .OrderBy(gs => gs.id).ToList();
 
         //Collider detection pass
         if (states.Count == 0)
         {
-            states = Managers.Rewind.GameStates
+            states = data.gameStates
                 .FindAll(gs => checkRepresentation(gs, pos, false))
                 .OrderBy(gs => gs.id).ToList();
         }

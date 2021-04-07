@@ -174,6 +174,7 @@ public class Managers : MonoBehaviour
         Power = FindObjectOfType<PowerManager>();
         Player = FindObjectOfType<PlayerController>();
         PlayerRewind = FindObjectOfType<PlayerRewindController>();
+        PlayerRewind.init(gameData);
         Camera = FindObjectOfType<CameraController>();
     }
 }

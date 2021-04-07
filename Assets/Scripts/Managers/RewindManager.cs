@@ -24,8 +24,6 @@ public class RewindManager : Manager
 
     public bool rewindInterruptableByPlayer { get; private set; } = true;
 
-    public List<GameState> GameStates => data.gameStates;
-
     public void init()
     {
         if (data.gameStates.Count == 0)
