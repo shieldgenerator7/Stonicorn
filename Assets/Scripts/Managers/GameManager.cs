@@ -260,13 +260,7 @@ public class GameManager : MonoBehaviour
             }
         }
         //Update the list of game objects to save
-#if UNITY_EDITOR
-        Logger.log(this, "sceneUnloaded: " + scene.name + ", old object count: " + Managers.Object.GameObjectCount);
-#endif
         Managers.Object.refreshGameObjects();
-#if UNITY_EDITOR
-        Logger.log(this, "sceneUnloaded: " + scene.name + ", new object count: " + Managers.Object.GameObjectCount);
-#endif
     }
     #endregion
 

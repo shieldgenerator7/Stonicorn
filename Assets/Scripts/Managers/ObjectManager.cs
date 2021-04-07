@@ -9,12 +9,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class ObjectManager : Manager, ISetting
 {
-    public List<GameObject> GameObjects => data.gameObjects.Values.ToList();
-    public int GameObjectCount => data.gameObjects.Count;
-
     //Create queue
     private Dictionary<int, AsyncOperationHandle<GameObject>> recreateQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
-    
+
 
     public void LoadSceneObjects(List<GameObject> sceneGOs, List<int> foreignIds, int lastStateSeen)
     {
@@ -28,20 +25,15 @@ public class ObjectManager : Manager, ISetting
         //Remove null objects from the list
         cleanObjects();
         //Destroy objects not spawned yet in the new selected state
-        int prevCount = GameObjects.Count;
         data.knownObjects
             .FindAll(soid => soid.spawnStateId > gameStateId)
             .ForEach(soid => destroyAndForgetObject(soid.id));
-        int nowCount = GameObjects.Count;
-        Debug.Log("Check after rewind complete: " + (prevCount - nowCount) + " objects removed");
     }
 
-    public List<GameObject> onPreGameStateSaved()
+    public void onPreGameStateSaved()
     {
         //Remove any null objects from the list
         cleanObjects();
-        //Return game object list
-        return GameObjects;
     }
 
     public void recreateObject(int goId, int lastStateSeen = -1)

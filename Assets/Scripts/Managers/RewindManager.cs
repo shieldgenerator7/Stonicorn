@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RewindManager : Manager
@@ -71,20 +72,20 @@ public class RewindManager : Manager
     /// </summary>
     public void Save()
     {
-        List<GameObject> gameObjects = new List<GameObject>();
-        foreach(OnPreGameStateSaved opgss  in onPreGameStateSaved.GetInvocationList())
-        {
-            gameObjects.AddRange(opgss.Invoke());
-        }
+        onPreGameStateSaved?.Invoke();
         //Create a new game state
-        data.gameStates.Add(new GameState(gameObjects));
+        data.gameStates.Add(
+            new GameState(
+                data.gameObjects.Values.ToList()
+                )
+            );
         //Update game state id variables
         chosenId++;
         rewindId++;
         //Save delegate
         onGameStateSaved?.Invoke(chosenId);
     }
-    public delegate List<GameObject> OnPreGameStateSaved();
+    public delegate void OnPreGameStateSaved();
     public event OnPreGameStateSaved onPreGameStateSaved;
     public delegate void OnGameStateSaved(int gameStateId);
     public event OnGameStateSaved onGameStateSaved;
