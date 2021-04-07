@@ -119,14 +119,6 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.onGameStateSaved += Managers.Scene.updateSceneLoadersForward;
         Managers.Rewind.onRewindStarted += processRewindStart;
         Managers.Rewind.onRewindFinished += processRewindEnd;
-        Managers.Rewind.onRewindFinished += Managers.Object.LoadObjectsPostRewind;
-        Managers.Rewind.onRewindFinished += (gameStateId) =>
-        {
-            if (gameStateId == 0)
-            {
-                Managers.File.saveToFile();
-            }
-        };
         //Object delegates
         Managers.Object.onObjectRecreated += Managers.Rewind.LoadObjectAndChildren;
         Managers.Object.onObjectRecreated +=
@@ -281,6 +273,7 @@ public class GameManager : MonoBehaviour
     void processRewindEnd(int rewindStateId)
     {
         //Refresh the game object list
+        Managers.Object.LoadObjectsPostRewind(rewindStateId);
         if (Managers.Object.RecreatingObjects)
         {
             Managers.Object.onAllObjectsRecreated -= Managers.Object.refreshGameObjects;
@@ -298,8 +291,14 @@ public class GameManager : MonoBehaviour
         Managers.Time.setPause(this, false);
         //Re-enable physics because the rewind is over
         Managers.Physics2DSurrogate.enabled = false;
-        //Update SceneLoaders
+        //Update SceneLoaders & scene object list
         Managers.Scene.updateSceneLoadersBackward(rewindStateId);
+        Managers.Scene.updateSceneObjectList(rewindStateId);
+        //Auto-Save file if rewound to beginning
+        if (rewindStateId == 0)
+        {
+            Managers.File.saveToFile();
+        }
     }
     #endregion
 

@@ -65,6 +65,13 @@ public class ScenesManager : Manager
             sl.onObjectExited -= registerObjectInScene;
             sl.onObjectExited += registerObjectInScene;
         });
+
+        //init scene object list
+        data.gameStates
+            .OrderBy(gs => gs.id).ToList()
+            .ForEach(
+                gs => updateSceneObjectList(gs.id)
+            );
     }
 
     #region Space Management
@@ -181,6 +188,13 @@ public class ScenesManager : Manager
     private SceneLoader getSceneLoader(Scene scene)
         => sceneLoaders.Find(sl => sl.Scene == scene);
     #endregion
+
+    public void updateSceneObjectList(int gameStateId)
+    {
+        data.gameStates[gameStateId].states.ForEach(
+            os => data.objectSceneList[os.objectId] = os.sceneId
+            );
+    }
 
     public void updateSceneLoadersForward(int gameStateId)
     {

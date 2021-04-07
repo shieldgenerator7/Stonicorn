@@ -20,6 +20,7 @@ public class GameData
     /// <summary>
     /// Stores the object's id and the scene id of the scene that it's in
     /// </summary>
+    [ES3NonSerializable]
     public Dictionary<int, int> objectSceneList = new Dictionary<int, int>();
 
     public static implicit operator bool(GameData gd)
