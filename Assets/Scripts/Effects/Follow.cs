@@ -50,10 +50,12 @@ public class Follow : MonoBehaviour
         Managers.Rewind.onRewindFinished -= rewindFinished;
     }
 
-    void rewindStarted(List<GameState> gss, int gs) => this.enabled = false;
-    void rewindState(List<GameState> gss, int gs)
+    void rewindStarted(int gs)
+        => this.enabled = false;
+    void rewindState(int gs)
         => updateTransform(false, orientToCamera);
-    void rewindFinished(List<GameState> gss, int gs) => this.enabled = true;
+    void rewindFinished(int gs)
+        => this.enabled = true;
 
     private void LateUpdate()
     {

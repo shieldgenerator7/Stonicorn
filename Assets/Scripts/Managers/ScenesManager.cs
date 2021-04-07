@@ -201,17 +201,18 @@ public class ScenesManager : Manager
             }
         }
     }
-    public void prepareForRewind(List<GameState> gameStates, int rewindStateId)
+    public void prepareForRewind(int rewindStateId)
     {
+        int gameStateCount = data.gameStates.Count;
         //Load levels that Merky will be passing through
         foreach (SceneLoader sl in sceneLoaders)
         {
-            if (sl.firstOpenGameStateId <= gameStates.Count
+            if (sl.firstOpenGameStateId <= gameStateCount
                 && sl.lastOpenGameStateId >= rewindStateId)
             {
-                for (int i = gameStates.Count - 1; i >= rewindStateId; i--)
+                for (int i = gameStateCount - 1; i >= rewindStateId; i--)
                 {
-                    if (sl.isPositionInScene(gameStates[i].Merky.position))
+                    if (sl.isPositionInScene(data.gameStates[i].Merky.position))
                     {
                         sl.loadLevelIfUnLoaded();
                         break;

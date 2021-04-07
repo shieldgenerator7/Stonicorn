@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.onRewindStarted += processRewindStart;
         Managers.Rewind.onRewindFinished += processRewindEnd;
         Managers.Rewind.onRewindFinished += Managers.Object.LoadObjectsPostRewind;
-        Managers.Rewind.onRewindFinished += (gameStates, gameStateId) =>
+        Managers.Rewind.onRewindFinished += (gameStateId) =>
         {
             if (gameStateId == 0)
             {
@@ -261,7 +261,7 @@ public class GameManager : MonoBehaviour
 
     #region Rewind Delegates
 
-    void processRewindStart(List<GameState> gameStates, int rewindStateId)
+    void processRewindStart(int rewindStateId)
     {
         //Set the music speed to rewind
         Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
@@ -276,9 +276,9 @@ public class GameManager : MonoBehaviour
         //Update Stats
         Managers.Stats.addOne(Stat.REWIND);
         //Prepare scenes
-        Managers.Scene.prepareForRewind(gameStates, rewindStateId);
+        Managers.Scene.prepareForRewind(rewindStateId);
     }
-    void processRewindEnd(List<GameState> gameStates, int rewindStateId)
+    void processRewindEnd(int rewindStateId)
     {
         //Refresh the game object list
         if (Managers.Object.RecreatingObjects)

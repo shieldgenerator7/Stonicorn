@@ -559,7 +559,7 @@ public class PlayerController : MonoBehaviour
         onDragGesture?.Invoke(origPos, newPos, finished);
     }
 
-    void pauseMovementAfterRewind(List<GameState> gameStates, int gameStateId)
+    void pauseMovementAfterRewind(int gameStateId)
     {
         //Grant gravity immunity
         MovementPaused = true;

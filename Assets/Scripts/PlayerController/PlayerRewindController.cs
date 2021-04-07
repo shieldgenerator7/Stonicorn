@@ -204,7 +204,7 @@ public class PlayerRewindController : MonoBehaviour
             return false;
         }
     }
-    private void hideOldRepresentations(List<GameState> gameStates, int gameStateId)
+    private void hideOldRepresentations(int gameStateId)
     {
         //Hide representations that got rewound out of
         for (int i = gameStateId; i < representations.Count; i++)
@@ -214,7 +214,7 @@ public class PlayerRewindController : MonoBehaviour
         //Update position of first representation
         if (gameStateId >= 0)
         {
-            updateRepresentation(gameStates[0]);
+            updateRepresentation(Managers.Rewind.GameStates[0]);
         }
     }
 

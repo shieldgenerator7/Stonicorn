@@ -19,7 +19,7 @@ public class ObjectManager : Manager, ISetting
         foreignIds.FindAll(id => !hasObject(id))
             .ForEach(id => recreateObject(id, lastStateSeen));
     }
-    public void LoadObjectsPostRewind(List<GameState> gameStates, int gameStateId)
+    public void LoadObjectsPostRewind(int gameStateId)
     {
         Debug.Log("Checking objects after rewinding to state " + gameStateId);
         //Remove null objects from the list

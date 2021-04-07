@@ -103,7 +103,7 @@ public class TeleportAbility : PlayerAbility
         Managers.Rewind.onRewindFinished -= onRewindFinished;
     }
 
-    private void onRewindFinished(List<GameState> gameStates, int gameStateId)
+    private void onRewindFinished(int gameStateId)
     {
         hasFreeTeleport = true;
     }

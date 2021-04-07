@@ -124,7 +124,7 @@ public class RewindManager : Manager
             //Stop the rewind
             Rewinding = false;
         }
-        onRewindState?.Invoke(data.gameStates, chosenId);
+        onRewindState?.Invoke(chosenId);
     }
 
     /// <summary>
@@ -234,9 +234,9 @@ public class RewindManager : Manager
         if (gamestateId == chosenId)
         {
             //Just load it
-            onRewindStarted?.Invoke(data.gameStates, gamestateId);
+            onRewindStarted?.Invoke(gamestateId);
             Load(gamestateId);
-            onRewindFinished?.Invoke(data.gameStates, gamestateId);
+            onRewindFinished?.Invoke(gamestateId);
             //And don't actually rewind
             return;
         }
@@ -285,7 +285,7 @@ public class RewindManager : Manager
                     rewindDelay = maxRewindDuration / count;
                 }
                 //Rewind Started Delegate
-                onRewindStarted?.Invoke(data.gameStates, rewindId);
+                onRewindStarted?.Invoke(rewindId);
             }
             //Stop rewinding
             else
@@ -293,11 +293,11 @@ public class RewindManager : Manager
                 //Set rewindId to chosenId
                 rewindId = chosenId;
                 //Rewind Finished Delegate
-                onRewindFinished?.Invoke(data.gameStates, chosenId);
+                onRewindFinished?.Invoke(chosenId);
             }
         }
     }
-    public delegate void OnRewind(List<GameState> gameStates, int gameStateId);
+    public delegate void OnRewind(int gameStateId);
     public event OnRewind onRewindStarted;
     public event OnRewind onRewindFinished;
     public event OnRewind onRewindState;
