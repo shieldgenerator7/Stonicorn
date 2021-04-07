@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class GameState
 {

@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using System.Linq;
 
 public class ObjectState
@@ -14,15 +12,17 @@ public class ObjectState
     public Vector2 velocity;
     public float angularVelocity;
     //Saveable Object
-    public List<SavableObject> soList = new List<SavableObject>();
+    public List<SavableObject> soList;
     //Name
     public int objectId = -1;
+    public int sceneId = -1;
 
     public ObjectState() { }
     public ObjectState(GameObject go)
     {
         SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
         objectId = info.Id;
+        sceneId = go.scene.buildIndex;
         saveState(go);
     }
 
@@ -41,7 +41,7 @@ public class ObjectState
         }
         //SavableMonoBehaviours
         List<SavableMonoBehaviour> smbs = go.GetComponents<SavableMonoBehaviour>().ToList();
-        smbs.ForEach(smb => soList.Add(smb.CurrentState));
+        soList = smbs.ConvertAll<SavableObject>(smb => smb.CurrentState);
     }
     public void loadState(GameObject go)
     {
