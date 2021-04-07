@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class GameData
 {
 
@@ -20,4 +22,7 @@ public class GameData
     /// Stores the object's id and the scene id of the scene that it's in
     /// </summary>
     public Dictionary<int, int> objectSceneList = new Dictionary<int, int>();
+
+    public static implicit operator bool(GameData gd)
+        => gd != null;
 }

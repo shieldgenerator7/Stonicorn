@@ -5,6 +5,12 @@ using UnityEngine;
 public class Managers : MonoBehaviour
 {
     //
+    // Game Data
+    //
+
+    public GameData gameData;
+
+    //
     // Managers
     //
 
@@ -138,6 +144,12 @@ public class Managers : MonoBehaviour
         }
         instance = this;
 
+        //GameData
+        if (!gameData)
+        {
+            gameData = new GameData();
+        }
+
         //Populate other managers
         Game = FindObjectOfType<GameManager>();
         Gesture = FindObjectOfType<GestureManager>();
@@ -146,13 +158,16 @@ public class Managers : MonoBehaviour
         Stats = FindObjectOfType<GameStatistics>();
         Time = FindObjectOfType<TimeManager>();
         Rewind = FindObjectOfType<RewindManager>();
+        Rewind.init(gameData);
         Object = FindObjectOfType<ObjectManager>();
+        Object.init(gameData);
         Physics2DSurrogate = GetComponent<Physics2DSurrogate>();
         Music = FindObjectOfType<MusicManager>();
         Sound = FindObjectOfType<SoundManager>();
         Video = FindObjectOfType<VideoManager>();
         Effect = FindObjectOfType<EffectManager>();
         Scene = FindObjectOfType<ScenesManager>();
+        Scene.init(gameData);
         Settings = FindObjectOfType<SettingsManager>();
         File = FindObjectOfType<FileManager>();
         DemoMode = FindObjectOfType<DemoModeManager>();

@@ -5,14 +5,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ScenesManager : SavableMonoBehaviour
+public class ScenesManager : Manager
 {
     [SerializeField]
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
-    /// <summary>
-    /// Stores the object's id and the scene id of the scene that it's in
-    /// </summary>
-    private Dictionary<int, int> objectSceneList = new Dictionary<int, int>();
 
     private int pauseForLoadingSceneId = -1;//the id of the scene that is currently loading
     public int PauseForLoadingSceneId
@@ -34,8 +30,9 @@ public class ScenesManager : SavableMonoBehaviour
     //Scene Loading
     private List<Scene> openScenes = new List<Scene>();//the list of the scenes that are open
 
-    public override void init()
+    public void init()
     {
+        base.init(data);
 #if UNITY_EDITOR
         //Add list of already open scenes to open scene list (for editor)
         for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -247,18 +244,18 @@ public class ScenesManager : SavableMonoBehaviour
     public List<int> getObjectsIdsInScene(Scene scene)
     {
         int sceneId = scene.buildIndex;
-        return objectSceneList.ToList()
+        return data.objectSceneList.ToList()
             .FindAll(entry => entry.Value == sceneId)
             .ConvertAll(entry => entry.Key);
     }
 
     public Scene getObjectScene(int objectId)
     {
-        if (objectSceneList.ContainsKey(objectId))
+        if (data.objectSceneList.ContainsKey(objectId))
         {
             if (objectId >= 0)
             {
-                return SceneManager.GetSceneByBuildIndex(objectSceneList[objectId]);
+                return SceneManager.GetSceneByBuildIndex(data.objectSceneList[objectId]);
             }
             throw new ArgumentException(
                 "Cannot get scene of object with id " + objectId
@@ -274,19 +271,19 @@ public class ScenesManager : SavableMonoBehaviour
     public bool isObjectInScene(GameObject go, Scene scene)
     {
         int objectId = go.getKey();
-        if (objectSceneList.ContainsKey(objectId))
+        if (data.objectSceneList.ContainsKey(objectId))
         {
-            return objectSceneList[objectId] == scene.buildIndex;
+            return data.objectSceneList[objectId] == scene.buildIndex;
         }
         return true;
     }
 
     public bool isObjectSceneOpen(int objectId)
     {
-        if (objectSceneList.ContainsKey(objectId))
+        if (data.objectSceneList.ContainsKey(objectId))
         {
-            Debug.Log("Object's (" + objectId + ") scene id: " + objectSceneList[objectId]);
-            return isSceneOpen(objectSceneList[objectId]);
+            Debug.Log("Object's (" + objectId + ") scene id: " + data.objectSceneList[objectId]);
+            return isSceneOpen(data.objectSceneList[objectId]);
         }
         Debug.Log("Can't get scene for object (" + objectId + ") because it's not in the list");
         return false;
@@ -395,7 +392,7 @@ public class ScenesManager : SavableMonoBehaviour
             );
         int objectId = go.getKey();
         int sceneId = scene.buildIndex;
-        if (!objectSceneList.ContainsKey(objectId))
+        if (!data.objectSceneList.ContainsKey(objectId))
         {
             if (objectId == 0)
             {
@@ -404,11 +401,11 @@ public class ScenesManager : SavableMonoBehaviour
                     go
                     );
             }
-            objectSceneList.Add(objectId, sceneId);
+            data.objectSceneList.Add(objectId, sceneId);
         }
         else
         {
-            objectSceneList[objectId] = sceneId;
+            data.objectSceneList[objectId] = sceneId;
         }
     }
 
@@ -452,30 +449,16 @@ public class ScenesManager : SavableMonoBehaviour
     private void removeObject(GameObject go)
     {
         Debug.Log("Removing object " + go + " (" + go.getKey() + ") from list", go);
-        objectSceneList.Remove(go.getKey());
+        data.objectSceneList.Remove(go.getKey());
     }
 
     public void printObjectSceneList()
     {
         Debug.Log(
-            "=== ScenesManager Object Scene List (" + objectSceneList.Count + ")===",
+            "=== ScenesManager Object Scene List (" + data.objectSceneList.Count + ")===",
             gameObject
             );
-        objectSceneList.ToList()
+        data.objectSceneList.ToList()
             .ForEach(entry => Debug.Log(entry.Key + " => " + entry.Value));
-    }
-
-    public override int Priority => 100;
-
-    public override SavableObject CurrentState
-    {
-        get => new SavableObject(this)
-            .addDictionary(
-            "objectSceneList", objectSceneList
-            );
-        set
-        {
-            objectSceneList = value.Dictionary<int, int>("objectSceneList");
-        }
     }
 }

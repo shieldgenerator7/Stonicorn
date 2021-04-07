@@ -712,28 +712,28 @@ public class CustomMenu
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
     public static void populateObjectManagerKnownObjectsList()
     {
-        ObjectManager objectManager = GameObject.FindObjectOfType<ObjectManager>();
-        int prevCount = objectManager.knownObjects.Count;
-        objectManager.knownObjects = new List<SavableObjectInfoData>();
+        Managers managers = GameObject.FindObjectOfType<Managers>();
+        int prevCount = managers.gameData.knownObjects.Count;
+        managers.gameData.knownObjects = new List<SavableObjectInfoData>();
         List<GameObject> savables = new List<GameObject>();
         GameObject.FindObjectsOfType<SceneSavableList>().ToList()
             .ForEach(ssl =>
             {
-                objectManager.knownObjects.AddRange(
+                managers.gameData.knownObjects.AddRange(
                     ssl.savables.ConvertAll(
                         go => go.GetComponent<SavableObjectInfo>().Data
                         )
                     );
             });
-        objectManager.knownObjects.OrderBy(soid => soid.id);
-        int newCount = objectManager.knownObjects.Count;
+        managers.gameData.knownObjects.OrderBy(soid => soid.id);
+        int newCount = managers.gameData.knownObjects.Count;
         if (prevCount != newCount)
         {
-            EditorUtility.SetDirty(objectManager);
-            EditorSceneManager.MarkSceneDirty(objectManager.gameObject.scene);
+            EditorUtility.SetDirty(managers);
+            EditorSceneManager.MarkSceneDirty(managers.gameObject.scene);
             Debug.LogWarning(
                 "ObjectManager known objects count: " + prevCount + " -> " + newCount,
-                objectManager.gameObject
+                managers.gameObject
                 );
         }
     }

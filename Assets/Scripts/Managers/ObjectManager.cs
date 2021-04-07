@@ -7,18 +7,14 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class ObjectManager : MonoBehaviour, ISetting
+public class ObjectManager : Manager, ISetting
 {
-    private Dictionary<int, GameObject> gameObjects = new Dictionary<int, GameObject>();//list of current objects that have state to save
-    public List<GameObject> GameObjects => gameObjects.Values.ToList();
-    public int GameObjectCount => gameObjects.Count;
-
-    //Memories
-    private Dictionary<int, MemoryObject> memories = new Dictionary<int, MemoryObject>();//memories that once turned on, don't get turned off
+    public List<GameObject> GameObjects => data.gameObjects.Values.ToList();
+    public int GameObjectCount => data.gameObjects.Count;
 
     //Create queue
     private Dictionary<int, AsyncOperationHandle<GameObject>> recreateQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
-    public List<SavableObjectInfoData> knownObjects;
+    
 
     public void LoadSceneObjects(List<GameObject> sceneGOs, List<int> foreignIds, int lastStateSeen)
     {
@@ -33,7 +29,7 @@ public class ObjectManager : MonoBehaviour, ISetting
         cleanObjects();
         //Destroy objects not spawned yet in the new selected state
         int prevCount = GameObjects.Count;
-        knownObjects
+        data.knownObjects
             .FindAll(soid => soid.spawnStateId > gameStateId)
             .ForEach(soid => destroyAndForgetObject(soid.id));
         int nowCount = GameObjects.Count;
@@ -52,7 +48,7 @@ public class ObjectManager : MonoBehaviour, ISetting
     {
         if (goId > 0)
         {
-            string prefabGUID = knownObjects.Find(soid => soid.id == goId).prefabGUID;
+            string prefabGUID = data.knownObjects.Find(soid => soid.id == goId).prefabGUID;
             Debug.Log("Recreating goId: " + goId + " using prefab "
 #if UNITY_EDITOR
                 + AssetDatabase.GUIDToAssetPath(prefabGUID)
@@ -141,17 +137,17 @@ public class ObjectManager : MonoBehaviour, ISetting
 
     public bool RecreatingObjects => recreateQueue.Count > 0;
 
-    public SettingObject Setting
+    public override SettingObject Setting
     {
         get => new SettingObject(ID).addList(
-            "knownObjects", knownObjects
+            "knownObjects", data.knownObjects
             );
-        set => knownObjects = value.List<SavableObjectInfoData>("knownObjects");
+        set => data.knownObjects = value.List<SavableObjectInfoData>("knownObjects");
     }
 
-    public SettingScope Scope => SettingScope.SAVE_FILE;
+    public override SettingScope Scope => SettingScope.SAVE_FILE;
 
-    public string ID => "ObjectManager";
+    public override string ID => "ObjectManager";
 
     /// <summary>
     /// Adds a newly created object to the list
@@ -160,9 +156,9 @@ public class ObjectManager : MonoBehaviour, ISetting
     public void addNewObject(GameObject go)
     {
         SavableObjectInfoData soid = go.GetComponent<SavableObjectInfo>().Data;
-        if (!knownObjects.Contains(soid))
+        if (!data.knownObjects.Contains(soid))
         {
-            knownObjects.Add(soid);
+            data.knownObjects.Add(soid);
         }
         addObject(go);
     }
@@ -204,27 +200,27 @@ public class ObjectManager : MonoBehaviour, ISetting
                 );
         }
         //If the game object's name is already in the dictionary,
-        if (gameObjects.ContainsKey(key))
+        if (data.gameObjects.ContainsKey(key))
         {
-            if (go.name != gameObjects[key].name)
+            if (go.name != data.gameObjects[key].name)
             {
                 Debug.LogWarning(
                       "Key (" + key + ") is already inside the gameObjects dictionary: "
-                      + "GameObject " + go.name + " replacing " + gameObjects[key],
+                      + "GameObject " + go.name + " replacing " + data.gameObjects[key],
                       go
                       );
             }
-            gameObjects[key] = go;
+            data.gameObjects[key] = go;
         }
         else
         {
             //Else if all good, add the object
-            gameObjects.Add(key, go);
+            data.gameObjects.Add(key, go);
         }
     }
 
     public bool hasObject(int goKey)
-        => gameObjects.ContainsKey(goKey);
+        => data.gameObjects.ContainsKey(goKey);
 
     /// <summary>
     /// Retrieves the GameObject from the gameObjects list with the given key
@@ -234,10 +230,10 @@ public class ObjectManager : MonoBehaviour, ISetting
     public GameObject getObject(int goKey)
     {
         //If the gameObjects list has the game object,
-        if (gameObjects.ContainsKey(goKey))
+        if (data.gameObjects.ContainsKey(goKey))
         {
             //Return it
-            return gameObjects[goKey];
+            return data.gameObjects[goKey];
         }
         Debug.LogError(
             "No object with key found: " + goKey + "!\n"
@@ -263,7 +259,7 @@ public class ObjectManager : MonoBehaviour, ISetting
         }
         Debug.Log("Destroying object permanently: " + go.name + " (" + soi.Id + ")", go);
         destroyObject(go);
-        knownObjects.RemoveAll(soid => soid.id == soi.Id);
+        data.knownObjects.RemoveAll(soid => soid.id == soi.Id);
     }
 
     /// <summary>
@@ -290,7 +286,7 @@ public class ObjectManager : MonoBehaviour, ISetting
         {
             Debug.Log("Destroying object permanently: [unknown name] (" + id + ")");
         }
-        knownObjects.RemoveAll(soid => soid.id == id);
+        data.knownObjects.RemoveAll(soid => soid.id == id);
     }
 
     public void destroyObject(int goKey)
@@ -323,7 +319,7 @@ public class ObjectManager : MonoBehaviour, ISetting
     /// <param name="go">The GameObject to remove from the list</param>
     private void removeObject(GameObject go)
     {
-        gameObjects.Remove(go.getKey());
+        data.gameObjects.Remove(go.getKey());
         //If go is not null and has children,
         if (go && go.transform.childCount > 0)
         {
@@ -333,7 +329,7 @@ public class ObjectManager : MonoBehaviour, ISetting
                 if (t.gameObject.hasKey())
                 {
                     //Remove it from the gameObjects list
-                    gameObjects.Remove(t.gameObject.getKey());
+                    data.gameObjects.Remove(t.gameObject.getKey());
                 }
             }
         }
@@ -345,17 +341,17 @@ public class ObjectManager : MonoBehaviour, ISetting
     {
         string cleanedKeys = "";
         //Copy the game object keys
-        List<int> keys = new List<int>(gameObjects.Keys);
+        List<int> keys = new List<int>(data.gameObjects.Keys);
         //Loop over copy list
         foreach (int key in keys)
         {
             //If the key's value is null,
-            if (gameObjects[key] == null
-                || ReferenceEquals(gameObjects[key], null))
+            if (data.gameObjects[key] == null
+                || ReferenceEquals(data.gameObjects[key], null))
             {
                 //Clean the key out
                 cleanedKeys += key + ", ";
-                gameObjects.Remove(key);
+                data.gameObjects.Remove(key);
             }
         }
         //Write out to the console which keys were cleaned
@@ -370,8 +366,8 @@ public class ObjectManager : MonoBehaviour, ISetting
     /// </summary>
     public void clearObjects()
     {
-        gameObjects.Clear();
-        memories.Clear();
+        data.gameObjects.Clear();
+        data.memories.Clear();
     }
 
     /// <summary>
@@ -380,7 +376,7 @@ public class ObjectManager : MonoBehaviour, ISetting
     public void refreshGameObjects()
     {
         //Clear the list
-        gameObjects.Clear();
+        data.gameObjects.Clear();
         //Add objects that can move
         foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
         {
@@ -400,16 +396,16 @@ public class ObjectManager : MonoBehaviour, ISetting
         {
             int key = mmb.gameObject.getKey();
             //If the memory has already been stored,
-            if (memories.ContainsKey(key))
+            if (data.memories.ContainsKey(key))
             {
                 //Load the memory
-                mmb.acceptMemoryObject(memories[key]);
+                mmb.acceptMemoryObject(data.memories[key]);
             }
             //Else
             else
             {
                 //Save the memory
-                memories.Add(key, mmb.getMemoryObject());
+                data.memories.Add(key, mmb.getMemoryObject());
             }
         }
     }
@@ -424,16 +420,16 @@ public class ObjectManager : MonoBehaviour, ISetting
         int key = mmb.gameObject.getKey();
         MemoryObject mo = mmb.getMemoryObject();
         //If the memory is already stored,
-        if (memories.ContainsKey(key))
+        if (data.memories.ContainsKey(key))
         {
             //Update it
-            memories[key] = mo;
+            data.memories[key] = mo;
         }
         //Else
         else
         {
             //Add it
-            memories.Add(key, mo);
+            data.memories.Add(key, mo);
         }
     }
     /// <summary>
@@ -446,10 +442,10 @@ public class ObjectManager : MonoBehaviour, ISetting
         {
             int key = mmb.gameObject.getKey();
             //If there's a memory saved for this object,
-            if (memories.ContainsKey(key))
+            if (data.memories.ContainsKey(key))
             {
                 //Tell that object what it is
-                mmb.acceptMemoryObject(memories[key]);
+                mmb.acceptMemoryObject(data.memories[key]);
             }
         }
     }
@@ -459,14 +455,14 @@ public class ObjectManager : MonoBehaviour, ISetting
     {
         ES3.Save<Dictionary<int, MemoryObject>>(
             "memories",
-            memories,
+            data.memories,
             fileName
             );
     }
     public void loadFromFile(string fileName)
     {
         //Load memories
-        memories = ES3.Load<Dictionary<int, MemoryObject>>(
+        data.memories = ES3.Load<Dictionary<int, MemoryObject>>(
             "memories",
             fileName
             );

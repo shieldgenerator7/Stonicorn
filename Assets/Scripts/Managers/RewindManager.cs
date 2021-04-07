@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RewindManager : MonoBehaviour
+public class RewindManager : Manager
 {
     [Header("Settings")]
     [SerializeField]
@@ -23,17 +23,15 @@ public class RewindManager : MonoBehaviour
 
     public bool rewindInterruptableByPlayer { get; private set; } = true;
 
-    //Game States
-    private List<GameState> gameStates = new List<GameState>();//basically a timeline
-    public List<GameState> GameStates => gameStates;
-    public int GameStateCount => gameStates.Count;
+    public List<GameState> GameStates => data.gameStates;
+    public int GameStateCount => data.gameStates.Count;
 
     public void init()
     {
         //Initialize the current game state id
         //There are possibly none, so the default "current" is -1
         //Update the game state id trackers
-        chosenId = rewindId = gameStates.Count - 1;
+        chosenId = rewindId = data.gameStates.Count - 1;
         //Load the most recent game state
         Load(chosenId);
     }
@@ -55,14 +53,14 @@ public class RewindManager : MonoBehaviour
         //Save game states
         ES3.Save<List<GameState>>(
             "states",
-            gameStates,
+            data.gameStates,
             fileName
             );
     }
     public void loadFromFile(string fileName)
     {
         //Load game states
-        gameStates = ES3.Load<List<GameState>>(
+        data.gameStates = ES3.Load<List<GameState>>(
             "states",
             fileName
             );
@@ -79,7 +77,7 @@ public class RewindManager : MonoBehaviour
             gameObjects.AddRange(opgss.Invoke());
         }
         //Create a new game state
-        gameStates.Add(new GameState(gameObjects));
+        data.gameStates.Add(new GameState(gameObjects));
         //Update game state id variables
         chosenId++;
         rewindId++;
@@ -97,19 +95,19 @@ public class RewindManager : MonoBehaviour
     private void Load(int gamestateId)
     {
         //Update chosenId to game-state-now
-        chosenId = Mathf.Clamp(gamestateId, -1, gameStates.Count - 1);
+        chosenId = Mathf.Clamp(gamestateId, -1, data.gameStates.Count - 1);
         if (chosenId < 0)
         {
             return;
         }
         //Actually load the game state
-        GameState gameState = gameStates[chosenId];
+        GameState gameState = data.gameStates[chosenId];
         gameState.load();
 
         //Destroy game states in game-state-future
-        for (int i = gameStates.Count - 1; i > chosenId; i--)
+        for (int i = data.gameStates.Count - 1; i > chosenId; i--)
         {
-            gameStates.RemoveAt(i);
+            data.gameStates.RemoveAt(i);
         }
 
         //Update the next game state id
@@ -121,7 +119,7 @@ public class RewindManager : MonoBehaviour
             //Stop the rewind
             Rewinding = false;
         }
-        onRewindState?.Invoke(gameStates, chosenId);
+        onRewindState?.Invoke(data.gameStates, chosenId);
     }
 
     /// <summary>
@@ -137,9 +135,9 @@ public class RewindManager : MonoBehaviour
             for (int stateid = lastStateSeen; stateid >= 0; stateid--)
             {
                 //If the game object was last saved in this game state,
-                if (gameStates[stateid].hasGameObject(go))
+                if (data.gameStates[stateid].hasGameObject(go))
                 {
-                    gameStates[stateid].loadObject(go);
+                    data.gameStates[stateid].loadObject(go);
                     //Great! It's loaded,
                     //Let's move onto the next object
                     break;
@@ -190,15 +188,15 @@ public class RewindManager : MonoBehaviour
     {
         if (lastStateSeen < 0)
         {
-            lastStateSeen = gameStates.Count - 1;
+            lastStateSeen = data.gameStates.Count - 1;
         }
         //Search through the game states to see when it was last saved
         for (int stateid = lastStateSeen; stateid >= 0; stateid--)
         {
             //If the game object was last saved in this game state,
-            if (gameStates[stateid].hasGameObject(go))
+            if (data.gameStates[stateid].hasGameObject(go))
             {
-                gameStates[stateid].loadObject(go);
+                data.gameStates[stateid].loadObject(go);
                 //Great! It's loaded
                 break;
             }
@@ -231,9 +229,9 @@ public class RewindManager : MonoBehaviour
         if (gamestateId == chosenId)
         {
             //Just load it
-            onRewindStarted?.Invoke(gameStates, gamestateId);
+            onRewindStarted?.Invoke(data.gameStates, gamestateId);
             Load(gamestateId);
-            onRewindFinished?.Invoke(gameStates, gamestateId);
+            onRewindFinished?.Invoke(data.gameStates, gamestateId);
             //And don't actually rewind
             return;
         }
@@ -282,7 +280,7 @@ public class RewindManager : MonoBehaviour
                     rewindDelay = maxRewindDuration / count;
                 }
                 //Rewind Started Delegate
-                onRewindStarted?.Invoke(gameStates, rewindId);
+                onRewindStarted?.Invoke(data.gameStates, rewindId);
             }
             //Stop rewinding
             else
@@ -290,7 +288,7 @@ public class RewindManager : MonoBehaviour
                 //Set rewindId to chosenId
                 rewindId = chosenId;
                 //Rewind Finished Delegate
-                onRewindFinished?.Invoke(gameStates, chosenId);
+                onRewindFinished?.Invoke(data.gameStates, chosenId);
             }
         }
     }
