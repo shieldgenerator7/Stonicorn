@@ -242,11 +242,6 @@ public class GameManager : MonoBehaviour
             if (Managers.Scene.SceneLoadingCount == 0)
             {
                 Managers.Music.playFirstSong();
-                if (Managers.Rewind.GameStateCount == 0)
-                {
-                    //Create the initial save state
-                    Managers.Rewind.Save();
-                }
             }
         }
     }

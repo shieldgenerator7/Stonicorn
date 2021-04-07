@@ -25,10 +25,14 @@ public class RewindManager : Manager
     public bool rewindInterruptableByPlayer { get; private set; } = true;
 
     public List<GameState> GameStates => data.gameStates;
-    public int GameStateCount => data.gameStates.Count;
 
     public void init()
     {
+        if (data.gameStates.Count == 0)
+        {
+            //Create the initial save state
+            Save();
+        }
         //Initialize the current game state id
         //There are possibly none, so the default "current" is -1
         //Update the game state id trackers
