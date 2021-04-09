@@ -39,13 +39,17 @@ public class FileManager : Manager
         {
             if (setting.Scope == SettingScope.SAVE_FILE)
             {
-                settings.Add(setting.Setting);
+                SettingObject so = setting.Setting;
+                if (so)
+                {
+                    settings.Add(so);
+                }
             }
         }
         ES3.Save<List<SettingObject>>("settings", settings, filename);
 
         //Save Game Data
-        ES3.Save<GameData>("data", data, fileName);
+        ES3.Save<GameData>("data", data, filename);
 
         //Delegate
         onFileSave?.Invoke(filename);
@@ -79,7 +83,7 @@ public class FileManager : Manager
             }
 
             //Load Game Data
-            data = ES3.Load<GameData>("data", fileName);
+            data = ES3.Load<GameData>("data", filename);
 
             //Delegate
             onFileLoad?.Invoke(filename);

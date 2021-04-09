@@ -82,4 +82,7 @@ public class SettingObject
         }
         return dict;
     }
+
+    public static implicit operator bool(SettingObject so)
+        => so != null;
 }
