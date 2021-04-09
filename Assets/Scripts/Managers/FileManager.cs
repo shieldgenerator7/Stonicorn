@@ -83,7 +83,10 @@ public class FileManager : Manager
             }
 
             //Load Game Data
-            data = ES3.Load<GameData>("data", filename);
+            GameData data = ES3.Load<GameData>("data", filename);
+            this.data.memories = data.memories;
+            this.data.knownObjects = data.knownObjects;
+            this.data.gameStates = data.gameStates;
 
             //Delegate
             onFileLoad?.Invoke(filename);
