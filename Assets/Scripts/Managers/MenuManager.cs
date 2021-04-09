@@ -57,7 +57,7 @@ public class MenuManager : MonoBehaviour
         return false;
     }
 
-    public void opened()
+    void Update()
     {
         //Orient camera to menu
         Managers.Camera.Up = Managers.Player.transform.up;

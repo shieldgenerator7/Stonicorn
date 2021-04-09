@@ -214,7 +214,6 @@ public class GameManager : MonoBehaviour
     {
         if (scene.buildIndex == MenuManager.MENU_SCENE_ID)
         {
-            Managers.Menu.opened();
             if (Managers.Rewind.Rewinding)
             {
                 Managers.Effect.showRewindEffect(false);
