@@ -34,6 +34,11 @@ public class GameState
         //Object States
         foreach (GameObject go in list)
         {
+            if (!go)
+            {
+                //skip null objects
+                continue;
+            }
             try
             {
                 ObjectState os = new ObjectState(go);

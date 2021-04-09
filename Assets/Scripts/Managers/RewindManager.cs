@@ -56,7 +56,6 @@ public class RewindManager : Manager
     /// </summary>
     public void Save()
     {
-        onPreGameStateSaved?.Invoke();
         //Create a new game state
         data.gameStates.Add(
             new GameState(
@@ -69,8 +68,6 @@ public class RewindManager : Manager
         //Save delegate
         onGameStateSaved?.Invoke(chosenId);
     }
-    public delegate void OnPreGameStateSaved();
-    public event OnPreGameStateSaved onPreGameStateSaved;
     public delegate void OnGameStateSaved(int gameStateId);
     public event OnGameStateSaved onGameStateSaved;
     /// <summary>

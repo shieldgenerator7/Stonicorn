@@ -30,12 +30,6 @@ public class ObjectManager : Manager, ISetting
             .ForEach(soid => destroyAndForgetObject(soid.id));
     }
 
-    public void onPreGameStateSaved()
-    {
-        //Remove any null objects from the list
-        cleanObjects();
-    }
-
     public void recreateObject(int goId, int lastStateSeen = -1)
     {
         if (goId > 0)
