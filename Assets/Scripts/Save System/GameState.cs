@@ -34,7 +34,7 @@ public class GameState
         //Object States
         foreach (GameObject go in list)
         {
-            if (!go)
+            if (!go || ReferenceEquals(go, null))
             {
                 //skip null objects
                 continue;
