@@ -188,7 +188,7 @@ public class ObjectManager : Manager, ISetting
         //If the game object's name is already in the dictionary,
         if (data.gameObjects.ContainsKey(key))
         {
-            if (go.name != data.gameObjects[key].name)
+            if (data.gameObjects[key] != null && go.name != data.gameObjects[key].name)
             {
                 Debug.LogWarning(
                       "Key (" + key + ") is already inside the gameObjects dictionary: "
@@ -206,7 +206,7 @@ public class ObjectManager : Manager, ISetting
     }
 
     public bool hasObject(int goKey)
-        => data.gameObjects.ContainsKey(goKey);
+        => data.gameObjects.ContainsKey(goKey) && data.gameObjects[goKey] != null;
 
     /// <summary>
     /// Retrieves the GameObject from the gameObjects list with the given key
