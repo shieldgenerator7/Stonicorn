@@ -20,12 +20,13 @@ public class PlayerTestSpawnPoint : MonoBehaviour
     public int LongTeleportAbility = -1;
 
     // Start is called before the first frame update
-    void Start()
+    public void init()
     {
         Debug.Log("PlayerTestSpawnPoint activating");
         //Set player position
         PlayerController pc = FindObjectOfType<PlayerController>();
         pc.transform.position = transform.position;
+        Physics2D.SyncTransforms();
         //Activate abilities
         checkAbility(ForceLaunchAbility, pc.GetComponent<ForceLaunchAbility>());
         checkAbility(SwapAbility, pc.GetComponent<SwapAbility>());

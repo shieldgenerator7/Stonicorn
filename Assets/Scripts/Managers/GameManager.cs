@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
         if (ptsp && ptsp.enabled)
         {
             Managers.DemoMode.DemoMode = true;
+            ptsp.init();
         }
 #endif
         //Register delegates
