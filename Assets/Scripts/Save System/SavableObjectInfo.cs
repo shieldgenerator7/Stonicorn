@@ -11,6 +11,7 @@ public class SavableObjectInfo : ObjectInfo
     public AssetReference PrefabAddress => prefabAddress;
     public virtual string PrefabGUID => prefabAddress.AssetGUID;
     public int spawnStateId = -1;//-1 is an invalid Id but it forces save on new objects
+    public int destroyStateId = -1;//the game state id in which this object was destroyed (-1 for not destroyed)
 
     public SavableObjectInfoData Data
         => new SavableObjectInfoData(this);

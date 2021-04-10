@@ -128,13 +128,27 @@ public class GameManager : MonoBehaviour
             {
                 //Don't load if it should actually not exist anymore
                 SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
-                if (soi.spawnStateId > Managers.Rewind.GameStateId)
+                int gameStateId = Managers.Rewind.GameStateId;
+                if (soi.spawnStateId > gameStateId)
                 {
                     Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
                         "is too late! Destroying permananetly.", go);
                     //(it's possible for an object recreation to be finished
                     //after it should have been rewound out of existence)
                     Managers.Object.destroyAndForgetObject(go);
+                }
+                else if (soi.destroyStateId < gameStateId)
+                {
+                    Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
+                        "is too early! Destroying.", go);
+                    //Destroy this object because it's still after it was originally destroyed
+                    Managers.Object.destroyObject(go);
+                }
+                else if (soi.destroyStateId > gameStateId)
+                {
+                    //this object should no longer be destroyed
+                    soi.destroyStateId = -1;
+                    Managers.Object.updateDestroyStateId(soi.Id, -1);
                 }
                 else
                 {

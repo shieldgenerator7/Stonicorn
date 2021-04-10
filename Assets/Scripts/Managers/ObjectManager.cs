@@ -290,15 +290,22 @@ public class ObjectManager : Manager, ISetting
     /// <param name="go">The GameObject to destroy</param>
     public void destroyObject(GameObject go)
     {
-        if (go.GetComponent<ObjectInfo>() is SingletonObjectInfo)
+        SavableObjectInfo soi = (SavableObjectInfo)go.GetComponent<ObjectInfo>();
+        if (soi is SingletonObjectInfo)
         {
             //don't destroy the game manager or merky
             return;
         }
         Debug.Log("Destroying object (" + go.getKey() + "): " + go.name);
+        if (soi.destroyStateId < 0)
+        {
+            soi.destroyStateId = Managers.Rewind.GameStateId;
+            updateDestroyStateId(soi.Id, Managers.Rewind.GameStateId);
+        }
         removeObject(go);
         Destroy(go);
     }
+
     /// <summary>
     /// Removes the given GameObject from the gameObjects list
     /// </summary>
@@ -320,6 +327,14 @@ public class ObjectManager : Manager, ISetting
             }
         }
     }
+
+    public void updateDestroyStateId(int soiId, int stateId)
+    {
+        SavableObjectInfoData soid = data.knownObjects
+            .Find(ksoid => ksoid.id == soiId);
+        soid.destroyStateId = stateId;
+    }
+
     /// <summary>
     /// Remove null objects from the gameObjects list
     /// </summary>
