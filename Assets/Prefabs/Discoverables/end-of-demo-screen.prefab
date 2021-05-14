@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8733178177893910356}
   - component: {fileID: 8733178177893910358}
-  - component: {fileID: 8733178177893910357}
   m_Layer: 0
   m_Name: Activation Trigger
   m_TagString: Untagged
@@ -58,39 +57,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
---- !u!114 &8733178177893910357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8733178177893910355}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb142b27c2edc524888a745711b29515, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerName: 
-  triggerEnterAction: 0
-  triggerExitAction: 1
-  objectsToActivate:
-  - {fileID: 0}
-  forPlayerOnly: 1
-  zoomLevelEnterAction: 3
-  zoomLevelExitAction: 3
-  zoomLevelEnterStayAction: 3
-  zoomLevelExitStayAction: 3
-  zoomRequireTrigger: 1
-  triggerRequireZoom: 0
-  minZoomScalePoint: 0
-  maxZoomScalePoint: 3
-  minZoomClusivity: 0
-  maxZoomClusivity: 0
-  cameraPositionCollider: {fileID: 0}
-  cameraEnterAction: 0
-  cameraExitAction: 1
-  cameraPositionRequireTrigger: 1
-  cameraSnapAnchor: {fileID: 0}
 --- !u!1 &8733178178621473297
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,6 +103,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
