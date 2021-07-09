@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class BuildInfoDisplayer : MonoBehaviour
 {
     public TMP_Text txtBuildVersion;
+    public List<string> buildMessages;
 
-#if UNITY_EDITOR
+    private void Start()
+    {
+        updateBuildInfoTexts();
+    }
+
     public void updateBuildInfoTexts()
     {
-        txtBuildVersion.text = "STONICORN " + PlayerSettings.bundleVersion;
+        string text = Application.productName.ToUpper() + " " + Application.version;
+        buildMessages.ForEach(m => text += "\n[" + m + "]");
+        txtBuildVersion.text = text;
     }
-#endif
 }
