@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 499288}
   - component: {fileID: 21247086}
   - component: {fileID: 6116290}
-  - component: {fileID: 7645321686783629705}
-  - component: {fileID: 8235515186407725065}
   m_Layer: 0
   m_Name: boulder
   m_TagString: Untagged
@@ -112,45 +110,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4255149, y: 1.3806827}
   m_EdgeRadius: 0
---- !u!114 &7645321686783629705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 111254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minForceThreshold: 2.5
-  maxForceThreshold: 50
-  maxIntegrity: 3
-  integrity: 0
-  crackedPrefab: {fileID: 1758183149841368, guid: 1d011da68b2bea944aefdb41e3cbb59f, type: 3}
-  crackStages:
-  - {fileID: 21300000, guid: fe909394bb5684840b07b2b519c018af, type: 3}
-  soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
-  soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
-  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
-  secretHiders: []
---- !u!114 &8235515186407725065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 111254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: -1
-  prefabAddress:
-    m_AssetGUID: 8eb4ed9bb79bb4247b0cbfea87b4ca60
-    m_SubObjectName: 
-    m_SubObjectType: 
-  spawnStateId: 0
-  destroyStateId: -1
