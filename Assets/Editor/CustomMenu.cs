@@ -447,7 +447,7 @@ public class CustomMenu
     }
 
     [MenuItem("SG7/Build/Pre-Build/Perform all Pre-Build Tasks &W")]
-    public static void performAllPreBuildTasks()
+    public static bool performAllPreBuildTasks()
     {
         ClearLog();
         Debug.Log("Running all Pre-Build Tasks");
@@ -480,6 +480,7 @@ public class CustomMenu
         }
         //Finish
         Debug.Log("Finished all Pre-Build Tasks");
+        return keepScenesOpen;
     }
 
     static bool allLevelScenesLoaded()
@@ -954,6 +955,20 @@ public class CustomMenu
         //Save and Log
         EditorSceneManager.SaveOpenScenes();
         Debug.LogWarning("Updated build version number from " + oldVersion + " to " + newVersion);
+    }
+
+    [MenuItem("SG7/Session/Finish Session")]
+    public static void finishSession()
+    {
+        Debug.Log("=== Finishing session ===");
+        bool problems = performAllPreBuildTasks();
+        if (!problems)
+        {
+            EditorSceneManager.SaveOpenScenes();
+            buildWindows();
+            //Open folders
+            openBuildFolder();
+        }
     }
 
     [MenuItem("SG7/Upgrade/Force save all assets")]
