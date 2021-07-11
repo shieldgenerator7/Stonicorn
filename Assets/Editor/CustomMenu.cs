@@ -722,6 +722,28 @@ public class CustomMenu
             .ThenBy(sr => sr.name).ToList()
             .ForEach(sr =>
             {
+                bool changedSR = false;
+                //
+                // Check for reasonable sprite size
+                //
+                Vector2 oldSRSize = sr.size;
+                Vector2 newSRSize = sr.size;
+                newSRSize.x = Mathf.Round(newSRSize.x * 100) / 100;
+                newSRSize.y = Mathf.Round(newSRSize.y * 100) / 100;
+                if (newSRSize != oldSRSize)
+                {
+                    sr.size = newSRSize;
+                    Debug.LogWarning(
+                        "Changed " + sr.name + " sprite size " +
+                        "from (" + oldSRSize.x + ", " + oldSRSize.y + ") " +
+                        "to (" + newSRSize.x + ", " + newSRSize.y + ").",
+                        sr
+                        );
+                    changedSR = true;
+                }
+                //
+                // Check collider size
+                //
                 BoxCollider2D bc2d = sr.GetComponent<BoxCollider2D>();
                 if (bc2d)
                 {
@@ -742,15 +764,21 @@ public class CustomMenu
                     if (newSize != oldSize)
                     {
                         bc2d.size = newSize;
-                        GameObject go = sr.gameObject;
-                        EditorUtility.SetDirty(bc2d);
-                        EditorUtility.SetDirty(go);
                         Debug.LogWarning(
-                            "Changed " + go.name + " collider size from (" + oldSize + ") to (" + newSize + ").",
-                            go
+                            "Changed " + sr.name + " collider size " +
+                            "from (" + oldSize.x + ", " + oldSize.y + ") " +
+                            "to (" + newSize.x + ", " + newSize.y + ").",
+                            sr
                             );
-                        changedCount++;
+                        changedSR = true;
                     }
+                }
+                if (changedSR)
+                {
+                    EditorUtility.SetDirty(sr);
+                    if (bc2d) { EditorUtility.SetDirty(bc2d); }
+                    EditorUtility.SetDirty(sr.gameObject);
+                    changedCount++;
                 }
             });
 
