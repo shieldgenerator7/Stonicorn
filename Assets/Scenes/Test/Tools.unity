@@ -12517,8 +12517,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c6979dbbd9d7bd418516ab320684126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotZ: 211.28925
-  autoRotate: 1
+  rotZ: 0
+  autoRotate: 0
 --- !u!4 &253958363
 Transform:
   m_ObjectHideFlags: 0
@@ -26434,7 +26434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578159050}
   m_LocalRotation: {x: -0, y: -0, z: 0.0028429776, w: 0.99999595}
-  m_LocalPosition: {x: -0.7157624, y: 2.9133747, z: 0}
+  m_LocalPosition: {x: -2.996695, y: -0.14077759, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 942494484}
@@ -26461,7 +26461,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578159050}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -26807,8 +26807,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942494481}
-  m_LocalRotation: {x: 0, y: 0, z: 0.97150683, w: -0.23701163}
-  m_LocalPosition: {x: 196.28387, y: -289.07623, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.91866904, w: -0.39502814}
+  m_LocalPosition: {x: 100.052895, y: -103.50416, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 578159051}
@@ -26829,7 +26829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ForceLaunchAbility: -1
   SwapAbility: -1
-  WallClimbAbility: -1
+  WallClimbAbility: 0
   AirSliceAbility: -1
   ElectricBeamAbility: -1
   LongTeleportAbility: -1
