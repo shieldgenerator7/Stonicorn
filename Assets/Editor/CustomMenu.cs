@@ -727,24 +727,17 @@ public class CustomMenu
                 {
                     Vector2 oldSize = bc2d.size;
                     Vector2 newSize = bc2d.size;
-                    //If tiled horizontally,
-                    if (sr.size.x > sr.size.y * 2)
-                    {
-                        //Set collider width to match
-                        newSize.x = sr.size.x;
-                    }
                     //If tiled vertically,
-                    else if (sr.size.y > sr.size.x * 2)
+                    if (sr.size.y > sr.size.x * 2)
                     {
                         //Set collider height to match
                         newSize.y = sr.size.y;
                     }
-                    //If tiled squarely,
+                    //Else: it's tiled horizontally, so
                     else
                     {
-                        //Set both width and height 
+                        //Set collider width to match
                         newSize.x = sr.size.x;
-                        newSize.y = sr.size.y;
                     }
                     if (newSize != oldSize)
                     {
