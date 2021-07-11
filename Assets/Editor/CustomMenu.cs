@@ -468,6 +468,7 @@ public class CustomMenu
         keepScenesOpen = ensureMemoryObjectsHaveObjectInfo() || keepScenesOpen;
         keepScenesOpen = ensureUniqueObjectIDs() || keepScenesOpen;
         keepScenesOpen = ensureHiddenAreasAreProperlySetup() || keepScenesOpen;
+        keepScenesOpen = checkTiledHitBoxes() || keepScenesOpen;
 
         populateObjectManagerKnownObjectsList();
 
@@ -706,6 +707,64 @@ public class CustomMenu
         {
             Debug.LogWarning(
                 "HiddenArea changes: Made " + changedCount + " changes."
+                );
+        }
+        return changedCount > 0;
+    }
+
+    [MenuItem("SG7/Build/Pre-Build/Check Tiled HitBoxes")]
+    public static bool checkTiledHitBoxes()
+    {
+        int changedCount = 0;
+        GameObject.FindObjectsOfType<SpriteRenderer>().ToList()
+            .FindAll(sr => sr.drawMode == SpriteDrawMode.Tiled)
+            .OrderBy(sr => sr.gameObject.scene.buildIndex)
+            .ThenBy(sr => sr.name).ToList()
+            .ForEach(sr =>
+            {
+                BoxCollider2D bc2d = sr.GetComponent<BoxCollider2D>();
+                if (bc2d)
+                {
+                    Vector2 oldSize = bc2d.size;
+                    Vector2 newSize = bc2d.size;
+                    //If tiled horizontally,
+                    if (sr.size.x > sr.size.y * 2)
+                    {
+                        //Set collider width to match
+                        newSize.x = sr.size.x;
+                    }
+                    //If tiled vertically,
+                    else if (sr.size.y > sr.size.x * 2)
+                    {
+                        //Set collider height to match
+                        newSize.y = sr.size.y;
+                    }
+                    //If tiled squarely,
+                    else
+                    {
+                        //Set both width and height 
+                        newSize.x = sr.size.x;
+                        newSize.y = sr.size.y;
+                    }
+                    if (newSize != oldSize)
+                    {
+                        bc2d.size = newSize;
+                        GameObject go = sr.gameObject;
+                        EditorUtility.SetDirty(bc2d);
+                        EditorUtility.SetDirty(go);
+                        Debug.LogWarning(
+                            "Changed " + go.name + " collider size from (" + oldSize + ") to (" + newSize + ").",
+                            go
+                            );
+                        changedCount++;
+                    }
+                }
+            });
+
+        if (changedCount > 0)
+        {
+            Debug.LogWarning(
+                "Tiled sprites changes: Made " + changedCount + " changes."
                 );
         }
         return changedCount > 0;
