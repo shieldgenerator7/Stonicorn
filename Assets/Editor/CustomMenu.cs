@@ -216,6 +216,7 @@ public class CustomMenu
                 playerSpawnObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
             }
             Selection.activeGameObject = playerSpawnObject;
+            Debug.Log("PTSP enabled: " + playerTSP.enabled);
         }
         else
         {
@@ -246,6 +247,7 @@ public class CustomMenu
             //Select player object
             GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
             Selection.activeGameObject = playerObject;
+            Debug.Log("PTSP enabled: " + playerTSP.enabled);
         }
     }
 

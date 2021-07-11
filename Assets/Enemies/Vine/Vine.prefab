@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1752975198636748496}
   - component: {fileID: 2044645791282478322}
   m_Layer: 0
-  m_Name: Cactus Surface
+  m_Name: Vine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,12 +75,12 @@ SpriteRenderer:
   m_SortingLayerID: 1837406103
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b951e716e6aed2148a0b73d6d83bc37b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: ddf84dfa4fefa7f49b8ed0c0cf9bc1f7, type: 3}
+  m_Color: {r: 1, g: 0.39200455, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 1.83, y: 0.29}
+  m_Size: {x: 5, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -99,18 +99,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.04}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.83, y: 0.29}
-    newSize: {x: 1.83, y: 0.29}
+    oldSize: {x: 5, y: 1}
+    newSize: {x: 5, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.7, y: 0.09}
+  m_Size: {x: 5, y: 0.1}
   m_EdgeRadius: 0
 --- !u!114 &1752975198636748496
 MonoBehaviour:
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: -1
   prefabAddress:
-    m_AssetGUID: 52f37f12592ceae4ebb2bdf4679a9a8b
+    m_AssetGUID: 2fe820ca98fb82b439997ab938e6bcd4
     m_SubObjectName: 
     m_SubObjectType: 
   spawnStateId: 0
