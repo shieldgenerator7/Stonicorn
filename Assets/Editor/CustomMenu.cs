@@ -467,6 +467,7 @@ public class CustomMenu
         keepScenesOpen = ensureSavableObjectsHaveObjectInfo() || keepScenesOpen;
         keepScenesOpen = ensureMemoryObjectsHaveObjectInfo() || keepScenesOpen;
         keepScenesOpen = ensureUniqueObjectIDs() || keepScenesOpen;
+        keepScenesOpen = ensureSavableObjectInfosSetup() || keepScenesOpen;
         keepScenesOpen = ensureHiddenAreasAreProperlySetup() || keepScenesOpen;
         keepScenesOpen = checkTiledHitBoxes() || keepScenesOpen;
 
@@ -600,6 +601,47 @@ public class CustomMenu
         return changedId;
     }
 
+    [MenuItem("SG7/Build/Pre-Build/Ensure SavableObjectInfos are properly setup")]
+    public static bool ensureSavableObjectInfosSetup()
+    {
+        bool changed = false;
+        foreach (SceneSavableList ssl in GameObject.FindObjectsOfType<SceneSavableList>())
+        {
+            const int SPAWN_STATE_ID = 0;
+            const int DESTROY_STATE_ID = int.MaxValue;
+            List<GameObject> savables = new List<GameObject>();
+            savables.AddRange(ssl.savables);
+            savables.ConvertAll(go => go.GetComponent<SavableObjectInfo>())
+                .ForEach(info =>
+                {
+                    if (info.spawnStateId != SPAWN_STATE_ID)
+                    {
+                        int prev = info.spawnStateId;
+                        info.spawnStateId = SPAWN_STATE_ID;
+                        Debug.LogWarning(
+                            "Changed spawnStateId: " + prev + " -> " + info.spawnStateId,
+                            info.gameObject
+                            );
+                        EditorUtility.SetDirty(info);
+                        EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
+                        changed = true;
+                    }
+                    if (info.destroyStateId != DESTROY_STATE_ID)
+                    {
+                        int prev = info.destroyStateId;
+                        info.destroyStateId = DESTROY_STATE_ID;
+                        Debug.LogWarning(
+                            "Changed destroyStateId: " + prev + " -> " + info.destroyStateId,
+                            info.gameObject
+                            );
+                        EditorUtility.SetDirty(info);
+                        EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
+                        changed = true;
+                    }
+                });
+        }
+        return changed;
+    }
     [MenuItem("SG7/Build/Pre-Build/Ensure Hidden Areas are Properly Setup")]
     public static bool ensureHiddenAreasAreProperlySetup()
     {
