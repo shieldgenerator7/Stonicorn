@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
                 if (soi.spawnStateId > gameStateId)
                 {
                     Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
-                        "is too late! Destroying permananetly.", go);
+                        "is too late! Destroying permananetly. Created at " + soi.spawnStateId + " after " + gameStateId, go);
                     //(it's possible for an object recreation to be finished
                     //after it should have been rewound out of existence)
                     Managers.Object.destroyAndForgetObject(go);
@@ -140,15 +140,15 @@ public class GameManager : MonoBehaviour
                 else if (soi.destroyStateId < gameStateId)
                 {
                     Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
-                        "is too early! Destroying.", go);
+                        "is too early! Destroying. Destroyed at " + soi.destroyStateId + " before " + gameStateId, go);
                     //Destroy this object because it's still after it was originally destroyed
                     Managers.Object.destroyObject(go);
                 }
                 else if (soi.destroyStateId > gameStateId)
                 {
                     //this object should no longer be destroyed
-                    soi.destroyStateId = -1;
-                    Managers.Object.updateDestroyStateId(soi.Id, -1);
+                    soi.destroyStateId = int.MaxValue;
+                    Managers.Object.updateDestroyStateId(soi.Id, soi.destroyStateId);
                 }
                 else
                 {

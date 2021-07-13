@@ -57,7 +57,7 @@ public class ObjectManager : Manager, ISetting
     /// <param name="goId"></param>
     /// <param name="prefabGUID"></param>
     /// <returns></returns>
-    private void /*AsyncOperationHandle<GameObject>*/ recreateObject(int goId, string prefabGUID, int lastStateSeen = -1)
+    private void /*AsyncOperationHandle<GameObject>*/ recreateObject(int goId, string prefabGUID, int lastStateSeen)
     {
         if (!recreateQueue.ContainsKey(goId))
         {
@@ -86,15 +86,21 @@ public class ObjectManager : Manager, ISetting
                         newGO.name = newGO.name.Split('(')[0];
                     }
                     //Init the New Game Object
-                    newGO.GetComponent<ObjectInfo>().Id = goId;
+                    SavableObjectInfo soi = newGO.GetComponent<SavableObjectInfo>();
+                    SavableObjectInfoData soid = data.knownObjects.Find(soid => soid.id == goId);
+                    soi.Data = soid;
                     addObject(newGO);
                     foreach (Transform t in newGO.transform)
                     {
                         if (t.gameObject.isSavable())
                         {
+                            SavableObjectInfo soiT = t.gameObject.GetComponent<SavableObjectInfo>();
+                            SavableObjectInfoData soidT = data.knownObjects.Find(soid => soid.id == soiT.Id);
+                            soiT.Data = soidT;
                             addObject(t.gameObject);
                         }
                     }
+                    Debug.Log("Recreated object "+newGO.name + " (" + goId + "). spawned: " + soi.spawnStateId + ", destroyed: " + soi.destroyStateId);
                     //Delegate
                     onObjectRecreated?.Invoke(newGO, lastStateSeen);
                     //Finish up
@@ -297,10 +303,11 @@ public class ObjectManager : Manager, ISetting
             return;
         }
         Debug.Log("Destroying object (" + go.getKey() + "): " + go.name);
-        if (soi.destroyStateId < 0)
+        int gameStateId = Managers.Rewind.GameStateId;
+        if (soi.destroyStateId > gameStateId)
         {
-            soi.destroyStateId = Managers.Rewind.GameStateId;
-            updateDestroyStateId(soi.Id, Managers.Rewind.GameStateId);
+            soi.destroyStateId = gameStateId;
+            updateDestroyStateId(soi.Id, gameStateId);
         }
         removeObject(go);
         Destroy(go);
