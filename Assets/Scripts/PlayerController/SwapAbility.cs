@@ -27,12 +27,14 @@ public class SwapAbility : PlayerAbility
     {
         base.init();
         playerController.Teleport.findTeleportablePositionOverride += findSwapPosition;
+        playerController.Teleport.onRangeChanged += onRangeChanged;
         pc2d = GetComponent<PolygonCollider2D>();
     }
     public override void OnDisable()
     {
         base.OnDisable();
         playerController.Teleport.findTeleportablePositionOverride -= findSwapPosition;
+        playerController.Teleport.onRangeChanged -= onRangeChanged;
     }
 
     private void Update()
@@ -51,6 +53,17 @@ public class SwapAbility : PlayerAbility
 
     protected override bool isGrounded()
         => swappedSomething;
+
+    private void onRangeChanged(float range)
+    {
+        if (swappedSomething)
+        {
+            if (range < playerController.Teleport.baseRange)
+            {
+                playerController.Teleport.Range = playerController.Teleport.baseRange;
+            }
+        }
+    }
 
     bool isObjectSwappable(GameObject go)
         => go != this.gameObject
@@ -203,6 +216,7 @@ public class SwapAbility : PlayerAbility
             }
             swapTarget.transform.position = swapPos;
             swappedSomething = true;
+            playerController.Teleport.Range = playerController.Teleport.baseRange;//TODO: properly hook this up
             //Swappables
             swapTarget.GetComponents<ISwappable>().ToList()
                 .ForEach(swappee => swappee.nowSwapped());
