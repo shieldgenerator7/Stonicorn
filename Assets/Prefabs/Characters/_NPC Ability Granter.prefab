@@ -235,19 +235,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: -1
---- !u!114 &1733970930827348733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8588691648314606260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1b50a6a70e709a4eb2b16543c584c83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mmb: {fileID: 2781270073562823497}
 --- !u!1001 &7013783185730706178
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -301,7 +288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1613659933863975350, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
       propertyPath: m_Name
-      value: Prefabs\Characters\_NPC Ability Granter
+      value: _NPC Ability Granter
       objectReference: {fileID: 0}
     - target: {fileID: 7218120628489264192, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
       propertyPath: destroyStateId
@@ -319,3 +306,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1613659933863623834, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
   m_PrefabInstance: {fileID: 7013783185730706178}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1733970930827348733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8588691648314606260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b50a6a70e709a4eb2b16543c584c83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mmb: {fileID: 2781270073562823497}
