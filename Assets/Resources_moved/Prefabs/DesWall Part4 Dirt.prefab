@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3888481672020999207, guid: e8dbbd2d5f78c9a408ce1d276da89e88, type: 3}
+      propertyPath: m_Name
+      value: DesWall Part4 Dirt
+      objectReference: {fileID: 0}
     - target: {fileID: -1434812847438068477, guid: e8dbbd2d5f78c9a408ce1d276da89e88, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -77,79 +81,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 7243324766535440047, guid: e8dbbd2d5f78c9a408ce1d276da89e88, type: 3}
---- !u!1 &2015731559114946410 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8132661164015043806, guid: e8dbbd2d5f78c9a408ce1d276da89e88, type: 3}
-  m_PrefabInstance: {fileID: 7720389193665115060}
-  m_PrefabAsset: {fileID: 0}
---- !u!50 &1289779019367578175
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015731559114946410}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 50
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!60 &1289779019367578615
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015731559114946410}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.7141811, y: 0.82901955}
-    newSize: {x: 0.7141811, y: 0.82901955}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.25972748, y: 0.39330792}
-      - {x: -0.16629791, y: 0.29505777}
-      - {x: -0.35231018, y: -0.3591981}
-      - {x: 0.16062927, y: -0.41180325}
-      - {x: 0.34314728, y: -0.27431846}
---- !u!114 &6692252730572383932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015731559114946410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: -1
-  prefabAddress:
-    m_AssetGUID: 192514dfe28372845bf4eb4bd638783f
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  spawnStateId: 0
-  destroyStateId: 2147483647

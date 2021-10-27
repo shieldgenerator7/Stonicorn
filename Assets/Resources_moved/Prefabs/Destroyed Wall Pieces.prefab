@@ -27,11 +27,12 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 123.58, y: -3.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8374618383384621622}
-  - {fileID: 7262813528773525044}
-  - {fileID: 4113890644523437579}
-  - {fileID: 5124737524328467641}
+  - {fileID: 3064618557977491016}
+  - {fileID: 5934478279851550297}
+  - {fileID: 6584427535860515450}
+  - {fileID: 7127913087466954596}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104,9 +105,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41adf2bf124af544586a181e3eec2f54, type: 3}
---- !u!4 &7262813528773525044 stripped
+--- !u!4 &3064618557977491016 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 9033419947139286596, guid: 41adf2bf124af544586a181e3eec2f54, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3679480132168928824, guid: 41adf2bf124af544586a181e3eec2f54, type: 3}
   m_PrefabInstance: {fileID: 1844107465157261424}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6954156472597033745
@@ -160,15 +161,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3664136768257758536, guid: f41de53a9fcb17845a3013d94d6918ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4275913565197926005, guid: f41de53a9fcb17845a3013d94d6918ad, type: 3}
       propertyPath: m_Name
       value: DesWall Part4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f41de53a9fcb17845a3013d94d6918ad, type: 3}
---- !u!4 &5124737524328467641 stripped
+--- !u!4 &5934478279851550297 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 2854325415983955880, guid: f41de53a9fcb17845a3013d94d6918ad, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3664136768257758536, guid: f41de53a9fcb17845a3013d94d6918ad, type: 3}
   m_PrefabInstance: {fileID: 6954156472597033745}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7116312189988379830
@@ -222,15 +227,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4153072910544559820, guid: a724ab5d9efd7da418b31cf252ee036f, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8454173214444199450, guid: a724ab5d9efd7da418b31cf252ee036f, type: 3}
       propertyPath: m_Name
       value: DesWall Part1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a724ab5d9efd7da418b31cf252ee036f, type: 3}
---- !u!4 &8374618383384621622 stripped
+--- !u!4 &6584427535860515450 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1655819668416540288, guid: a724ab5d9efd7da418b31cf252ee036f, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4153072910544559820, guid: a724ab5d9efd7da418b31cf252ee036f, type: 3}
   m_PrefabInstance: {fileID: 7116312189988379830}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9208073642420406227
@@ -240,6 +249,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 191}
     m_Modifications:
+    - target: {fileID: 2099461382075865271, guid: 6a9441a04a6f1ea41b7c16a334500d38, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4928097208358760143, guid: 6a9441a04a6f1ea41b7c16a334500d38, type: 3}
       propertyPath: m_Name
       value: DesWall Part3
@@ -290,8 +303,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a9441a04a6f1ea41b7c16a334500d38, type: 3}
---- !u!4 &4113890644523437579 stripped
+--- !u!4 &7127913087466954596 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 5106764829897804248, guid: 6a9441a04a6f1ea41b7c16a334500d38, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2099461382075865271, guid: 6a9441a04a6f1ea41b7c16a334500d38, type: 3}
   m_PrefabInstance: {fileID: 9208073642420406227}
   m_PrefabAsset: {fileID: 0}
