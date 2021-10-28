@@ -24,12 +24,12 @@ public class LongTeleportAbility : StonicornAbility
             shielded = value;
             onShieldedChanged?.Invoke(shielded);
             //OnHitException delegate registering
-            if (playerController)
+            if (stonicorn)
             {
-                playerController.onHazardHitException -= onHitException;
+                stonicorn.onHazardHitException -= onHitException;
                 if (shielded)
                 {
-                    playerController.onHazardHitException += onHitException;
+                    stonicorn.onHazardHitException += onHitException;
                     Debug.Log("OnHit registered!");
                 }
             }
@@ -89,15 +89,15 @@ public class LongTeleportAbility : StonicornAbility
             ((Vector2)offset).magnitude / maxDragDistance,
             1
             );
-        playerController.Teleport.Range = Mathf.Max(
-            playerController.Teleport.baseRange,
-            playerController.Teleport.baseRange * maxRangeIncreaseFactor * dragFactor
+        stonicorn.Teleport.Range = Mathf.Max(
+            stonicorn.Teleport.baseRange,
+            stonicorn.Teleport.baseRange * maxRangeIncreaseFactor * dragFactor
             );
     }
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        if (playerController.Teleport.Range > playerController.Teleport.baseRange)
+        if (stonicorn.Teleport.Range > stonicorn.Teleport.baseRange)
         {
             //Update Stats
             Managers.Stats.addOne(Stat.LONG_TELEPORT);
@@ -134,7 +134,7 @@ public class LongTeleportAbility : StonicornAbility
             //Require certain distance apart
             && !oldPos.inRange(
                 newPos,
-                playerController.Teleport.baseRange * portalRequiredRangeFactor
+                stonicorn.Teleport.baseRange * portalRequiredRangeFactor
                 )
             //Don't overlap portals
             && !portalList.Any(portal => portal.containsPoint(oldPos))

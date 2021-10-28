@@ -26,22 +26,22 @@ public class SwapAbility : StonicornAbility
     public override void init()
     {
         base.init();
-        playerController.Teleport.findTeleportablePositionOverride += findSwapPosition;
-        playerController.Teleport.onRangeChanged += onRangeChanged;
+        stonicorn.Teleport.findTeleportablePositionOverride += findSwapPosition;
+        stonicorn.Teleport.onRangeChanged += onRangeChanged;
         pc2d = GetComponent<PolygonCollider2D>();
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.Teleport.findTeleportablePositionOverride -= findSwapPosition;
-        playerController.Teleport.onRangeChanged -= onRangeChanged;
+        stonicorn.Teleport.findTeleportablePositionOverride -= findSwapPosition;
+        stonicorn.Teleport.onRangeChanged -= onRangeChanged;
     }
 
     private void Update()
     {
         List<GameObject> swappables = Physics2D.OverlapCircleAll(
             transform.position,
-            playerController.Teleport.Range
+            stonicorn.Teleport.Range
             ).ToList()
             .FindAll(coll => isObjectSwappable(coll.gameObject))
             .ConvertAll(coll => coll.gameObject);
@@ -58,9 +58,9 @@ public class SwapAbility : StonicornAbility
     {
         if (swappedSomething)
         {
-            if (range < playerController.Teleport.baseRange)
+            if (range < stonicorn.Teleport.baseRange)
             {
-                playerController.Teleport.Range = playerController.Teleport.baseRange;
+                stonicorn.Teleport.Range = stonicorn.Teleport.baseRange;
             }
         }
     }
@@ -68,7 +68,7 @@ public class SwapAbility : StonicornAbility
     bool isObjectSwappable(GameObject go)
         => go != this.gameObject
         && go.GetComponent<Rigidbody2D>()
-        && go.getSize().magnitude <= playerController.halfWidth * 2 * swapSizeScaleLimit;
+        && go.getSize().magnitude <= stonicorn.halfWidth * 2 * swapSizeScaleLimit;
 
     bool isColliderSwappable(Collider2D coll, Vector3 tapPos)
         => isObjectSwappable(coll.gameObject)
@@ -216,7 +216,7 @@ public class SwapAbility : StonicornAbility
             }
             swapTarget.transform.position = swapPos;
             swappedSomething = true;
-            playerController.Teleport.Range = playerController.Teleport.baseRange;//TODO: properly hook this up
+            stonicorn.Teleport.Range = stonicorn.Teleport.baseRange;//TODO: properly hook this up
             //Swappables
             swapTarget.GetComponents<ISwappable>().ToList()
                 .ForEach(swappee => swappee.nowSwapped());
@@ -231,14 +231,15 @@ public class SwapAbility : StonicornAbility
                 applyStasis();
             }
             //Give player time to tap again after swapping
-            playerController.MovementPaused = true;
+            //TODO: Refactor
+            //stonicorn.MovementPaused = true;
             //Update Stats
             Managers.Stats.addOne(Stat.SWAP_OBJECT);
             //Update Stats
             Managers.Stats.addOne(Stat.SWAP);
             //Delegates
             effectTeleport(oldPos, newPos);
-            onSwap?.Invoke(playerController.gameObject, swapTarget);
+            onSwap?.Invoke(stonicorn.gameObject, swapTarget);
         }
     }
     public delegate void OnSwap(GameObject go1, GameObject go2);
@@ -277,7 +278,7 @@ public class SwapAbility : StonicornAbility
         Vector2 swapUp = transform.up;
         transform.up = swapTarget.transform.up;
         swapTarget.transform.up = swapUp;
-        onRotate?.Invoke(playerController.gameObject, swapTarget);
+        onRotate?.Invoke(stonicorn.gameObject, swapTarget);
     }
     public event OnSwap onRotate;
 
@@ -288,7 +289,7 @@ public class SwapAbility : StonicornAbility
     {
         StaticUntilTouched sut = swapTarget.AddComponent<StaticUntilTouched>();
         sut.onRootedChanged += (rooted) => { if (!rooted) { Destroy(sut); } };
-        onStasis?.Invoke(playerController.gameObject, swapTarget);
+        onStasis?.Invoke(stonicorn.gameObject, swapTarget);
     }
     public event OnSwap onStasis;
 

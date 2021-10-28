@@ -66,13 +66,13 @@ public class ElectricBeamAbility : StonicornAbility
     public override void init()
     {
         base.init();
-        playerController.Teleport.findTeleportablePositionOverride
+        stonicorn.Teleport.findTeleportablePositionOverride
             += findTeleportablePosition;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.Teleport.findTeleportablePositionOverride
+        stonicorn.Teleport.findTeleportablePositionOverride
             -= findTeleportablePosition;
     }
 
@@ -112,12 +112,12 @@ public class ElectricBeamAbility : StonicornAbility
 
     void applyStatic(bool apply = true)
     {
-        playerController.GravityAccepter.AcceptsGravity = !apply;
+        stonicorn.GravityAccepter.AcceptsGravity = !apply;
         if (apply)
         {
             Vector2 targetVelocity = (targetRB2D) ? targetRB2D.velocity : Vector2.zero;
             rb2d.velocity = Vector2.Lerp(rb2d.velocity, targetVelocity, Time.fixedDeltaTime * staticSpeed);
-            playerController.GravityAccepter.AcceptsGravity = false;
+            stonicorn.GravityAccepter.AcceptsGravity = false;
         }
     }
 
@@ -150,7 +150,7 @@ public class ElectricBeamAbility : StonicornAbility
             int index = (target) ? powerables.IndexOf(target) : -1;
             int newIndex = (index + 1) % powerables.Count;
             Target = powerables[newIndex];
-            playerController.updateGroundedState();
+            stonicorn.updateGroundedState();
         }
         else
         {
@@ -186,7 +186,7 @@ public class ElectricBeamAbility : StonicornAbility
     #region Input Handling
     Vector2 findTeleportablePosition(Vector2 rangePos, Vector2 tapPos)
     {
-        if (playerController.gestureOnPlayer(tapPos))
+        if (stonicorn.gestureOnSprite(tapPos))
         {
             tapOnPlayer = true;
         }

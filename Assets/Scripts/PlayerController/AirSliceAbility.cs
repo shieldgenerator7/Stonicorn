@@ -30,14 +30,14 @@ public class AirSliceAbility : StonicornAbility
     public override void init()
     {
         base.init();
-        playerController.onGroundedStateUpdated += resetAirPorts;
+        stonicorn.onGroundedStateUpdated += resetAirPorts;
         swapAbility = GetComponent<SwapAbility>();
         GetComponent<ForceLaunchAbility>().onLaunch += useAirPort;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.onGroundedStateUpdated -= resetAirPorts;
+        stonicorn.onGroundedStateUpdated -= resetAirPorts;
         GetComponent<ForceLaunchAbility>().onLaunch -= useAirPort;
     }
 
@@ -61,7 +61,7 @@ public class AirSliceAbility : StonicornAbility
         AirPortsUsed++;
         if (AirPortsUsed == maxAirPorts)
         {
-            playerController.updateGroundedState();
+            stonicorn.updateGroundedState();
         }
     }
     public void grantAirPort()
@@ -71,15 +71,15 @@ public class AirSliceAbility : StonicornAbility
             AirPortsUsed--;
             if (AirPortsUsed < maxAirPorts)
             {
-                playerController.updateGroundedState();
+                stonicorn.updateGroundedState();
             }
         }
     }
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        if (!playerController.Ground.isGroundedPrevWithoutAbility(this)
-            && playerController.Ground.GroundedPrev)
+        if (!stonicorn.Ground.isGroundedPrevWithoutAbility(this)
+            && stonicorn.Ground.GroundedPrev)
         {
             //Update Stats
             Managers.Stats.addOne(Stat.AIR_SLICE);
@@ -101,7 +101,8 @@ public class AirSliceAbility : StonicornAbility
             if (AirPortsUsed <= maxAirPorts)
             {
                 rb2d.nullifyMovement();
-                playerController.MovementPaused = true;
+                //TODO: Refactor
+                //stonicorn.MovementPaused = true;
             }
             //Effect Teleport
             effectTeleport(oldPos, newPos);
@@ -110,7 +111,7 @@ public class AirSliceAbility : StonicornAbility
 
     bool CanSlice
         => FeatureLevel >= 1 &&
-        (playerController.Ground.GroundedAbility || playerController.Ground.GroundedAbilityPrev);
+        (stonicorn.Ground.GroundedAbility || stonicorn.Ground.GroundedAbilityPrev);
 
     void sliceThings(Vector2 oldPos, Vector2 newPos)
     {
@@ -143,13 +144,13 @@ public class AirSliceAbility : StonicornAbility
 
     bool CanMakeCloud
         => FeatureLevel >= 2 &&
-        (playerController.Ground.GroundedAbility || playerController.Ground.GroundedAbilityPrev);
+        (stonicorn.Ground.GroundedAbility || stonicorn.Ground.GroundedAbilityPrev);
 
     void makeCloud(Vector2 oldPos)
     {
         GameObject cloud = Utility.Instantiate(cloudPrefab);
         cloud.transform.position = oldPos;
-        cloud.transform.up = -playerController.GravityAccepter.Gravity;
+        cloud.transform.up = -stonicorn.GravityAccepter.Gravity;
     }
 
     public override SavableObject CurrentState

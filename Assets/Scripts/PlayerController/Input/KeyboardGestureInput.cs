@@ -47,7 +47,7 @@ public class KeyboardGestureInput : GestureInput
                     //Gesture Start
                     gestureStartTime = Time.time;
                 }
-                float range = Managers.Player.Teleport.baseRange;
+                float range = Managers.Player.BaseRange;
                 if (Input.GetButton("Short"))
                 {
                     range /= 2;

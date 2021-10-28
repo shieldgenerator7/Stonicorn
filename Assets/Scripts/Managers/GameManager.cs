@@ -219,8 +219,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        //TODO: Refactor
         //Put the player ground trigger in its proper spot
-        Managers.Player.updateGroundTrigger();
+        //Managers.Player.updateGroundTrigger();
     }
 
     #region Scene Load delegates

@@ -24,15 +24,16 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour
 
     public void updateRange()
     {
-        if (controller.Teleport.TeleportReady)
-        {
-            sr.enabled = true;
-        }
-        else
-        {
-            sr.enabled = false;
-        }
-        float newSize = controller.Teleport.Range;
+        //TODO: Refactor, or perhaps scrap this script?
+        //if (controller.Teleport.TeleportReady)
+        //{
+        //    sr.enabled = true;
+        //}
+        //else
+        //{
+        //    sr.enabled = false;
+        //}
+        float newSize = controller.Range;
         setRange(newSize);
     }
     public void setRange(float range)

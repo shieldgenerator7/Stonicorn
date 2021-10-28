@@ -7,7 +7,17 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    public Stonicorn stonicorn;
+    private Stonicorn stonicorn;
+    public Stonicorn Stonicorn
+    {
+        private get => stonicorn;
+        set
+        {
+            registerStonicornDelegates(false);
+            stonicorn = value;
+            registerStonicornDelegates(true);
+        }
+    }
 
     //
     //Settings
@@ -35,28 +45,75 @@ public class PlayerController : MonoBehaviour
         //Register the delegates
         registerDelegates();
     }
+
+    #region Delegates and Stonicorn Interfaces
+
+    public float Speed => stonicorn.Speed;
+    public float Range => stonicorn.Teleport.Range;
+    public float BaseRange => stonicorn.Teleport.baseRange;
+
+    public Vector2 GravityDir => stonicorn.GravityDir;
+
     protected virtual void registerDelegates()
     {
         Managers.Rewind.onRewindFinished += pauseMovementAfterRewind;
-        stonicorn.onTriggerEntered += (coll2D) =>
-        {
-            checkMovementPause();//first grounded frame after teleport
-        };
-        stonicorn.onCollisionEntered += (coll2D, hazardDamage) =>
-        {
-            if (hazardDamage > 0)
-            {
-                //Take damage (and rewind)
-                forceRewindHazard(hazardDamage, coll2D.contacts[0].point);
-            }
-            else
-            {
-                //Grant gravity immunity
-                checkMovementPause();//first grounded frame after teleport
-            }
-        };
-        stonicorn.Teleport.onTeleport += onTeleported;
+        registerStonicornDelegates();
     }
+    private void registerStonicornDelegates(bool register = true)
+    {
+        //unregister
+        stonicorn.onTriggerEntered -= onTriggerEntered;
+        stonicorn.onCollisionEntered -= OnCollisionEntered;
+        stonicorn.Teleport.onTeleport -= onTeleported;
+        stonicorn.onAbilityActivated -= onAbilityActivated;
+        stonicorn.onAbilityUpgraded -= onAbilityUpgraded;
+        stonicorn.onGroundedStateUpdated -= onGroundedStateUpdated;
+        stonicorn.Teleport.onRangeChanged -= onRangeChanged;
+        stonicorn.Teleport.findTeleportablePositionOverride -= findTeleportablePositionOverride;
+        stonicorn.Teleport.onTeleport -= onTeleport;
+        //register
+        if (register)
+        {
+            stonicorn.onTriggerEntered += onTriggerEntered;
+            stonicorn.onCollisionEntered += OnCollisionEntered;
+            stonicorn.Teleport.onTeleport += onTeleported;
+            stonicorn.onAbilityActivated += onAbilityActivated;
+            stonicorn.onAbilityUpgraded += onAbilityUpgraded;
+            stonicorn.onGroundedStateUpdated += onGroundedStateUpdated;
+            stonicorn.Teleport.onRangeChanged += onRangeChanged;
+            stonicorn.Teleport.findTeleportablePositionOverride += findTeleportablePositionOverride;
+            stonicorn.Teleport.onTeleport += onTeleport;
+        }
+    }
+
+    private void onTriggerEntered(Collider2D coll2D)
+    {
+        checkMovementPause();//first grounded frame after teleport
+    }
+    private void OnCollisionEntered(Collision2D coll2D, int hazardDamage)
+    {
+        if (hazardDamage > 0)
+        {
+            //Take damage (and rewind)
+            forceRewindHazard(hazardDamage, coll2D.contacts[0].point);
+        }
+        else
+        {
+            //Grant gravity immunity
+            checkMovementPause();//first grounded frame after teleport
+        }
+    }
+
+    public event Stonicorn.OnAbilityActivated onAbilityActivated;
+    public event Stonicorn.OnAbilityUpgraded onAbilityUpgraded;
+
+    public event Stonicorn.OnGroundedStateUpdated onGroundedStateUpdated;
+
+    public event TeleportAbility.OnRangeChanged onRangeChanged;
+    public event TeleportAbility.FindTeleportablePositionOverride findTeleportablePositionOverride;
+    public event TeleportAbility.OnTeleport onTeleport;
+
+    #endregion
 
     /// <summary>
     /// True if pausing movement for a time, false if otherwise

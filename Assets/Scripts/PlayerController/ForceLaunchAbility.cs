@@ -84,13 +84,15 @@ public class ForceLaunchAbility : StonicornAbility
     public override void init()
     {
         base.init();
-        playerController.onDragGesture += processDrag;
+        //TODO: Refactor
+        //stonicorn.onDragGesture += processDrag;
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.onDragGesture -= processDrag;
+        //TODO: Refactor
+        //stonicorn.onDragGesture -= processDrag;
     }
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
@@ -107,7 +109,7 @@ public class ForceLaunchAbility : StonicornAbility
     {
         Launching = !finished;
         dragPos = newPos;
-        LaunchDirection = (Vector2)playerController.transform.position - newPos;
+        LaunchDirection = (Vector2)stonicorn.transform.position - newPos;
         if (finished && CanLaunch)
         {
             //Save the game state
@@ -124,7 +126,7 @@ public class ForceLaunchAbility : StonicornAbility
 
     protected override bool isGrounded()
         => affectingVelocity
-            || playerController.Ground.isGroundedInDirection(rb2d.velocity);
+            || stonicorn.Ground.isGroundedInDirection(rb2d.velocity);
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -194,9 +196,9 @@ public class ForceLaunchAbility : StonicornAbility
     /// or hasn't teleported since not being grounded
     /// </summary>
     bool CanLaunch =>
-        (playerController.Ground.isGroundedWithoutAbility(this)
+        (stonicorn.Ground.isGroundedWithoutAbility(this)
         || !rb2d.isMoving())
-        && !Managers.Player.gestureOnPlayer(dragPos);
+        && !stonicorn.gestureOnSprite(dragPos);
 
     void launch()
     {
@@ -251,7 +253,7 @@ public class ForceLaunchAbility : StonicornAbility
         Vector2 startPos = (Vector2)transform.position
             + launchDirection.normalized * -1.5f;
         //If there's space to spawn it
-        if (!playerController.isOccupied(startPos))
+        if (!stonicorn.isOccupied(startPos))
         {
             //Spawn it
             GameObject projectile = Utility.Instantiate(projectilePrefab);

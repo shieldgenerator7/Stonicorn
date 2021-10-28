@@ -23,8 +23,8 @@ public class TeleportRangeUpdater : MonoBehaviour
     {
         effects.ForEach(fx => fx.init(this));
         //Register range update delegate
-        Managers.Player.Teleport.onRangeChanged += updateRange;
-        updateRange(Managers.Player.Teleport.Range);
+        Managers.Player.onRangeChanged += updateRange;
+        updateRange(Managers.Player.Range);
     }
 
     private void updateRange(float range)

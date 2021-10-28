@@ -88,7 +88,7 @@ public class TeleportAbility : StonicornAbility
     {
         base.init();
         pc2d = GetComponent<PolygonCollider2D>();
-        playerController.onGroundedStateUpdated += onGroundedChanged;
+        stonicorn.onGroundedStateUpdated += onGroundedChanged;
         Managers.Rewind.onRewindFinished += onRewindFinished;
         //TeleportAbility doesn't need an onTeleport delegate
         onTeleport -= processTeleport;
@@ -99,7 +99,7 @@ public class TeleportAbility : StonicornAbility
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.onGroundedStateUpdated -= onGroundedChanged;
+        stonicorn.onGroundedStateUpdated -= onGroundedChanged;
         Managers.Rewind.onRewindFinished -= onRewindFinished;
     }
 
@@ -122,13 +122,13 @@ public class TeleportAbility : StonicornAbility
     private void teleport(Vector3 targetPos)
     {
         //If Merky is teleporting from the air,
-        if (!hasFreeTeleport && !playerController.Ground.Grounded)
+        if (!hasFreeTeleport && !stonicorn.Ground.Grounded)
         {
             //Put the teleport ability on cooldown, longer if teleporting up
             //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
             float upAmount = Vector3.Dot(
                 (targetPos - transform.position).normalized,
-                -playerController.GravityDir.normalized
+                -stonicorn.GravityDir.normalized
                 );
             exhaustCoolDownTime = baseExhaustCoolDownTime * upAmount;
         }
@@ -171,7 +171,7 @@ public class TeleportAbility : StonicornAbility
         //Check grounded state
         //have to check it again because state has changed
         Physics2D.SyncTransforms();
-        playerController.updateGroundedState();
+        stonicorn.updateGroundedState();
 
         //On Teleport Effects
         onTeleport?.Invoke(oldPos, newPos);
@@ -222,11 +222,11 @@ public class TeleportAbility : StonicornAbility
         //Determine if you can teleport to the position
         //(i.e. is it occupied or not?)
         //If the new position is occupied,
-        if (playerController.isOccupied(newPos))
+        if (stonicorn.isOccupied(newPos))
         {
             //Try to adjust it first
             Vector2 adjustedPos = adjustForOccupant(newPos);
-            if (!playerController.isOccupied(adjustedPos))
+            if (!stonicorn.isOccupied(adjustedPos))
             {
                 return adjustedPos;
             }
@@ -250,12 +250,12 @@ public class TeleportAbility : StonicornAbility
                 {
                     Vector2 testPos = (norm * percent) + oldPos;
                     //If the test position is occupied,
-                    if (playerController.isOccupied(testPos))
+                    if (stonicorn.isOccupied(testPos))
                     {
                         //Adjust position based on occupant
                         testPos = adjustForOccupant(testPos);
                         //If the test position is no longer occupied,
-                        if (!playerController.isOccupied(testPos))
+                        if (!stonicorn.isOccupied(testPos))
                         {
                             //Possible option found
                             possibleOptions.Add(testPos);
@@ -332,7 +332,7 @@ public class TeleportAbility : StonicornAbility
                     //Figure out in which direction to move and how far
                     Vector3 outDir = testPos - (Vector3)rh2d.point;
                     //(half width is only an estimate of the dist from the sprite center to its edge)
-                    float adjustDistance = playerController.halfWidth - rh2d.distance;
+                    float adjustDistance = stonicorn.halfWidth - rh2d.distance;
                     //If the distance to move is invalid,
                     if (adjustDistance < 0)
                     {
@@ -344,7 +344,7 @@ public class TeleportAbility : StonicornAbility
                     {
                         //Reverse the direction and increase the dist
                         outDir *= -1;
-                        adjustDistance += playerController.halfWidth;
+                        adjustDistance += stonicorn.halfWidth;
                     }
                     //Add the calculated direction and magnitude to the running total
                     moveDir += outDir.normalized * adjustDistance;
@@ -392,7 +392,7 @@ public class TeleportAbility : StonicornAbility
             //Teleport
             teleport(newPos);
             //Save the game state
-            if (playerController.Ground.GroundedPrev)
+            if (stonicorn.Ground.GroundedPrev)
             {
                 Managers.Rewind.Save();
             }
@@ -418,9 +418,9 @@ public class TeleportAbility : StonicornAbility
         teleportPreviewPointer.transform.localScale = transform.localScale;
         teleportPreviewPointer.transform.position = futurePos;
         //Account for teleport-on-player
-        if (playerController.gestureOnPlayer(futurePos))
+        if (stonicorn.gestureOnSprite(futurePos))
         {
-            float newAngle = playerController.getNextRotation(futureProjection.transform.localEulerAngles.z);
+            float newAngle = stonicorn.getNextRotation(futureProjection.transform.localEulerAngles.z);
             futureProjection.transform.localEulerAngles = new Vector3(0, 0, newAngle);
         }
     }

@@ -34,12 +34,12 @@ public class TeleportPortal : SavableMonoBehaviour
             transform.position = Vector2.one * 0.001f;
         }
         //Register delegates
-        Managers.Player.Teleport.findTeleportablePositionOverride += checkPortal;
+        Managers.Player.findTeleportablePositionOverride += checkPortal;
     }
 
     private void OnDisable()
     {
-        Managers.Player.Teleport.findTeleportablePositionOverride -= checkPortal;
+        Managers.Player.findTeleportablePositionOverride -= checkPortal;
     }
 
     public void connectTo(GameObject other)
@@ -62,7 +62,7 @@ public class TeleportPortal : SavableMonoBehaviour
     Vector2 checkPortal(Vector2 oldPos, Vector2 tapPos)
     {
         if (containsPoint(tapPos)
-            && oldPos.inRange(tapPos, Managers.Player.Teleport.Range)
+            && oldPos.inRange(tapPos, Managers.Player.Range)
             )
         {
             return otherEnd.transform.position;

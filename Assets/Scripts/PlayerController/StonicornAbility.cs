@@ -53,45 +53,47 @@ public abstract class StonicornAbility : SavableMonoBehaviour, ISetting
         }
     }
 
-    protected Stonicorn playerController;
+    protected Stonicorn stonicorn;
     protected Rigidbody2D rb2d;
 
     // Use this for initialization
     public override void init()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        playerController = GetComponent<PlayerController>();
+        stonicorn = GetComponent<Stonicorn>();
         //Upgrade Levels
         acceptUpgradeLevel(upgradeLevel);
 
-        if (playerController)
+        if (stonicorn)
         {
             //Sound Effects
             if (soundEffect)
             {
                 if (addsOnTeleportSoundEffect)
                 {
-                    playerController.onPlayTeleportSound += playTeleportSound;
+                    //TODO: refactor this ugly reference to Managers.Player
+                    Managers.Player.onPlayTeleportSound += playTeleportSound;
                 }
             }
-            playerController.abilityActivated(this, true);
+            stonicorn.abilityActivated(this, true);
             //Delegates
-            playerController.Teleport.onTeleport += processTeleport;
-            playerController.Ground.isGroundedCheck += isGrounded;
+            stonicorn.Teleport.onTeleport += processTeleport;
+            stonicorn.Ground.isGroundedCheck += isGrounded;
         }
     }
     public virtual void OnDisable()
     {
-        if (playerController)
+        if (stonicorn)
         {
             if (addsOnTeleportSoundEffect)
             {
-                playerController.onPlayTeleportSound -= playTeleportSound;
+                //TODO: refactor this ugly reference to Managers.Player
+                Managers.Player.onPlayTeleportSound -= playTeleportSound;
             }
-            playerController.abilityActivated(this, false);
+            stonicorn.abilityActivated(this, false);
             //Delegates
-            playerController.Teleport.onTeleport -= processTeleport;
-            playerController.Ground.isGroundedCheck -= isGrounded;
+            stonicorn.Teleport.onTeleport -= processTeleport;
+            stonicorn.Ground.isGroundedCheck -= isGrounded;
         }
     }
     public void OnEnable()
@@ -120,7 +122,7 @@ public abstract class StonicornAbility : SavableMonoBehaviour, ISetting
         {
             acceptUpgradeLevel(upgradeLevels[level]);
         }
-        playerController?.abilityUpgraded(this, level);
+        stonicorn?.abilityUpgraded(this, level);
     }
     protected abstract void acceptUpgradeLevel(AbilityUpgradeLevel aul);
 

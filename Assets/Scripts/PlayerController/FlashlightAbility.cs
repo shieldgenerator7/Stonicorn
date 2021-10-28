@@ -27,12 +27,14 @@ public class FlashlightAbility : StonicornAbility
     public override void init()
     {
         base.init();
-        playerController.onDragGesture += processDrag;
+        //TODO: Refactor
+        //stonicorn.onDragGesture += processDrag;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.onDragGesture -= processDrag;
+        //TODO: Refactor
+        //stonicorn.onDragGesture -= processDrag;
     }
 
     #region Input Processing
@@ -43,7 +45,7 @@ public class FlashlightAbility : StonicornAbility
     public void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
     {
         flashlightOn = !finished;
-        FlashlightDirection = (Vector2)playerController.transform.position - newPos;
+        FlashlightDirection = (Vector2)stonicorn.transform.position - newPos;
         updateFlashlightVisuals();
     }
     #endregion

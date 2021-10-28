@@ -185,6 +185,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
             }
         }
     }
+    //TODO: Refactor this whole property, probably move it somewhere
     /// <summary>
     /// Whether or not the player is inside a checkpoint
     /// </summary>
@@ -192,20 +193,14 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         set
         {
+            //Managers.Player.Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
+            //Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
+            Managers.PlayerRewind.tapProcessed -= checkCheckPointGhostsZoomedOut;
             if (value)
             {
-                Managers.Player.Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
-                Managers.Player.Teleport.overrideTeleportPosition += checkCheckPointGhosts;
-                Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
-                Managers.Player.Teleport.onTeleport += updateCheckPointCheckers;
-                Managers.PlayerRewind.tapProcessed -= checkCheckPointGhostsZoomedOut;
+                //Managers.Player.Teleport.overrideTeleportPosition += checkCheckPointGhosts;
+                //Managers.Player.Teleport.onTeleport += updateCheckPointCheckers;
                 Managers.PlayerRewind.tapProcessed += checkCheckPointGhostsZoomedOut;
-            }
-            else
-            {
-                Managers.Player.Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
-                Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
-                Managers.PlayerRewind.tapProcessed -= checkCheckPointGhostsZoomedOut;
             }
         }
     }
@@ -215,7 +210,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
             .Find(cpc => cpc.checkGhostActivation(pos));
         if (checkPoint)
         {
-            Managers.Player.Teleport.processTeleport(pos);
+            //TODO: Refactor this
+            //Managers.Player.Teleport.processTeleport(pos);
         }
     }
     private static Vector2 checkCheckPointGhosts(Vector2 pos, Vector2 tapPos)
@@ -225,29 +221,31 @@ public class CheckPointChecker : MemoryMonoBehaviour
         if (checkPoint)
         {
             Vector2 telepadPos = checkPoint.getTelepadPosition(current);
-            Vector2 foundPos = Managers.Player.Teleport
-                .findTeleportablePosition(telepadPos, telepadPos);
-            if (checkPoint.GetComponent<Collider2D>().OverlapPoint(foundPos))
-            {
-                return foundPos;
-            }
+            //TODO: Refactor this
+            //Vector2 foundPos = Managers.Player.Teleport
+            //    .findTeleportablePosition(telepadPos, telepadPos);
+            //if (checkPoint.GetComponent<Collider2D>().OverlapPoint(foundPos))
+            //{
+            //    return foundPos;
+            //}
         }
         return Vector2.zero;
     }
     private static void updateCheckPointCheckers(Vector2 oldPos, Vector2 newPos)
     {
-        //If teleport to other checkpoint,
-        if ((oldPos - newPos).magnitude > Managers.Player.Teleport.Range * 2)
-        {
-            //Move the camera to Merky's center
-            Managers.Camera.recenter();
-        }
-        //If teleport within same checkpoint,
-        else
-        {
-            //Reposition checkpoint previews
-            readjustCheckPointGhosts(Managers.Player.transform.position);
-        }
+        //TODO: Refactor this
+        ////If teleport to other checkpoint,
+        //if ((oldPos - newPos).magnitude > Managers.Player.Teleport.Range * 2)
+        //{
+        //    //Move the camera to Merky's center
+        //    Managers.Camera.recenter();
+        //}
+        ////If teleport within same checkpoint,
+        //else
+        //{
+        //    //Reposition checkpoint previews
+        //    readjustCheckPointGhosts(Managers.Player.transform.position);
+        //}
     }
 
     public string grabCheckPointCameraData()//2016-12-06: grabs image data from the camera designated for checkpoints

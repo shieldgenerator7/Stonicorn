@@ -28,12 +28,12 @@ public class WallClimbAbility : StonicornAbility
             if (value)
             {
                 magnetStartTime = Managers.Time.Time;
-                playerController.GravityAccepter.gravityScale = 1 - wallMagnetAntiGravity;
+                stonicorn.GravityAccepter.gravityScale = 1 - wallMagnetAntiGravity;
             }
             else
             {
                 magnetStartTime = -1;
-                playerController.GravityAccepter.gravityScale = 1;
+                stonicorn.GravityAccepter.gravityScale = 1;
             }
             onMagnetChanged?.Invoke(value);
         }
@@ -63,14 +63,14 @@ public class WallClimbAbility : StonicornAbility
     bool isGroundedWall()
     {
         groundedLeft = groundedRight = false;
-        Vector2 gravity = playerController.GravityDir;
+        Vector2 gravity = stonicorn.GravityDir;
         //Test left side
-        groundedLeft = playerController.Ground.isGroundedInDirection(
+        groundedLeft = stonicorn.Ground.isGroundedInDirection(
             -gravity.PerpendicularLeft(),
             wallDetectRange
             );
         //Test right side
-        groundedRight = playerController.Ground.isGroundedInDirection(
+        groundedRight = stonicorn.Ground.isGroundedInDirection(
             -gravity.PerpendicularRight(),
             wallDetectRange
             );
@@ -79,8 +79,8 @@ public class WallClimbAbility : StonicornAbility
     bool isGroundedCeiling()
     {
         groundedCeiling = false;
-        groundedCeiling = playerController.Ground.isGroundedInDirection(
-            -playerController.GravityDir,
+        groundedCeiling = stonicorn.Ground.isGroundedInDirection(
+            -stonicorn.GravityDir,
             wallDetectRange
             );
         return groundedCeiling;
@@ -114,7 +114,7 @@ public class WallClimbAbility : StonicornAbility
         if (Magneted)
         {
             if (Managers.Time.Time <= magnetStartTime + magnetDuration
-                && !playerController.Ground.GroundedNormal)
+                && !stonicorn.Ground.GroundedNormal)
             {
                 if (groundedLeft || groundedRight || groundedCeiling)
                 {
@@ -153,7 +153,7 @@ public class WallClimbAbility : StonicornAbility
 
     protected override void playTeleportSound(Vector2 oldPos, Vector2 newPos)
     {
-        if (playerController.Ground.GroundedAbilityPrev)
+        if (stonicorn.Ground.GroundedAbilityPrev)
         {
             base.playTeleportSound(oldPos, newPos);
         }
@@ -187,10 +187,10 @@ public class WallClimbAbility : StonicornAbility
     /// <param name="newPos"></param>
     public void plantSticky(Vector2 teleportPos)
     {
-        if (playerController.Ground.GroundedAbilityPrev)
+        if (stonicorn.Ground.GroundedAbilityPrev)
         {
             //Get the gravity direction
-            Vector2 gravity = playerController.GravityDir;
+            Vector2 gravity = stonicorn.GravityDir;
             if (groundedLeft)
             {
                 //Look left
