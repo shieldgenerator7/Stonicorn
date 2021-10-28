@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 21235352}
   - component: {fileID: 5068768}
   - component: {fileID: 6075330}
-  - component: {fileID: 11477714}
   - component: {fileID: 7835665536134532039}
+  - component: {fileID: 803154599080377303}
   - component: {fileID: 1792176476}
   - component: {fileID: 3415424875800634050}
   - component: {fileID: 4077093240442266713}
@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 1792176481}
   - component: {fileID: 1792176475}
   - component: {fileID: 1792176466}
-  - component: {fileID: 3807953469792525793}
+  - component: {fileID: 8638340729489593205}
   m_Layer: 8
   m_Name: merky
   m_TagString: Player
@@ -189,23 +189,6 @@ PolygonCollider2D:
     - - {x: -0.2734375, y: -0.21875}
       - {x: -0.2734375, y: -0.2421875}
       - {x: -0.26953125, y: -0.23828125}
---- !u!114 &11477714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbdae502dd894ed4fb9a1c7edf39b7b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  autoTeleportDelay: 0.1
-  pauseMovementDuration: 0.3
-  hitStunDuration: 0.75
-  scoutColliderMin: {fileID: 530089677}
-  scoutColliderMax: {fileID: 1809435738}
 --- !u!114 &7835665536134532039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,6 +204,20 @@ MonoBehaviour:
   playerGhostPrefab: {fileID: 1000011127396842, guid: 9606e6e6819228048814d508f93b193e, type: 3}
   ghostFolder: {fileID: 0}
   selectionHighlighter: {fileID: 0}
+--- !u!114 &803154599080377303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c67a6b85ae6ce545815241086cf3485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoutColliderMin: {fileID: 530089677}
+  scoutColliderMax: {fileID: 1809435738}
 --- !u!114 &1792176476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,7 +650,7 @@ MonoBehaviour:
   groundTestDistance: 0.25
   coll2d: {fileID: 6075330}
   Gravity: {fileID: 0}
---- !u!114 &3807953469792525793
+--- !u!114 &8638340729489593205
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -662,12 +659,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 100086}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f226e1a029e61f5408883be589e5ecf4, type: 3}
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: -1
   prefabAddress:
-    m_AssetGUID: 
+    m_AssetGUID: 5913bd1e88aefff4988c7dfee6595611
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

@@ -66,6 +66,10 @@ public abstract class StonicornAbility : SavableMonoBehaviour, ISetting
 
         if (stonicorn)
         {
+            if (!stonicorn.Teleport)
+            {
+                stonicorn.Awake();
+            }
             //Sound Effects
             if (soundEffect)
             {

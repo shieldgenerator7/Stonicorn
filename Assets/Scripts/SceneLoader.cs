@@ -80,6 +80,10 @@ public class SceneLoader : MonoBehaviour, ISetting
 
     public void check()
     {
+        if (!explorer)
+        {
+            return;
+        }
         bool isLoaded = IsLoaded;
         bool overlaps = Collider.OverlapPoint(ExplorerObject.transform.position);
         //Unload when player leaves

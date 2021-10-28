@@ -38,7 +38,8 @@ public class DistanceYTimer : Timer
 
     public override float CurrentTime => Duration - TimeLeft;
 
-    private float Distance => Mathf.Abs(timerObject.position.y - targetObject.position.y);
+    //TODO: Refactor
+    private float Distance => 1000;// Mathf.Abs(timerObject.position.y - targetObject.position.y);
     private float OrigDistance => Mathf.Abs(origPos.y - targetObject.position.y);
 
     public override void overrideStartTime(float startTime)

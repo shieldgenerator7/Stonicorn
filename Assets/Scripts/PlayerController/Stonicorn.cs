@@ -56,7 +56,7 @@ public class Stonicorn : MonoBehaviour
     public event OnAbilityUpgraded onAbilityUpgraded;
 
     // Use this for initialization
-    public void Start()
+    public void Awake()
     {
         //Retrieve components
         rb2d = GetComponent<Rigidbody2D>();

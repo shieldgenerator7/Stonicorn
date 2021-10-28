@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     public void init()
     {
-        stonicorn?.Start();
+        stonicorn?.Awake();
         //Register the delegates
         registerDelegates();
     }

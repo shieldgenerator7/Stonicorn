@@ -18,17 +18,20 @@ public class Follow : MonoBehaviour
     private Rigidbody2D rb2dParent;
     private Vector2 offset = Vector2.zero;
 
-    private void Awake()
+    public void Awake()
     {
         if (shakeOnStop)
         {
-            rb2dParent = followObject.GetComponent<Rigidbody2D>();
-            if (!rb2dParent)
+            if (followObject)
             {
-                Debug.LogError("Follow has shakeOnStop, " +
-                    "but its follow object does not have a RigidBody2D!",
-                    gameObject
-                    );
+                rb2dParent = followObject.GetComponent<Rigidbody2D>();
+                if (!rb2dParent)
+                {
+                    Debug.LogError("Follow has shakeOnStop, " +
+                        "but its follow object does not have a RigidBody2D!",
+                        gameObject
+                        );
+                }
             }
         }
         if (orientToCamera)
@@ -38,6 +41,9 @@ public class Follow : MonoBehaviour
                 (up) => transform.up = up;
         }
         //Rewind delegates
+        Managers.Rewind.onRewindStarted -= rewindStarted;
+        Managers.Rewind.onRewindState -= rewindState;
+        Managers.Rewind.onRewindFinished -= rewindFinished;
         Managers.Rewind.onRewindStarted += rewindStarted;
         Managers.Rewind.onRewindState += rewindState;
         Managers.Rewind.onRewindFinished += rewindFinished;

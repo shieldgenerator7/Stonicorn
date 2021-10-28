@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Managers.initInstance();
-        Managers.Player.init();
+        SceneManager.LoadSceneAsync(4, LoadSceneMode.Additive);
+        //Managers.Player.init();
         Managers.Camera.init();
         Addressables.InitializeAsync();
     }
@@ -236,6 +237,12 @@ public class GameManager : MonoBehaviour
         }
         if (Managers.Scene.isLevelScene(scene))
         {
+            Stonicorn stonicorn = FindObjectOfType<Stonicorn>();
+            Managers.Player.Stonicorn = stonicorn;
+            SceneLoader.ExplorerObject = stonicorn.gameObject;
+            FindObjectOfType<Follow>().followObject = stonicorn.gameObject;
+            FindObjectOfType<Follow>().Awake();
+            Managers.Player.init();
             //Load the previous state of the objects in the scene
             Managers.Scene.LoadObjectsFromScene(scene);
             //Refresh Memory Objects

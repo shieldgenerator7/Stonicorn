@@ -18,11 +18,12 @@ public class TeleportEffects : MonoBehaviour
 
     private void OnEnable()
     {
-        effectParticleController = GetComponent<ParticleSystemController>();
-        effectParticleSystem = GetComponent<ParticleSystem>();
-        ParticleSystem.MainModule psmm = effectParticleSystem.main;
-        psmm.startColor = playerAbility.EffectColor.adjustAlpha(psmm.startColor.color.a);
-        playerAbility.onEffectedTeleport += processTeleport;
+        //TODO: Refactor
+        //effectParticleController = GetComponent<ParticleSystemController>();
+        //effectParticleSystem = GetComponent<ParticleSystem>();
+        //ParticleSystem.MainModule psmm = effectParticleSystem.main;
+        //psmm.startColor = playerAbility.EffectColor.adjustAlpha(psmm.startColor.color.a);
+        //playerAbility.onEffectedTeleport += processTeleport;
     }
     private void OnDisable()
     {
