@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 
-public class WallClimbAbility : PlayerAbility
+public class WallClimbAbility : StonicornAbility
 {//2017-03-17: copied from ForceTeleportAbility
 
     [Header("Settings")]

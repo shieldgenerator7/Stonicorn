@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ElectricBeamAbility : PlayerAbility
+public class ElectricBeamAbility : StonicornAbility
 {
     [Header("Settings")]
     public float range = 2.5f;

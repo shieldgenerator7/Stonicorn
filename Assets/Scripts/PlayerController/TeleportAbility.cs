@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// Currently just used for the teleport hold gesture effect,
 /// but might actually have teleport capabilities in the future
 /// </summary>
-public class TeleportAbility : PlayerAbility
+public class TeleportAbility : StonicornAbility
 {//2017-08-07: copied from ForceTeleportAbility
     [Header("Teleport")]
     [Range(0, 10)]

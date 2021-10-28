@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlashlightAbility : PlayerAbility
+public class FlashlightAbility : StonicornAbility
 {
     [Header("Flashlight")]
     public float maxPullBackDistance = 6;

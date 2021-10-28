@@ -37,22 +37,22 @@ public class Stonicorn : MonoBehaviour
     /// <summary>
     /// Returns a list of active abilities
     /// </summary>
-    public List<PlayerAbility> ActiveAbilities
-        => GetComponents<PlayerAbility>().ToList()
+    public List<StonicornAbility> ActiveAbilities
+        => GetComponents<StonicornAbility>().ToList()
             .FindAll(ability => ability.enabled);
 
-    public void abilityActivated(PlayerAbility ability, bool active)
+    public void abilityActivated(StonicornAbility ability, bool active)
     {
         onAbilityActivated?.Invoke(ability, active);
     }
-    public delegate void OnAbilityActivated(PlayerAbility ability, bool active);
+    public delegate void OnAbilityActivated(StonicornAbility ability, bool active);
     public event OnAbilityActivated onAbilityActivated;
 
-    public void abilityUpgraded(PlayerAbility ability, int upgradeLevel)
+    public void abilityUpgraded(StonicornAbility ability, int upgradeLevel)
     {
         onAbilityUpgraded?.Invoke(ability, upgradeLevel);
     }
-    public delegate void OnAbilityUpgraded(PlayerAbility ability, int upgradeLevel);
+    public delegate void OnAbilityUpgraded(StonicornAbility ability, int upgradeLevel);
     public event OnAbilityUpgraded onAbilityUpgraded;
 
     // Use this for initialization

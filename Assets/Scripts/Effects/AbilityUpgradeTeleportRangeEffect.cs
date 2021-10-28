@@ -11,7 +11,7 @@ public class AbilityUpgradeTeleportRangeEffect : TeleportRangeEffect
         Managers.Player.onAbilityUpgraded += abilityUpgraded;
     }
 
-    private void abilityUpgraded(PlayerAbility ability, int upgradeLevel)
+    private void abilityUpgraded(StonicornAbility ability, int upgradeLevel)
     {
         updateEffect();
     }
@@ -19,7 +19,7 @@ public class AbilityUpgradeTeleportRangeEffect : TeleportRangeEffect
     public override void updateEffect()
     {
         //Get list of all TeleportRangeSegments
-        List<List<float>> segmentAngles = Managers.Player.GetComponents<PlayerAbility>().ToList()
+        List<List<float>> segmentAngles = Managers.Player.GetComponents<StonicornAbility>().ToList()
             .FindAll(ability => ability.teleportRangeSegment && ability.UpgradeLevel > 0)
             .ConvertAll(ability =>
                 ability.teleportRangeSegment.getAngles(ability.UpgradeLevel)

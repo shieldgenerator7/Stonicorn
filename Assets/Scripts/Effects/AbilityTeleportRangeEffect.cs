@@ -10,7 +10,7 @@ public class AbilityTeleportRangeEffect : TeleportRangeEffect
         Managers.Player.onAbilityActivated += abilityActivated;
     }
 
-    private void abilityActivated(PlayerAbility ability, bool active)
+    private void abilityActivated(StonicornAbility ability, bool active)
     {
         //Update effects
         updateEffect();
@@ -24,7 +24,7 @@ public class AbilityTeleportRangeEffect : TeleportRangeEffect
             fragment.GetComponent<SpriteRenderer>().color = Color.white;
         }
         //Segment consulting
-        foreach (PlayerAbility ability in Managers.Player.GetComponents<PlayerAbility>())
+        foreach (StonicornAbility ability in Managers.Player.GetComponents<StonicornAbility>())
         {
             if (ability.enabled)
             {

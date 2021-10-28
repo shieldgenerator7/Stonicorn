@@ -271,7 +271,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void dropHoldGesture()
     {
-        foreach (PlayerAbility ability in stonicorn.ActiveAbilities)
+        foreach (StonicornAbility ability in stonicorn.ActiveAbilities)
         {
             ability.stopGestureEffects();
         }

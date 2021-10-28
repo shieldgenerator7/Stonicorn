@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LongTeleportAbility : PlayerAbility
+public class LongTeleportAbility : StonicornAbility
 {
     [Header("Settings")]
     public float maxRangeIncreaseFactor = 2;

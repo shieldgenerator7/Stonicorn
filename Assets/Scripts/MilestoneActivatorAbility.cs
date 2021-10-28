@@ -9,7 +9,7 @@ public class MilestoneActivatorAbility : MilestoneActivator
 
     public override void activateEffect()
     {
-        PlayerAbility pa = ((PlayerAbility)Managers.Player.GetComponent(abilityTypeName));
+        StonicornAbility pa = ((StonicornAbility)Managers.Player.GetComponent(abilityTypeName));
         if (canGrantAbility && !pa.Unlocked)
         {
             pa.Unlocked = true;

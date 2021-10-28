@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AirSliceAbility : PlayerAbility
+public class AirSliceAbility : StonicornAbility
 {
 
     [Header("Settings")]
     public int maxAirPorts = 0;//how many times Merky can teleport into the air without being exhausted
     [Header("Components")]
-    public PlayerAbility[] excludeAbilityFromGrounding;
+    public StonicornAbility[] excludeAbilityFromGrounding;
     public GameObject cloudPrefab;
 
     private int airPorts = 0;//"air teleports": how many airports Merky has used since touching the ground

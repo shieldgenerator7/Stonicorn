@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(PlayerAbility), editorForChildClasses: true)]
+[CustomEditor(typeof(StonicornAbility), editorForChildClasses: true)]
 public class PlayerAbilityEditor : Editor
 {
     public override void OnInspectorGUI()
@@ -19,7 +19,7 @@ public class PlayerAbilityEditor : Editor
         }
         if (GUILayout.Button("Update Upgrade Level (Play Mode)"))
         {
-            PlayerAbility pa = (PlayerAbility)target;
+            StonicornAbility pa = (StonicornAbility)target;
             pa.testUpgradeLevel();
         }
 
@@ -30,12 +30,12 @@ public class PlayerAbilityEditor : Editor
         }
         if (GUILayout.Button("Auto-Fillout Upgrade Levels (Edit Mode)"))
         {
-            PlayerAbility pa = (PlayerAbility)target;
+            StonicornAbility pa = (StonicornAbility)target;
             autoFillOutUpgradeLevels(pa);
         }
     }
 
-    private void autoFillOutUpgradeLevels(PlayerAbility pa)
+    private void autoFillOutUpgradeLevels(StonicornAbility pa)
     {
         if (pa.upgradeLevels.Count == 7)
         {

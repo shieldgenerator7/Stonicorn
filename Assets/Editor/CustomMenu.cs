@@ -84,7 +84,7 @@ public class CustomMenu
             .ForEach(
             maa =>
             {
-                PlayerAbility pa = (PlayerAbility)pc.GetComponent(
+                StonicornAbility pa = (StonicornAbility)pc.GetComponent(
                     maa.abilityTypeName
                     );
                 if (!pa)

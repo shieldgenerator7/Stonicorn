@@ -20,7 +20,7 @@ public class CloudMeter : MonoBehaviour
         abilityEnableChanged(airSliceAbility, airSliceAbility.enabled);
     }
 
-    private void abilityEnableChanged(PlayerAbility ability, bool active)
+    private void abilityEnableChanged(StonicornAbility ability, bool active)
     {
         if (ability == airSliceAbility)
         {

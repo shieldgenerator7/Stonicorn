@@ -49,7 +49,7 @@ public class PlayerTestSpawnPoint : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    void checkAbility(int level, PlayerAbility ability)
+    void checkAbility(int level, StonicornAbility ability)
     {
         if (level >= 0)
         {

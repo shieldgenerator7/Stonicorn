@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
+public abstract class StonicornAbility : SavableMonoBehaviour, ISetting
 {
     //the color used for the particle system upon activation
     public Color EffectColor => teleportRangeSegment.color;
@@ -53,7 +53,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
         }
     }
 
-    protected PlayerController playerController;
+    protected Stonicorn playerController;
     protected Rigidbody2D rb2d;
 
     // Use this for initialization

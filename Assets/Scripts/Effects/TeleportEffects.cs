@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TeleportEffects : MonoBehaviour
 {
-    public PlayerAbility playerAbility;
+    public StonicornAbility playerAbility;
     public enum PlayPosition
     {
         OLD_POS,

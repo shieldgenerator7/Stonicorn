@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SwapAbility : PlayerAbility
+public class SwapAbility : StonicornAbility
 {
     public float swapSizeScaleLimit = 1;
 

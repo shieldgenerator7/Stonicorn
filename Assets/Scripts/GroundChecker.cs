@@ -16,8 +16,8 @@ public class GroundChecker : SavableMonoBehaviour
 
     public GravityAccepter Gravity;
 
-    private List<PlayerAbility> groundedAbilities = new List<PlayerAbility>();
-    private List<PlayerAbility> groundedAbilitiesPrev = new List<PlayerAbility>();
+    private List<StonicornAbility> groundedAbilities = new List<StonicornAbility>();
+    private List<StonicornAbility> groundedAbilitiesPrev = new List<StonicornAbility>();
 
     private void Start()
     {
@@ -104,7 +104,7 @@ public class GroundChecker : SavableMonoBehaviour
             isGroundedCheck.GetInvocationList()
                 .Cast<IsGroundedCheck>().ToList()
                 .FindAll(igc => igc.Invoke())
-                .ForEach(igc => groundedAbilities.Add((PlayerAbility)igc.Target));
+                .ForEach(igc => groundedAbilities.Add((StonicornAbility)igc.Target));
             GroundedAbility = groundedAbilities.Count > 0;
         }
     }
@@ -152,7 +152,7 @@ public class GroundChecker : SavableMonoBehaviour
     /// </summary>
     /// <param name="ability"></param>
     /// <returns></returns>
-    public bool isGroundedWithoutAbility(params PlayerAbility[] abilities)
+    public bool isGroundedWithoutAbility(params StonicornAbility[] abilities)
         => GroundedNormal
         || groundedAbilities.Any(gpa => !abilities.Contains(gpa));
 
@@ -162,7 +162,7 @@ public class GroundChecker : SavableMonoBehaviour
     /// </summary>
     /// <param name="ability"></param>
     /// <returns></returns>
-    public bool isGroundedPrevWithoutAbility(PlayerAbility ability)
+    public bool isGroundedPrevWithoutAbility(StonicornAbility ability)
         => GroundedNormalPrev || groundedAbilitiesPrev.Any(gpa => gpa != ability);
 
     public override SavableObject CurrentState

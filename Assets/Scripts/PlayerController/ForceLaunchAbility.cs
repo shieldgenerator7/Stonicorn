@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
-public class ForceLaunchAbility : PlayerAbility
+public class ForceLaunchAbility : StonicornAbility
 {
     [Header("Settings")]
     public float maxPullBackDistance = 3;//how far back the player can pull the sling
