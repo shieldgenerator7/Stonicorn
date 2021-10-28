@@ -28,6 +28,36 @@ public class PlayerController : MonoBehaviour
     private float pauseMovementStartTime = -1;//when Merky last had his movement paused
     private bool hazardHit = false;
 
+    // Use this for initialization
+    public void init()
+    {
+        stonicorn?.Start();
+        //Register the delegates
+        registerDelegates();
+    }
+    protected virtual void registerDelegates()
+    {
+        Managers.Rewind.onRewindFinished += pauseMovementAfterRewind;
+        stonicorn.onTriggerEntered += (coll2D) =>
+        {
+            checkMovementPause();//first grounded frame after teleport
+        };
+        stonicorn.onCollisionEntered += (coll2D, hazardDamage) =>
+        {
+            if (hazardDamage > 0)
+            {
+                //Take damage (and rewind)
+                forceRewindHazard(hazardDamage, coll2D.contacts[0].point);
+            }
+            else
+            {
+                //Grant gravity immunity
+                checkMovementPause();//first grounded frame after teleport
+            }
+        };
+        stonicorn.Teleport.onTeleport += onTeleported;
+    }
+
     /// <summary>
     /// True if pausing movement for a time, false if otherwise
     /// </summary>
@@ -75,7 +105,7 @@ public class PlayerController : MonoBehaviour
         if (shouldPauseMovement)
         {
             //And Merky is grounded,
-            if (Ground.Grounded)
+            if (stonicorn.Ground.Grounded)
             {
                 //Turn off shouldPauseMovement
                 shouldPauseMovement = false;
@@ -83,6 +113,26 @@ public class PlayerController : MonoBehaviour
                 MovementPaused = true;
             }
         }
+    }
+
+    private void onTeleported(Vector2 oldPos, Vector2 newPos)
+    {
+        //Movement pausing
+        //If movement paused,
+        if (MovementPaused)
+        {
+            //Turn it off
+            MovementPaused = false;
+        }
+        //When Merky touches ground next,
+        //he should get his movement paused
+        shouldPauseMovement = true;
+
+        //Show effect
+        showTeleportEffect(oldPos, newPos);
+
+        //Play Sound
+        playTeleportSound(oldPos, newPos);
     }
 
     /// <summary>
@@ -164,13 +214,13 @@ public class PlayerController : MonoBehaviour
             return;
         }
         //If the player tapped on Merky,
-        if (gestureOnPlayer(tapPos))
+        if (stonicorn.gestureOnSprite(tapPos))
         {
             //Rotate player ~90 degrees
-            rotate();
+            stonicorn.rotate();
         }
         //Teleport
-        Teleport.processTeleport(tapPos);
+        stonicorn.Teleport.processTeleport(tapPos);
     }
 
     /// <summary>
@@ -205,14 +255,14 @@ public class PlayerController : MonoBehaviour
                 dropHoldGesture();
             }
             //Show the teleport preview effect
-            Teleport.processHoldGesture(holdPos, holdTime, finished);
+            stonicorn.Teleport.processHoldGesture(holdPos, holdTime, finished);
             //If this is the last frame of the hold gesture,
             if (finished)
             {
                 //Finally teleport to the location
                 processTapGesture(holdPos);
                 //Erase the teleport preview effects
-                Teleport.stopGestureEffects();
+                stonicorn.Teleport.stopGestureEffects();
             }
         }
     }

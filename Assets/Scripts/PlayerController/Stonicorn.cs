@@ -56,7 +56,7 @@ public class Stonicorn : MonoBehaviour
     public event OnAbilityUpgraded onAbilityUpgraded;
 
     // Use this for initialization
-    public void init()
+    public void Start()
     {
         //Retrieve components
         rb2d = GetComponent<Rigidbody2D>();
@@ -70,15 +70,6 @@ public class Stonicorn : MonoBehaviour
         updateGroundTrigger();
         //Teleport Ability
         Teleport = GetComponent<TeleportAbility>();
-        //Register the delegates
-        registerDelegates();
-    }
-
-
-    protected virtual void registerDelegates()
-    {
-        Managers.Rewind.onRewindFinished += pauseMovementAfterRewind;
-        Teleport.onTeleport += onTeleported;
     }
 
     /// <summary>
@@ -90,38 +81,41 @@ public class Stonicorn : MonoBehaviour
         if (coll2D.isSolid())
         {
             updateGroundedState();
-            checkMovementPause();//first grounded frame after teleport
+            onTriggerEntered?.Invoke(coll2D);
         }
     }
+    public delegate void OnTriggerEntered(Collider2D coll2D);
+    public event OnTriggerEntered onTriggerEntered;
 
     /// <summary>
     /// Updates Merky's range when he hits ground
     /// </summary>
     /// <param name="collision"></param>
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.isSolid())
         {
             updateGroundedState();
             //If collided with a Hazard,
+            int hazardDamage = 0;
             Hazard hazard = collision.gameObject.GetComponent<Hazard>();
-            bool hazardous = hazard && hazard.Hazardous;
-            //If any delegate says yes there is an exception,
-            //it's no longer a hazard
-            Vector2 point = collision.contacts[0].point;
-            bool hazardException = hazardous && onHazardHitException != null
-                && onHazardHitException.GetInvocationList().ToList()
-                .Any(ohhe => (bool)ohhe.DynamicInvoke(point));
-            if (hazardous && !hazardException)
+            if (hazard)
             {
-                //Take damage (and rewind)
-                forceRewindHazard(hazard.DamageDealt, collision.contacts[0].point);
-            }
-            else
-            {
-                //Grant gravity immunity
-                checkMovementPause();//first grounded frame after teleport
-            }
+                if (hazard.Hazardous)
+                {
+                    //If any delegate says yes there is an exception,
+                    //it's no longer a hazard
+                    Vector2 point = collision.contacts[0].point;
+                    bool hazardException = onHazardHitException != null
+                        && onHazardHitException.GetInvocationList().ToList()
+                        .Any(ohhe => (bool)ohhe.DynamicInvoke(point));
+                    if (!hazardException)
+                    {
+                        hazardDamage = hazard.DamageDealt;
+                    }
+                }
+            }            
+            onCollisionEntered?.Invoke(collision, hazardDamage);
         }
     }
     public delegate bool OnHazardHitException(Vector2 contactPoint);
@@ -129,6 +123,8 @@ public class Stonicorn : MonoBehaviour
     /// Returns true if there is an exception and the hazard does not hit
     /// </summary>
     public event OnHazardHitException onHazardHitException;
+    public delegate void OnCollisionEntered(Collision2D coll2D, int hazardDamage);
+    public event OnCollisionEntered onCollisionEntered;
 
     /// <summary>
     /// Updates the position of the copycat collider that hits the ground before Merky does
@@ -152,10 +148,11 @@ public class Stonicorn : MonoBehaviour
         groundedTrigger.offset = transform.InverseTransformDirection(offset);
     }
 
+    //TODO: make this method private again
     /// <summary>
     /// Rotates Merky to the next default rotation clockwise
     /// </summary>
-    private void rotate()
+    public void rotate()
     {
         float newAngle = getNextRotation(transform.localEulerAngles.z);
         transform.localEulerAngles = new Vector3(0, 0, newAngle);
@@ -207,27 +204,7 @@ public class Stonicorn : MonoBehaviour
     }
     public delegate void OnGroundedStateUpdated(GroundChecker grounder);
     public event OnGroundedStateUpdated onGroundedStateUpdated;//called when grounded becomes true
-
-    private void onTeleported(Vector2 oldPos, Vector2 newPos)
-    {
-        //Movement pausing
-        //If movement paused,
-        if (MovementPaused)
-        {
-            //Turn it off
-            MovementPaused = false;
-        }
-        //When Merky touches ground next,
-        //he should get his movement paused
-        shouldPauseMovement = true;
-
-        //Show effect
-        showTeleportEffect(oldPos, newPos);
-
-        //Play Sound
-        playTeleportSound(oldPos, newPos);
-    }
-
+    
     /// <summary>
     /// Determines whether the given position is occupied or not
     /// </summary>
@@ -309,13 +286,12 @@ public class Stonicorn : MonoBehaviour
         return false;
     }
 
-
     /// <summary>
     /// Returns true if the given Vector3 is on Merky's sprite
     /// </summary>
     /// <param name="pos">The position to check</param>
     /// <returns>True if the position is on Merky's sprite, false if otherwise</returns>
-    public bool gestureOnPlayer(Vector2 pos) =>
+    public bool gestureOnSprite(Vector2 pos) =>
         pos.inRange(transform.position, halfWidth);
 
     /// <summary>
@@ -324,6 +300,6 @@ public class Stonicorn : MonoBehaviour
     /// <param name="pos">The position to check</param>
     /// <param name="range">How far out to check, default is half of Merky's sprite width</param>
     /// <returns>True if the position is on Merky's sprite, false if otherwise</returns>
-    public bool gestureOnPlayer(Vector2 pos, float range) =>
+    public bool gestureOnSprite(Vector2 pos, float range) =>
         pos.inRange(transform.position, range);
 }
