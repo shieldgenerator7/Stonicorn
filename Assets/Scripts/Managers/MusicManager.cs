@@ -87,7 +87,7 @@ public class MusicManager : MonoBehaviour
         lockCurrentSong = false;
         //
         FindObjectsOfType<MusicZone>().ToList()
-            .ForEach(mz => mz.checkZone(Managers.Player.transform.position));
+            .ForEach(mz => mz.checkZone(Managers.Player.position));
         //
         fadeStartTime = 0;
         fadePercent = 1;

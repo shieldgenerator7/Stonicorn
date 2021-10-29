@@ -114,7 +114,8 @@ public class CinematicCameraController : MonoBehaviour
             //Cheats
             if (Input.GetKeyDown(KeyCode.M))
             {
-                Managers.Player.transform.position = (Vector2)transform.position;
+                //TODO: Refactor this cheat
+                //Managers.Player.position = (Vector2)transform.position;
             }
             if (Input.GetKeyDown(KeyCode.H))
             {

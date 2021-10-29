@@ -57,7 +57,8 @@ public class PlayerController : MonoBehaviour
     public float Speed => stonicorn?.Speed ?? 0;
     public float Range => stonicorn?.Teleport.Range ?? 0;
     public float BaseRange => stonicorn?.Teleport.baseRange ?? 0;
-
+    public Vector2 position => stonicorn?.transform.position ?? transform.position;
+    public Quaternion rotation => stonicorn?.transform.rotation ?? transform.rotation;
     public Vector2 GravityDir => stonicorn?.GravityDir ?? Vector2.zero;
 
     protected virtual void registerDelegates()

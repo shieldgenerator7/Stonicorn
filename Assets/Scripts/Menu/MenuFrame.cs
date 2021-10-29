@@ -47,7 +47,7 @@ public class MenuFrame : MonoBehaviour
 
         //Set camera position
         //(by using CameraController.Offset)
-        camcon.Offset = transform.position - Managers.Player.transform.position;
+        camcon.Offset = transform.position - (Vector3)Managers.Player.position;
     }
 
     public bool canDelegateTaps()

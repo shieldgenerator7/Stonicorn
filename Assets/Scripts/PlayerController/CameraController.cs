@@ -48,7 +48,7 @@ public class CameraController : MonoBehaviour
     /// How far away the camera is from where it wants to be
     /// </summary>
     public Vector2 Displacement
-        => transform.position - Managers.Player.transform.position + offset;
+        => transform.position - (Vector3)Managers.Player.position + offset;
 
     /// <summary>
     /// The up direction that the camera should be rotated towards
@@ -224,7 +224,7 @@ public class CameraController : MonoBehaviour
             if (!Locked)
             {
                 //Target
-                Vector3 target = Managers.Player.transform.position + offset + (Vector3)autoOffset;
+                Vector3 target = (Vector3)(Managers.Player.position + autoOffset) + offset;
                 //Speed
                 float speed = (
                         Vector3.Distance(transform.position, target)
@@ -250,14 +250,14 @@ public class CameraController : MonoBehaviour
             {
                 if (allowAutoExitPlanMode)
                 {
-                    if (!inView(Managers.Player.transform.position, 0.1f))
+                    if (!inView(Managers.Player.position, 0.1f))
                     {
                         recenter();
                     }
                 }
                 else
                 {
-                    if (!inView(Managers.Player.transform.position))
+                    if (!inView(Managers.Player.position))
                     {
                         recenter();
                     }
@@ -392,7 +392,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void pinPoint()
     {
-        Offset = transform.position - Managers.Player.transform.position;
+        Offset = transform.position - (Vector3)Managers.Player.position;
         Locked = offsetOffPlayer();
         autoOffset = Vector2.zero;
         previousMoveDir = Vector2.zero;
@@ -411,7 +411,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void refocus()
     {
-        transform.position = Managers.Player.transform.position + offset;
+        transform.position = (Vector3)Managers.Player.position + offset;
     }
 
     /// <summary>
@@ -440,11 +440,11 @@ public class CameraController : MonoBehaviour
     {
         if (originalCameraPosition == Vector2.zero)
         {
-            originalCameraPosition = transform.position - Managers.Player.transform.position;
+            originalCameraPosition = transform.position - (Vector3)Managers.Player.position;
         }
         bool canMove = false;
         Vector2 delta = origMPWorld - newMPWorld;
-        Vector2 playerPos = Managers.Player.transform.position;
+        Vector2 playerPos = Managers.Player.position;
         Vector3 newPos = playerPos + originalCameraPosition + delta;
         //If the camera is not zoomed into the menu,
         if (ZoomLevel > toZoomLevel(CameraScalePoints.MENU))

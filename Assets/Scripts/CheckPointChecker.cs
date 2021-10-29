@@ -137,7 +137,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
             {
                 float dist = Vector2.Distance(
                     tp.position,
-                    Managers.Player.transform.position
+                    Managers.Player.position
                     );
                 //That is closest to the player
                 if (dist < minDist)
@@ -244,7 +244,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         //else
         //{
         //    //Reposition checkpoint previews
-        //    readjustCheckPointGhosts(Managers.Player.transform.position);
+        //    readjustCheckPointGhosts(Managers.Player.position);
         //}
     }
 

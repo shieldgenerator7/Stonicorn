@@ -53,7 +53,7 @@ public class KeyboardGestureInput : GestureInput
                     range /= 2;
                 }
                 profile.processHoldGesture(
-                    (Vector2)Managers.Player.transform.position + (dir * range),
+                    Managers.Player.position + (dir * range),
                     Time.time - gestureStartTime,
                     !isInputNow
                     );
@@ -61,7 +61,7 @@ public class KeyboardGestureInput : GestureInput
             }
             else if (Input.GetButtonDown("Rotate"))
             {
-                profile.processTapGesture(Managers.Player.transform.position);
+                profile.processTapGesture(Managers.Player.position);
                 return true;
             }
             prevDir = dir;

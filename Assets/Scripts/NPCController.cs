@@ -239,7 +239,7 @@ public class NPCController : SavableMonoBehaviour
     /// <returns></returns>
     protected virtual bool canGreet()
     {
-        Vector3 playerPos = Managers.Player.transform.position;
+        Vector3 playerPos = Managers.Player.position;
         float distance = Vector3.Distance(playerPos, transform.position);
         if (distance > 5)
         {
@@ -272,7 +272,7 @@ public class NPCController : SavableMonoBehaviour
         {
             return false;
         }
-        return Vector3.Distance(Managers.Player.transform.position, transform.position) > interruptDistance;
+        return Vector3.Distance(Managers.Player.position, transform.position) > interruptDistance;
     }
 
     public NPCVoiceLine getMostRelevantVoiceLine()

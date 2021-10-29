@@ -40,7 +40,7 @@ public class PositionSnapper : MonoBehaviour
     {
         if (snapToPlayer)
         {
-            Vector2 position = Managers.Player.transform.position;
+            Vector2 position = Managers.Player.position;
             if (range < 0 || position.inRange(transform.position, range))
             {
                 transform.position = position + offset;

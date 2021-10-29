@@ -13,6 +13,8 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
+        //TODO: Refactor, get this to follow the current Merky (or camera or something)
+        //TODO: Refactor, some other refactor related to something else, I forget
         GetComponent<Follow>().followObject = Managers.Player.gameObject;
     }
 
@@ -25,9 +27,8 @@ public class MenuManager : MonoBehaviour
                 frames.Add(mf);
             }
         }
-        GameObject player = Managers.Player.gameObject;
-        transform.position = player.transform.position;
-        transform.rotation = player.transform.rotation;
+        transform.position = Managers.Player.position;
+        transform.rotation = Managers.Player.rotation;
         startFrame.frameCamera();
     }
 
