@@ -4,6 +4,8 @@ using System.Collections;
 
 public class SceneLoader : MonoBehaviour, ISetting
 {
+    public static float RANGE_LOAD = 30;
+    public static float RANGE_UNLOAD = 80;
     public string sceneName;//the name of the scene to load, not actually used in code
     public int sceneId = -1;//the build index of the scene
     private Scene scene;
@@ -24,24 +26,8 @@ public class SceneLoader : MonoBehaviour, ISetting
     public static GameObject ExplorerObject
     {
         get => explorerObj;
-        set
-        {
-            explorerObj = value;
-            if (explorerObj)
-            {
-                explorer = explorerObj.GetComponent<Explorer>();
-                if (!explorer)
-                {
-                    explorer = explorerObj.GetComponentInChildren<Explorer>();
-                }
-            }
-            else
-            {
-                explorer = null;
-            }
-        }
+        set => explorerObj = value;
     }
-    private static Explorer explorer;
 
     private bool isLoading = false;
     public bool IsLoading => isLoading && !scene.isLoaded;
@@ -80,16 +66,12 @@ public class SceneLoader : MonoBehaviour, ISetting
 
     public void check()
     {
-        if (!explorer)
-        {
-            return;
-        }
         bool isLoaded = IsLoaded;
         bool overlaps = Collider.OverlapPoint(ExplorerObject.transform.position);
         //Unload when player leaves
         if (isLoaded)
         {
-            bool shouldUnload = !explorer.canSeeBehind(Collider);
+            bool shouldUnload = !explorerCanSee(RANGE_UNLOAD);
             if (shouldUnload)
             {
                 unloadLevel();
@@ -100,7 +82,7 @@ public class SceneLoader : MonoBehaviour, ISetting
         {
             bool shouldLoad =
                 overlaps ||
-                explorer.canSee(Collider);
+                explorerCanSee(RANGE_LOAD);
             if (shouldLoad)
             {
                 loadLevel();
@@ -116,6 +98,21 @@ public class SceneLoader : MonoBehaviour, ISetting
     public bool isPositionInScene(Vector2 pos)
     {
         return Collider.OverlapPoint(pos);
+    }
+
+    public bool explorerCanSee(float range)
+    {
+        Collider2D c2d = Collider;
+        Vector2 dir = (c2d.transform.position - explorerObj.transform.position);
+        if (dir.magnitude <= range)
+        {
+            //The center of our collider is in the range, 
+            //So our collider is too
+            return true;
+        }
+        dir = dir.normalized * range;
+        Vector2 attractPoint = dir + (Vector2)explorerObj.transform.position;
+        return c2d.OverlapPoint(attractPoint);
     }
     void loadLevel()
     {
