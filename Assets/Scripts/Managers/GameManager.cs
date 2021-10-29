@@ -239,12 +239,16 @@ public class GameManager : MonoBehaviour
         }
         if (Managers.Scene.isLevelScene(scene))
         {
-            Stonicorn stonicorn = FindObjectOfType<Stonicorn>();
-            Managers.Player.Stonicorn = stonicorn;
-            SceneLoader.ExplorerObject = stonicorn.gameObject;
-            FindObjectOfType<Follow>().followObject = stonicorn.gameObject;
-            FindObjectOfType<Follow>().Awake();
-            Managers.Player.init();
+            if (Managers.Player.Range == 0)
+            {
+                Stonicorn stonicorn = FindObjectOfType<Stonicorn>();
+                Managers.Player.Stonicorn = stonicorn;
+                SceneLoader.ExplorerObject = stonicorn.gameObject;
+                FindObjectsOfType<Follow>().ToList()
+                    .ForEach(follow => follow.followObject = stonicorn.gameObject);
+                FindObjectOfType<Follow>().Awake();
+                Managers.Player.init();
+            }
             //Load the previous state of the objects in the scene
             Managers.Scene.LoadObjectsFromScene(scene);
             //Refresh Memory Objects
