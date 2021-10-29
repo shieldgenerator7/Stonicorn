@@ -36,7 +36,10 @@ public class RewindManager : Manager
         //Update the game state id trackers
         chosenId = rewindId = data.gameStates.Count - 1;
         //Load the most recent game state
-        Load(chosenId);
+        if (data.gameStates.Count > 0)
+        {
+            Load(chosenId);
+        }
     }
 
     public void processRewind()

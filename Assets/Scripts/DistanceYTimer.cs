@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: Refactor this to allow for multiple stonicorns
 public class DistanceYTimer : Timer
 {
     [Header("Distance Timer Settings")]

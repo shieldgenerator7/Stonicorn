@@ -48,11 +48,11 @@ public class PlayerController : MonoBehaviour
 
     #region Delegates and Stonicorn Interfaces
 
-    public float Speed => stonicorn.Speed;
-    public float Range => stonicorn.Teleport.Range;
-    public float BaseRange => stonicorn.Teleport.baseRange;
+    public float Speed => stonicorn?.Speed ?? 0;
+    public float Range => stonicorn?.Teleport.Range ?? 0;
+    public float BaseRange => stonicorn?.Teleport.baseRange ?? 0;
 
-    public Vector2 GravityDir => stonicorn.GravityDir;
+    public Vector2 GravityDir => stonicorn?.GravityDir ?? Vector2.zero;
 
     protected virtual void registerDelegates()
     {

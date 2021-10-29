@@ -232,7 +232,8 @@ public class GameManager : MonoBehaviour
         {
             if (Managers.Rewind.Rewinding)
             {
-                Managers.Effect.showRewindEffect(false);
+                //TODO: Get this back
+                //Managers.Effect.showRewindEffect(false);
             }
         }
         if (Managers.Scene.isLevelScene(scene))
@@ -260,7 +261,8 @@ public class GameManager : MonoBehaviour
         {
             if (Managers.Rewind.Rewinding)
             {
-                Managers.Effect.showRewindEffect(true);
+                //TODO: Get this back
+                //Managers.Effect.showRewindEffect(true);
             }
         }
         //Update the list of game objects to save
@@ -275,7 +277,8 @@ public class GameManager : MonoBehaviour
         //Set the music speed to rewind
         Managers.Music.SongSpeed = Managers.Music.rewindSongSpeed;
         //Show rewind visual effect
-        Managers.Effect.showRewindEffect(true);
+        //TODO: Get this back
+        //Managers.Effect.showRewindEffect(true);
         //Recenter the camera on Merky
         Managers.Camera.recenter();
         //Disable physics while rewinding
@@ -303,7 +306,8 @@ public class GameManager : MonoBehaviour
         //Put the music back to normal
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
         //Stop rewind visual effect
-        Managers.Effect.showRewindEffect(false);
+        //TODO: Get this back
+        //Managers.Effect.showRewindEffect(false);
         //Unpause time
         Managers.Time.setPause(this, false);
         //Re-enable physics because the rewind is over
