@@ -14,7 +14,8 @@ public class GameState
         {
             if (merky == null)
             {
-                merky = states.Find(os => os.objectId == 0);
+                int objectId = Managers.Player.objectId;
+                merky = states.Find(os => os.objectId == objectId);
             }
             return merky;
         }

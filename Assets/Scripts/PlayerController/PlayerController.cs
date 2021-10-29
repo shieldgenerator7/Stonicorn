@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
     public Vector2 position => stonicorn?.transform.position ?? transform.position;
     public Quaternion rotation => stonicorn?.transform.rotation ?? transform.rotation;
     public Vector2 GravityDir => stonicorn?.GravityDir ?? Vector2.zero;
+    public int objectId => stonicorn.GetComponent<SavableObjectInfo>().Id;
 
     protected virtual void registerDelegates()
     {
