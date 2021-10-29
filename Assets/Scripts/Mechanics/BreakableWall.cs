@@ -98,7 +98,8 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
             float damage = checkForce(force, rb2d.velocity);
             //Show Collision Effect
             float hitPercentage = damage * 100 / maxIntegrity;
-            Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
+            //TODO: Get back
+            //Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
             //Play Collision Sound
             if (damage == 0)
             {

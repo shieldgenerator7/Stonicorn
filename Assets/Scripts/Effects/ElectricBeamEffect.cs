@@ -46,18 +46,21 @@ public class ElectricBeamEffect : MonoBehaviour
     {
         this.enabled = active;
         sr.enabled = false;
-        Managers.Effect.showLightningStatic(electricBeamAbility.gameObject, active);
+        //TODO: Get back
+        //Managers.Effect.showLightningStatic(electricBeamAbility.gameObject, active);
     }
 
     void updateStaticEffect(GameObject oldGO, GameObject newGO)
     {
         if (oldGO)
         {
-            Managers.Effect.showLightningStatic(oldGO, false);
+            //TODO: Get back
+            //Managers.Effect.showLightningStatic(oldGO, false);
         }
         if (newGO)
         {
-            Managers.Effect.showLightningStatic(newGO);
+            //TODO: Get back
+            //Managers.Effect.showLightningStatic(newGO);
             sr.enabled = true;
         }
         else

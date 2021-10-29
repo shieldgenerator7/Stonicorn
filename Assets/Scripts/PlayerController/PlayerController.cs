@@ -206,7 +206,8 @@ public class PlayerController : MonoBehaviour
     /// <param name="newPos">The post-teleport position</param>
     public void showTeleportEffect(Vector2 oldPos, Vector2 newPos)
     {
-        Managers.Effect.showTeleportStar(oldPos);
+        //TODO: get back
+        //Managers.Effect.showTeleportStar(oldPos);
     }
 
     /// <summary>
@@ -247,7 +248,8 @@ public class PlayerController : MonoBehaviour
             //Start hit timer
             Timer.startTimer(hitStunDuration, () => hitTimerUp(damageToSelf));
             //Highlight impact area
-            Managers.Effect.showPointEffect("effect_contact", contactPoint);
+            //TODO: Get back
+            //Managers.Effect.showPointEffect("effect_contact", contactPoint);
             //Pause game
             Managers.Time.setPause(this, true);
         }
@@ -260,7 +262,8 @@ public class PlayerController : MonoBehaviour
         //Unpause game
         Managers.Time.setPause(this, false);
         //Remove highlight
-        Managers.Effect.showPointEffect("effect_contact", Vector2.zero, false);
+        //TODO: Get back
+        //Managers.Effect.showPointEffect("effect_contact", Vector2.zero, false);
         //Rewind
         Managers.Rewind.Rewind(damageToSelf);
     }

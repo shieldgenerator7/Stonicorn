@@ -58,8 +58,9 @@ public class Managers : MonoBehaviour
     //Video Manager
     public static VideoManager Video { get; private set; }
 
+    //TODO: get back, maybe refactor
     //Effect Manager
-    public static EffectManager Effect { get; private set; }
+    //public static EffectManager Effect { get; private set; }
 
     //Scenes Manager
     public static ScenesManager Scene { get; private set; }
@@ -163,7 +164,8 @@ public class Managers : MonoBehaviour
         Music = FindObjectOfType<MusicManager>();
         Sound = FindObjectOfType<SoundManager>();
         Video = FindObjectOfType<VideoManager>();
-        Effect = FindObjectOfType<EffectManager>();
+        //TODO: Get back
+        //Effect = FindObjectOfType<EffectManager>();
         Scene = FindObjectOfType<ScenesManager>();
         Settings = FindObjectOfType<SettingsManager>();
         File = FindObjectOfType<FileManager>();

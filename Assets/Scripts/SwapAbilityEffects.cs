@@ -15,19 +15,22 @@ public class SwapAbilityEffects : MonoBehaviour
 
     void onSwapRotate(GameObject player, GameObject target)
     {
-        Managers.Effect.showSwapRotate(player, true);
-        Managers.Effect.showSwapRotate(target, false);
+        //TODO: Get back
+        //Managers.Effect.showSwapRotate(player, true);
+        //Managers.Effect.showSwapRotate(target, false);
     }
 
     void onSwapStasis(GameObject player, GameObject target)
     {
-        Managers.Effect.showSwapStasis(target, true);
+        //TODO: Get back
+        //Managers.Effect.showSwapStasis(target, true);
         target.GetComponent<StaticUntilTouched>().onRootedChanged +=
             (rooted) =>
             {
                 if (!rooted)
                 {
-                    Managers.Effect.showSwapStasis(target, false);
+                    //TODO: Get back
+                    //Managers.Effect.showSwapStasis(target, false);
                 }
             };
     }

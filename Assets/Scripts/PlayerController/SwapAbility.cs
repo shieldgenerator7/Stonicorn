@@ -46,9 +46,11 @@ public class SwapAbility : StonicornAbility
             .FindAll(coll => isObjectSwappable(coll.gameObject))
             .ConvertAll(coll => coll.gameObject);
         //Hide current effects
-        Managers.Effect.hideSwapCircleEffects(swappables);
+        //TODO: Get back
+        //Managers.Effect.hideSwapCircleEffects(swappables);
         //Show which game objects are swappable
-        swappables.ForEach(go => Managers.Effect.showSwapCircle(go));
+        //TODO: Get back
+        //swappables.ForEach(go => Managers.Effect.showSwapCircle(go));
     }
 
     protected override bool isGrounded()

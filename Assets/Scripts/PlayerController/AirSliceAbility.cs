@@ -89,7 +89,8 @@ public class AirSliceAbility : StonicornAbility
             if (CanSlice)
             {
                 sliceThings(oldPos, newPos);
-                Managers.Effect.showTeleportStreak(oldPos, newPos);
+                //TODO: Get back
+                //Managers.Effect.showTeleportStreak(oldPos, newPos);
             }
             //Cloud
             if (CanMakeCloud)
