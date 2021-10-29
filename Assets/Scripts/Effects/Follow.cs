@@ -34,32 +34,43 @@ public class Follow : MonoBehaviour
                 }
             }
         }
-        if (orientToCamera)
-        {
-            //Camera delegate
-            Managers.Camera.onRotated +=
-                (up) => transform.up = up;
-        }
-        //Rewind delegates
-        Managers.Rewind.onRewindStarted -= rewindStarted;
-        Managers.Rewind.onRewindState -= rewindState;
-        Managers.Rewind.onRewindFinished -= rewindFinished;
-        Managers.Rewind.onRewindStarted += rewindStarted;
-        Managers.Rewind.onRewindState += rewindState;
-        Managers.Rewind.onRewindFinished += rewindFinished;
+        registerDelegates(true);
     }
 
     private void OnDestroy()
     {
+        registerDelegates(false);
+    }
+
+    private void registerDelegates(bool register = true)
+    {
+        Managers.Camera.onRotated -= rotateToCamera;
         Managers.Rewind.onRewindStarted -= rewindStarted;
         Managers.Rewind.onRewindState -= rewindState;
         Managers.Rewind.onRewindFinished -= rewindFinished;
+        if (register)
+        {
+            //Camera delegate
+            Managers.Camera.onRotated += rotateToCamera;
+            //Rewind delegates
+            Managers.Rewind.onRewindStarted += rewindStarted;
+            Managers.Rewind.onRewindState += rewindState;
+            Managers.Rewind.onRewindFinished += rewindFinished;
+        }
+    }
+
+    void rotateToCamera(Vector2 up)
+    {
+        if (orientToCamera)
+        {
+            transform.up = up;
+        }
     }
 
     void rewindStarted(int gs)
         => this.enabled = false;
     void rewindState(int gs)
-        => updateTransform(false, orientToCamera);
+        => updateTransform(false);
     void rewindFinished(int gs)
         => this.enabled = true;
 
@@ -75,7 +86,7 @@ public class Follow : MonoBehaviour
             }
             prevVelocity = rb2dParent.velocity;
             //Update transform
-            updateTransform(true, orientToCamera);
+            updateTransform(true);
             //Decrease offset
             offset = Vector2.Lerp(
                 offset,
@@ -86,17 +97,17 @@ public class Follow : MonoBehaviour
         else
         {
             //Update transform
-            updateTransform(false, orientToCamera);
+            updateTransform(false);
         }
     }
 
-    void updateTransform(bool useOffset, bool useCameraUp)
+    void updateTransform(bool useOffset)
     {
         //Position
         transform.position = followObject.transform.position
             + ((useOffset) ? (Vector3)offset : Vector3.zero);
         //Rotation
-        if (!useCameraUp)
+        if (!orientToCamera)
         {
             transform.up = followObject.transform.up;
         }
