@@ -13,9 +13,15 @@ public class PlayerController : MonoBehaviour
         private get => stonicorn;
         set
         {
-            registerStonicornDelegates(false);
+            if (stonicorn)
+            {
+                registerStonicornDelegates(false);
+            }
             stonicorn = value;
-            registerStonicornDelegates(true);
+            if (stonicorn)
+            {
+                registerStonicornDelegates(true);
+            }
         }
     }
 

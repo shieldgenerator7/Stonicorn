@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Managers.initInstance();
-        SceneManager.LoadSceneAsync(4, LoadSceneMode.Additive);
         //Managers.Player.init();
         Managers.Camera.init();
         Addressables.InitializeAsync();
@@ -49,6 +48,8 @@ public class GameManager : MonoBehaviour
         }
         //Init the ScenesManager
         Managers.Scene.init();
+        //Load default level
+        Managers.Scene.getSceneLoader("Forest").loadLevelIfUnLoaded();
         //Check to see which levels need loaded
         Managers.Scene.checkScenes();
         //If it's not in demo mode, and its save file exists,

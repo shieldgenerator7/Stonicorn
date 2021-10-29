@@ -187,6 +187,10 @@ public class ScenesManager : Manager
 
     private SceneLoader getSceneLoader(Scene scene)
         => sceneLoaders.Find(sl => sl.Scene == scene);
+
+    public SceneLoader getSceneLoader(string sceneName)
+        => sceneLoaders.Find(sl => sl.sceneName == sceneName);
+
     #endregion
 
     public void updateSceneObjectList(int gameStateId)
