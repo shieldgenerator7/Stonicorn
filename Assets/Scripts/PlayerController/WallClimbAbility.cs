@@ -153,31 +153,33 @@ public class WallClimbAbility : StonicornAbility
 
     protected override void playTeleportSound(Vector2 oldPos, Vector2 newPos)
     {
-        if (stonicorn.Ground.GroundedAbilityPrev)
-        {
-            base.playTeleportSound(oldPos, newPos);
-        }
+        //TODO: Refactor
+        //if (stonicorn.Ground.GroundedAbilityPrev)
+        //{
+        //    base.playTeleportSound(oldPos, newPos);
+        //}
     }
 
     private void updateClimbSpikeEffect(bool on)
     {
-        if (on)
-        {
-            if (climbSpikesEffect == null)
-            {
-                climbSpikesEffect = Instantiate(climbSpikesPrefab, transform);
-                climbSpikesEffect.transform.parent = transform;
-                climbSpikesEffect.GetComponentsInChildren<SpriteRenderer>().ToList()
-                    .ForEach(cseSR =>
-                        cseSR.color = this.EffectColor.adjustAlpha(cseSR.color.a)
-                        );
-            }
-            climbSpikesEffect.SetActive(true);
-        }
-        else
-        {
-            climbSpikesEffect?.SetActive(false);
-        }
+        //TODO: Refactor how this works / when it's called
+        //if (on)
+        //{
+        //    if (climbSpikesEffect == null)
+        //    {
+        //        climbSpikesEffect = Instantiate(climbSpikesPrefab, transform);
+        //        climbSpikesEffect.transform.parent = transform;
+        //        climbSpikesEffect.GetComponentsInChildren<SpriteRenderer>().ToList()
+        //            .ForEach(cseSR =>
+        //                cseSR.color = this.EffectColor.adjustAlpha(cseSR.color.a)
+        //                );
+        //    }
+        //    climbSpikesEffect.SetActive(true);
+        //}
+        //else
+        //{
+        //    climbSpikesEffect?.SetActive(false);
+        //}
     }
 
     /// <summary>
