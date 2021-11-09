@@ -41,6 +41,8 @@ public class LevelManager : Manager
 
     private void levelGoalReached()
     {
-        CurrentLevelId++;
+        onLevelFinished?.Invoke();
     }
+    public delegate void OnLevelFinished();
+    public event OnLevelFinished onLevelFinished;
 }

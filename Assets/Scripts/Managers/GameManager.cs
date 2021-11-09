@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
         Managers.Scene.init();
         //Load default level
         Managers.Level.CurrentLevelId = 0;
+        Managers.Level.registerLevelGoalDelegates();
         //Check to see which levels need loaded
         Managers.Scene.checkScenes();
         //If it's not in demo mode, and its save file exists,
@@ -105,6 +106,7 @@ public class GameManager : MonoBehaviour
         Managers.Scene.onSceneUnloaded += (s) => Managers.Power.generateConnectionMap();
         //Level delegates
         Managers.Level.onLevelChanged += onLevelChanged;
+        Managers.Level.onLevelFinished += onLevelFinished;
         //Menu delegates
         MenuManager.onOpenedChanged +=
             (open) => Managers.Time.setPause(this, open);
@@ -291,6 +293,14 @@ public class GameManager : MonoBehaviour
                 Managers.Player.init();
             }
         }
+    }
+    void onLevelFinished()
+    {
+        Timer.startTimer(2, () =>
+        {
+            Managers.Rewind.RewindToStart();
+            Managers.Level.CurrentLevelId++;
+        });
     }
     #endregion
 
