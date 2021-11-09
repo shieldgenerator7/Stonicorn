@@ -921,13 +921,15 @@ public class CustomMenu
         LevelManager levelManager = GameObject.FindObjectOfType<LevelManager>();
         int prevCount = levelManager.levelInfoList.Count;
         levelManager.levelInfoList = new List<LevelInfo>();
-        List<Stonicorn> stonicorns = GameObject.FindObjectsOfType<Stonicorn>().ToList();
-        stonicorns.ForEach(stonicorn => {
-            LevelInfo info = new LevelInfo();
-            info.sceneId = stonicorn.gameObject.scene.buildIndex;
-            info.stonicornId = stonicorn.GetComponent<SavableObjectInfo>().Id;
-            levelManager.levelInfoList.Add(info);
-        });
+        GameObject.FindObjectsOfType<Stonicorn>()
+            .OrderBy(stonicorn => stonicorn.GetComponent<SavableObjectInfo>().Id).ToList()
+            .ForEach(stonicorn =>
+            {
+                LevelInfo info = new LevelInfo();
+                info.sceneId = stonicorn.gameObject.scene.buildIndex;
+                info.stonicornId = stonicorn.GetComponent<SavableObjectInfo>().Id;
+                levelManager.levelInfoList.Add(info);
+            });
         int newCount = levelManager.levelInfoList.Count;
         if (prevCount != newCount)
         {
