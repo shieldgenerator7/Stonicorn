@@ -192,6 +192,12 @@ public static class Utility
         return coll2d.gameObject.GetComponent<Stonicorn>()
             && !coll2d.isTrigger;
     }
+    public static bool isPlayerCurrent(this Collider2D coll2d)
+    {
+        int stonicornId = coll2d.gameObject.GetComponent<Stonicorn>()?
+            .GetComponent<SavableObjectInfo>()?.Id ?? -1;
+        return stonicornId == Managers.Player.objectId;
+    }
     /// <summary>
     /// Returns true if the collider can be stood on,
     /// i.e. is not a trigger
