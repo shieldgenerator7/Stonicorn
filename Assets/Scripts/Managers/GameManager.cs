@@ -307,7 +307,6 @@ public class GameManager : MonoBehaviour
         Timer.startTimer(2, () =>
         {
             Managers.Rewind.RewindToStart();
-            Managers.Level.CurrentLevelId++;
         });
     }
     #endregion
@@ -362,6 +361,8 @@ public class GameManager : MonoBehaviour
         {
             Managers.File.saveToFile();
         }
+        //Check to see if level needs incremented
+        Managers.Level.checkLevelIncrement();
     }
     #endregion
 

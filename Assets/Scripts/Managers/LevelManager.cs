@@ -12,7 +12,6 @@ public class LevelManager : Manager
         private set
         {
             levelInfo = value;
-            Managers.Scene.getSceneLoader(levelInfo.sceneId).loadLevelIfUnLoaded();
         }
     }
     public int CurrentLevelId
@@ -22,6 +21,7 @@ public class LevelManager : Manager
         {
             int index = Mathf.Clamp(value, 0, levelInfoList.Count - 1);
             LevelInfo = levelInfoList[index];
+            levelFinished = false;
             onLevelChanged?.Invoke(levelInfo);
         }
     }
@@ -29,6 +29,8 @@ public class LevelManager : Manager
     public event OnLevelChanged onLevelChanged;
 
     public List<LevelInfo> levelInfoList;
+
+    private bool levelFinished = false;
 
     public void registerLevelGoalDelegates()
     {
@@ -41,8 +43,17 @@ public class LevelManager : Manager
 
     private void levelGoalReached()
     {
+        levelFinished = true;
         onLevelFinished?.Invoke();
     }
     public delegate void OnLevelFinished();
     public event OnLevelFinished onLevelFinished;
+
+    public void checkLevelIncrement()
+    {
+        if (levelFinished)
+        {
+            CurrentLevelId++;
+        }
+    }
 }
