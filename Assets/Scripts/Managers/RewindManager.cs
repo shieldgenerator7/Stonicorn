@@ -22,22 +22,19 @@ public class RewindManager : Manager
     private float lastRewindTime;//the last time the game rewound
     public int GameStateId => chosenId;
 
+    public int GameStateCount => data.gameStates.Count;
+
     public bool rewindInterruptableByPlayer { get; private set; } = true;
 
     public void init()
     {
-        if (data.gameStates.Count == 0)
-        {
-            //Create the initial save state
-            Save();
-        }
-        //Initialize the current game state id
-        //There are possibly none, so the default "current" is -1
-        //Update the game state id trackers
-        chosenId = rewindId = data.gameStates.Count - 1;
-        //Load the most recent game state
         if (data.gameStates.Count > 0)
         {
+            //Initialize the current game state id
+            //There are possibly none, so the default "current" is -1
+            //Update the game state id trackers
+            chosenId = rewindId = data.gameStates.Count - 1;
+            //Load the most recent game state
             Load(chosenId);
         }
     }

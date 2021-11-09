@@ -255,6 +255,11 @@ public class GameManager : MonoBehaviour
             {
                 Managers.Music.playFirstSong();
             }
+            //Create the initial save state
+            if (Managers.Rewind.GameStateCount == 0)
+            {
+                Managers.Rewind.Save();
+            }
         }
     }
     void sceneUnloaded(Scene scene)
