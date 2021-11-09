@@ -190,6 +190,8 @@ public class ScenesManager : Manager
 
     public SceneLoader getSceneLoader(string sceneName)
         => sceneLoaders.Find(sl => sl.sceneName == sceneName);
+    public SceneLoader getSceneLoader(int sceneId)
+        => sceneLoaders.Find(sl => sl.sceneId == sceneId);
 
     #endregion
 

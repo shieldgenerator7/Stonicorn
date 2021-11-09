@@ -5,24 +5,42 @@ using UnityEngine;
 
 public class LevelManager : Manager
 {
-    private LevelGoal goal;
-    public LevelGoal Goal
+    private LevelInfo levelInfo;
+    public LevelInfo LevelInfo
     {
-        get => goal;
-        set
+        get => levelInfo;
+        private set
         {
-            goal = value;
+            levelInfo = value;
+            Managers.Scene.getSceneLoader(levelInfo.sceneId).loadLevelIfUnLoaded();
         }
     }
-    public int currentLevelId
+    public int CurrentLevelId
     {
-        get => goal.levelId;
+        get => levelInfo.levelId;
         set
         {
-            
-            //LevelGoal lg = levelInfoList.FirstOrDefault(info => info.levelId == value);
+            int index = Mathf.Clamp(value, 0, levelInfoList.Count - 1);
+            LevelInfo = levelInfoList[index];
+            onLevelChanged?.Invoke(levelInfo);
         }
     }
+    public delegate void OnLevelChanged(LevelInfo levelInfo);
+    public event OnLevelChanged onLevelChanged;
 
     public List<LevelInfo> levelInfoList;
+
+    public void registerLevelGoalDelegates()
+    {
+        FindObjectsOfType<LevelGoal>().ToList().ForEach(lg =>
+        {
+            lg.onGoalReached -= levelGoalReached;
+            lg.onGoalReached += levelGoalReached;
+        });
+    }
+
+    private void levelGoalReached()
+    {
+        CurrentLevelId++;
+    }
 }

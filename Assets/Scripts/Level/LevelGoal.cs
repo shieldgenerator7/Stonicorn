@@ -10,7 +10,9 @@ public class LevelGoal : MonoBehaviour
     {
         if (coll2d.isPlayerSolid())
         {
-
+            onGoalReached?.Invoke();
         }
     }
+    public delegate void OnGoalReached();
+    public event OnGoalReached onGoalReached;
 }

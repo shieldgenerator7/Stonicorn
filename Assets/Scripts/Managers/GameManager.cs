@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         //Init the ScenesManager
         Managers.Scene.init();
         //Load default level
-        Managers.Scene.getSceneLoader("Forest").loadLevelIfUnLoaded();
+        Managers.Level.CurrentLevelId = 0;
         //Check to see which levels need loaded
         Managers.Scene.checkScenes();
         //If it's not in demo mode, and its save file exists,
@@ -103,6 +103,8 @@ public class GameManager : MonoBehaviour
         Managers.Scene.onSceneObjectsLoaded += Managers.Object.LoadSceneObjects;
         Managers.Scene.onSceneLoaded += (s) => Managers.Power.generateConnectionMap();
         Managers.Scene.onSceneUnloaded += (s) => Managers.Power.generateConnectionMap();
+        //Level delegates
+        Managers.Level.onLevelChanged += onLevelChanged;
         //Menu delegates
         MenuManager.onOpenedChanged +=
             (open) => Managers.Time.setPause(this, open);
@@ -239,16 +241,9 @@ public class GameManager : MonoBehaviour
         }
         if (Managers.Scene.isLevelScene(scene))
         {
-            if (Managers.Player.Range == 0)
-            {
-                Stonicorn stonicorn = FindObjectOfType<Stonicorn>();
-                Managers.Player.Stonicorn = stonicorn;
-                SceneLoader.ExplorerObject = stonicorn.gameObject;
-                FindObjectsOfType<Follow>().ToList()
-                    .ForEach(follow => follow.followObject = stonicorn.gameObject);
-                FindObjectOfType<Follow>().Awake();
-                Managers.Player.init();
-            }
+            //Make sure the PlayerController has the right player
+            Managers.Level.registerLevelGoalDelegates();
+            onLevelChanged(Managers.Level.LevelInfo);
             //Load the previous state of the objects in the scene
             Managers.Scene.LoadObjectsFromScene(scene);
             //Refresh Memory Objects
@@ -272,6 +267,30 @@ public class GameManager : MonoBehaviour
         }
         //Update the list of game objects to save
         Managers.Object.refreshGameObjects();
+    }
+    #endregion
+
+    #region Level delegates
+    void onLevelChanged(LevelInfo levelInfo)
+    {
+        Managers.Scene.getSceneLoader(levelInfo.sceneId).loadLevelIfUnLoaded();
+        int stonicornId = levelInfo.stonicornId;
+        if (Managers.Player.objectId != stonicornId)
+        {
+            Stonicorn stonicorn = FindObjectsOfType<Stonicorn>()
+                .FirstOrDefault(stncrn =>
+                    stncrn.GetComponent<SavableObjectInfo>().Id == stonicornId
+                );
+            if (stonicorn)
+            {
+                Managers.Player.Stonicorn = stonicorn;
+                SceneLoader.ExplorerObject = stonicorn.gameObject;
+                FindObjectsOfType<Follow>().ToList()
+                    .ForEach(follow => follow.followObject = stonicorn.gameObject);
+                FindObjectOfType<Follow>().Awake();
+                Managers.Player.init();
+            }
+        }
     }
     #endregion
 

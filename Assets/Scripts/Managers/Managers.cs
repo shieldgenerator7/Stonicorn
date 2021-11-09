@@ -65,6 +65,9 @@ public class Managers : MonoBehaviour
     //Scenes Manager
     public static ScenesManager Scene { get; private set; }
 
+    //Level Manager
+    public static LevelManager Level { get; private set; }
+
     //Menu Manager
     private MenuManager menuManager;
     public static MenuManager Menu
@@ -167,6 +170,7 @@ public class Managers : MonoBehaviour
         //TODO: Get back
         //Effect = FindObjectOfType<EffectManager>();
         Scene = FindObjectOfType<ScenesManager>();
+        Level = FindObjectOfType<LevelManager>();
         Settings = FindObjectOfType<SettingsManager>();
         File = FindObjectOfType<FileManager>();
         DemoMode = FindObjectOfType<DemoModeManager>();
