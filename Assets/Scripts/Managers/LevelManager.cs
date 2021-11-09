@@ -5,24 +5,17 @@ using UnityEngine;
 
 public class LevelManager : Manager
 {
-    private LevelInfo levelInfo;
-    public LevelInfo LevelInfo
-    {
-        get => levelInfo;
-        private set
-        {
-            levelInfo = value;
-        }
-    }
+    public LevelInfo LevelInfo => levelInfoList[levelId];
+
+    private int levelId;
     public int CurrentLevelId
     {
-        get => levelInfo.levelId;
+        get => levelId;
         set
         {
-            int index = Mathf.Clamp(value, 0, levelInfoList.Count - 1);
-            LevelInfo = levelInfoList[index];
+            levelId = Mathf.Clamp(value, 0, levelInfoList.Count - 1);
             levelFinished = false;
-            onLevelChanged?.Invoke(levelInfo);
+            onLevelChanged?.Invoke(LevelInfo);
         }
     }
     public delegate void OnLevelChanged(LevelInfo levelInfo);
