@@ -293,8 +293,11 @@ public class GameManager : MonoBehaviour
                 Managers.Player.Stonicorn = stonicorn;
                 SceneLoader.ExplorerObject = stonicorn.gameObject;
                 FindObjectsOfType<Follow>().ToList()
-                    .ForEach(follow => follow.followObject = stonicorn.gameObject);
-                FindObjectOfType<Follow>().Awake();
+                    .ForEach(follow =>
+                    {
+                        follow.followObject = stonicorn.gameObject;
+                        follow.Awake();
+                    });
                 Managers.Player.init();
             }
         }
