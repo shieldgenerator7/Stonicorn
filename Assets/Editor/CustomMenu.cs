@@ -474,6 +474,7 @@ public class CustomMenu
         keepScenesOpen = checkTiledHitBoxes() || keepScenesOpen;
 
         populateObjectManagerKnownObjectsList();
+        populateLevelManagerLevelInfoList();
 
         //Cleanup
         EditorSceneManager.SaveOpenScenes();
@@ -914,6 +915,30 @@ public class CustomMenu
         }
     }
 
+    [MenuItem("SG7/Build/Pre-Build/Populate LevelManager LevelInfo list")]
+    public static void populateLevelManagerLevelInfoList()
+    {
+        LevelManager levelManager = GameObject.FindObjectOfType<LevelManager>();
+        int prevCount = levelManager.levelInfoList.Count;
+        levelManager.levelInfoList = new List<LevelInfo>();
+        List<Stonicorn> stonicorns = GameObject.FindObjectsOfType<Stonicorn>().ToList();
+        stonicorns.ForEach(stonicorn => {
+            LevelInfo info = new LevelInfo();
+            info.sceneId = stonicorn.gameObject.scene.buildIndex;
+            info.stonicornId = stonicorn.GetComponent<SavableObjectInfo>().Id;
+            levelManager.levelInfoList.Add(info);
+        });
+        int newCount = levelManager.levelInfoList.Count;
+        if (prevCount != newCount)
+        {
+            EditorUtility.SetDirty(levelManager);
+            EditorSceneManager.MarkSceneDirty(levelManager.gameObject.scene);
+            Debug.LogWarning(
+                "LevelManager LevelInfo count: " + prevCount + " -> " + newCount,
+                levelManager.gameObject
+                );
+        }
+    }
 
     /// <summary>
     /// Recursively gather all files under the given path including all its subfolders.
