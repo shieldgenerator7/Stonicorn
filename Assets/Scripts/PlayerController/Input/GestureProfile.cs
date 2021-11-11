@@ -25,12 +25,12 @@ public class GestureProfile
         }
         else
         {
-            Managers.Player.processTapGesture(curMPWorld);
+            Managers.Player.processGesture(new Gesture(curMPWorld));
         }
     }
     public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state)
     {
-        Managers.Player.processHoldGesture(curMPWorld, holdTime, state);
+        Managers.Player.processGesture(new Gesture(curMPWorld, holdTime, state));
     }
     public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, GestureState state)
     {
@@ -38,7 +38,7 @@ public class GestureProfile
         if (dragType == GestureDragType.PLAYER)
         {
             //Activate the ForceLaunch ability
-            Managers.Player.processDragGesture(origMPWorld, newMPWorld, state);
+            Managers.Player.processGesture(new Gesture(origMPWorld, newMPWorld, dragType, state));
         }
         else if (dragType == GestureDragType.CAMERA)
         {

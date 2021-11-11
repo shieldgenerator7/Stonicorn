@@ -6,4 +6,5 @@ public enum GestureType
     TAP,
     HOLD,
     DRAG,
+    HOVER,
 }

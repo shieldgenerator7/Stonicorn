@@ -269,11 +269,27 @@ public class PlayerController : MonoBehaviour
         Managers.Rewind.Rewind(damageToSelf);
     }
 
+    public void processGesture(Gesture gesture)
+    {
+        switch (gesture.type)
+        {
+            case GestureType.TAP:
+                processTapGesture(gesture.position);
+                break;
+            case GestureType.HOLD:
+                processHoldGesture(gesture.position, gesture.HoldTime, gesture.state);
+                break;
+            case GestureType.DRAG:
+                processDragGesture(gesture.startPosition, gesture.position, gesture.state);
+                break;
+        }
+    }
+
     /// <summary>
     /// Process the tap gesture at the given position
     /// </summary>
     /// <param name="tapPos">The position to teleport to</param>
-    public void processTapGesture(Vector3 tapPos)
+    private void processTapGesture(Vector3 tapPos)
     {
         //If the game is paused because Merky is hit,
         if (hazardHit)
@@ -297,7 +313,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="holdPos">The current hold position</param>
     /// <param name="holdTime">The current hold duration</param>
     /// <param name="finished">True if this is the last frame of the hold gesture</param>
-    public void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
+    private void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
     {
         //If the camera is centered on the player,
         if (!Managers.Camera.offsetOffPlayer())
@@ -352,7 +368,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="origPos"></param>
     /// <param name="newPos"></param>
-    public void processDragGesture(Vector3 origPos, Vector3 newPos, GestureState state)
+    private void processDragGesture(Vector3 origPos, Vector3 newPos, GestureState state)
     {
         onDragGesture?.Invoke(origPos, newPos, state);
     }
