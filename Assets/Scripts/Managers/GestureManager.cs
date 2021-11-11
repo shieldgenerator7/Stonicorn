@@ -35,7 +35,7 @@ public class GestureManager : MonoBehaviour
     public void init()
     {
         gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
-        gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());
+        gestureProfiles.Add(GestureProfileType.MAIN, new PlayGestureProfile());
         gestureProfiles.Add(GestureProfileType.REWIND, new RewindGestureProfile());
         switchGestureProfile(GestureProfileType.MENU);
 
