@@ -32,7 +32,7 @@ public class RewindGestureProfile : GestureProfile
             Managers.PlayerRewind.processTapGesture(curMPWorld);
         }
     }
-    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, bool finished)
+    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, bool finished)
     {
         //Drag the camera
         Managers.Camera.processDragGesture(origMPWorld, newMPWorld, finished);

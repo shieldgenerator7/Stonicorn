@@ -32,15 +32,15 @@ public class GestureProfile
     {
         Managers.Player.processHoldGesture(curMPWorld, holdTime, finished);
     }
-    public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, bool finished)
+    public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, bool finished)
     {
         //If the player drags on Merky,
-        if (dragType == GestureInput.DragType.DRAG_PLAYER)
+        if (dragType == GestureDragType.PLAYER)
         {
             //Activate the ForceLaunch ability
             Managers.Player.processDragGesture(origMPWorld, newMPWorld, finished);
         }
-        else if (dragType == GestureInput.DragType.DRAG_CAMERA)
+        else if (dragType == GestureDragType.CAMERA)
         {
             //Drag the camera
             Managers.Camera.processDragGesture(origMPWorld, newMPWorld, finished);

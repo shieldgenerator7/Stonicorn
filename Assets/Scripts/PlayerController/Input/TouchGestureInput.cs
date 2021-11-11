@@ -137,7 +137,7 @@ public class TouchGestureInput : GestureInput
                         profile.processDragGesture(
                             data.origPosWorld,
                             Utility.ScreenToWorldPoint(touch.position),
-                            DragType.DRAG_PLAYER,
+                            GestureDragType.PLAYER,
                             true
                             );
                         break;
@@ -169,7 +169,7 @@ public class TouchGestureInput : GestureInput
                         profile.processDragGesture(
                             data.origPosWorld,
                             Utility.ScreenToWorldPoint(touch.position),
-                            DragType.DRAG_PLAYER,
+                            GestureDragType.PLAYER,
                             touch.phase == TouchPhase.Ended
                             );
                         break;
@@ -202,7 +202,7 @@ public class TouchGestureInput : GestureInput
                 profile.processDragGesture(
                     origTouchCenterWorld,
                     Utility.ScreenToWorldPoint(TouchCenter),
-                    DragType.DRAG_CAMERA,
+                    GestureDragType.CAMERA,
                     Input.touches
                         .Where(t =>
                             t.phase != TouchPhase.Ended
