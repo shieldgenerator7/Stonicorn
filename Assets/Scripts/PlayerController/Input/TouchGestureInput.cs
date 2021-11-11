@@ -134,20 +134,20 @@ public class TouchGestureInput : GestureInput
                 {
                     //DRAG
                     case TouchEvent.DRAG:
-                        profile.processDragGesture(
+                        profile.processGesture(new Gesture(
                             data.origPosWorld,
                             Utility.ScreenToWorldPoint(touch.position),
                             GestureDragType.PLAYER,
                             GestureState.FINISHED
-                            );
+                            ));
                         break;
                     //HOLD
                     case TouchEvent.HOLD:
-                        profile.processHoldGesture(
+                        profile.processGesture(new Gesture(
                             Utility.ScreenToWorldPoint(touch.position),
                             Time.time - data.origTime,
                             GestureState.FINISHED
-                            );
+                            ));
                         break;
                 }
                 //Convert to camera gesture
@@ -166,20 +166,20 @@ public class TouchGestureInput : GestureInput
                 {
                     //DRAG
                     case TouchEvent.DRAG:
-                        profile.processDragGesture(
+                        profile.processGesture(new Gesture(
                             data.origPosWorld,
                             Utility.ScreenToWorldPoint(touch.position),
                             GestureDragType.PLAYER,
                             touch.phase.toGestureState()
-                            );
+                            ));
                         break;
                     //HOLD
                     case TouchEvent.HOLD:
-                        profile.processHoldGesture(
+                        profile.processGesture(new Gesture(
                             Utility.ScreenToWorldPoint(touch.position),
                             Time.time - data.origTime,
                             touch.phase.toGestureState()
-                            );
+                            ));
                         break;
                 }
 
@@ -192,19 +192,19 @@ public class TouchGestureInput : GestureInput
                     if (touchEvent == TouchEvent.UNKNOWN)
                     {
                         //Then it's a tap
-                        profile.processTapGesture(Utility.ScreenToWorldPoint(touch.position));
+                        profile.processGesture(new Gesture(Utility.ScreenToWorldPoint(touch.position)));
                     }
                 }
             }
             else if (maxTouchCount > 1)
             {
                 //Get the center and drag the camera to it
-                profile.processDragGesture(
+                profile.processGesture(new Gesture(
                     origTouchCenterWorld,
                     Utility.ScreenToWorldPoint(TouchCenter),
                     GestureDragType.CAMERA,
                     Input.touches.ToList().toGestureState()
-                    );
+                    ));
                 //Get the change in scale and zoom the camera
                 float adfc = AverageDistanceFromCenter;
                 if (adfc > 0)

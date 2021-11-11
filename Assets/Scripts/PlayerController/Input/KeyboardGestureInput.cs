@@ -52,18 +52,18 @@ public class KeyboardGestureInput : GestureInput
                 {
                     range /= 2;
                 }
-                profile.processHoldGesture(
+                profile.processGesture(new Gesture(
                     Managers.Player.position + (dir * range),
                     Time.time - gestureStartTime,
                     (!isInputNow)
-                    ?GestureState.FINISHED
-                    :GestureState.ONGOING
-                    );
+                    ? GestureState.FINISHED
+                    : GestureState.ONGOING
+                    ));
                 return true;
             }
             else if (Input.GetButtonDown("Rotate"))
             {
-                profile.processTapGesture(Managers.Player.position);
+                profile.processGesture(new Gesture(Managers.Player.position));
                 return true;
             }
             prevDir = dir;

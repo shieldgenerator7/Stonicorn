@@ -13,13 +13,32 @@ public abstract class GestureProfile
     /// </summary>
     public virtual void deactivate() { }
 
-    public virtual void processHoverGesture(Vector2 curMPWorld) { }
+    public void processGesture(Gesture gesture)
+    {
+        switch (gesture.type)
+        {
+            case GestureType.TAP:
+                processTapGesture(gesture);
+                break;
+            case GestureType.HOLD:
+                processHoldGesture(gesture);
+                break;
+            case GestureType.DRAG:
+                processDragGesture(gesture);
+                break;
+            case GestureType.HOVER:
+                processHoverGesture(gesture);
+                break;
+        }
+    }
 
-    public virtual void processTapGesture(Vector3 curMPWorld) { }
+    protected virtual void processHoverGesture(Gesture gesture) { }
 
-    public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state) { }
+    protected virtual void processTapGesture(Gesture gesture) { }
 
-    public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, GestureState state) { }
+    protected virtual void processHoldGesture(Gesture gesture) { }
+
+    protected virtual void processDragGesture(Gesture gesture) { }
 
     public virtual void processZoomLevelChange(float zoomLevel) { }
 }

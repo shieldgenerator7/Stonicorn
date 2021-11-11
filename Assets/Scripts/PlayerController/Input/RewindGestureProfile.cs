@@ -17,24 +17,24 @@ public class RewindGestureProfile : GestureProfile
         //Hide Previous Teleport Points
         Managers.PlayerRewind.showPlayerGhosts(false);
     }
-    public override void processHoverGesture(Vector2 curMPWorld)
+    protected override void processHoverGesture(Gesture gesture)
     {
-        Managers.PlayerRewind.processHoverGesture(curMPWorld);
+        Managers.PlayerRewind.processHoverGesture(gesture.position);
     }
-    public override void processTapGesture(Vector3 curMPWorld)
+    protected override void processTapGesture(Gesture gesture)
     {
-        Managers.PlayerRewind.processTapGesture(curMPWorld);
+        Managers.PlayerRewind.processTapGesture(gesture.position);
     }
-    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state)
+    protected override void processHoldGesture(Gesture gesture)
     {
-        if (state == GestureState.FINISHED)
+        if (gesture.state == GestureState.FINISHED)
         {
-            Managers.PlayerRewind.processTapGesture(curMPWorld);
+            Managers.PlayerRewind.processTapGesture(gesture.position);
         }
     }
-    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, GestureState state)
+    protected override void processDragGesture(Gesture gesture)
     {
         //Drag the camera
-        Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
+        Managers.Camera.processDragGesture(gesture.startPosition, gesture.position, gesture.state);
     }
 }

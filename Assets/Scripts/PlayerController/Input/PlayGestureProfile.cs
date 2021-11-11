@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayGestureProfile : GestureProfile
 {
-    public override void processTapGesture(Vector3 curMPWorld)
+    protected override void processTapGesture(Gesture gesture)
     {
         if (Managers.Rewind.Rewinding)
         {
@@ -15,31 +15,31 @@ public class PlayGestureProfile : GestureProfile
         }
         else
         {
-            Managers.Player.processGesture(new Gesture(curMPWorld));
+            Managers.Player.processGesture(gesture);
         }
     }
 
-    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state)
+    protected override void processHoldGesture(Gesture gesture)
     {
-        Managers.Player.processGesture(new Gesture(curMPWorld, holdTime, state));
+        Managers.Player.processGesture(gesture);
     }
 
-    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, GestureState state)
+    protected override void processDragGesture(Gesture gesture)
     {
         //If the player drags on Merky,
-        if (dragType == GestureDragType.PLAYER)
+        if (gesture.dragType == GestureDragType.PLAYER)
         {
             //Activate the ForceLaunch ability
-            Managers.Player.processGesture(new Gesture(origMPWorld, newMPWorld, dragType, state));
+            Managers.Player.processGesture(gesture);
         }
-        else if (dragType == GestureDragType.CAMERA)
+        else if (gesture.dragType == GestureDragType.CAMERA)
         {
             //Drag the camera
-            Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
+            Managers.Camera.processDragGesture(gesture.startPosition, gesture.position, gesture.state);
         }
         else
         {
-            throw new System.ArgumentException("DragType must be a valid value! dragType: " + dragType);
+            throw new System.ArgumentException("DragType must be a valid value! dragType: " + gesture.dragType);
         }
     }
 

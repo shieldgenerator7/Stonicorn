@@ -90,23 +90,23 @@ public class MouseGestureInput : GestureInput
             switch (mouseEvent)
             {
                 case MouseEvent.DRAG:
-                    profile.processDragGesture(
+                    profile.processGesture(new Gesture(
                         OrigPosWorld,
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         dragType,
                         (Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2))
                         ?GestureState.FINISHED
                         :GestureState.ONGOING
-                        );
+                        ));
                     break;
                 case MouseEvent.HOLD:
-                    profile.processHoldGesture(
+                    profile.processGesture(new Gesture(
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         Time.time - origTime,
                         (Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2))
                         ? GestureState.FINISHED
                         : GestureState.ONGOING
-                        );
+                        ));
                     break;
                 case MouseEvent.SCROLL:
                     if (Input.GetAxis("Mouse ScrollWheel") < 0)
@@ -130,7 +130,7 @@ public class MouseGestureInput : GestureInput
                 {
                     //Then it's a click.
                     mouseEvent = MouseEvent.CLICK;
-                    profile.processTapGesture(Utility.ScreenToWorldPoint(Input.mousePosition));
+                    profile.processGesture(new Gesture(Utility.ScreenToWorldPoint(Input.mousePosition)));
                 }
             }
             if (Input.GetMouseButtonUp(mouseButton2))
@@ -140,12 +140,12 @@ public class MouseGestureInput : GestureInput
                 {
                     //Then it's a camera drag
                     mouseEvent = MouseEvent.DRAG;
-                    profile.processDragGesture(
+                    profile.processGesture(new Gesture(
                           OrigPosWorld,
                           Utility.ScreenToWorldPoint(Input.mousePosition),
                           dragType,
                           GestureState.FINISHED
-                          );
+                          ));
                 }
             }
             return true;
@@ -157,9 +157,9 @@ public class MouseGestureInput : GestureInput
             mouseEvent = MouseEvent.UNKNOWN;
             dragType = GestureDragType.UNKNOWN;
             //Hover gesture
-            profile.processHoverGesture(
+            profile.processGesture(new Gesture(
                 Utility.ScreenToWorldPoint(Input.mousePosition)
-                );
+                ));
             return false;
         }
     }

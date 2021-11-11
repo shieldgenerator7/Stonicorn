@@ -14,26 +14,26 @@ public class MenuGestureProfile : GestureProfile
         MenuManager.Open = false;
         Managers.Camera.Up = -Managers.Player.GravityDir;
     }
-    public override void processTapGesture(Vector3 curMPWorld)
+    protected override void processTapGesture(Gesture gesture)
     {
         if (MenuManager.Open)
         {
-            Managers.Menu.processTapGesture(curMPWorld);
+            Managers.Menu.processTapGesture(gesture.position);
         }
     }
-    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state)
+    protected override void processHoldGesture(Gesture gesture)
     {
-        if (MenuManager.Open && state == GestureState.FINISHED)
+        if (MenuManager.Open && gesture.state == GestureState.FINISHED)
         {
-            processTapGesture(curMPWorld);
+            processTapGesture(gesture);
         }
     }
-    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, GestureState state)
+    protected override void processDragGesture(Gesture gesture)
     {
-        if (MenuManager.Open && !Managers.Menu.processDragGesture(origMPWorld, newMPWorld))
+        if (MenuManager.Open && !Managers.Menu.processDragGesture(gesture.startPosition, gesture.position))
         {
             //Drag the camera
-            Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
+            Managers.Camera.processDragGesture(gesture.startPosition, gesture.position, gesture.state);
         }
     }
 }
