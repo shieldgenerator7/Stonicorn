@@ -105,8 +105,9 @@ public class ForceLaunchAbility : StonicornAbility
         }
     }
 
-    void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
+    void processDrag(Vector2 oldPos, Vector2 newPos, GestureState state)
     {
+        bool finished = (state != GestureState.FINISHED);
         Launching = !finished;
         dragPos = newPos;
         LaunchDirection = (Vector2)stonicorn.transform.position - newPos;

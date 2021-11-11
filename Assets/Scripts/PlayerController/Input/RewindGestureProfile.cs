@@ -25,16 +25,16 @@ public class RewindGestureProfile : GestureProfile
     {
         Managers.PlayerRewind.processTapGesture(curMPWorld);
     }
-    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
+    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state)
     {
-        if (finished)
+        if (state == GestureState.FINISHED)
         {
             Managers.PlayerRewind.processTapGesture(curMPWorld);
         }
     }
-    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, bool finished)
+    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, GestureState state)
     {
         //Drag the camera
-        Managers.Camera.processDragGesture(origMPWorld, newMPWorld, finished);
+        Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
     }
 }

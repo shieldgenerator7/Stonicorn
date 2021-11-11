@@ -55,7 +55,9 @@ public class KeyboardGestureInput : GestureInput
                 profile.processHoldGesture(
                     Managers.Player.position + (dir * range),
                     Time.time - gestureStartTime,
-                    !isInputNow
+                    (!isInputNow)
+                    ?GestureState.FINISHED
+                    :GestureState.ONGOING
                     );
                 return true;
             }

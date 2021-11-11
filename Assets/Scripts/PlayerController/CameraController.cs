@@ -436,7 +436,7 @@ public class CameraController : MonoBehaviour
     public delegate void OnOffsetChange(Vector3 offset);
     public event OnOffsetChange onOffsetChange;
 
-    public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, bool finished)
+    public void processDragGesture(Vector2 origMPWorld, Vector2 newMPWorld, GestureState state)
     {
         if (originalCameraPosition == Vector2.zero)
         {
@@ -467,7 +467,7 @@ public class CameraController : MonoBehaviour
             transform.position = newPos;
             pinPoint();
         }
-        if (finished)
+        if (state == GestureState.FINISHED)
         {
             originalCameraPosition = Vector2.zero;
         }

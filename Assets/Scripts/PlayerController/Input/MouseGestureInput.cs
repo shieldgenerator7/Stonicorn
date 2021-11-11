@@ -94,14 +94,18 @@ public class MouseGestureInput : GestureInput
                         OrigPosWorld,
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         dragType,
-                        Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2)
+                        (Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2))
+                        ?GestureState.FINISHED
+                        :GestureState.ONGOING
                         );
                     break;
                 case MouseEvent.HOLD:
                     profile.processHoldGesture(
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         Time.time - origTime,
-                        Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2)
+                        (Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2))
+                        ? GestureState.FINISHED
+                        : GestureState.ONGOING
                         );
                     break;
                 case MouseEvent.SCROLL:
@@ -140,7 +144,7 @@ public class MouseGestureInput : GestureInput
                           OrigPosWorld,
                           Utility.ScreenToWorldPoint(Input.mousePosition),
                           dragType,
-                          true
+                          GestureState.FINISHED
                           );
                 }
             }

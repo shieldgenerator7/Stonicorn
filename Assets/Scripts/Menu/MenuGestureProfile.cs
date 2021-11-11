@@ -21,19 +21,19 @@ public class MenuGestureProfile : GestureProfile
             Managers.Menu.processTapGesture(curMPWorld);
         }
     }
-    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
+    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state)
     {
-        if (MenuManager.Open && finished)
+        if (MenuManager.Open && state == GestureState.FINISHED)
         {
             processTapGesture(curMPWorld);
         }
     }
-    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, bool finished)
+    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureDragType dragType, GestureState state)
     {
         if (MenuManager.Open && !Managers.Menu.processDragGesture(origMPWorld, newMPWorld))
         {
             //Drag the camera
-            Managers.Camera.processDragGesture(origMPWorld, newMPWorld, finished);
+            Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
         }
     }
 }

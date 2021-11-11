@@ -297,7 +297,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="holdPos">The current hold position</param>
     /// <param name="holdTime">The current hold duration</param>
     /// <param name="finished">True if this is the last frame of the hold gesture</param>
-    public void processHoldGesture(Vector3 holdPos, float holdTime, bool finished)
+    public void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
     {
         //If the camera is centered on the player,
         if (!Managers.Camera.offsetOffPlayer())
@@ -323,9 +323,9 @@ public class PlayerController : MonoBehaviour
                 dropHoldGesture();
             }
             //Show the teleport preview effect
-            stonicorn.Teleport.processHoldGesture(holdPos, holdTime, finished);
+            stonicorn.Teleport.processHoldGesture(holdPos, holdTime, state);
             //If this is the last frame of the hold gesture,
-            if (finished)
+            if (state == GestureState.FINISHED)
             {
                 //Finally teleport to the location
                 processTapGesture(holdPos);
@@ -345,16 +345,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public delegate void OnDragGesture(Vector2 origPos, Vector2 newPos, bool finished);
+    public delegate void OnDragGesture(Vector2 origPos, Vector2 newPos, GestureState state);
     public event OnDragGesture onDragGesture;
     /// <summary>
     /// Process a drag gesture
     /// </summary>
     /// <param name="origPos"></param>
     /// <param name="newPos"></param>
-    public void processDragGesture(Vector3 origPos, Vector3 newPos, bool finished)
+    public void processDragGesture(Vector3 origPos, Vector3 newPos, GestureState state)
     {
-        onDragGesture?.Invoke(origPos, newPos, finished);
+        onDragGesture?.Invoke(origPos, newPos, state);
     }
 
     void pauseMovementAfterRewind(int gameStateId)

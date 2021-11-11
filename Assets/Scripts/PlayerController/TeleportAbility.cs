@@ -404,7 +404,7 @@ public class TeleportAbility : StonicornAbility
         }
     }
 
-    public void processHoldGesture(Vector2 pos, float holdTime, bool finished)
+    public void processHoldGesture(Vector2 pos, float holdTime, GestureState state)
     {
         //Show a preview of where Merky will teleport
         Vector2 futurePos = findTeleportablePosition(transform.position, pos);

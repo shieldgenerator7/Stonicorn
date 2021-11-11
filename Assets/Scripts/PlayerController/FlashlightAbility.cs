@@ -42,9 +42,9 @@ public class FlashlightAbility : StonicornAbility
     protected override bool isGrounded() => false;
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos) { }
 
-    public void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
+    public void processDrag(Vector2 oldPos, Vector2 newPos, GestureState state)
     {
-        flashlightOn = !finished;
+        flashlightOn = !(state == GestureState.FINISHED);
         FlashlightDirection = (Vector2)stonicorn.transform.position - newPos;
         updateFlashlightVisuals();
     }
