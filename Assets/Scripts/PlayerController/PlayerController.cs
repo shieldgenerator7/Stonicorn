@@ -8,6 +8,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Stonicorn stonicorn;
+    private GestureRecorder gestureRecorder;
     public Stonicorn Stonicorn
     {
         private get => stonicorn;
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
                 registerStonicornDelegates(false);
             }
             stonicorn = value;
+            gestureRecorder = stonicorn.GetComponent<GestureRecorder>();
             if (stonicorn)
             {
                 registerStonicornDelegates(true);
@@ -276,6 +278,7 @@ public class PlayerController : MonoBehaviour
         if (!hazardHit)
         {
             stonicorn.processGesture(gesture);
+            gestureRecorder.recordGesture(gesture);
         }
     }
 
