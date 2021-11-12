@@ -29,9 +29,6 @@ public class PlayerController : MonoBehaviour
     //Settings
     //
     [Header("Settings")]
-    [Range(0, 0.5f)]
-    public float autoTeleportDelay = 0.1f;//how long (sec) between each auto teleport using the hold gesture
-    public float lastAutoTeleportTime { get; private set; }//the last time that Merky auto teleported using the hold gesture
     [Range(0, 1)]
     public float pauseMovementDuration = 0.2f;//amount of time (sec) Merky's movement is paused after landing
     [Range(0, 3)]
@@ -271,85 +268,17 @@ public class PlayerController : MonoBehaviour
 
     public void processGesture(Gesture gesture)
     {
-        switch (gesture.type)
+        if (gesture.type != GestureType.HOLD)
         {
-            case GestureType.TAP:
-                processTapGesture(gesture.position);
-                break;
-            case GestureType.HOLD:
-                processHoldGesture(gesture.position, gesture.HoldTime, gesture.state);
-                break;
-            case GestureType.DRAG:
-                processDragGesture(gesture.startPosition, gesture.position, gesture.state);
-                break;
+            //Erase any visual effects of the other abilities
+            dropHoldGesture();
+        }
+        if (!hazardHit)
+        {
+            stonicorn.processGesture(gesture);
         }
     }
 
-    /// <summary>
-    /// Process the tap gesture at the given position
-    /// </summary>
-    /// <param name="tapPos">The position to teleport to</param>
-    private void processTapGesture(Vector3 tapPos)
-    {
-        //If the game is paused because Merky is hit,
-        if (hazardHit)
-        {
-            //Don't process input
-            return;
-        }
-        //If the player tapped on Merky,
-        if (stonicorn.gestureOnSprite(tapPos))
-        {
-            //Rotate player ~90 degrees
-            stonicorn.rotate();
-        }
-        //Teleport
-        stonicorn.Teleport.processTeleport(tapPos);
-    }
-
-    /// <summary>
-    /// Process a hold gesture
-    /// </summary>
-    /// <param name="holdPos">The current hold position</param>
-    /// <param name="holdTime">The current hold duration</param>
-    /// <param name="finished">True if this is the last frame of the hold gesture</param>
-    private void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
-    {
-        //If the camera is centered on the player,
-        if (!Managers.Camera.offsetOffPlayer())
-        {
-            //Rapidly auto-teleport
-            //If enough time has passed since the last auto-teleport,
-            if (Time.unscaledTime > lastAutoTeleportTime + autoTeleportDelay)
-            {
-                //Teleport
-                lastAutoTeleportTime = Time.unscaledTime;
-                processTapGesture(holdPos);
-            }
-        }
-        //Else if the player is on the edge of the screen,
-        else
-        {
-            //Show a teleport preview
-
-            //If this is the first frame of the hold gesture,
-            if (holdTime < Time.deltaTime)
-            {
-                //Erase any visual effects of the other abilities
-                dropHoldGesture();
-            }
-            //Show the teleport preview effect
-            stonicorn.Teleport.processHoldGesture(holdPos, holdTime, state);
-            //If this is the last frame of the hold gesture,
-            if (state == GestureState.FINISHED)
-            {
-                //Finally teleport to the location
-                processTapGesture(holdPos);
-                //Erase the teleport preview effects
-                stonicorn.Teleport.stopGestureEffects();
-            }
-        }
-    }
     /// <summary>
     /// Erase any visual effects of active abilities
     /// </summary>
@@ -359,18 +288,6 @@ public class PlayerController : MonoBehaviour
         {
             ability.stopGestureEffects();
         }
-    }
-
-    public delegate void OnDragGesture(Vector2 origPos, Vector2 newPos, GestureState state);
-    public event OnDragGesture onDragGesture;
-    /// <summary>
-    /// Process a drag gesture
-    /// </summary>
-    /// <param name="origPos"></param>
-    /// <param name="newPos"></param>
-    private void processDragGesture(Vector3 origPos, Vector3 newPos, GestureState state)
-    {
-        onDragGesture?.Invoke(origPos, newPos, state);
     }
 
     void pauseMovementAfterRewind(int gameStateId)
