@@ -17,12 +17,15 @@ public class PlayerController : MonoBehaviour
             if (stonicorn)
             {
                 registerStonicornDelegates(false);
+                gestureRecorder.playBack = true;
             }
             stonicorn = value;
-            gestureRecorder = stonicorn.GetComponent<GestureRecorder>();
+            gestureRecorder = stonicorn?.GetComponent<GestureRecorder>();
             if (stonicorn)
             {
                 registerStonicornDelegates(true);
+                gestureRecorder.playBack = false;
+                gestureRecorder.clear();
             }
         }
     }
@@ -277,8 +280,8 @@ public class PlayerController : MonoBehaviour
         }
         if (!hazardHit)
         {
-            stonicorn.processGesture(gesture);
             gestureRecorder.recordGesture(gesture);
+            stonicorn.processGesture(gesture);
         }
     }
 

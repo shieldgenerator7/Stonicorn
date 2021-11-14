@@ -7,6 +7,7 @@ public class GestureRecorder : SavableMonoBehaviour
     public List<Gesture> gestures = new List<Gesture>();
     public int currentPlayBackIndex = 0;
     public bool playBack = false;
+    private Stonicorn stonicorn;
 
     private Gesture CurrentGesture => gestures[currentPlayBackIndex];
 
@@ -27,27 +28,44 @@ public class GestureRecorder : SavableMonoBehaviour
 
     public override void init()
     {
+        stonicorn = GetComponent<Stonicorn>();
     }
 
     public void recordGesture(Gesture gesture)
     {
         currentPlayBackIndex = 0;
         playBack = false;
+        //Convert to relative to stonicorn
+        gesture.startPosition = gesture.startPosition - (Vector2)stonicorn.transform.position;
+        gesture.position = gesture.position - (Vector2)stonicorn.transform.position;
+        //Add gesture to list
         gestures.Add(gesture);
     }
 
     public void playBackGesture(float time)
     {
         playBack = true;
-        if (time >= CurrentGesture.time)
+        Gesture gesture = CurrentGesture;
+        if (time >= gesture.time)
         {
-            //TODO: process gesture
+            //Convert to relative to world
+            gesture.startPosition = (Vector2)stonicorn.transform.position + gesture.startPosition;
+            gesture.position = (Vector2)stonicorn.transform.position + gesture.position;
+            //Process gesture
+            stonicorn.processGesture(gesture);
+            //Move to next gesture
             currentPlayBackIndex++;
             if (currentPlayBackIndex >= gestures.Count)
             {
                 playBack = false;
             }
         }
+    }
+
+    public void clear()
+    {
+        currentPlayBackIndex = 0;
+        gestures.Clear();
     }
 
     private void Update()
