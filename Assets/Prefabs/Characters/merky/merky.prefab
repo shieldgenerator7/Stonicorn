@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5068768}
   - component: {fileID: 6075330}
   - component: {fileID: 803154599080377303}
+  - component: {fileID: 3355067762275551084}
   - component: {fileID: 1792176476}
   - component: {fileID: 3415424875800634050}
   - component: {fileID: 4077093240442266713}
@@ -202,6 +203,20 @@ MonoBehaviour:
   autoTeleportDelay: 0.1
   scoutColliderMin: {fileID: 530089677}
   scoutColliderMax: {fileID: 1809435738}
+--- !u!114 &3355067762275551084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0598351e6d478e5489ae566154511b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPlayBackIndex: 0
+  playBack: 0
 --- !u!114 &1792176476
 MonoBehaviour:
   m_ObjectHideFlags: 0

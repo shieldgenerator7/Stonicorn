@@ -40,5 +40,20 @@ public abstract class GestureProfile
 
     protected virtual void processDragGesture(Gesture gesture) { }
 
-    public virtual void processZoomLevelChange(float zoomLevel) { }
+    public virtual void processZoomLevelChange(float zoomLevel)
+    {
+        //GestureProfile switcher
+        if (zoomLevel < Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU + 1))
+        {
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MENU);
+        }
+        else if (zoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND - 1))
+        {
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
+        }
+        else
+        {
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
+        }
+    }
 }

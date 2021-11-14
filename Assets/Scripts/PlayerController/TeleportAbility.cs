@@ -35,7 +35,8 @@ public class TeleportAbility : StonicornAbility
 
     [Header("Future Projection")]
     public GameObject futureProjection;//the object that is used to show a preview of the landing spot
-    public GameObject teleportPreviewPointer;//the object that visually points at the future projection
+    //TODO: Get back
+    //public GameObject teleportPreviewPointer;//the object that visually points at the future projection
 
     /// <summary>
     /// Returns whether the teleport ability is ready
@@ -414,9 +415,9 @@ public class TeleportAbility : StonicornAbility
         futureProjection.transform.localScale = transform.localScale;
         futureProjection.transform.position = futurePos;
         //Teleport Preview Pointer
-        teleportPreviewPointer.SetActive(true);
+        /*teleportPreviewPointer.SetActive(true);
         teleportPreviewPointer.transform.localScale = transform.localScale;
-        teleportPreviewPointer.transform.position = futurePos;
+        teleportPreviewPointer.transform.position = futurePos;*/
         //Account for teleport-on-player
         if (stonicorn.gestureOnSprite(futurePos))
         {
@@ -428,7 +429,8 @@ public class TeleportAbility : StonicornAbility
     public override void stopGestureEffects()
     {
         futureProjection.SetActive(false);
-        teleportPreviewPointer.SetActive(false);
+        //TODO: Get back
+        //teleportPreviewPointer.SetActive(false);
     }
     #endregion
 
