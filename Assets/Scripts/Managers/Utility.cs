@@ -503,9 +503,16 @@ public static class Utility
             container.Savables.ForEach(savable =>
             {
                 savable.name += spawnTag;
-                SavableObjectInfo soi = savable.GetComponent<SavableObjectInfo>();
-                soi.Id = getUniqueId(baseId, nextId);
-                soi.spawnStateId = Managers.Rewind.GameStateId;
+                try
+                {
+                    SavableObjectInfo soi = savable.GetComponent<SavableObjectInfo>();
+                    soi.Id = getUniqueId(baseId, nextId);
+                    soi.spawnStateId = Managers.Rewind.GameStateId;
+                }
+                catch (NullReferenceException nre)
+                {
+                    Debug.LogError($"Saveable {savable.name} (child of {newObj.name}) does not have a {typeof(SavableObjectInfo)}!");
+                }
                 nextId++;
                 Managers.Object.addNewObject(savable);
                 Managers.Scene.registerObjectInScene(savable);

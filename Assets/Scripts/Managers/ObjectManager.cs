@@ -187,7 +187,7 @@ public class ObjectManager : Manager, ISetting
         if (!go.isSavable())
         {
             throw new System.ArgumentException(
-                "GameObject (" + key + ") doesn't have any state to save! "
+                $"GameObject ({go.name} {key}) doesn't have any state to save! "
                 + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
                 );
         }
