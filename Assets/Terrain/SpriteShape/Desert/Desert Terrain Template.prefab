@@ -99,6 +99,7 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: 0, y: -0.027500033, z: 0}
     m_Extent: {x: 2.1250002, y: 2.1425004, z: 0}
+  m_SpriteSortPoint: 0
 --- !u!114 &114612983269256184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,8 +120,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 0
       m_CornerMode: 0
@@ -129,8 +128,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 0
       m_CornerMode: 0
@@ -139,8 +136,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 0
       m_CornerMode: 0
@@ -149,8 +144,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 0
       m_CornerMode: 0
@@ -170,6 +163,8 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
+  m_Creator: {fileID: 0}
+  m_Modifiers: []
 --- !u!60 &60526792826475178
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -199,3 +194,4 @@ PolygonCollider2D:
       - {x: -2.11, y: 2.11}
       - {x: -2.11, y: -2.11}
       - {x: 2.11, y: -2.11}
+  m_UseDelaunayMesh: 0

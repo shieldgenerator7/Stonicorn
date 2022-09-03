@@ -128,6 +128,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 1574612556}
     m_Modifications:
     - target: {fileID: 676413016022806697, guid: 96239452133fe8948badf42419198450, type: 3}
@@ -12039,6 +12040,7 @@ PrefabInstance:
       value: Snow Terrain Template
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 96239452133fe8948badf42419198450, type: 3}
 --- !u!4 &28663703 stripped
 Transform:
@@ -12091,7 +12093,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &113341555
 MonoBehaviour:
@@ -12154,6 +12156,7 @@ PolygonCollider2D:
       - {x: -0.8588821, y: 0.025325412}
       - {x: -0.62039155, y: 0.19785716}
       - {x: -0.75285774, y: 0.45302016}
+  m_UseDelaunayMesh: 0
 --- !u!4 &219329270
 Transform:
   m_ObjectHideFlags: 0
@@ -12269,6 +12272,7 @@ PolygonCollider2D:
       - {x: -0.5, y: -0.5}
       - {x: 0.5, y: -0.5}
       - {x: 0.5, y: 0.5}
+  m_UseDelaunayMesh: 0
 --- !u!114 &235639783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12411,6 +12415,7 @@ PolygonCollider2D:
       - {x: -0.5, y: -0.5}
       - {x: 0.5, y: -0.5}
       - {x: 0.5, y: 0.5}
+  m_UseDelaunayMesh: 0
 --- !u!114 &248421128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12536,7 +12541,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &256031402
 GameObject:
@@ -12581,7 +12586,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &351159163
 GameObject:
@@ -12665,13 +12670,14 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!1001 &384607749
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 1574612556}
     m_Modifications:
     - target: {fileID: 676413016022806697, guid: 96239452133fe8948badf42419198450, type: 3}
@@ -26127,6 +26133,7 @@ PrefabInstance:
       value: Snow Terrain Template (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 96239452133fe8948badf42419198450, type: 3}
 --- !u!4 &384607750 stripped
 Transform:
@@ -26149,6 +26156,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 100000, guid: 17c0cbcd5cee2f54a9f829f36bf10d89, type: 3}
@@ -26232,6 +26240,7 @@ PrefabInstance:
       value: 1659163103
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 17c0cbcd5cee2f54a9f829f36bf10d89, type: 3}
 --- !u!1 &457045075
 GameObject:
@@ -26367,6 +26376,7 @@ PolygonCollider2D:
       - {x: 0.24246092, y: -0.4846555}
       - {x: 0.5, y: -0.5}
       - {x: 0.5, y: 0.5}
+  m_UseDelaunayMesh: 0
 --- !u!1 &483820035
 GameObject:
   m_ObjectHideFlags: 0
@@ -26415,7 +26425,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &578159050
 GameObject:
@@ -26561,7 +26571,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &741800598
 GameObject:
@@ -26617,6 +26627,7 @@ PolygonCollider2D:
       - {x: 0.13378558, y: -0.6359892}
       - {x: 0.024791494, y: -0.4377029}
       - {x: 0.85708225, y: 0.019787908}
+  m_UseDelaunayMesh: 0
 --- !u!212 &741800600
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -26726,7 +26737,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &942494481
 GameObject:
@@ -26827,7 +26838,7 @@ Transform:
   m_Children:
   - {fileID: 578159051}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &942494485
 MonoBehaviour:
@@ -26941,6 +26952,7 @@ PolygonCollider2D:
       - {x: 0.42999998, y: -1.4699999}
       - {x: 0.65, y: -1.37}
       - {x: 0.78999996, y: -1.3}
+  m_UseDelaunayMesh: 0
 --- !u!114 &1079170521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27066,7 +27078,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1168811341
 GameObject:
@@ -27116,7 +27128,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1397584231
 GameObject:
@@ -27157,8 +27169,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -27167,8 +27177,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -27177,8 +27185,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -27187,8 +27193,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -27197,8 +27201,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -27207,8 +27209,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -27217,8 +27217,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -27227,8 +27225,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -27237,8 +27233,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -27258,6 +27252,8 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
+  m_Creator: {fileID: 0}
+  m_Modifiers: []
 --- !u!1971053207 &1397584233
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -27323,6 +27319,7 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: 1.6285229, y: 3.1810486, z: -0.00045035}
     m_Extent: {x: 3.7581615, y: 6.136315, z: 0.00045035}
+  m_SpriteSortPoint: 0
 --- !u!4 &1397584234
 Transform:
   m_ObjectHideFlags: 0
@@ -27373,6 +27370,7 @@ PolygonCollider2D:
       - {x: 1.0000005, y: -2.0060382}
       - {x: -1.0022278, y: -2.0031486}
       - {x: -1.0034652, y: -2.003139}
+  m_UseDelaunayMesh: 0
 --- !u!1 &1413209803
 GameObject:
   m_ObjectHideFlags: 0
@@ -27417,7 +27415,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1539603659
 GameObject:
@@ -27495,6 +27493,7 @@ PolygonCollider2D:
       - {x: 0.6300795, y: -0.37228572}
       - {x: 0.7096437, y: -0.43397975}
       - {x: 0.9510584, y: 0.3090159}
+  m_UseDelaunayMesh: 0
 --- !u!212 &1539603662
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -27588,7 +27587,7 @@ Transform:
   - {fileID: 1617361729}
   - {fileID: 1994891055}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1617361728
 GameObject:
@@ -27656,6 +27655,7 @@ PolygonCollider2D:
       - {x: -0.47681805, y: 0.07342446}
       - {x: -0.36906558, y: -0.07149496}
       - {x: 0.68062675, y: 0.5054987}
+  m_UseDelaunayMesh: 0
 --- !u!212 &1617361731
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -27713,6 +27713,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 1574612556}
     m_Modifications:
     - target: {fileID: 1843331137400316, guid: ead57b9cede673647a29fd7fef0f67d6, type: 3}
@@ -27892,6 +27893,7 @@ PrefabInstance:
       value: 0.0002
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: ead57b9cede673647a29fd7fef0f67d6, type: 3}
 --- !u!4 &1818392736 stripped
 Transform:
@@ -28007,6 +28009,7 @@ PolygonCollider2D:
       - {x: 0.42999998, y: -1.4699999}
       - {x: 0.65, y: -1.37}
       - {x: 0.78999996, y: -1.3}
+  m_UseDelaunayMesh: 0
 --- !u!4 &1971183725
 Transform:
   m_ObjectHideFlags: 0
@@ -28189,5 +28192,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

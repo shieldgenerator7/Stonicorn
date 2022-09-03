@@ -84,6 +84,7 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: 3.1243265, y: 16.405794, z: 0}
     m_Extent: {x: 5.991535, y: 25.823994, z: 0}
+  m_SpriteSortPoint: 0
 --- !u!114 &2530284081612747194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,8 +105,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 0
       m_CornerMode: 0
@@ -114,8 +113,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -124,8 +121,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -134,8 +129,6 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
-      bevelCutoff: 0
-      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -155,6 +148,8 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
+  m_Creator: {fileID: 0}
+  m_Modifiers: []
 --- !u!60 &2007797029166489927
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -187,6 +182,7 @@ PolygonCollider2D:
       - {x: 6.9508324, y: 40.719826}
       - {x: 7.3208046, y: 40.662926}
       - {x: 7.452283, y: 40.642708}
+  m_UseDelaunayMesh: 0
 --- !u!114 &9022736994455335174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +200,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
@@ -299,6 +296,10 @@ PrefabInstance:
       value: 1.7677155
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 434596, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 69852205314708333}
   m_SourcePrefab: {fileID: 100100000, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
 --- !u!4 &3876710677255052268 stripped
 Transform:

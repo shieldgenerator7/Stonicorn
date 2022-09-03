@@ -116,6 +116,7 @@ PolygonCollider2D:
       - {x: -4.1719284, y: 3.2055092}
       - {x: 3.9892502, y: 3.174553}
       - {x: 4.3423386, y: 11.975533}
+  m_UseDelaunayMesh: 0
 --- !u!114 &114232847425781760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,6 +734,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
+    gravitySource: 0
     maxNumParticles: 1000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
@@ -4129,6 +4131,7 @@ ParticleSystem:
         m_RotationOrder: 4
     minVertexDistance: 0.2
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     ribbonCount: 1
     shadowBias: 0.5
     worldSpace: 0
