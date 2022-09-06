@@ -345,12 +345,24 @@ public class CustomMenu
             }
             else
             {
+                if (scene.name == null || scene.name == "")
+                {
+                    Debug.LogError($"scene {scene} at index {i} has invalid name! {scene.name}");
+                    continue;
+                }
                 //Load
-                EditorSceneManager.OpenScene(
-                    "Assets/Scenes/Levels/" + scene.name + ".unity",
-                    OpenSceneMode.Additive
-                    );
-                SetExpanded(scene, false);
+                try
+                {
+                    EditorSceneManager.OpenScene(
+                        "Assets/Scenes/Levels/" + scene.name + ".unity",
+                        OpenSceneMode.Additive
+                        );
+                    SetExpanded(scene, false);
+                }
+                catch(ArgumentException ae)
+                {
+                    Debug.LogError($"scene load error ({scene.name}): {ae}");
+                }
             }
         }
     }
