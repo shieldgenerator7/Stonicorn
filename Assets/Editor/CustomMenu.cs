@@ -199,15 +199,60 @@ public class CustomMenu
             return;
         }
         int changedCount = 0;
-        foreach(GameObject go in gos)
+        foreach (GameObject go in gos)
         {
-            SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
-            BoxCollider2D bc2d = go.GetComponent<BoxCollider2D>();
-            bc2d.size = sr.size;
-            EditorUtility.SetDirty(bc2d);
+            autosizeBC2DtoTiledSprite(go);
             changedCount++;
         }
         Debug.Log($"Autosized {changedCount} BoxCollider2Ds to SpriteRenderer tiled size");
+    }
+    public static void autosizeBC2DtoTiledSprite(GameObject go)
+    {
+        SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
+        BoxCollider2D bc2d = go.GetComponent<BoxCollider2D>();
+        bc2d.size = sr.size;
+        EditorUtility.SetDirty(bc2d);
+    }
+
+    [MenuItem("SG7/Editor/Mechanics/Auto-extend platform width")]
+    public static void autoextendPlatformWidth()
+    {
+        List<GameObject> gos = Selection.gameObjects.ToList();
+        gos = gos.FindAll(go =>
+            go.GetComponent<SpriteRenderer>()?.drawMode == SpriteDrawMode.Tiled
+            && go.GetComponent<BoxCollider2D>()
+            );
+        if (gos.Count == 0)
+        {
+            Debug.LogWarning("Select 1 or more gameobjects with both a SpriteRenderer in Tiled mode, and a BoxCollider2D");
+            return;
+        }
+        int changedCount = 0;
+        foreach (GameObject go in gos)
+        {
+            //Find left and right points
+            BoxCollider2D bc2d = go.GetComponent<BoxCollider2D>();
+            bc2d.enabled = false;
+            RaycastHit2D rch2dRight = Physics2D.Raycast(go.transform.position, go.transform.right);
+            Vector2 rightPos = rch2dRight.point;
+            RaycastHit2D rch2dLeft = Physics2D.Raycast(go.transform.position, -go.transform.right);
+            Vector2 leftPos = rch2dLeft.point;
+            bc2d.enabled = true;
+            //Move platform to center
+            go.transform.position = (rightPos + leftPos) / 2;
+            EditorUtility.SetDirty(go);
+            //Set size to distance between left and right points
+            SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
+            Vector2 size = sr.size;
+            size.x = Vector2.Distance(leftPos, rightPos);
+            sr.size = size;
+            EditorUtility.SetDirty(sr);
+            //Update BoxCollider2D
+            autosizeBC2DtoTiledSprite(go);
+            //Update counter
+            changedCount++;
+        }
+        Debug.Log($"Auto-extended {changedCount} platform widths");
     }
 
     [MenuItem("SG7/Editor/List Prefabs")]
