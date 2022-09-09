@@ -177,12 +177,37 @@ public class CustomMenu
         ecro.toggle();
     }
 
-    [MenuItem("SG7/Editor/Connect selected Lantern and HiddenArea %#H")]
+    [MenuItem("SG7/Editor/Mechanics/Connect selected Lantern and HiddenArea %#H")]
     public static void connectLanternToHiddenArea()
     {
         HiddenAreaConnector hac = GameObject.FindObjectOfType<HiddenAreaConnector>();
         Selection.activeGameObject = hac.gameObject;
         hac.connect();
+    }
+
+    [MenuItem("SG7/Editor/Mechanics/Autosize BoxColliider2D to tiled sprite")]
+    public static void autosizeBC2DtoTiledSprite()
+    {
+        List<GameObject> gos = Selection.gameObjects.ToList();
+        gos = gos.FindAll(go =>
+            go.GetComponent<SpriteRenderer>()?.drawMode == SpriteDrawMode.Tiled
+            && go.GetComponent<BoxCollider2D>()
+            );
+        if (gos.Count == 0)
+        {
+            Debug.LogWarning("Select 1 or more gameobjects with both a SpriteRenderer in Tiled mode, and a BoxCollider2D");
+            return;
+        }
+        int changedCount = 0;
+        foreach(GameObject go in gos)
+        {
+            SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
+            BoxCollider2D bc2d = go.GetComponent<BoxCollider2D>();
+            bc2d.size = sr.size;
+            EditorUtility.SetDirty(bc2d);
+            changedCount++;
+        }
+        Debug.Log($"Autosized {changedCount} BoxCollider2Ds to SpriteRenderer tiled size");
     }
 
     [MenuItem("SG7/Editor/List Prefabs")]
@@ -359,7 +384,7 @@ public class CustomMenu
                         );
                     SetExpanded(scene, false);
                 }
-                catch(ArgumentException ae)
+                catch (ArgumentException ae)
                 {
                     Debug.LogError($"scene load error ({scene.name}): {ae}");
                 }
