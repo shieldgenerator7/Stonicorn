@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 2859978935190022864}
   - component: {fileID: 2859978935190022871}
   - component: {fileID: 2859978935190022878}
-  - component: {fileID: 767994834465439263}
   - component: {fileID: 2859978935190022872}
   - component: {fileID: 2859978935190022865}
   - component: {fileID: 2995129134111674952}
@@ -4735,26 +4734,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
-  endGameTimer: {fileID: 767994834465439263}
+  endGameTimer: {fileID: 0}
   slowTimeSpeed: 0.2
---- !u!114 &767994834465439263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2859978935190022699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13f032a9f4542634f91a289a5b600bac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyOnFinish: 0
-  maxTime: 360
-  useUnscaledTime: 0
-  startFromZeroOnStart: 1
-  timerObject: {fileID: 0}
-  targetObject: {fileID: 0}
 --- !u!114 &2859978935190022872
 MonoBehaviour:
   m_ObjectHideFlags: 0
