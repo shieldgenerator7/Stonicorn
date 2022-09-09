@@ -10,7 +10,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
     [Range(1, 10)]
     public int maxIntegrity = 3;
     [SerializeField]
-    [Range(1, 10)]
+    [Range(0, 10)]
     private int integrity = 0;
     public int Integrity
     {
