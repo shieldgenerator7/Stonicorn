@@ -9192,14 +9192,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 40073705359149296, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: effects.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 644455257598791475, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: playerAbility
       value: 
       objectReference: {fileID: 1792176472}
-    - target: {fileID: 1338258086251405045, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: timer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1404192947651301418, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: longTeleportAbility
       value: 
@@ -9304,6 +9304,10 @@ PrefabInstance:
       propertyPath: followObject
       value: 
       objectReference: {fileID: 1792176465}
+    - target: {fileID: 0}
+      propertyPath: timer
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
