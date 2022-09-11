@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 11477714}
   - component: {fileID: 7835665536134532039}
   - component: {fileID: 1792176476}
+  - component: {fileID: 2397303777831740310}
   - component: {fileID: 3415424875800634050}
   - component: {fileID: 4077093240442266713}
   - component: {fileID: 1792176479}
@@ -250,6 +251,28 @@ MonoBehaviour:
   teleportUnavailableSound: {fileID: 8300000, guid: 90ef9b97e3f00ea46933e6605e9cb380, type: 3}
   futureProjection: {fileID: 2593851138179183123}
   teleportPreviewPointer: {fileID: 0}
+--- !u!114 &2397303777831740310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5701098221da76245baba4eb7c958527, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportRangeSegment: {fileID: 0}
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
+  unlocked: 1
+  upgradeLevel: 0
+  upgradeLevels: []
+  holdSizeScaleLimit: 1
+  maxHoldStartRange: 3
+  maxHoldKeepRange: 10
+  pullSpeed: 3
 --- !u!114 &3415424875800634050
 MonoBehaviour:
   m_ObjectHideFlags: 0
