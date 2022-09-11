@@ -78,7 +78,7 @@ public static class Utility
                 return rch2d.distance;
             }
         }
-        throw new UnityException("Object " + obj + "'s raycast not found! This should not be possible!");
+        throw new UnityException($"Object {obj}'s raycast not found! This should not be possible!");
     }
     public static bool inRange(this Vector2 v1, Vector2 v2, float range)
     {
