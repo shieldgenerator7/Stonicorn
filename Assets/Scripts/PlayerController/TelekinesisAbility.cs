@@ -133,6 +133,13 @@ public class TelekinesisAbility : PlayerAbility
 
     private void pickupObject(GameObject go)
     {
+        //Make gameobject effected by things
+        StaticUntilTouched sut = go.GetComponent<StaticUntilTouched>();
+        if (sut)
+        {
+            sut.Rooted = false;
+        }
+        //Add gameobject to list
         HoldContext hc = new HoldContext(go, transform.position);
         holdTargets.Add(hc);
     }
