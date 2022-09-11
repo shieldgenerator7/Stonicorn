@@ -59,15 +59,16 @@ public class TelekinesisAbility : PlayerAbility
     {
         //For each held object, pull it towards its desired position relative to Merky
         Vector2 playerPosition = (Vector2)transform.position;
-        holdTargets.ForEach((hc) =>
+        for (int i = 0; i < holdTargets.Count; i++)
         {
+            HoldContext hc = holdTargets[i];
             Vector2 currentPosition = hc.go.transform.position;
             Vector2 targetPosition = playerPosition + hc.offset;
             //auto-drop if object becomes outside of range
             if (Vector2.Distance(currentPosition, targetPosition) > maxHoldKeepRange)
             {
                 dropObject(hc.go);
-                return;
+                continue;
             }
             //pull object towards intended position
             if (currentPosition != targetPosition)
@@ -79,7 +80,7 @@ public class TelekinesisAbility : PlayerAbility
                     Time.fixedDeltaTime * pullAcceleration
                     );
             }
-        });
+        };
     }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
