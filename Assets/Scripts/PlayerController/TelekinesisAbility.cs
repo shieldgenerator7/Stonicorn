@@ -146,12 +146,16 @@ public class TelekinesisAbility : PlayerAbility
         //Add gameobject to list
         HoldContext hc = new HoldContext(go, transform.position);
         holdTargets.Add(hc);
+        //TEMP: visual effects
+        Managers.Effect.showSwapCircle(go, true);
     }
 
     private void dropObject(GameObject go)
     {
         HoldContext hc = holdTargets.Find(hc => hc.go == go);
         holdTargets.Remove(hc);
+        //TEMP: visual effects
+        Managers.Effect.showSwapCircle(go, false);
     }
 
     //TODO: add hold targets to save list
