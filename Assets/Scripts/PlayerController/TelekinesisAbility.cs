@@ -36,12 +36,12 @@ public class TelekinesisAbility : PlayerAbility
     public override void init()
     {
         base.init();
-        playerController.Teleport.findTeleportablePositionOverride += findHoldPos;
+        playerController.teleportOverride += checkOverrideTeleport;
     }
     public override void OnDisable()
     {
         base.OnDisable();
-        playerController.Teleport.findTeleportablePositionOverride -= findHoldPos;
+        playerController.teleportOverride -= checkOverrideTeleport;
     }
 
     private void Update()
@@ -61,12 +61,14 @@ public class TelekinesisAbility : PlayerAbility
 
     //TODO: add delegates for when telekinesis happens
 
-    //TODO: check to see if this is the right delegate to use (should it happen before a targetPos is determined?)
-    private Vector2 findHoldPos(Vector2 targetPos, Vector2 tapPos)
+    private bool checkOverrideTeleport(Vector2 tapPos)
     {
         holdTarget = findHoldTarget(tapPos);
-        //If hold target found, don't teleport
-        return (holdTarget) ?Vector2.zero :targetPos;
+        if (holdTarget)
+        {
+            return true;
+        }
+        return false;
     }
 
     private GameObject findHoldTarget(Vector2 pos)

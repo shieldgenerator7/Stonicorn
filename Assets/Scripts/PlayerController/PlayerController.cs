@@ -411,6 +411,8 @@ public class PlayerController : MonoBehaviour
     public bool gestureOnPlayer(Vector2 pos, float range) =>
         pos.inRange(transform.position, range);
 
+    public delegate bool TeleportOverride(Vector2 tapPos);
+    public event TeleportOverride teleportOverride;
     /// <summary>
     /// Process the tap gesture at the given position
     /// </summary>
@@ -423,8 +425,13 @@ public class PlayerController : MonoBehaviour
             //Rotate player ~90 degrees
             rotate();
         }
-        //Teleport
-        Teleport.processTeleport(tapPos);
+        //Teleport Override
+        bool overrideTeleport = teleportOverride?.Invoke(tapPos) ?? false;
+        if (!overrideTeleport)
+        {
+            //Teleport
+            Teleport.processTeleport(tapPos);
+        }
     }
 
     /// <summary>
