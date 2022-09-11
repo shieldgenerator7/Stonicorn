@@ -27,7 +27,6 @@ public class TelekinesisAbility : PlayerAbility
     /// </summary>
     public float pullAcceleration = 1;
 
-    [System.Serializable]
     private struct HoldContext
     {
         public GameObject go;
@@ -41,8 +40,7 @@ public class TelekinesisAbility : PlayerAbility
             this.offset = (Vector2)go.transform.position - origin;
         }
     }
-    [SerializeField]
-    private List<HoldContext> holdTargets;
+    private List<HoldContext> holdTargets = new List<HoldContext>();
 
     public override void init()
     {
@@ -153,7 +151,7 @@ public class TelekinesisAbility : PlayerAbility
         //Add gameobject to list
         HoldContext hc = new HoldContext(go, transform.position);
         holdTargets.Add(hc);
-        //TEMP: visual effects
+        //TEMP: visual effects //TODO: replace with separate visual update script
         Managers.Effect.showSwapCircle(go, true);
     }
 
@@ -161,7 +159,7 @@ public class TelekinesisAbility : PlayerAbility
     {
         HoldContext hc = holdTargets.Find(hc => hc.go == go);
         holdTargets.Remove(hc);
-        //TEMP: visual effects
+        //TEMP: visual effects //TODO: replace with separate visual update script
         Managers.Effect.showSwapCircle(go, false);
     }
 
