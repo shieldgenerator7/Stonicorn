@@ -64,7 +64,7 @@ public class TelekinesisAbility : PlayerAbility
             Vector2 currentPosition = hc.go.transform.position;
             Vector2 targetPosition = playerPosition + hc.offset;
             //auto-drop if object becomes outside of range
-            if (Vector2.Distance(currentPosition,targetPosition) > maxHoldKeepRange)
+            if (Vector2.Distance(currentPosition, targetPosition) > maxHoldKeepRange)
             {
                 dropObject(hc.go);
                 return;
@@ -127,10 +127,10 @@ public class TelekinesisAbility : PlayerAbility
     }
 
     private bool isObjectHoldable(GameObject go)
-       => go != this.gameObject
-       && go.GetComponent<Rigidbody2D>()
-       && go.getSize().magnitude <= playerController.halfWidth * 2 * holdSizeScaleLimit;
-    //TODO: check to make sure object is within range
+        => go != this.gameObject
+        && go.GetComponent<Rigidbody2D>()
+        && go.getSize().magnitude <= playerController.halfWidth * 2 * holdSizeScaleLimit
+        && ((Vector2)gameObject.transform.position).distanceToObject(go) <= maxHoldStartRange;
 
     private bool isObjectHeld(GameObject go)
     {
