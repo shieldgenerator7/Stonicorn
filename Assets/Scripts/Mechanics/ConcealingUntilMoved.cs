@@ -43,7 +43,13 @@ public class ConcealingUntilMoved : MonoBehaviour
 
     private void revealHiddenAreas()
     {
-        haListToUncover.ForEach(ha => ha.Discovered = true);
+        haListToUncover.ForEach(ha =>
+        {
+            if (ha)
+            {
+                ha.Discovered = true;
+            }
+        });
         Destroy(this);
     }
 }
