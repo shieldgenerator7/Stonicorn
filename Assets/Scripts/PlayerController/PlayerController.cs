@@ -16,8 +16,6 @@ public class PlayerController : MonoBehaviour
     public float lastAutoTeleportTime { get; private set; }//the last time that Merky auto teleported using the hold gesture
     [Range(0, 1)]
     public float pauseMovementDuration = 0.2f;//amount of time (sec) Merky's movement is paused after landing
-    [Range(0, 3)]
-    public float hitStunDuration = 1;//how long merky freezes after getting hit before he auto-rewinds
 
     [Header("Components")]
     public BoxCollider2D scoutColliderMin;//small collider (inside Merky) used to scout the level for teleportable spots
@@ -28,7 +26,6 @@ public class PlayerController : MonoBehaviour
     //
     private bool shouldPauseMovement = false;//whether or not to pause movement, true after teleport
     private float pauseMovementStartTime = -1;//when Merky last had his movement paused
-    private bool hazardHit = false;
 
     //
     // Runtime Constants
@@ -121,32 +118,10 @@ public class PlayerController : MonoBehaviour
         if (collision.collider.isSolid())
         {
             updateGroundedState();
-            //If collided with a Hazard,
-            Hazard hazard = collision.gameObject.GetComponent<Hazard>();
-            bool hazardous = hazard && hazard.Hazardous;
-            //If any delegate says yes there is an exception,
-            //it's no longer a hazard
-            Vector2 point = collision.contacts[0].point;
-            bool hazardException = hazardous && onHazardHitException != null
-                && onHazardHitException.GetInvocationList().ToList()
-                .Any(ohhe => (bool)ohhe.DynamicInvoke(point));
-            if (hazardous && !hazardException)
-            {
-                //Take damage (and rewind)
-                forceRewindHazard(hazard.DamageDealt, collision.contacts[0].point);
-            }
-            else
-            {
-                //Grant gravity immunity
-                checkMovementPause();//first grounded frame after teleport
-            }
+            //Grant gravity immunity
+            checkMovementPause();//first grounded frame after teleport
         }
     }
-    public delegate bool OnHazardHitException(Vector2 contactPoint);
-    /// <summary>
-    /// Returns true if there is an exception and the hazard does not hit
-    /// </summary>
-    public event OnHazardHitException onHazardHitException;
 
     /// <summary>
     /// Updates the position of the copycat collider that hits the ground before Merky does
@@ -338,41 +313,6 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Call this to force Merky to rewind due to hitting a hazard
-    /// </summary>
-    /// <param name="damageToSelf"></param>
-    /// <param name="damageToOther"></param>
-    /// <param name="contactPoint"></param>
-    private void forceRewindHazard(int damageToSelf, Vector2 contactPoint)
-    {
-        if (damageToSelf > 0)
-        {
-            //Mark hit
-            hazardHit = true;
-            //Increment damaged counter
-            Managers.Stats.addOne(Stat.DAMAGED);
-            //Start hit timer
-            Timer.startTimer(hitStunDuration, () => hitTimerUp(damageToSelf));
-            //Highlight impact area
-            Managers.Effect.showPointEffect("effect_contact", contactPoint);
-            //Pause game
-            Managers.Time.setPause(this, true);
-        }
-    }
-
-    private void hitTimerUp(int damageToSelf)
-    {
-        //Mark not hit
-        hazardHit = false;
-        //Unpause game
-        Managers.Time.setPause(this, false);
-        //Remove highlight
-        Managers.Effect.showPointEffect("effect_contact", Vector2.zero, false);
-        //Rewind
-        Managers.Rewind.Rewind(damageToSelf);
-    }
-
-    /// <summary>
     /// Determines whether the given position is occupied or not
     /// </summary>
     /// <param name="testPos">The position to test</param>
@@ -477,12 +417,6 @@ public class PlayerController : MonoBehaviour
     /// <param name="tapPos">The position to teleport to</param>
     public void processTapGesture(Vector3 tapPos)
     {
-        //If the game is paused because Merky is hit,
-        if (hazardHit)
-        {
-            //Don't process input
-            return;
-        }
         //If the player tapped on Merky,
         if (gestureOnPlayer(tapPos))
         {

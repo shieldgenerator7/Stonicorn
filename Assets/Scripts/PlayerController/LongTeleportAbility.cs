@@ -23,16 +23,6 @@ public class LongTeleportAbility : PlayerAbility
         {
             shielded = value;
             onShieldedChanged?.Invoke(shielded);
-            //OnHitException delegate registering
-            if (playerController)
-            {
-                playerController.onHazardHitException -= onHitException;
-                if (shielded)
-                {
-                    playerController.onHazardHitException += onHitException;
-                    Debug.Log("OnHit registered!");
-                }
-            }
         }
     }
     public delegate void OnShieldedChanged(bool shielded);
@@ -155,19 +145,6 @@ public class LongTeleportAbility : PlayerAbility
         SpriteRenderer sr = portal.GetComponent<SpriteRenderer>();
         sr.color = EffectColor.adjustAlpha(sr.color.a);
         return portal.GetComponent<TeleportPortal>();
-    }
-
-    bool onHitException(Vector2 contactPoint)
-    {
-        Debug.Log("OnHit called!");
-        //Remove shield after grace period
-        ShouldUnshield = true;
-        //Stop merky
-        rb2d.nullifyMovement();
-        //Move merky away from hazard
-        rb2d.velocity += ((Vector2)transform.position - contactPoint)
-            * postShieldKnockbackSpeed;
-        return true;
     }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
