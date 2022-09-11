@@ -47,7 +47,7 @@ public class CustomMenu
                 }
             }
         }
-        Debug.Log(string.Format("Searched {0} GameObjects, {1} components, found {2} missing", go_count, components_count, missing_count));
+        Debug.Log($"Searched {go_count} GameObjects, {components_count} components, found {missing_count} missing");
     }
     private static void FindInGO(GameObject g)
     {
@@ -63,10 +63,10 @@ public class CustomMenu
                 Transform t = g.transform;
                 while (t.parent != null)
                 {
-                    s = t.parent.name + "/" + s;
+                    s = $"{t.parent.name}/{s}";
                     t = t.parent;
                 }
-                Debug.Log(s + " has an empty script attached in position: " + i, g);
+                Debug.Log($"{s} has an empty script attached in position: {i}", g);
             }
         }
         // Now recurse through each child GO (if there are any):
@@ -91,8 +91,7 @@ public class CustomMenu
                 {
                     errorCount++;
                     Debug.LogError(
-                        "Player does not have an ability called "
-                            + maa.abilityTypeName + "!",
+                        $"Player does not have an ability called {maa.abilityTypeName}!",
                         maa
                         );
                 }
@@ -262,7 +261,7 @@ public class CustomMenu
             .FindAll(soi => soi.PrefabAddress.editorAsset != null)
             .OrderBy(soi => soi.PrefabAddress.editorAsset.name).ToList()
             .ForEach(soi =>
-                Debug.Log("Prefab: " + soi.PrefabAddress.editorAsset.name, soi.gameObject)
+                Debug.Log($"Prefab: {soi.PrefabAddress.editorAsset.name}", soi.gameObject)
             );
     }
 
@@ -287,7 +286,7 @@ public class CustomMenu
                 playerSpawnObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
             }
             Selection.activeGameObject = playerSpawnObject;
-            Debug.Log("PTSP enabled: " + playerTSP.enabled);
+            Debug.Log($"PTSP enabled: {playerTSP.enabled}");
         }
         else
         {
@@ -318,7 +317,7 @@ public class CustomMenu
             //Select player object
             GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
             Selection.activeGameObject = playerObject;
-            Debug.Log("PTSP enabled: " + playerTSP.enabled);
+            Debug.Log($"PTSP enabled: {playerTSP.enabled}");
         }
     }
 
@@ -424,7 +423,7 @@ public class CustomMenu
                 try
                 {
                     EditorSceneManager.OpenScene(
-                        "Assets/Scenes/Levels/" + scene.name + ".unity",
+                        $"Assets/Scenes/Levels/{scene.name}.unity",
                         OpenSceneMode.Additive
                         );
                     SetExpanded(scene, false);
@@ -597,7 +596,7 @@ public class CustomMenu
         List<GameObject> missingInfo = savables
             .FindAll(go => !go.GetComponent<SavableObjectInfo>());
         missingInfo.ForEach(
-            go => Debug.LogError(go.name + " does not have an SavableObjectInfo!", go)
+            go => Debug.LogError($"{go.name} does not have an SavableObjectInfo!", go)
             );
         //Null info in ObjectInfo
         List<GameObject> nullInfo = savables
@@ -608,7 +607,7 @@ public class CustomMenu
             }
             );
         nullInfo.ForEach(
-            go => Debug.LogError(go.name + " has SavableObjectInfo with missing prefabGUID!", go)
+            go => Debug.LogError($"{go.name} has SavableObjectInfo with missing prefabGUID!", go)
             );
         //Spawn State 0
         List<GameObject> spawn0 = savables
@@ -623,8 +622,7 @@ public class CustomMenu
             {
                 SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
                 Debug.LogWarning(
-                    go.name + " has non-zero spawn state; zeroing it out..."
-                    + info.spawnStateId,
+                    $"{go.name} has non-zero spawn state; zeroing it out... {info.spawnStateId}",
                     go
                     );
                 info.spawnStateId = 0;
@@ -645,7 +643,7 @@ public class CustomMenu
         List<GameObject> missingInfo = memories
             .FindAll(go => !go.GetComponent<MemoryObjectInfo>());
         missingInfo.ForEach(
-            go => Debug.LogError(go.name + " does not have an MemoryObjectInfo!", go)
+            go => Debug.LogError($"{go.name} does not have an MemoryObjectInfo!", go)
             );
         return missingInfo.Count > 0;
     }
@@ -674,7 +672,7 @@ public class CustomMenu
                     if (id != prevID)
                     {
                         Debug.LogWarning(
-                            "Changed Id: " + prevID + " -> " + id,
+                            $"Changed Id: {prevID} -> {id}",
                             info.gameObject
                             );
                         EditorUtility.SetDirty(info);
@@ -710,7 +708,7 @@ public class CustomMenu
                             int prev = soi.spawnStateId;
                             soi.spawnStateId = SPAWN_STATE_ID;
                             Debug.LogWarning(
-                                "Changed spawnStateId: " + prev + " -> " + soi.spawnStateId,
+                                $"Changed spawnStateId: {prev} -> {soi.spawnStateId}",
                                 soi.gameObject
                                 );
                             changedThis = true;
@@ -720,7 +718,7 @@ public class CustomMenu
                             int prev = soi.destroyStateId;
                             soi.destroyStateId = DESTROY_STATE_ID;
                             Debug.LogWarning(
-                                "Changed destroyStateId: " + prev + " -> " + soi.destroyStateId,
+                                $"Changed destroyStateId: {prev} -> {soi.destroyStateId}",
                                 soi.gameObject
                                 );
                             changedThis = true;
@@ -757,7 +755,7 @@ public class CustomMenu
                     {
                         int prev = info.spawnStateId;
                         Debug.LogError(
-                            "spawnStateId: " + prev,
+                            $"spawnStateId: {prev}",
                             info.gameObject
                             );
                         errorFound = true;
@@ -766,7 +764,7 @@ public class CustomMenu
                     {
                         int prev = info.destroyStateId;
                         Debug.LogError(
-                            "destroyStateId: " + prev,
+                            $"destroyStateId: {prev}",
                             info.gameObject
                             );
                         errorFound = true;
@@ -799,7 +797,7 @@ public class CustomMenu
                                 go.tag = TAG;
                                 EditorUtility.SetDirty(go);
                                 Debug.LogWarning(
-                                    "Changed " + go.name + " tag to " + TAG + ".",
+                                    $"Changed {go.name} tag to {TAG}.",
                                     go
                                     );
                                 changedCount++;
@@ -815,7 +813,7 @@ public class CustomMenu
                                 go.tag = UNTAG;
                                 EditorUtility.SetDirty(go);
                                 Debug.LogWarning(
-                                    "Changed " + go.name + " tag to " + UNTAG + ".",
+                                    $"Changed {go.name} tag to {UNTAG}.",
                                     go
                                     );
                                 changedCount++;
@@ -827,7 +825,7 @@ public class CustomMenu
                             go.transform.position = (Vector2)go.transform.position;
                             EditorUtility.SetDirty(go);
                             Debug.LogWarning(
-                                "Changed " + go.name + " pos to " + go.transform.position + ".",
+                                $"Changed {go.name} pos to {go.transform.position}.",
                                 go
                                 );
                             changedCount++;
@@ -845,7 +843,7 @@ public class CustomMenu
                                 renderer.sortingLayerName = layerName;
                                 EditorUtility.SetDirty(go);
                                 Debug.LogWarning(
-                                    "Changed " + go.name + " layer name to " + layerName + ".",
+                                    $"Changed {go.name} layer name to {layerName}.",
                                     go
                                     );
                                 changedCount++;
@@ -853,7 +851,7 @@ public class CustomMenu
                             if (!coll2d)
                             {
                                 Debug.LogError(
-                                    go.name + " has renderer without a collider!",
+                                    $"{go.name} has renderer without a collider!",
                                     go
                                     );
                                 //Fake a change
@@ -870,7 +868,7 @@ public class CustomMenu
                                 coll2d.isTrigger = true;
                                 EditorUtility.SetDirty(go);
                                 Debug.LogWarning(
-                                    "Changed " + go.name + " collider isTrigger to " + coll2d.isTrigger + ".",
+                                    $"Changed {go.name} collider isTrigger to {coll2d.isTrigger}.",
                                     go
                                     );
                                 changedCount++;
@@ -883,7 +881,7 @@ public class CustomMenu
         if (changedCount > 0)
         {
             Debug.LogWarning(
-                "HiddenArea changes: Made " + changedCount + " changes."
+                $"HiddenArea changes: Made {changedCount} changes."
                 );
         }
         return changedCount > 0;
@@ -911,9 +909,9 @@ public class CustomMenu
                 {
                     sr.size = newSRSize;
                     Debug.LogWarning(
-                        "Changed " + sr.name + " sprite size " +
-                        "from (" + oldSRSize.x + ", " + oldSRSize.y + ") " +
-                        "to (" + newSRSize.x + ", " + newSRSize.y + ").",
+                        $"Changed {sr.name} sprite size " +
+                        $"from ({oldSRSize.x}, {oldSRSize.y}) " +
+                        $"to ({newSRSize.x}, {newSRSize.y}).",
                         sr
                         );
                     changedSR = true;
@@ -942,9 +940,9 @@ public class CustomMenu
                     {
                         bc2d.size = newSize;
                         Debug.LogWarning(
-                            "Changed " + sr.name + " collider size " +
-                            "from (" + oldSize.x + ", " + oldSize.y + ") " +
-                            "to (" + newSize.x + ", " + newSize.y + ").",
+                            $"Changed {sr.name} collider size " +
+                            $"from ({oldSize.x}, {oldSize.y}) " +
+                            $"to ({newSize.x}, {newSize.y}).",
                             sr
                             );
                         changedSR = true;
@@ -962,7 +960,7 @@ public class CustomMenu
         if (changedCount > 0)
         {
             Debug.LogWarning(
-                "Tiled sprites changes: Made " + changedCount + " changes."
+                $"Tiled sprites changes: Made {changedCount} changes."
                 );
         }
         return changedCount > 0;
@@ -991,7 +989,7 @@ public class CustomMenu
             EditorUtility.SetDirty(managers);
             EditorSceneManager.MarkSceneDirty(managers.gameObject.scene);
             Debug.LogWarning(
-                "ObjectManager known objects count: " + prevCount + " -> " + newCount,
+                $"ObjectManager known objects count: {prevCount} -> {newCount}",
                 managers.gameObject
                 );
         }
@@ -1072,8 +1070,8 @@ public class CustomMenu
             return;
 
         string path = buildName.Substring(0, buildName.LastIndexOf("/"));
-        Debug.Log("BUILDNAME: " + buildName);
-        Debug.Log("PATH: " + path);
+        Debug.Log($"BUILDNAME: {buildName}");
+        Debug.Log($"PATH: {path}");
 
         string[] levels = new string[EditorBuildSettings.scenes.Length];
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
@@ -1092,15 +1090,15 @@ public class CustomMenu
         BuildPipeline.BuildPlayer(levels, buildName, buildTarget, BuildOptions.None);
 
         // Copy a file from the project folder to the build folder, alongside the built game.
-        string resourcesPath = path + "/Assets/Resources";
-        string dialogPath = resourcesPath + "/Dialogue";
+        string resourcesPath = $"{path}/Assets/Resources";
+        string dialogPath = $"{resourcesPath}/Dialogue";
 
         if (!System.IO.Directory.Exists(dialogPath))
         {
             System.IO.Directory.CreateDirectory(resourcesPath);
         }
 
-        if (true || EditorUtility.DisplayDialog("Dialog Refresh", "Refresh the voice acting entries in " + dialogPath + "?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable."))
+        if (true || EditorUtility.DisplayDialog("Dialog Refresh", $"Refresh the voice acting entries in {dialogPath}?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable."))
         {
             FileUtil.DeleteFileOrDirectory(dialogPath);
             FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/", dialogPath);
@@ -1117,7 +1115,7 @@ public class CustomMenu
     {//2018-08-10: copied from build()
         string extension = "exe";
         string buildName = getBuildNamePath(extension);
-        Debug.Log("Launching: " + buildName);
+        Debug.Log($"Launching: {buildName}");
         // Run the game (Process class from System.Diagnostics).
         Process proc = new Process();
         proc.StartInfo.FileName = buildName;
@@ -1136,7 +1134,7 @@ public class CustomMenu
     [MenuItem("SG7/Run/Open App Data Folder &f")]
     public static void openAppDataFolder()
     {
-        string filePath = Application.persistentDataPath + "/merky.txt";
+        string filePath = $"{Application.persistentDataPath}/merky.txt";
         if (System.IO.File.Exists(filePath))
         {
             EditorUtility.RevealInFinder(filePath);
@@ -1149,16 +1147,16 @@ public class CustomMenu
 
     public static string getDefaultBuildPath()
     {
-        return System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Unity/Stoned Builds/Builds/" + PlayerSettings.productName + "_" + PlayerSettings.bundleVersion.Replace(".", "_");
+        return $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/Unity/Stoned Builds/Builds/{PlayerSettings.productName}_{PlayerSettings.bundleVersion.Replace(".", "_")}";
     }
     public static string getBuildNamePath(string extension, bool checkFolderExists = true)
     {
         string defaultPath = getDefaultBuildPath();
         if (checkFolderExists && !System.IO.Directory.Exists(defaultPath))
         {
-            throw new UnityException("You need to build the " + extension + " for " + PlayerSettings.productName + " (Version " + PlayerSettings.bundleVersion + ") first!");
+            throw new UnityException($"You need to build the {extension} for {PlayerSettings.productName} (Version {PlayerSettings.bundleVersion}) first!");
         }
-        string buildName = defaultPath + "/" + PlayerSettings.productName + "." + extension;
+        string buildName = $"{defaultPath}/{PlayerSettings.productName}.{extension}";
         return buildName;
     }
 
@@ -1168,11 +1166,11 @@ public class CustomMenu
         Debug.Log("=== Beginning session ===");
         string oldVersion = PlayerSettings.bundleVersion;
         string[] split = oldVersion.Split('.');
-        string newVersion = split[0] + "." + (int.Parse(split[1]) + 1);
+        string newVersion = $"{split[0]}.{int.Parse(split[1]) + 1}";
         PlayerSettings.bundleVersion = newVersion;
         //Save and Log
         EditorSceneManager.SaveOpenScenes();
-        Debug.LogWarning("Updated build version number from " + oldVersion + " to " + newVersion);
+        Debug.LogWarning($"Updated build version number from {oldVersion} to {newVersion}");
     }
 
     [MenuItem("SG7/Session/Finish Session")]
