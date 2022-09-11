@@ -85,7 +85,7 @@ public class TelekinesisAbility : PlayerAbility
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos) { }
 
-    //TODO: add delegates for when telekinesis happens
+    //TODO: add delegates for when telekinesis happens (for stats, etc)
 
     private bool checkOverrideTeleport(Vector2 tapPos)
     {
@@ -128,6 +128,10 @@ public class TelekinesisAbility : PlayerAbility
 
     private bool isObjectHeld(GameObject go)
     {
+        if (!go)
+        {
+            Debug.LogError($"GameObject is null!: {go}");
+        }
         return holdTargets.Any(hc => hc.go == go);
     }
 
@@ -149,6 +153,6 @@ public class TelekinesisAbility : PlayerAbility
         HoldContext hc = holdTargets.Find(hc => hc.go == go);
         holdTargets.Remove(hc);
     }
-    
+
     //TODO: add hold targets to save list
 }
