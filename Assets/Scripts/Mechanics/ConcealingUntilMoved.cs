@@ -6,11 +6,18 @@ public class ConcealingUntilMoved : MonoBehaviour
 {
     public List<HiddenArea> haListToUncover;
 
+    /// <summary>
+    /// As long as the object is within this distance of its starting position, it does not reveal the hidden areas
+    /// </summary>
+    private float concealRange;
     private Vector2 startPos;
     private StaticUntilTouched staticUntilTouched;
 
     private void Start()
     {
+        //Record concealRange
+        Vector2 size = gameObject.getSize();
+        concealRange = Mathf.Min(size.x, size.y);
         //Record startPos
         startPos = transform.position;
         //Register with staticUntilTouched (if available)
@@ -21,21 +28,29 @@ public class ConcealingUntilMoved : MonoBehaviour
             {
                 if (!rooted)
                 {
-                    revealHiddenAreas();
+                    checkRevealHiddenAreas();
+                    this.enabled = true;
                 }
             };
+            this.enabled = false;
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void FixedUpdate()
     {
         checkRevealHiddenAreas();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        checkRevealHiddenAreas();
+        this.enabled = true;
+    }
+
     private void checkRevealHiddenAreas()
     {
-        Vector2 currentPosition = transform.position;
-        if (currentPosition != startPos)
+        float distance = Vector2.Distance(transform.position, startPos);
+        if (distance > concealRange)
         {
             revealHiddenAreas();
         }
