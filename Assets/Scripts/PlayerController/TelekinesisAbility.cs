@@ -22,6 +22,10 @@ public class TelekinesisAbility : PlayerAbility
     /// How fast objects move to their desired location relative to Merky
     /// </summary>
     public float pullSpeed = 3;
+    /// <summary>
+    /// How fast objects snap to the target velocity to get them back to their desired location
+    /// </summary>
+    public float pullAcceleration = 1;
 
     [System.Serializable]
     private struct HoldContext
@@ -62,7 +66,12 @@ public class TelekinesisAbility : PlayerAbility
             //TODO: auto-drop if object becomes outside of range
             if (currentPosition != targetPosition)
             {
-                hc.rb2d.velocity = (targetPosition - currentPosition).normalized * pullSpeed;
+                Vector2 targetVelocity = (targetPosition - currentPosition).normalized * pullSpeed;
+                hc.rb2d.velocity = Vector2.Lerp(
+                    hc.rb2d.velocity,
+                    targetVelocity,
+                    Time.fixedDeltaTime * pullAcceleration
+                    );
             }
         });
     }
