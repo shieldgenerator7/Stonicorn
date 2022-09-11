@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ConcealingUntilMoved : MonoBehaviour
@@ -15,6 +16,13 @@ public class ConcealingUntilMoved : MonoBehaviour
 
     private void Start()
     {
+        //Error checking: soft check for at least one valid HA
+        if (!haListToUncover.Any(ha => ha))
+        {
+            Debug.LogWarning($"ConcealingUntilMoved script on gameobject {gameObject.name} has no HiddenAreas to reveal!");
+            Destroy(this);
+            return;
+        }
         //Record concealRange
         Vector2 size = gameObject.getSize();
         concealRange = Mathf.Min(size.x, size.y);

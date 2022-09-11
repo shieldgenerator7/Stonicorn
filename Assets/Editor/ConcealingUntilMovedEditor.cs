@@ -31,11 +31,11 @@ public class ConcealingUntilMovedEditor : Editor
                             if (!cum.haListToUncover.Contains(ha))
                             {
                                 cum.haListToUncover.Add(ha);
-                                EditorUtility.SetDirty(cum);
                             }
                         }
                     }
                 }
+                EditorUtility.SetDirty(cum);
             }
         }
     }
