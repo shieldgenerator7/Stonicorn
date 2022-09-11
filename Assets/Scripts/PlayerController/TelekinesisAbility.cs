@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class TelekinesisAbility : PlayerAbility
 {
-    protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
-    {
-        holdSizeScaleLimit = aul.stat1;
-    }
-
-    protected override bool isGrounded() => false;
-
-    protected override void processTeleport(Vector2 oldPos, Vector2 newPos) { }
-
     [Header("Settings")]
     /// <summary>
     /// Merky can hold an object that is this many times bigger than him or smaller
@@ -37,6 +28,7 @@ public class TelekinesisAbility : PlayerAbility
     private struct HoldContext
     {
         public GameObject go;
+        public Rigidbody2D rb2d;
         public Vector2 offset;
     }
     private List<HoldContext> holdTargets;
@@ -58,37 +50,42 @@ public class TelekinesisAbility : PlayerAbility
         //TODO
     }
 
-    bool isObjectHoldable(GameObject go)
-        => go != this.gameObject
-        && go.GetComponent<Rigidbody2D>()
-        && go.getSize().magnitude <= playerController.halfWidth * 2 * holdSizeScaleLimit;
+    protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
+    {
+        holdSizeScaleLimit = aul.stat1;
+    }
 
-    bool isColliderHoldable(Collider2D coll, Vector3 tapPos)
-        => isObjectHoldable(coll.gameObject)
-        && coll.OverlapPoint(tapPos);
+    protected override bool isGrounded() => false;
+
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos) { }
 
     //TODO: add delegates for when telekinesis happens
 
     //TODO: check to see if this is the right delegate to use (should it happen before a targetPos is determined?)
     private Vector2 findHoldPos(Vector2 targetPos, Vector2 tapPos)
     {
-        holdTarget = findHoldTarget(targetPos, tapPos);
+        holdTarget = findHoldTarget(tapPos);
         //If hold target found, don't teleport
         return (holdTarget) ?Vector2.zero :targetPos;
     }
 
-    private GameObject findHoldTarget(Vector2 targetPos, Vector2 tapPos)
+    private GameObject findHoldTarget(Vector2 pos)
     {
-        Utility.RaycastAnswer answer = Utility.RaycastAll(tapPos, Vector2.up, 0);
+        Utility.RaycastAnswer answer = Utility.RaycastAll(pos, Vector2.up, 0);
         for (int i = 0; i < answer.count; i++)
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
             GameObject rch2dGO = rch2d.collider.gameObject;
-            if (isColliderHoldable(rch2d.collider, tapPos))
+            if (isObjectHoldable(rch2dGO))
             {
                 return rch2dGO;
             }
         }
         return null;
     }
+
+    bool isObjectHoldable(GameObject go)
+       => go != this.gameObject
+       && go.GetComponent<Rigidbody2D>()
+       && go.getSize().magnitude <= playerController.halfWidth * 2 * holdSizeScaleLimit;
 }
