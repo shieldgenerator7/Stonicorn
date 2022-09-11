@@ -51,10 +51,20 @@ public class TelekinesisAbility : PlayerAbility
         playerController.teleportOverride -= checkOverrideTeleport;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         //For each held object, pull it towards its desired position relative to Merky
-        //TODO
+        Vector2 playerPosition = (Vector2)transform.position;
+        holdTargets.ForEach((hc) =>
+        {
+            Vector2 currentPosition = hc.go.transform.position;
+            Vector2 targetPosition = playerPosition + hc.offset;
+            //TODO: auto-drop if object becomes outside of range
+            if (currentPosition != targetPosition)
+            {
+                hc.rb2d.velocity = (targetPosition - currentPosition).normalized * pullSpeed;
+            }
+        });
     }
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
