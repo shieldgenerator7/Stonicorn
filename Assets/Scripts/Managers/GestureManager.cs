@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class GestureManager : MonoBehaviour
 {
     //Gesture Profiles
-    public enum GestureProfileType { MENU, MAIN, REWIND };
+    public enum GestureProfileType { MENU, MAIN };
     private GestureProfile currentGP;//the current gesture profile
     private Dictionary<GestureProfileType, GestureProfile> gestureProfiles = new Dictionary<GestureProfileType, GestureProfile>();//dict of valid gesture profiles
 
@@ -36,7 +36,6 @@ public class GestureManager : MonoBehaviour
     {
         gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
         gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());
-        gestureProfiles.Add(GestureProfileType.REWIND, new RewindGestureProfile());
         switchGestureProfile(GestureProfileType.MENU);
 
         Managers.Camera.onZoomLevelChanged += processZoomLevelChange;

@@ -97,9 +97,6 @@ public class Managers : MonoBehaviour
     //Player Controller
     public static PlayerController Player { get; private set; }
 
-    //Player Rewind Controller
-    public static PlayerRewindController PlayerRewind { get; private set; }
-
     //Camera Controller
     public static CameraController Camera { get; private set; }
 
@@ -170,7 +167,6 @@ public class Managers : MonoBehaviour
         DemoMode = FindObjectOfType<DemoModeManager>();
         Power = FindObjectOfType<PowerManager>();
         Player = FindObjectOfType<PlayerController>();
-        PlayerRewind = FindObjectOfType<PlayerRewindController>();
         Camera = FindObjectOfType<CameraController>();
 
         //Init with game data

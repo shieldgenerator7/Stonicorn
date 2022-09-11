@@ -198,14 +198,11 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 Managers.Player.Teleport.overrideTeleportPosition += checkCheckPointGhosts;
                 Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
                 Managers.Player.Teleport.onTeleport += updateCheckPointCheckers;
-                Managers.PlayerRewind.tapProcessed -= checkCheckPointGhostsZoomedOut;
-                Managers.PlayerRewind.tapProcessed += checkCheckPointGhostsZoomedOut;
             }
             else
             {
                 Managers.Player.Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
                 Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
-                Managers.PlayerRewind.tapProcessed -= checkCheckPointGhostsZoomedOut;
             }
         }
     }
