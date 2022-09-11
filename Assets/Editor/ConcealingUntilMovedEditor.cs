@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+[CanEditMultipleObjects]
 [CustomEditor(typeof(ConcealingUntilMoved))]
 public class ConcealingUntilMovedEditor : Editor
 {
