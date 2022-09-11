@@ -652,11 +652,14 @@ public class CustomMenu
     [MenuItem("SG7/Build/Pre-Build/Ensure unique object IDs among open scenes")]
     public static bool ensureUniqueObjectIDs()
     {
-        int nextID = 10;
+        int nextID = 0;
         bool changedId = false;
         const int SECTION_SIZE = 1000;
         foreach (SceneSavableList ssl in GameObject.FindObjectsOfType<SceneSavableList>())
         {
+            //Use buildIndex to set next id
+            nextID = ssl.gameObject.scene.buildIndex * SECTION_SIZE;
+            //Get list of savables
             List<GameObject> savables = new List<GameObject>();
             savables.AddRange(ssl.savables);
             savables.AddRange(ssl.memories);
@@ -679,8 +682,6 @@ public class CustomMenu
                         changedId = true;
                     }
                 });
-            //Make nextID start at the next section
-            nextID = (int)Mathf.Floor(nextID / SECTION_SIZE) * SECTION_SIZE + SECTION_SIZE;
         }
         return changedId;
     }
