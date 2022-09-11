@@ -63,7 +63,13 @@ public class TelekinesisAbility : PlayerAbility
         {
             Vector2 currentPosition = hc.go.transform.position;
             Vector2 targetPosition = playerPosition + hc.offset;
-            //TODO: auto-drop if object becomes outside of range
+            //auto-drop if object becomes outside of range
+            if (Vector2.Distance(currentPosition,targetPosition) > maxHoldKeepRange)
+            {
+                dropObject(hc.go);
+                return;
+            }
+            //pull object towards intended position
             if (currentPosition != targetPosition)
             {
                 Vector2 targetVelocity = (targetPosition - currentPosition).normalized * pullSpeed;
