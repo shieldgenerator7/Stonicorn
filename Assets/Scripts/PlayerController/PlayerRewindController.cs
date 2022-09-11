@@ -282,8 +282,6 @@ public class PlayerRewindController : Manager
         {
             //Rewind back to the selected game state
             Managers.Rewind.RewindTo(final.id);
-            //Update Stats
-            Managers.Stats.addOne(Stat.REWIND_PLAYER);
         }
 
         //Leave this zoom level even if no past merky was chosen

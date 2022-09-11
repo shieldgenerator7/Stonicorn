@@ -277,8 +277,6 @@ public class GameManager : MonoBehaviour
         Managers.Physics2DSurrogate.enabled = true;
         //Pause time
         Managers.Time.setPause(this, true);
-        //Update Stats
-        Managers.Stats.addOne(Stat.REWIND);
         //Prepare scenes
         Managers.Scene.prepareForRewind(rewindStateId);
     }

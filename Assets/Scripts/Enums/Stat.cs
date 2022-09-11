@@ -34,15 +34,8 @@ public enum Stat
     AIR_SLICE_OBJECT,//how many objects the player has sliced
     AIR_SLICE_WIND,//how many winds the player generated
     LONG_TELEPORT,//how many times the player has teleported with an extended range
-    LONG_TELEPORT_SHIELD,//how many shields the player generated
     LONG_TELEPORT_PORTAL,//how many portals the player generated
     LONG_TELEPORT_PORTALED,//how many times the player used a portal
-    #endregion
-
-    #region Rewind
-    DAMAGED,//how many times the player has been damaged
-    REWIND,//how many times the rewind ability has been activated
-    REWIND_PLAYER,//how many times the player used the rewind ability
     #endregion
 
     #region Menu Buttons
