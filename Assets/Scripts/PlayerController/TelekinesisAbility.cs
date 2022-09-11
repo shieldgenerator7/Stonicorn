@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TelekinesisAbility : PlayerAbility
@@ -22,15 +23,21 @@ public class TelekinesisAbility : PlayerAbility
     /// </summary>
     public float pullSpeed = 3;
 
-    private GameObject holdTarget;
-    public GameObject HoldTarget => holdTarget;
-
+    [System.Serializable]
     private struct HoldContext
     {
         public GameObject go;
         public Rigidbody2D rb2d;
         public Vector2 offset;
+
+        public HoldContext(GameObject go, Vector2 origin)
+        {
+            this.go = go;
+            this.rb2d = go.GetComponent<Rigidbody2D>();
+            this.offset = (Vector2)go.transform.position - origin;
+        }
     }
+    [SerializeField]
     private List<HoldContext> holdTargets;
 
     public override void init()
@@ -63,9 +70,17 @@ public class TelekinesisAbility : PlayerAbility
 
     private bool checkOverrideTeleport(Vector2 tapPos)
     {
-        holdTarget = findHoldTarget(tapPos);
+        GameObject holdTarget = findHoldTarget(tapPos);
         if (holdTarget)
         {
+            if (isObjectHeld(holdTarget))
+            {
+                dropObject(holdTarget);
+            }
+            else
+            {
+                pickupObject(holdTarget);
+            }
             return true;
         }
         return false;
@@ -86,8 +101,28 @@ public class TelekinesisAbility : PlayerAbility
         return null;
     }
 
-    bool isObjectHoldable(GameObject go)
+    private bool isObjectHoldable(GameObject go)
        => go != this.gameObject
        && go.GetComponent<Rigidbody2D>()
        && go.getSize().magnitude <= playerController.halfWidth * 2 * holdSizeScaleLimit;
+    //TODO: check to make sure object is within range
+
+    private bool isObjectHeld(GameObject go)
+    {
+        return holdTargets.Any(hc => hc.go == go);
+    }
+
+    private void pickupObject(GameObject go)
+    {
+        HoldContext hc = new HoldContext(go, transform.position);
+        holdTargets.Add(hc);
+    }
+
+    private void dropObject(GameObject go)
+    {
+        HoldContext hc = holdTargets.Find(hc => hc.go == go);
+        holdTargets.Remove(hc);
+    }
+    
+    //TODO: add hold targets to save list
 }
