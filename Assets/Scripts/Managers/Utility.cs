@@ -235,7 +235,7 @@ public static class Utility
         if (!info)
         {
             Debug.LogError(
-                "Object " + go.name + " does not have an ObjectInfo!",
+                $"Object {go.name} does not have an ObjectInfo!",
                 go
                 );
             return -1;
@@ -392,17 +392,17 @@ public static class Utility
             //Check that number is between curLow and curHigh
             if (number > curHigh || number < curLow)
             {
-                throw new System.ArgumentException("number is " + number + " but it should be between (" + curLow + ", " + curHigh + ")");
+                throw new System.ArgumentException($"number is {number} but it should be between ({curLow}, {curHigh})");
             }
         }
         //Check the bounds in relation to each other
         if (curLow > curHigh)
         {
-            throw new System.ArgumentException("curLow (" + curLow + ") is higher than curHigh (" + curHigh + ")!");
+            throw new System.ArgumentException($"curLow ({curLow}) is higher than curHigh ({curHigh})!");
         }
         if (newLow > newHigh)
         {
-            throw new System.ArgumentException("newLow (" + newLow + ") is higher than newHigh (" + newHigh + ")!");
+            throw new System.ArgumentException($"newLow ({newLow}) is higher than newHigh ({newHigh})!");
         }
         //Conversion
         return (((number - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow);
@@ -427,7 +427,7 @@ public static class Utility
         //Error checking
         if (newLow > newHigh)
         {
-            throw new System.ArgumentException("newLow (" + newLow + ") is higher than newHigh (" + newHigh + ")!");
+            throw new System.ArgumentException($"newLow ({newLow}) is higher than newHigh ({newHigh})!");
         }
         //Get distance percent
         float startDistance = (curEnd - curStart).magnitude;
@@ -474,12 +474,12 @@ public static class Utility
         {
             if (!isSavable)
             {
-                throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
+                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
             }
             bool hasInfo = prefab.GetComponent<ObjectInfo>();
             if (!hasInfo)
             {
-                throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
+                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
             }
         }
         //Instantiate
@@ -557,8 +557,10 @@ public static class Utility
         }
         if (results.Length != MAX_HIT_COUNT)
         {
-            throw new UnityException("Script using collider on object " + coll2d.gameObject.name + " is using result array != MAX_HIT_COUNT: " +
-                "results.count: " + results.Length + ", MAX_HIT_COUNT: " + MAX_HIT_COUNT);
+            throw new UnityException(
+                $"Script using collider on object {coll2d.gameObject.name} is using result array != MAX_HIT_COUNT: " +
+                $"results.count: {results.Length}, MAX_HIT_COUNT: {MAX_HIT_COUNT}"
+                );
         }
         int count = 0;
         count = coll2d.Cast(direction, results, distance, ignoreSiblingColliders);
@@ -639,7 +641,7 @@ public static class Utility
             maxReturnedList = count;
             Logger.log(
                 Managers.Game,
-                methodName + ": max list count: " + maxReturnedList
+                $"{methodName}: max list count: {maxReturnedList}"
                 );
         }
 #endif
