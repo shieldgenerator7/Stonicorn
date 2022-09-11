@@ -579,7 +579,9 @@ public static class Utility
     public static RaycastAnswer CastAnswer(this Collider2D coll2d, Vector2 direction, float distance = 0, bool ignoreSiblingColliders = true)
     {
         int count = coll2d.Cast(direction, rch2dsNonAlloc, distance, ignoreSiblingColliders);
+#if !UNITY_EDITOR
         checkMaxReturnedList("Utility.CastAnswer", count);
+#endif
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
     /// <summary>
