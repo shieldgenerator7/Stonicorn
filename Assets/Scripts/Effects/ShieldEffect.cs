@@ -12,7 +12,6 @@ public class ShieldEffect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        longTeleportAbility.onShieldedChanged += onShieldedChanged;
     }
 
     void onShieldedChanged(bool shielded)

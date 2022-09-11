@@ -8,47 +8,10 @@ public class LongTeleportAbility : PlayerAbility
     [Header("Settings")]
     public float maxRangeIncreaseFactor = 2;
     public float maxDragDistance = 6;//how far out to drag the camera to get max range
-    public float postShieldKnockbackSpeed = 10;
-    public float postShieldGracePeriodDuration = 1;//how long it takes for the shield to actually disappear
     public float portalRequiredRangeFactor = 3;//how much further than the standard range you have to teleport in order to make a portal
 
     [Header("Components")]
     public GameObject portalPrefab;
-
-    private bool shielded = false;
-    public bool Shielded
-    {
-        get => shielded;
-        set
-        {
-            shielded = value;
-            onShieldedChanged?.Invoke(shielded);
-        }
-    }
-    public delegate void OnShieldedChanged(bool shielded);
-    public event OnShieldedChanged onShieldedChanged;
-
-    float postShieldStartTime = -1;
-    bool ShouldUnshield
-    {
-        get => postShieldStartTime >= 0
-            && Time.time >= postShieldStartTime + postShieldGracePeriodDuration;
-        set
-        {
-            if (value)
-            {
-                if (postShieldStartTime < 0)
-                {
-                    postShieldStartTime = Time.time;
-                }
-            }
-            else
-            {
-                postShieldStartTime = -1;
-            }
-        }
-    }
-
 
     public override void init()
     {
@@ -59,15 +22,6 @@ public class LongTeleportAbility : PlayerAbility
     {
         base.OnDisable();
         Managers.Camera.onOffsetChange -= adjustRange;
-    }
-
-    private void FixedUpdate()
-    {
-        if (ShouldUnshield)
-        {
-            Shielded = false;
-            ShouldUnshield = false;
-        }
     }
 
     /// <summary>
@@ -92,10 +46,6 @@ public class LongTeleportAbility : PlayerAbility
             //Update Stats
             Managers.Stats.addOne(Stat.LONG_TELEPORT);
             //Upgrade 1
-            if (CanShield)
-            {
-                applyShield();
-            }
             //Upgrade 2
             if (canPortal(oldPos, newPos))
             {
@@ -107,14 +57,6 @@ public class LongTeleportAbility : PlayerAbility
     }
 
     protected override bool isGrounded() => false;
-
-    bool CanShield =>
-        FeatureLevel >= 1;
-
-    void applyShield()
-    {
-        Shielded = true;
-    }
 
     bool canPortal(Vector2 oldPos, Vector2 newPos)
     {
@@ -150,17 +92,5 @@ public class LongTeleportAbility : PlayerAbility
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
         maxRangeIncreaseFactor = aul.stat1;
-    }
-
-    public override SavableObject CurrentState
-    {
-        get => base.CurrentState.more(
-            "shielded", shielded
-            );
-        set
-        {
-            base.CurrentState = value;
-            Shielded = value.Bool("shielded");
-        }
     }
 }
