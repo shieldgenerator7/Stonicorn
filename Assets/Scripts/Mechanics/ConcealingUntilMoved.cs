@@ -32,15 +32,16 @@ public class ConcealingUntilMoved : MonoBehaviour
         staticUntilTouched = GetComponent<StaticUntilTouched>();
         if (staticUntilTouched)
         {
-            staticUntilTouched.onRootedChanged += (rooted) =>
-            {
-                if (!rooted)
-                {
-                    checkRevealHiddenAreas();
-                    this.enabled = true;
-                }
-            };
+            staticUntilTouched.onRootedChanged += onRootedChanged;
             this.enabled = false;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (staticUntilTouched)
+        {
+            staticUntilTouched.onRootedChanged -= onRootedChanged;
         }
     }
 
@@ -53,6 +54,15 @@ public class ConcealingUntilMoved : MonoBehaviour
     {
         checkRevealHiddenAreas();
         this.enabled = true;
+    }
+
+    private void onRootedChanged(bool rooted)
+    {
+        if (!rooted)
+        {
+            checkRevealHiddenAreas();
+            this.enabled = true;
+        }
     }
 
     private void checkRevealHiddenAreas()

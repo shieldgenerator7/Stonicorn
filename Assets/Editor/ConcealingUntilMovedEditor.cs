@@ -19,7 +19,7 @@ public class ConcealingUntilMovedEditor : Editor
             foreach (Object obj in targets)
             {
                 ConcealingUntilMoved cum = (ConcealingUntilMoved)obj;
-                cum.haListToUncover.Clear();
+                cum.haListToUncover?.Clear();
                 foreach (Collider2D c2d in cum.GetComponents<Collider2D>())
                 {
                     Utility.RaycastAnswer rca = c2d.CastAnswer(Vector2.zero, 0, true);
