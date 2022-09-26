@@ -112,7 +112,15 @@ public class GameManager : MonoBehaviour
         //Time delegates
         Managers.Time.onPauseChanged += Managers.NPC.pauseCurrentNPC;
         Managers.Time.onPauseChanged += (paused) =>
+        {
+#if UNITY_EDITOR
+            if (Managers.DemoMode.DemoMode && Cursor.lockState == CursorLockMode.None)
+            {
+                return;
+            }
+#endif
             Cursor.lockState = (paused) ? CursorLockMode.None : CursorLockMode.Confined;
+        };
         if (Managers.Time.endGameTimer)
         {
             Managers.Time.endGameTimer.onTimeFinished += Managers.Rewind.RewindToStart;
