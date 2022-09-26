@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 
@@ -134,16 +133,22 @@ public class GameManager : MonoBehaviour
                 int gameStateId = Managers.Rewind.GameStateId;
                 if (soi.spawnStateId > gameStateId)
                 {
-                    Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
-                        "is too late! Destroying permananetly. Created at " + soi.spawnStateId + " after " + gameStateId, go);
+                    Debug.Log(
+                        $"Recreation of object {go.name}({soi.Id}) is too late! " +
+                        $"Destroying permanently. Created at {soi.spawnStateId} after {gameStateId}",
+                        go
+                        );
                     //(it's possible for an object recreation to be finished
                     //after it should have been rewound out of existence)
                     Managers.Object.destroyAndForgetObject(go);
                 }
                 else if (soi.destroyStateId < gameStateId)
                 {
-                    Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
-                        "is too early! Destroying. Destroyed at " + soi.destroyStateId + " before " + gameStateId, go);
+                    Debug.Log(
+                        $"Recreation of object {go.name}({soi.Id}) is too early! " +
+                        $"Destroying. Destroyed at {soi.destroyStateId} before {gameStateId}",
+                        go
+                        );
                     //Destroy this object because it's still after it was originally destroyed
                     Managers.Object.destroyObject(go);
                 }
@@ -155,8 +160,11 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
-                        "is ok. GameState Id: " + Managers.Rewind.GameStateId, go);
+                    Debug.Log(
+                        $"Recreation of object {go.name}({soi.Id}) is ok. " +
+                        $"GameState Id: {Managers.Rewind.GameStateId}",
+                        go
+                        );
                 }
             };
         //File delegates
