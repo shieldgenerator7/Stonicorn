@@ -384,7 +384,7 @@ public class CustomMenu
         }
     }
 
-    public static List<Scene> getLevelScenes(Func<Scene, bool> filter = null)
+    public static List<Scene> getLevelScenes(Func<Scene, bool> filter = null, bool reportFailures = false)
     {
         List<Scene> scenes = new List<Scene>();
         for (int i = FIRST_LEVEL_INDEX; i < EditorBuildSettings.scenes.Length; i++)
@@ -393,6 +393,13 @@ public class CustomMenu
             if (filter?.Invoke(scene) ?? true)
             {
                 scenes.Add(scene);
+            }
+            else
+            {
+                if (reportFailures)
+                {
+                    Debug.LogError($"Scene {scene.name} at index {i} failed the filter.");
+                }
             }
         }
         return scenes;
@@ -537,7 +544,10 @@ public class CustomMenu
         Debug.Log("Running all Pre-Build Tasks");
         //Setup
         EditorSceneManager.SaveOpenScenes();
-        List<Scene> levels = getLevelScenes((s) => !String.IsNullOrEmpty(s.name));
+        List<Scene> levels = getLevelScenes(
+            (s) => !String.IsNullOrEmpty(s.name),
+            true
+            );
         loadAllLevelScenes(levels, false);
         loadAllLevelScenes(levels, true);
         int waitCount = 0;
