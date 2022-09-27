@@ -409,7 +409,7 @@ public class CustomMenu
     public static void loadOrUnloadLevelScenes()
     {
         //Find out if all of the scenes are loaded
-        List<Scene> levels = getLevelScenes();
+        List<Scene> levels = getLevelScenes((s)=>!String.IsNullOrEmpty(s.name), true);
         bool allLoaded = allLevelScenesLoaded(levels);
         //If any are unloaded, load them all.
         //Else, unload them all.
@@ -427,7 +427,6 @@ public class CustomMenu
             }
             else
             {
-                Debug.Log($"Scene: {scene.name}, path: {scene.path}");
                 //Load
                 try
                 {
