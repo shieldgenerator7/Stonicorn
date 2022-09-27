@@ -50,21 +50,13 @@ public static class Utility
     }
 
     public static Vector2 PerpendicularRight(this Vector2 v)
-    {
-        return v.RotateZ(-Mathf.PI / 2);
-    }
+        => v.RotateZ(-Mathf.PI / 2);
     public static Vector3 PerpendicularRight(this Vector3 v)
-    {
-        return ((Vector2)v).PerpendicularRight();
-    }
+        => ((Vector2)v).PerpendicularRight();
     public static Vector2 PerpendicularLeft(this Vector2 v)
-    {
-        return v.RotateZ(Mathf.PI / 2);
-    }
+        => v.RotateZ(Mathf.PI / 2);
     public static Vector3 PerpendicularLeft(this Vector3 v)
-    {
-        return ((Vector2)v).PerpendicularLeft();
-    }
+        => ((Vector2)v).PerpendicularLeft();
     public static float distanceToObject(this Vector2 position, GameObject obj)
     {
         Vector2 center = obj.getCollectiveColliderCenter();
@@ -81,13 +73,9 @@ public static class Utility
         throw new UnityException($"Object {obj}'s raycast not found! This should not be possible!");
     }
     public static bool inRange(this Vector2 v1, Vector2 v2, float range)
-    {
-        return (v1 - v2).sqrMagnitude <= range * range;
-    }
+        => (v1 - v2).sqrMagnitude <= range * range;
     public static bool inRange(this Vector3 v1, Vector3 v2, float range)
-    {
-        return (v1 - v2).sqrMagnitude <= range * range;
-    }
+        => (v1 - v2).sqrMagnitude <= range * range;
     public static Vector2 average(List<Vector2> vectors)
         => (vectors.Count > 0)
             ? vectors.Aggregate((result, v) => result + v) / vectors.Count
@@ -166,9 +154,7 @@ public static class Utility
         body.velocity = dir * expSpeed;
     }
     public static bool isMoving(this Rigidbody2D rb2d)
-    {
-        return !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
-    }
+        => !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
     public static void nullifyMovement(this Rigidbody2D rb2d)
     {
         rb2d.velocity = Vector2.zero;
@@ -179,19 +165,15 @@ public static class Utility
     #region GameObject Extension Methods
 
     public static bool isPlayer(this GameObject go)
-    {
-        return go.GetComponent<PlayerController>();
-    }
+        => go.GetComponent<PlayerController>();
     /// <summary>
     /// Returns true if the collider is of the player's and is not a trigger
     /// </summary>
     /// <param name="coll2d"></param>
     /// <returns></returns>
     public static bool isPlayerSolid(this Collider2D coll2d)
-    {
-        return coll2d.gameObject.GetComponent<PlayerController>()
+        => coll2d.gameObject.GetComponent<PlayerController>()
             && !coll2d.isTrigger;
-    }
     /// <summary>
     /// Returns true if the collider can be stood on,
     /// i.e. is not a trigger
@@ -199,9 +181,7 @@ public static class Utility
     /// <param name="coll2d"></param>
     /// <returns></returns>
     public static bool isSolid(this Collider2D coll2d)
-    {
-        return !coll2d.isTrigger;
-    }
+        => !coll2d.isTrigger;
 
     /// <summary>
     /// Returns true if the game object has state to save
@@ -336,7 +316,7 @@ public static class Utility
     {
         foreach (GameObject rgo in s.GetRootGameObjects())
         {
-            doForGameObjectAndChildren(rgo, action);            
+            doForGameObjectAndChildren(rgo, action);
         }
     }
     public static void doForGameObjectAndChildren(GameObject go, Action<GameObject> action)
@@ -419,9 +399,7 @@ public static class Utility
         return convertPercentToVector2(distancePercent, newStart, newEnd);
     }
     public static Vector2 convertPercentToVector2(float distancePercent, Vector2 newStart, Vector2 newEnd)
-    {
-        return newStart + (newEnd - newStart) * distancePercent;
-    }
+        => newStart + (newEnd - newStart) * distancePercent;
     public static float convertToRange(Vector2 vector, Vector2 curStart, Vector2 curEnd, float newLow, float newHigh)
     {
         //Error checking
@@ -485,7 +463,7 @@ public static class Utility
         //Instantiate
         GameObject newObj = GameObject.Instantiate(prefab);
         int baseId = (int)System.DateTime.Now.Ticks;
-        string spawnTag = "---" + baseId;
+        string spawnTag = $"---{baseId}";
         newObj.name += spawnTag;
         if (isSavable)
         {
@@ -551,10 +529,7 @@ public static class Utility
     }
     public static int Cast(Collider2D coll2d, Vector2 direction, RaycastHit2D[] results = null, float distance = 0, bool ignoreSiblingColliders = true)
     {
-        if (results == null)
-        {
-            results = rch2dsNonAlloc;
-        }
+        results ??= rch2dsNonAlloc;
         if (results.Length != MAX_HIT_COUNT)
         {
             throw new UnityException(
@@ -649,11 +624,11 @@ public static class Utility
 #endif
     }
 
-    public static void copyTransform(Transform fromTransform, ref GameObject toObject)
+    public static void copyTransform(this Transform toTransform, Transform fromTransform)
     {
-        toObject.transform.position = fromTransform.position;
-        toObject.transform.rotation = fromTransform.rotation;
-        toObject.transform.localScale = fromTransform.localScale;
+        toTransform.position = fromTransform.position;
+        toTransform.rotation = fromTransform.rotation;
+        toTransform.localScale = fromTransform.localScale;
     }
 
     public static bool between(float value, float bound1, float bound2)
