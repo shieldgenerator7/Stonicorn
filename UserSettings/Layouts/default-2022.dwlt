@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1368
     height: 830
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Console
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -69,8 +69,8 @@ MonoBehaviour:
     y: 0
     width: 100
     height: 780
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 11}
   m_Panes:
   - {fileID: 11}
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 8096}
   vertical: 0
-  controlID: 16
+  controlID: 74
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneView
+  m_Name: ConsoleWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -219,15 +219,15 @@ MonoBehaviour:
     y: 0
     width: 1068
     height: 780
-  m_MinSize: {x: 201, y: 221}
+  m_MinSize: {x: 101, y: 121}
   m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 13}
+  m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 13}
   - {fileID: 14}
   - {fileID: 15}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 2
+  m_LastSelected: 0
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -282,7 +282,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: ac540000
     m_LastClickedID: 21676
-    m_ExpandedIDs: 00000000e87d0000ea7d0000ec7d0000
+    m_ExpandedIDs: 0000000006670000086700000a670000266c0000286c00002a6c00002c6c00002e6c0000306c0000326c0000346c0000366c0000386c00003a6c00003c6c00003e6c0000406c0000426c0000446c0000466c0000486c00004a6c00004c6c00004e6c0000506c0000526c0000546c0000566c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -310,7 +310,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 2903}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: ffffffff00000000a8750000aa750000ac750000e87d0000ea7d0000067e00000a7e0000107e0000207e0000287e00002c7e00002e7e0000408000005c80000078820000a8820000488300008888000016890000168d0000548e0000748e0000a2910000c493000010950000c6970000cc9700003e9d0000ffffff7f
+    m_ExpandedIDs: ffffffff0000000006670000086700000a670000266c0000286c00002a6c00002c6c00002e6c0000306c0000326c0000346c0000366c0000386c00003a6c00003c6c00003e6c0000406c0000426c0000446c0000466c0000486c00004a6c00004c6c00004e6c0000506c0000526c0000546c0000566c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -440,21 +440,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: a060f6ffe660f6ffa464f6fff864f6ff0069f6ffd669f6ffce6cf6ffd272f6fff280f6ffec8bf6ff3e97f6ffac9af6ff969cf6ff80a3f6ff8ea3f6ffa21ff8ff2820f8ff702efcffb459fcffb659fcffa8bbfdffde82feff8ec002004ac20200e6fe020082a00400a2c504006cc9040064ca04006acc0400521d0500
+      m_ExpandedIDs: 0635ffff3a35fffff838ffff4c39ffff543dffff2a3effff2241ffff2647ffff4655ffff4060ffff866bfffff46effffde70ffffc877ffffd677ffffd8d9ffff28fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: HA Forest Cave (8)
-        m_OriginalName: HA Forest Cave (8)
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -515272
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 4}
       m_SearchString: 
@@ -733,9 +733,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 19.86383, y: 101.225586, z: -3.5159473}
+    m_Target: {x: -8.348331, y: 141.9172, z: -3.3431573}
     speed: 2
-    m_Value: {x: 20.726665, y: 100.66317, z: -3.4903417}
+    m_Value: {x: -8.348331, y: 141.9172, z: -3.3431573}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -785,9 +785,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 59.461853
+    m_Target: 49.349934
     speed: 2
-    m_Value: 56.901295
+    m_Value: 49.349934
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -933,7 +933,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 72
-    width: 601
+    width: 1067
     height: 759
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
