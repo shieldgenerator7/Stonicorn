@@ -127,16 +127,7 @@ public class ScenesManager : Manager
     }
 
     public bool isSceneOpen(int sceneId)
-    {
-        foreach (Scene s in openScenes)
-        {
-            if (sceneId == s.buildIndex)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+        => openScenes.Any(s => s.buildIndex == sceneId);
 
     public int SceneLoadingCount
         => sceneLoaders.Count(sl => sl.IsLoading);
@@ -158,7 +149,7 @@ public class ScenesManager : Manager
         //Destroy it before it gets put into the game object list.
         unsceneGOs.ForEach(go =>
         {
-            Debug.Log("Destroying now duplicate: " + go + " (" + go.getKey() + ")");
+            Debug.Log($"Destroying now duplicate: {go} ({go.getKey()})");
             Destroy(go);
         });
         //Register object in scene
@@ -266,21 +257,19 @@ public class ScenesManager : Manager
 
     public Scene getObjectScene(int objectId)
     {
-        if (data.objectSceneList.ContainsKey(objectId))
+        if (!data.objectSceneList.ContainsKey(objectId))
         {
-            if (objectId >= 0)
-            {
-                return SceneManager.GetSceneByBuildIndex(data.objectSceneList[objectId]);
-            }
             throw new ArgumentException(
-                "Cannot get scene of object with id " + objectId
-                + " because its id is less than 0"
+                $"Cannot get scene of object with id {objectId} because it is not in the list"
                 );
         }
-        throw new ArgumentException(
-            "Cannot get scene of object with id " + objectId
-            + " because it is not in the list"
-            );
+        if (objectId < 0)
+        {
+            throw new ArgumentException(
+                $"Cannot get scene of object with id {objectId} because its id is less than 0"
+                );
+        }
+        return SceneManager.GetSceneByBuildIndex(data.objectSceneList[objectId]);
     }
 
     public bool isObjectInScene(GameObject go, Scene scene)
@@ -297,10 +286,10 @@ public class ScenesManager : Manager
     {
         if (data.objectSceneList.ContainsKey(objectId))
         {
-            Debug.Log("Object's (" + objectId + ") scene id: " + data.objectSceneList[objectId]);
+            Debug.Log($"Object's ({objectId}) scene id: {data.objectSceneList[objectId]}");
             return isSceneOpen(data.objectSceneList[objectId]);
         }
-        Debug.Log("Can't get scene for object (" + objectId + ") because it's not in the list");
+        Debug.Log($"Can't get scene for object ({objectId}) because it's not in the list");
         return false;
     }
 
@@ -309,7 +298,7 @@ public class ScenesManager : Manager
         if (go == null || ReferenceEquals(go, null))
         {
             //don't register null or destroyed objects
-            Debug.LogWarning("GameObject " + go.name + " is destroyed and will not be processed.");
+            Debug.LogWarning($"GameObject {go.name} is destroyed and will not be processed.");
             removeObject(go);
             return;
         }
@@ -329,7 +318,7 @@ public class ScenesManager : Manager
         if (objectId < 0)
         {
             Debug.LogError(
-                "Object " + go.name + " Id is less than 0! id: " + objectId,
+                $"Object {go.name} Id is less than 0! id: {objectId}",
                 go
                 );
             removeObject(go);
@@ -357,9 +346,10 @@ public class ScenesManager : Manager
         if (!loader)
         {
             //just don't process it
-            Debug.LogWarning("Can't find a scene for object (" + objectId + ") " + go
-                + " at position " + go.transform.position,
-                go);
+            Debug.LogWarning(
+                $"Can't find a scene for object ({objectId}) {go} at position {go.transform.position}",
+                go
+                );
             return;
         }
         try
@@ -369,8 +359,7 @@ public class ScenesManager : Manager
             if (sceneId < 0)
             {
                 Debug.LogWarning(
-                    "SceneLoader " + loader.gameObject.name + " has bad scene (" + scene + ")! " +
-                    "sceneId: " + sceneId,
+                    $"SceneLoader {loader.gameObject.name} has bad scene ({scene})! sceneId: {sceneId}",
                     loader.gameObject
                     );
                 //Don't process it
@@ -382,17 +371,15 @@ public class ScenesManager : Manager
         catch (NullReferenceException nre)
         {
             throw new NullReferenceException(
-                "No SL found when trying to register object " + go.name
-                + " at position " + go.transform.position,
+                $"No SL found when trying to register object {go.name} at position {go.transform.position}",
                 nre
                 );
         }
         catch (ArgumentException ae)
         {
             Debug.LogError(
-                "No scene found when trying to register object " + go.name
-                + " at position " + go.transform.position
-                + "\nArgumentException: " + ae,
+                $"No scene found when trying to register object {go.name} at position {go.transform.position}" +
+                $"\nArgumentException: {ae}",
                 go
                 );
         }
@@ -401,8 +388,7 @@ public class ScenesManager : Manager
     private void registerObjectInScene(GameObject go, Scene scene)
     {
         Debug.Log(
-            "Registering object " + go.name + " (" + go.getKey()
-            + ") in scene " + scene.name,
+            $"Registering object {go.name} ({go.getKey()}) in scene {scene.name}",
             go
             );
         int objectId = go.getKey();
@@ -412,7 +398,7 @@ public class ScenesManager : Manager
             if (objectId == 0)
             {
                 Debug.LogError(
-                    "Trying to add object Id " + objectId + " to the objectScenesList!",
+                    $"Trying to add object Id {objectId} to the objectScenesList!",
                     go
                     );
             }
@@ -446,34 +432,33 @@ public class ScenesManager : Manager
             }
             if (go.scene != scene)
             {
-                Debug.Log("Moving " + go.name + " into scene " + scene.name, go);
+                Debug.Log($"Moving {go.name} into scene {scene.name}", go);
                 SceneManager.MoveGameObjectToScene(go, scene);
-                Debug.Log("Moved " + go.name + " is now in scene " + go.scene.name, go);
+                Debug.Log($"Moved {go.name} is now in scene {go.scene.name}", go);
             }
         }
         catch (System.ArgumentException ae)
         {
             Debug.LogError(
-                "Trying to move " + go.name + " into scene " + scene.name
-                + " at position: " + go.transform.position
-                + "\nArgumentException: " + ae
+                $"Trying to move {go.name} into scene {scene.name} at position: {go.transform.position}" +
+                $"\nArgumentException: {ae}"
                 );
         }
     }
 
     private void removeObject(GameObject go)
     {
-        Debug.Log("Removing object " + go + " (" + go.getKey() + ") from list", go);
+        Debug.Log($"Removing object {go} ({go.getKey()}) from list", go);
         data.objectSceneList.Remove(go.getKey());
     }
 
     public void printObjectSceneList()
     {
         Debug.Log(
-            "=== ScenesManager Object Scene List (" + data.objectSceneList.Count + ")===",
+            $"=== ScenesManager Object Scene List ({data.objectSceneList.Count})===",
             gameObject
             );
         data.objectSceneList.ToList()
-            .ForEach(entry => Debug.Log(entry.Key + " => " + entry.Value));
+            .ForEach(entry => Debug.Log($"{entry.Key} => {entry.Value}"));
     }
 }
