@@ -537,9 +537,16 @@ public class CustomMenu
         EditorSceneManager.SaveOpenScenes();
         loadAllLevelScenes(false);
         loadAllLevelScenes(true);
-        while (!allLevelScenesLoaded())
+        int waitCount = 0;
+        const int WAIT_LIMIT = 1000;
         {
             new WaitForSecondsRealtime(0.1f);
+            waitCount++;
+            if (waitCount >= WAIT_LIMIT)
+            {
+                Debug.LogError("Waited longer than limit for scenes to load, continuing anyway");
+                break;
+            }
         }
 
         //Checklist
