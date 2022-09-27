@@ -384,29 +384,35 @@ public class CustomMenu
         }
     }
 
+    public static List<Scene> getLevelScenes(Func<Scene, bool> filter = null)
+    {
+        List<Scene> scenes = new List<Scene>();
+        for (int i = FIRST_LEVEL_INDEX; i < EditorBuildSettings.scenes.Length; i++)
+        {
+            Scene scene = EditorSceneManager.GetSceneByBuildIndex(i);
+            if (filter?.Invoke(scene) ?? true)
+            {
+                scenes.Add(scene);
+            }
+        }
+        return scenes;
+    }
+
     [MenuItem("SG7/Editor/Load or Unload Level Scenes %&S")]
     public static void loadOrUnloadLevelScenes()
     {
         //Find out if all of the scenes are loaded
-        bool allLoaded = true;
-        for (int i = FIRST_LEVEL_INDEX; i < EditorBuildSettings.scenes.Length; i++)
-        {
-            if (!EditorSceneManager.GetSceneByBuildIndex(i).isLoaded)
-            {
-                allLoaded = false;
-                break;
-            }
-        }
-        //If any are loaded, unload them all.
-        //Else, load them all.
-        loadAllLevelScenes(!allLoaded);
+        List<Scene> levels = getLevelScenes();
+        bool allLoaded = allLevelScenesLoaded(levels);
+        //If any are unloaded, load them all.
+        //Else, unload them all.
+        loadAllLevelScenes(levels, !allLoaded);
     }
-    public static void loadAllLevelScenes(bool load)
+    public static void loadAllLevelScenes(List<Scene> levels, bool load)
     {
         //Load or unload all the level scenes
-        for (int i = FIRST_LEVEL_INDEX; i < EditorBuildSettings.scenes.Length; i++)
+        levels.ForEach(scene =>
         {
-            Scene scene = EditorSceneManager.GetSceneByBuildIndex(i);
             if (!load)
             {
                 //Unload
@@ -414,16 +420,12 @@ public class CustomMenu
             }
             else
             {
-                if (scene.name == null || scene.name == "")
-                {
-                    Debug.LogError($"scene {scene} at index {i} has invalid name! {scene.name}");
-                    continue;
-                }
+                Debug.Log($"Scene: {scene.name}, path: {scene.path}");
                 //Load
                 try
                 {
                     EditorSceneManager.OpenScene(
-                        $"Assets/Scenes/Levels/{scene.name}.unity",
+                        scene.path,
                         OpenSceneMode.Additive
                         );
                     SetExpanded(scene, false);
@@ -433,7 +435,7 @@ public class CustomMenu
                     Debug.LogError($"scene load error ({scene.name}): {ae}");
                 }
             }
-        }
+        });
     }
 
     //2020-12-09: copied from https://forum.unity.com/threads/how-to-collapse-hierarchy-scene-nodes-via-script.605245/#post-6551890
@@ -535,10 +537,12 @@ public class CustomMenu
         Debug.Log("Running all Pre-Build Tasks");
         //Setup
         EditorSceneManager.SaveOpenScenes();
-        loadAllLevelScenes(false);
-        loadAllLevelScenes(true);
+        List<Scene> levels = getLevelScenes((s) => !String.IsNullOrEmpty(s.name));
+        loadAllLevelScenes(levels, false);
+        loadAllLevelScenes(levels, true);
         int waitCount = 0;
         const int WAIT_LIMIT = 1000;
+        while (!allLevelScenesLoaded(levels))
         {
             new WaitForSecondsRealtime(0.1f);
             waitCount++;
@@ -567,25 +571,16 @@ public class CustomMenu
         EditorSceneManager.SaveOpenScenes();
         if (!keepScenesOpen)
         {
-            loadAllLevelScenes(false);
+            loadAllLevelScenes(levels, false);
         }
         //Finish
         Debug.Log("Finished all Pre-Build Tasks");
         return keepScenesOpen;
     }
 
-    static bool allLevelScenesLoaded()
-    {
-        for (int i = FIRST_LEVEL_INDEX; i < EditorBuildSettings.scenes.Length; i++)
-        {
-            Scene scene = EditorSceneManager.GetSceneByBuildIndex(i);
-            if (!scene.isLoaded)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
+    static bool allLevelScenesLoaded(List<Scene> levels)
+        => levels.All(s => s.isLoaded);
+
     [MenuItem("SG7/Build/Pre-Build/Refresh Scene Savable Object Lists")]
     public static void refreshSceneSavableObjectLists()
     {
