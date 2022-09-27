@@ -43,6 +43,11 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
                     GameObject pieces = Utility.Instantiate(crackedPrefab);
                     BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
                     brokenPiece.unpack(gameObject);
+                    //change color of broken pieces
+                    Color color = GetComponent<SpriteRenderer>().color;
+                    brokenPiece.Savables.ForEach(
+                        bp => bp.GetComponent<SpriteRenderer>().color = color
+                        );
                 }
 
                 //Reveal hidden areas
