@@ -8,11 +8,11 @@ using UnityEngine;
 public abstract class EventTrigger : MonoBehaviour
 {
     [Tooltip(
-           "The unique id for this individual trigger. " +
-           "Used to determine whether this has ever been triggered."
-           )]
+        "The unique id for this individual trigger. " +
+        "Used to determine whether this has ever been triggered."
+        )]
     public int id = -1;
-    public string IdString => gameObject.scene.name + "_" + id;
+    public string IdString => $"{gameObject.scene.name}_{id}";
 
     public AudioClip triggerSound;
 
@@ -29,36 +29,39 @@ public abstract class EventTrigger : MonoBehaviour
         if (!coll2d)
         {
             Debug.LogError(
-                this.GetType().Name + " requires a Collider2D with isTrigger set to true. "
-                + "This one on GameObject " + gameObject.name + " has none."
-                ,this);
+                $"{this.GetType().Name} requires a Collider2D with isTrigger set to true. " +
+                $"This one on GameObject {gameObject.name} has none.",
+                this
+                );
         }
         //Id must be valid
         if (id < 0)
         {
             Debug.LogError(
-                "EventTrigger Id is invalid on object " + gameObject.name
-                + " in scene " + gameObject.scene.name + ". "
-                + "Id must be 0 or greater (Assign it an Id). "
-                + "Invalid value: " + id
-                ,this);
+                $"EventTrigger Id is invalid on object {gameObject.name}" +
+                $" in scene {gameObject.scene.name}. " +
+                $"Id must be 0 or greater (Assign it an Id). " +
+                $"Invalid value: {id}",
+                this
+                );
         }
         //Id must be unique
         EventTrigger dupIdTrigger = FindObjectsOfType<EventTrigger>()
             .FirstOrDefault(
                 t => t.gameObject.scene == this.gameObject.scene
-                && t.id == this.id
-                && t != this
+                    && t.id == this.id
+                    && t != this
             );
         if (dupIdTrigger)
         {
             Debug.LogError(
-                "EventTrigger has a duplicate Id! "
-                + "GameObject " + gameObject.name + " and " + dupIdTrigger.name
-                + " in scene " + gameObject.scene.name
-                + " have the same Id: " + this.id + ". "
-                + "Assign these EventTriggers unique Ids."
-                , this);
+                $"EventTrigger has a duplicate Id! " +
+                $"GameObject {gameObject.name} and {dupIdTrigger.name}" +
+                $" in scene {gameObject.scene.name}" +
+                $" have the same Id: {this.id}. " +
+                $"Assign these EventTriggers unique Ids.",
+                this
+                );
         }
     }
 

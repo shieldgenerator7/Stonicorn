@@ -96,7 +96,7 @@ public class InteractUI : MonoBehaviour
     private void Update()
     {
         //Move interact UI to the new position
-        transform.position = (Vector2) currentTrigger.transform.position + offset;
+        transform.position = (Vector2)currentTrigger.transform.position + offset;
         //Keep the interact UI on screen
         float maxY = Camera.main.ViewportToWorldPoint(Vector2.up).y + distanceFromScreenTop;
         if (transform.position.y > maxY)

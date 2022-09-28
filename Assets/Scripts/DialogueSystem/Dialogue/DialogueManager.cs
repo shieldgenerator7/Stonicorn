@@ -35,9 +35,9 @@ public class DialogueManager : MonoBehaviour
 
     public bool hasDialogue(string title)
     {
-        if (title == null || title == "")
+        if (String.IsNullOrEmpty(title))
         {
-            throw new NullReferenceException("Title cannot be empty! title: " + title);
+            throw new NullReferenceException($"Title cannot be empty! title: {title}");
         }
         return dialogueData.getDialoguePath(title) != null;
     }
@@ -56,20 +56,20 @@ public class DialogueManager : MonoBehaviour
             return;
         }
         DialoguePath path = null;
-        if (title == null || title == "")
+        if (String.IsNullOrEmpty(title))
         {
             //2020-09-24: TODO: make it search for characters
             //path = dialogueData.selectSuitableDialoguePath();
 
             //can't do anything (for now)
-            throw new NullReferenceException("Title must be non-null and must not be the empty string! title: " + title);
+            throw new NullReferenceException($"Title must be non-null and must not be the empty string! title: {title}");
         }
         else
         {
             path = dialogueData.getDialoguePath(title);
             if (path == null)
             {
-                throw new Exception("Dialogue with this title cannot be found: " + title);
+                throw new Exception($"Dialogue with this title cannot be found: {title}");
             }
         }
         playDialogue(path);
@@ -87,8 +87,8 @@ public class DialogueManager : MonoBehaviour
         {
             string characterString = "";
             characters.ForEach(
-                c => characterString += c + ", ");
-            throw new Exception("Dialogue with these characters cannot be found: " + characterString);
+                c => characterString += $"{c}, ");
+            throw new Exception($"Dialogue with these characters cannot be found: {characterString}");
         }
         playDialogue(path);
     }
@@ -118,7 +118,7 @@ public class DialogueManager : MonoBehaviour
             case Condition.TestType.GREATER_THAN_EQUAL: return value >= c.testValue;
             case Condition.TestType.LESS_THAN: return value < c.testValue;
             case Condition.TestType.LESS_THAN_EQUAL: return value <= c.testValue;
-            default: throw new ArgumentException("condition testType is not valid: " + c.testType);
+            default: throw new ArgumentException($"condition testType is not valid: {c.testType}");
         }
     }
 
@@ -137,7 +137,7 @@ public class DialogueManager : MonoBehaviour
             case Action.ActionType.SUBTRACT: progressManager.add(a.variableName, -a.actionValue); break;
             case Action.ActionType.MULTIPLY: progressManager.multiply(a.variableName, a.actionValue); break;
             case Action.ActionType.DIVIDE: progressManager.multiply(a.variableName, 1 / a.actionValue); break;
-            default: throw new ArgumentException("Action testType is not valid: " + a.actionType);
+            default: throw new ArgumentException($"Action testType is not valid: {a.actionType}");
         }
     }
 }
