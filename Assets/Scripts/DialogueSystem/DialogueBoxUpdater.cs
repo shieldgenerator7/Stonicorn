@@ -1,47 +1,71 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NPCManager : MonoBehaviour
+public class DialogueBoxUpdater : MonoBehaviour
 {
+    [Header("Settings")]
+    [Tooltip("The scale point at which the NPC quote box should be full screen")]
+    public CameraController.CameraScalePoints baseCameraScalePoint;
 
-    public ParticleSystem npcTalkEffect;//the particle system for the visual part of NPC talking
-    private NPCController lastTalkingNPC;//the last NPC to talk
-    public Text npcDialogueText;
+    [Header("Components")]
+    public ParticleSystem talkEffect;//the particle system for the visual part of NPC talking
+    public Text txtDialogue;
     public Canvas canvas;
-    public GameObject npcQuoteBox;
-    public GameObject npcQuoteBoxTail;
-    public CameraController.CameraScalePoints baseCameraScalePoint;//the scale point at which the NPC quote box should be full screen
+    public GameObject quoteBox;
+    public GameObject quoteBoxTail;
 
-    // Use this for initialization
+    private string rawText;
+    private List<string> textLines;
+    private Transform source;
+    private Vector2 offset = Vector2.up * 1;
+
+    // Start is called before the first frame update
     void Start()
     {
-        npcDialogueText.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
+        txtDialogue.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
     }
 
     // Update is called once per frame
-    public void processDialogue()
+    void Update()
     {
-        //set canvas rect size?
+        //resize dialogue box
+        resizeToCamera();
+        //rotate dialogue box
+        Quaternion rotation = Camera.main.transform.rotation;
+        canvas.transform.rotation = rotation;
+        quoteBox.transform.rotation = rotation;
+    }
+
+    public void setText(string text)
+    {
+        this.rawText = text;
+    }
+
+    public void setSource(Transform source)
+    {
+        this.source = source;
+    }
+
+    public void resizeToCamera()
+    {
+        //set canvas rect size
         Camera cam = Camera.main;
         CameraController camCtr = Managers.Camera;
-        RectTransform canTrans = ((RectTransform)canvas.transform);
-        canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth);
-        canTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight);
+        RectTransform canvasRect = ((RectTransform)canvas.transform);
+        canvasRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth);
+        canvasRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight);
         //set canvas localscale
         Vector2 size = camCtr.CamSizeWorld;
         size *= (camCtr.toZoomLevel(baseCameraScalePoint) / camCtr.ZoomLevel);
-        float newDim = Mathf.Max(Mathf.Abs(size.x) / canTrans.rect.width, Mathf.Abs(size.y) / canTrans.rect.height);
-        Vector3 newSize = new Vector3(newDim, newDim, 1);        
+        float newDim = Mathf.Max(Mathf.Abs(size.x) / canvasRect.rect.width, Mathf.Abs(size.y) / canvasRect.rect.height);
+        Vector3 newSize = new Vector3(newDim, newDim, 1);
         canvas.transform.localScale = newSize;
         //set text rect size
-        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cam.pixelWidth * 3 / 4);
-        ((RectTransform)npcDialogueText.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cam.pixelHeight * 3 / 4);
-        //rotate canvas
-        canvas.transform.rotation = cam.transform.rotation;
-        //rotate quotebox
-        npcQuoteBox.transform.rotation = canvas.transform.rotation;
+        RectTransform dialogueRect = ((RectTransform)txtDialogue.transform);
+        dialogueRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cam.pixelWidth * 3 / 4);
+        dialogueRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cam.pixelHeight * 3 / 4);
     }
 
     /// <summary>
@@ -52,57 +76,41 @@ public class NPCManager : MonoBehaviour
     public void speakNPC(NPCController npc, bool talking, string message, string eventualMessage)
     {
         canvas.gameObject.SetActive(talking);
-        npcQuoteBox.SetActive(talking);
-        npcDialogueText.text = message;
+        quoteBox.SetActive(talking);
+        txtDialogue.text = message;
         enabled = talking;
         if (talking)
         {
-            npcTalkEffect.transform.position = npc.transform.position;
+            talkEffect.transform.position = npc.transform.position;
             //Show text
-            float textHeight = getTextHeight(canvas, npcDialogueText);
+            float textHeight = getTextHeight(canvas, txtDialogue);
             float buffer = textHeight / 2;
-            int maxTextLength = getMaxTextLength(canvas, npcDialogueText);
-            Vector2 messageDimensions = getMessageDimensions(canvas, npcDialogueText, eventualMessage);
-            maxTextLength = getTextLength(canvas, npcDialogueText, messageDimensions.x);
+            int maxTextLength = getMaxTextLength(canvas, txtDialogue);
+            Vector2 messageDimensions = getMessageDimensions(canvas, txtDialogue, eventualMessage);
+            maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
             if (messageDimensions.y > textHeight)
             {
-                float textWidth = getTextWidth(canvas, npcDialogueText, eventualMessage);
-                int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(canvas, npcDialogueText));
+                float textWidth = getTextWidth(canvas, txtDialogue, eventualMessage);
+                int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(canvas, txtDialogue));
                 maxTextLength = (maxTextLength + (eventualMessage.Length / lineCount)) / 2;
-                messageDimensions = getMessageDimensions(canvas, npcDialogueText, eventualMessage, maxTextLength);
-                maxTextLength = getTextLength(canvas, npcDialogueText, messageDimensions.x);
+                messageDimensions = getMessageDimensions(canvas, txtDialogue, eventualMessage, maxTextLength);
+                maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
             }
             Vector2 textBoxSize = messageDimensions + (Vector2.one * buffer * 2);
             canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
-            npcDialogueText.text = processMessage(canvas, npcDialogueText, message, maxTextLength);
+            txtDialogue.text = processMessage(canvas, txtDialogue, message, maxTextLength);
             //Show quote box
-            npcQuoteBox.transform.position = canvas.transform.position;
-            SpriteRenderer quoteSR = npcQuoteBox.GetComponent<SpriteRenderer>();
+            quoteBox.transform.position = canvas.transform.position;
+            SpriteRenderer quoteSR = quoteBox.GetComponent<SpriteRenderer>();
             quoteSR.size = textBoxSize;
-            npcQuoteBoxTail.transform.position = npcQuoteBox.transform.position - (npcQuoteBox.transform.up * quoteSR.size.y / 2);
+            quoteBoxTail.transform.position = quoteBox.transform.position - (quoteBox.transform.up * quoteSR.size.y / 2);
             //Show speaking particles
-            if (!npcTalkEffect.isPlaying)
+            if (!talkEffect.isPlaying)
             {
-                npcTalkEffect.Play();
-            }
-            if (lastTalkingNPC != npc)
-            {
-                lastTalkingNPC = npc;
-                onNPCSpeakingChanged?.Invoke(true);
-            }
-        }
-        else
-        {
-            if (npc == lastTalkingNPC)
-            {
-                npcTalkEffect.Stop();
-                onNPCSpeakingChanged?.Invoke(false);
+                talkEffect.Play();
             }
         }
     }
-    public delegate void OnNPCSpeakingChanged(bool speaking);
-    public event OnNPCSpeakingChanged onNPCSpeakingChanged;
-
 
     static float getTextWidth(Canvas canvas, Text text, string stringToMeasure)
     {
@@ -239,13 +247,5 @@ public class NPCManager : MonoBehaviour
         }
         strings.Add(buildString);
         return strings.ToArray();
-    }
-
-    public void pauseCurrentNPC(bool paused)
-    {
-        if (lastTalkingNPC != null && !ReferenceEquals(lastTalkingNPC, null))
-        {
-            lastTalkingNPC.pauseDialogue(paused);
-        }
     }
 }
