@@ -30,7 +30,12 @@ public class InteractUI : MonoBehaviour
         instance = this;
         gameObject.SetActive(false);
         SceneManager.sceneUnloaded += (s) => triggers.Clear();
-        PlayerController.OnPlayerInteract += interactPressed;
+        Managers.Player.Teleport.onTeleport += onTeleportInteract;
+    }
+
+    private void onTeleportInteract(Vector2 oldPos, Vector2 newPos)
+    {
+        interactPressed();
     }
 
     public void interactPressed()

@@ -70,8 +70,7 @@ public class DialoguePlayer : MonoBehaviour
             //Show the first quote
             advanceDialogue();
             //Subscribe to Interact button
-            PlayerController.OnPlayerInteract += advanceDialogue;
-            PlayerController.OnPlayerJump += advanceDialogue;
+            Managers.Player.Teleport.onTeleport += onTeleportAdvanceDialogue;
         }
         else
         {
@@ -87,8 +86,7 @@ public class DialoguePlayer : MonoBehaviour
         onDialogueEnded?.Invoke(path);
         InteractUI.instance.suppress(this, false);
         //Unsubscribe from Interact button
-        PlayerController.OnPlayerInteract -= advanceDialogue;
-        PlayerController.OnPlayerJump -= advanceDialogue;
+        Managers.Player.Teleport.onTeleport -= onTeleportAdvanceDialogue;
         //Unset path
         this.path = null;
         //Sound
@@ -106,6 +104,11 @@ public class DialoguePlayer : MonoBehaviour
             imgDiamond.enabled = FullyRevealed;
             displayQuoteText(CurrentQuote.text);
         }
+    }
+
+    void onTeleportAdvanceDialogue(Vector2 oldPos, Vector2 newPos)
+    {
+        advanceDialogue();
     }
 
     void advanceDialogue()
