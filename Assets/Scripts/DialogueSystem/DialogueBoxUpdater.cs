@@ -7,6 +7,7 @@ public class DialogueBoxUpdater : MonoBehaviour
 {
     [Header("Settings")]
     [Tooltip("The scale point at which the NPC quote box should be full screen")]
+    public float offsetLength = 3;
     public CameraController.CameraScalePoints baseCameraScalePoint;
 
     [Header("Components")]
@@ -16,15 +17,17 @@ public class DialogueBoxUpdater : MonoBehaviour
     public GameObject quoteBox;
     public GameObject quoteBoxTail;
 
+    SpriteRenderer quoteSR;
+
     private string rawText;
     private List<string> textLines;
     private Transform source;
-    private Vector2 offset = Vector2.up * 1;
 
     // Start is called before the first frame update
     void Start()
     {
         txtDialogue.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
+        quoteSR = quoteBox.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -32,10 +35,8 @@ public class DialogueBoxUpdater : MonoBehaviour
     {
         //resize dialogue box
         resizeToCamera();
-        //rotate dialogue box
-        Quaternion rotation = Camera.main.transform.rotation;
-        canvas.transform.rotation = rotation;
-        quoteBox.transform.rotation = rotation;
+        //update position
+        updatePosition();
     }
 
     public void setText(string text)
@@ -46,6 +47,19 @@ public class DialogueBoxUpdater : MonoBehaviour
     public void setSource(Transform source)
     {
         this.source = source;
+    }
+
+    private void updatePosition()
+    {
+        //rotate dialogue box
+        Quaternion rotation = Camera.main.transform.rotation;
+        canvas.transform.rotation = rotation;
+        quoteBox.transform.rotation = rotation;
+        //position relative to source
+        Vector2 position = source.position + Camera.main.transform.up.normalized * offsetLength;
+        canvas.transform.position = position;
+        quoteBox.transform.position = position;
+        quoteBoxTail.transform.position = position - (Vector2)(quoteBox.transform.up * quoteSR.size.y / 2);
     }
 
     public void resizeToCamera()
@@ -97,13 +111,9 @@ public class DialogueBoxUpdater : MonoBehaviour
                 maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
             }
             Vector2 textBoxSize = messageDimensions + (Vector2.one * buffer * 2);
-            canvas.transform.position = npc.transform.position + Camera.main.transform.up.normalized * (textHeight * 3 + npc.GetComponent<SpriteRenderer>().bounds.extents.y);
             txtDialogue.text = processMessage(canvas, txtDialogue, message, maxTextLength);
             //Show quote box
-            quoteBox.transform.position = canvas.transform.position;
-            SpriteRenderer quoteSR = quoteBox.GetComponent<SpriteRenderer>();
             quoteSR.size = textBoxSize;
-            quoteBoxTail.transform.position = quoteBox.transform.position - (quoteBox.transform.up * quoteSR.size.y / 2);
             //Show speaking particles
             if (!talkEffect.isPlaying)
             {
