@@ -33,8 +33,8 @@ public class DialogueBoxUpdater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //resize dialogue box
-        resizeToCamera();
+        ////resize dialogue box
+        //resizeToCamera();
         //update position
         updatePosition();
     }
@@ -42,11 +42,38 @@ public class DialogueBoxUpdater : MonoBehaviour
     public void setText(string text)
     {
         this.rawText = text;
+
+        Vector2 messageDimensions = getMessageDimensions(canvas, txtDialogue, text);
+        int maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
+        text = processMessage(canvas, txtDialogue, text, maxTextLength);
+        txtDialogue.text = text;
+        updateSize();
     }
 
     public void setSource(Transform source)
     {
         this.source = source;
+    }
+
+    public bool Active
+    {
+        get => gameObject.activeSelf;
+        set
+        {
+            gameObject.SetActive(value);
+            canvas.gameObject.SetActive(value);
+            quoteBox.SetActive(value);
+            enabled = value;
+            //Show speaking particles
+            if (value && !talkEffect.isPlaying)
+            {
+                talkEffect.Play();
+            }
+            else if (!value && talkEffect.isPlaying)
+            {
+                talkEffect.Stop();
+            }
+        }
     }
 
     private void updatePosition()
@@ -60,6 +87,28 @@ public class DialogueBoxUpdater : MonoBehaviour
         canvas.transform.position = position;
         quoteBox.transform.position = position;
         quoteBoxTail.transform.position = position - (Vector2)(quoteBox.transform.up * quoteSR.size.y / 2);
+        talkEffect.transform.position = source.position;
+    }
+
+    private void updateSize()
+    {
+        string text = this.rawText;
+        //size textbox
+        float textHeight = getTextHeight(canvas, txtDialogue);
+        float buffer = textHeight / 2;
+        int maxTextLength = getMaxTextLength(canvas, txtDialogue);
+        Vector2 messageDimensions = getMessageDimensions(canvas, txtDialogue, text);
+        maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
+        if (messageDimensions.y > textHeight)
+        {
+            float textWidth = getTextWidth(canvas, txtDialogue, text);
+            int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(canvas, txtDialogue));
+            maxTextLength = (maxTextLength + (text.Length / lineCount)) / 2;
+            messageDimensions = getMessageDimensions(canvas, txtDialogue, text, maxTextLength);
+            maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
+        }
+        Vector2 textBoxSize = messageDimensions + (Vector2.one * buffer * 2);
+        quoteSR.size = textBoxSize;
     }
 
     public void resizeToCamera()
@@ -80,46 +129,6 @@ public class DialogueBoxUpdater : MonoBehaviour
         RectTransform dialogueRect = ((RectTransform)txtDialogue.transform);
         dialogueRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cam.pixelWidth * 3 / 4);
         dialogueRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cam.pixelHeight * 3 / 4);
-    }
-
-    /// <summary>
-    /// Activates the visual effects for the given npc talking
-    /// </summary>
-    /// <param name="npc"></param>
-    /// <param name="talking">Whether to activate or deactivate the visual effects</param>
-    public void speakNPC(NPCController npc, bool talking, string message, string eventualMessage)
-    {
-        canvas.gameObject.SetActive(talking);
-        quoteBox.SetActive(talking);
-        txtDialogue.text = message;
-        enabled = talking;
-        if (talking)
-        {
-            talkEffect.transform.position = npc.transform.position;
-            //Show text
-            float textHeight = getTextHeight(canvas, txtDialogue);
-            float buffer = textHeight / 2;
-            int maxTextLength = getMaxTextLength(canvas, txtDialogue);
-            Vector2 messageDimensions = getMessageDimensions(canvas, txtDialogue, eventualMessage);
-            maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
-            if (messageDimensions.y > textHeight)
-            {
-                float textWidth = getTextWidth(canvas, txtDialogue, eventualMessage);
-                int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(canvas, txtDialogue));
-                maxTextLength = (maxTextLength + (eventualMessage.Length / lineCount)) / 2;
-                messageDimensions = getMessageDimensions(canvas, txtDialogue, eventualMessage, maxTextLength);
-                maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
-            }
-            Vector2 textBoxSize = messageDimensions + (Vector2.one * buffer * 2);
-            txtDialogue.text = processMessage(canvas, txtDialogue, message, maxTextLength);
-            //Show quote box
-            quoteSR.size = textBoxSize;
-            //Show speaking particles
-            if (!talkEffect.isPlaying)
-            {
-                talkEffect.Play();
-            }
-        }
     }
 
     static float getTextWidth(Canvas canvas, Text text, string stringToMeasure)
@@ -188,7 +197,7 @@ public class DialogueBoxUpdater : MonoBehaviour
 
     static Vector2 getMessageDimensions(Canvas canvas, Text text, string message, int maxTextLength = 0)
     {
-        string[] strings = splitIntoSegments(canvas, text, message, maxTextLength);
+        List<string> strings = splitIntoSegments(canvas, text, message, maxTextLength);
         string foundMaxString = "";
         foreach (string s in strings)
         {
@@ -198,19 +207,20 @@ public class DialogueBoxUpdater : MonoBehaviour
             }
         }
         float textWidth = getTextWidth(canvas, text, foundMaxString);
-        float textHeight = getTextHeight(canvas, text, strings.Length);
+        float textHeight = getTextHeight(canvas, text, strings.Count);
         return new Vector2(textWidth, textHeight);
     }
 
     static string processMessage(Canvas canvas, Text text, string message, int maxTextLength)
     {
-        string[] strings = splitIntoSegments(canvas, text, message, maxTextLength);
-        string buildString = addSpaces(strings[0], maxTextLength - strings[0].Length);
-        for (int i = 1; i < strings.Length; i++)
+        List<string> strings = splitIntoSegments(canvas, text, message, maxTextLength);
+        string buildString = "";
+        foreach (string str in strings)
         {
-            strings[i] = addSpaces(strings[i], maxTextLength - strings[i].Length);
-            buildString += "\n" + strings[i];
+            string str2 = addSpaces(str, maxTextLength - str.Length);
+            buildString += $"{str2}\n";
         }
+        buildString.Trim();
         return buildString;
     }
     static string addSpaces(string original, int spaceCount)
@@ -223,7 +233,7 @@ public class DialogueBoxUpdater : MonoBehaviour
         return buildString;
     }
 
-    static string[] splitIntoSegments(Canvas canvas, Text text, string message, int maxTextLength = 0)
+    static List<string> splitIntoSegments(Canvas canvas, Text text, string message, int maxTextLength = 0)
     {
         float textWidth = getTextWidth(canvas, text, message);
         float maxWidth = getMaxWidth(canvas, text);
@@ -238,7 +248,7 @@ public class DialogueBoxUpdater : MonoBehaviour
         }
         return splitIntoSegments(message, segmentLength);
     }
-    static string[] splitIntoSegments(string message, int maxLength)
+    static List<string> splitIntoSegments(string message, int maxLength)
     {
         string[] split = message.Split(' ');
         List<string> strings = new List<string>();
@@ -256,6 +266,6 @@ public class DialogueBoxUpdater : MonoBehaviour
             buildString += $" {split[i]}";
         }
         strings.Add(buildString);
-        return strings.ToArray();
+        return strings;
     }
 }
