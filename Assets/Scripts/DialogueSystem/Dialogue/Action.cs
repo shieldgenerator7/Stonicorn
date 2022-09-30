@@ -15,7 +15,7 @@ public class Action : DialogueComponent
         ADD,
         SUBTRACT,
         MULTIPLY,
-        DIVIDE
+        DIVIDE,
     }
 
     public string ActionTypeString
@@ -29,7 +29,7 @@ public class Action : DialogueComponent
                 case ActionType.SUBTRACT: return "-=";
                 case ActionType.MULTIPLY: return "*=";
                 case ActionType.DIVIDE: return "/=";
-                default: throw new ArgumentException("actionType is not valid: " + actionType);
+                default: throw new ArgumentException($"actionType is not valid: {actionType}");
             }
         }
         set
@@ -41,7 +41,7 @@ public class Action : DialogueComponent
                 case "-=": actionType = ActionType.SUBTRACT; break;
                 case "*=": actionType = ActionType.MULTIPLY; break;
                 case "/=": actionType = ActionType.DIVIDE; break;
-                default: throw new ArgumentException("value is not valid: " + value);
+                default: throw new ArgumentException($"value is not valid: {value}");
             }
         }
     }

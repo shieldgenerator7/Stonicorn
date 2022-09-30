@@ -25,13 +25,14 @@ public class DialoguePath
         actions.ForEach(
             a => a.path = this
             );
+        //set cached variables
+        Characters = quotes.Select(q => q.characterName).Distinct().ToList();
     }
 
     /// <summary>
     /// Returns a list of the characters in this dialogue path
     /// </summary>
-    public List<string> Characters
-        => quotes.Select(q => q.characterName).Distinct().ToList();
+    public List<string> Characters { get; private set; }
 
     /// <summary>
     /// Returns true if all the required characters are in this dialogue path.
@@ -40,20 +41,6 @@ public class DialoguePath
     /// <param name="requiredCharacters"></param>
     /// <returns></returns>
     public bool allCharactersPresent(List<string> requiredCharacters)
-    {
-        List<string> chars = Characters;
-        foreach (string chr in requiredCharacters)
-        {
-            //If one required character is not in this dialogue path,
-            if (!chars.Contains(chr))
-            {
-                //Then not all are present
-                return false;
-            }
-        }
-        //All characters present
-        return true;
-    }
 
     public void remove(DialogueComponent dc)
     {
@@ -70,4 +57,5 @@ public class DialoguePath
             actions.Remove((Action)dc);
         }
     }
+        => requiredCharacters.All(rchar => Characters.Contains(rchar));
 }

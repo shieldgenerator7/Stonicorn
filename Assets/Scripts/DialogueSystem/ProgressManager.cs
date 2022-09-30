@@ -74,9 +74,9 @@ public class ProgressManager
 
     public void printVariables()
     {
-        foreach (KeyValuePair<string,int> pair in data)
+        foreach (KeyValuePair<string, int> pair in data)
         {
-            Debug.Log("Data[\"" + pair.Key + "\"] = " + pair.Value);
+            Debug.Log($"Data[\"{pair.Key}\"] = {pair.Value}");
         }
     }
 }

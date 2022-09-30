@@ -16,7 +16,7 @@ public class Condition : DialogueComponent
         GREATER_THAN,
         GREATER_THAN_EQUAL,
         LESS_THAN,
-        LESS_THAN_EQUAL
+        LESS_THAN_EQUAL,
     }
 
     public string TestTypeString
@@ -31,7 +31,7 @@ public class Condition : DialogueComponent
                 case TestType.GREATER_THAN_EQUAL: return ">=";
                 case TestType.LESS_THAN: return "<";
                 case TestType.LESS_THAN_EQUAL: return "<=";
-                default: throw new ArgumentException("testType is not valid: " + testType);
+                default: throw new ArgumentException($"testType is not valid: {testType}");
             }
         }
         set
@@ -44,7 +44,7 @@ public class Condition : DialogueComponent
                 case ">=": testType = TestType.GREATER_THAN_EQUAL; break;
                 case "<": testType = TestType.LESS_THAN; break;
                 case "<=": testType = TestType.LESS_THAN_EQUAL; break;
-                default: throw new ArgumentException("value is not valid: " + value);
+                default: throw new ArgumentException($"value is not valid: {value}");
             }
         }
     }
