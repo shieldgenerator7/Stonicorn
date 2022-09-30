@@ -14,7 +14,6 @@ public class DialogueManager : MonoBehaviour
     [SerializeField]
     private DialoguePlayer dialoguePlayer;
 
-    public readonly ProgressManager progressManager = new ProgressManager();
 
     private void Awake()
     {
@@ -28,7 +27,7 @@ public class DialogueManager : MonoBehaviour
             {
                 foreach (OnStartCheckVariable oscv in Resources.FindObjectsOfTypeAll(typeof(OnStartCheckVariable)))
                 {
-                    oscv.checkTakeAction(progressManager);
+                    oscv.checkTakeAction(Managers.Progress);
                 }
             };
     }
@@ -109,7 +108,7 @@ public class DialogueManager : MonoBehaviour
 
     private bool conditionMet(Condition c)
     {
-        int value = progressManager.get(c.variableName);
+        int value = Managers.Progress.get(c.variableName);
         switch (c.testType)
         {
             case Condition.TestType.EQUAL: return value == c.testValue;
@@ -132,11 +131,11 @@ public class DialogueManager : MonoBehaviour
     {
         switch (a.actionType)
         {
-            case Action.ActionType.SET: progressManager.set(a.variableName, a.actionValue); break;
-            case Action.ActionType.ADD: progressManager.add(a.variableName, a.actionValue); break;
-            case Action.ActionType.SUBTRACT: progressManager.add(a.variableName, -a.actionValue); break;
-            case Action.ActionType.MULTIPLY: progressManager.multiply(a.variableName, a.actionValue); break;
-            case Action.ActionType.DIVIDE: progressManager.multiply(a.variableName, 1 / a.actionValue); break;
+            case Action.ActionType.SET: Managers.Progress.set(a.variableName, a.actionValue); break;
+            case Action.ActionType.ADD: Managers.Progress.add(a.variableName, a.actionValue); break;
+            case Action.ActionType.SUBTRACT: Managers.Progress.add(a.variableName, -a.actionValue); break;
+            case Action.ActionType.MULTIPLY: Managers.Progress.multiply(a.variableName, a.actionValue); break;
+            case Action.ActionType.DIVIDE: Managers.Progress.multiply(a.variableName, 1 / a.actionValue); break;
             default: throw new ArgumentException($"Action testType is not valid: {a.actionType}");
         }
     }
