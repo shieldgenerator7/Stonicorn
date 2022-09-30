@@ -190,7 +190,7 @@ public class NPCController : SavableMonoBehaviour
                         lastPlayedCheckPointLineIndex = mrvli;
                         if (npcvl.triggerEvent != null)
                         {
-                            GameEventManager.addEvent(npcvl.triggerEvent);
+                            Managers.Progress.markActivated(npcvl.triggerEvent);
                         }
                     }
                 }
@@ -290,8 +290,8 @@ public class NPCController : SavableMonoBehaviour
         {
             NPCVoiceLine npcvl = voiceLines[i];
             if (!npcvl.triggerLine && !npcvl.played
-                && GameEventManager.eventHappened(npcvl.eventReq)
-                && (!npcvl.hasExcludeRequirement() || !GameEventManager.eventHappened(npcvl.eventReqExclude)))
+                && Managers.Progress.hasActivated(npcvl.eventReq)
+                && (!npcvl.hasExcludeRequirement() || !Managers.Progress.hasActivated(npcvl.eventReqExclude)))
             {
                 return i;
             }

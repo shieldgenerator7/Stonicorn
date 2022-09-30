@@ -32,12 +32,12 @@ public class DialogueTrigger : EventTrigger
         //Find dialogue path by its title
         if (!string.IsNullOrEmpty(title))
         {
-            Managers.Dialogue.playDialogue(title);
+            Managers.Event.playDialogue(title);
         }
         //Find dialogue path by characters
         else
         {
-            Managers.Dialogue.playDialogue(characters);
+            Managers.Event.playDialogue(characters);
         }
     }
 }

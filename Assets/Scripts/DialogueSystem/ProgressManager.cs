@@ -56,21 +56,55 @@ public class ProgressManager
     public void markActivated(EventTrigger trigger, bool mark = true)
     {
         string idString = trigger.IdString;
+        markActivated(idString, mark);
+    }
+
+    public void markActivated(string id, bool mark = true)
+    {
         if (mark)
         {
-            if (!activatedTriggers.Contains(idString))
+            if (!activatedTriggers.Contains(id))
             {
-                activatedTriggers.Add(idString);
+                activatedTriggers.Add(id);
             }
         }
         else
         {
-            activatedTriggers.Remove(idString);
+            activatedTriggers.Remove(id);
         }
     }
 
     public bool hasActivated(EventTrigger trigger)
-        => activatedTriggers.Contains(trigger.IdString);
+        => hasActivated(trigger.IdString);
+
+    public bool hasActivated(string id)
+        => activatedTriggers.Contains(id);
+
+    //TODO: modify so it works here in context
+    //public List<string> events = new List<string>();//the list of events that have happened
+    //public override SavableObject CurrentState
+    //{
+    //    get
+    //    {
+    //        SavableObject so = new SavableObject(this);
+    //        int counter = 0;
+    //        foreach (string str in events)
+    //        {
+    //            so.more("event" + counter, str);
+    //            counter++;
+    //        }
+    //        so.more("eventCount", counter);
+    //        return so;
+    //    }
+    //    set
+    //    {
+    //        events = new List<string>();
+    //        for (int i = 0; i < value.Int("eventCount"); i++)
+    //        {
+    //            events.Add(value.String("event" + i));
+    //        }
+    //    }
+    //}
 
     public void printVariables()
     {

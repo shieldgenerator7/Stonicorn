@@ -39,7 +39,7 @@ public class ItemCollectTrigger : EventTrigger
         //Find dialogue path by its title
         if (!string.IsNullOrEmpty(title))
         {
-            Managers.Dialogue.playDialogue(title);
+            Managers.Event.playDialogue(title);
         }
         else
         {

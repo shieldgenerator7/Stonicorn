@@ -29,9 +29,9 @@ public class Managers : MonoBehaviour
     //Progress Manager
     public static ProgressManager Progress { get; private set; }
 
-    //Game Event Manager
+    //Event Manager
     //Used to store which NPC voicelines have been played
-    public static GameEventManager Event { get; private set; }
+    public static EventManager Event { get; private set; }
 
     //Game Statistics
     //Keeps track of how many times everything has happened
@@ -159,7 +159,7 @@ public class Managers : MonoBehaviour
         NPC = GetComponent<NPCManager>();
         Dialogue = GetComponent<DialogueManager>();
         Progress = new ProgressManager();
-        Event = FindObjectOfType<GameEventManager>();
+        Event = FindObjectOfType<EventManager>();
         Stats = FindObjectOfType<GameStatistics>();
         Time = FindObjectOfType<TimeManager>();
         Rewind = FindObjectOfType<RewindManager>();

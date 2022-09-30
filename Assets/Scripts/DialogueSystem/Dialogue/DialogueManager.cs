@@ -49,61 +49,14 @@ public class DialogueManager : MonoBehaviour
         return path != null;
     }
 
-    //TODO: move this to future EventManager
-    public void playDialogue(string title = null)
-    {
-        //if (dialoguePlayer.Playing)
-        //{
-        //    return;
-        //}
-        DialoguePath path = null;
-        if (String.IsNullOrEmpty(title))
-        {
-            //2020-09-24: TODO: make it search for characters
-            //path = dialogueData.selectSuitableDialoguePath();
+    public DialoguePath getDialogue(string title)
+        => dialogueData.getDialoguePath(title);
 
-            //can't do anything (for now)
-            throw new NullReferenceException($"Title must be non-null and must not be the empty string! title: {title}");
-        }
-        else
-        {
-            path = dialogueData.getDialoguePath(title);
-            if (path == null)
-            {
-                throw new Exception($"Dialogue with this title cannot be found: {title}");
-            }
-        }
-        playDialogue(path);
-    }
+    public List<DialoguePath> getDialogues(List<string> characters)
+        => dialogueData.getDialoguePaths(characters);
 
-    //TODO: move this to future EventManager
-    public void playDialogue(List<string> characters)
-    {
-        //if (dialoguePlayer.Playing)
-        //{
-        //    return;
-        //}
-        DialoguePath path = dialogueData.getDialoguePaths(characters)
-            .FirstOrDefault(dp => conditionsMet(dp));
-        if (path == null)
-        {
-            string characterString = "";
-            characters.ForEach(
-                c => characterString += $"{c}, ");
-            throw new Exception($"Dialogue with these characters cannot be found: {characterString}");
-        }
-        playDialogue(path);
-    }
-
-    //TODO: move this to future EventManager
-    public void playDialogue(DialoguePath path)
-    {
-        //if (dialoguePlayer.Playing)
-        //{
-        //    return;
-        //}
-        //dialoguePlayer.playDialogue(path);
-    }
+    public DialoguePath getDialogue(List<string> characters)
+        => getDialogues(characters).FirstOrDefault(dp => conditionsMet(dp));
 
     private bool conditionsMet(DialoguePath path)
     {

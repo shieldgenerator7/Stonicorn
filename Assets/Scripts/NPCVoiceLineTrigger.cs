@@ -16,8 +16,8 @@ public class NPCVoiceLineTrigger : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!lineToTrigger.played
-            && GameEventManager.eventHappened(lineToTrigger.eventReq)
-            && (!lineToTrigger.hasExcludeRequirement() || !GameEventManager.eventHappened(lineToTrigger.eventReqExclude)))
+            && Managers.Progress.hasActivated(lineToTrigger.eventReq)
+            && (!lineToTrigger.hasExcludeRequirement() || !Managers.Progress.hasActivated(lineToTrigger.eventReqExclude)))
         {
             controller.setTriggerVoiceLine(lineToTrigger);
         }
