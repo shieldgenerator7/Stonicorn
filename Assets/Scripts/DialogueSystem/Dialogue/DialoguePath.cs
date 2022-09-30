@@ -41,21 +41,5 @@ public class DialoguePath
     /// <param name="requiredCharacters"></param>
     /// <returns></returns>
     public bool allCharactersPresent(List<string> requiredCharacters)
-
-    public void remove(DialogueComponent dc)
-    {
-        if (dc is Condition)
-        {
-            conditions.Remove((Condition)dc);
-        }
-        else if (dc is Quote)
-        {
-            quotes.Remove((Quote)dc);
-        }
-        else if (dc is Action)
-        {
-            actions.Remove((Action)dc);
-        }
-    }
         => requiredCharacters.All(rchar => Characters.Contains(rchar));
 }

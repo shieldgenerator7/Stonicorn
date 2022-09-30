@@ -7,24 +7,25 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Determines which dialogue happens when you want to trigger a dialogue
 /// </summary>
-[RequireComponent(typeof(DialoguePlayer))]
 public class DialogueManager : MonoBehaviour
 {
-    private DialogueData dialogueData;
-    [SerializeField]
-    private DialoguePlayer dialoguePlayer;
+    [Header("Settings")]
+    public string dialogueResourceName = "dialogues";
 
+    private DialogueData dialogueData;
 
     private void Awake()
     {
-        string jsonString = Resources.Load<TextAsset>("dialogues").text;
+        string jsonString = Resources.Load<TextAsset>(dialogueResourceName).text;
         dialogueData = JsonUtility.FromJson<DialogueData>(jsonString);
         dialogueData.dialogues.ForEach(d => d.inflate());
-        dialoguePlayer.onDialogueEnded += takeActions;
+        //dialoguePlayer.onDialogueEnded += takeActions;
+        //TODO: move to GameManager
         //OnStartCheckVariable
-        SceneManager.sceneLoaded +=
-            (s, m) =>
+        Managers.Scene.onSceneObjectsLoaded +=
+            (sceneGOs, foreignGOs, lastStateSeen) =>
             {
+                //TODO: use list of scene gos instead of searching with resources
                 foreach (OnStartCheckVariable oscv in Resources.FindObjectsOfTypeAll(typeof(OnStartCheckVariable)))
                 {
                     oscv.checkTakeAction(Managers.Progress);
@@ -48,12 +49,13 @@ public class DialogueManager : MonoBehaviour
         return path != null;
     }
 
+    //TODO: move this to future EventManager
     public void playDialogue(string title = null)
     {
-        if (dialoguePlayer.Playing)
-        {
-            return;
-        }
+        //if (dialoguePlayer.Playing)
+        //{
+        //    return;
+        //}
         DialoguePath path = null;
         if (String.IsNullOrEmpty(title))
         {
@@ -74,12 +76,13 @@ public class DialogueManager : MonoBehaviour
         playDialogue(path);
     }
 
+    //TODO: move this to future EventManager
     public void playDialogue(List<string> characters)
     {
-        if (dialoguePlayer.Playing)
-        {
-            return;
-        }
+        //if (dialoguePlayer.Playing)
+        //{
+        //    return;
+        //}
         DialoguePath path = dialogueData.getDialoguePaths(characters)
             .FirstOrDefault(dp => conditionsMet(dp));
         if (path == null)
@@ -92,13 +95,14 @@ public class DialogueManager : MonoBehaviour
         playDialogue(path);
     }
 
+    //TODO: move this to future EventManager
     public void playDialogue(DialoguePath path)
     {
-        if (dialoguePlayer.Playing)
-        {
-            return;
-        }
-        dialoguePlayer.playDialogue(path);
+        //if (dialoguePlayer.Playing)
+        //{
+        //    return;
+        //}
+        //dialoguePlayer.playDialogue(path);
     }
 
     private bool conditionsMet(DialoguePath path)
@@ -124,6 +128,7 @@ public class DialogueManager : MonoBehaviour
     private void takeActions(DialoguePath path)
     {
         path.actions.ForEach(a => takeAction(a));
+        //TODO: remove this line
         InteractUI.instance.refreshTriggerList();
     }
 
