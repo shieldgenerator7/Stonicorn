@@ -10,17 +10,9 @@ public class ItemCollectTrigger : EventTrigger
     [Tooltip("The variable to increment by 1 if there is no title")]
     public string counterName;
 
-    protected override void Start()
+    protected override void checkErrors()
     {
-        //If this item has already been collected,
-        if (Managers.Progress.hasActivated(this))
-        {
-            //Destroy it
-            destroy();
-        }
-
-        //Parent start up process
-        base.Start();
+        base.checkErrors();
 
         //Item must have a title or a counterName
         if (string.IsNullOrEmpty(title)
@@ -32,6 +24,11 @@ public class ItemCollectTrigger : EventTrigger
                 this
                 );
         }
+    }
+
+    protected override void previouslyDiscovered()
+    {
+        destroy();
     }
 
     protected override void triggerEvent()

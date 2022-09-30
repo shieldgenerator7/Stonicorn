@@ -4,24 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D))]
-public abstract class EventTrigger : MonoBehaviour
+public abstract class EventTrigger : MemoryMonoBehaviour
 {
-    [Tooltip(
-        "The unique id for this individual trigger. " +
-        "Used to determine whether this has ever been triggered."
-        )]
-    public int id = -1;
-    public string IdString => $"{gameObject.scene.name}_{id}";
-
-    public AudioClip triggerSound;
-
     public virtual bool Interactable => true;
 
     private Collider2D coll2d;
 
     // Start is called before the first frame update
     protected virtual void Start()
+    {
+        checkErrors();
+    }
+
+    protected virtual void checkErrors()
     {
         coll2d = GetComponents<Collider2D>().FirstOrDefault(c2d => c2d.isTrigger == true);
         if (!coll2d)
@@ -32,69 +29,15 @@ public abstract class EventTrigger : MonoBehaviour
                 this
                 );
         }
-        //Id must be valid
-        if (id < 0)
-        {
-            Debug.LogError(
-                $"EventTrigger Id is invalid on object {gameObject.name}" +
-                $" in scene {gameObject.scene.name}. " +
-                $"Id must be 0 or greater (Assign it an Id). " +
-                $"Invalid value: {id}",
-                this
-                );
-        }
-        //Id must be unique
-        EventTrigger dupIdTrigger = FindObjectsOfType<EventTrigger>()
-            .FirstOrDefault(
-                t => t.gameObject.scene == this.gameObject.scene
-                    && t.id == this.id
-                    && t != this
-            );
-        if (dupIdTrigger)
-        {
-            Debug.LogError(
-                $"EventTrigger has a duplicate Id! " +
-                $"GameObject {gameObject.name} and {dupIdTrigger.name}" +
-                $" in scene {gameObject.scene.name}" +
-                $" have the same Id: {this.id}. " +
-                $"Assign these EventTriggers unique Ids.",
-                this
-                );
-        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void nowDiscovered()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            if (this.Interactable)
-            {
-            }
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-        }
-    }
-
-    private void OnDestroy()
-    {
-    }
-
-    public void processTrigger()
-    {
-        Managers.Progress.markActivated(this);
-        AudioSource.PlayClipAtPoint(triggerSound, transform.position);
         triggerEvent();
+    }
+
+    protected override void previouslyDiscovered()
+    {
     }
 
     protected abstract void triggerEvent();

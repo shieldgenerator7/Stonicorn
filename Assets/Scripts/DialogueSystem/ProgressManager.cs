@@ -53,12 +53,6 @@ public class ProgressManager
     public delegate void OnVariableChange(string varName, int oldValue, int newValue);
     public OnVariableChange onVariableChange;
 
-    public void markActivated(EventTrigger trigger, bool mark = true)
-    {
-        string idString = trigger.IdString;
-        markActivated(idString, mark);
-    }
-
     public void markActivated(string id, bool mark = true)
     {
         if (mark)
@@ -73,9 +67,6 @@ public class ProgressManager
             activatedTriggers.Remove(id);
         }
     }
-
-    public bool hasActivated(EventTrigger trigger)
-        => hasActivated(trigger.IdString);
 
     public bool hasActivated(string id)
         => activatedTriggers.Contains(id);
