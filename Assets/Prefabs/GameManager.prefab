@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5270741036896818801}
   - component: {fileID: 2859978935190022867}
   - component: {fileID: 2859978935190022864}
+  - component: {fileID: 5898409314609114241}
   - component: {fileID: 2859978935190022871}
   - component: {fileID: 2859978935190022878}
   - component: {fileID: 2859978935190022872}
@@ -4708,6 +4709,19 @@ MonoBehaviour:
   npcQuoteBox: {fileID: 0}
   npcQuoteBoxTail: {fileID: 0}
   baseCameraScalePoint: 2
+--- !u!114 &5898409314609114241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2859978935190022699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 961da9fb5e9d1d648b7660b48059ae7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueResourceName: dialogues
 --- !u!114 &2859978935190022871
 MonoBehaviour:
   m_ObjectHideFlags: 0
