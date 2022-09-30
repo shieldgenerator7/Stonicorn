@@ -13,7 +13,7 @@ public class ItemCollectTrigger : EventTrigger
     protected override void Start()
     {
         //If this item has already been collected,
-        if (FindObjectOfType<DialogueManager>().progressManager.hasActivated(this))
+        if (Managers.Progress.hasActivated(this))
         {
             //Destroy it
             destroy();
@@ -23,25 +23,27 @@ public class ItemCollectTrigger : EventTrigger
         base.Start();
 
         //Item must have a title or a counterName
-        if ((title == null || title == "")
-            && (counterName == null || counterName == ""))
+        if (string.IsNullOrEmpty(title)
+            && string.IsNullOrEmpty(counterName)
+            )
         {
             Debug.LogError(
-                "ItemCollectTrigger must have either a title or a counterName."
-                , this);
+                "ItemCollectTrigger must have either a title or a counterName.",
+                this
+                );
         }
     }
 
     protected override void triggerEvent()
     {
         //Find dialogue path by its title
-        if (title != "" && title != null)
+        if (!string.IsNullOrEmpty(title))
         {
-            dialogueManager.playDialogue(title);
+            Managers.Dialogue.playDialogue(title);
         }
         else
         {
-            dialogueManager.progressManager.add(counterName);
+            Managers.Progress.add(counterName);
         }
         destroy();
     }

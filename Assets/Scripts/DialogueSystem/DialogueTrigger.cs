@@ -15,14 +15,14 @@ public class DialogueTrigger : EventTrigger
         get
         {
             //Find dialogue path by its title
-            if (title != "" && title != null)
+            if (!string.IsNullOrEmpty(title))
             {
-                return dialogueManager.hasDialogue(title);
+                return Managers.Dialogue.hasDialogue(title);
             }
             //Find dialogue path by characters
             else
             {
-                return dialogueManager.hasDialogue(characters);
+                return Managers.Dialogue.hasDialogue(characters);
             }
         }
     }
@@ -30,14 +30,14 @@ public class DialogueTrigger : EventTrigger
     protected override void triggerEvent()
     {
         //Find dialogue path by its title
-        if (title != "" && title != null)
+        if (!string.IsNullOrEmpty(title))
         {
-            dialogueManager.playDialogue(title);
+            Managers.Dialogue.playDialogue(title);
         }
         //Find dialogue path by characters
         else
         {
-            dialogueManager.playDialogue(characters);
+            Managers.Dialogue.playDialogue(characters);
         }
     }
 }

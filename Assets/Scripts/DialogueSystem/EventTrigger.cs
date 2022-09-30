@@ -19,13 +19,11 @@ public abstract class EventTrigger : MonoBehaviour
     public virtual bool Interactable => true;
 
     private Collider2D coll2d;
-    protected DialogueManager dialogueManager;
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
         coll2d = GetComponents<Collider2D>().FirstOrDefault(c2d => c2d.isTrigger == true);
-        dialogueManager = FindObjectOfType<DialogueManager>();
         if (!coll2d)
         {
             Debug.LogError(
@@ -98,7 +96,7 @@ public abstract class EventTrigger : MonoBehaviour
 
     public void processTrigger()
     {
-        dialogueManager.progressManager.markActivated(this);
+        Managers.Progress.markActivated(this);
         AudioSource.PlayClipAtPoint(triggerSound, transform.position);
         triggerEvent();
     }
