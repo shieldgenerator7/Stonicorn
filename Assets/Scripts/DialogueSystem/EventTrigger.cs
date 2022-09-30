@@ -69,7 +69,6 @@ public abstract class EventTrigger : MonoBehaviour
         {
             if (this.Interactable)
             {
-                InteractUI.instance.registerTrigger(this, true);
             }
         }
     }
@@ -77,7 +76,6 @@ public abstract class EventTrigger : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            InteractUI.instance.registerTrigger(this, false);
         }
     }
 
@@ -85,13 +83,11 @@ public abstract class EventTrigger : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            InteractUI.instance.checkClosestTrigger();
         }
     }
 
     private void OnDestroy()
     {
-        InteractUI.instance.registerTrigger(this, false);
     }
 
     public void processTrigger()

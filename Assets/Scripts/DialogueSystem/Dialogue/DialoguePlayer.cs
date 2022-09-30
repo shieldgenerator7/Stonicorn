@@ -61,7 +61,6 @@ public class DialoguePlayer : MonoBehaviour
         index = -1;//will be incremented in advanceDialogue()
         this.path = path;
         onDialogueStarted?.Invoke(path);
-        InteractUI.instance.suppress(this);
         if (path.quotes.Count > 0)
         {
             //UI
@@ -84,7 +83,6 @@ public class DialoguePlayer : MonoBehaviour
         this.enabled = false;
         dialogueCanvas.gameObject.SetActive(false);
         onDialogueEnded?.Invoke(path);
-        InteractUI.instance.suppress(this, false);
         //Unsubscribe from Interact button
         Managers.Player.Teleport.onTeleport -= onTeleportAdvanceDialogue;
         //Unset path

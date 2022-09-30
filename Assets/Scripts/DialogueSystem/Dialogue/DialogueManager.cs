@@ -81,8 +81,6 @@ public class DialogueManager : MonoBehaviour
     private void takeActions(DialoguePath path)
     {
         path.actions.ForEach(a => takeAction(a));
-        //TODO: remove this line
-        InteractUI.instance.refreshTriggerList();
     }
 
     private void takeAction(Action a)
