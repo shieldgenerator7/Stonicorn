@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class DialogueBoxUpdater : MonoBehaviour
 {
     [Header("Settings")]
+    [Tooltip("The amount of extra space around the letters inside the box")]
+    public float padding = 1;
     [Tooltip("The scale point at which the NPC quote box should be full screen")]
     public float offsetLength = 3;
     public CameraController.CameraScalePoints baseCameraScalePoint;
@@ -115,7 +117,7 @@ public class DialogueBoxUpdater : MonoBehaviour
         //    messageDimensions = getMessageDimensions(canvas, txtDialogue, text, maxTextLength);
         //    maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
         //}
-        Vector2 textBoxSize = getTextSize(canvas, txtDialogue);// messageDimensions + (Vector2.one * buffer * 2);
+        Vector2 textBoxSize = getTextSize(canvas, txtDialogue, padding);// messageDimensions + (Vector2.one * buffer * 2);
         quoteSR.size = textBoxSize;
         quoteBoxTail.transform.position = quoteSR.transform.position - (quoteBox.transform.up * quoteSR.size.y / 2);
     }
@@ -154,10 +156,14 @@ public class DialogueBoxUpdater : MonoBehaviour
         return getTextLength(canvas, text, getMaxWidth(canvas, text));
     }
 
-    static Vector2 getTextSize(Canvas canvas, TMP_Text text)
+    static Vector2 getTextSize(Canvas canvas, TMP_Text text, float padding = 0)
     {
         //assumes canvas scale x and y are the same
         Vector2 size = text.GetRenderedValues(true) * canvas.transform.localScale.x;
+        if (padding > 0)
+        {
+            size += Vector2.one * padding;
+        }
         Debug.Log($"getTextSize: {size}");
         return size;
     }
