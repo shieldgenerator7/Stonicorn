@@ -9,6 +9,8 @@ public class DialogueBoxUpdater : MonoBehaviour
     [Header("Settings")]
     [Tooltip("The amount of extra space around the letters inside the box")]
     public float padding = 1;
+    [Tooltip("The minimum amount of width the dialogue box can have")]
+    public float minWidth = 1;
     [Tooltip("The scale point at which the NPC quote box should be full screen")]
     public float offsetLength = 3;
     public CameraController.CameraScalePoints baseCameraScalePoint;
@@ -103,6 +105,10 @@ public class DialogueBoxUpdater : MonoBehaviour
     {
         //assumes canvas scale x and y are the same
         Vector2 size = txtDialogue.GetRenderedValues(true) * canvas.transform.localScale.x;
+        if (size.x < minWidth)
+        {
+            size.x = minWidth;
+        }
         if (usePadding)
         {
             size += Vector2.one * padding;
