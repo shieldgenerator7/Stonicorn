@@ -117,7 +117,7 @@ public class DialogueBoxUpdater : MonoBehaviour
         //    messageDimensions = getMessageDimensions(canvas, txtDialogue, text, maxTextLength);
         //    maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
         //}
-        Vector2 textBoxSize = getTextSize(canvas, txtDialogue, padding);// messageDimensions + (Vector2.one * buffer * 2);
+        Vector2 textBoxSize = getTextSize();
         quoteSR.size = textBoxSize;
         quoteBoxTail.transform.position = quoteSR.transform.position - (quoteBox.transform.up * quoteSR.size.y / 2);
     }
@@ -156,15 +156,14 @@ public class DialogueBoxUpdater : MonoBehaviour
         return getTextLength(canvas, text, getMaxWidth(canvas, text));
     }
 
-    static Vector2 getTextSize(Canvas canvas, TMP_Text text, float padding = 0)
+    private Vector2 getTextSize(bool usePadding = true)
     {
         //assumes canvas scale x and y are the same
-        Vector2 size = text.GetRenderedValues(true) * canvas.transform.localScale.x;
-        if (padding > 0)
+        Vector2 size = txtDialogue.GetRenderedValues(true) * canvas.transform.localScale.x;
+        if (usePadding)
         {
             size += Vector2.one * padding;
         }
-        Debug.Log($"getTextSize: {size}");
         return size;
     }
 
