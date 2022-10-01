@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class DialogueBoxUpdater : MonoBehaviour
 
     [Header("Components")]
     public ParticleSystem talkEffect;//the particle system for the visual part of NPC talking
-    public Text txtDialogue;
+    public TMP_Text txtDialogue;
     public Canvas canvas;
     public GameObject quoteBox;
     public GameObject quoteBoxTail;
@@ -136,9 +137,10 @@ public class DialogueBoxUpdater : MonoBehaviour
         dialogueRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cam.pixelHeight * 3 / 4);
     }
 
-    static float getTextWidth(Canvas canvas, Text text, string stringToMeasure)
+    static float getTextWidth(Canvas canvas, TMP_Text text, string stringToMeasure)
     {
-        return getSumOfCharacterOffsets(text, stringToMeasure) * canvas.transform.localScale.x;
+        float width = text.GetRenderedValues(true).x * canvas.transform.localScale.x;
+        return width;
         /*
         string prevString = text.text;
         //text.text = stringToMeasure;
@@ -181,26 +183,26 @@ public class DialogueBoxUpdater : MonoBehaviour
 
         return totalMaxWidthLength;
     }
-    static float getTextHeight(Canvas canvas, Text text, int lines = 1)
+    static float getTextHeight(Canvas canvas, TMP_Text text, int lines = 1)
     {
         return text.fontSize * lines * canvas.transform.localScale.y;
     }
-    static float getMaxWidth(Canvas canvas, Text text)
+    static float getMaxWidth(Canvas canvas, TMP_Text text)
     {
         return Mathf.Min(Screen.width / 2, text.rectTransform.rect.width * canvas.transform.localScale.x);
     }
 
-    static int getTextLength(Canvas canvas, Text text, float width)
+    static int getTextLength(Canvas canvas, TMP_Text text, float width)
     {
         return Mathf.FloorToInt(width / (text.fontSize * 0.5f * canvas.transform.localScale.x));
     }
-    static int getMaxTextLength(Canvas canvas, Text text)
+    static int getMaxTextLength(Canvas canvas, TMP_Text text)
     {
         return getTextLength(canvas, text, getMaxWidth(canvas, text));
     }
 
 
-    static Vector2 getMessageDimensions(Canvas canvas, Text text, string message, int maxTextLength = 0)
+    static Vector2 getMessageDimensions(Canvas canvas, TMP_Text text, string message, int maxTextLength = 0)
     {
         List<string> strings = splitIntoSegments(canvas, text, message, maxTextLength);
         string foundMaxString = "";
@@ -216,7 +218,7 @@ public class DialogueBoxUpdater : MonoBehaviour
         return new Vector2(textWidth, textHeight);
     }
 
-    static string processMessage(Canvas canvas, Text text, string message, int maxTextLength)
+    static string processMessage(Canvas canvas, TMP_Text text, string message, int maxTextLength)
     {
         List<string> strings = splitIntoSegments(canvas, text, message, maxTextLength);
         string buildString = "";
@@ -238,7 +240,7 @@ public class DialogueBoxUpdater : MonoBehaviour
         return buildString;
     }
 
-    static List<string> splitIntoSegments(Canvas canvas, Text text, string message, int maxTextLength = 0)
+    static List<string> splitIntoSegments(Canvas canvas, TMP_Text text, string message, int maxTextLength = 0)
     {
         float textWidth = getTextWidth(canvas, text, message);
         float maxWidth = getMaxWidth(canvas, text);
