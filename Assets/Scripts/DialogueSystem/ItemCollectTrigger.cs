@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class ItemCollectTrigger : EventTrigger
 {
-    [Tooltip("The title of the dialogue to play")]
-    public string title;
     [Tooltip("The variable to increment by 1 if there is no title")]
     public string counterName;
 
@@ -15,9 +13,7 @@ public class ItemCollectTrigger : EventTrigger
         base.checkErrors();
 
         //Item must have a title or a counterName
-        if (string.IsNullOrEmpty(title)
-            && string.IsNullOrEmpty(counterName)
-            )
+        if (!HasTitle && string.IsNullOrEmpty(counterName))
         {
             Debug.LogError(
                 "ItemCollectTrigger must have either a title or a counterName.",
@@ -34,7 +30,7 @@ public class ItemCollectTrigger : EventTrigger
     protected override void triggerEvent()
     {
         //Find dialogue path by its title
-        if (!string.IsNullOrEmpty(title))
+        if (HasTitle)
         {
             Managers.Event.playDialogue(title);
         }

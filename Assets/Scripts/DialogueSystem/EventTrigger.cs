@@ -8,7 +8,12 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public abstract class EventTrigger : MemoryMonoBehaviour
 {
+    [Tooltip("The title of the dialogue path to play")]
+    public string title;
+
     public virtual bool Interactable => true;
+
+    protected bool HasTitle => !string.IsNullOrEmpty(title);
 
     private Collider2D coll2d;
 

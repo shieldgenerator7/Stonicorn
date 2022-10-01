@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 public class DialogueTrigger : EventTrigger
 {
-    public string title;
     public List<string> characters;
 
     public override bool Interactable
@@ -15,7 +14,7 @@ public class DialogueTrigger : EventTrigger
         get
         {
             //Find dialogue path by its title
-            if (!string.IsNullOrEmpty(title))
+            if (HasTitle)
             {
                 return Managers.Dialogue.hasDialogue(title);
             }
@@ -30,7 +29,7 @@ public class DialogueTrigger : EventTrigger
     protected override void triggerEvent()
     {
         //Find dialogue path by its title
-        if (!string.IsNullOrEmpty(title))
+        if (HasTitle)
         {
             Managers.Event.playDialogue(title);
         }
