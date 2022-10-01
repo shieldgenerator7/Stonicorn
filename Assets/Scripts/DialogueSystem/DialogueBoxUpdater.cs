@@ -22,8 +22,6 @@ public class DialogueBoxUpdater : MonoBehaviour
 
     SpriteRenderer quoteSR;
 
-    private string rawText;
-    private List<string> textLines;
     [SerializeField]
     private Transform source;
 
@@ -48,12 +46,6 @@ public class DialogueBoxUpdater : MonoBehaviour
 #if UNITY_EDITOR
         Start();
 #endif
-        this.rawText = text;
-        
-        //txtDialogue.text = text;
-        //Vector2 messageDimensions = getMessageDimensions(canvas, txtDialogue, text);
-        //int maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
-        //text = processMessage(canvas, txtDialogue, text, maxTextLength);
         txtDialogue.text = text;
         txtDialogue.ForceMeshUpdate();
         updateSize();
@@ -63,6 +55,7 @@ public class DialogueBoxUpdater : MonoBehaviour
     public void setSource(Transform source)
     {
         this.source = source;
+        updatePosition();
     }
 
     public bool Active
@@ -90,70 +83,20 @@ public class DialogueBoxUpdater : MonoBehaviour
     {
         //rotate dialogue box
         Quaternion rotation = Camera.main.transform.rotation;
-        canvas.transform.rotation = rotation;
-        quoteBox.transform.rotation = rotation;
+        transform.rotation = rotation;
         //position relative to source
         Vector2 position = source.position + Camera.main.transform.up.normalized * offsetLength;
-        canvas.transform.position = position;
-        quoteBox.transform.position = position;
-        quoteBoxTail.transform.position = position - (Vector2)(quoteBox.transform.up * quoteSR.size.y / 2);
+        transform.position = position;
+        quoteBoxTail.transform.position = quoteBox.transform.position - (quoteBox.transform.up * quoteSR.size.y / 2);
+        //position talk effect
         talkEffect.transform.position = source.position;
     }
 
     private void updateSize()
     {
-        //string text = this.rawText;
-        ////size textbox
-        //float textHeight = getTextHeight(canvas, txtDialogue);
-        //float buffer = textHeight / 2;
-        //int maxTextLength = getMaxTextLength(canvas, txtDialogue);
-        //Vector2 messageDimensions = getMessageDimensions(canvas, txtDialogue, text);
-        //maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
-        //if (messageDimensions.y > textHeight)
-        //{
-        //    float textWidth = getTextWidth(canvas, txtDialogue, text);
-        //    int lineCount = Mathf.CeilToInt(textWidth / getMaxWidth(canvas, txtDialogue));
-        //    maxTextLength = (maxTextLength + (text.Length / lineCount)) / 2;
-        //    messageDimensions = getMessageDimensions(canvas, txtDialogue, text, maxTextLength);
-        //    maxTextLength = getTextLength(canvas, txtDialogue, messageDimensions.x);
-        //}
         Vector2 textBoxSize = getTextSize();
         quoteSR.size = textBoxSize;
         quoteBoxTail.transform.position = quoteSR.transform.position - (quoteBox.transform.up * quoteSR.size.y / 2);
-    }
-
-    public void resizeToCamera()
-    {
-        //set canvas rect size
-        Camera cam = Camera.main;
-        CameraController camCtr = Managers.Camera;
-        RectTransform canvasRect = ((RectTransform)canvas.transform);
-        canvasRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Camera.main.pixelWidth);
-        canvasRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.pixelHeight);
-        //set canvas localscale
-        Vector2 size = camCtr.CamSizeWorld;
-        size *= (camCtr.toZoomLevel(baseCameraScalePoint) / camCtr.ZoomLevel);
-        float newDim = Mathf.Max(Mathf.Abs(size.x) / canvasRect.rect.width, Mathf.Abs(size.y) / canvasRect.rect.height);
-        Vector3 newSize = new Vector3(newDim, newDim, 1);
-        canvas.transform.localScale = newSize;
-        //set text rect size
-        RectTransform dialogueRect = ((RectTransform)txtDialogue.transform);
-        dialogueRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cam.pixelWidth * 3 / 4);
-        dialogueRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cam.pixelHeight * 3 / 4);
-    }
-
-    static float getMaxWidth(Canvas canvas, TMP_Text text)
-    {
-        return Mathf.Min(Screen.width / 2, text.rectTransform.rect.width * canvas.transform.localScale.x);
-    }
-
-    static int getTextLength(Canvas canvas, TMP_Text text, float width)
-    {
-        return Mathf.FloorToInt(width / (text.fontSize * 0.5f * canvas.transform.localScale.x));
-    }
-    static int getMaxTextLength(Canvas canvas, TMP_Text text)
-    {
-        return getTextLength(canvas, text, getMaxWidth(canvas, text));
     }
 
     private Vector2 getTextSize(bool usePadding = true)
@@ -165,53 +108,5 @@ public class DialogueBoxUpdater : MonoBehaviour
             size += Vector2.one * padding;
         }
         return size;
-    }
-
-    //static string processMessage(Canvas canvas, TMP_Text text, string message, int maxTextLength)
-    //{
-    //    List<string> strings = splitIntoSegments(canvas, text, message, maxTextLength);
-    //    string buildString = "";
-    //    foreach (string str in strings)
-    //    {
-    //        buildString += $"{str}\n";
-    //    }
-    //    buildString.Trim();
-    //    return buildString;
-    //}
-
-    //static List<string> splitIntoSegments(Canvas canvas, TMP_Text text, int maxTextLength = 0)
-    //{
-    //    float textWidth = getTextSize(canvas, text).x;
-    //    float maxWidth = getMaxWidth(canvas, text);
-    //    int segmentLength = message.Length;
-    //    if (textWidth > maxWidth)
-    //    {
-    //        if (maxTextLength == 0)
-    //        {
-    //            maxTextLength = getMaxTextLength(canvas, text);
-    //        }
-    //        segmentLength = maxTextLength;
-    //    }
-    //    return splitIntoSegments(message, segmentLength);
-    //}
-    static List<string> splitIntoSegments(string message, int maxLength)
-    {
-        string[] split = message.Split(' ');
-        List<string> strings = new List<string>();
-        int sumLength = split[0].Length;
-        string buildString = split[0];
-        for (int i = 1; i < split.Length; i++)
-        {
-            if (sumLength + split[i].Length + 1 > maxLength)
-            {
-                sumLength = 0;
-                strings.Add(buildString);
-                buildString = "";
-            }
-            sumLength += split[i].Length + 1;
-            buildString += $" {split[i]}";
-        }
-        strings.Add(buildString);
-        return strings;
     }
 }
