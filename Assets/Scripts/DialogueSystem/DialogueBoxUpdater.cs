@@ -21,6 +21,7 @@ public class DialogueBoxUpdater : MonoBehaviour
 
     private string rawText;
     private List<string> textLines;
+    [SerializeField]
     private Transform source;
 
     // Start is called before the first frame update
@@ -41,6 +42,9 @@ public class DialogueBoxUpdater : MonoBehaviour
 
     public void setText(string text)
     {
+#if UNITY_EDITOR
+        Start();
+#endif
         this.rawText = text;
 
         Vector2 messageDimensions = getMessageDimensions(canvas, txtDialogue, text);
@@ -48,6 +52,7 @@ public class DialogueBoxUpdater : MonoBehaviour
         text = processMessage(canvas, txtDialogue, text, maxTextLength);
         txtDialogue.text = text;
         updateSize();
+        updatePosition();
     }
 
     public void setSource(Transform source)
