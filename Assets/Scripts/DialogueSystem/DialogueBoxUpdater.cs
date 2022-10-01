@@ -30,7 +30,6 @@ public class DialogueBoxUpdater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        txtDialogue.fontSize = (int)(Camera.main.pixelHeight * 0.05f);
         quoteSR = quoteBox.GetComponent<SpriteRenderer>();
     }
 
