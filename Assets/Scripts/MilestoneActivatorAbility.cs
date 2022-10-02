@@ -9,6 +9,11 @@ public class MilestoneActivatorAbility : MilestoneActivator
 
     public override void activateEffect()
     {
+        if (string.IsNullOrEmpty(abilityTypeName))
+        {
+            Debug.LogError($"Invalid ability type name: {abilityTypeName}");
+            return;
+        }
         PlayerAbility pa = ((PlayerAbility)Managers.Player.GetComponent(abilityTypeName));
         if (canGrantAbility && !pa.Unlocked)
         {

@@ -28,7 +28,7 @@ public class DialogueBoxUpdater : MonoBehaviour
     private Transform source;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         quoteSR = quoteBox.GetComponent<SpriteRenderer>();
     }

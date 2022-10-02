@@ -93,12 +93,14 @@ public class EventManager : MonoBehaviour
     public void playDialogue(DialoguePath path)
     {
         DialogueBoxUpdater dbu = Instantiate(dialogueBoxPrefab).GetComponent<DialogueBoxUpdater>();
+        dbu.Start();
         this.dialogueBox = dbu;
         this.currentDialoguePath = path;
         this.quoteIndex = 0;
         Quote q = path.quotes[this.quoteIndex];
+        Character ch = Character.getCharacterByName(q.characterName);
+        dbu.setSource(ch.transform);
         dbu.setText(q.text);
-        dbu.setSource(Character.getCharacterByName(q.characterName).transform);
         //if (dialoguePlayer.Playing)
         //{
         //    return;
