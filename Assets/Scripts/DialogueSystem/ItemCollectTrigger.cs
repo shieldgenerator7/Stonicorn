@@ -32,7 +32,7 @@ public class ItemCollectTrigger : EventTrigger
         //Find dialogue path by its title
         if (HasTitle)
         {
-            Managers.Event.playDialogue(title);
+            Managers.Event.processEventTrigger(this);
         }
         else
         {

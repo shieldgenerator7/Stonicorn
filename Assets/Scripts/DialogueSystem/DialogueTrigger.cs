@@ -28,15 +28,6 @@ public class DialogueTrigger : EventTrigger
 
     protected override void triggerEvent()
     {
-        //Find dialogue path by its title
-        if (HasTitle)
-        {
-            Managers.Event.playDialogue(title);
-        }
-        //Find dialogue path by characters
-        else
-        {
-            Managers.Event.playDialogue(characters);
-        }
+        Managers.Event.processEventTrigger(this);
     }
 }
