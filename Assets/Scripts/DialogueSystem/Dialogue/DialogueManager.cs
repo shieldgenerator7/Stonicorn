@@ -10,13 +10,16 @@ using UnityEngine.SceneManagement;
 public class DialogueManager : MonoBehaviour
 {
     [Header("Settings")]
+    public string dialogueResourceFolder = "Dialogues";
     public string dialogueResourceName = "dialogues";
 
     private DialogueData dialogueData;
 
     private void Awake()
     {
-        string jsonString = Resources.Load<TextAsset>(dialogueResourceName).text;
+        string jsonString = Resources.Load<TextAsset>(
+            $"{dialogueResourceFolder}/{dialogueResourceName}"
+            ).text;
         dialogueData = JsonUtility.FromJson<DialogueData>(jsonString);
         dialogueData.dialogues.ForEach(d => d.inflate());
         //dialoguePlayer.onDialogueEnded += takeActions;
