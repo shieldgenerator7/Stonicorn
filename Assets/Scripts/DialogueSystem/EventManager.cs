@@ -8,9 +8,7 @@ public class EventManager : MonoBehaviour
 {
     public GameObject dialogueBoxPrefab;
 
-    private DialoguePath currentDialoguePath;
     private DialogueBoxUpdater dialogueBox;
-    private int quoteIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +24,7 @@ public class EventManager : MonoBehaviour
 
     public void processEventTrigger(EventTrigger trigger)
     {
-        if (!(currentDialoguePath != null))
+        if (!dialogueBox)
         {
             if (trigger.HasTitle)
             {
@@ -92,19 +90,21 @@ public class EventManager : MonoBehaviour
 
     public void playDialogue(DialoguePath path)
     {
+        //Setup dbu
         DialogueBoxUpdater dbu = Instantiate(dialogueBoxPrefab).GetComponent<DialogueBoxUpdater>();
         dbu.Start();
         this.dialogueBox = dbu;
-        this.currentDialoguePath = path;
-        this.quoteIndex = 0;
-        Quote q = path.quotes[this.quoteIndex];
+        Quote q = path.quotes[0];
         Character ch = Character.getCharacterByName(q.characterName);
         dbu.setSource(ch.transform);
-        dbu.setText(q.text);
-        //if (dialoguePlayer.Playing)
-        //{
-        //    return;
-        //}
-        //dialoguePlayer.playDialogue(path);
+        //Setup dp
+        DialoguePlayer dp = dbu.GetComponent<DialoguePlayer>();
+        dp.onDialogueChanged += dbu.setText;
+        //dp.onDialogueAdvanced += (quote) => dbu.setSource(Character.getCharacterByName(quote.characterName));
+        dp.playDialogue(path);
+        dp.onDialogueEnded += (path) =>
+        {
+            Destroy(dbu.gameObject);
+        };
     }
 }
