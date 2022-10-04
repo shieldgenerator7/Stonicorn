@@ -104,7 +104,9 @@ public class EventManager : MonoBehaviour
         dp.playDialogue(path);
         dp.onDialogueEnded += (path) =>
         {
+            dbu.setText("");
             Destroy(dbu.gameObject);
+            Managers.Dialogue.takeActions(path);
         };
     }
 }

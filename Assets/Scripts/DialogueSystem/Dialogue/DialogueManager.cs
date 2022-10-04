@@ -81,7 +81,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void takeActions(DialoguePath path)
+    public void takeActions(DialoguePath path)
     {
         path.actions.ForEach(a => takeAction(a));
     }
