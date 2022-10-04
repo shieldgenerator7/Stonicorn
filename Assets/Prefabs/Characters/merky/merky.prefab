@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 21235352}
   - component: {fileID: 5068768}
   - component: {fileID: 6075330}
+  - component: {fileID: 2524260793796516660}
   - component: {fileID: 11477714}
   - component: {fileID: 1792176476}
   - component: {fileID: 2397303777831740310}
@@ -190,6 +191,19 @@ PolygonCollider2D:
       - {x: -0.2734375, y: -0.2421875}
       - {x: -0.26953125, y: -0.23828125}
   m_UseDelaunayMesh: 0
+--- !u!114 &2524260793796516660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb914b3be499852479ef4a65144ad56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Merky
 --- !u!114 &11477714
 MonoBehaviour:
   m_ObjectHideFlags: 0
