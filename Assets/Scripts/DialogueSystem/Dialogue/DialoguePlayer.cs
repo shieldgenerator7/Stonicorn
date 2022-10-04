@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
 /// Plays dialogue
@@ -12,23 +10,25 @@ public class DialoguePlayer : MonoBehaviour
 {
     [Tooltip("Determines how fast to display the quote")]
     public float charsPerSecond = 10;
-
-    public Canvas dialogueCanvas;
-    public Image charPortrait;
-    public TMP_Text charName;
-    public TMP_Text charQuote;
-    public Image imgDiamond;
-
-    public AudioClip endDialogueSound;
+    [Tooltip(
+        "How many seconds should it wait before it auto-advances after the current quote finishes? " +
+        "-1 to disable."
+        )]
+    public float autoAdvanceDelay = 1;
 
     private int index = 0;
     private DialoguePath path;
 
-    public delegate void DialogueDelegate(DialoguePath path);
-    public DialogueDelegate onDialogueStarted;
-    public DialogueDelegate onDialogueEnded;
+    public delegate void DialoguePathDelegate(DialoguePath path);
+    public DialoguePathDelegate onDialogueStarted;
+    public DialoguePathDelegate onDialogueEnded;
+
+    public delegate void DialogueDelegate(string dialogue);
+    public event DialogueDelegate onDialogueChanged;
+    public event DialogueDelegate onDialogueAdvanced;
 
     private float revealStartTime = -1;
+    private string revealedString = "";
 
     public bool Playing => path != null && index >= 0;
     public Quote CurrentQuote
@@ -37,17 +37,19 @@ public class DialoguePlayer : MonoBehaviour
     {
         get =>
             //yes, it is "fully revealed" if there is no selected quote yet
-            index < 0 
+            index < 0
             //but also if all characters should be shown
             || RevealedCharacterCount >= CurrentQuote.text.Length;
         set
         {
             if (value)
             {
+                //Fully reveal
                 revealStartTime = -1;
             }
             else
             {
+                //Fully hide
                 revealStartTime = Time.time;
             }
         }
@@ -56,42 +58,43 @@ public class DialoguePlayer : MonoBehaviour
     public int RevealedCharacterCount
         => (int)((Time.time - revealStartTime) * charsPerSecond);
 
+    /// <summary>
+    /// Amount of time elapsed since it has been fully revealed. Returns a negative number if it's not fully revealed
+    /// </summary>
+    public float RevealedTime
+        => Time.time - (revealStartTime + (CurrentQuote.text.Length / charsPerSecond));
+
     public void playDialogue(DialoguePath path)
     {
+        //error checking
+        if (!(path?.quotes.Count > 0))
+        {
+            Debug.LogError(
+                $"Cannot call playDialogue() with null path! path: {path}. " +
+                $"Call stopDialogue() instead",
+                this
+                );
+            return;
+        }
+        //
         index = -1;//will be incremented in advanceDialogue()
         this.path = path;
+        //OnStart delegate
         onDialogueStarted?.Invoke(path);
-        if (path.quotes.Count > 0)
-        {
-            //UI
-            this.enabled = true;
-            dialogueCanvas.gameObject.SetActive(true);
-            //Show the first quote
-            advanceDialogue();
-            //Subscribe to Interact button
-            Managers.Player.Teleport.onTeleport += onTeleportAdvanceDialogue;
-        }
-        else
-        {
-            stopDialogue();
-        }
+        //UI
+        this.enabled = true;
+        //Show the first quote
+        advanceDialogue();
     }
 
     public void stopDialogue()
     {
         //UI
         this.enabled = false;
-        dialogueCanvas.gameObject.SetActive(false);
+        //OnStop delegate
         onDialogueEnded?.Invoke(path);
-        //Unsubscribe from Interact button
-        Managers.Player.Teleport.onTeleport -= onTeleportAdvanceDialogue;
         //Unset path
         this.path = null;
-        //Sound
-        AudioSource.PlayClipAtPoint(
-            endDialogueSound,
-            FindObjectOfType<PlayerController>().transform.position
-            );
     }
 
     // Update is called once per frame
@@ -99,14 +102,18 @@ public class DialoguePlayer : MonoBehaviour
     {
         if (Playing)
         {
-            imgDiamond.enabled = FullyRevealed;
-            displayQuoteText(CurrentQuote.text);
+            string prevRevealedString = revealedString;
+            revealedString = RevealedString;
+            if (prevRevealedString != revealedString)
+            {
+                onDialogueChanged?.Invoke(revealedString);
+            }
+            //Debug.Log($"RevealedTime: {RevealedTime}");
+            else if (autoAdvanceDelay >= 0 && RevealedTime >= autoAdvanceDelay)
+            {
+                advanceDialogue();
+            }
         }
-    }
-
-    void onTeleportAdvanceDialogue(Vector2 oldPos, Vector2 newPos)
-    {
-        advanceDialogue();
     }
 
     void advanceDialogue()
@@ -116,6 +123,8 @@ public class DialoguePlayer : MonoBehaviour
         {
             //Show all the characters
             FullyRevealed = true;
+            //Dialogue delegates
+            onDialogueChanged?.Invoke(RevealedString);
             //Consume event
             return;
         }
@@ -127,59 +136,51 @@ public class DialoguePlayer : MonoBehaviour
         }
         //Reset timer
         revealStartTime = Time.time;
-        //Continue diamond image
-        imgDiamond.enabled = false;
-        //Display quote
-        displayQuote(CurrentQuote);
+        //Dialogue delegates
+        onDialogueAdvanced?.Invoke(CurrentQuote.text);
+        onDialogueChanged?.Invoke(RevealedString);
     }
 
-    private void displayQuote(Quote quote)
+    public string RevealedString
     {
-        charPortrait.sprite = Resources.Load<Sprite>($"DialogueFaces/{quote.ImageName}");
-        charName.text = quote.characterName;
-        displayQuoteText(quote.text);
-    }
-    private void displayQuoteText(string text)
-    {
-        charQuote.text = getRevealedString(text);
-    }
-
-    public string getRevealedString(string quoteString)
-    {
-        int charCount = RevealedCharacterCount;
-        if (charCount >= quoteString.Length)
+        get
         {
-            return quoteString;
-        }
-        string builtString = "";
-        bool inTag = false;
-        int length = 0;
-        for (int i = 0; i < quoteString.Length; i++)
-        {
-            builtString += quoteString[i];
-            if (inTag)
+            string quoteString = CurrentQuote.text;
+            int charCount = RevealedCharacterCount;
+            if (charCount >= quoteString.Length)
             {
-                if (quoteString[i] == '>')
+                return quoteString;
+            }
+            string builtString = "";
+            bool inTag = false;
+            int length = 0;
+            for (int i = 0; i < quoteString.Length; i++)
+            {
+                builtString += quoteString[i];
+                if (inTag)
                 {
-                    inTag = false;
+                    if (quoteString[i] == '>')
+                    {
+                        inTag = false;
+                    }
+                }
+                else
+                {
+                    length++;
+                    if (quoteString[i] == '<')
+                    {
+                        inTag = true;
+                    }
+                }
+                //If we got enough characters,
+                if (length >= charCount)
+                {
+                    //we got our revealed string
+                    break;
                 }
             }
-            else
-            {
-                length++;
-                if (quoteString[i] == '<')
-                {
-                    inTag = true;
-                }
-            }
-            //If we got enough characters,
-            if (length >= charCount)
-            {
-                //we got our revealed string
-                break;
-            }
+            return builtString;
         }
-        return builtString;
     }
 
 }

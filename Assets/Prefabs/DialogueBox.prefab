@@ -4982,6 +4982,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8970004901470342809}
   - component: {fileID: 3445677009343038090}
+  - component: {fileID: 7295824138714031038}
   m_Layer: 0
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -5029,6 +5030,20 @@ MonoBehaviour:
   quoteBox: {fileID: 3842306251735314271}
   quoteBoxTail: {fileID: 4555845559030309252}
   source: {fileID: 0}
+--- !u!114 &7295824138714031038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3668902425520989893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12b2b82299483ca42adecb988004beb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charsPerSecond: 10
+  autoAdvanceDelay: 1
 --- !u!1 &3842306251735314271
 GameObject:
   m_ObjectHideFlags: 0
