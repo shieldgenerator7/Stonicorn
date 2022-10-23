@@ -5,18 +5,18 @@ using UnityEngine;
 /// <summary>
 /// Triggers a dialogue cutscene
 /// </summary>
-[DisallowMultipleComponent]
 public class DialogueTrigger : EventTrigger
 {
     public List<string> characters;
 
-    public VariableSetTrigger variableSetTrigger { get; private set; }
+    [Tooltip("The variable actions to take before triggering this dialogue")]
+    public VariableSetAction variableSetAction;
 
     public override bool Interactable
     {
         get
         {
-            if (variableSetTrigger)
+            if (variableSetAction)
             {
                 return true;
             }
@@ -33,19 +33,9 @@ public class DialogueTrigger : EventTrigger
         }
     }
 
-    protected override void Start()
-    {
-        base.Start();
-        variableSetTrigger = GetComponent<VariableSetTrigger>();
-        if (variableSetTrigger)
-        {
-            variableSetTrigger.autoTrigger = false;
-        }
-    }
-
     protected override void triggerEvent()
     {
-        variableSetTrigger?.triggerEventFromDialogueTrigger(this);
+        variableSetAction?.processAllActions();
         Managers.Event.processEventTrigger(this);
     }
 }

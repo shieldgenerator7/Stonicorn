@@ -2,28 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(VariableSetAction))]
 public class VariableSetTrigger : EventTrigger
 {
-    public string variableName;
-    public int value;
+    public VariableSetAction variableSetAction;
 
-    public bool autoTrigger { get; set; } = true;
-
-    protected override void triggerEvent()
+    protected override void checkErrors()
     {
-        if (autoTrigger)
+        base.checkErrors();
+        if (!variableSetAction)
         {
-            Managers.Progress.set(variableName, value);
+            Debug.LogError($"VariableSetTrigger doesn't have a variableSetAction! {variableSetAction}");
         }
     }
 
-    public void triggerEventFromDialogueTrigger(DialogueTrigger trigger)
+    protected override void triggerEvent()
     {
-        if (trigger.variableSetTrigger == this)
-        {
-            autoTrigger = true;
-            triggerEvent();
-            autoTrigger = false;
-        }
+        variableSetAction.processAllActions();
     }
 }
