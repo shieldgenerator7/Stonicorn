@@ -28,17 +28,28 @@ public class EventManager : MonoBehaviour
         {
             if (trigger.HasTitle)
             {
+                Debug.Log($"Event: playing trigger with title: {trigger.title}");
                 playDialogue(Managers.Dialogue.getDialogue(trigger.title));
             }
             else
             {
                 if (trigger is DialogueTrigger)
                 {
-                    playDialogue(Managers.Dialogue.getDialogue(
-                        ((DialogueTrigger)trigger).characters
-                        ));
+                    DialogueTrigger dialogueTrigger = ((DialogueTrigger)trigger);
+                    string charStr = "";
+                    dialogueTrigger.characters.ForEach(chr => charStr += $"{chr}, ");
+                    Debug.Log($"Event: playing trigger with characters: {charStr}");
+                    DialoguePath path = Managers.Dialogue.getDialogue(
+                        dialogueTrigger.characters
+                        );
+                    Debug.Log($"Event: path: {path?.title ?? "[none]"}");
+                    playDialogue(path);
                 }
             }
+        }
+        else
+        {
+            Debug.Log($"Event: not playing trigger because dialogueBox already exists");
         }
     }
 
