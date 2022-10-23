@@ -13,7 +13,7 @@ public abstract class EventTrigger : MemoryMonoBehaviour
 
     public virtual bool Interactable => true;
 
-    public bool HasTitle => !string.IsNullOrEmpty(title);
+    public bool HasTitle => !string.IsNullOrWhiteSpace(title);
 
     private Collider2D coll2d;
 

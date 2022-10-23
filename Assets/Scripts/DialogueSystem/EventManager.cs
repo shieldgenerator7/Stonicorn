@@ -90,6 +90,10 @@ public class EventManager : MonoBehaviour
 
     public void playDialogue(DialoguePath path)
     {
+        if (path == null)
+        {
+            return;
+        }
         //Setup dbu
         DialogueBoxUpdater dbu = Instantiate(dialogueBoxPrefab).GetComponent<DialogueBoxUpdater>();
         dbu.Start();
