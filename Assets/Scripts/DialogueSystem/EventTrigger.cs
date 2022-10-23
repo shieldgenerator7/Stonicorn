@@ -40,6 +40,22 @@ public abstract class EventTrigger : MonoBehaviour
     {
         if (coll.isPlayerSolid())
         {
+            if (!Managers.Time.Paused)
+            {
+                triggerEvent();
+            }
+            else
+            {
+                Managers.Time.onPauseChanged += triggerEventOnPlay;
+            }
+        }
+    }
+
+    private void triggerEventOnPlay(bool paused)
+    {
+        if (!paused)
+        {
+            Managers.Time.onPauseChanged -= triggerEventOnPlay;
             triggerEvent();
         }
     }
