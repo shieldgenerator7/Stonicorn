@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ProgressManager
@@ -96,6 +97,13 @@ public class ProgressManager
     //        }
     //    }
     //}
+
+    public List<string> getVariableValues()
+    {
+        List<string> varVals = data.ToArray().ToList()
+            .ConvertAll(kvp => $"{kvp.Key} = {kvp.Value}");
+        return varVals;
+    }
 
     public void printVariables()
     {
