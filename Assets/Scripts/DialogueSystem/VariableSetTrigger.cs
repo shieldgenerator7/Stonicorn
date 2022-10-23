@@ -7,8 +7,23 @@ public class VariableSetTrigger : EventTrigger
     public string variableName;
     public int value;
 
+    public bool autoTrigger { get; set; } = true;
+
     protected override void triggerEvent()
     {
-        Managers.Progress.set(variableName, value);
+        if (autoTrigger)
+        {
+            Managers.Progress.set(variableName, value);
+        }
+    }
+
+    public void triggerEventFromDialogueTrigger(DialogueTrigger trigger)
+    {
+        if (trigger.variableSetTrigger == this)
+        {
+            autoTrigger = true;
+            triggerEvent();
+            autoTrigger = false;
+        }
     }
 }
