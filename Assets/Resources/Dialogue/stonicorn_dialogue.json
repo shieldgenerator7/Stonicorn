@@ -110,6 +110,11 @@
           "variableName": "checkCoreTemp",
           "actionType": 0,
           "actionValue": 1
+        },
+        {
+          "variableName": "day",
+          "actionType": 0,
+          "actionValue": 1
         }
       ]
     },
@@ -125,6 +130,11 @@
           "variableName": "checkCoreTemp",
           "testType": 0,
           "testValue": 1
+        },
+        {
+          "variableName": "shaftPos",
+          "testType": 0,
+          "testValue": 3
         }
       ],
       "quotes": [
@@ -147,6 +157,16 @@
       "conditions": [
         {
           "variableName": "checkCoreTemp",
+          "testType": 0,
+          "testValue": 2
+        },
+        {
+          "variableName": "day",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "shaftPos",
           "testType": 0,
           "testValue": 2
         }
