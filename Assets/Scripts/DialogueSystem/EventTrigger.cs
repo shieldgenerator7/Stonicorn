@@ -6,7 +6,7 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D))]
-public abstract class EventTrigger : MemoryMonoBehaviour
+public abstract class EventTrigger : MonoBehaviour
 {
     [Tooltip("The title of the dialogue path to play")]
     public string title;
@@ -36,13 +36,12 @@ public abstract class EventTrigger : MemoryMonoBehaviour
         }
     }
 
-    protected override void nowDiscovered()
+    private void OnTriggerEnter2D(Collider2D coll)
     {
-        triggerEvent();
-    }
-
-    protected override void previouslyDiscovered()
-    {
+        if (coll.isPlayerSolid())
+        {
+            triggerEvent();
+        }
     }
 
     protected abstract void triggerEvent();
