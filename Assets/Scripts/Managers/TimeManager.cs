@@ -22,16 +22,10 @@ public class TimeManager : SavableMonoBehaviour
         {
             time = value;
             lastCheckedTime = UnityEngine.Time.time;
-            if (endGameTimer)
-            {
-                endGameTimer.Active = true;
-                endGameTimer.overrideStartTime(0);
-            }
         }
     }
     private float lastCheckedTime;//the Time.time point that it last checked for program time
 
-    public Timer endGameTimer;
 
     public bool Paused
     {
