@@ -110,7 +110,6 @@ public class GameManager : MonoBehaviour
                 Managers.Camera.cameraZoomSpeed = (open) ? 5 : 1.5f;
             };
         //Time delegates
-        Managers.Time.onPauseChanged += Managers.NPC.pauseCurrentNPC;
         Managers.Time.onPauseChanged += (paused) =>
         {
 #if UNITY_EDITOR
@@ -174,8 +173,6 @@ public class GameManager : MonoBehaviour
         //File delegates
         Managers.File.onFileSave += Managers.Settings.saveSettings;
         Managers.File.onFileLoad += Managers.Settings.loadSettings;
-        //NPC delegates
-        Managers.NPC.onNPCSpeakingChanged += (speaking) => Managers.Music.Quiet = !speaking;
     }
 
     // Update is called once per frame
@@ -201,11 +198,6 @@ public class GameManager : MonoBehaviour
                 Managers.Scene.checkScenes();
                 //Camera screen dimensions
                 Managers.Camera.checkScreenDimensions();
-                //NPC Dialogue
-                if (Managers.NPC.enabled)
-                {
-                    Managers.NPC.processDialogue();
-                }
                 //Music Fade
                 Managers.Music.processFade();
             }

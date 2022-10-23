@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2859978935190022698}
   - component: {fileID: 5270741036896818801}
   - component: {fileID: 2859978935190022867}
-  - component: {fileID: 2859978935190022864}
   - component: {fileID: 5898409314609114241}
   - component: {fileID: 4159430573843667809}
   - component: {fileID: 2859978935190022878}
@@ -4691,24 +4690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e363b7df0cecae740b4a61c6bf8acc06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2859978935190022864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2859978935190022699}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4d941dec3b194b4b9d810fb9e930ed4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  npcTalkEffect: {fileID: 0}
-  npcDialogueText: {fileID: 0}
-  canvas: {fileID: 0}
-  npcQuoteBox: {fileID: 0}
-  npcQuoteBoxTail: {fileID: 0}
-  baseCameraScalePoint: 2
 --- !u!114 &5898409314609114241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4749,7 +4730,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
-  endGameTimer: {fileID: 0}
   slowTimeSpeed: 0.2
 --- !u!114 &2859978935190022872
 MonoBehaviour:

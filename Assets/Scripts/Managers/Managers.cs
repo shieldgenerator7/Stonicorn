@@ -20,9 +20,6 @@ public class Managers : MonoBehaviour
     //Gesture Manager
     public static GestureManager Gesture { get; private set; }
 
-    //NPC Manager
-    public static NPCManager NPC { get; private set; }
-
     //Dialogue Manager
     public static DialogueManager Dialogue { get; private set; }
 
@@ -156,7 +153,6 @@ public class Managers : MonoBehaviour
         //Populate other managers
         Game = FindObjectOfType<GameManager>();
         Gesture = FindObjectOfType<GestureManager>();
-        NPC = GetComponent<NPCManager>();
         Dialogue = GetComponent<DialogueManager>();
         Progress = new ProgressManager();
         Event = FindObjectOfType<EventManager>();
