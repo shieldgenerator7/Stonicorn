@@ -19,8 +19,16 @@ public class Character : MonoBehaviour
         }
         if (charMap.ContainsKey(characterName) && charMap[characterName] != this)
         {
-            Debug.LogError($"Character name already in map! {characterName}", this);
-            return;
+            Character character = charMap[characterName];
+            if (character != null && !ReferenceEquals(character, null))
+            {
+                Debug.LogError($"Character name already in map! {characterName}", this);
+                return;
+            }
+            else
+            {
+                charMap.Remove(characterName);
+            }
         }
         charMap.Add(characterName, this);
     }
