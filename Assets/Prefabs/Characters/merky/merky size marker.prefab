@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 21232124}
   - component: {fileID: 50676167309274048}
   - component: {fileID: 60428431802213692}
-  - component: {fileID: 114557904908406206}
   - component: {fileID: 82398419077081308}
   - component: {fileID: -986511111547633234}
   m_Layer: 0
@@ -106,6 +105,12 @@ Rigidbody2D:
   m_AngularDrag: 2.5
   m_GravityScale: 0
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -120,6 +125,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -178,22 +202,6 @@ PolygonCollider2D:
       - {x: -0.2734375, y: -0.2421875}
       - {x: -0.26953125, y: -0.23828125}
   m_UseDelaunayMesh: 0
---- !u!114 &114557904908406206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 115800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baec8ceac9609dc448cadd3efa4966cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineFileName: 
-  interruptDistance: 10
-  currentVoiceLineIndex: -1
-  lastPlayedCheckPointLineIndex: -1
 --- !u!82 &82398419077081308
 AudioSource:
   m_ObjectHideFlags: 0

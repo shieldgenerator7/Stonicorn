@@ -143,13 +143,12 @@ MonoBehaviour:
   m_ColliderDetail: 16
   m_ColliderOffset: 0
   m_UpdateCollider: 1
-  m_OptimizeCollider: 1
-  m_OptimizeGeometry: 1
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
   m_Creator: {fileID: 0}
   m_Modifiers: []
+  m_ColliderSegment: []
 --- !u!60 &679778901
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -160,6 +159,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -200,7 +218,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
@@ -264,10 +282,12 @@ PrefabInstance:
       value: -0.2687888
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 434596, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
       insertIndex: -1
       addedObject: {fileID: 679778900}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 3}
 --- !u!4 &7590842321950687990 stripped
 Transform:

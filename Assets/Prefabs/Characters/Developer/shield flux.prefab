@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8015733771763440040}
   - component: {fileID: 8015733771763440087}
   - component: {fileID: 8015733771763440086}
-  - component: {fileID: 8015733771763440085}
   - component: {fileID: 8015733771763440084}
   m_Layer: 0
   m_Name: shield flux
@@ -105,6 +104,12 @@ Rigidbody2D:
   m_AngularDrag: 2.5
   m_GravityScale: 0
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -119,6 +124,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -180,22 +204,6 @@ PolygonCollider2D:
       - {x: -0.01171875, y: -0.32421875}
       - {x: -0.00390625, y: -0.3203125}
   m_UseDelaunayMesh: 0
---- !u!114 &8015733771763440085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8015733771763440083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baec8ceac9609dc448cadd3efa4966cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineFileName: Credits.txt
-  interruptDistance: 10
-  currentVoiceLineIndex: -1
-  lastPlayedCheckPointLineIndex: -1
 --- !u!82 &8015733771763440084
 AudioSource:
   m_ObjectHideFlags: 0
