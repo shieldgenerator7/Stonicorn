@@ -511,7 +511,8 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Show or Hide All Colliders %&c")]
     public static void showHideAllColliders()
     {
-        Physics2D.alwaysShowColliders = !Physics2D.alwaysShowColliders;
+        //Physics2D.alwaysShowColliders = !Physics2D.alwaysShowColliders;
+        Debug.LogError("Physics2D.alwaysShowColliders was deprecated! :(");
     }
 
     [MenuItem("SG7/Editor/Log Objects %l")]
