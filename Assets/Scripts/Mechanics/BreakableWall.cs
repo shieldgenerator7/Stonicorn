@@ -99,8 +99,9 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
         Rigidbody2D rb2d = coll.gameObject.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
-            float force = rb2d.velocity.magnitude * rb2d.mass;
-            float damage = checkForce(force, rb2d.velocity);
+            Vector2 relativeVelocity = coll.relativeVelocity;
+            float force = relativeVelocity.magnitude * rb2d.mass;
+            float damage = checkForce(force, relativeVelocity);
             //Show Collision Effect
             float hitPercentage = damage * 100 / maxIntegrity;
             Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
