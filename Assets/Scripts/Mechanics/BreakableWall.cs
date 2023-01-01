@@ -8,11 +8,11 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
     public float minForceThreshold = 2.5f;//the minimum amount of force required to crack it
     public float maxForceThreshold = 50;//the maximum amount of force consumed per damage
     [Range(1, 10)]
-    public int maxIntegrity = 3;
+    public float maxIntegrity = 3;
     [SerializeField]
     [Range(0, 10)]
-    private int integrity = 0;
-    public int Integrity
+    private float integrity = 0;
+    public float Integrity
     {
         get => integrity;
         set
@@ -27,7 +27,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
                     {
                         sr = GetComponent<SpriteRenderer>();
                     }
-                    int index = Mathf.Clamp(
+                    int index = (int)Mathf.Clamp(
                         maxIntegrity - integrity,
                         0,
                         crackStages.Count - 1
@@ -125,7 +125,8 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
     {
         if (force >= minForceThreshold)
         {
-            int damage = Mathf.Max(1, Mathf.FloorToInt(force / maxForceThreshold));
+            float thresholdRange = maxForceThreshold - minForceThreshold;
+            float damage = maxIntegrity * ((force - minForceThreshold) / thresholdRange);
             Integrity -= damage;
             return damage;
         }
