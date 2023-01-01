@@ -7,10 +7,10 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
 {
     public float minForceThreshold = 2.5f;//the minimum amount of force required to crack it
     public float maxForceThreshold = 50;//the maximum amount of force consumed per damage
-    [Range(1, 10)]
+    [Range(1, 100)]
     public float maxIntegrity = 3;
     [SerializeField]
-    [Range(0, 10)]
+    [Range(0, 100)]
     private float integrity = 0;
     public float Integrity
     {

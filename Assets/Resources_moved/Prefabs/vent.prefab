@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2261415960315624797
 SpriteRenderer:
@@ -144,9 +144,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025df3c7c82fe4e47bf273fa4b907437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minForceThreshold: 2.5
-  maxForceThreshold: 50
-  maxIntegrity: 2
+  minForceThreshold: 250
+  maxForceThreshold: 800
+  maxIntegrity: 100
   integrity: 0
   crackedPrefab: {fileID: 0}
   crackStages: []
