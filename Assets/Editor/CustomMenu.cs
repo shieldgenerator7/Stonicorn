@@ -1160,7 +1160,7 @@ public class CustomMenu
 
     public static string getDefaultBuildPath()
     {
-        return $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/Unity/Stoned Builds/Builds/{PlayerSettings.productName}_{PlayerSettings.bundleVersion.Replace(".", "_")}";
+        return $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/Unity/Stonicorn/Builds/{PlayerSettings.productName}_{PlayerSettings.bundleVersion.Replace(".", "_")}";
     }
     public static string getBuildNamePath(string extension, bool checkFolderExists = true)
     {
