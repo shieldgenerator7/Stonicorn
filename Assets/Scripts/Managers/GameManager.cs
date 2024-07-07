@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 
@@ -111,10 +110,17 @@ public class GameManager : MonoBehaviour
                 Managers.Camera.cameraZoomSpeed = (open) ? 5 : 1.5f;
             };
         //Time delegates
-        Managers.Time.onPauseChanged += Managers.NPC.pauseCurrentNPC;
         Managers.Time.onPauseChanged += (paused) =>
+        {
+#if UNITY_EDITOR
+            if (Managers.DemoMode.DemoMode && Cursor.lockState == CursorLockMode.None)
+            {
+                return;
+            }
+#endif
             Cursor.lockState = (paused) ? CursorLockMode.None : CursorLockMode.Confined;
         Managers.Time.endGameTimer.onTimeFinished += Managers.Rewind.RewindToStart;
+        };
         //Rewind delegates
         Managers.Rewind.onGameStateSaved += Managers.Scene.updateSceneLoadersForward;
         Managers.Rewind.onRewindStarted += processRewindStart;
@@ -131,16 +137,22 @@ public class GameManager : MonoBehaviour
                 int gameStateId = Managers.Rewind.GameStateId;
                 if (soi.spawnStateId > gameStateId)
                 {
-                    Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
-                        "is too late! Destroying permananetly. Created at " + soi.spawnStateId + " after " + gameStateId, go);
+                    Debug.Log(
+                        $"Recreation of object {go.name}({soi.Id}) is too late! " +
+                        $"Destroying permanently. Created at {soi.spawnStateId} after {gameStateId}",
+                        go
+                        );
                     //(it's possible for an object recreation to be finished
                     //after it should have been rewound out of existence)
                     Managers.Object.destroyAndForgetObject(go);
                 }
                 else if (soi.destroyStateId < gameStateId)
                 {
-                    Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
-                        "is too early! Destroying. Destroyed at " + soi.destroyStateId + " before " + gameStateId, go);
+                    Debug.Log(
+                        $"Recreation of object {go.name}({soi.Id}) is too early! " +
+                        $"Destroying. Destroyed at {soi.destroyStateId} before {gameStateId}",
+                        go
+                        );
                     //Destroy this object because it's still after it was originally destroyed
                     Managers.Object.destroyObject(go);
                 }
@@ -152,15 +164,16 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Recreation of object " + go.name + "(" + soi.Id + ") " +
-                        "is ok. GameState Id: " + Managers.Rewind.GameStateId, go);
+                    Debug.Log(
+                        $"Recreation of object {go.name}({soi.Id}) is ok. " +
+                        $"GameState Id: {Managers.Rewind.GameStateId}",
+                        go
+                        );
                 }
             };
         //File delegates
         Managers.File.onFileSave += Managers.Settings.saveSettings;
         Managers.File.onFileLoad += Managers.Settings.loadSettings;
-        //NPC delegates
-        Managers.NPC.onNPCSpeakingChanged += (speaking) => Managers.Music.Quiet = !speaking;
     }
 
     // Update is called once per frame
@@ -186,11 +199,6 @@ public class GameManager : MonoBehaviour
                 Managers.Scene.checkScenes();
                 //Camera screen dimensions
                 Managers.Camera.checkScreenDimensions();
-                //NPC Dialogue
-                if (Managers.NPC.enabled)
-                {
-                    Managers.NPC.processDialogue();
-                }
                 //Music Fade
                 Managers.Music.processFade();
             }

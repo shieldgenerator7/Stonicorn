@@ -49,8 +49,9 @@ public class SceneSavableList : MonoBehaviour
         //Save
         EditorUtility.SetDirty(gameObject);
         Debug.Log(
-            "Found " + savables.Count + " savables and " + memories.Count
-            + " memories in scene " + gameObject.scene.name,
+            $"Found {savables.Count} savables " +
+            $"and {memories.Count} memories " +
+            $"in scene {gameObject.scene.name}",
             gameObject
             );
     }

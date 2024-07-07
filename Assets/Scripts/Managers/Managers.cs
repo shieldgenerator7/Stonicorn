@@ -20,12 +20,15 @@ public class Managers : MonoBehaviour
     //Gesture Manager
     public static GestureManager Gesture { get; private set; }
 
-    //NPC Manager
-    public static NPCManager NPC { get; private set; }
+    //Dialogue Manager
+    public static DialogueManager Dialogue { get; private set; }
 
-    //Game Event Manager
+    //Progress Manager
+    public static ProgressManager Progress { get; private set; }
+
+    //Event Manager
     //Used to store which NPC voicelines have been played
-    public static GameEventManager Event { get; private set; }
+    public static EventManager Event { get; private set; }
 
     //Game Statistics
     //Keeps track of how many times everything has happened
@@ -153,8 +156,9 @@ public class Managers : MonoBehaviour
         //Populate other managers
         Game = FindObjectOfType<GameManager>();
         Gesture = FindObjectOfType<GestureManager>();
-        NPC = GetComponent<NPCManager>();
-        Event = FindObjectOfType<GameEventManager>();
+        Dialogue = GetComponent<DialogueManager>();
+        Progress = new ProgressManager();
+        Event = FindObjectOfType<EventManager>();
         Stats = FindObjectOfType<GameStatistics>();
         Time = FindObjectOfType<TimeManager>();
         Rewind = FindObjectOfType<RewindManager>();
