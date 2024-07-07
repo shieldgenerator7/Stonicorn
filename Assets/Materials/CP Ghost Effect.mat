@@ -2,20 +2,26 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CP Ghost Effect
   m_Shader: {fileID: 4800000, guid: 546ed2eb115a07c45ae40bc130626f58, type: 3}
-  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _EMISSION
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - ETC1_EXTERNAL_ALPHA
+  - _EMISSION
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -37,3 +43,4 @@ Material:
     m_Colors:
     - <noninit>: {r: 0, g: 9.462927e-35, b: 0, a: 9.46289e-35}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
