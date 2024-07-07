@@ -7343,8 +7343,8 @@ SpriteShapeRenderer:
   m_ShapeTexture: {fileID: 2800000, guid: c5b2df9fb92399c418251d20b4f5830a, type: 3}
   m_Sprites: []
   m_LocalAABB:
-    m_Center: {x: 0.00018310547, y: 0, z: 0}
-    m_Extent: {x: 550.0802, y: 550.08, z: 0}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 550.08, y: 550.08, z: 0}
   m_SpriteSortPoint: 0
 --- !u!4 &1048347776
 Transform:
@@ -9842,6 +9842,38 @@ PrefabInstance:
       propertyPath: playerAbility
       value: 
       objectReference: {fileID: 1792176471}
+    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_Points.Array.size
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_Points.Array.data[7].y
+      value: -0.116992794
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_Points.Array.data[9].y
+      value: -0.867806
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_Points.Array.data[17].y
+      value: -2.4463782
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_Points.Array.data[45].x
+      value: -0.6448643
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_Points.Array.data[45].y
+      value: 2.831009
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495255726360166130, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_LocalAABB.m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495255726360166130, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_LocalAABB.m_Extent.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3915830671258936401, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: playerAbility
       value: 
@@ -9957,30 +9989,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 2859978935190022864, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
-      propertyPath: canvas
-      value: 
-      objectReference: {fileID: 1267262434}
-    - target: {fileID: 2859978935190022864, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
-      propertyPath: npcQuoteBox
-      value: 
-      objectReference: {fileID: 74092486}
-    - target: {fileID: 2859978935190022864, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
-      propertyPath: npcTalkEffect
-      value: 
-      objectReference: {fileID: 534039102}
-    - target: {fileID: 2859978935190022864, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
-      propertyPath: npcDialogueText
-      value: 
-      objectReference: {fileID: 69792880}
-    - target: {fileID: 2859978935190022864, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
-      propertyPath: npcQuoteBoxTail
-      value: 
-      objectReference: {fileID: 684612215}
-    - target: {fileID: 2859978935190022869, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2859978935190022869, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -69
@@ -10049,14 +10057,6 @@ PrefabInstance:
       propertyPath: 'sceneLoaders.Array.data[6]'
       value: 
       objectReference: {fileID: 670661346}
-    - target: {fileID: 2995129134111674952, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
-      propertyPath: 'sceneLoaders.Array.data[7]'
-      value: 
-      objectReference: {fileID: 1603800214}
-    - target: {fileID: 2995129134111674952, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
-      propertyPath: 'sceneLoaders.Array.data[8]'
-      value: 
-      objectReference: {fileID: 838574609}
     - target: {fileID: 5270741036896818801, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
       propertyPath: txtDemoTimer
       value: 
