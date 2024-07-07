@@ -1,0 +1,213 @@
+{
+  "dialogues": [
+    {
+      "title": "Test",
+      "conditions": [
+        {
+          "variableName": "introvar",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Grunhardt",
+          "text": "Oh, another one!",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Do you happen to remember anything about being turned to stone?",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Probably not.",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "But I hear there's a cure.",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "If you can find a way to the moon, the moonicorn might be able to help you.",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "I myself have tried but have gotten stuck here.",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "The lady unicorn to the east has gotten farther than me.",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Maybe she can help you.",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Would you, perhaps, say hi to her for me?",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "",
+          "imageFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "introvar",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Day 1 Intro",
+      "conditions": [
+        {
+          "variableName": "day",
+          "testType": 0,
+          "testValue": 0
+        },
+        {
+          "variableName": "intro",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Merky",
+          "text": "We have almost everything we need for the supply drop coming in a few days.",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Merky",
+          "text": "Every unicorn is working hard on their part. For mine, I just have one thing left to do.",
+          "imageFileName": ""
+        },
+        {
+          "characterName": "Merky",
+          "text": "I have to check the planet's core temperature to make sure it's not being too strained.",
+          "imageFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "intro",
+          "actionType": 1,
+          "actionValue": 1
+        },
+        {
+          "variableName": "checkCoreTemp",
+          "actionType": 0,
+          "actionValue": 1
+        },
+        {
+          "variableName": "day",
+          "actionType": 0,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Check Core Temperature",
+      "conditions": [
+        {
+          "variableName": "day",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "checkCoreTemp",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "shaftPos",
+          "testType": 0,
+          "testValue": 3
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Merky",
+          "text": "Mmm. Mmhmm. Looks good. Now I can go home and relax for the next few days!",
+          "imageFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "checkCoreTemp",
+          "actionType": 0,
+          "actionValue": 2
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "checkCoreTemp",
+          "testType": 0,
+          "testValue": 2
+        },
+        {
+          "variableName": "day",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "shaftPos",
+          "testType": 0,
+          "testValue": 2
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Merky",
+          "text": "The way back is gone! I seem to remember another way out.",
+          "imageFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "checkCoreTemp",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Core Entrance",
+      "conditions": [
+        {
+          "variableName": "checkCoreTemp",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "shaftPos",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Merky",
+          "text": "Doesn't look like any unicorn has opened this entrance since I came here last.",
+          "imageFileName": ""
+        }
+      ],
+      "actions": []
+    }
+  ]
+}
