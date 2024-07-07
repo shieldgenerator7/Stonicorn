@@ -119,8 +119,8 @@ public class GameManager : MonoBehaviour
             }
 #endif
             Cursor.lockState = (paused) ? CursorLockMode.None : CursorLockMode.Confined;
-        Managers.Time.endGameTimer.onTimeFinished += Managers.Rewind.RewindToStart;
         };
+        Managers.Time.endGameTimer.onTimeFinished += Managers.Rewind.RewindToStart;
         //Rewind delegates
         Managers.Rewind.onGameStateSaved += Managers.Scene.updateSceneLoadersForward;
         Managers.Rewind.onRewindStarted += processRewindStart;
