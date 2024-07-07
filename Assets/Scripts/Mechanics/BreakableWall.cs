@@ -7,12 +7,12 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
 {
     public float minForceThreshold = 2.5f;//the minimum amount of force required to crack it
     public float maxForceThreshold = 50;//the maximum amount of force consumed per damage
-    [Range(1, 5)]
-    public int maxIntegrity = 3;
+    [Range(1, 100)]
+    public float maxIntegrity = 3;
     [SerializeField]
-    [Range(1, 5)]
-    private int integrity = 0;
-    public int Integrity
+    [Range(0, 100)]
+    private float integrity = 0;
+    public float Integrity
     {
         get => integrity;
         set
@@ -27,7 +27,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
                     {
                         sr = GetComponent<SpriteRenderer>();
                     }
-                    int index = Mathf.Clamp(
+                    int index = (int)Mathf.Clamp(
                         maxIntegrity - integrity,
                         0,
                         crackStages.Count - 1
@@ -43,6 +43,11 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
                     GameObject pieces = Utility.Instantiate(crackedPrefab);
                     BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
                     brokenPiece.unpack(gameObject);
+                    //change color of broken pieces
+                    Color color = GetComponent<SpriteRenderer>().color;
+                    brokenPiece.Savables.ForEach(
+                        bp => bp.GetComponent<SpriteRenderer>().color = color
+                        );
                 }
 
                 //Reveal hidden areas
@@ -94,8 +99,9 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
         Rigidbody2D rb2d = coll.gameObject.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
-            float force = rb2d.velocity.magnitude * rb2d.mass;
-            float damage = checkForce(force, rb2d.velocity);
+            Vector2 relativeVelocity = coll.relativeVelocity;
+            float force = relativeVelocity.magnitude * rb2d.mass;
+            float damage = checkForce(force, relativeVelocity);
             //Show Collision Effect
             float hitPercentage = damage * 100 / maxIntegrity;
             Managers.Effect.collisionEffect(cp2ds[0].point, hitPercentage);
@@ -119,7 +125,8 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
     {
         if (force >= minForceThreshold)
         {
-            int damage = Mathf.Max(1, Mathf.FloorToInt(force / maxForceThreshold));
+            float thresholdRange = maxForceThreshold - minForceThreshold;
+            float damage = maxIntegrity * ((force - minForceThreshold) / thresholdRange);
             Integrity -= damage;
             return damage;
         }
