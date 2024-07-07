@@ -50,21 +50,13 @@ public static class Utility
     }
 
     public static Vector2 PerpendicularRight(this Vector2 v)
-    {
-        return v.RotateZ(-Mathf.PI / 2);
-    }
+        => v.RotateZ(-Mathf.PI / 2);
     public static Vector3 PerpendicularRight(this Vector3 v)
-    {
-        return ((Vector2)v).PerpendicularRight();
-    }
+        => ((Vector2)v).PerpendicularRight();
     public static Vector2 PerpendicularLeft(this Vector2 v)
-    {
-        return v.RotateZ(Mathf.PI / 2);
-    }
+        => v.RotateZ(Mathf.PI / 2);
     public static Vector3 PerpendicularLeft(this Vector3 v)
-    {
-        return ((Vector2)v).PerpendicularLeft();
-    }
+        => ((Vector2)v).PerpendicularLeft();
     public static float distanceToObject(this Vector2 position, GameObject obj)
     {
         Vector2 center = obj.getCollectiveColliderCenter();
@@ -78,16 +70,12 @@ public static class Utility
                 return rch2d.distance;
             }
         }
-        throw new UnityException("Object " + obj + "'s raycast not found! This should not be possible!");
+        throw new UnityException($"Object {obj}'s raycast not found! This should not be possible!");
     }
     public static bool inRange(this Vector2 v1, Vector2 v2, float range)
-    {
-        return (v1 - v2).sqrMagnitude <= range * range;
-    }
+        => (v1 - v2).sqrMagnitude <= range * range;
     public static bool inRange(this Vector3 v1, Vector3 v2, float range)
-    {
-        return (v1 - v2).sqrMagnitude <= range * range;
-    }
+        => (v1 - v2).sqrMagnitude <= range * range;
     public static Vector2 average(List<Vector2> vectors)
         => (vectors.Count > 0)
             ? vectors.Aggregate((result, v) => result + v) / vectors.Count
@@ -166,9 +154,7 @@ public static class Utility
         body.velocity = dir * expSpeed;
     }
     public static bool isMoving(this Rigidbody2D rb2d)
-    {
-        return !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
-    }
+        => !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
     public static void nullifyMovement(this Rigidbody2D rb2d)
     {
         rb2d.velocity = Vector2.zero;
@@ -179,19 +165,15 @@ public static class Utility
     #region GameObject Extension Methods
 
     public static bool isPlayer(this GameObject go)
-    {
-        return go.GetComponent<PlayerController>();
-    }
+        => go.GetComponent<PlayerController>();
     /// <summary>
     /// Returns true if the collider is of the player's and is not a trigger
     /// </summary>
     /// <param name="coll2d"></param>
     /// <returns></returns>
     public static bool isPlayerSolid(this Collider2D coll2d)
-    {
-        return coll2d.gameObject.GetComponent<PlayerController>()
+        => coll2d.gameObject.GetComponent<PlayerController>()
             && !coll2d.isTrigger;
-    }
     /// <summary>
     /// Returns true if the collider can be stood on,
     /// i.e. is not a trigger
@@ -199,9 +181,7 @@ public static class Utility
     /// <param name="coll2d"></param>
     /// <returns></returns>
     public static bool isSolid(this Collider2D coll2d)
-    {
-        return !coll2d.isTrigger;
-    }
+        => !coll2d.isTrigger;
 
     /// <summary>
     /// Returns true if the game object has state to save
@@ -235,7 +215,7 @@ public static class Utility
         if (!info)
         {
             Debug.LogError(
-                "Object " + go.name + " does not have an ObjectInfo!",
+                $"Object {go.name} does not have an ObjectInfo!",
                 go
                 );
             return -1;
@@ -336,7 +316,7 @@ public static class Utility
     {
         foreach (GameObject rgo in s.GetRootGameObjects())
         {
-            doForGameObjectAndChildren(rgo, action);            
+            doForGameObjectAndChildren(rgo, action);
         }
     }
     public static void doForGameObjectAndChildren(GameObject go, Action<GameObject> action)
@@ -392,17 +372,17 @@ public static class Utility
             //Check that number is between curLow and curHigh
             if (number > curHigh || number < curLow)
             {
-                throw new System.ArgumentException("number is " + number + " but it should be between (" + curLow + ", " + curHigh + ")");
+                throw new System.ArgumentException($"number is {number} but it should be between ({curLow}, {curHigh})");
             }
         }
         //Check the bounds in relation to each other
         if (curLow > curHigh)
         {
-            throw new System.ArgumentException("curLow (" + curLow + ") is higher than curHigh (" + curHigh + ")!");
+            throw new System.ArgumentException($"curLow ({curLow}) is higher than curHigh ({curHigh})!");
         }
         if (newLow > newHigh)
         {
-            throw new System.ArgumentException("newLow (" + newLow + ") is higher than newHigh (" + newHigh + ")!");
+            throw new System.ArgumentException($"newLow ({newLow}) is higher than newHigh ({newHigh})!");
         }
         //Conversion
         return (((number - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow);
@@ -419,15 +399,13 @@ public static class Utility
         return convertPercentToVector2(distancePercent, newStart, newEnd);
     }
     public static Vector2 convertPercentToVector2(float distancePercent, Vector2 newStart, Vector2 newEnd)
-    {
-        return newStart + (newEnd - newStart) * distancePercent;
-    }
+        => newStart + (newEnd - newStart) * distancePercent;
     public static float convertToRange(Vector2 vector, Vector2 curStart, Vector2 curEnd, float newLow, float newHigh)
     {
         //Error checking
         if (newLow > newHigh)
         {
-            throw new System.ArgumentException("newLow (" + newLow + ") is higher than newHigh (" + newHigh + ")!");
+            throw new System.ArgumentException($"newLow ({newLow}) is higher than newHigh ({newHigh})!");
         }
         //Get distance percent
         float startDistance = (curEnd - curStart).magnitude;
@@ -474,18 +452,18 @@ public static class Utility
         {
             if (!isSavable)
             {
-                throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
+                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
             }
             bool hasInfo = prefab.GetComponent<ObjectInfo>();
             if (!hasInfo)
             {
-                throw new UnityException("Prefab " + prefab.name + " cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
+                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
             }
         }
         //Instantiate
         GameObject newObj = GameObject.Instantiate(prefab);
         int baseId = (int)System.DateTime.Now.Ticks;
-        string spawnTag = "---" + baseId;
+        string spawnTag = $"---{baseId}";
         newObj.name += spawnTag;
         if (isSavable)
         {
@@ -503,9 +481,16 @@ public static class Utility
             container.Savables.ForEach(savable =>
             {
                 savable.name += spawnTag;
-                SavableObjectInfo soi = savable.GetComponent<SavableObjectInfo>();
-                soi.Id = getUniqueId(baseId, nextId);
-                soi.spawnStateId = Managers.Rewind.GameStateId;
+                try
+                {
+                    SavableObjectInfo soi = savable.GetComponent<SavableObjectInfo>();
+                    soi.Id = getUniqueId(baseId, nextId);
+                    soi.spawnStateId = Managers.Rewind.GameStateId;
+                }
+                catch (NullReferenceException nre)
+                {
+                    Debug.LogError($"Saveable {savable.name} (child of {newObj.name}) does not have a {typeof(SavableObjectInfo)}!");
+                }
                 nextId++;
                 Managers.Object.addNewObject(savable);
                 Managers.Scene.registerObjectInScene(savable);
@@ -544,14 +529,13 @@ public static class Utility
     }
     public static int Cast(Collider2D coll2d, Vector2 direction, RaycastHit2D[] results = null, float distance = 0, bool ignoreSiblingColliders = true)
     {
-        if (results == null)
-        {
-            results = rch2dsNonAlloc;
-        }
+        results ??= rch2dsNonAlloc;
         if (results.Length != MAX_HIT_COUNT)
         {
-            throw new UnityException("Script using collider on object " + coll2d.gameObject.name + " is using result array != MAX_HIT_COUNT: " +
-                "results.count: " + results.Length + ", MAX_HIT_COUNT: " + MAX_HIT_COUNT);
+            throw new UnityException(
+                $"Script using collider on object {coll2d.gameObject.name} is using result array != MAX_HIT_COUNT: " +
+                $"results.count: {results.Length}, MAX_HIT_COUNT: {MAX_HIT_COUNT}"
+                );
         }
         int count = 0;
         count = coll2d.Cast(direction, results, distance, ignoreSiblingColliders);
@@ -570,7 +554,9 @@ public static class Utility
     public static RaycastAnswer CastAnswer(this Collider2D coll2d, Vector2 direction, float distance = 0, bool ignoreSiblingColliders = true)
     {
         int count = coll2d.Cast(direction, rch2dsNonAlloc, distance, ignoreSiblingColliders);
+#if !UNITY_EDITOR
         checkMaxReturnedList("Utility.CastAnswer", count);
+#endif
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
     /// <summary>
@@ -632,17 +618,17 @@ public static class Utility
             maxReturnedList = count;
             Logger.log(
                 Managers.Game,
-                methodName + ": max list count: " + maxReturnedList
+                $"{methodName}: max list count: {maxReturnedList}"
                 );
         }
 #endif
     }
 
-    public static void copyTransform(Transform fromTransform, ref GameObject toObject)
+    public static void copyTransform(this Transform toTransform, Transform fromTransform)
     {
-        toObject.transform.position = fromTransform.position;
-        toObject.transform.rotation = fromTransform.rotation;
-        toObject.transform.localScale = fromTransform.localScale;
+        toTransform.position = fromTransform.position;
+        toTransform.rotation = fromTransform.rotation;
+        toTransform.localScale = fromTransform.localScale;
     }
 
     public static bool between(float value, float bound1, float bound2)
