@@ -213,7 +213,7 @@ public class PowerManager : MonoBehaviour
         Collider2D[] colls = new Collider2D[Utility.MAX_HIT_COUNT];
         ContactFilter2D filter = new ContactFilter2D();
         filter.NoFilter();
-        int count = coll2d.OverlapCollider(filter, colls);
+        int count = coll2d.Overlap(filter, colls);
         Utility.checkMaxReturnedList("getConnectingConduits", count);
         List<IPowerConduit> conduits = new List<IPowerConduit>();
         for (int i = 0; i < count; i++)
