@@ -46,7 +46,8 @@ Transform:
   m_LocalPosition: {x: -69, y: 191, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2224364663450508750}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2859978935190022866
@@ -3860,7 +3861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
-  endGameTimer: {fileID: 0}
+  endGameTimer: {fileID: 6020679409768259350}
   slowTimeSpeed: 0.2
 --- !u!114 &2859978935190022872
 MonoBehaviour:
@@ -4027,3 +4028,53 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   spawnStateId: 0
   destroyStateId: 2147483647
+--- !u!1 &4948078954240296993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2224364663450508750}
+  - component: {fileID: 6020679409768259350}
+  m_Layer: 0
+  m_Name: End Game Timer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2224364663450508750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4948078954240296993}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2859978935190022869}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6020679409768259350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4948078954240296993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f032a9f4542634f91a289a5b600bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnFinish: 0
+  maxTime: 10
+  useUnscaledTime: 0
+  startFromZeroOnStart: 0
+  timerObject: {fileID: 0}
+  targetObject: {fileID: 0}
