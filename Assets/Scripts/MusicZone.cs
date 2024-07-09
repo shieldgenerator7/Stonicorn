@@ -11,6 +11,11 @@ public class MusicZone : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        init();
+    }
+
+    public void init()
+    {
         music = GetComponent<AudioSource>();
         music.volume = 0;
         coll2d = GetComponent<Collider2D>();
