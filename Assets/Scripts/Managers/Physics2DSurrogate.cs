@@ -64,9 +64,8 @@ public class Physics2DSurrogate : MonoBehaviour
         //Music
         foreach (MusicZone mz in musicZones)
         {
-            if (mz.GetComponent<Collider2D>().OverlapPoint(camPos))
+            if (mz.checkZone(camPos))
             {
-                mz.playTrack();
                 break;
             }
         }

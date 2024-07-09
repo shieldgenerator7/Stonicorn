@@ -6,12 +6,14 @@ public class MusicZone : MonoBehaviour
 {
 
     private AudioSource music;
+    private Collider2D coll2d;
 
     // Use this for initialization
     void Start()
     {
         music = GetComponent<AudioSource>();
         music.volume = 0;
+        coll2d = GetComponent<Collider2D>();
     }
 
     void OnTriggerEnter2D(Collider2D coll)
@@ -22,12 +24,14 @@ public class MusicZone : MonoBehaviour
         }
     }
 
-    public void checkZone(Vector2 pos)
+    public bool checkZone(Vector2 pos)
     {
-        if (GetComponent<Collider2D>().OverlapPoint(pos))
+        if (coll2d.OverlapPoint(pos))
         {
             playTrack();
+            return true;
         }
+        return false;
     }
 
     public void playTrack()
