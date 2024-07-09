@@ -26,12 +26,16 @@ public class MusicZone : MonoBehaviour
 
     public bool checkZone(Vector2 pos)
     {
-        if (coll2d.OverlapPoint(pos))
+        if (conditionsMet(pos))
         {
             playTrack();
             return true;
         }
         return false;
+    }
+    protected virtual bool conditionsMet(Vector2 pos)
+    {
+        return coll2d.OverlapPoint(pos);
     }
 
     public void playTrack()
