@@ -140,6 +140,8 @@ public class GroundChecker : SavableMonoBehaviour
                     //Then there is ground in the given direction
                     return true;
                 }
+                //assume the first one in the list is the closest, therefore just hit the first non-player solid collider
+                return false;
             }
         }
         //Else, There is no ground in the given direction
