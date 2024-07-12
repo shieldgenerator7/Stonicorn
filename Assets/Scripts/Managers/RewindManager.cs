@@ -207,6 +207,7 @@ public class RewindManager : Manager
     /// <param name="gamestateId">The game state id to rewind to</param>
     public void RewindTo(int gamestateId, bool playerInitiated = true)
     {
+        gamestateId = Mathf.Clamp(gamestateId, 0, chosenId);
         //If already at the state you want to rewind to,
         if (gamestateId == chosenId)
         {
