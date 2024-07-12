@@ -7880,6 +7880,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2859978935190022699, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
   m_PrefabInstance: {fileID: 2859978935247260757}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1335874088 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6020679409768259350, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
+  m_PrefabInstance: {fileID: 2859978935247260757}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f032a9f4542634f91a289a5b600bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1385001677 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2592284710092542991, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
@@ -9583,10 +9594,6 @@ PrefabInstance:
       propertyPath: playerAbility
       value: 
       objectReference: {fileID: 1792176472}
-    - target: {fileID: 1338258086251405045, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: timer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1404192947651301418, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: longTeleportAbility
       value: 
@@ -9598,10 +9605,6 @@ PrefabInstance:
     - target: {fileID: 2592284711590913630, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: m_Name
       value: Player Effects
-      objectReference: {fileID: 0}
-    - target: {fileID: 2592284711590913631, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2592284711590913631, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9651,37 +9654,9 @@ PrefabInstance:
       propertyPath: playerAbility
       value: 
       objectReference: {fileID: 1792176471}
-    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: m_Points.Array.size
-      value: 46
-      objectReference: {fileID: 0}
-    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: m_Points.Array.data[7].y
-      value: -0.116992794
-      objectReference: {fileID: 0}
-    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: m_Points.Array.data[9].y
-      value: -0.867806
-      objectReference: {fileID: 0}
-    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: m_Points.Array.data[17].y
-      value: -2.4463782
-      objectReference: {fileID: 0}
-    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: m_Points.Array.data[45].x
-      value: -0.6448643
-      objectReference: {fileID: 0}
-    - target: {fileID: 3495255726360166128, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: m_Points.Array.data[45].y
-      value: 2.831009
-      objectReference: {fileID: 0}
-    - target: {fileID: 3495255726360166130, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: m_LocalAABB.m_Center.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3495255726360166130, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
-      propertyPath: m_LocalAABB.m_Extent.z
-      value: 0
+    - target: {fileID: 3495255726360166131, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_Creator
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3915830671258936401, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: playerAbility
@@ -9691,6 +9666,10 @@ PrefabInstance:
       propertyPath: electricBeamAbility
       value: 
       objectReference: {fileID: 1792176474}
+    - target: {fileID: 5904254661299786462, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: timer
+      value: 
+      objectReference: {fileID: 1335874088}
     - target: {fileID: 6253390994195550591, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: playerAbility
       value: 
