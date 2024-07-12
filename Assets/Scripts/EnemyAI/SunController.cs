@@ -10,11 +10,6 @@ public class SunController : Hazard
     private float speed;
     private Vector2 direction;
 
-    private void Start()
-    {
-        init();
-    }
-
     public override void init()
     {
         direction = targetPos - (Vector2)transform.position;

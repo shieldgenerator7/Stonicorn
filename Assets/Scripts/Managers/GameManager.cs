@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour
         }
         //Update the list of objects that have state to save
         Managers.Object.refreshGameObjects();
+        //Make sun move
+        FindAnyObjectByType<SunController>().init();
         //Update the game state id trackers
         Managers.Rewind.init();
         //Load the memories
