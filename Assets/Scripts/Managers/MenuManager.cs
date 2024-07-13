@@ -14,10 +14,17 @@ public class MenuManager : MonoBehaviour
     private void Awake()
     {
         GetComponent<Follow>().followObject = Managers.Player.gameObject;
+        init();
     }
 
     private void Start()
     {
+        init();
+    }
+
+    private void init() {
+
+        frames.Clear();
         foreach (MenuFrame mf in FindObjectsOfType<MenuFrame>())
         {
             if (mf.canDelegateTaps())
