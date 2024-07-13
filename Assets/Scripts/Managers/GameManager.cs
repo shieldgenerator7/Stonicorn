@@ -283,7 +283,7 @@ public class GameManager : MonoBehaviour
         //Disable physics while rewinding
         Managers.Physics2DSurrogate.enabled = true;
         //Pause time
-        Managers.Time.setPause(this, true);
+        Managers.Time.setPause(Managers.Rewind, true);
         //Update Stats
         Managers.Stats.addOne(Stat.REWIND);
         //Prepare scenes
@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviour
         //Stop rewind visual effect
         Managers.Effect.showRewindEffect(false);
         //Unpause time
-        Managers.Time.setPause(this, false);
+        Managers.Time.setPause(Managers.Rewind, false);
         //Re-enable physics because the rewind is over
         Managers.Physics2DSurrogate.enabled = false;
         //Update SceneLoaders & scene object list
