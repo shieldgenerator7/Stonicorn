@@ -21,6 +21,7 @@ public class EffectManager : MonoBehaviour
     public GameObject collisionEffectPrefab;//the object that holds the special effect for collision
     public float particleStartSpeed = 7.0f;
     public float particleAmount = 50.0f;
+    public float pointEffectEmphasisSizeMultiplier = 2;
     [Header("Tap Target Highlighting")]
     public ParticleSystem tapTargetHighlight;
     [Header("Rewind Stripe Effect")]
@@ -33,6 +34,15 @@ public class EffectManager : MonoBehaviour
     private List<SpriteRenderer> swapRotateList = new List<SpriteRenderer>();
     private List<SpriteRenderer> swapStasisList = new List<SpriteRenderer>();
     private List<ParticleSystem> collisionEffectList = new List<ParticleSystem>();
+    private Dictionary<Transform, Vector3> origSizes = new Dictionary<Transform, Vector3>();
+
+    private void Start()
+    {
+        foreach (Transform t in transform)
+        {
+            origSizes.Add(t, t.localScale);
+        }
+    }
 
     /// <summary>
     /// Shows the teleport star effect
@@ -390,7 +400,7 @@ public class EffectManager : MonoBehaviour
         }
     }
 
-    public void showPointEffect(string name, Vector2 pos, bool play = true)
+    public void showPointEffect(string name, Vector2 pos, bool play = true, bool emphasize = false)
     {
         GameObject effect = null;
         foreach (Transform t in transform)
@@ -407,6 +417,8 @@ public class EffectManager : MonoBehaviour
         }
         effect.SetActive(play);
         effect.transform.position = pos;
+        Vector3 origSize = origSizes[effect.transform];
+        effect.transform.localScale = origSize * ((emphasize) ? pointEffectEmphasisSizeMultiplier : 1);
     }
 
     public void showRewindEffect(bool show)

@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public float pauseMovementDuration = 0.2f;//amount of time (sec) Merky's movement is paused after landing
     [Range(0, 3)]
     public float hitStunDuration = 1;//how long merky freezes after getting hit before he auto-rewinds
+    public float bigHitThreshold = 50;//how much damage taken at once counts as a "big" hit (ex: the sun)
 
     [Header("Components")]
     public BoxCollider2D scoutColliderMin;//small collider (inside Merky) used to scout the level for teleportable spots
@@ -354,7 +355,7 @@ public class PlayerController : MonoBehaviour
             //Start hit timer
             Timer.startTimer(hitStunDuration, () => hitTimerUp(damageToSelf));
             //Highlight impact area
-            Managers.Effect.showPointEffect("effect_contact", contactPoint);
+            Managers.Effect.showPointEffect("effect_contact", contactPoint, true, damageToSelf >= bigHitThreshold);
             //Pause game
             Managers.Time.setPause(this, true);
         }
