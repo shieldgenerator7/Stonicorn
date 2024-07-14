@@ -29,7 +29,13 @@ public class MenuManager : MonoBehaviour
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
         startFrame.frameCamera();
+        Managers.Time.setPause(this, true);
     }
+
+    private void OnDestroy()
+    {
+        Managers.Time.setPause(this, false);
+    }//
 
     public void processTapGesture(Vector3 pos)
     {
