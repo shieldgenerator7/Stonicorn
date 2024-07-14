@@ -7,6 +7,7 @@ public class MouseGestureInput : GestureInput
     public int mouseButton = 0;
     public int mouseButton2 = 1;
     public float dragThreshold = 50;
+    public float dragHoldThreshold = 0.1f;//how long the gesture needs to be held for in order to count as a drag (and not a tap)
     public float holdThreshold = 0.2f;
 
     private DragType dragType = DragType.UNKNOWN;
@@ -71,7 +72,7 @@ public class MouseGestureInput : GestureInput
                 {
                     //Check Drag
                     float dragDistance = Vector2.Distance(origPosScreen, Input.mousePosition);
-                    if (dragDistance >= dragThreshold)
+                    if (dragDistance >= dragThreshold && Time.time - origTime >= dragHoldThreshold)
                     {
                         mouseEvent = MouseEvent.DRAG;
                     }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class TouchGestureInput : GestureInput
 {
     public float dragThreshold = 50;
+    public float dragHoldThreshold = 0.1f;//how long the gesture needs to be held for in order to count as a drag (and not a tap)
     public float holdThreshold = 0.2f;
 
     private int maxTouchCount = 0;//the max amount of touches involved in this gesture at any one time
@@ -106,7 +107,9 @@ public class TouchGestureInput : GestureInput
                     Touch touch = Input.touches[0];
                     TouchData data = touchDatas[touch.fingerId];
                     //Drag Gesture
-                    if (Vector2.Distance(data.origPosScreen, touch.position) >= dragThreshold)
+                    if (Vector2.Distance(data.origPosScreen, touch.position) >= dragThreshold
+                        && Time.time - data.origTime >= dragHoldThreshold
+                        )
                     {
                         touchEvent = TouchEvent.DRAG;
                     }
