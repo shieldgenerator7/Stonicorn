@@ -362,6 +362,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
     protected override void nowDiscovered()
     {
         activate();
+        //Save game
+        Managers.File.saveToFile();
     }
     protected override void previouslyDiscovered()
     {

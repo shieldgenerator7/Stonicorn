@@ -12,6 +12,8 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour
             AudioSource.PlayClipAtPoint(activateSound, transform.position);
         }
         Destroy(this);//makes sure it can only be used once
+        //Save game
+        Managers.File.saveToFile();
     }
 
     public abstract void activateEffect();
