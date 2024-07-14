@@ -10,6 +10,10 @@ public class MenuButton : MonoBehaviour
 
     private BoxCollider2D bc2d;
 
+    public void init()
+    {
+        Start();//TODO: reverse this so Start() calls init()
+    }
     // Use this for initialization
     protected virtual void Start()
     {
