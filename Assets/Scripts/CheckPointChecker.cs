@@ -14,6 +14,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public CheckPointGhostMover GhostMover => cpGhostMover;
     public GameObject ghostPrefab;
     private static Camera checkpointCamera;
+    private static bool inCheckPoint = false;
 
     public int defaultTelepadIndex = 0;
     public List<Transform> telepads;
@@ -190,6 +191,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     /// </summary>
     public static bool InCheckPoint
     {
+        get => inCheckPoint;
         set
         {
             if (value)
@@ -206,7 +208,14 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 Managers.Player.Teleport.overrideTeleportPosition -= checkCheckPointGhosts;
                 Managers.Player.Teleport.onTeleport -= updateCheckPointCheckers;
                 Managers.PlayerRewind.tapProcessed -= checkCheckPointGhostsZoomedOut;
+
+                float defaultZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
+                if (Managers.Camera.ZoomLevel > defaultZoomLevel)
+                {
+                    Managers.Camera.ZoomLevel = defaultZoomLevel;
+                }
             }
+            inCheckPoint = value;
         }
     }
     private static void checkCheckPointGhostsZoomedOut(Vector2 pos)

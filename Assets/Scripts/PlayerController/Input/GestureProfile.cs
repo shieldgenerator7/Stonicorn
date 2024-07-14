@@ -59,7 +59,10 @@ public class GestureProfile
         }
         else if (zoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND - 1))
         {
-            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
+            if (!CheckPointChecker.InCheckPoint)
+            {
+                Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
+            }
         }
         else
         {
