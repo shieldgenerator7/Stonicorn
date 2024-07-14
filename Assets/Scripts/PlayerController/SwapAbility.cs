@@ -282,7 +282,7 @@ public class SwapAbility : PlayerAbility
     public event OnSwap onRotate;
 
     bool CanStasis =>
-        FeatureLevel >= 2;
+        FeatureLevel >= 2 && CanUseUltimate;
 
     void applyStasis()
     {

@@ -35,6 +35,8 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
         }
     }
 
+    public bool CanUseUltimate => playerController.Teleport.Range > playerController.Teleport.baseRange;
+
     [Header("Persisting Variables")]
     [SerializeField]
     [Range(0, 6)]

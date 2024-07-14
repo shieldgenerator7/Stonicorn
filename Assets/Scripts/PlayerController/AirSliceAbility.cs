@@ -142,7 +142,7 @@ public class AirSliceAbility : PlayerAbility
     }
 
     bool CanMakeCloud
-        => FeatureLevel >= 2 &&
+        => FeatureLevel >= 2 && CanUseUltimate &&
         (playerController.Ground.GroundedAbility || playerController.Ground.GroundedAbilityPrev);
 
     void makeCloud(Vector2 oldPos)

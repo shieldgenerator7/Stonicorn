@@ -122,7 +122,7 @@ public class ElectricBeamAbility : PlayerAbility
     }
 
     bool CanWire =>
-        !wiredThisInput && Target != null && FeatureLevel >= 2 && !(targetRB2D && targetRB2D.isMoving());
+        !wiredThisInput && Target != null && FeatureLevel >= 2 && !(targetRB2D && targetRB2D.isMoving()) && CanUseUltimate;
 
     void applyWire()
     {

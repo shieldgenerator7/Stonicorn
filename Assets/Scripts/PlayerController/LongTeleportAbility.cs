@@ -107,7 +107,7 @@ public class LongTeleportAbility : PlayerAbility
                 applyShield();
             }
             //Upgrade 2
-            if (canPortal(oldPos, newPos))
+            if (CanPortal && canPortalBetween(oldPos, newPos))
             {
                 applyPortal(oldPos, newPos);
             }
@@ -126,13 +126,15 @@ public class LongTeleportAbility : PlayerAbility
         Shielded = true;
     }
 
-    bool canPortal(Vector2 oldPos, Vector2 newPos)
+    bool CanPortal => FeatureLevel >= 2 && CanUseUltimate;
+
+    bool canPortalBetween(Vector2 oldPos, Vector2 newPos)
     {
         List<TeleportPortal> portalList = FindObjectsOfType<TeleportPortal>().ToList();
         //Require max upgrade level
-        return FeatureLevel >= 2
+        return
             //Require certain distance apart
-            && !oldPos.inRange(
+            !oldPos.inRange(
                 newPos,
                 playerController.Teleport.baseRange * portalRequiredRangeFactor
                 )

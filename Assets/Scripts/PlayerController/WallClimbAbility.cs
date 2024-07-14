@@ -56,7 +56,7 @@ public class WallClimbAbility : PlayerAbility
     {
         //Make sure to check all possible directions
         bool grounded = isGroundedWall();
-        grounded = (FeatureLevel >= 1 && isGroundedCeiling()) || grounded;
+        grounded = (CanCeiling && isGroundedCeiling()) || grounded;
         return grounded;
     }
 
@@ -86,6 +86,10 @@ public class WallClimbAbility : PlayerAbility
         return groundedCeiling;
     }
 
+    bool CanCeiling => FeatureLevel >= 1;
+
+    bool CanSticky => FeatureLevel >= 2 && CanUseUltimate;
+
     /// <summary>
     /// Should be called after isGroundedWall() gets called
     /// </summary>
@@ -100,7 +104,7 @@ public class WallClimbAbility : PlayerAbility
             rb2d.nullifyMovement();
             Magneted = true;
             //Plant Sticky
-            if (FeatureLevel >= 2)
+            if (CanSticky)
             {
                 plantSticky(oldPos);
             }

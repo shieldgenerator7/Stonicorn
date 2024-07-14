@@ -245,7 +245,7 @@ public class ForceLaunchAbility : PlayerAbility
     }
 
     bool CanShoot =>
-        FeatureLevel >= 2;
+        FeatureLevel >= 2 && CanUseUltimate;
     void shootProjectile()
     {
         Vector2 startPos = (Vector2)transform.position
