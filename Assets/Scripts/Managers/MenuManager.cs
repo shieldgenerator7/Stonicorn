@@ -31,23 +31,9 @@ public class MenuManager : MonoBehaviour
         transform.rotation = player.transform.rotation;
         startFrame.frameCamera();
         //init menu buttons
-        //gameObject.GetComponentsInChildren<MenuButton>().ToList().ForEach((mb) => { mb.init(); });
-        searchAndInit(gameObject);
+        gameObject.GetComponentsInChildren<MenuFrame>().ToList().ForEach((mf) => mf.init());
         //pause game
         Managers.Time.setPause(this, true);
-    }
-    private void searchAndInit(GameObject go)
-    {
-        foreach(Transform t in go.transform)
-        {
-            GameObject go2 = t.gameObject;
-            MenuButton mb = go2.GetComponent<MenuButton>();
-            if (mb != null)
-            {
-                mb.init();
-            }
-            searchAndInit(go2 );
-        }
     }
 
     private void OnDestroy()

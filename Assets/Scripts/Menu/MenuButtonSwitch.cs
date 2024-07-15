@@ -16,9 +16,9 @@ public class MenuButtonSwitch : MenuButton
     private SpriteRenderer sr;
     private MenuActionSwitch mas;
 
-    protected override void Start()
+    public override void init()
     {
-        base.Start();
+        base.init();
         sr = GetComponent<SpriteRenderer>();
         if (sr == null)
         {

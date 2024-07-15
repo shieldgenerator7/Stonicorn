@@ -24,6 +24,7 @@ public class MenuFrame : MonoBehaviour
         {
             MenuButton mb = t.GetComponent<MenuButton>();
             if (mb != null)
+                mb.init();
             {
                 buttons.Add(mb);
             }

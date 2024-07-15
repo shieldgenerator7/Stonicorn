@@ -78,9 +78,9 @@ public class MenuButtonSlide : MenuButton
     private float sliderBarWidth;
     private MenuActionSlide mas;
 
-    protected override void Start()
+    public override void init()
     {
-        base.Start();
+        base.init();
         mas = GetComponent<MenuActionSlide>();
         MaxValue = mas.getOverriddenMaxValue(MaxValue);
         sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
