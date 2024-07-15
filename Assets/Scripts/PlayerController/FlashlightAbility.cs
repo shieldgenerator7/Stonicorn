@@ -12,6 +12,10 @@ public class FlashlightAbility : PlayerAbility
     public float minAlpha = 0.1f;
     [Range(0, 1)]
     public float maxAlpha = 1f;
+    [Range(0, 10)]
+    public float minGlowSize = 2f;
+    [Range(0, 10)]
+    public float maxGlowSize = 3f;
     public float afterglowDuration = 0.5f;
 
     public GameObject flashlight;
@@ -75,6 +79,10 @@ public class FlashlightAbility : PlayerAbility
             size.y = maxBeamDistance * percent;
             flashlightBeamMask.transform.localScale = size;
             
+            Vector2 sizeGlow = flashlightPlayerGlowSR.transform.localScale;
+            sizeGlow = Vector2.one * ((maxGlowSize - minGlowSize) * (1 - percent) + minGlowSize);
+            flashlightPlayerGlowSR.transform.localScale = sizeGlow;
+
             //adjust alpha
             float alpha = (1 - percent)*(maxAlpha-minAlpha)+minAlpha;
             flashlightSRs.ForEach(flsr =>
