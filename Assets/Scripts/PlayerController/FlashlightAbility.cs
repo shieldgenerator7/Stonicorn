@@ -11,7 +11,7 @@ public class FlashlightAbility : PlayerAbility
     public GameObject flashlight;
     public SpriteMask flashlightBeamMask;
     private bool flashlightOn = false;
-    //private List<SpriteRenderer> flashlightSRs;
+    private List<SpriteRenderer> flashlightSRs;
     private Vector2 flashlightDirection;
     public Vector2 FlashlightDirection
     {
@@ -30,6 +30,8 @@ public class FlashlightAbility : PlayerAbility
     {
         base.init();
         playerController.onDragGesture += processDrag;
+
+        this.flashlightSRs = this.flashlight.GetComponentsInChildren<SpriteRenderer>().ToList();
     }
     public override void OnDisable()
     {
@@ -63,9 +65,12 @@ public class FlashlightAbility : PlayerAbility
             Vector2 size = flashlightBeamMask.transform.localScale;
             size.y = maxBeamDistance * percent;
             flashlightBeamMask.transform.localScale = size;
-            //flashlightSRs.ForEach(flsr =>
-            //    flsr.color = flsr.color.adjustAlpha(alpha)
-            //);
+            
+            //adjust alpha
+            float alpha = 1 - percent;
+            flashlightSRs.ForEach(flsr =>
+                flsr.color = flsr.color.adjustAlpha(alpha)
+            );
         }
         else
         {
