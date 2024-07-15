@@ -8,6 +8,10 @@ public class FlashlightAbility : PlayerAbility
     [Header("Flashlight")]
     public float maxPullBackDistance = 6;
     public float maxBeamDistance = 6;
+    [Range(0,1)]
+    public float minAlpha = 0.1f;
+    [Range(0, 1)]
+    public float maxAlpha = 1f;
     public GameObject flashlight;
     public SpriteMask flashlightBeamMask;
     private bool flashlightOn = false;
@@ -67,7 +71,7 @@ public class FlashlightAbility : PlayerAbility
             flashlightBeamMask.transform.localScale = size;
             
             //adjust alpha
-            float alpha = 1 - percent;
+            float alpha = (1 - percent)*(maxAlpha-minAlpha)+minAlpha;
             flashlightSRs.ForEach(flsr =>
                 flsr.color = flsr.color.adjustAlpha(alpha)
             );
