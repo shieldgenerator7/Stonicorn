@@ -39,7 +39,7 @@ public class MenuManager : MonoBehaviour
     private void OnDestroy()
     {
         Managers.Time.setPause(this, false);
-    }//
+    }
 
     public void processTapGesture(Vector3 pos)
     {
