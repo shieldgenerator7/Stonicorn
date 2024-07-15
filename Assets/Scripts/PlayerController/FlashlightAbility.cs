@@ -17,6 +17,7 @@ public class FlashlightAbility : PlayerAbility
     [Range(0, 10)]
     public float maxGlowSize = 3f;
     public float afterglowDuration = 0.5f;
+    private float afterglowStartSize = 1;
 
     public GameObject flashlight;
     public SpriteMask flashlightBeamMask;
@@ -43,10 +44,6 @@ public class FlashlightAbility : PlayerAbility
         playerController.onDragGesture += processDrag;
 
         this.flashlightSRs = this.flashlight.GetComponentsInChildren<SpriteRenderer>().ToList();
-        playerController.Teleport.onTeleport += (oldPos, newPos) =>
-        {
-            flashlight.SetActive(false);
-        };
     }
     public override void OnDisable()
     {
@@ -103,7 +100,38 @@ public class FlashlightAbility : PlayerAbility
                 flsr.enabled = false
             );
             flashlightPlayerGlowSR.enabled = true;
+
+            playerController.Teleport.onTeleport += startFade;
         }
+    }
+
+    void startFade(Vector2 oldPos, Vector2 newPos)
+    {
+        playerController.Teleport.onTeleport -= startFade;
+        afterglowStartSize = flashlightPlayerGlowSR.transform.localScale.x;//assume x and y are same and the sprite takes a single unit
+        Timer timer = Timer.startTimer(afterglowDuration, () =>
+        {
+            if (!flashlightOn)
+            {
+                flashlight.SetActive(false);
+            }
+        });
+        timer.onTimeLeftChanged += (timeLeft, duration) =>
+        {
+            if (!flashlightOn)
+            {
+                float percent = timeLeft / duration;
+                flashlightPlayerGlowSR.color = flashlightPlayerGlowSR.color.adjustAlpha(percent * (maxAlpha - minAlpha) + minAlpha);
+
+                Vector2 sizeGlow = flashlightPlayerGlowSR.transform.localScale;
+                sizeGlow = Vector2.one * ((afterglowStartSize) * percent);
+                flashlightPlayerGlowSR.transform.localScale = sizeGlow;
+            }
+            else
+            {
+                Destroy(timer);
+            }
+        };
     }
     #endregion
 
