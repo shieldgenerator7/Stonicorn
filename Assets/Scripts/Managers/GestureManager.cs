@@ -10,6 +10,7 @@ public class GestureManager : MonoBehaviour
         MENU,//for the menu
         MAIN,//for normal playing of the game
         REWIND,//for activating a rewind and during a rewind
+        PILOT,//for controlling a pod
     };
     private GestureProfile currentGP;//the current gesture profile
     private Dictionary<GestureProfileType, GestureProfile> gestureProfiles = new Dictionary<GestureProfileType, GestureProfile>();//dict of valid gesture profiles

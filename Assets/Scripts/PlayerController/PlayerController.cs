@@ -35,7 +35,9 @@ public class PlayerController : MonoBehaviour
     // Runtime Constants
     //
     private float[] rotations = new float[] { 285, 155, 90, 0 };//the default rotations for Merky
-    public float halfWidth { get; private set; }//half of Merky's sprite width
+    [SerializeField]
+    private float _halfWidth = 0;
+    public float halfWidth { get => _halfWidth; }//half of Merky's sprite width
 
     //
     // Components
@@ -84,8 +86,11 @@ public class PlayerController : MonoBehaviour
         GravityAccepter = GetComponent<GravityAccepter>();
         pc2d = GetComponent<PolygonCollider2D>();
         //Estimate the halfWidth
-        Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
-        halfWidth = (extents.x + extents.y) / 2;
+        if (_halfWidth == 0)
+        {
+            Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
+            _halfWidth = (extents.x + extents.y) / 2;
+        }
         //Initialize the ground trigger
         updateGroundTrigger();
         //Teleport Ability
