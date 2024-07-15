@@ -58,16 +58,14 @@ public class FlashlightAbility : PlayerAbility
             flashlight.SetActive(true);
             flashlight.transform.up = flashlightDirection;
 
-            Vector2 size = flashlightBeamMask.transform.localScale;
-            size.y = maxBeamDistance;
-            flashlightBeamMask.transform.localScale = size;
+
             float percent = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
+            Vector2 size = flashlightBeamMask.transform.localScale;
+            size.y = maxBeamDistance * percent;
+            flashlightBeamMask.transform.localScale = size;
             //flashlightSRs.ForEach(flsr =>
             //    flsr.color = flsr.color.adjustAlpha(alpha)
             //);
-            Vector3 pos = flashlightBeamMask.transform.localPosition;
-            pos.y = percent * maxBeamDistance + size.y/2;
-            flashlightBeamMask.transform.localPosition = pos;
         }
         else
         {
