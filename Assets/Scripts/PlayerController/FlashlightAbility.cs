@@ -43,6 +43,10 @@ public class FlashlightAbility : PlayerAbility
         playerController.onDragGesture += processDrag;
 
         this.flashlightSRs = this.flashlight.GetComponentsInChildren<SpriteRenderer>().ToList();
+        playerController.Teleport.onTeleport += (oldPos, newPos) =>
+        {
+            flashlight.SetActive(false);
+        };
     }
     public override void OnDisable()
     {
@@ -99,13 +103,6 @@ public class FlashlightAbility : PlayerAbility
                 flsr.enabled = false
             );
             flashlightPlayerGlowSR.enabled = true;
-            Timer.startTimer(afterglowDuration, () =>
-            {
-                if (!flashlightOn)
-                {
-                    flashlight.SetActive(false);
-                }
-            });
         }
     }
     #endregion
