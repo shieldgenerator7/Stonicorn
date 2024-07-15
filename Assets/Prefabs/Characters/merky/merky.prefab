@@ -306,8 +306,10 @@ MonoBehaviour:
   maxBeamDistance: 7
   minAlpha: 0.4
   maxAlpha: 0.8
+  afterglowDuration: 0.5
   flashlight: {fileID: 8011020201040473474}
   flashlightBeamMask: {fileID: 4860461149259244950}
+  flashlightPlayerGlowSR: {fileID: 2689111574658393306}
 --- !u!114 &4077093240442266713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1266,6 +1268,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
+--- !u!212 &2689111574658393306 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2293298322133135469, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
+  m_PrefabInstance: {fileID: 4216154399801152695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!331 &4860461149259244950 stripped
 SpriteMask:
   m_CorrespondingSourceObject: {fileID: 8786832657992790305, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}

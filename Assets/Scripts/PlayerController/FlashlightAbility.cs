@@ -12,8 +12,11 @@ public class FlashlightAbility : PlayerAbility
     public float minAlpha = 0.1f;
     [Range(0, 1)]
     public float maxAlpha = 1f;
+    public float afterglowDuration = 0.5f;
+
     public GameObject flashlight;
     public SpriteMask flashlightBeamMask;
+    public SpriteRenderer flashlightPlayerGlowSR;
     private bool flashlightOn = false;
     private List<SpriteRenderer> flashlightSRs;
     private Vector2 flashlightDirection;
@@ -59,6 +62,8 @@ public class FlashlightAbility : PlayerAbility
     #region Visuals
     void updateFlashlightVisuals()
     {
+        flashlightBeamMask.enabled = flashlightOn;
+
         if (flashlightOn)
         {
             flashlight.SetActive(true);
@@ -75,10 +80,24 @@ public class FlashlightAbility : PlayerAbility
             flashlightSRs.ForEach(flsr =>
                 flsr.color = flsr.color.adjustAlpha(alpha)
             );
+
+            //enable sprites
+            flashlightSRs.ForEach(flsr => flsr.enabled = true);
+
         }
         else
         {
-            flashlight?.SetActive(false);
+            flashlightSRs.ForEach(flsr =>
+                flsr.enabled = false
+            );
+            flashlightPlayerGlowSR.enabled = true;
+            Timer.startTimer(afterglowDuration, () =>
+            {
+                if (!flashlightOn)
+                {
+                    flashlight.SetActive(false);
+                }
+            });
         }
     }
     #endregion
