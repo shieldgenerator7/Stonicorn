@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
         Managers.initInstance();
         Managers.Player.init();
         Managers.Camera.init();
+        Managers.PlayerPilot.init();
         Addressables.InitializeAsync();
     }
 

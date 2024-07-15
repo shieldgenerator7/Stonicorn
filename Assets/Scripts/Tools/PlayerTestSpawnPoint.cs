@@ -24,7 +24,7 @@ public class PlayerTestSpawnPoint : MonoBehaviour
     {
         Debug.Log("PlayerTestSpawnPoint activating");
         //Set player position
-        PlayerController pc = FindObjectOfType<PlayerController>();
+        PlayerController pc = Managers.Player;
         pc.transform.position = transform.position;
         Physics2D.SyncTransforms();
         //Activate abilities

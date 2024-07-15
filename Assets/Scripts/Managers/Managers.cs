@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -176,7 +177,7 @@ public class Managers : MonoBehaviour
         File = FindObjectOfType<FileManager>();
         DemoMode = FindObjectOfType<DemoModeManager>();
         Power = FindObjectOfType<PowerManager>();
-        Player = FindObjectOfType<PlayerController>();
+        Player = FindObjectsOfType<PlayerController>().ToList().Find(pc=>pc.gameObject.CompareTag("Player"));
         PlayerRewind = FindObjectOfType<PlayerRewindController>();
         PlayerPilot = FindObjectOfType<PlayerPilotController>();
         Camera = FindObjectOfType<CameraController>();

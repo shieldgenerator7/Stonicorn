@@ -11,6 +11,10 @@ public class PlayerPilotController : MonoBehaviour
     {
         
     }
+    public void init()
+    {
+        playerController.init();
+    }
 
     // Update is called once per frame
     void Update()
