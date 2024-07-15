@@ -7,10 +7,11 @@ public class FlashlightAbility : PlayerAbility
 {
     [Header("Flashlight")]
     public float maxPullBackDistance = 6;
-    public GameObject flashlightPrefab;//prefab
-    private GameObject flashlight;
+    public float maxBeamDistance = 6;
+    public GameObject flashlight;
+    public SpriteMask flashlightBeamMask;
     private bool flashlightOn = false;
-    private List<SpriteRenderer> flashlightSRs;
+    //private List<SpriteRenderer> flashlightSRs;
     private Vector2 flashlightDirection;
     public Vector2 FlashlightDirection
     {
@@ -54,19 +55,19 @@ public class FlashlightAbility : PlayerAbility
     {
         if (flashlightOn)
         {
-            if (this.flashlight == null)
-            {
-                this.flashlight = Instantiate(flashlightPrefab);
-                this.flashlight.transform.parent = transform;
-                this.flashlight.transform.localPosition = Vector2.zero;
-                this.flashlightSRs = this.flashlight.GetComponentsInChildren<SpriteRenderer>().ToList();
-            }
             flashlight.SetActive(true);
             flashlight.transform.up = flashlightDirection;
-            float alpha = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
-            flashlightSRs.ForEach(flsr =>
-                flsr.color = flsr.color.adjustAlpha(alpha)
-            );
+
+            Vector2 size = flashlightBeamMask.transform.localScale;
+            size.y = maxBeamDistance;
+            flashlightBeamMask.transform.localScale = size;
+            float percent = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
+            //flashlightSRs.ForEach(flsr =>
+            //    flsr.color = flsr.color.adjustAlpha(alpha)
+            //);
+            Vector3 pos = flashlightBeamMask.transform.localPosition;
+            pos.y = percent * maxBeamDistance + size.y/2;
+            flashlightBeamMask.transform.localPosition = pos;
         }
         else
         {
