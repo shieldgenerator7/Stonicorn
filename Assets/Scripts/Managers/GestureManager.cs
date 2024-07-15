@@ -5,7 +5,12 @@ using System.Collections.Generic;
 public class GestureManager : MonoBehaviour
 {
     //Gesture Profiles
-    public enum GestureProfileType { MENU, MAIN, REWIND };
+    public enum GestureProfileType
+    {
+        MENU,//for the menu
+        MAIN,//for normal playing of the game
+        REWIND,//for activating a rewind and during a rewind
+    };
     private GestureProfile currentGP;//the current gesture profile
     private Dictionary<GestureProfileType, GestureProfile> gestureProfiles = new Dictionary<GestureProfileType, GestureProfile>();//dict of valid gesture profiles
 
