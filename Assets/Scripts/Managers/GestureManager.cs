@@ -43,6 +43,7 @@ public class GestureManager : MonoBehaviour
         gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
         gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());
         gestureProfiles.Add(GestureProfileType.REWIND, new RewindGestureProfile());
+        gestureProfiles.Add(GestureProfileType.PILOT, new PilotGestureProfile());
         switchGestureProfile(GestureProfileType.MENU);
 
         Managers.Camera.onZoomLevelChanged += processZoomLevelChange;
