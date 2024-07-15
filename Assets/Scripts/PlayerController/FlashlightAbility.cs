@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FlashlightAbility : PlayerAbility
@@ -9,7 +10,7 @@ public class FlashlightAbility : PlayerAbility
     public GameObject flashlightPrefab;//prefab
     private GameObject flashlight;
     private bool flashlightOn = false;
-    private SpriteRenderer flashlightSR;
+    private List<SpriteRenderer> flashlightSRs;
     private Vector2 flashlightDirection;
     public Vector2 FlashlightDirection
     {
@@ -58,13 +59,14 @@ public class FlashlightAbility : PlayerAbility
                 this.flashlight = Instantiate(flashlightPrefab);
                 this.flashlight.transform.parent = transform;
                 this.flashlight.transform.localPosition = Vector2.zero;
-                this.flashlightSR = this.flashlight.GetComponent<SpriteRenderer>();
+                this.flashlightSRs = this.flashlight.GetComponentsInChildren<SpriteRenderer>().ToList();
             }
             flashlight.SetActive(true);
             flashlight.transform.up = flashlightDirection;
-            flashlightSR.color = flashlightSR.color.adjustAlpha(
-                    (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance
-                    );
+            float alpha = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
+            flashlightSRs.ForEach(flsr =>
+                flsr.color = flsr.color.adjustAlpha(alpha)
+            );
         }
         else
         {
