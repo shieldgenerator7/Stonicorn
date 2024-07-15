@@ -14,6 +14,10 @@ public class PlayerPilotController : MonoBehaviour
     public void init()
     {
         playerController.init();
+        playerController.Teleport.onTeleport += (oldPos, newPos) =>
+        {
+            Managers.Player.transform.position = newPos;
+        };
     }
 
     // Update is called once per frame
