@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Skin : MonoBehaviour
 {
+    public GameObject outline;
 
     public static Skin attachedSkin;
 
@@ -37,6 +38,7 @@ public class Skin : MonoBehaviour
         {
             transform.SetParent(null, true);
         }
+        outline.SetActive(!attach);
         coll2d.enabled = !attach;
     }
 }
