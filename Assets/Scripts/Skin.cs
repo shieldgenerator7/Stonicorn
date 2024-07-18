@@ -9,6 +9,8 @@ public class Skin : MonoBehaviour
 
     private Collider2D coll2d;
 
+    private bool canBePickedUp = true;
+
     private void Start()
     {
         coll2d = GetComponent<Collider2D>();
@@ -16,13 +18,20 @@ public class Skin : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.isPlayerSolid())
+        if (canBePickedUp && collision.isPlayerSolid())
         {
             if (attachedSkin != null)
             {
                 attachedSkin.attach(false);
             }
             attach(true);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.isPlayerSolid())
+        {
+            canBePickedUp = true;
         }
     }
 
@@ -34,6 +43,7 @@ public class Skin : MonoBehaviour
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
             attachedSkin = this;
+            canBePickedUp = false;
         }
         else
         {
@@ -42,6 +52,7 @@ public class Skin : MonoBehaviour
             {
                 attachedSkin = null;
             }
+            canBePickedUp = false;
         }
         outline.SetActive(!attach);
         coll2d.enabled = !attach;
