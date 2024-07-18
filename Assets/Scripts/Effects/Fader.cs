@@ -53,6 +53,7 @@ public class Fader : MonoBehaviour
         srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
         srs.AddRange(GetComponentsInChildren<SpriteShapeRenderer>());
         srs.AddRange(GetComponentsInChildren<Image>());
+        srs.Add(GetComponent<SpriteMask>());
         srs.RemoveAll(sr => sr == null);
         if (destroyColliders)
         {
@@ -94,6 +95,11 @@ public class Fader : MonoBehaviour
                 {
                     Image img = (Image)o;
                     img.color = img.color.adjustAlpha(alpha);
+                }
+                else if (o is SpriteMask)
+                {
+                    SpriteMask mask = (SpriteMask)o;
+                    mask.enabled = alpha > 0;
                 }
             }
             checkDestroy(alpha);
