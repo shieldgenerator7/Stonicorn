@@ -16,6 +16,7 @@ public class FlashlightAbility : PlayerAbility
     public float minGlowSize = 2f;
     [Range(0, 10)]
     public float maxGlowSize = 3f;
+    public float glowAlpha = -1;//override alpha animation if between 0 and 1
     public float afterglowDuration = 0.5f;
     private float afterglowStartSize = 1;
 
@@ -90,6 +91,11 @@ public class FlashlightAbility : PlayerAbility
                 flsr.color = flsr.color.adjustAlpha(alpha)
             );
 
+            if (Utility.between(glowAlpha, 0, 1))
+            {
+                flashlightPlayerGlowSR.color = flashlightPlayerGlowSR.color.adjustAlpha(glowAlpha);
+            }
+
             //enable sprites
             flashlightSRs.ForEach(flsr => flsr.enabled = true);
 
@@ -121,7 +127,14 @@ public class FlashlightAbility : PlayerAbility
             if (!flashlightOn)
             {
                 float percent = timeLeft / duration;
+                if (Utility.between(glowAlpha, 0, 1))
+                {
+                    flashlightPlayerGlowSR.color = flashlightPlayerGlowSR.color.adjustAlpha(glowAlpha);
+                }
+                else
+                {
                 flashlightPlayerGlowSR.color = flashlightPlayerGlowSR.color.adjustAlpha(percent * (maxAlpha - minAlpha) + minAlpha);
+                }
 
                 Vector2 sizeGlow = flashlightPlayerGlowSR.transform.localScale;
                 sizeGlow = Vector2.one * ((afterglowStartSize) * percent);
