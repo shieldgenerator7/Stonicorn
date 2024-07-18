@@ -33,10 +33,15 @@ public class Skin : MonoBehaviour
             transform.SetParent(Managers.Player.transform,false);
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
+            attachedSkin = this;
         }
         else
         {
             transform.SetParent(null, true);
+            if (attachedSkin == this)
+            {
+                attachedSkin = null;
+            }
         }
         outline.SetActive(!attach);
         coll2d.enabled = !attach;
