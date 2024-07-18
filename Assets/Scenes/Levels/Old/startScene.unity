@@ -1679,8 +1679,10 @@ MonoBehaviour:
   autoTeleportDelay: 0.1
   pauseMovementDuration: 0.2
   hitStunDuration: 1
+  bigHitThreshold: 50
   scoutColliderMin: {fileID: 0}
   scoutColliderMax: {fileID: 0}
+  _halfWidth: 0
 --- !u!60 &502139758
 PolygonCollider2D:
   m_ObjectHideFlags: 0
