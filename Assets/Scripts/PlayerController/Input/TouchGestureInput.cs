@@ -78,6 +78,7 @@ public class TouchGestureInput : GestureInput
 
     public override bool processInput(GestureProfile profile)
     {
+        float time = Time.unscaledTime;
         if (Input.touchCount > 0)
         {
             //
@@ -108,13 +109,13 @@ public class TouchGestureInput : GestureInput
                     TouchData data = touchDatas[touch.fingerId];
                     //Drag Gesture
                     if (Vector2.Distance(data.origPosScreen, touch.position) >= dragThreshold
-                        && Time.time - data.origTime >= dragHoldThreshold
+                        && time - data.origTime >= dragHoldThreshold
                         )
                     {
                         touchEvent = TouchEvent.DRAG;
                     }
                     //Hold Gesture
-                    if (Time.time - data.origTime >= holdThreshold)
+                    if (time - data.origTime >= holdThreshold)
                     {
                         touchEvent = TouchEvent.HOLD;
                     }
@@ -148,7 +149,7 @@ public class TouchGestureInput : GestureInput
                     case TouchEvent.HOLD:
                         profile.processHoldGesture(
                             Utility.ScreenToWorldPoint(touch.position),
-                            Time.time - data.origTime,
+                            time - data.origTime,
                             true
                             );
                         break;
@@ -180,7 +181,7 @@ public class TouchGestureInput : GestureInput
                     case TouchEvent.HOLD:
                         profile.processHoldGesture(
                             Utility.ScreenToWorldPoint(touch.position),
-                            Time.time - data.origTime,
+                            time - data.origTime,
                             touch.phase == TouchPhase.Ended
                             );
                         break;

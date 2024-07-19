@@ -24,6 +24,7 @@ public class KeyboardGestureInput : GestureInput
 
     public override bool processInput(GestureProfile profile)
     {
+        float time = Time.unscaledTime;
         if (InputOngoing)
         {
             float horizontal = Input.GetAxis("Horizontal");
@@ -45,7 +46,7 @@ public class KeyboardGestureInput : GestureInput
                 if (!wasInputPrev && isInputNow)
                 {
                     //Gesture Start
-                    gestureStartTime = Time.time;
+                    gestureStartTime = time;
                 }
                 float range = Managers.Player.Teleport.baseRange;
                 if (Input.GetButton("Short"))
@@ -54,7 +55,7 @@ public class KeyboardGestureInput : GestureInput
                 }
                 profile.processHoldGesture(
                     (Vector2)Managers.Player.transform.position + (dir * range),
-                    Time.time - gestureStartTime,
+                    time - gestureStartTime,
                     !isInputNow
                     );
                 return true;

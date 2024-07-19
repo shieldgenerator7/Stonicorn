@@ -43,6 +43,7 @@ public class MouseGestureInput : GestureInput
 
     public override bool processInput(GestureProfile profile)
     {
+        float time = Time.unscaledTime;
         if (InputOngoing)
         {
             //
@@ -54,13 +55,13 @@ public class MouseGestureInput : GestureInput
                 if (Input.GetMouseButtonDown(mouseButton))
                 {
                     origPosScreen = Input.mousePosition;
-                    origTime = Time.time;
+                    origTime = time;
                     dragType = DragType.DRAG_PLAYER;
                 }
                 else if (Input.GetMouseButtonDown(mouseButton2))
                 {
                     origPosScreen = Input.mousePosition;
-                    origTime = Time.time;
+                    origTime = time;
                     dragType = DragType.DRAG_CAMERA;
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") != 0)
@@ -72,12 +73,12 @@ public class MouseGestureInput : GestureInput
                 {
                     //Check Drag
                     float dragDistance = Vector2.Distance(origPosScreen, Input.mousePosition);
-                    if (dragDistance >= dragThreshold && Time.time - origTime >= dragHoldThreshold)
+                    if (dragDistance >= dragThreshold && time - origTime >= dragHoldThreshold)
                     {
                         mouseEvent = MouseEvent.DRAG;
                     }
                     //Check Hold
-                    else if (Time.time - origTime >= holdThreshold)
+                    else if (time - origTime >= holdThreshold)
                     {
                         mouseEvent = MouseEvent.HOLD;
                     }
@@ -101,7 +102,7 @@ public class MouseGestureInput : GestureInput
                 case MouseEvent.HOLD:
                     profile.processHoldGesture(
                         Utility.ScreenToWorldPoint(Input.mousePosition),
-                        Time.time - origTime,
+                        time - origTime,
                         Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2)
                         );
                     break;
