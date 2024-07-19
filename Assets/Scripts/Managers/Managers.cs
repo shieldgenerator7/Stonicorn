@@ -76,7 +76,7 @@ public class Managers : MonoBehaviour
         {
             if (instance.menuManager == null || ReferenceEquals(instance.menuManager, null))
             {
-                instance.menuManager = FindObjectOfType<MenuManager>();
+                instance.menuManager = FindAnyObjectByType<MenuManager>();
             }
             return instance.menuManager;
         }
@@ -139,7 +139,7 @@ public class Managers : MonoBehaviour
     private static Managers instance;
     public static void initInstance()
     {
-        FindObjectOfType<Managers>().init();
+        FindAnyObjectByType<Managers>().init();
     }
     void init()
     {
@@ -158,29 +158,29 @@ public class Managers : MonoBehaviour
         }
 
         //Populate other managers
-        Game = FindObjectOfType<GameManager>();
-        Gesture = FindObjectOfType<GestureManager>();
-        Dialogue = GetComponent<DialogueManager>();
+        Game = FindAnyObjectByType<GameManager>();
+        Gesture = FindAnyObjectByType<GestureManager>();
+        Dialogue = FindAnyObjectByType<DialogueManager>();
         Progress = new ProgressManager();
-        Event = FindObjectOfType<EventManager>();
-        Stats = FindObjectOfType<GameStatistics>();
-        Time = FindObjectOfType<TimeManager>();
-        Rewind = FindObjectOfType<RewindManager>();
-        Object = FindObjectOfType<ObjectManager>();
-        Physics2DSurrogate = GetComponent<Physics2DSurrogate>();
-        Music = FindObjectOfType<MusicManager>();
-        Sound = FindObjectOfType<SoundManager>();
-        Video = FindObjectOfType<VideoManager>();
-        Effect = FindObjectOfType<EffectManager>();
-        Scene = FindObjectOfType<ScenesManager>();
-        Settings = FindObjectOfType<SettingsManager>();
-        File = FindObjectOfType<FileManager>();
-        DemoMode = FindObjectOfType<DemoModeManager>();
-        Power = FindObjectOfType<PowerManager>();
+        Event = FindAnyObjectByType<EventManager>();
+        Stats = FindAnyObjectByType<GameStatistics>();
+        Time = FindAnyObjectByType<TimeManager>();
+        Rewind = FindAnyObjectByType<RewindManager>();
+        Object = FindAnyObjectByType<ObjectManager>();
+        Physics2DSurrogate = FindAnyObjectByType<Physics2DSurrogate>();
+        Music = FindAnyObjectByType<MusicManager>();
+        Sound = FindAnyObjectByType<SoundManager>();
+        Video = FindAnyObjectByType<VideoManager>();
+        Effect = FindAnyObjectByType<EffectManager>();
+        Scene = FindAnyObjectByType<ScenesManager>();
+        Settings = FindAnyObjectByType<SettingsManager>();
+        File = FindAnyObjectByType<FileManager>();
+        DemoMode = FindAnyObjectByType<DemoModeManager>();
+        Power = FindAnyObjectByType<PowerManager>();
         Player = FindObjectsOfType<PlayerController>().ToList().Find(pc=>pc.gameObject.CompareTag("Player"));
-        PlayerRewind = FindObjectOfType<PlayerRewindController>();
-        PlayerPilot = FindObjectOfType<PlayerPilotController>();
-        Camera = FindObjectOfType<CameraController>();
+        PlayerRewind = FindAnyObjectByType<PlayerRewindController>();
+        PlayerPilot = FindAnyObjectByType<PlayerPilotController>();
+        Camera = FindAnyObjectByType<CameraController>();
 
         //Init with game data
         foreach (Manager m in FindObjectsOfType<Manager>())
