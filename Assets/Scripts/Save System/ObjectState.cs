@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class ObjectState
 {
@@ -72,7 +73,14 @@ public class ObjectState
                         );
                 }
             }
-            smb.CurrentState = so;
+            try
+            {
+                smb.CurrentState = so;
+            }
+            catch (InvalidCastException ice)
+            {
+                Debug.Log($"InvalidCastException {ice}");
+            }
         }
     }
 }
