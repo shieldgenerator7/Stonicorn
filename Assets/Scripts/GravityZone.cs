@@ -10,7 +10,8 @@ public class GravityZone : MonoBehaviour
     public bool radialGravity = true;//true to make it gravitate towards the center of the gravity zone
     
     private Vector2 gravityVector;
-    private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
+    private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of Rigidbody2D in this zone
+    private List<GravityAccepter> tenantsGAs = new List<GravityAccepter>();//the list of GravityAccepter in this zone
 
     private Collider2D coll2d;
 
@@ -24,6 +25,16 @@ public class GravityZone : MonoBehaviour
     {
         if (coll.isSolid())
         {
+            GravityAccepter ga = new GravityAccepter();
+            if (ga)
+            {
+                if (!tenantsGAs.Contains(ga))
+                {
+                    tenantsGAs.Add(ga);
+                }
+            }
+            else
+            {
             Rigidbody2D rb2d = coll.GetComponent<Rigidbody2D>();
             if (rb2d)
             {
@@ -31,6 +42,7 @@ public class GravityZone : MonoBehaviour
                 {
                     tenants.Add(rb2d);
                 }
+            }
             }
         }
     }
@@ -49,29 +61,31 @@ public class GravityZone : MonoBehaviour
     void FixedUpdate()
     {
         tenants.RemoveAll(ten => !ten || ReferenceEquals(ten, null));
-        foreach (Rigidbody2D rb2d in tenants)
+        tenantsGAs.ForEach(ga =>
+        {
+            if (ga.AcceptsGravity)
+            {
+                Rigidbody2D rb2d = ga.Rigidbody2D;
+                Vector2 finalGravityVector = (radialGravity)
+                    ? (Vector2)(transform.position - rb2d.transform.position).normalized
+                        * gravityScale
+                    : gravityVector;
+                Vector3 vector = finalGravityVector * rb2d.mass;
+                vector *= ga.gravityScale;
+                rb2d.AddForce(vector);
+                //Inform the gravity accepter of the direction
+                ga.addGravity(finalGravityVector);
+            }
+        });
+        tenants.ForEach(rb2d =>
         {
             Vector2 finalGravityVector = (radialGravity)
                 ? (Vector2)(transform.position - rb2d.transform.position).normalized
                     * gravityScale
                 : gravityVector;
             Vector3 vector = finalGravityVector * rb2d.mass;
-            GravityAccepter ga = rb2d.GetComponent<GravityAccepter>();
-            if (ga)
-            {
-                if (ga.AcceptsGravity)
-                {
-                    vector *= ga.gravityScale;
-                    rb2d.AddForce(vector);
-                    //Inform the gravity accepter of the direction
-                    ga.addGravity(finalGravityVector);
-                }
-            }
-            else
-            {
                 rb2d.AddForce(vector);
-            }
-        }
+        });
     }
 
     public bool Contains(Vector2 pos) => coll2d.OverlapPoint(pos);

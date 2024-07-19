@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class GravityAccepter : SavableMonoBehaviour
 {
     //used for objects that need to know their gravity direction
@@ -68,6 +69,9 @@ public class GravityAccepter : SavableMonoBehaviour
         set { acceptsGravity = value; }
     }
 
+    private Rigidbody2D rb2d;
+    public Rigidbody2D Rigidbody2D => rb2d;
+
     public void addGravity(Vector2 newGravity)
     {
         Gravity = gravityVector + newGravity;
@@ -77,6 +81,7 @@ public class GravityAccepter : SavableMonoBehaviour
 
     public override void init()
     {
+        rb2d = GetComponent<Rigidbody2D>();
     }
     private void LateUpdate()
     {
