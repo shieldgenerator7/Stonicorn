@@ -5,6 +5,7 @@ public class PlayerPilotController : MonoBehaviour
 {
 
     public PlayerController playerController;//the player controller specific to this particular pod
+    public CheckPointChecker checkPointChecker;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,10 +28,13 @@ public class PlayerPilotController : MonoBehaviour
         if (active)
         {
             Managers.Player.Teleport.Range = playerController.Teleport.Range;
+            checkPointChecker?.clearPostTeleport(true);
         }
         else
         {
             Managers.Player.Teleport.Range = Managers.Player.Teleport.baseRange;
+            CheckPointChecker.current = null;//dirty: the checkpoint system should handle this better
+            checkPointChecker?.trigger();
         }
     }
 

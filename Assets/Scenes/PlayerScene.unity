@@ -7806,6 +7806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 1133267393}
+  checkPointChecker: {fileID: 1906529701}
 --- !u!114 &1133267397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9539,6 +9540,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8412103709058295066, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
   m_PrefabInstance: {fileID: 674380232}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1906529701 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1488479641167960267, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 674380232}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906529698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3906f200e66153241816eb7732d6aa99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1932115898 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1918756826042548, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
