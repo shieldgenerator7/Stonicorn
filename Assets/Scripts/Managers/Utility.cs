@@ -232,8 +232,21 @@ public static class Utility
     {
         Vector2 prevUp = go.transform.up;
         go.transform.up = Vector2.up;
+        Bounds b = new Bounds();
         SpriteRenderer goSR = go.GetComponent<SpriteRenderer>();
-        Bounds b = goSR.bounds;
+        if (goSR)
+        {
+            b = goSR.bounds;
+        }
+        else
+        {
+            Collider2D coll2d = go.GetComponent<Collider2D>();
+            if (coll2d)
+            {
+                b = coll2d.bounds;
+            }
+        }
+        //Bounds b = go.GetComponent<SpriteRenderer>()?.bounds ?? go.GetComponent<Collider2D>()?.bounds ?? new Bounds();
         go.transform.up = prevUp;
         return b.size;
     }
