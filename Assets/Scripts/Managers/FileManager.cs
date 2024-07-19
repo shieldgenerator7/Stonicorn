@@ -34,18 +34,14 @@ public class FileManager : Manager
     {
         string filename = getFileName(saveWithTimeStamp);
         //Save file settings
-        List<SettingObject> settings = new List<SettingObject>();
-        foreach (ISetting setting in FindObjectsOfType<MonoBehaviour>().OfType<ISetting>())
-        {
-            if (setting.Scope == SettingScope.SAVE_FILE)
-            {
-                SettingObject so = setting.Setting;
-                if (so)
-                {
-                    settings.Add(so);
-                }
-            }
-        }
+        List<SettingObject> settings = 
+            FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+            .OfType<ISetting>()
+            .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
+            .ToList()
+            .ConvertAll(setting => setting.Setting)
+            .Where(so => so)
+            .ToList();
         ES3.Save<List<SettingObject>>("settings", settings, filename);
 
         //Save Game Data
