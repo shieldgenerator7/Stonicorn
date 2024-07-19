@@ -92,10 +92,9 @@ public class CinematicCameraController : MonoBehaviour
             }
 
             //Rotation
-            foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
+            GravityZone gz = GravityZone.getGravityZone(transform.position);
+            if (gz)
             {
-                if (gz.mainGravityZone && gz.GetComponent<Collider2D>().OverlapPoint(transform.position))
-                {
                     if (gz.radialGravity)
                     {
                         targetUp = (transform.position - gz.transform.position).normalized;
@@ -104,8 +103,6 @@ public class CinematicCameraController : MonoBehaviour
                     {
                         targetUp = gz.transform.up;
                     }
-                    break;
-                }
             }
             if ((Vector2)transform.up != targetUp)
             {

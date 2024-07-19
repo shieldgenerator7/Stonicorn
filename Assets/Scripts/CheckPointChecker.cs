@@ -269,16 +269,11 @@ public class CheckPointChecker : MemoryMonoBehaviour
         checkpointCamera.gameObject.SetActive(true);
         checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0, 0, -10);
         //Orient the camera to the gravity collider it's in
-        foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
+        GravityZone gravityZone = GravityZone.getGravityZone(checkpointCamera.gameObject.transform.position);
+        if (gravityZone)
         {
-            if (gz.GetComponent<Collider2D>().OverlapPoint(
-                checkpointCamera.gameObject.transform.position
-                ))
-            {
-                checkpointCamera.gameObject.transform.up =
-                    (Vector2)checkpointCamera.gameObject.transform.position - (Vector2)gz.transform.position;
-                break;
-            }
+            checkpointCamera.gameObject.transform.up =
+                (Vector2)(checkpointCamera.gameObject.transform.position - gravityZone.transform.position);
         }
         //2016-12-06: The following code copied from an answer by jashan: http://answers.unity3d.com/questions/22954/how-to-save-a-picture-take-screenshot-from-a-camer.html
         int resWidth = 300;

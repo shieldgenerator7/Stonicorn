@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Physics2DSurrogate : MonoBehaviour
 {
-    private List<GravityZone> gravityZones;
     private MusicZone[] musicZones;
+    private IEnumerable<GravityZone> gravityZones;
 
     private void OnEnable()
     {
@@ -34,14 +35,8 @@ public class Physics2DSurrogate : MonoBehaviour
     void refreshZones()
     {
         //Gravity
-        gravityZones = new List<GravityZone>();
-        foreach (GravityZone gz in FindObjectsOfType<GravityZone>())
-        {
-            if (gz.mainGravityZone)
-            {
-                gravityZones.Add(gz);
-            }
-        }
+        gravityZones = FindObjectsByType<GravityZone>(FindObjectsSortMode.None)
+            .Where(gz => gz.mainGravityZone);
         //Music
         musicZones = FindObjectsOfType<MusicZone>();
     }
@@ -53,13 +48,10 @@ public class Physics2DSurrogate : MonoBehaviour
         cam.refocus();
         Vector2 camPos = cam.transform.position;
         //Gravity
-        foreach (GravityZone gz in gravityZones)
+        GravityZone gz = gravityZones.First(gz => gz.Contains(camPos));
+        if (gz)
         {
-            if (gz.GetComponent<Collider2D>().OverlapPoint(camPos))
-            {
-                cam.transform.up = gz.transform.up;
-                break;
-            }
+            cam.transform.up = gz.transform.up;
         }
         //Music
         foreach (MusicZone mz in musicZones)

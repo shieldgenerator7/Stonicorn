@@ -12,7 +12,7 @@ public class GravityZone : MonoBehaviour
     private Vector2 gravityVector;
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
 
-    public Collider2D coll2d;
+    private Collider2D coll2d;
 
     // Use this for initialization
     void Start()
@@ -74,6 +74,8 @@ public class GravityZone : MonoBehaviour
         }
     }
 
+    public bool Contains(Vector2 pos) => coll2d.OverlapPoint(pos);
+
     public static Vector2 getUpDirection(Vector2 pos)
     {
         GravityZone gz = getGravityZone(pos);
@@ -89,7 +91,7 @@ public class GravityZone : MonoBehaviour
     }
 
     public static GravityZone getGravityZone(Vector2 pos)
-        => FindObjectsOfType<GravityZone>()
+        => FindObjectsByType<GravityZone>(FindObjectsSortMode.None)
             .FirstOrDefault(
                 gz => gz.mainGravityZone && gz.coll2d.OverlapPoint(pos)
             );
