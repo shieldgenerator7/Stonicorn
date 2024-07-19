@@ -18,6 +18,7 @@ public class GravityZone : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        coll2d = GetComponent<Collider2D>();
         gravityVector = -transform.up.normalized * gravityScale;
     }
 
