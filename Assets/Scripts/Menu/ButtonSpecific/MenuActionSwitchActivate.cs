@@ -15,10 +15,7 @@ public class MenuActionSwitchActivate : MenuActionSwitch
             mf.init();
             mf.frameCamera();
             MenuManager mm = Managers.Menu;
-            if (!mm.frames.Contains(mf))
-            {
-                mm.frames.Add(mf);
-            }
+            mm.AddFrame(mf);
         }
     }
 

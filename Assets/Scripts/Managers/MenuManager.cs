@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class MenuManager : MonoBehaviour
 
     public MenuFrame startFrame;
 
-    public List<MenuFrame> frames = new List<MenuFrame>();
+    private IEnumerable<MenuFrame> frames;
 
     private void Awake()
     {
@@ -19,13 +20,8 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (MenuFrame mf in FindObjectsOfType<MenuFrame>())
-        {
-            if (mf.canDelegateTaps())
-            {
-                frames.Add(mf);
-            }
-        }
+        frames = FindObjectsByType<MenuFrame>(FindObjectsSortMode.None)
+            .Where(mf => mf.canDelegateTaps());
         GameObject player = Managers.Player.gameObject;
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
@@ -41,36 +37,26 @@ public class MenuManager : MonoBehaviour
         Managers.Time.setPause(this, false);
     }
 
-    public void processTapGesture(Vector3 pos)
-    {
-        foreach (MenuFrame mf in frames)
-        {
-            if (mf.tapInArea(pos))
-            {
-                mf.delegateTap(pos);
-                return;
-            }
-        }
-    }
-    public bool processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld)
-    {
-        foreach (MenuFrame mf in frames)
-        {
-            if (mf.tapInArea(origMPWorld))
-            {
-                if (mf.delegateDrag(origMPWorld, newMPWorld))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    public void processTapGesture(Vector3 pos) =>
+        frames.First(mf => mf.tapInArea(pos))?
+            .delegateTap(pos);
+    public bool processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld) =>
+        frames.First(mf => mf.tapInArea(origMPWorld))?
+            .delegateDrag(origMPWorld, newMPWorld)
+            ?? false;
 
     void Update()
     {
         //Orient camera to menu
         Managers.Camera.Up = Managers.Player.transform.up;
+    }
+
+    internal void AddFrame(MenuFrame mf)
+    {
+        if (!frames.Contains(mf))
+        {
+            frames = frames.Concat(new[] { mf });
+        }
     }
 
     public static bool Open
