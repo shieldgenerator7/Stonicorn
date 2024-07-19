@@ -8,7 +8,7 @@ public class GravityZone : MonoBehaviour
     public float gravityScale = 9.81f;
     public bool mainGravityZone = true;//true to change camera angle, false to not
     public bool radialGravity = true;//true to make it gravitate towards the center of the gravity zone
-    
+
     private Vector2 gravityVector;
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of Rigidbody2D in this zone
     private List<GravityAccepter> tenantsGAs = new List<GravityAccepter>();//the list of GravityAccepter in this zone
@@ -35,14 +35,14 @@ public class GravityZone : MonoBehaviour
             }
             else
             {
-            Rigidbody2D rb2d = coll.GetComponent<Rigidbody2D>();
-            if (rb2d)
-            {
-                if (!tenants.Contains(rb2d))
+                Rigidbody2D rb2d = coll.GetComponent<Rigidbody2D>();
+                if (rb2d)
                 {
-                    tenants.Add(rb2d);
+                    if (!tenants.Contains(rb2d))
+                    {
+                        tenants.Add(rb2d);
+                    }
                 }
-            }
             }
         }
     }
@@ -84,7 +84,7 @@ public class GravityZone : MonoBehaviour
                     * gravityScale
                 : gravityVector;
             Vector3 vector = finalGravityVector * rb2d.mass;
-                rb2d.AddForce(vector);
+            rb2d.AddForce(vector);
         });
     }
 

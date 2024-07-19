@@ -95,14 +95,14 @@ public class CinematicCameraController : MonoBehaviour
             GravityZone gz = GravityZone.getGravityZone(transform.position);
             if (gz)
             {
-                    if (gz.radialGravity)
-                    {
-                        targetUp = (transform.position - gz.transform.position).normalized;
-                    }
-                    else
-                    {
-                        targetUp = gz.transform.up;
-                    }
+                if (gz.radialGravity)
+                {
+                    targetUp = (transform.position - gz.transform.position).normalized;
+                }
+                else
+                {
+                    targetUp = gz.transform.up;
+                }
             }
             if ((Vector2)transform.up != targetUp)
             {
