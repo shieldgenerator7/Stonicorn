@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Physics2DSurrogate : MonoBehaviour
 {
-    private MusicZone[] musicZones;
     private IEnumerable<GravityZone> gravityZones;
+    private IEnumerable<MusicZone> musicZones;
 
     private void OnEnable()
     {
@@ -38,7 +38,7 @@ public class Physics2DSurrogate : MonoBehaviour
         gravityZones = FindObjectsByType<GravityZone>(FindObjectsSortMode.None)
             .Where(gz => gz.mainGravityZone);
         //Music
-        musicZones = FindObjectsOfType<MusicZone>();
+        musicZones = FindObjectsByType<MusicZone>(FindObjectsSortMode.None);
     }
 
     public void processFrame()
@@ -54,12 +54,7 @@ public class Physics2DSurrogate : MonoBehaviour
             cam.transform.up = gz.transform.up;
         }
         //Music
-        foreach (MusicZone mz in musicZones)
-        {
-            if (mz.checkZone(camPos))
-            {
-                break;
-            }
-        }
+        MusicZone mz = musicZones.First(mz => mz.checkZone(camPos));
+        //that's it, the mz processing is already done in the checkZone method
     }
 }

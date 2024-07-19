@@ -86,7 +86,7 @@ public class MusicManager : MonoBehaviour
     {
         lockCurrentSong = false;
         //
-        FindObjectsOfType<MusicZone>().ToList()
+        FindObjectsByType<MusicZone>(FindObjectsSortMode.None).ToList()
             .ForEach(mz => {
                 mz.init();
                 mz.checkZone(Managers.Player.transform.position);
