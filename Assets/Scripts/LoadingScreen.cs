@@ -10,6 +10,7 @@ public class LoadingScreen : MonoBehaviour
     public float growSpeed = 0.5f;
 
     public Camera initialCamera;
+    public SplashScreenUpdater splashScreenUpdater;
 
     //Runtime vars
     private List<AsyncOperation> operations = new List<AsyncOperation>();
@@ -36,7 +37,7 @@ public class LoadingScreen : MonoBehaviour
         //Managers.Time.Paused = false;
         Time.timeScale = 0;
         //Set Splash Screen delegate
-        FindObjectOfType<SplashScreenUpdater>().onSplashScreenFinished += splashScreenFinished;
+        splashScreenUpdater.onSplashScreenFinished += splashScreenFinished;
         //Disable this script until splash screen finishes
         this.enabled = false;
         //Allow app to load in background
