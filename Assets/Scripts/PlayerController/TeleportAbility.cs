@@ -9,9 +9,9 @@ using System.Collections.Generic;
 public class TeleportAbility : PlayerAbility
 {//2017-08-07: copied from ForceTeleportAbility
     [Header("Teleport")]
-    [Range(0, 10)]
+    [Range(0, 50)]
     public float baseRange = 3;//the range after touching the ground
-    [Range(0, 10)]
+    [Range(0, 50)]
     public float exhaustRange = 1;//the range after teleporting into the air (and being exhausted)
     [Range(0, 10)]
     public float dampenSpeed = 1;//how much velocity to dampen when teleporting

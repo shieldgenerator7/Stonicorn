@@ -5,10 +5,12 @@ public class PilotGestureProfile: GestureProfile
     public override void activate()
     {
         base.activate();
+        Managers.PlayerPilot.activate(true);
     }
     public override void deactivate()
     {
         base.deactivate();
+        Managers.PlayerPilot.activate(false);
     }
 
     public override void processTapGesture(Vector3 curMPWorld)

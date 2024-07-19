@@ -18,6 +18,20 @@ public class PlayerPilotController : MonoBehaviour
         {
             Managers.Player.transform.position = newPos;
         };
+
+        playerController.Teleport.onRangeChanged += (range) => Managers.Player.Teleport.Range = range;
+    }
+
+    public void activate(bool active)
+    {
+        if (active)
+        {
+            Managers.Player.Teleport.Range = playerController.Teleport.Range;
+        }
+        else
+        {
+            Managers.Player.Teleport.Range = Managers.Player.Teleport.baseRange;
+        }
     }
 
     // Update is called once per frame
