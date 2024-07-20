@@ -142,12 +142,18 @@ public class SceneLoader : MonoBehaviour, ISetting
 
     private void OnTriggerEnter2D(Collider2D coll2D)
     {
+        //early exit: scene is not loaded
+        if (!IsLoaded) { return; }
+        //
         GameObject go = coll2D.gameObject;
         onObjectEntered?.Invoke(go);
     }
     public event OnObjectMoved onObjectEntered;
     private void OnTriggerExit2D(Collider2D coll2D)
     {
+        //early exit: scene is not loaded
+        if (!IsLoaded) { return; }
+        //
         GameObject go = coll2D.gameObject;
         onObjectExited?.Invoke(go);
     }
