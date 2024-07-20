@@ -26,7 +26,7 @@ public class GravityZone : MonoBehaviour
     {
         if (coll.isSolid())
         {
-            GravityAccepter ga = new GravityAccepter();
+            GravityAccepter ga = coll.GetComponent<GravityAccepter>();
             if (ga)
             {
                 if (!tenantsGAs.Contains(ga))
