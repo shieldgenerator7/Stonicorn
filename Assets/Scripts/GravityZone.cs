@@ -51,6 +51,14 @@ public class GravityZone : MonoBehaviour
     {
         if (coll.isSolid())
         {
+            GravityAccepter ga = coll.GetComponent<GravityAccepter>();
+            if (ga)
+            {
+                if (!tenantsGAs.Contains(ga))
+                {
+                    tenantsGAs.Add(ga);
+                }
+            }
             Rigidbody2D rb2d = coll.GetComponent<Rigidbody2D>();
             if (rb2d)
             {
