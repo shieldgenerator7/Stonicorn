@@ -500,7 +500,7 @@ public static class Utility
                     soi.Id = getUniqueId(baseId, nextId);
                     soi.spawnStateId = Managers.Rewind.GameStateId;
                 }
-                catch (NullReferenceException nre)
+                catch (NullReferenceException)
                 {
                     Debug.LogError($"Saveable {savable.name} (child of {newObj.name}) does not have a {typeof(SavableObjectInfo)}!");
                 }
