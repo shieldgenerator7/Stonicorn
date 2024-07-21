@@ -531,12 +531,13 @@ public static class Utility
 
     static int maxReturnedList = 0;
     static RaycastHit2D[] rch2dsNonAlloc = new RaycastHit2D[MAX_HIT_COUNT];
+    static ContactFilter2D filter = new ContactFilter2D();
     /// <summary>
     /// Test method to see how many objects are typically returned in a raycast call
     /// </summary>
     public static RaycastAnswer RaycastAll(Vector2 origin, Vector2 direction, float distance)
     {
-        int count = Physics2D.RaycastNonAlloc(origin, direction, rch2dsNonAlloc, distance);
+        int count = Physics2D.Raycast(origin, direction, filter, rch2dsNonAlloc, distance);
         checkMaxReturnedList("Utility.RaycastAll", count);
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
