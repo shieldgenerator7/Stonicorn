@@ -14,6 +14,17 @@ public class GravityZone : MonoBehaviour
     private List<GravityAccepter> tenantsGAs = new List<GravityAccepter>();//the list of GravityAccepter in this zone
 
     private Collider2D coll2d;
+    public Collider2D Collider2D
+    {
+        get
+        {
+            if (coll2d == null)
+            {
+                coll2d = GetComponent<Collider2D>();
+            }
+            return coll2d;
+        }
+    }
 
     // Use this for initialization
     void Start()
@@ -116,6 +127,6 @@ public class GravityZone : MonoBehaviour
     public static GravityZone getGravityZone(Vector2 pos)
         => FindObjectsByType<GravityZone>(FindObjectsSortMode.None)
             .FirstOrDefault(
-                gz => gz.mainGravityZone && gz.coll2d.OverlapPoint(pos)
+                gz => gz.mainGravityZone && gz.Collider2D.OverlapPoint(pos)
             );
 }
