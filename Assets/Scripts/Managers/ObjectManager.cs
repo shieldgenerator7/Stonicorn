@@ -100,7 +100,7 @@ public class ObjectManager : Manager, ISetting
                             addObject(t.gameObject);
                         }
                     }
-                    Debug.Log("Recreated object "+newGO.name + " (" + goId + "). spawned: " + soi.spawnStateId + ", destroyed: " + soi.destroyStateId);
+                    Debug.Log("Recreated object " + newGO.name + " (" + goId + "). spawned: " + soi.spawnStateId + ", destroyed: " + soi.destroyStateId);
                     //Delegate
                     onObjectRecreated?.Invoke(newGO, lastStateSeen);
                     //Finish up

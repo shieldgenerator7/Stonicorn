@@ -34,7 +34,7 @@ public class FileManager : Manager
     {
         string filename = getFileName(saveWithTimeStamp);
         //Save file settings
-        List<SettingObject> settings = 
+        List<SettingObject> settings =
             FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
             .OfType<ISetting>()
             .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
