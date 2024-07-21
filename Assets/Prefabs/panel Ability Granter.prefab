@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5442258529637258614}
   - component: {fileID: 2610120137431724279}
   - component: {fileID: 9094953629494913890}
+  - component: {fileID: 5603433520739007864}
   m_Layer: 0
   m_Name: granter
   m_TagString: Untagged
@@ -170,6 +171,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   percentRequired: 1
+--- !u!58 &5603433520739007864
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4645545890874453627}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.00000333786, y: 0}
+  m_Radius: 0.5005001
 --- !u!1 &5278277183756558367
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +283,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: f88009068e80ed34c8daacc7b004627e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -369,6 +406,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: panel Ability Granter
       objectReference: {fileID: 0}
+    - target: {fileID: 3403370793880824990, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7659771117124049304, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
       propertyPath: id
       value: 10030
@@ -376,6 +417,10 @@ PrefabInstance:
     - target: {fileID: 7659771117124049304, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
       propertyPath: spawnStateId
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666839374085249897, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7981319394032975260, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
       propertyPath: m_RootOrder
