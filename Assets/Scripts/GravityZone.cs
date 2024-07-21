@@ -80,6 +80,7 @@ public class GravityZone : MonoBehaviour
 
     void FixedUpdate()
     {
+        tenantsGAs.RemoveAll(ten => !ten || ReferenceEquals(ten, null));
         tenants.RemoveAll(ten => !ten || ReferenceEquals(ten, null));
         tenantsGAs.ForEach(ga =>
         {
