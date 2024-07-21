@@ -183,9 +183,11 @@ public class Managers : MonoBehaviour
         Camera = FindAnyObjectByType<CameraController>();
 
         //Init with game data
-        foreach (Manager m in FindObjectsOfType<Manager>())
-        {
+        FindObjectsByType<Manager>(FindObjectsSortMode.None)
+            .ToList()
+            .ForEach(m =>
+            {
             m.init(gameData);
-        }
+            });
     }
 }
