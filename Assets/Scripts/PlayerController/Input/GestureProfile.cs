@@ -59,7 +59,7 @@ public class GestureProfile
         }
         else if (zoomLevel > Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND - 1))
         {
-            if (CheckPointChecker.InCheckPoint)
+            if (CheckPointChecker.InCheckPoint && CheckPointChecker.current.GetComponentInParent<PlayerPilotController>())
             {
                 Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.PILOT);
             }

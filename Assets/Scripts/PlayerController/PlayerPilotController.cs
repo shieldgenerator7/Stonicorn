@@ -29,12 +29,17 @@ public class PlayerPilotController : MonoBehaviour
         {
             Managers.Player.Teleport.Range = playerController.Teleport.Range;
             checkPointChecker?.clearPostTeleport(true);
+            Managers.PlayerPilot = this;
         }
         else
         {
             Managers.Player.Teleport.Range = Managers.Player.Teleport.baseRange;
             CheckPointChecker.current = null;//dirty: the checkpoint system should handle this better
             checkPointChecker?.trigger();
+            if (Managers.PlayerPilot == this)
+            {
+                Managers.PlayerPilot = null;
+            }
         }
     }
 

@@ -5,12 +5,20 @@ public class PilotGestureProfile : GestureProfile
     public override void activate()
     {
         base.activate();
-        Managers.PlayerPilot.activate(true);
+        PlayerPilotController pilot = CheckPointChecker.current?.GetComponentInParent<PlayerPilotController>();
+        if (pilot)
+        {
+            pilot.activate(true);
+        }
+        else
+        {
+            deactivate();
+        }
     }
     public override void deactivate()
     {
         base.deactivate();
-        Managers.PlayerPilot.activate(false);
+        CheckPointChecker.current?.GetComponentInParent<PlayerPilotController>()?.activate(false);
     }
 
     public override void processTapGesture(Vector3 curMPWorld)

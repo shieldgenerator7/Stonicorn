@@ -105,7 +105,7 @@ public class Managers : MonoBehaviour
     public static PlayerRewindController PlayerRewind { get; private set; }
 
     //Player Pilot Controller
-    public static PlayerPilotController PlayerPilot { get; private set; }
+    public static PlayerPilotController PlayerPilot { get; set; }
 
     //Camera Controller
     public static CameraController Camera { get; private set; }
@@ -179,7 +179,6 @@ public class Managers : MonoBehaviour
         Power = FindAnyObjectByType<PowerManager>();
         Player = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
         PlayerRewind = FindAnyObjectByType<PlayerRewindController>();
-        PlayerPilot = FindAnyObjectByType<PlayerPilotController>();
         Camera = FindAnyObjectByType<CameraController>();
 
         //Init with game data

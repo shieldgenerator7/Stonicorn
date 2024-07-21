@@ -17,7 +17,9 @@ public class GameManager : MonoBehaviour
         Managers.initInstance();
         Managers.Player.init();
         Managers.Camera.init();
-        Managers.PlayerPilot.init();
+        FindObjectsByType<PlayerPilotController>(FindObjectsSortMode.None).ToList().ForEach(
+            pilot => pilot.init()
+            );
         Addressables.InitializeAsync();
     }
 
