@@ -8,6 +8,7 @@ public class PoweredActivator : MonoBehaviour
 {
     [Range(0f, 1f)]
     public float percentRequired = 1f;
+    public bool allowTurnOff = true;
 
     private IPowerConduit conduit;
 
@@ -15,7 +16,6 @@ public class PoweredActivator : MonoBehaviour
     {
         conduit = GetComponent<IPowerConduit>() ?? GetComponentInParent<IPowerConduit>();
         conduit.OnPowerFlowed += onPowerFlowed;
-        gameObject.SetActive(false);
     }
 
     private void OnDestroy()
@@ -29,8 +29,7 @@ public class PoweredActivator : MonoBehaviour
     void onPowerFlowed(float power, float maxPower)
     {
         bool active = power >= maxPower * percentRequired;
-        //only allow it to turn on
-        if (active && gameObject.activeSelf != active) {
+        if ((active || allowTurnOff) && gameObject.activeSelf != active) {
             gameObject.SetActive(active);
         }
     }

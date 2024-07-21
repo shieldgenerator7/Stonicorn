@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6682129587736252561}
   - component: {fileID: 7351314925325393012}
-  - component: {fileID: 5025214062000379054}
+  - component: {fileID: 1966606659765281275}
   - component: {fileID: 4895617548520513934}
   - component: {fileID: 5442258529637258614}
   - component: {fileID: 2610120137431724279}
@@ -94,7 +94,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 1
   m_SpriteSortPoint: 0
---- !u!114 &5025214062000379054
+--- !u!114 &1966606659765281275
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4645545890874453627}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4decc246a7eb3d0438c4436d93d75ec8, type: 3}
+  m_Script: {fileID: 11500000, guid: e43a3dc7c8b09de41b8938edf8017a86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   activateSound: {fileID: 8300000, guid: 4900c34eb31a4f346be7a608f3012039, type: 3}
@@ -171,6 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   percentRequired: 1
+  allowTurnOff: 1
 --- !u!58 &5603433520739007864
 CircleCollider2D:
   m_ObjectHideFlags: 0
