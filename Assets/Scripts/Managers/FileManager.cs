@@ -62,21 +62,19 @@ public class FileManager : Manager
         {
             //Load file settings
             List<SettingObject> settings = ES3.Load<List<SettingObject>>("settings", filename);
-            foreach (ISetting setting in FindObjectsOfType<MonoBehaviour>().OfType<ISetting>())
-            {
-                if (setting.Scope == SettingScope.SAVE_FILE)
+            FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+                .OfType<ISetting>()
+                .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
+                .ToList()
+                .ForEach(setting =>
                 {
                     string id = setting.ID;
-                    foreach (SettingObject setObj in settings)
+                    SettingObject setObj = settings.Find(setObj => setObj.id == id);
+                    if (setObj)
                     {
-                        if (id == setObj.id)
-                        {
                             setting.Setting = setObj;
-                            break;
-                        }
                     }
-                }
-            }
+                });
 
             //Load Game Data
             GameData data = ES3.Load<GameData>("data", filename);
