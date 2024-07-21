@@ -177,7 +177,7 @@ public class TeleportAbility : PlayerAbility
         onTeleport?.Invoke(oldPos, newPos);
 
         //Detach Merky from sticky pads stuck to him
-        foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
+        foreach (FixedJoint2D fj2d in GameObject.FindObjectsByType<FixedJoint2D>(FindObjectsSortMode.None))
         {
             if (fj2d.connectedBody == rb2d)
             {

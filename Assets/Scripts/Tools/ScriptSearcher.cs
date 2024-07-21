@@ -54,7 +54,7 @@ public class ScriptSearcher : MonoBehaviour
         // Find all object that have an Audio component in the current Scene
         Debug.Log("Finding all Assets in the Current Scene that have a " + scriptName);
         System.Type scriptType = typeof(GameManager).Assembly.GetType(scriptName);
-        MonoBehaviour[] myScripts = FindObjectsOfType(scriptType) as MonoBehaviour[];
+        MonoBehaviour[] myScripts = FindObjectsByType(scriptType, FindObjectsSortMode.None) as MonoBehaviour[];
         Debug.Log("Found " + myScripts.Length + " objects with a " + scriptName + " attached");
         foreach (MonoBehaviour item in myScripts)
         {

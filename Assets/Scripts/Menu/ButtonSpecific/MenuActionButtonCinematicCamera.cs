@@ -6,11 +6,11 @@ public class MenuActionButtonCinematicCamera : MenuActionSwitch
 {
     public override void doAction(bool active)
     {
-        FindObjectOfType<CinematicCameraController>().Active = active;
+        FindAnyObjectByType<CinematicCameraController>().Active = active;
     }
 
     public override bool getActiveState()
     {
-        return FindObjectOfType<CinematicCameraController>().Active;
+        return FindAnyObjectByType<CinematicCameraController>().Active;
     }
 }

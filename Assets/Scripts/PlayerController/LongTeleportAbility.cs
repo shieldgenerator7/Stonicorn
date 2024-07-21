@@ -130,7 +130,7 @@ public class LongTeleportAbility : PlayerAbility
 
     bool canPortalBetween(Vector2 oldPos, Vector2 newPos)
     {
-        List<TeleportPortal> portalList = FindObjectsOfType<TeleportPortal>().ToList();
+        List<TeleportPortal> portalList = FindObjectsByType<TeleportPortal>(FindObjectsSortMode.None).ToList();
         //Require max upgrade level
         return
             //Require certain distance apart

@@ -386,12 +386,12 @@ public class ObjectManager : Manager, ISetting
         //Clear the list
         data.gameObjects.Clear();
         //Add objects that can move
-        foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
+        foreach (Rigidbody2D rb in FindObjectsByType<Rigidbody2D>(FindObjectsSortMode.None))
         {
             addObject(rb.gameObject);
         }
         //Add objects that have other variables that can get rewound
-        foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
+        foreach (SavableMonoBehaviour smb in FindObjectsByType<SavableMonoBehaviour>(FindObjectsSortMode.None))
         {
             addObject(smb.gameObject);
         }
@@ -400,7 +400,7 @@ public class ObjectManager : Manager, ISetting
     }
     public void refreshMemoryObjects()
     {
-        foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
+        foreach (MemoryMonoBehaviour mmb in FindObjectsByType<MemoryMonoBehaviour>(FindObjectsSortMode.None))
         {
             int key = mmb.gameObject.getKey();
             //If the memory has already been stored,
@@ -446,7 +446,7 @@ public class ObjectManager : Manager, ISetting
     public void LoadMemories()
     {
         //Find all the game objects that can have memories
-        foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
+        foreach (MemoryMonoBehaviour mmb in FindObjectsByType<MemoryMonoBehaviour>(FindObjectsSortMode.None))
         {
             int key = mmb.gameObject.getKey();
             //If there's a memory saved for this object,

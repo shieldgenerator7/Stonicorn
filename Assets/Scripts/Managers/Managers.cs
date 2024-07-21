@@ -177,7 +177,7 @@ public class Managers : MonoBehaviour
         File = FindAnyObjectByType<FileManager>();
         DemoMode = FindAnyObjectByType<DemoModeManager>();
         Power = FindAnyObjectByType<PowerManager>();
-        Player = FindObjectsOfType<PlayerController>().ToList().Find(pc=>pc.gameObject.CompareTag("Player"));
+        Player = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc=>pc.gameObject.CompareTag("Player"));
         PlayerRewind = FindAnyObjectByType<PlayerRewindController>();
         PlayerPilot = FindAnyObjectByType<PlayerPilotController>();
         Camera = FindAnyObjectByType<CameraController>();

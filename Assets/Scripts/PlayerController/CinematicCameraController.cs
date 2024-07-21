@@ -115,7 +115,7 @@ public class CinematicCameraController : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.H))
             {
-                foreach (HiddenArea ha in FindObjectsOfType<HiddenArea>())
+                foreach (HiddenArea ha in FindObjectsByType<HiddenArea>(FindObjectsSortMode.None))
                 {
                     Destroy(ha.gameObject);
                 }

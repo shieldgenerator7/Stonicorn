@@ -9,11 +9,11 @@ public class StopSpriteShapeColliderUpdating : MonoBehaviour
     void Start()
     {
         //Find all SpriteShapes now
-        FindObjectsOfType<SpriteShapeController>().ToList()
+        FindObjectsByType<SpriteShapeController>(FindObjectsSortMode.None).ToList()
             .ForEach(ssc => ssc.autoUpdateCollider = false);
         //Find all SpriteShapes when a scene is loaded
         SceneManager.sceneLoaded += (scene, loadMode) =>
-        FindObjectsOfType<SpriteShapeController>().ToList()
+        FindObjectsByType<SpriteShapeController>(FindObjectsSortMode.None).ToList()
             .ForEach(ssc => ssc.autoUpdateCollider = false);
         Destroy(this);
     }

@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 #if UNITY_EDITOR
-        PlayerTestSpawnPoint ptsp = FindObjectOfType<PlayerTestSpawnPoint>();
+        PlayerTestSpawnPoint ptsp = FindAnyObjectByType<PlayerTestSpawnPoint>();
         if (ptsp && ptsp.enabled)
         {
             Managers.DemoMode.DemoMode = true;
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         //Register delegates
         registerDelegates();
         //Pause time
-        Managers.Time.setPause(FindObjectOfType<LoadingScreen>(), true);
+        Managers.Time.setPause(FindAnyObjectByType<LoadingScreen>(), true);
         //Init Gesture
         Managers.Gesture.init();
         //init DemoMode

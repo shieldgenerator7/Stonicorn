@@ -196,7 +196,7 @@ public class SwapAbility : PlayerAbility
             if (goRB2D)
             {
                 //Disconnect attachments, if any
-                foreach (FixedJoint2D fj2d in GameObject.FindObjectsOfType<FixedJoint2D>())
+                foreach (FixedJoint2D fj2d in GameObject.FindObjectsByType<FixedJoint2D>(FindObjectsSortMode.None))
                 {
                     if (fj2d.connectedBody == goRB2D)
                     {

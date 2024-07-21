@@ -52,7 +52,7 @@ public class TesterShortcuts : MonoBehaviour
     }
     public static void activateAllCheckpoints()
     {
-        foreach (CheckPointChecker cpc in GameObject.FindObjectsOfType<CheckPointChecker>())
+        foreach (CheckPointChecker cpc in GameObject.FindObjectsByType<CheckPointChecker>(FindObjectsSortMode.None))
         {
             cpc.Discovered = true;
         }
@@ -157,7 +157,7 @@ public class TesterShortcuts : MonoBehaviour
             //If no checkpoints are undiscovered (all CPs discovered)
             //Then this cheat is active,
             //even if the CPs were activated by legitimate means
-            return !FindObjectsOfType<CheckPointChecker>().ToList()
+            return !FindObjectsByType<CheckPointChecker>(FindObjectsSortMode.None).ToList()
                 .Any(cpc => !cpc.Discovered);
         }
         else if (cheat == Cheat.RESET_GAME)

@@ -42,12 +42,12 @@ public class CarrotController : MonoBehaviour
             AudioSource.PlayClipAtPoint(boingOff, transform.position);
         }
         //If all carrots are glowing, change Merky's color
-        if (FindObjectsOfType<CarrotController>().ToList()
+        if (FindObjectsByType<CarrotController>(FindObjectsSortMode.None).ToList()
             .All(cc => cc.glowing))
         {
             Managers.Player.GetComponent<SpriteRenderer>().color = costumeColor;
         }
-        else if (FindObjectsOfType<CarrotController>().ToList()
+        else if (FindObjectsByType<CarrotController>(FindObjectsSortMode.None).ToList()
             .All(cc => !cc.glowing))
         {
             Managers.Player.GetComponent<SpriteRenderer>().color = Color.white;

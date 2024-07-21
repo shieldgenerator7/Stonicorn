@@ -58,7 +58,7 @@ public class PolygonCollider2DWorker : MonoBehaviour
         pc2dTargets.Clear();
         PolygonCollider2D pc2d = GetComponent<PolygonCollider2D>();
 
-        foreach (PolygonCollider2D pc2dOther in GameObject.FindObjectsOfType<PolygonCollider2D>())
+        foreach (PolygonCollider2D pc2dOther in GameObject.FindObjectsByType<PolygonCollider2D>(FindObjectsSortMode.None))
         {
             if (pc2d != pc2dOther
                 && !pc2d.isTrigger
@@ -73,7 +73,7 @@ public class PolygonCollider2DWorker : MonoBehaviour
         //SpriteShape
         spriteShapeTargets.Clear();
 
-        foreach (SpriteShapeController ssOther in GameObject.FindObjectsOfType<SpriteShapeController>())
+        foreach (SpriteShapeController ssOther in GameObject.FindObjectsByType<SpriteShapeController>(FindObjectsSortMode.None))
         {
             if (pc2d.gameObject != ssOther.gameObject
                 && pc2d.bounds.Intersects(ssOther.polygonCollider.bounds))

@@ -228,7 +228,7 @@ public class WallClimbAbility : PlayerAbility
     void spawnSticky(Vector2 stickyPos, Vector2 normal)
     {
         bool tooClose = false;
-        foreach (StickyPadChecker spc in GameObject.FindObjectsOfType<StickyPadChecker>())
+        foreach (StickyPadChecker spc in GameObject.FindObjectsByType<StickyPadChecker>(FindObjectsSortMode.None))//TODO: store known stickypads
         {
             SpriteRenderer spcSR = spc.GetComponent<SpriteRenderer>();
             float minDim = Mathf.Min(spcSR.size.x, spcSR.size.y) / 2;
