@@ -122,7 +122,7 @@ public class Timer : MonoBehaviour
 
     public static Timer startTimer(float seconds = 1, OnTimeFinished timeFinished = null)
     {
-        GameObject go = FindObjectOfType<GameManager>().gameObject;
+        GameObject go = Managers.Game.gameObject;
         Timer timer = go.AddComponent<Timer>();
         timer.destroyOnFinish = true;
         timer.useUnscaledTime = true;
@@ -135,7 +135,7 @@ public class Timer : MonoBehaviour
     {
         if (go == null)
         {
-            go = FindObjectOfType<GameManager>().gameObject;
+            go = Managers.Game.gameObject;
         }
         Timer timer = go.GetComponent<Timer>();
         if (timer == null)
