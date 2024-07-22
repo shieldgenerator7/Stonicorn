@@ -25,9 +25,10 @@ public class PowerWire : SavableMonoBehaviour, IPowerTransferer, ICuttable
 
     bool ICuttable.Cuttable => true;
 
-    public override SavableObject CurrentState { 
+    public override SavableObject CurrentState
+    {
         get => new SavableObject(this);
-        set { } 
+        set { }
     }
 
     public override void init()
@@ -37,11 +38,11 @@ public class PowerWire : SavableMonoBehaviour, IPowerTransferer, ICuttable
         //TODO: get rid of this code, and/or move it to prebuild tasks (maybe?)
         if (sr)
         {
-        GetComponent<BoxCollider2D>().size = sr.size;
-        foreach (SpriteRenderer sr1 in GetComponentsInChildren<SpriteRenderer>())
-        {
-            sr1.size = sr.size;
-        }
+            GetComponent<BoxCollider2D>().size = sr.size;
+            foreach (SpriteRenderer sr1 in GetComponentsInChildren<SpriteRenderer>())
+            {
+                sr1.size = sr.size;
+            }
         }
     }
 
