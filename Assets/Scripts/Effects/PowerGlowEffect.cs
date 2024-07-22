@@ -16,7 +16,7 @@ public class PowerGlowEffect : MonoBehaviour
     private SpriteShapeRenderer spriteShapeRenderer;
     private TMP_Text text;
 
-    private Color startColor;
+    private Color startColor = Color.white;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +27,10 @@ public class PowerGlowEffect : MonoBehaviour
         conduit = GetComponent<IPowerConduit>() ?? GetComponentInParent<IPowerConduit>();
         conduit.OnPowerFlowed += onPowerFlowed;
 
-        startColor = spriteShapeRenderer?.color ?? Color.white;
+        if (spriteShapeRenderer)
+        {
+            startColor = spriteShapeRenderer.color;
+        }
     }
 
     private void OnDestroy()

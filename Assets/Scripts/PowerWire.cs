@@ -34,10 +34,14 @@ public class PowerWire : SavableMonoBehaviour, IPowerTransferer, ICuttable
     {
         //Autoset BoxCollider2D size
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        //TODO: get rid of this code, and/or move it to prebuild tasks (maybe?)
+        if (sr)
+        {
         GetComponent<BoxCollider2D>().size = sr.size;
         foreach (SpriteRenderer sr1 in GetComponentsInChildren<SpriteRenderer>())
         {
             sr1.size = sr.size;
+        }
         }
     }
 
