@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8797448055634171366}
   - component: {fileID: 7066936344681184663}
   - component: {fileID: 530731421565617602}
+  - component: {fileID: 1078624473941356470}
   - component: {fileID: 648928324139468845}
   m_Layer: 0
   m_Name: powerwire_spriteshape
@@ -201,6 +202,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throughPut: 3
+--- !u!114 &1078624473941356470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5848883352900296536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c766c9a3273cc49b677fd86639b698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectColor: {r: 1, g: 0.8470589, b: 0, a: 1}
 --- !u!114 &648928324139468845
 MonoBehaviour:
   m_ObjectHideFlags: 0
