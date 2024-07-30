@@ -61,6 +61,14 @@ public class GravityAccepter : SavableMonoBehaviour
         }
         private set { sideVector = value; }
     }
+
+    private Transform center;
+    public Transform Center
+    {
+        get => center;
+        set => center = value;
+    }
+
     [SerializeField]
     private bool acceptsGravity = true;
     public bool AcceptsGravity

@@ -44,6 +44,7 @@ public class GravityZone : MonoBehaviour
                 {
                     tenantsGAs.Add(ga);
                 }
+                ga.Center = transform;
             }
             else
             {
