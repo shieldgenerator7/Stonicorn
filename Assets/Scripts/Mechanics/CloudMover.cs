@@ -2,7 +2,7 @@ using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 
 [RequireComponent(typeof(GravityAccepter))]
-[RequireComponent (typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class CloudMover : MonoBehaviour
 {
     public float speed = 0.02f;
@@ -21,6 +21,9 @@ public class CloudMover : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        rb2d.velocity = gravityAccepter.SideVector * speed;
+        Vector2 center = Vector2.zero;// gravityAccepter.Center.position //TODO: use gravityAccepter center
+        Vector2 gravityVector = center - (Vector2)transform.position;
+        Vector2 sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
+        rb2d.velocity = sideVector.normalized * speed;
     }
 }
