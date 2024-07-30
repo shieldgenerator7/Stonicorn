@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class FileManager : Manager
@@ -32,6 +33,9 @@ public class FileManager : Manager
     /// </summary>
     public void saveToFile()
     {
+        Task.Run(() =>
+        {
+
         string filename = getFileName(saveWithTimeStamp);
         //Save file settings
         List<SettingObject> settings =
@@ -49,6 +53,7 @@ public class FileManager : Manager
 
         //Delegate
         onFileSave?.Invoke(filename);
+        });
     }
     public event OnFileAccess onFileSave;
     /// <summary>
