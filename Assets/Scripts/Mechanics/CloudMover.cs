@@ -25,5 +25,6 @@ public class CloudMover : MonoBehaviour
         Vector2 gravityVector = center - (Vector2)transform.position;
         Vector2 sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
         rb2d.velocity = sideVector.normalized * speed;
+        transform.up = -gravityVector;
     }
 }
