@@ -82,6 +82,10 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
             playerController.Ground.isGroundedCheck += isGrounded;
         }
     }
+    public void acceptPlayerController(PlayerController playerController)
+    {
+        this.playerController = playerController;
+    }
     public virtual void OnDisable()
     {
         if (playerController)
@@ -122,7 +126,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
         {
             acceptUpgradeLevel(upgradeLevels[level]);
         }
-        playerController?.abilityUpgraded(this, level);
+        playerController.abilityUpgraded(this, level);
     }
     protected abstract void acceptUpgradeLevel(AbilityUpgradeLevel aul);
 

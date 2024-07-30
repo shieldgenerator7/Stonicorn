@@ -95,6 +95,11 @@ public class PlayerController : MonoBehaviour
         updateGroundTrigger();
         //Teleport Ability
         Teleport = GetComponent<TeleportAbility>();
+        //Register with abilities
+        GetComponents<PlayerAbility>().ToList()
+            .ForEach(
+                pa => pa.acceptPlayerController(this)
+            );
         //Register the delegates
         registerDelegates();
     }
