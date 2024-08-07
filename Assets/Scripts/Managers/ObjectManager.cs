@@ -69,6 +69,11 @@ public class ObjectManager : Manager, ISetting
                     Debug.LogError("Asset Ref is null! id: " + goId);
                     return;
                 }
+                if (assetRef.editorAsset == null)
+                {
+                    Debug.LogError("Asset Ref editor asset is null! id: " + goId);
+                    return;
+                }
                 //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
                 var op = Addressables.InstantiateAsync(assetRef);
                 recreateQueue.Add(goId, op);
