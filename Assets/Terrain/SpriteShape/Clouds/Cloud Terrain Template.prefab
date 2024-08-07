@@ -12,6 +12,10 @@ GameObject:
   - component: {fileID: 2891230181969961444}
   - component: {fileID: 2891230181969961445}
   - component: {fileID: 2891230181969961446}
+  - component: {fileID: 1222864423378626054}
+  - component: {fileID: 5527956641338764716}
+  - component: {fileID: 2761856487625864048}
+  - component: {fileID: 3252409094762772300}
   m_Layer: 0
   m_Name: Cloud Terrain Template
   m_TagString: Untagged
@@ -93,8 +97,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 83d170dc5fe24be4a9dfb7be0d7ec0c8, type: 3}
   - {fileID: 21300000, guid: e8029b18319155f46a6b91ed85c3f1b0, type: 3}
   m_LocalAABB:
-    m_Center: {x: 0, y: -0.02000022, z: -0.00040035}
-    m_Extent: {x: 2.1150002, y: 2.145, z: 0.00040035}
+    m_Center: {x: 0, y: -0.01999998, z: 0}
+    m_Extent: {x: 2.1150002, y: 2.1450002, z: 0}
   m_SpriteSortPoint: 0
 --- !u!114 &2891230181969961445
 MonoBehaviour:
@@ -195,7 +199,17 @@ MonoBehaviour:
   m_BoundsScale: 2
   m_Creator: {fileID: 0}
   m_Modifiers: []
-  m_ColliderSegment: []
+  m_ColliderSegment:
+  - {x: -0.9790203, y: -1.9790201}
+  - {x: -1.9790201, y: -0.9790201}
+  - {x: -1.97033, y: 1}
+  - {x: -0.97719586, y: 1.9771957}
+  - {x: 1, y: 1.9677501}
+  - {x: 1.9771957, y: 0.97719586}
+  - {x: 1.97033, y: -1}
+  - {x: 1, y: -1.9574301}
+  - {x: -1, y: -1.9574301}
+  - {x: -0.9790203, y: -1.9790201}
   m_ShadowSegment: []
 --- !u!60 &2891230181969961446
 PolygonCollider2D:
@@ -251,10 +265,86 @@ PolygonCollider2D:
       - {x: 1.9771957, y: 0.97719586}
       - {x: 1.97033, y: -1}
       - {x: 1, y: -1.9574301}
-      - {x: -0.97451854, y: -1.9574301}
       - {x: -1, y: -1.9574301}
       - {x: -0.9790203, y: -1.9790201}
   m_UseDelaunayMesh: 0
+--- !u!50 &1222864423378626054
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2891230181969961447}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &5527956641338764716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2891230181969961447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usesSideVector: 0
+  saveValues: 1
+  gravityScale: 0
+  acceptsGravity: 0
+--- !u!114 &2761856487625864048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2891230181969961447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6703ab8cace9ed946823d8800b68e56d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.02
+--- !u!114 &3252409094762772300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2891230181969961447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  prefabAddress:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  spawnStateId: 0
+  destroyStateId: 2147483647
 --- !u!1 &4461704052682818956
 GameObject:
   m_ObjectHideFlags: 0
