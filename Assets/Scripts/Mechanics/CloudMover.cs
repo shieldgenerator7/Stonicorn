@@ -27,4 +27,19 @@ public class CloudMover : MonoBehaviour
         rb2d.velocity = sideVector.normalized * speed;
         transform.up = -gravityVector;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //if it collides with a solid piece of terrain,
+        Collider2D collider = collision.collider;
+        if (collider.isSolid() && !collision.collider.GetComponent<Rigidbody2D>())
+        {
+            //stop it
+            rb2d.velocity = Vector2.zero;
+            this.enabled = false;
+            //make it disappear
+            Fader fader = GetComponent<Fader>();
+            fader.enabled = true;
+        }
+    }
 }
