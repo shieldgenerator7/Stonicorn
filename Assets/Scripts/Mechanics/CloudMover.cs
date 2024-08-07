@@ -7,6 +7,8 @@ public class CloudMover : MonoBehaviour
 {
     public float speed = 0.02f;
 
+    public GameObject shadow;
+
     GravityAccepter gravityAccepter;
 
     Rigidbody2D rb2d;
@@ -40,6 +42,11 @@ public class CloudMover : MonoBehaviour
             //make it disappear
             Fader fader = GetComponent<Fader>();
             fader.enabled = true;
+            //make shadow disappear
+            if (shadow)
+            {
+                shadow.SetActive(false);
+            }
         }
     }
 }
