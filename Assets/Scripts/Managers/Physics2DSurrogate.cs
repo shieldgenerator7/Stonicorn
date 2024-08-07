@@ -48,13 +48,13 @@ public class Physics2DSurrogate : MonoBehaviour
         cam.refocus();
         Vector2 camPos = cam.transform.position;
         //Gravity
-        GravityZone gz = gravityZones.First(gz => gz.Contains(camPos));
+        GravityZone gz = gravityZones.FirstOrDefault(gz => gz.Contains(camPos));
         if (gz)
         {
             cam.transform.up = gz.transform.up;
         }
         //Music
-        MusicZone mz = musicZones.First(mz => mz.checkZone(camPos));
+        MusicZone mz = musicZones.FirstOrDefault(mz => mz.checkZone(camPos));
         //that's it, the mz processing is already done in the checkZone method
     }
 }

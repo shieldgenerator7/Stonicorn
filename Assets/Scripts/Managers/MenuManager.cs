@@ -38,10 +38,10 @@ public class MenuManager : MonoBehaviour
     }
 
     public void processTapGesture(Vector3 pos) =>
-        frames.First(mf => mf.tapInArea(pos))?
+        frames.FirstOrDefault(mf => mf.tapInArea(pos))?
             .delegateTap(pos);
     public bool processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld) =>
-        frames.First(mf => mf.tapInArea(origMPWorld))?
+        frames.FirstOrDefault(mf => mf.tapInArea(origMPWorld))?
             .delegateDrag(origMPWorld, newMPWorld)
             ?? false;
 
