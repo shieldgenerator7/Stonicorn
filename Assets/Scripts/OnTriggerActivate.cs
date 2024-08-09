@@ -21,6 +21,11 @@ public class OnTriggerActivate : MonoBehaviour
     {
         if (collision.isPlayerSolid())
         {
+            if (waitForDialogueFinish)
+            {
+                Managers.Event.OnDialoguePlayingChanged -= _waitForDialogue;
+                Managers.Event.OnDialoguePlayingChanged += _waitForDialogue;
+            }
             activateObjects(activeOnPlayerIn);
         }
     }
