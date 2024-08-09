@@ -4,7 +4,7 @@
       "title": "Test",
       "conditions": [
         {
-          "variableName": "introvar",
+          "variableName": "mooncomm",
           "testType": 0,
           "testValue": 0
         }
@@ -73,7 +73,7 @@
       ],
       "actions": [
         {
-          "variableName": "introvar",
+          "variableName": "mooncomm",
           "actionType": 1,
           "actionValue": 1
         }
@@ -81,34 +81,150 @@
     },
     {
       "title": "Contact Made",
-      "conditions": [],
+      "conditions": [
+        {
+          "variableName": "mooncomm",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
       "quotes": [
         {
           "characterName": "Moonicorn",
-          "text": "Merky! Are you there? Can you hear me?",
+          "text": "Moon to Merky...",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Moonicorn",
-          "text": "Merky, is that you?",
+          "text": "...",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Moonicorn",
-          "text": "It is! Oh thank the Alicorn! I was so worried about you.",
+          "text": "Moon to Merky...",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Moonicorn",
-          "text": "Quick! There's no time. You need to get up to the moon right away!",
+          "text": "...",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
       ],
-      "actions": []
+      "actions": [
+        {
+          "variableName": "mooncomm",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Contact Made",
+      "conditions": [
+        {
+          "variableName": "mooncomm",
+          "testType": 0,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Moon to Merky...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Come in Merky...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "mooncomm",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Contact Made",
+      "conditions": [
+        {
+          "variableName": "mooncomm",
+          "testType": 0,
+          "testValue": 2
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Merky!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Is that you?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "mooncomm",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Contact Made",
+      "conditions": [
+        {
+          "variableName": "mooncomm",
+          "testType": 0,
+          "testValue": 3
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Merky! It's you!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Quick! There's no time to lose. You need to come to the moon ASAP!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "mooncomm",
+          "actionType": 1,
+          "actionValue": 1
+        },
+        {
+          "variableName": "moonquest",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
     },
     {
       "title": "Moon Welcome",
@@ -123,6 +239,80 @@
         {
           "characterName": "Moonicorn",
           "text": "Now, let's get out of here!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "(this is the end of the game)",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "(ENDING 1: ESCAPE)",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": []
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 0,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Oh hay! I forgot to tell you how to get to the moon.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "There's a shuttle pod in the desert that should still be operational.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "There's also the railgun transport system, but that hasn't been used in a while. I'm not sure it's still operational.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Or if you can somehow fly, I don't care. Just get here quick.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "moonquest",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Here it is.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "You remember how to pilot these, right Merky?",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
