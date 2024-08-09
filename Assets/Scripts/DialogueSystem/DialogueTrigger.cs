@@ -35,6 +35,12 @@ public class DialogueTrigger : EventTrigger
 
     protected override void triggerEvent()
     {
+        //don't start a new dialogue if one is already active
+            if (Managers.Event.DialoguePlaying)
+            {
+                return;
+            }
+        //
         variableSetAction?.processAllActions();
         Managers.Event.processEventTrigger(this);
     }
