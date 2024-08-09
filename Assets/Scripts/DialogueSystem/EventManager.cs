@@ -10,6 +10,10 @@ public class EventManager : MonoBehaviour
 
     private DialogueBoxUpdater dialogueBox;
 
+    private List<DialoguePlayer> dialoguePlayingList = new List<DialoguePlayer>();
+    public bool DialoguePlaying => dialoguePlayingList.Count > 0;
+    public Action<bool> OnDialoguePlayingChanged;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -122,6 +126,13 @@ public class EventManager : MonoBehaviour
             dbu.setText("");
             Destroy(dbu.gameObject);
             Managers.Dialogue.takeActions(path);
+            dialoguePlayingList.Remove(dp);
+            OnDialoguePlayingChanged(DialoguePlaying);
         };
+        if (!dialoguePlayingList.Contains(dp))
+        {
+            dialoguePlayingList.Add(dp);
+        }
+        OnDialoguePlayingChanged(DialoguePlaying);
     }
 }

@@ -7,6 +7,7 @@ public class OnTriggerActivate : MonoBehaviour
     public List<GameObject> objectsToActivate;
     public bool activeOnPlayerIn = true;
     public bool activeOnPlayerOut = false;
+    public bool waitForDialogueFinish = true;
 
     private void Start()
     {
@@ -28,7 +29,24 @@ public class OnTriggerActivate : MonoBehaviour
     {
         if (collision.isPlayerSolid())
         {
+            if (waitForDialogueFinish && Managers.Event.DialoguePlaying)
+            {
+                Managers.Event.OnDialoguePlayingChanged -= _waitForDialogue;
+                Managers.Event.OnDialoguePlayingChanged += _waitForDialogue;
+            }
+            else
+            {
+                activateObjects(activeOnPlayerOut);
+            }
+        }
+    }
+
+    void _waitForDialogue(bool playing)
+    {
+        if (!playing)
+        {
             activateObjects(activeOnPlayerOut);
+            Managers.Event.OnDialoguePlayingChanged -= _waitForDialogue;
         }
     }
 
