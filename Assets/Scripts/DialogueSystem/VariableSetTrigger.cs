@@ -6,6 +6,7 @@ using UnityEngine;
 public class VariableSetTrigger : EventTrigger
 {
     public VariableSetAction variableSetAction;
+    public VariableSetAction triggerLeaveAction;
 
     protected override void checkErrors()
     {
@@ -19,5 +20,14 @@ public class VariableSetTrigger : EventTrigger
     protected override void triggerEvent()
     {
         variableSetAction.processAllActions();
+    }
+
+    //dirty: should be a system in super class for this
+    private void OnTriggerExit2D(Collider2D coll)
+    {
+        if (coll.isPlayerSolid())
+        {
+            triggerLeaveAction?.processAllActions();
+        }
     }
 }
