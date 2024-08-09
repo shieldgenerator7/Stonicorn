@@ -336,8 +336,18 @@
       "conditions": [
         {
           "variableName": "moonquest",
-          "testType": 0,
+          "testType": 3,
           "testValue": 2
+        },
+        {
+          "variableName": "inpod",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "podinfo",
+          "testType": 0,
+          "testValue": 0
         }
       ],
       "quotes": [
@@ -356,7 +366,7 @@
       ],
       "actions": [
         {
-          "variableName": "moonquest",
+          "variableName": "podinfo",
           "actionType": 1,
           "actionValue": 1
         }
