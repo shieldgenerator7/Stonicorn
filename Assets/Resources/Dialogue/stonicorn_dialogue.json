@@ -371,6 +371,44 @@
           "actionValue": 1
         }
       ]
+    },
+    {
+      "title": "Quickly! Pod",
+      "conditions": [
+        {
+          "variableName": "inpod",
+          "testType": 0,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Pilot this shuttle pod to the moon.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": []
+    },
+    {
+      "title": "Quickly!",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 3,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Get to the moon as fast as you can Merky!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": []
     }
   ]
 }
