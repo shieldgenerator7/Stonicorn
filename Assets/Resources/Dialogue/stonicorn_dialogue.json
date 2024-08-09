@@ -63,12 +63,6 @@
           "text": "Would you, perhaps, say hi to her for me?",
           "imageFileName": "",
           "voiceLineFileName": ""
-        },
-        {
-          "characterName": "Grunhardt",
-          "text": "",
-          "imageFileName": "",
-          "voiceLineFileName": ""
         }
       ],
       "actions": [
@@ -228,7 +222,18 @@
     },
     {
       "title": "Moon Welcome",
-      "conditions": [],
+      "conditions": [
+        {
+          "variableName": "onmoon",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "moonwelcome",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
       "quotes": [
         {
           "characterName": "Moonicorn",
@@ -255,7 +260,13 @@
           "voiceLineFileName": ""
         }
       ],
-      "actions": []
+      "actions": [
+        {
+          "variableName": "moonwelcome",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
     },
     {
       "title": "Dialogue Title",
