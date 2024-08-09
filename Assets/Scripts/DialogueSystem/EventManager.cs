@@ -127,12 +127,12 @@ public class EventManager : MonoBehaviour
             Destroy(dbu.gameObject);
             Managers.Dialogue.takeActions(path);
             dialoguePlayingList.Remove(dp);
-            OnDialoguePlayingChanged(DialoguePlaying);
+            OnDialoguePlayingChanged?.Invoke(DialoguePlaying);
         };
         if (!dialoguePlayingList.Contains(dp))
         {
             dialoguePlayingList.Add(dp);
         }
-        OnDialoguePlayingChanged(DialoguePlaying);
+        OnDialoguePlayingChanged?.Invoke(DialoguePlaying);
     }
 }
