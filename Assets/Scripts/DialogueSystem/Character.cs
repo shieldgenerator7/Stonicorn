@@ -8,30 +8,38 @@ public class Character : MonoBehaviour
     public string characterName;
 
     //TODO: find better way to store and retrieve this map
-    private static Dictionary<string, Character> charMap = new System.Collections.Generic.Dictionary<string, Character>();
+    private static Dictionary<string, List<Character>> charMap = new System.Collections.Generic.Dictionary<string, List<Character>>();
 
-    private void Start()
+    private void OnEnable()
     {
         if (string.IsNullOrEmpty(characterName))
         {
             Debug.LogError($"Invalid character name! {characterName}", this);
             return;
         }
-        if (charMap.ContainsKey(characterName) && charMap[characterName] != this)
+        if (!charMap.ContainsKey(characterName))
         {
-            Character character = charMap[characterName];
-            if (character != null && !ReferenceEquals(character, null))
-            {
-                Debug.LogError($"Character name already in map! {characterName}", this);
-                return;
-            }
-            else
-            {
-                charMap.Remove(characterName);
-            }
+            charMap[characterName] = new List<Character>();
         }
-        charMap.Add(characterName, this);
+        List<Character> list = charMap[characterName];
+        if (!list.Contains(this))
+        {
+            list.Add(this);
+        }
+    }
+    private void OnDisable()
+    {
+        List<Character> list = charMap[characterName];
+        if (list.Contains(this))
+        {
+            list.Remove(this);
+        }
     }
 
-    public static Character getCharacterByName(string name) => charMap[name];
+    public static Character getCharacterByName(string name) => charMap[name]
+        //TODO: find closest character, even if not in range
+        .Find(chr => Vector2.Distance(
+            chr.transform.position,
+            Managers.Player.transform.position
+            ) <= 5);//dirty: hard coded range
 }
