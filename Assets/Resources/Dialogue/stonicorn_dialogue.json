@@ -301,12 +301,18 @@
       ]
     },
     {
-      "title": "Dialogue Title",
-      "conditions": [],
+      "title": "Shuttle Pod",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 0,
+          "testValue": 2
+        }
+      ],
       "quotes": [
         {
           "characterName": "Moonicorn",
-          "text": "Here it is.",
+          "text": "Here it is. The working shuttle pod.",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
@@ -317,7 +323,13 @@
           "voiceLineFileName": ""
         }
       ],
-      "actions": []
+      "actions": [
+        {
+          "variableName": "moonquest",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
     }
   ]
 }
