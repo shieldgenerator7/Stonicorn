@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RewindGestureProfile : PlayGestureProfile
+public class RewindGestureProfile : GestureProfile
 {
     public override void activate()
     {
