@@ -36,6 +36,7 @@ public class CloudMover : MonoBehaviour
         Collider2D collider = collision.collider;
         if (collider.isSolid() && !collision.collider.GetComponent<Rigidbody2D>())
         {
+            Debug.Log($"cloud {gameObject.name} ran into {collider.name}");
             //stop it
             rb2d.velocity = Vector2.zero;
             this.enabled = false;
