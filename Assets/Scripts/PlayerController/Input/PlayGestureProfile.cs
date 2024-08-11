@@ -6,15 +6,15 @@ public class PlayGestureProfile : GestureProfile
     /// <summary>
     /// Called when this profile is set to the current one
     /// </summary>
-    public virtual void activate() { }
+    public override void activate() { }
     /// <summary>
     /// Called when the GestureManager switches off this profile to a different one
     /// </summary>
-    public virtual void deactivate() { }
+    public override void deactivate() { }
 
-    public virtual void processHoverGesture(Vector2 curMPWorld) { }
+    public override void processHoverGesture(Vector2 curMPWorld) { }
 
-    public virtual void processTapGesture(Vector3 curMPWorld)
+    public override void processTapGesture(Vector3 curMPWorld)
     {
         if (Managers.Rewind.Rewinding)
         {
@@ -28,11 +28,11 @@ public class PlayGestureProfile : GestureProfile
             Managers.Player.processTapGesture(curMPWorld);
         }
     }
-    public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
+    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {
         Managers.Player.processHoldGesture(curMPWorld, holdTime, finished);
     }
-    public virtual void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, bool finished)
+    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, bool finished)
     {
         //If the player drags on Merky,
         if (dragType == GestureInput.DragType.DRAG_PLAYER)

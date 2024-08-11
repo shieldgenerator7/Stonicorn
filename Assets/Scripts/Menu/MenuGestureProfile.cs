@@ -14,6 +14,9 @@ public class MenuGestureProfile : GestureProfile
         MenuManager.Open = false;
         Managers.Camera.Up = -Managers.Player.GravityDir;
     }
+    public override void processHoverGesture(Vector2 curMPWorld)
+    {
+    }
     public override void processTapGesture(Vector3 curMPWorld)
     {
         if (MenuManager.Open)

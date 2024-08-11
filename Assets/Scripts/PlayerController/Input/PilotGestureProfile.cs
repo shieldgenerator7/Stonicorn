@@ -4,7 +4,6 @@ public class PilotGestureProfile : GestureProfile
 {
     public override void activate()
     {
-        base.activate();
         PlayerPilotController pilot = CheckPointChecker.current?.GetComponentInParent<PlayerPilotController>();
         if (pilot)
         {
@@ -17,8 +16,11 @@ public class PilotGestureProfile : GestureProfile
     }
     public override void deactivate()
     {
-        base.deactivate();
         CheckPointChecker.current?.GetComponentInParent<PlayerPilotController>()?.activate(false);
+    }
+
+    public override void processHoverGesture(Vector2 curMPWorld)
+    {
     }
 
     public override void processTapGesture(Vector3 curMPWorld)
@@ -41,7 +43,12 @@ public class PilotGestureProfile : GestureProfile
         }
         else if (dragType == GestureInput.DragType.DRAG_CAMERA)
         {
-            base.processDragGesture(origMPWorld, newMPWorld, dragType, finished);
+            //Drag the camera
+            Managers.Camera.processDragGesture(origMPWorld, newMPWorld, finished);
+        }
+        else
+        {
+            throw new System.ArgumentException("DragType must be a valid value! dragType: " + dragType);
         }
     }
 }
