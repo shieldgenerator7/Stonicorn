@@ -537,11 +537,17 @@ public class PlayerController : MonoBehaviour
             //Show a teleport preview
 
             //If this is the first frame of the hold gesture,
-            if (holdTime < Time.deltaTime)
+            if (holdTime < Time.deltaTime)//TODO: add parameter for start, middle, end of hold
             {
                 //Erase any visual effects of the other abilities
                 dropHoldGesture();
             }
+
+            //TODO: only register these delegates at start of hold
+            //register camera delegate
+            Managers.Camera.onOffsetChange -= _call_dropHoldGesture;
+            Managers.Camera.onOffsetChange += _call_dropHoldGesture;
+
             //Show the teleport preview effect
             Teleport.processHoldGesture(holdPos, holdTime, finished);
             //If this is the last frame of the hold gesture,
@@ -563,7 +569,12 @@ public class PlayerController : MonoBehaviour
         {
             ability.stopGestureEffects();
         }
+
+        //unregister camera delegate
+        Managers.Camera.onOffsetChange -= _call_dropHoldGesture;
+        Debug.Log("dropped hold gesture");
     }
+    private void _call_dropHoldGesture(Vector3 offset) => dropHoldGesture();
 
     public delegate void OnDragGesture(Vector2 origPos, Vector2 newPos, bool finished);
     public event OnDragGesture onDragGesture;
