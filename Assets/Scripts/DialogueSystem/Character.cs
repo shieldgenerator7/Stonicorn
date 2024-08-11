@@ -41,5 +41,5 @@ public class Character : MonoBehaviour
         .Find(chr => Vector2.Distance(
             chr.transform.position,
             Managers.Player.transform.position
-            ) <= 5);//dirty: hard coded range
+            ) <= 10);//dirty: hard coded range
 }

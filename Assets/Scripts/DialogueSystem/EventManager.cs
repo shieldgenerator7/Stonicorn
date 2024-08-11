@@ -115,6 +115,10 @@ public class EventManager : MonoBehaviour
         this.dialogueBox = dbu;
         Quote q = path.quotes[0];
         Character ch = Character.getCharacterByName(q.characterName);
+        if(ch == null)
+        {
+            Debug.LogError($"Character not found: {q.characterName}! {ch}");
+        }
         dbu.setSource(ch.transform);
         //Setup dp
         DialoguePlayer dp = dbu.GetComponent<DialoguePlayer>();
