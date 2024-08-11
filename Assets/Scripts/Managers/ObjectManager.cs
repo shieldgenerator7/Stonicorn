@@ -73,6 +73,7 @@ public class ObjectManager : Manager, ISetting
                 if (assetRef.editorAsset == null)
                 {
                     Debug.LogError("Asset Ref editor asset is null! id: " + goId);
+                    EditorApplication.isPaused = true;
                     return;
                 }
 #endif
