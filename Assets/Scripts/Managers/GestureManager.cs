@@ -12,8 +12,8 @@ public class GestureManager : MonoBehaviour
         REWIND,//for activating a rewind and during a rewind
         PILOT,//for controlling a pod
     };
-    private GestureProfile currentGP;//the current gesture profile
-    private Dictionary<GestureProfileType, GestureProfile> gestureProfiles = new Dictionary<GestureProfileType, GestureProfile>();//dict of valid gesture profiles
+    private PlayGestureProfile currentGP;//the current gesture profile
+    private Dictionary<GestureProfileType, PlayGestureProfile> gestureProfiles = new Dictionary<GestureProfileType, PlayGestureProfile>();//dict of valid gesture profiles
 
     /// <summary>
     /// The input that is currently providing input or that has most recently provided input
@@ -41,7 +41,7 @@ public class GestureManager : MonoBehaviour
     public void init()
     {
         gestureProfiles.Add(GestureProfileType.MENU, new MenuGestureProfile());
-        gestureProfiles.Add(GestureProfileType.MAIN, new GestureProfile());
+        gestureProfiles.Add(GestureProfileType.MAIN, new PlayGestureProfile());
         gestureProfiles.Add(GestureProfileType.REWIND, new RewindGestureProfile());
         gestureProfiles.Add(GestureProfileType.PILOT, new PilotGestureProfile());
         switchGestureProfile(GestureProfileType.MENU);
@@ -100,7 +100,7 @@ public class GestureManager : MonoBehaviour
     /// <param name="gpName">The name of the GestureProfile</param>
     public void switchGestureProfile(GestureProfileType gpt)
     {
-        GestureProfile newGP = gestureProfiles[gpt];
+        PlayGestureProfile newGP = gestureProfiles[gpt];
         //If the gesture profile is not already active,
         if (newGP != currentGP)
         {

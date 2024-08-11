@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GestureProfile
+public class PlayGestureProfile
 {
     /// <summary>
     /// Called when this profile is set to the current one

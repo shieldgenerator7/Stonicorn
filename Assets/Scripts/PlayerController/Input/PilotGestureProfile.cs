@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PilotGestureProfile : GestureProfile
+public class PilotGestureProfile : PlayGestureProfile
 {
     public override void activate()
     {

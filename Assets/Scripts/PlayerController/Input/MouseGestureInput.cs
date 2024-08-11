@@ -41,7 +41,7 @@ public class MouseGestureInput : GestureInput
             || Input.GetMouseButtonUp(mouseButton2)
             || Input.GetAxis("Mouse ScrollWheel") != 0;
 
-    public override bool processInput(GestureProfile profile)
+    public override bool processInput(PlayGestureProfile profile)
     {
         float time = Time.unscaledTime;
         if (InputOngoing)
