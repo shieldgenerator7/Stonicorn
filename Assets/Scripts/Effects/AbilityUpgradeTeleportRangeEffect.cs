@@ -48,12 +48,12 @@ public class AbilityUpgradeTeleportRangeEffect : TeleportRangeEffect
         //Decrement the value 360 (if any)
         angles = angles.ConvertAll(angle => ((angle == 360) ? 359 : angle));
         //Get list of fragment groups
-        List<List<GameObject>> fragmentGroups = updater.getFragmentGroups(angles);
+        List<List<TeleportRangeFragment>> fragmentGroups = updater.getFragmentGroups(angles);
         //Alternate switching on of fragment groups
         for (int i = 0; i < fragmentGroups.Count; i++)
         {
             bool on = i % 2 == 1;
-            fragmentGroups[i].ForEach(fragment => fragment.SetActive(on));
+            fragmentGroups[i].ForEach(fragment => fragment.Active = on);
         }
     }
 }

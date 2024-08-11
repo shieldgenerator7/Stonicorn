@@ -19,9 +19,9 @@ public class AbilityTeleportRangeEffect : TeleportRangeEffect
     public override void updateEffect()
     {
         //Set the color to white
-        foreach (GameObject fragment in updater.fragments)
+        foreach (TeleportRangeFragment fragment in updater.fragments)
         {
-            fragment.GetComponent<SpriteRenderer>().color = Color.white;
+            fragment.SpriteRenderer.color = Color.white;
         }
         //Segment consulting
         foreach (PlayerAbility ability in Managers.Player.GetComponents<PlayerAbility>())

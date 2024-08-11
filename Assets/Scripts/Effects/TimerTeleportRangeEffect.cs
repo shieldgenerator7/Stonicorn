@@ -6,8 +6,8 @@ public class TimerTeleportRangeEffect : TeleportRangeEffect
 {
     public Timer timer;
 
-    internal readonly List<GameObject> fragmentsBurned = new List<GameObject>();//the fragments that represent time that is used up
-    internal readonly List<GameObject> fragmentsFuse = new List<GameObject>();//the fragments that represent time that has not been used up
+    internal readonly List<TeleportRangeFragment> fragmentsBurned = new List<TeleportRangeFragment>();//the fragments that represent time that is used up
+    internal readonly List<TeleportRangeFragment> fragmentsFuse = new List<TeleportRangeFragment>();//the fragments that represent time that has not been used up
 
     public List<TimedTeleportRangeEffect> effects;
 
@@ -30,7 +30,7 @@ public class TimerTeleportRangeEffect : TeleportRangeEffect
         fragmentsBurned.Clear();
         fragmentsFuse.Clear();
         float angleMax = 360 * timer.TimeLeft / timer.Duration;
-        List<List<GameObject>> fragmentGroups = updater.getFragmentGroups(angleMax);
+        List<List<TeleportRangeFragment>> fragmentGroups = updater.getFragmentGroups(angleMax);
         fragmentsBurned.AddRange(fragmentGroups[0]);
         fragmentsFuse.AddRange(fragmentGroups[1]);
         effects.ForEach(fx => fx.updateEffect());

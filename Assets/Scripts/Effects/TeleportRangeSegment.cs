@@ -23,13 +23,13 @@ public class TeleportRangeSegment : ScriptableObject
         return new List<float> { angleMin, angleMax };
     }
 
-    public void processFragments(List<GameObject> fragments, Vector2 upVector)
+    public void processFragments(List<TeleportRangeFragment> fragments, Vector2 upVector)
     {
         int partCount = segmentCount;
         float angleSpacing = 360 / partCount;
         float angleMin = angleSpacing * segmentIndex;
         float angleMax = angleSpacing * (segmentIndex + 1);
-        foreach (GameObject fragment in fragments)
+        foreach (TeleportRangeFragment fragment in fragments)
         {
             if (Utility.between(
                 Utility.RotationZ(upVector, fragment.transform.up),
@@ -38,7 +38,7 @@ public class TeleportRangeSegment : ScriptableObject
                 )
                 )
             {
-                fragment.GetComponent<SpriteRenderer>().color = color;
+                fragment.SpriteRenderer.color = color;
             }
         }
     }

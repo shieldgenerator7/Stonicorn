@@ -14,7 +14,7 @@ public class TeleportRangeUpdater : MonoBehaviour
     [Header("Components")]
     public GameObject fragmentPrefab;
 
-    internal readonly List<GameObject> fragments = new List<GameObject>();
+    internal readonly List<TeleportRangeFragment> fragments = new List<TeleportRangeFragment>();
     private float range;//cached range, gets updated in updateRange()
     public float Range => range;
 
@@ -49,7 +49,7 @@ public class TeleportRangeUpdater : MonoBehaviour
             fragment.transform.localPosition = placer;
             fragment.transform.up = fragment.transform.position - transform.position;
             //Add it to the list
-            fragments.Add(fragment);
+            fragments.Add(fragment.GetComponent<TeleportRangeFragment>());
             //Update placer
             placer = Utility.RotateZ(placer, angleSpacing);
         }
@@ -62,18 +62,18 @@ public class TeleportRangeUpdater : MonoBehaviour
         effects.ForEach(fx => fx.updateEffect());
     }
 
-    public List<List<GameObject>> getFragmentGroups(params float[] angles)
+    public List<List<TeleportRangeFragment>> getFragmentGroups(params float[] angles)
     {
         return getFragmentGroups(angles.ToList());
     }
 
-    public List<List<GameObject>> getFragmentGroups(List<float> angles)
+    public List<List<TeleportRangeFragment>> getFragmentGroups(List<float> angles)
     {
         //Initialize groups list
-        List<List<GameObject>> groups = new List<List<GameObject>>();
+        List<List<TeleportRangeFragment>> groups = new List<List<TeleportRangeFragment>>();
         for (int i = 0; i < angles.Count + 1; i++)
         {
-            groups.Add(new List<GameObject>());
+            groups.Add(new List<TeleportRangeFragment>());
         }
         //Sanitize input
         if (!angles.Contains(0))
@@ -95,7 +95,7 @@ public class TeleportRangeUpdater : MonoBehaviour
         angles.Reverse();
         //
         Vector2 upVector = transform.up;
-        foreach (GameObject fragment in fragments)
+        foreach (TeleportRangeFragment fragment in fragments)
         {
             float angle = Utility.RotationZ(upVector, fragment.transform.up);
             for (int i = 0; i < angles.Count; i++)
@@ -113,7 +113,7 @@ public class TeleportRangeUpdater : MonoBehaviour
 
     private void clear()
     {
-        foreach (GameObject fragment in fragments)
+        foreach (TeleportRangeFragment fragment in fragments)
         {
             Destroy(fragment);
         }
