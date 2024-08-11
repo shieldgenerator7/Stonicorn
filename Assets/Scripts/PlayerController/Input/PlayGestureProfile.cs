@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayGestureProfile
+public class PlayGestureProfile : GestureProfile
 {
     /// <summary>
     /// Called when this profile is set to the current one
@@ -50,7 +50,7 @@ public class PlayGestureProfile
             throw new System.ArgumentException("DragType must be a valid value! dragType: " + dragType);
         }
     }
-    public void processZoomLevelChange(float zoomLevel)
+    public virtual void processZoomLevelChange(float zoomLevel)
     {
         //GestureProfile switcher
         if (zoomLevel < Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.MENU + 1))

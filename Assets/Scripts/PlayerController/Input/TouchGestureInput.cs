@@ -76,7 +76,7 @@ public class TouchGestureInput : GestureInput
     public override bool InputOngoing
         => Input.touchCount > 0;
 
-    public override bool processInput(PlayGestureProfile profile)
+    public override bool processInput(GestureProfile profile)
     {
         float time = Time.unscaledTime;
         if (Input.touchCount > 0)

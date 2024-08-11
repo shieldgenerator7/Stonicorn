@@ -22,7 +22,7 @@ public class KeyboardGestureInput : GestureInput
     public override bool InputOngoing
         => Input.anyKey;
 
-    public override bool processInput(PlayGestureProfile profile)
+    public override bool processInput(GestureProfile profile)
     {
         float time = Time.unscaledTime;
         if (InputOngoing)

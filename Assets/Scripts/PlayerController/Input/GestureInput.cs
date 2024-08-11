@@ -18,7 +18,7 @@ public abstract class GestureInput
 
     public abstract bool InputOngoing { get; }
 
-    public abstract bool processInput(PlayGestureProfile profile);
+    public abstract bool processInput(GestureProfile profile);
 
     public static implicit operator bool(GestureInput gi)
         => gi != null;
