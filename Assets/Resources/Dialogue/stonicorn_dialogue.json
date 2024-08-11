@@ -412,7 +412,13 @@
     },
     {
       "title": "Dialogue Title",
-      "conditions": [],
+      "conditions": [
+        {
+          "variableName": "kakiintro",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
       "quotes": [
         {
           "characterName": "Kaki",
@@ -453,6 +459,31 @@
         {
           "characterName": "Kaki",
           "text": "Now scram!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "kakiintro",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [],
+      "quotes": [
+        {
+          "characterName": "Kaki",
+          "text": "Why are you still here?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kaki",
+          "text": "Leave already!",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
