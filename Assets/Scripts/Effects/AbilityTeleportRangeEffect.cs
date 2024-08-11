@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,14 @@ public class AbilityTeleportRangeEffect : TeleportRangeEffect
         //Set the color to white
         foreach (TeleportRangeFragment fragment in updater.fragments)
         {
+            try
+            {
             fragment.SpriteRenderer.color = Color.white;
+            }
+            catch(NullReferenceException nre)
+            {
+                Debug.LogException(nre);
+            }
         }
         //Segment consulting
         foreach (PlayerAbility ability in Managers.Player.GetComponents<PlayerAbility>())
