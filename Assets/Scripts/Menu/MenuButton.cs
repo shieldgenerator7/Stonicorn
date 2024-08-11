@@ -8,13 +8,8 @@ public class MenuButton : MonoBehaviour
     public MenuFrame frame;
     public MenuActionButton mab;
 
+    [SerializeField]
     private BoxCollider2D bc2d;
-
-    // Use this for initialization
-    private void Start()
-    {
-        init();
-    }
 
     public virtual void init()
     {

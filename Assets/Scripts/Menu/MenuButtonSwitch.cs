@@ -13,7 +13,9 @@ public class MenuButtonSwitch : MenuButton
 
     private bool active = true;
 
+    [SerializeField]
     private SpriteRenderer sr;
+    [SerializeField]
     private MenuActionSwitch mas;
 
     public override void init()
@@ -56,6 +58,11 @@ public class MenuButtonSwitch : MenuButton
             }
         }
         mas = GetComponent<MenuActionSwitch>();
+
+    }
+
+    private void Start()//TODO: call this in true init method
+    {
         active = mas.getActiveState();
         updateSprite();
     }

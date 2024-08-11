@@ -9,13 +9,9 @@ public class MenuFrame : MonoBehaviour
 {
     public List<MenuButton> buttons = new List<MenuButton>();
 
+    [SerializeField]
     private BoxCollider2D bc2d;
 
-    // Use this for initialization
-    protected virtual void Start()
-    {
-        init();
-    }
     public void init()
     {
         bc2d = GetComponent<BoxCollider2D>();
@@ -24,8 +20,8 @@ public class MenuFrame : MonoBehaviour
         {
             MenuButton mb = t.GetComponent<MenuButton>();
             if (mb != null)
-                mb.init();
             {
+                mb.init();
                 buttons.Add(mb);
             }
         }

@@ -11,7 +11,8 @@ public class MenuManager : MonoBehaviour
 
     public MenuFrame startFrame;
 
-    private IEnumerable<MenuFrame> frames;
+    [SerializeField]
+    private List<MenuFrame> frames;
 
     private void Awake()
     {
@@ -20,16 +21,28 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        frames = FindObjectsByType<MenuFrame>(FindObjectsSortMode.None)
-            .Where(mf => mf.canDelegateTaps());
+        //Lock on player
         GameObject player = Managers.Player.gameObject;
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
+        //focus camera on start frame
         startFrame.frameCamera();
-        //init menu buttons
-        gameObject.GetComponentsInChildren<MenuFrame>().ToList().ForEach((mf) => mf.init());
         //pause game
         Managers.Time.setPause(this, true);
+    }
+
+    public void init()
+    {
+        //populate frames
+        frames = FindObjectsByType<MenuFrame>(FindObjectsSortMode.None)
+            .Where(mf => mf.canDelegateTaps()).ToList();
+        //set start frame
+        if (!startFrame)
+        {
+            startFrame = frames.First();
+        }
+        //init menu buttons
+        gameObject.GetComponentsInChildren<MenuFrame>().ToList().ForEach((mf) => mf.init());
     }
 
     private void OnDestroy()
@@ -55,7 +68,7 @@ public class MenuManager : MonoBehaviour
     {
         if (!frames.Contains(mf))
         {
-            frames = frames.Concat(new[] { mf });
+            frames.Add(mf);
         }
     }
 

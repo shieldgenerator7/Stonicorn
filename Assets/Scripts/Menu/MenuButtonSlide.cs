@@ -86,6 +86,8 @@ public class MenuButtonSlide : MenuButton
         sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
         sliderBarEC2D = sliderBar.GetComponent<EdgeCollider2D>();
         sliderBarWidth = (transform.TransformPoint(sliderBarEC2D.points[1]) - transform.TransformPoint(sliderBarEC2D.points[0])).magnitude;
+    }
+    void Start() { //TODO: call this in the true init method
         //Update the value
         Value = Mathf.Clamp(mas.getCurrentValue(), MinValue, MaxValue);
     }
