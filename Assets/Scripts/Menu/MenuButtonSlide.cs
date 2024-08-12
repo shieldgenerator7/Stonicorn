@@ -73,9 +73,13 @@ public class MenuButtonSlide : MenuButton
     public EdgeCollider2D validBarBounds;//the box that binds where the slider bar can be
     public Text valueText;
 
+    [SerializeField, HideInInspector]
     private SpriteRenderer sliderFillSR;
+    [SerializeField, HideInInspector]
     private EdgeCollider2D sliderBarEC2D;
+    [SerializeField]
     private float sliderBarWidth;
+    [SerializeField, HideInInspector]
     private MenuActionSlide mas;
 
     public override void init()
