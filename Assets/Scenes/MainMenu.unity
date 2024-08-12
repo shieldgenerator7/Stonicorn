@@ -672,6 +672,26 @@ PrefabInstance:
       propertyPath: m_Points.Array.data[1].x
       value: 2.9
       objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: mas
+      value: 
+      objectReference: {fileID: 81425504}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderFillSR
+      value: 
+      objectReference: {fileID: 81425506}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarEC2D
+      value: 
+      objectReference: {fileID: 81425507}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: valueBounds.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarWidth
+      value: 0.0022309124
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -802,6 +822,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61499a302c3661e48a4eab2b3c8c7a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &81425506 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3377550153422869279, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 81425501}
+  m_PrefabAsset: {fileID: 0}
+--- !u!68 &81425507 stripped
+EdgeCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3377550154432312776, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 81425501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &107986823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -810,6 +840,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 11584384}
     m_Modifications:
+    - target: {fileID: 1454596516321886812, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: bc2d
+      value: 
+      objectReference: {fileID: 107986826}
     - target: {fileID: 1586827436746985989, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
       propertyPath: url
       value: https://www.patreon.com/fawndawnstudios
@@ -875,6 +909,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a60c2d08176ef4c83adee9d58f4587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &107986826 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+  m_PrefabInstance: {fileID: 107986823}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &131980049
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1004,6 +1043,26 @@ PrefabInstance:
     - target: {fileID: 3377550153525780680, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Points.Array.data[1].x
       value: 2.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: mas
+      value: 
+      objectReference: {fileID: 136927482}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderFillSR
+      value: 
+      objectReference: {fileID: 136927484}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarEC2D
+      value: 
+      objectReference: {fileID: 136927485}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: valueBounds.y
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarWidth
+      value: 0.0022308826
       objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_RootOrder
@@ -1135,6 +1194,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61499a302c3661e48a4eab2b3c8c7a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &136927484 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3377550153422869279, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 136927479}
+  m_PrefabAsset: {fileID: 0}
+--- !u!68 &136927485 stripped
+EdgeCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3377550154432312776, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 136927479}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &169835815
 GameObject:
   m_ObjectHideFlags: 0
@@ -4296,8 +4365,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startFrame: {fileID: 11584382}
   frames:
-  - {fileID: 1037794870}
   - {fileID: 953867115}
+  - {fileID: 1037794870}
   - {fileID: 539739725}
   - {fileID: 298357110}
   - {fileID: 11584382}
@@ -4661,6 +4730,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 11584384}
     m_Modifications:
+    - target: {fileID: 1454596516321886812, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: bc2d
+      value: 
+      objectReference: {fileID: 1788434791}
     - target: {fileID: 1586827436746985989, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
       propertyPath: url
       value: https://discord.gg/D4zx3ef
@@ -4726,6 +4799,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a60c2d08176ef4c83adee9d58f4587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &1788434791 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+  m_PrefabInstance: {fileID: 1788434788}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1826045642
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4737,6 +4815,22 @@ PrefabInstance:
     - target: {fileID: 3377550153086607534, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Text
       value: SOUND
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: mas
+      value: 
+      objectReference: {fileID: 1826045645}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderFillSR
+      value: 
+      objectReference: {fileID: 1826045647}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarEC2D
+      value: 
+      objectReference: {fileID: 1826045648}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarWidth
+      value: 0.0022309124
       objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_RootOrder
@@ -4836,6 +4930,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61499a302c3661e48a4eab2b3c8c7a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &1826045647 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3377550153422869279, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 1826045642}
+  m_PrefabAsset: {fileID: 0}
+--- !u!68 &1826045648 stripped
+EdgeCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3377550154432312776, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 1826045642}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1844524490
 GameObject:
   m_ObjectHideFlags: 0
@@ -5081,6 +5185,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 11584384}
     m_Modifications:
+    - target: {fileID: 1454596516321886812, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: bc2d
+      value: 
+      objectReference: {fileID: 2019234860}
     - target: {fileID: 1586827436746985989, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
       propertyPath: url
       value: https://www.youtube.com/channel/UCQTcfT5Jq7cQFjgk8zyEhNQ
@@ -5146,6 +5254,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a60c2d08176ef4c83adee9d58f4587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &2019234860 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+  m_PrefabInstance: {fileID: 2019234857}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2055183966
 GameObject:
   m_ObjectHideFlags: 0
@@ -5413,6 +5526,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 11584384}
     m_Modifications:
+    - target: {fileID: 1454596516321886812, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+      propertyPath: bc2d
+      value: 
+      objectReference: {fileID: 834165616314500381}
     - target: {fileID: 1586827436746985989, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
       propertyPath: url
       value: https://twitter.com/fawndawnstudios
@@ -5449,6 +5566,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a60c2d08176ef4c83adee9d58f4587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &834165616314500381 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
+  m_PrefabInstance: {fileID: 834165616314500379}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1068222169265079648
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5522,6 +5644,22 @@ PrefabInstance:
       propertyPath: m_Text
       value: MUSIC
       objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: mas
+      value: 
+      objectReference: {fileID: 3377550154664015007}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderFillSR
+      value: 
+      objectReference: {fileID: 3377550154664015005}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarEC2D
+      value: 
+      objectReference: {fileID: 3377550154664015006}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarWidth
+      value: 0.0022308826
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -5592,6 +5730,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61499a302c3661e48a4eab2b3c8c7a33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!212 &3377550154664015005 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3377550153422869279, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 3377550154664015003}
+  m_PrefabAsset: {fileID: 0}
+--- !u!68 &3377550154664015006 stripped
+EdgeCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3377550154432312776, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 3377550154664015003}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3377550154664015007 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3377550153525780686, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 3377550154664015003}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 938331af42de81a4bae49294b9f97bdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4653168201520641552

@@ -17,6 +17,14 @@ public class MenuManagerEditor : Editor
                 mm.compile();
                 EditorUtility.SetDirty(mm);
                 EditorUtility.SetDirty(mm.gameObject);
+                foreach (Transform t in mm.transform)
+                {
+                    EditorUtility.SetDirty(t.gameObject);
+                }
+                mm.GetComponentsInChildren<MenuFrame>().ToList()
+                    .ForEach(mf => EditorUtility.SetDirty(mf));
+                mm.GetComponentsInChildren<MenuButton>().ToList()
+                    .ForEach(mb => EditorUtility.SetDirty(mb));
             });
         }
     }
