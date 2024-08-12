@@ -29,8 +29,7 @@ public class TeleportRangeUpdater : MonoBehaviour
         //init pools
         fragmentPool = new ObjectPool<TeleportRangeFragment>(
             () => Instantiate(fragmentPrefab, transform).GetComponent<TeleportRangeFragment>(),
-            (fragment) => fragment.gameObject.SetActive(true),
-            (fragment) => fragment.gameObject.SetActive(false)
+            (fragment, enable) => fragment.gameObject.SetActive(enable)
         );
 
         //call delegates

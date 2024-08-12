@@ -10,17 +10,15 @@ public class ObjectPool<T>
     private List<T> pool = new List<T>();//list of objects not being used
 
     private Func<T> createFunc;
-    private Action<T> enableFunc;
-    private Action<T> disableFunc;
+    private Action<T, bool> enableFunc;
 
-    public ObjectPool(Func<T> createFunc) : this(createFunc, (obj) => { }, (obj) => { })
+    public ObjectPool(Func<T> createFunc) : this(createFunc, (obj, enable) => { })
     {
     }
-    public ObjectPool(Func<T> createFunc, Action<T> enableFunc, Action<T> disableFunc)
+    public ObjectPool(Func<T> createFunc, Action<T, bool> enableFunc)
     {
         this.createFunc = createFunc;
         this.enableFunc = enableFunc;
-        this.disableFunc = disableFunc;
     }
 
     public T checkoutObject()
@@ -37,7 +35,7 @@ public class ObjectPool<T>
         {
             T t = pool[0];
             pool.RemoveAt(0);
-            enableFunc(t);
+            enableFunc(t, true);
             loanedList.Add(t);
             return t;
         }
@@ -46,7 +44,7 @@ public class ObjectPool<T>
     public void returnObject(T t)
     {
         loanedList.Remove(t);
-        disableFunc(t);
+        enableFunc(t, false);
         pool.Add(t);
     }
 }
