@@ -15,6 +15,7 @@ public class TeleportRangeUpdater : MonoBehaviour
     public GameObject fragmentPrefab;
 
     internal readonly List<TeleportRangeFragment> fragments = new List<TeleportRangeFragment>();
+    private ObjectPool<TeleportRangeFragment> fragmentPool;
     private float range;//cached range, gets updated in updateRange()
     public float Range => range;
 
@@ -24,6 +25,15 @@ public class TeleportRangeUpdater : MonoBehaviour
         effects.ForEach(fx => fx.init(this));
         //Register range update delegate
         Managers.Player.Teleport.onRangeChanged += updateRange;
+
+        //init pools
+        fragmentPool = new ObjectPool<TeleportRangeFragment>(
+            () => Instantiate(fragmentPrefab, transform).GetComponent<TeleportRangeFragment>(),
+            (fragment) => fragment.gameObject.SetActive(true),
+            (fragment) => fragment.gameObject.SetActive(false)
+        );
+
+        //call delegates
         updateRange(Managers.Player.Teleport.Range);
     }
 
@@ -42,14 +52,12 @@ public class TeleportRangeUpdater : MonoBehaviour
         for (int i = 0; i < fragmentCount; i++)
         {
             //Instantiate
-            GameObject fragment = Instantiate(fragmentPrefab);
-            //Parent it to this object
-            fragment.transform.parent = transform;
+            TeleportRangeFragment fragment = fragmentPool.checkoutObject();
             //Place the fragment in the right position and rotation
             fragment.transform.localPosition = placer;
             fragment.transform.up = fragment.transform.position - transform.position;
             //Add it to the list
-            fragments.Add(fragment.GetComponent<TeleportRangeFragment>());
+            fragments.Add(fragment);
             //Update placer
             placer = Utility.RotateZ(placer, angleSpacing);
         }
@@ -115,7 +123,7 @@ public class TeleportRangeUpdater : MonoBehaviour
     {
         foreach (TeleportRangeFragment fragment in fragments)
         {
-            Destroy(fragment.gameObject);
+            fragmentPool.returnObject(fragment);
         }
         fragments.Clear();
     }
