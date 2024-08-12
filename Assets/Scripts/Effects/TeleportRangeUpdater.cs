@@ -115,7 +115,7 @@ public class TeleportRangeUpdater : MonoBehaviour
     {
         foreach (TeleportRangeFragment fragment in fragments)
         {
-            Destroy(fragment);
+            Destroy(fragment.gameObject);
         }
         fragments.Clear();
     }
