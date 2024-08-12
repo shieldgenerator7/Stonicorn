@@ -38,13 +38,7 @@ public class MenuButton : MonoBehaviour
 
     public virtual void activate()
     {
-        if (frame != null)
-        {
-            frame.frameCamera();
-        }
-        if (mab != null)
-        {
-            mab.activate();
-        }
+        frame?.frameCamera();
+        mab?.activate();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -64,14 +65,8 @@ public class MenuFrame : MonoBehaviour
 
     public void delegateTap(Vector3 tapPos)
     {
-        foreach (MenuButton mb in buttons)
-        {
-            if (mb.tapInArea(tapPos))
-            {
-                mb.processTap(tapPos);
-                return;
-            }
-        }
+        buttons.FirstOrDefault(mb => mb.tapInArea(tapPos))?
+            .processTap(tapPos);
     }
     public bool delegateDrag(Vector3 origMPWorld, Vector3 newMPWorld)
     {
