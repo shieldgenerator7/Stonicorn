@@ -14,6 +14,11 @@ public class MenuFrame : MonoBehaviour
 
     public void init()
     {
+        buttons.ForEach(button => button.init());
+    }
+
+    public void compile()
+    {
         bc2d = GetComponent<BoxCollider2D>();
         buttons.Clear();
         foreach (Transform t in transform)
@@ -21,7 +26,7 @@ public class MenuFrame : MonoBehaviour
             MenuButton mb = t.GetComponent<MenuButton>();
             if (mb != null)
             {
-                mb.init();
+                mb.compile();
                 buttons.Add(mb);
             }
         }

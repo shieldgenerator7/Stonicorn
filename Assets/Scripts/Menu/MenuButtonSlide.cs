@@ -82,16 +82,18 @@ public class MenuButtonSlide : MenuButton
     [SerializeField, HideInInspector]
     private MenuActionSlide mas;
 
-    public override void init()
+    public override void compile()
     {
-        base.init();
+        base.compile();
         mas = GetComponent<MenuActionSlide>();
         MaxValue = mas.getOverriddenMaxValue(MaxValue);
         sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
         sliderBarEC2D = sliderBar.GetComponent<EdgeCollider2D>();
         sliderBarWidth = (transform.TransformPoint(sliderBarEC2D.points[1]) - transform.TransformPoint(sliderBarEC2D.points[0])).magnitude;
     }
-    void Start() { //TODO: call this in the true init method
+    public override void init()
+    {
+        base.init();
         //Update the value
         Value = Mathf.Clamp(mas.getCurrentValue(), MinValue, MaxValue);
     }

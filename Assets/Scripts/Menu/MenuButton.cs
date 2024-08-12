@@ -13,6 +13,11 @@ public class MenuButton : MonoBehaviour
 
     public virtual void init()
     {
+
+    }
+
+    public virtual void compile()
+    {
         bc2d = GetComponent<BoxCollider2D>();
     }
 

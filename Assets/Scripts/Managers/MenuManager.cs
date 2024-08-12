@@ -21,6 +21,13 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
+        init();
+    }
+
+    void init()
+    {
+        //init frames
+        frames.ForEach(frame => frame.init());
         //Lock on player
         GameObject player = Managers.Player.gameObject;
         transform.position = player.transform.position;
@@ -32,7 +39,7 @@ public class MenuManager : MonoBehaviour
         Managers.Time.setPause(this, true);
     }
 
-    public void init()
+    public void compile()
     {
         //populate frames
         frames = FindObjectsByType<MenuFrame>(FindObjectsSortMode.None)
@@ -43,7 +50,7 @@ public class MenuManager : MonoBehaviour
             startFrame = frames.First();
         }
         //init menu buttons
-        gameObject.GetComponentsInChildren<MenuFrame>().ToList().ForEach((mf) => mf.init());
+        gameObject.GetComponentsInChildren<MenuFrame>().ToList().ForEach((mf) => mf.compile());
     }
 
     private void OnDestroy()

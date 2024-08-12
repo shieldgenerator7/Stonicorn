@@ -18,9 +18,9 @@ public class MenuButtonSwitch : MenuButton
     [SerializeField]
     private MenuActionSwitch mas;
 
-    public override void init()
+    public override void compile()
     {
-        base.init();
+        base.compile();
         sr = GetComponent<SpriteRenderer>();
         if (sr == null)
         {
@@ -61,8 +61,9 @@ public class MenuButtonSwitch : MenuButton
 
     }
 
-    private void Start()//TODO: call this in true init method
+    public override void init()
     {
+        base.init();
         active = mas.getActiveState();
         updateSprite();
     }
