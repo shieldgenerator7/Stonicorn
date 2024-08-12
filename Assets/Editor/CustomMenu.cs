@@ -1076,15 +1076,26 @@ public class CustomMenu
         }
         //2017-10-19 copied from https://docs.unity3d.com/Manual/BuildPlayerPipeline.html
         // Get filename.
-        string buildName = EditorUtility.SaveFilePanel("Choose Location of Built Game", defaultPath, PlayerSettings.productName, extension);
+        string buildName = $"{defaultPath}/{PlayerSettings.productName}.{extension}";
 
+        //Ask for confirmation to build
+        bool shouldBuild = EditorUtility.DisplayDialog(
+            "Build?",
+            $"Build {PlayerSettings.productName} {PlayerSettings.bundleVersion}?",
+            "Build",
+            "Cancel"
+            );
         // User hit the cancel button.
-        if (buildName == "")
+        if (!shouldBuild)
+        {
             return;
+        }
 
-        string path = buildName.Substring(0, buildName.LastIndexOf("/"));
+        string path = defaultPath;
         Debug.Log($"BUILDNAME: {buildName}");
         Debug.Log($"PATH: {path}");
+        Debug.Log($"defaultPath: {defaultPath}");
+        
 
         string[] levels = new string[EditorBuildSettings.scenes.Length];
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
