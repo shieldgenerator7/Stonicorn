@@ -66,11 +66,6 @@ public class MenuManager : MonoBehaviour
             .delegateDrag(origMPWorld, newMPWorld)
             ?? false;
 
-    void Update()
-    {
-        //Orient camera to menu
-        Managers.Camera.Up = Managers.Player.transform.up;
-    }
 
     internal void AddFrame(MenuFrame mf)
     {
