@@ -25,6 +25,7 @@ public class MenuManager : MonoBehaviour
         GameObject player = Managers.Player.gameObject;
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
+        Physics2D.SyncTransforms();
         //focus camera on start frame
         startFrame.frameCamera();
         //pause game
