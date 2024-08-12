@@ -27,7 +27,7 @@ public class EffectManager : MonoBehaviour
     [Header("Rewind Stripe Effect")]
     public GameObject rewindCanvas;
     //Supporting Lists
-    private List<Fader> teleportStarList = new List<Fader>();
+    ObjectPool<Fader> teleportStarPool;
     private List<Fader> teleportStreakList = new List<Fader>();
     private List<SpriteRenderer> lightningStaticList = new List<SpriteRenderer>();
     private List<SpriteRenderer> swapCircleList = new List<SpriteRenderer>();
@@ -42,6 +42,18 @@ public class EffectManager : MonoBehaviour
         {
             origSizes.Add(t, t.localScale);
         }
+
+        //init pools
+        teleportStarPool = new ObjectPool<Fader>(
+            () =>
+            {
+                GameObject newTS = GameObject.Instantiate(teleportStarPrefab);
+                newTS.transform.parent = transform;
+                Fader newTSU = newTS.GetComponent<Fader>();
+                newTSU.onFadeFinished += () => teleportStarPool.returnObject(newTSU);
+                return newTSU;
+            }
+            );
     }
 
     /// <summary>
@@ -51,19 +63,7 @@ public class EffectManager : MonoBehaviour
     /// <param name="pos"></param>
     public void showTeleportStar(Vector3 pos)
     {
-        //Find existing particle system
-        Fader chosenTSU = teleportStarList.FirstOrDefault(
-            tsu => !tsu.enabled
-            );
-        //Else make a new one
-        if (chosenTSU == null)
-        {
-            GameObject newTS = GameObject.Instantiate(teleportStarPrefab);
-            newTS.transform.parent = transform;
-            Fader newTSU = newTS.GetComponent<Fader>();
-            teleportStarList.Add(newTSU);
-            chosenTSU = newTSU;
-        }
+        Fader chosenTSU = teleportStarPool.checkoutObject();
         chosenTSU.transform.position = pos;
         chosenTSU.gameObject.SetActive(true);
     }
