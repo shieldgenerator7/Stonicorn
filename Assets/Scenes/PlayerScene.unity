@@ -7085,6 +7085,7 @@ GameObject:
   - component: {fileID: 838574611}
   - component: {fileID: 838574612}
   - component: {fileID: 838574609}
+  - component: {fileID: 838574613}
   m_Layer: 2
   m_Name: MoonLoader
   m_TagString: Untagged
@@ -7178,6 +7179,23 @@ PolygonCollider2D:
       - {x: 50.672047, y: 11.936048}
       - {x: 28.012812, y: 45.3646}
   m_UseDelaunayMesh: 0
+--- !u!114 &838574613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838574608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40275423348911d40a8fe98ddbcf1e80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followName: 
+  followObject: {fileID: 647664406}
+  orientToCamera: 0
+  shakeOnStop: 1
+  bounceBackSpeed: 2
 --- !u!1 &848858906 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8412103709058295066, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}

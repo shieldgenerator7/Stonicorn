@@ -9,6 +9,7 @@ using UnityEngine;
 public class Follow : MonoBehaviour
 {
 
+    public string followName = "";
     public GameObject followObject;
     public bool orientToCamera = false;
     public bool shakeOnStop = true;
@@ -20,6 +21,19 @@ public class Follow : MonoBehaviour
 
     private void Awake()
     {
+        //Follow Object
+        if (!followObject)
+        {
+            followObject = GameObject.Find(followName);
+        }
+        if (!followObject)
+        {
+            Debug.LogError($"Can't find followObject {followName}");
+            this.enabled = false;
+            return;
+        }
+
+        //Shake on Stop
         if (shakeOnStop)
         {
             rb2dParent = followObject.GetComponent<Rigidbody2D>();
@@ -31,12 +45,15 @@ public class Follow : MonoBehaviour
                     );
             }
         }
+
+        //Orient to Camera
         if (orientToCamera)
         {
             //Camera delegate
             Managers.Camera.onRotated +=
                 (up) => transform.up = up;
         }
+
         //Rewind delegates
         Managers.Rewind.onRewindStarted += rewindStarted;
         Managers.Rewind.onRewindState += rewindState;
