@@ -41,14 +41,20 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
                 //Break into pieces
                 if (crackedPrefab)
                 {
-                    GameObject pieces = Utility.Instantiate(crackedPrefab);
+                    GameObject pieces = Instantiate(crackedPrefab);
                     BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
-                    brokenPiece.unpack(gameObject);
-                    //change color of broken pieces
-                    Color color = GetComponent<SpriteRenderer>().color;
-                    brokenPiece.Savables.ForEach(
-                        bp => bp.GetComponent<SpriteRenderer>().color = color
-                        );
+                    if (brokenPiece)
+                    {
+                        brokenPiece.unpack(gameObject);
+                        //change color of broken pieces
+                        Color color = GetComponent<SpriteRenderer>().color;
+                        brokenPiece.Savables.ForEach(
+                            bp => bp.GetComponent<SpriteRenderer>().color = color
+                            );
+                    }
+                    //set id
+                    MemoryObjectInfo moi = pieces.GetComponent<MemoryObjectInfo>();
+                    moi.Id = (GetComponent<MemoryObjectInfo>() ?? GetComponentInChildren<MemoryObjectInfo>()).Id;
                 }
 
                 //Reveal hidden areas
@@ -70,7 +76,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
     private List<Sprite> crackStages = new List<Sprite>();
     public AudioClip soundDamageNone;
     public AudioClip soundDamageOne;
-    private AudioClip soundDamageTwoOrMore;
+    public AudioClip soundDamageTwoOrMore;
     public List<MemoryMonoBehaviour> dicoverables;
 
     //Components

@@ -23,7 +23,7 @@ public class MilestoneActivatorAbility : MilestoneActivator
         {
             fader.enabled = true;
         }
-        SimpleScaling scaling = GetComponent<SimpleScaling>();
+        SimpleScaling scaling = GetComponent<SimpleScaling>() ?? GetComponentInChildren<SimpleScaling>();
         if (scaling)
         {
             scaling.enabled = true;
