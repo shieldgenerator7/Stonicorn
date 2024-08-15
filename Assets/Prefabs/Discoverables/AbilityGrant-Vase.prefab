@@ -149,17 +149,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4670090421767223389, guid: 2c21b0f438683e24da350f4153c1b036, type: 3}
   m_PrefabInstance: {fileID: 485942941590027062}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6706151882703069778 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6606608152781756772, guid: 2c21b0f438683e24da350f4153c1b036, type: 3}
-  m_PrefabInstance: {fileID: 485942941590027062}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8251570076619766231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4decc246a7eb3d0438c4436d93d75ec8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8251570076619766231 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8375883608669094625, guid: 2c21b0f438683e24da350f4153c1b036, type: 3}
@@ -422,7 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c881664a3ae6c5e4690d0bcab81fb7e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyDelay: 0
+  destroyDelay: 1
   minForceThreshold: 700
   maxForceThreshold: 700
   maxIntegrity: 1
@@ -434,7 +423,7 @@ MonoBehaviour:
   soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   dicoverables:
-  - {fileID: 6706151882703069778}
+  - {fileID: 0}
 --- !u!4 &7800436665770949004 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2606984600078756362, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}

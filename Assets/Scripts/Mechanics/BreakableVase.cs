@@ -38,44 +38,14 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
             }
             else
             {
-                //Break into pieces
-                if (crackedPrefab)
-                {
-                    GameObject pieces = Instantiate(crackedPrefab);
-                    BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
-                    if (brokenPiece)
-                    {
-                        brokenPiece.unpack(gameObject);
-                        //change color of broken pieces
-                        Color color = GetComponent<SpriteRenderer>().color;
-                        brokenPiece.Savables.ForEach(
-                            bp => bp.GetComponent<SpriteRenderer>().color = color
-                            );
-                    }
-                    //set id
-                    MemoryObjectInfo moi = pieces.GetComponent<MemoryObjectInfo>();
-                    moi.Id = (GetComponent<MemoryObjectInfo>() ?? GetComponentInChildren<MemoryObjectInfo>()).Id;
-                }
-
-                //Reveal hidden areas
-                dicoverables
-                    .FindAll(ha => ha != null && !ReferenceEquals(ha, null))
-                    .ForEach(ha => ha.Discovered = true);
-
-                //Deploy contents
-                contents.ForEach(go => go.transform.parent = null);
-
                 //Destroy object
                 if (destroyDelay == 0)
                 {
-                    Managers.Object.destroyObject(gameObject);
+                    breakApart();
                 }
                 else
                 {
-                Timer.startTimer(destroyDelay, () =>
-                {
-                    Managers.Object.destroyObject(gameObject);
-                });
+                    Timer.startTimer(destroyDelay, breakApart);
                 }
             }
         }
@@ -141,6 +111,40 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
             }
         }
     }
+
+    public void breakApart()
+    {
+        //Break into pieces
+        if (crackedPrefab)
+        {
+            GameObject pieces = Instantiate(crackedPrefab);
+            BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
+            if (brokenPiece)
+            {
+                brokenPiece.unpack(gameObject);
+                //change color of broken pieces
+                Color color = GetComponent<SpriteRenderer>().color;
+                brokenPiece.Savables.ForEach(
+                    bp => bp.GetComponent<SpriteRenderer>().color = color
+                    );
+            }
+            //set id
+            MemoryObjectInfo moi = pieces.GetComponent<MemoryObjectInfo>();
+            moi.Id = (GetComponent<MemoryObjectInfo>() ?? GetComponentInChildren<MemoryObjectInfo>()).Id;
+        }
+
+        //Reveal discoverables
+        dicoverables
+            .FindAll(ha => ha != null && !ReferenceEquals(ha, null))
+            .ForEach(ha => ha.Discovered = true);
+
+        //Deploy contents
+        contents.ForEach(go => go.transform.parent = null);
+
+        //Destroy object
+        Managers.Object.destroyObject(gameObject);
+    }
+
 
     public float checkForce(float force, Vector2 direction)
     {
