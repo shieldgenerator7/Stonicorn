@@ -151,10 +151,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5162585452941231850, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -182,6 +178,10 @@ PrefabInstance:
     - target: {fileID: 8100616966844326253, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: abilityTypeName
       value: ForceLaunchAbility
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100616966844326253, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: canGrantUpgrade
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8320296173667841571, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -352,8 +352,10 @@ MonoBehaviour:
   maxForceThreshold: 700
   maxIntegrity: 1
   integrity: 0
+  crackedPrefab: {fileID: 8375883608669094625, guid: 2c21b0f438683e24da350f4153c1b036, type: 3}
   soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
   soundDamageOne: {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   dicoverables:
   - {fileID: 4036990298518991595}
 --- !u!4 &7800436665770949004 stripped

@@ -66,7 +66,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
     }
 
     [Header("Cracked Components")]
-    private GameObject crackedPrefab;
+    public GameObject crackedPrefab;
     private List<Sprite> crackStages = new List<Sprite>();
     public AudioClip soundDamageNone;
     public AudioClip soundDamageOne;
