@@ -66,10 +66,17 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
                 contents.ForEach(go => go.transform.parent = null);
 
                 //Destroy object
+                if (destroyDelay == 0)
+                {
+                    Managers.Object.destroyObject(gameObject);
+                }
+                else
+                {
                 Timer.startTimer(destroyDelay, () =>
                 {
                     Managers.Object.destroyObject(gameObject);
                 });
+                }
             }
         }
     }
