@@ -172,7 +172,7 @@ public static class Utility
     /// <param name="coll2d"></param>
     /// <returns></returns>
     public static bool isPlayerSolid(this Collider2D coll2d)
-        => coll2d.gameObject.GetComponent<PlayerController>()
+        => coll2d.gameObject.CompareTag("Player")
             && !coll2d.isTrigger;
     /// <summary>
     /// Returns true if the collider can be stood on,
