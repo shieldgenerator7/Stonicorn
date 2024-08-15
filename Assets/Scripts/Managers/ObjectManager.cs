@@ -79,8 +79,9 @@ public class ObjectManager : Manager, ISetting
                 var op = Addressables.InstantiateAsync(assetRef);
                 recreateQueue.Add(goId, op);
                 Debug.Log("Recreating object (" + goId + ")"
+                    + $" using prefabGUID {prefabGUID},"
 #if UNITY_EDITOR
-                    + " using prefab " + assetRef.editorAsset.name
+                    + $" using prefab {assetRef.editorAsset.name}"
 #endif
                     );
                 op.Completed += (operation) =>
