@@ -84,19 +84,19 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
             Integrity = Integrity;
         }
 
-        //Find contents, if exists
-        if (contentId == 0)
-        {
-            contentId = contents[0]?.GetComponent<SavableObjectInfo>().Id ?? 0;
-        }
-        SavableObjectInfo soi = FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None)
-            .Where(soi => soi.Id == contentId)
-            .FirstOrDefault();
-        if (soi)
-        {
-            contents.FindAll(go => go != soi.gameObject).ForEach(go => Destroy(go));
-            soi.transform.parent = transform;
-        }
+        ////Find contents, if exists
+        //if (contentId == 0 && contents.Count > 0)
+        //{
+        //    contentId = contents[0]?.GetComponent<SavableObjectInfo>().Id ?? 0;
+        //}
+        //SavableObjectInfo soi = FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None)
+        //    .Where(soi => soi.Id == contentId)
+        //    .FirstOrDefault();
+        //if (soi)
+        //{
+        //    contents.FindAll(go => go != soi.gameObject).ForEach(go => Destroy(go));
+        //    soi.transform.parent = transform;
+        //}
     }
 
     void OnCollisionEnter2D(Collision2D coll)
