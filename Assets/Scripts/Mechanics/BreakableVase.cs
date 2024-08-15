@@ -62,6 +62,9 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
                     .FindAll(ha => ha != null && !ReferenceEquals(ha, null))
                     .ForEach(ha => ha.Discovered = true);
 
+                //Deploy contents
+                contents.ForEach(go => go.transform.parent = null);
+
                 //Destroy object
                 Timer.startTimer(destroyDelay, () =>
                 {
@@ -73,6 +76,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
 
     [Header("Cracked Components")]
     public GameObject crackedPrefab;
+    public List<GameObject> contents;
     private List<Sprite> crackStages = new List<Sprite>();
     public AudioClip soundDamageNone;
     public AudioClip soundDamageOne;
