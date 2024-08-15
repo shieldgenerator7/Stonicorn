@@ -380,6 +380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6432156677330164494, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+    - {fileID: 8320296173667841571, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
     m_RemovedGameObjects:
     - {fileID: 5162585452941231850, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
     m_AddedGameObjects:
@@ -391,6 +392,9 @@ PrefabInstance:
       addedObject: {fileID: 5075861314920203115}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 3790237238363825108}
+    - targetCorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5911128790826070625}
   m_SourcePrefab: {fileID: 100100000, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
@@ -399,6 +403,59 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
   m_PrefabInstance: {fileID: 5218943540640224134}
   m_PrefabAsset: {fileID: 0}
+--- !u!68 &3790237238363825108
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6261100641845864174}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.2101329, y: 0.33168814}
+  - {x: -0.21183383, y: 0.30634695}
+  - {x: -0.13292626, y: 0.29022434}
+  - {x: -0.26559025, y: 0.22234805}
+  - {x: -0.2658769, y: -0.049610555}
+  - {x: -0.16470365, y: -0.31105193}
+  - {x: 0.13852154, y: -0.32680905}
+  - {x: 0.24393281, y: -0.10161083}
+  - {x: 0.2667649, y: 0.23498565}
+  - {x: 0.1239225, y: 0.28068194}
+  - {x: 0.17371655, y: 0.30018666}
+  - {x: 0.174205, y: 0.3400595}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!114 &5911128790826070625
 MonoBehaviour:
   m_ObjectHideFlags: 0
