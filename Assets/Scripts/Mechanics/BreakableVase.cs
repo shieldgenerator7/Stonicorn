@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BreakableVase : SavableMonoBehaviour, IBlastable
@@ -59,6 +60,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
     public AudioClip soundDamageOne;
     public AudioClip soundDamageTwoOrMore;
     public List<MemoryMonoBehaviour> dicoverables;
+    private int contentId;
 
     //Components
     private SpriteRenderer sr;
@@ -80,6 +82,20 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
         else
         {
             Integrity = Integrity;
+        }
+
+        //Find contents, if exists
+        if (contentId == 0)
+        {
+            contentId = contents[0]?.GetComponent<SavableObjectInfo>().Id ?? 0;
+        }
+        SavableObjectInfo soi = FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None)
+            .Where(soi => soi.Id == contentId)
+            .FirstOrDefault();
+        if (soi)
+        {
+            contents.FindAll(go => go != soi.gameObject).ForEach(go => Destroy(go));
+            soi.transform.parent = transform;
         }
     }
 
@@ -165,10 +181,11 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable
 
     public override SavableObject CurrentState
     {
-        get => new SavableObject(this, "integrity", integrity);
+        get => new SavableObject(this, "integrity", integrity, "contentid", contentId);//TODO: make it work for multiple contents
         set
         {
             Integrity = value.Int("integrity");
+            contentId = value.Int("contentid");
         }
     }
 }
