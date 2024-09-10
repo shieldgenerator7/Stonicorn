@@ -8,6 +8,8 @@ public class CactusBlossomController : MonoBehaviour
     public float openLeft = 0;
     [Tooltip("How far to the right to open to. 0 is pointing to its left")]
     public float openRight = 180;
+    [Tooltip("How much to nudge the middle petals by")]
+    public float middleOffset = 0;
     [Range(0f, 1f)]
     public float _openPercent = 1f;
 
@@ -39,7 +41,8 @@ public class CactusBlossomController : MonoBehaviour
         {
             Transform petal = petals[i];
             float percent = (float)i / (float)(petals.Count - 1);
-            float angle = diff * percent + left;
+            float offset = (i > 0 && i < petals.Count - 1) ? middleOffset * openPercent : 0;
+            float angle = diff * percent + left + offset;
             petal.localEulerAngles = new Vector3(0,0,angle);
         }
     }
