@@ -9,7 +9,8 @@ public class Managers : MonoBehaviour
     // Game Data
     //
 
-    public GameData gameData;
+    private GameData gameData;
+    public GameDataContainer gameDataContainer;
 
     //
     // Managers
@@ -152,6 +153,7 @@ public class Managers : MonoBehaviour
         instance = this;
 
         //GameData
+        gameData = gameDataContainer?.gameData;
         if (!gameData)
         {
             gameData = new GameData();

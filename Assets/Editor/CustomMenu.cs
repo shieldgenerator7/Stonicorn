@@ -983,20 +983,25 @@ public class CustomMenu
     public static void populateObjectManagerKnownObjectsList()
     {
         Managers managers = GameObject.FindObjectOfType<Managers>();
-        int prevCount = managers.gameData.knownObjects.Count;
-        managers.gameData.knownObjects = new List<SavableObjectInfoData>();
+        if (!managers.gameDataContainer)
+        {
+            Debug.LogError("Managers object needs to have a game data container!", managers);
+            return;
+        }
+        int prevCount = managers.gameDataContainer.gameData.knownObjects.Count;
+        managers.gameDataContainer.gameData.knownObjects = new List<SavableObjectInfoData>();
         List<GameObject> savables = new List<GameObject>();
         GameObject.FindObjectsOfType<SceneSavableList>().ToList()
             .ForEach(ssl =>
             {
-                managers.gameData.knownObjects.AddRange(
+                managers.gameDataContainer.gameData.knownObjects.AddRange(
                     ssl.savables.ConvertAll(
                         go => go.GetComponent<SavableObjectInfo>().Data
                         )
                     );
             });
-        managers.gameData.knownObjects.OrderBy(soid => soid.id);
-        int newCount = managers.gameData.knownObjects.Count;
+        managers.gameDataContainer.gameData.knownObjects.OrderBy(soid => soid.id);
+        int newCount = managers.gameDataContainer.gameData.knownObjects.Count;
         if (prevCount != newCount)
         {
             EditorUtility.SetDirty(managers);
