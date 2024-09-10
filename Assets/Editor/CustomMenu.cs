@@ -1004,6 +1004,7 @@ public class CustomMenu
         int newCount = managers.gameDataContainer.gameData.knownObjects.Count;
         if (prevCount != newCount)
         {
+            EditorUtility.SetDirty(managers.gameDataContainer);
             EditorUtility.SetDirty(managers);
             EditorSceneManager.MarkSceneDirty(managers.gameObject.scene);
             Debug.LogWarning(
