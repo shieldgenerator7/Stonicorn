@@ -11,7 +11,7 @@ public class CactusBlossomController : SavableMonoBehaviour
     [Tooltip("How much to nudge the middle petals by")]
     public float middleOffset = 0;
     [Range(0f, 1f)]
-    public float _openPercent = 1f;
+    public float openPercent = 1f;
 
     [Tooltip("How long it takes to close while closing")]
     public float closingDuration = 0.5f;
@@ -21,6 +21,16 @@ public class CactusBlossomController : SavableMonoBehaviour
     public float openingDuration = 2;
 
     public List<Transform> petals;
+
+    public float OpenPercent
+    {
+        get => openPercent;
+        set
+        {
+            openPercent = Mathf.Clamp(value, 0, 1);
+        }
+    }
+    private float closedWaitTime = 0;
 
     public enum State
     {
@@ -33,7 +43,8 @@ public class CactusBlossomController : SavableMonoBehaviour
 
     public override void init()
     {
-        placePetals(_openPercent);
+        state = (openPercent==1)? State.OPEN : State.CLOSED;
+        placePetals(openPercent);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -45,7 +56,37 @@ public class CactusBlossomController : SavableMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //placePetals(_openPercent);
+        switch (state)
+        {
+            case State.OPEN:
+                break;
+            case State.CLOSING:
+                OpenPercent += -(1 / closingDuration) * Time.deltaTime;
+                placePetals(openPercent);
+                if (openPercent == 0)
+                {
+                    state = State.CLOSED;
+                    closedWaitTime = 0;
+                }
+                break;
+            case State.CLOSED:
+                closedWaitTime += (1 / closedDuration) * Time.deltaTime;
+                if (closedWaitTime >= closedDuration)
+                {
+                    state = State.OPENING;
+                }
+                break;
+            case State.OPENING:
+                OpenPercent += (1 / openingDuration) * Time.deltaTime;
+                placePetals(openPercent);
+                if (openPercent == 1)
+                {
+                    state = State.OPEN;
+                }
+                break;
+            default:
+                throw new UnityException($"Unknown state: {state}");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -68,28 +109,11 @@ public class CactusBlossomController : SavableMonoBehaviour
 
     public void reactToTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        if (state != State.OPEN)
-        {
-            return;
-        }
+        //early exit: already closed
+        if (state == State.CLOSED)        {            return;        }
+
+        //start the closing process
         state = State.CLOSING;
-        Timer closingTimer = Timer.startTimer(closingDuration, () => {
-            state = State.CLOSED;
-            Timer closedTimer = Timer.startTimer(closedDuration, () => {
-                state = State.OPENING;
-                Timer openingTimer = Timer.startTimer(openingDuration, () => {
-                    state = State.OPEN;
-                });
-                openingTimer.onTimeLeftChanged += (timeLeft, duration) =>
-                {
-                    placePetals(1 - (timeLeft / duration));
-                };
-            });
-        });
-        closingTimer.onTimeLeftChanged += (timeLeft, duration) =>
-        {
-            placePetals(timeLeft / duration);
-        };
     }
 
     public void placePetals(float openPercent)
@@ -115,8 +139,16 @@ public class CactusBlossomController : SavableMonoBehaviour
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-           "state", (int)state
+           "state", (int)state,
+           "openPercent", openPercent,
+            "closedWaitTime", closedWaitTime
            );
-        set => state = (State)value.Int("state");
+        set
+        {
+            state = (State)value.Int("state");
+            openPercent = value.Float("openPercent");
+            closedWaitTime = value.Float("closedWaitTime");
+            placePetals(openPercent);
+        }
     }
 }   
