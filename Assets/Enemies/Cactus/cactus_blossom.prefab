@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4652907031855334110}
+  - component: {fileID: 7548437415943294857}
   - component: {fileID: 2674515064564001816}
   m_Layer: 0
   m_Name: cactus_blossom
@@ -31,14 +32,36 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6176236681032185507}
-  - {fileID: 7338748492999438493}
   - {fileID: 5203930985161901460}
   - {fileID: 1479655080784507667}
   - {fileID: 6105537407829653108}
   - {fileID: 7628968850541310828}
   - {fileID: 5849155553107931115}
+  - {fileID: 7338748492999438493}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -68.312}
+--- !u!114 &7548437415943294857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6541020760080976190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb12e01cb26133c47b8d2dc6f310e5fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openLeft: 0
+  openRight: -180
+  petals:
+  - {fileID: 6176236681032185507}
+  - {fileID: 5203930985161901460}
+  - {fileID: 1479655080784507667}
+  - {fileID: 6105537407829653108}
+  - {fileID: 7628968850541310828}
+  - {fileID: 5849155553107931115}
+  - {fileID: 7338748492999438493}
 --- !u!114 &2674515064564001816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,7 +129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7592162024371016505, guid: 67e9003bf97be144385cb8523dc4f1b8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7592162024371016505, guid: 67e9003bf97be144385cb8523dc4f1b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -118,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7592162024371016505, guid: 67e9003bf97be144385cb8523dc4f1b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 180
+      value: -180
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
