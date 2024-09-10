@@ -29,11 +29,17 @@ public class CactusBlossomController : MonoBehaviour
     {
         float openDiff = openRight - openLeft;
         float openHalf = openDiff / 2;
+
+        float sign = Mathf.Sign(openDiff);
+        float closePercent = 1 - openPercent;
+        float left = openLeft + (openHalf * closePercent);
+        float diff = openDiff - (Mathf.Abs(openLeft - left) * 2 * sign);
+
         for(int i = 0; i < petals.Count; i++)
         {
             Transform petal = petals[i];
             float percent = (float)i / (float)(petals.Count - 1);
-            float angle = openDiff * percent + openLeft;
+            float angle = diff * percent + left;
             petal.localEulerAngles = new Vector3(0,0,angle);
         }
     }
