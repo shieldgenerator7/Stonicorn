@@ -22,6 +22,15 @@ public class CactusBlossomController : MonoBehaviour
 
     public List<Transform> petals;
 
+    public enum State
+    {
+        OPEN,
+        CLOSING,
+        CLOSED,
+        OPENING,
+    }
+    public State state = State.OPEN;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -54,9 +63,18 @@ public class CactusBlossomController : MonoBehaviour
 
     public void reactToTeleport(Vector2 oldPos, Vector2 newPos)
     {
+        if (state != State.OPEN)
+        {
+            return;
+        }
+        state = State.CLOSING;
         Timer closingTimer = Timer.startTimer(closingDuration, () => {
+            state = State.CLOSED;
             Timer closedTimer = Timer.startTimer(closedDuration, () => {
-                Timer openingTimer = Timer.startTimer(openingDuration, () => { });
+                state = State.OPENING;
+                Timer openingTimer = Timer.startTimer(openingDuration, () => {
+                    state = State.OPEN;
+                });
                 openingTimer.onTimeLeftChanged += (timeLeft, duration) =>
                 {
                     placePetals(1 - (timeLeft / duration));
