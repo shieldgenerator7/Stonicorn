@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CactusBlossomController : MonoBehaviour
+public class CactusBlossomController : SavableMonoBehaviour
 {
     [Tooltip("How far to the left to open to. 0 is pointing to its left")]
     public float openLeft = 0;
@@ -31,10 +31,15 @@ public class CactusBlossomController : MonoBehaviour
     }
     public State state = State.OPEN;
 
+    public override void init()
+    {
+        placePetals(_openPercent);
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        placePetals(_openPercent);
+        init();
     }
 
     // Update is called once per frame
@@ -106,4 +111,12 @@ public class CactusBlossomController : MonoBehaviour
             petal.localEulerAngles = new Vector3(0,0,angle);
         }
     }
-}
+
+    public override SavableObject CurrentState
+    {
+        get => new SavableObject(this,
+           "state", (int)state
+           );
+        set => state = (State)value.Int("state");
+    }
+}   
