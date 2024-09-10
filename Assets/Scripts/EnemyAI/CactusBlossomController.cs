@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,7 +31,7 @@ public class CactusBlossomController : SavableMonoBehaviour
             openPercent = Mathf.Clamp(value, 0, 1);
         }
     }
-    private float closedWaitTime = 0;
+    private float closedWaitStartTime = 0;
 
     public enum State
     {
@@ -66,12 +67,11 @@ public class CactusBlossomController : SavableMonoBehaviour
                 if (openPercent == 0)
                 {
                     state = State.CLOSED;
-                    closedWaitTime = 0;
+                    closedWaitStartTime = Managers.Time.Time;
                 }
                 break;
             case State.CLOSED:
-                closedWaitTime += (1 / closedDuration) * Time.deltaTime;
-                if (closedWaitTime >= closedDuration)
+                if (Managers.Time.Time - closedWaitStartTime >= closedDuration)
                 {
                     state = State.OPENING;
                 }
@@ -141,13 +141,13 @@ public class CactusBlossomController : SavableMonoBehaviour
         get => new SavableObject(this,
            "state", (int)state,
            "openPercent", openPercent,
-            "closedWaitTime", closedWaitTime
+            "closedWaitStartTime", closedWaitStartTime
            );
         set
         {
             state = (State)value.Int("state");
             openPercent = value.Float("openPercent");
-            closedWaitTime = value.Float("closedWaitTime");
+            closedWaitStartTime = value.Float("closedWaitStartTime");
             placePetals(openPercent);
         }
     }
