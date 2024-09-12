@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
 {
     [SerializeField]
