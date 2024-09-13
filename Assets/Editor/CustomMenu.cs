@@ -184,6 +184,42 @@ public class CustomMenu
         hac.connect();
     }
 
+    [MenuItem("SG7/Editor/Mechanics/Connect selected Breakable Wall to nearby HiddenArea %&H")]
+    public static void connectBreakableToHiddenArea()
+    {
+        //Find BreakableWall
+        BreakableWall breakableWall = Selection.activeGameObject?.GetComponent<BreakableWall>();
+        if (!breakableWall)
+        {
+            Debug.LogError("No breakable wall selected!");
+            return;
+        }
+
+        //Reset secret hiders list
+        breakableWall.secretHiders.Clear();
+
+        //Find HiddenAreas
+        RaycastHit2D[] rch2ds = Physics2D.BoxCastAll(breakableWall.transform.position, Vector2.one * 1, 0, Vector2.zero);
+        foreach (RaycastHit2D rch in rch2ds)
+        {
+            GameObject go = rch.collider.gameObject;
+            HiddenArea ha = go.GetComponent<HiddenArea>() ?? go.GetComponentInParent<HiddenArea>();
+            if (ha)
+            {
+                breakableWall.secretHiders.Add(ha);
+            }
+        }
+
+        //Select everything
+        List<GameObject> selection = breakableWall.secretHiders.ConvertAll(ha => ha.gameObject);
+        selection.Add(breakableWall.gameObject);
+        Selection.objects = selection.ToArray();
+
+        //Set dirty
+        EditorUtility.SetDirty(breakableWall);
+        EditorUtility.SetDirty(breakableWall.gameObject);
+    }
+
     [MenuItem("SG7/Editor/Mechanics/Autosize BoxColliider2D to tiled sprite")]
     public static void autosizeBC2DtoTiledSprite()
     {
