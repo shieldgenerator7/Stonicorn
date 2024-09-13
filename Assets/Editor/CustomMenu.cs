@@ -349,6 +349,12 @@ public class CustomMenu
             {
                 rrp.Active = false;
             }
+
+            //select ruler
+            if (!Selection.activeGameObject)
+            {
+                Selection.activeGameObject = GameObject.FindObjectOfType<RulerDisplayer>().gameObject;
+            }
         }
     }
 
