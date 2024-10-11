@@ -152,18 +152,18 @@ public class TeleportAbility : PlayerAbility
         {
             //Reduce momentum that is going in opposite direction
             Vector3 direction = (newPos - oldPos).normalized;
-            Vector2 normVel = rb2d.velocity.normalized;
-            float magnitude = rb2d.velocity.magnitude;
+            Vector2 normVel = rb2d.linearVelocity.normalized;
+            float magnitude = rb2d.linearVelocity.magnitude;
             float dot = Vector2.Dot(normVel, direction);
             //If velocity moving opposite of the teleport direction x,
             if (dot < 0)
             {
                 //Add teleport direction to velocity
                 //dot is going to be a number between -1 and 0
-                rb2d.velocity += normVel * dot * dampenSpeed;
-                if (rb2d.velocity.magnitude > magnitude)
+                rb2d.linearVelocity += normVel * dot * dampenSpeed;
+                if (rb2d.linearVelocity.magnitude > magnitude)
                 {
-                    rb2d.velocity = normVel * magnitude;
+                    rb2d.linearVelocity = normVel * magnitude;
                 }
             }
         }

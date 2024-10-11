@@ -14,7 +14,7 @@ public class SunController : Hazard
     {
         direction = targetPos - (Vector2)transform.position;
         speed = direction.magnitude / travelTimeToTarget;
-        GetComponent<Rigidbody2D>().velocity = direction.normalized * speed;
+        GetComponent<Rigidbody2D>().linearVelocity = direction.normalized * speed;
     }
 
     private void Update()

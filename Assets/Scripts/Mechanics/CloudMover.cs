@@ -26,7 +26,7 @@ public class CloudMover : MonoBehaviour
         Vector2 center = Vector2.zero;// gravityAccepter.Center.position //TODO: use gravityAccepter center
         Vector2 gravityVector = center - (Vector2)transform.position;
         Vector2 sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
-        rb2d.velocity = sideVector.normalized * speed;
+        rb2d.linearVelocity = sideVector.normalized * speed;
         transform.up = -gravityVector;
     }
 
@@ -38,7 +38,7 @@ public class CloudMover : MonoBehaviour
         {
             Debug.Log($"cloud {gameObject.name} ran into {collider.name}");
             //stop it
-            rb2d.velocity = Vector2.zero;
+            rb2d.linearVelocity = Vector2.zero;
             this.enabled = false;
             //make it disappear
             Fader fader = GetComponent<Fader>();

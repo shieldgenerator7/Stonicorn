@@ -13,7 +13,7 @@ public class DistanceYTimer : Timer
     private Vector2 origPos;
     public override float Duration
     {
-        get => OrigDistance / rb2dTimer.velocity.magnitude;
+        get => OrigDistance / rb2dTimer.linearVelocity.magnitude;
         set { }
     }
     public override bool Active
@@ -32,7 +32,7 @@ public class DistanceYTimer : Timer
     }
     public override float TimeLeft
     {
-        get => Distance / rb2dTimer.velocity.magnitude;
+        get => Distance / rb2dTimer.linearVelocity.magnitude;
         set { }
     }
 

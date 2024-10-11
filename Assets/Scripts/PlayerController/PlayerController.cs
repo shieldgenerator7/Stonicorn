@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
     public float Speed
-        => rb2d.velocity.magnitude;
+        => rb2d.linearVelocity.magnitude;
 
     public GravityAccepter GravityAccepter { get; private set; }
     public Vector2 GravityDir => GravityAccepter.Gravity;

@@ -26,7 +26,7 @@ public class CarrotController : MonoBehaviour
 
     private void launchObject(Rigidbody2D rb2d)
     {
-        rb2d.velocity = transform.up * moveForce;
+        rb2d.linearVelocity = transform.up * moveForce;
     }
 
     private void toggleEffect()

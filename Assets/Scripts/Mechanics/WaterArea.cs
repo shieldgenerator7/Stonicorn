@@ -26,18 +26,18 @@ public class WaterArea : MonoBehaviour
                 Rigidbody2D rb2d = rch2d.collider.GetComponent<Rigidbody2D>();
                 if (rb2d)
                 {
-                    float speed = rb2d.velocity.magnitude;
+                    float speed = rb2d.linearVelocity.magnitude;
                     if (speed >= minSpeed)
                     {
-                        Vector2 dir = rb2d.velocity.normalized;
+                        Vector2 dir = rb2d.linearVelocity.normalized;
                         if (speed > maxSpeed)
                         {
-                            rb2d.velocity = dir * maxSpeed;
+                            rb2d.linearVelocity = dir * maxSpeed;
                         }
                         float durationLeft = (speed - minSpeed) / (maxSpeed - minSpeed);
                         durationLeft = Mathf.Max(durationLeft, 1);
-                        rb2d.velocity = Vector2.Lerp(
-                            rb2d.velocity,
+                        rb2d.linearVelocity = Vector2.Lerp(
+                            rb2d.linearVelocity,
                             dir * minSpeed,
                             Time.deltaTime / durationLeft
                             );

@@ -79,12 +79,12 @@ public class Follow : MonoBehaviour
         if (shakeOnStop)
         {
             //Check if needs to shake
-            if (rb2dParent.velocity != prevVelocity
+            if (rb2dParent.linearVelocity != prevVelocity
                 && !rb2dParent.isMoving())
             {
-                offset += (prevVelocity - rb2dParent.velocity) * 0.1f;
+                offset += (prevVelocity - rb2dParent.linearVelocity) * 0.1f;
             }
-            prevVelocity = rb2dParent.velocity;
+            prevVelocity = rb2dParent.linearVelocity;
             //Update transform
             updateTransform(true, orientToCamera);
             //Decrease offset

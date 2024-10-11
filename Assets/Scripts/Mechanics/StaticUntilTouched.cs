@@ -45,7 +45,7 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
             {
                 Rooted = true;
                 Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
-                rb2d.velocity = Vector2.zero;
+                rb2d.linearVelocity = Vector2.zero;
                 rb2d.angularVelocity = 0;
                 return;
             }
@@ -56,7 +56,7 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
             if (collision.collider.isSolid())
             {
                 Rooted = false;
-                GetComponent<Rigidbody2D>().velocity = collision.relativeVelocity;
+                GetComponent<Rigidbody2D>().linearVelocity = collision.relativeVelocity;
             }
         }
     }

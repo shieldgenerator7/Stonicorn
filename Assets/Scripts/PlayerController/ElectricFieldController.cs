@@ -85,7 +85,7 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
                 {
                     float dampening = energy * energyToSlowRatio;
                     dampening = Mathf.Max(0, dampening);
-                    rb2d.velocity = rb2d.velocity * (1 - dampening);
+                    rb2d.linearVelocity = rb2d.linearVelocity * (1 - dampening);
                 }
                 else
                 {

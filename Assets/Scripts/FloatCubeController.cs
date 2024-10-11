@@ -143,7 +143,7 @@ public class FloatCubeController : MonoBehaviour
                 if (propping1 && propping2)
                 {
                     float heavyMultiplier = 1;
-                    float upVelocity = Vector3.Dot(rb.velocity, upDirection.normalized);
+                    float upVelocity = Vector3.Dot(rb.linearVelocity, upDirection.normalized);
                     if (upVelocity <= 0)
                     {
                         heavyMultiplier = forceMultiplierHeavy;
@@ -154,7 +154,7 @@ public class FloatCubeController : MonoBehaviour
                 else if (!propping1 && propping2)
                 {
                     float heavyMultiplier = 1;
-                    float upVelocity = Vector3.Dot(rb.velocity, upDirection.normalized);
+                    float upVelocity = Vector3.Dot(rb.linearVelocity, upDirection.normalized);
                     if (upVelocity < 0)
                     {
                         heavyMultiplier = forceMultiplierHeavy;

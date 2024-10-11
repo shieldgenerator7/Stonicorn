@@ -115,8 +115,8 @@ public class ElectricBeamAbility : PlayerAbility
         playerController.GravityAccepter.AcceptsGravity = !apply;
         if (apply)
         {
-            Vector2 targetVelocity = (targetRB2D) ? targetRB2D.velocity : Vector2.zero;
-            rb2d.velocity = Vector2.Lerp(rb2d.velocity, targetVelocity, Time.fixedDeltaTime * staticSpeed);
+            Vector2 targetVelocity = (targetRB2D) ? targetRB2D.linearVelocity : Vector2.zero;
+            rb2d.linearVelocity = Vector2.Lerp(rb2d.linearVelocity, targetVelocity, Time.fixedDeltaTime * staticSpeed);
             playerController.GravityAccepter.AcceptsGravity = false;
         }
     }

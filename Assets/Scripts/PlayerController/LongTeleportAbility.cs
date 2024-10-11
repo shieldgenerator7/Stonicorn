@@ -167,7 +167,7 @@ public class LongTeleportAbility : PlayerAbility
         //Stop merky
         rb2d.nullifyMovement();
         //Move merky away from hazard
-        rb2d.velocity += ((Vector2)transform.position - contactPoint)
+        rb2d.linearVelocity += ((Vector2)transform.position - contactPoint)
             * postShieldKnockbackSpeed;
         return true;
     }

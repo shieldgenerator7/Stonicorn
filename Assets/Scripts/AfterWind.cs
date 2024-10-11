@@ -61,12 +61,12 @@ public class AfterWind : SavableMonoBehaviour, ICuttable
                     }
                 }
                 //Reduce velocity in whatever direction it's moving
-                rb2d.velocity -= rb2d.velocity * 0.9f * Time.fixedDeltaTime;
+                rb2d.linearVelocity -= rb2d.linearVelocity * 0.9f * Time.fixedDeltaTime;
                 //Reinforce movement in intended direction
-                rb2d.velocity += pushVector;
-                if (rb2d.velocity.magnitude > windForce)
+                rb2d.linearVelocity += pushVector;
+                if (rb2d.linearVelocity.magnitude > windForce)
                 {
-                    rb2d.velocity = rb2d.velocity.normalized * windForce;
+                    rb2d.linearVelocity = rb2d.linearVelocity.normalized * windForce;
                 }
             }
         }

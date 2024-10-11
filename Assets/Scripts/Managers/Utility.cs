@@ -151,13 +151,13 @@ public static class Utility
     public static void SetExplosionVelocity(this Rigidbody2D body, float expSpeed, Vector2 expPosition)
     {
         Vector2 dir = ((Vector2)body.transform.position - expPosition).normalized;
-        body.velocity = dir * expSpeed;
+        body.linearVelocity = dir * expSpeed;
     }
     public static bool isMoving(this Rigidbody2D rb2d)
-        => !Mathf.Approximately(rb2d.velocity.sqrMagnitude, 0);
+        => !Mathf.Approximately(rb2d.linearVelocity.sqrMagnitude, 0);
     public static void nullifyMovement(this Rigidbody2D rb2d)
     {
-        rb2d.velocity = Vector2.zero;
+        rb2d.linearVelocity = Vector2.zero;
         rb2d.angularVelocity = 0;
     }
     #endregion

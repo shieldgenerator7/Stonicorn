@@ -37,7 +37,7 @@ public class ObjectState
         Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
-            velocity = rb2d.velocity;
+            velocity = rb2d.linearVelocity;
             angularVelocity = rb2d.angularVelocity;
         }
         //SavableMonoBehaviours
@@ -52,7 +52,7 @@ public class ObjectState
         Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
         if (rb2d != null)
         {
-            rb2d.velocity = velocity;
+            rb2d.linearVelocity = velocity;
             rb2d.angularVelocity = angularVelocity;
         }
         foreach (SavableObject so in this.soList)

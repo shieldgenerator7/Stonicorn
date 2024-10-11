@@ -124,7 +124,7 @@ public class ForceLaunchAbility : PlayerAbility
 
     protected override bool isGrounded()
         => affectingVelocity
-            || playerController.Ground.isGroundedInDirection(rb2d.velocity);
+            || playerController.Ground.isGroundedInDirection(rb2d.linearVelocity);
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -139,7 +139,7 @@ public class ForceLaunchAbility : PlayerAbility
             Rigidbody2D rb2dColl = collision.gameObject.GetComponent<Rigidbody2D>();
             if (rb2dColl)
             {
-                rb2dColl.velocity = rb2d.velocity;
+                rb2dColl.linearVelocity = rb2d.linearVelocity;
             }
             //Bounce off the surface
             Vector2 velocity = currentVelocity;
@@ -148,8 +148,8 @@ public class ForceLaunchAbility : PlayerAbility
                 velocity,
                 surfaceNormal
                 ) * bounceEnergyConservationPercent;
-            rb2d.velocity = reflect;
-            currentVelocity = rb2d.velocity;
+            rb2d.linearVelocity = reflect;
+            currentVelocity = rb2d.linearVelocity;
             //Save the game state
             Managers.Rewind.Save();
             //Explode if able
@@ -168,7 +168,7 @@ public class ForceLaunchAbility : PlayerAbility
             return;
         }
         //Update current velocity
-        currentVelocity = rb2d.velocity;
+        currentVelocity = rb2d.linearVelocity;
         //Check minimum bounciness speed requirements
         if (affectingVelocity)
         {
@@ -202,7 +202,7 @@ public class ForceLaunchAbility : PlayerAbility
     {
         //Launch in indicated direction
         rb2d.nullifyMovement();
-        rb2d.velocity += LaunchVelocity;
+        rb2d.linearVelocity += LaunchVelocity;
         //Indicate effect on velocity
         AffectingVelocity = true;
         //Delegate
@@ -212,11 +212,11 @@ public class ForceLaunchAbility : PlayerAbility
     public event OnLaunch onLaunch;
 
     bool CanExplode =>
-        FeatureLevel >= 1 && rb2d.velocity.magnitude >= minimumExplodeSpeed;
+        FeatureLevel >= 1 && rb2d.linearVelocity.magnitude >= minimumExplodeSpeed;
     void explode(Vector2 pos)
     {
         float range = maxEplodeRange;
-        float forceAmount = rb2d.velocity.magnitude;
+        float forceAmount = rb2d.linearVelocity.magnitude;
         //Force things away
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
         for (int i = 0; i < hitColliders.Length; i++)
@@ -258,7 +258,7 @@ public class ForceLaunchAbility : PlayerAbility
             projectile.transform.position = startPos;
             projectile.transform.up = transform.up;
             projectile.transform.localScale = transform.localScale;
-            projectile.GetComponent<Rigidbody2D>().velocity = -LaunchVelocity;
+            projectile.GetComponent<Rigidbody2D>().linearVelocity = -LaunchVelocity;
             //Update Stats
             //Managers.Stats.addOne("WallClimbSticky");
         }
@@ -278,17 +278,17 @@ public class ForceLaunchAbility : PlayerAbility
     /// </summary>
     void speedUp()
     {
-        float oldSpeed = rb2d.velocity.magnitude;
+        float oldSpeed = rb2d.linearVelocity.magnitude;
         //If there's room to speed up
         if (oldSpeed < maxLaunchSpeed)
         {
             //Add velocity in the direction of movement
-            rb2d.velocity += (rb2d.velocity.normalized * oldSpeed * accelerationBoostPercent);
+            rb2d.linearVelocity += (rb2d.linearVelocity.normalized * oldSpeed * accelerationBoostPercent);
             //Reduce speed if too high
-            float newSpeed = rb2d.velocity.magnitude;
+            float newSpeed = rb2d.linearVelocity.magnitude;
             if (newSpeed > maxLaunchSpeed)
             {
-                rb2d.velocity = rb2d.velocity.normalized * maxLaunchSpeed;
+                rb2d.linearVelocity = rb2d.linearVelocity.normalized * maxLaunchSpeed;
             }
         }
     }

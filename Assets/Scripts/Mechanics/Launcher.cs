@@ -83,7 +83,7 @@ public class Launcher : SavableMonoBehaviour, IPowerable
             if (rb2d && answer.rch2ds[i].collider.isSolid())
             {
                 Vector3 forceVector = speed * direction;
-                rb2d.velocity = forceVector;
+                rb2d.linearVelocity = forceVector;
             }
         }
         EnergyStored = 0;

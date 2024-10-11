@@ -40,7 +40,7 @@ public class BoundsChecker : MonoBehaviour
                 Rigidbody2D rb2d = collGO.GetComponent<Rigidbody2D>();
                 if (rb2d)
                 {
-                    if (((Vector2)collGO.transform.position + rb2d.velocity - (Vector2)transform.position).sqrMagnitude > (collGO.transform.position - transform.position).sqrMagnitude)
+                    if (((Vector2)collGO.transform.position + rb2d.linearVelocity - (Vector2)transform.position).sqrMagnitude > (collGO.transform.position - transform.position).sqrMagnitude)
                     {
                         //Loop it over to the other side
                         collGO.transform.position = transform.position + (transform.position - collGO.transform.position);

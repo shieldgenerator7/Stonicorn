@@ -72,8 +72,8 @@ public class TelekinesisAbility : PlayerAbility
             if (currentPosition != targetPosition)
             {
                 Vector2 targetVelocity = (targetPosition - currentPosition).normalized * pullSpeed;
-                hc.rb2d.velocity = Vector2.Lerp(
-                    hc.rb2d.velocity,
+                hc.rb2d.linearVelocity = Vector2.Lerp(
+                    hc.rb2d.linearVelocity,
                     targetVelocity,
                     Time.fixedDeltaTime * pullAcceleration
                     );

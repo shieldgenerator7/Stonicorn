@@ -62,20 +62,20 @@ public class CrabController : Hazard
     {
         //Move self
         float speed = moveSpeed;
-        if (rb2d.velocity.magnitude < 0.1f)
+        if (rb2d.linearVelocity.magnitude < 0.1f)
         {
             speed *= 2;
         }
         Vector3 forceVector = speed * transform.right * Mathf.Sign(transform.localScale.x);
         rb2d.AddForce(forceVector * rb2d.mass);
-        if (rb2d.velocity.magnitude > speed)
+        if (rb2d.linearVelocity.magnitude > speed)
         {
-            rb2d.velocity = rb2d.velocity.normalized * speed;
+            rb2d.linearVelocity = rb2d.linearVelocity.normalized * speed;
         }
 
         if (heldRB2D)
         {
-            heldRB2D.velocity = rb2d.velocity;
+            heldRB2D.linearVelocity = rb2d.linearVelocity;
             heldRB2D.angularVelocity = 0;
         }
     }
@@ -96,7 +96,7 @@ public class CrabController : Hazard
         {
             collRB2D.transform.position = clawCollider.bounds.center;
         }
-        collRB2D.velocity = rb2d.velocity;
+        collRB2D.linearVelocity = rb2d.linearVelocity;
         collRB2D.angularVelocity = 0;
         heldRB2D = collRB2D;
     }
@@ -168,7 +168,7 @@ public class CrabController : Hazard
     void throwObjects()
     {
         //Throw object
-        heldRB2D.velocity =
+        heldRB2D.linearVelocity =
             (throwDirection.position - transform.position)
             * throwSpeed;
         throwStartTime = Managers.Time.Time;

@@ -51,7 +51,7 @@ public class PoweredDoorOpener : SavableMonoBehaviour, IPowerable
                 Rigidbody2D rb2d = rch2dStartup[i].collider.gameObject.GetComponent<Rigidbody2D>();
                 if (rb2d)
                 {
-                    rb2d.velocity = forceVector;
+                    rb2d.linearVelocity = forceVector;
                 }
             }
         }

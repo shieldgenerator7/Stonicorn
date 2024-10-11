@@ -44,15 +44,15 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         {
             //Move self
             float speed = (energyToUse / maxEnergy) * moveForce;
-            if (rb2d.velocity.magnitude < 0.1f)
+            if (rb2d.linearVelocity.magnitude < 0.1f)
             {
                 speed *= 2;
             }
             Vector3 forceVector = speed * transform.TransformDirection(moveVector);
             rb2d.AddForce(forceVector * rb2d.mass);
-            if (rb2d.velocity.magnitude > speed)
+            if (rb2d.linearVelocity.magnitude > speed)
             {
-                rb2d.velocity = rb2d.velocity.normalized * speed;
+                rb2d.linearVelocity = rb2d.linearVelocity.normalized * speed;
             }
         }
         onPowerGiven?.Invoke(energyToUse, maxEnergy);

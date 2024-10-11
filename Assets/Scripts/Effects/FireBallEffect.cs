@@ -35,6 +35,6 @@ public class FireBallEffect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.up = -rb2d.velocity;
+        transform.up = -rb2d.linearVelocity;
     }
 }
