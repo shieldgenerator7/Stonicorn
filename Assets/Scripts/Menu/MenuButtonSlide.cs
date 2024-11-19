@@ -107,6 +107,7 @@ public class MenuButtonSlide : MenuButton
                 MinValue,
                 MaxValue
                 );
+        value = (int)Mathf.Clamp(Mathf.Round(value), MinValue, MaxValue);
         if (finished || mas.alwaysUpdateValue)
         {
             Value = value;
@@ -137,5 +138,5 @@ public class MenuButtonSlide : MenuButton
         size.x = (size.x * sliderFill.transform.localScale.x) / sliderFill.transform.lossyScale.x;
         size.y = sliderFill.transform.localScale.y;
         sliderFill.transform.localScale = size;
-    }//
+    }
 }
