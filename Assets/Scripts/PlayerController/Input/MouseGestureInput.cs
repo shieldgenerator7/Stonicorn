@@ -13,8 +13,7 @@ public class MouseGestureInput : GestureInput
     private DragType dragType = DragType.UNKNOWN;
 
     private Vector2 origPosScreen;
-    private Vector2 OrigPosWorld
-        => Utility.ScreenToWorldPoint(origPosScreen);
+    private Vector2 origPosWorld;//cant be a calculation from origPosScreen in case screen moves during the input
 
     private float origTime;
 
@@ -55,12 +54,14 @@ public class MouseGestureInput : GestureInput
                 if (Input.GetMouseButtonDown(mouseButton))
                 {
                     origPosScreen = Input.mousePosition;
+                    origPosWorld = Utility.ScreenToWorldPoint(origPosScreen);
                     origTime = time;
                     dragType = DragType.DRAG_PLAYER;
                 }
                 else if (Input.GetMouseButtonDown(mouseButton2))
                 {
                     origPosScreen = Input.mousePosition;
+                    origPosWorld = Utility.ScreenToWorldPoint(origPosScreen);
                     origTime = time;
                     dragType = DragType.DRAG_CAMERA;
                 }
@@ -93,7 +94,7 @@ public class MouseGestureInput : GestureInput
             {
                 case MouseEvent.DRAG:
                     profile.processDragGesture(
-                        OrigPosWorld,
+                        origPosWorld,
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         dragType,
                         Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2)
@@ -139,7 +140,7 @@ public class MouseGestureInput : GestureInput
                     //Then it's a camera drag
                     mouseEvent = MouseEvent.DRAG;
                     profile.processDragGesture(
-                          OrigPosWorld,
+                          origPosWorld,
                           Utility.ScreenToWorldPoint(Input.mousePosition),
                           dragType,
                           true

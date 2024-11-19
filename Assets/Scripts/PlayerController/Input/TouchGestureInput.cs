@@ -13,8 +13,8 @@ public class TouchGestureInput : GestureInput
 
     //Camera Drag processing variables
     private Vector2 origTouchCenter;
-    private Vector2 origTouchCenterWorld
-        => Utility.ScreenToWorldPoint(origTouchCenter);
+    private Vector2 origTouchCenterWorld;//cant be processed from origTouchCenter in case camera moves during the input
+
     private List<Vector2> AliveTouchPositions
         => Input.touches
             .Where(t =>
@@ -46,13 +46,13 @@ public class TouchGestureInput : GestureInput
     struct TouchData
     {
         public Vector2 origPosScreen;
-        public Vector2 origPosWorld
-            => Utility.ScreenToWorldPoint(origPosScreen);
+        public Vector2 origPosWorld;//cant be processed from origPosScreen bc camera might move during input
         public float origTime;
 
         public TouchData(Touch touch)
         {
             origPosScreen = touch.position;
+            origPosWorld = Utility.ScreenToWorldPoint(origPosScreen);
             origTime = Time.time;
         }
     }
@@ -202,17 +202,18 @@ public class TouchGestureInput : GestureInput
             }
             else if (maxTouchCount > 1)
             {
+                Touch touch = Input.touches[0];
+                TouchData data = touchDatas[touch.fingerId];
                 //Get the center and drag the camera to it
                 profile.processDragGesture(
-                    origTouchCenterWorld,
+                    data.origPosWorld,
                     Utility.ScreenToWorldPoint(TouchCenter),
                     DragType.DRAG_CAMERA,
                     Input.touches
-                        .Where(t =>
-                            t.phase != TouchPhase.Ended
-                            && t.phase != TouchPhase.Canceled
-                        ).ToArray()
-                        .Length == 0
+                        .All(t =>
+                            t.phase == TouchPhase.Ended
+                            || t.phase == TouchPhase.Canceled
+                        )
                     );
                 //Get the change in scale and zoom the camera
                 float adfc = AverageDistanceFromCenter;
