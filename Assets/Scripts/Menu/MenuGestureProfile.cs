@@ -41,6 +41,12 @@ public class MenuGestureProfile : GestureProfile
             //Drag the camera
             Managers.Camera.processDragGesture(origMPWorld, newMPWorld, finished);
                     break;
+                case GestureInput.DragType.DRAG_PLAYER:
+                    break;
+                case GestureInput.DragType.UNKNOWN:
+                    break;
+                default:
+                    throw new UnityException($"Unknown value for dragType! {dragType}");
             }
         }
     }
