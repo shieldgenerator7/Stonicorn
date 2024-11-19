@@ -16,9 +16,9 @@ public class SettingsManager : MonoBehaviour, ISetting
     public bool soundMute = false;
     //Video Settings
     [Range(0, 5)]
-    public int videoQuality = 0;
+    public int videoQuality = 5;
     [Range(0, 30)]
-    public int videoResolution = 13;
+    public int videoResolution = 30;
     public bool videoFullScreen = true;
 
     // Start is called before the first frame update
