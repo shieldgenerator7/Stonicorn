@@ -14,6 +14,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private List<MenuFrame> frames;
 
+    private MenuButton currentButton;
+
     private void Awake()
     {
         GetComponent<Follow>().followObject = Managers.Player.gameObject;
@@ -61,11 +63,23 @@ public class MenuManager : MonoBehaviour
     public void processTapGesture(Vector3 pos) =>
         frames.FirstOrDefault(mf => mf.tapInArea(pos))?
             .delegateTap(pos);
-    public bool processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureState state) =>
+    public bool processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureState state)
+    {
+        //if (state == GestureState.START)
+        //{
+        //    currentButton = findButton(origMPWorld);
+        //}
+        return
         frames.FirstOrDefault(mf => mf.tapInArea(origMPWorld))?
             .delegateDrag(origMPWorld, newMPWorld, state)
             ?? false;
+    }
 
+    private MenuButton findButton(Vector2 tapPosWorld)
+    {
+        return frames.FirstOrDefault(mf => mf.tapInArea(tapPosWorld))?.findButton(tapPosWorld)
+            ?? null;
+    }
 
     internal void AddFrame(MenuFrame mf)
     {

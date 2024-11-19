@@ -63,6 +63,11 @@ public class MenuFrame : MonoBehaviour
         return bc2d.OverlapPoint(tapPos);
     }
 
+    public MenuButton findButton(Vector3 tapPos)
+    {
+        return buttons.FirstOrDefault(mb => mb.tapInArea(tapPos));
+    }
+
     public void delegateTap(Vector3 tapPos)
     {
         buttons.FirstOrDefault(mb => mb.tapInArea(tapPos))?
