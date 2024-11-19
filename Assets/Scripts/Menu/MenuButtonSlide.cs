@@ -47,24 +47,8 @@ public class MenuButtonSlide : MenuButton
             this.value = (int)Mathf.Clamp(Mathf.Round(value), MinValue, MaxValue);
             //Update value it controls
             mas.valueAdjusted(this.value);
-            //Update UI value text
-            valueText.text = mas.getValueLabel(this.value);
-            //Update Slider Bar
-            Vector3 pos = sliderBar.transform.position;
-            pos = Utility.convertToRange(
-                Vector2.one * this.value,
-                Vector2.one * MinValue,
-                Vector2.one * MaxValue,
-                PointZero,
-                PointOne
-                );
-            sliderBar.transform.position = pos;
-            //Update Slider Fill
-            Vector2 size = sliderFill.transform.lossyScale;
-            size.x = ((sliderBar.transform.position - sliderFill.transform.position).magnitude + sliderBarWidth);
-            size.x = (size.x * sliderFill.transform.localScale.x) / sliderFill.transform.lossyScale.x;
-            size.y = sliderFill.transform.localScale.y;
-            sliderFill.transform.localScale = size;
+            //Update slider
+            updateSlider(this.value);
         }
     }
 
@@ -127,5 +111,31 @@ public class MenuButtonSlide : MenuButton
         {
             Value = value;
         }
+        else
+        {
+            updateSlider(value);
+        }
     }
+
+    private void updateSlider(float value)
+    {
+        //Update UI value text
+        valueText.text = mas.getValueLabel(value);
+        //Update Slider Bar
+        Vector3 pos = sliderBar.transform.position;
+        pos = Utility.convertToRange(
+            Vector2.one * value,
+            Vector2.one * MinValue,
+            Vector2.one * MaxValue,
+            PointZero,
+            PointOne
+            );
+        sliderBar.transform.position = pos;
+        //Update Slider Fill
+        Vector2 size = sliderFill.transform.lossyScale;
+        size.x = ((sliderBar.transform.position - sliderFill.transform.position).magnitude + sliderBarWidth);
+        size.x = (size.x * sliderFill.transform.localScale.x) / sliderFill.transform.lossyScale.x;
+        size.y = sliderFill.transform.localScale.y;
+        sliderFill.transform.localScale = size;
+    }//
 }
