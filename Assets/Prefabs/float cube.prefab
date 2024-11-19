@@ -9816,7 +9816,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!50 &5001384
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9827,8 +9827,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 10
-  m_LinearDrag: 0
-  m_AngularDrag: 200
+  m_LinearDamping: 0
+  m_AngularDamping: 200
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 777874910ec66ff4eac8a47546d85dd9, type: 2}
   m_IncludeLayers:
