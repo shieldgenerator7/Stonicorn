@@ -17,9 +17,9 @@ public abstract class GestureProfile
 
     public abstract void processTapGesture(Vector3 curMPWorld);
 
-    public abstract void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished);
+    public abstract void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state);
 
-    public abstract void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, bool finished);
+    public abstract void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, GestureState state);
 
     public virtual void processZoomLevelChange(float zoomLevel)
     {

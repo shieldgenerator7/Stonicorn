@@ -103,12 +103,12 @@ public class ForceLaunchAbility : PlayerAbility
         }
     }
 
-    void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
+    void processDrag(Vector2 oldPos, Vector2 newPos, GestureState state)
     {
-        Launching = !finished;
+        Launching = state == GestureState.ONGOING;
         dragPos = newPos;
         LaunchDirection = (Vector2)playerController.transform.position - newPos;
-        if (finished && CanLaunch)
+        if (state.Finished() && CanLaunch)
         {
             //Save the game state
             Managers.Rewind.Save();

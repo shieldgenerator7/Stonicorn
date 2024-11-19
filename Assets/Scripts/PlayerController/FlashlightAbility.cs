@@ -57,9 +57,9 @@ public class FlashlightAbility : PlayerAbility
     protected override bool isGrounded() => false;
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos) { }
 
-    public void processDrag(Vector2 oldPos, Vector2 newPos, bool finished)
+    public void processDrag(Vector2 oldPos, Vector2 newPos, GestureState state)
     {
-        flashlightOn = !finished;
+        flashlightOn = state == GestureState.ONGOING;
         FlashlightDirection = (Vector2)playerController.transform.position - newPos;
         updateFlashlightVisuals();
     }

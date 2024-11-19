@@ -41,6 +41,12 @@ public class MouseGestureInput : GestureInput
             || Input.GetMouseButtonUp(mouseButton2)
             || Input.GetAxis("Mouse ScrollWheel") != 0;
 
+    public GestureState InputState =>
+        GestureStateUtil.FromBool(
+            Input.GetMouseButtonUp(mouseButton) 
+            || Input.GetMouseButtonUp(mouseButton2)
+            );
+
     public override bool processInput(GestureProfile profile)
     {
         float time = Time.unscaledTime;
@@ -96,14 +102,14 @@ public class MouseGestureInput : GestureInput
                         OrigPosWorld,
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         dragType,
-                        Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2)
+                        InputState
                         );
                     break;
                 case MouseEvent.HOLD:
                     profile.processHoldGesture(
                         Utility.ScreenToWorldPoint(Input.mousePosition),
                         time - origTime,
-                        Input.GetMouseButtonUp(mouseButton) || Input.GetMouseButtonUp(mouseButton2)
+                        InputState
                         );
                     break;
                 case MouseEvent.SCROLL:
@@ -142,7 +148,7 @@ public class MouseGestureInput : GestureInput
                           OrigPosWorld,
                           Utility.ScreenToWorldPoint(Input.mousePosition),
                           dragType,
-                          true
+                          GestureState.FINISH
                           );
                 }
             }

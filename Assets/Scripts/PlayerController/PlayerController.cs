@@ -516,8 +516,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="holdPos">The current hold position</param>
     /// <param name="holdTime">The current hold duration</param>
-    /// <param name="finished">True if this is the last frame of the hold gesture</param>
-    public void processHoldGesture(Vector3 holdPos, float holdTime, bool finished)
+    /// <param name="state">The state of the hold gesture</param>
+    public void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
     {
         //If the camera is centered on the player,
         if (!Managers.Camera.offsetOffPlayer())
@@ -549,9 +549,9 @@ public class PlayerController : MonoBehaviour
             Managers.Camera.onOffsetChange += _call_dropHoldGesture;
 
             //Show the teleport preview effect
-            Teleport.processHoldGesture(holdPos, holdTime, finished);
+            Teleport.processHoldGesture(holdPos, holdTime, state);
             //If this is the last frame of the hold gesture,
-            if (finished)
+            if (state.Finished())
             {
                 //Finally teleport to the location
                 processTapGesture(holdPos);
@@ -576,16 +576,16 @@ public class PlayerController : MonoBehaviour
     }
     private void _call_dropHoldGesture(Vector3 offset) => dropHoldGesture();
 
-    public delegate void OnDragGesture(Vector2 origPos, Vector2 newPos, bool finished);
+    public delegate void OnDragGesture(Vector2 origPos, Vector2 newPos, GestureState state);
     public event OnDragGesture onDragGesture;
     /// <summary>
     /// Process a drag gesture
     /// </summary>
     /// <param name="origPos"></param>
     /// <param name="newPos"></param>
-    public void processDragGesture(Vector3 origPos, Vector3 newPos, bool finished)
+    public void processDragGesture(Vector3 origPos, Vector3 newPos, GestureState state)
     {
-        onDragGesture?.Invoke(origPos, newPos, finished);
+        onDragGesture?.Invoke(origPos, newPos, state);
     }
 
     void pauseMovementAfterRewind(int gameStateId)

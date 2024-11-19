@@ -36,9 +36,9 @@ public class MenuButton : MonoBehaviour
         return false;
     }
 
-    public virtual void processDrag(Vector2 tapPos, bool finished)
+    public virtual void processDrag(Vector2 tapPos, GestureState state)
     {
-        if (finished)
+        if (state.Finished())
         {
             activate();
         }

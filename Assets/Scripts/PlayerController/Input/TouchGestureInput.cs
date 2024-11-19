@@ -142,7 +142,7 @@ public class TouchGestureInput : GestureInput
                             data.origPosWorld,
                             Utility.ScreenToWorldPoint(touch.position),
                             DragType.DRAG_PLAYER,
-                            true
+                            GestureState.FINISH
                             );
                         break;
                     //HOLD
@@ -150,7 +150,7 @@ public class TouchGestureInput : GestureInput
                         profile.processHoldGesture(
                             Utility.ScreenToWorldPoint(touch.position),
                             time - data.origTime,
-                            true
+                            GestureState.FINISH
                             );
                         break;
                 }
@@ -174,7 +174,9 @@ public class TouchGestureInput : GestureInput
                             data.origPosWorld,
                             Utility.ScreenToWorldPoint(touch.position),
                             DragType.DRAG_PLAYER,
+                            GestureStateUtil.FromBool(
                             touch.phase == TouchPhase.Ended
+                            )
                             );
                         break;
                     //HOLD
@@ -182,7 +184,9 @@ public class TouchGestureInput : GestureInput
                         profile.processHoldGesture(
                             Utility.ScreenToWorldPoint(touch.position),
                             time - data.origTime,
+                            GestureStateUtil.FromBool(
                             touch.phase == TouchPhase.Ended
+                            )
                             );
                         break;
                 }
@@ -207,10 +211,12 @@ public class TouchGestureInput : GestureInput
                     origTouchCenterWorld,
                     Utility.ScreenToWorldPoint(TouchCenter),
                     DragType.DRAG_CAMERA,
+                    GestureStateUtil.FromBool(
                     Input.touches
                         .All(t =>
                             t.phase == TouchPhase.Ended
                             || t.phase == TouchPhase.Canceled
+                        )
                         )
                     );
                 //Get the change in scale and zoom the camera

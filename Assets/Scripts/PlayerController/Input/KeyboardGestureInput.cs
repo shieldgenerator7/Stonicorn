@@ -56,7 +56,7 @@ public class KeyboardGestureInput : GestureInput
                 profile.processHoldGesture(
                     (Vector2)Managers.Player.transform.position + (dir * range),
                     time - gestureStartTime,
-                    !isInputNow
+                    GestureStateUtil.FromBool(!isInputNow)
                     );
                 return true;
             }

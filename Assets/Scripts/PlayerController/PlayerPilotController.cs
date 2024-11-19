@@ -68,13 +68,13 @@ public class PlayerPilotController : MonoBehaviour
     public delegate void TapProcessed(Vector2 curMPWorld);
     public event TapProcessed tapProcessed;
 
-    public void processHoldGesture(Vector3 holdPos, float holdTime, bool finished)
+    public void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
     {
-        playerController.processHoldGesture(holdPos, holdTime, finished);
+        playerController.processHoldGesture(holdPos, holdTime, state);
     }
 
-    public void processDragGesture(Vector3 origPos, Vector3 newPos, bool finished)
+    public void processDragGesture(Vector3 origPos, Vector3 newPos, GestureState state)
     {
-        playerController.processDragGesture(origPos, newPos, finished);
+        playerController.processDragGesture(origPos, newPos, state);
     }
 }

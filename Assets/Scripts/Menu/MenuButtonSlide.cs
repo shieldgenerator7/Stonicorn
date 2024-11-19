@@ -94,7 +94,7 @@ public class MenuButtonSlide : MenuButton
                 );
     }
 
-    public override void processDrag(Vector2 tapPos, bool finished)
+    public override void processDrag(Vector2 tapPos, GestureState state)
     {
         float value = Utility.convertToRange(
                 tapPos,
@@ -104,7 +104,7 @@ public class MenuButtonSlide : MenuButton
                 MaxValue
                 );
         value = (int)Mathf.Clamp(Mathf.Round(value), MinValue, MaxValue);
-        if (finished || mas.alwaysUpdateValue)
+        if (state.Finished() || mas.alwaysUpdateValue)
         {
             Value = value;
         }

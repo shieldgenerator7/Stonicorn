@@ -61,9 +61,9 @@ public class MenuManager : MonoBehaviour
     public void processTapGesture(Vector3 pos) =>
         frames.FirstOrDefault(mf => mf.tapInArea(pos))?
             .delegateTap(pos);
-    public bool processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, bool finished) =>
+    public bool processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureState state) =>
         frames.FirstOrDefault(mf => mf.tapInArea(origMPWorld))?
-            .delegateDrag(origMPWorld, newMPWorld, finished)
+            .delegateDrag(origMPWorld, newMPWorld, state)
             ?? false;
 
 

@@ -28,22 +28,22 @@ public class PlayGestureProfile : GestureProfile
             Managers.Player.processTapGesture(curMPWorld);
         }
     }
-    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
+    public override void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state)
     {
-        Managers.Player.processHoldGesture(curMPWorld, holdTime, finished);
+        Managers.Player.processHoldGesture(curMPWorld, holdTime, state);
     }
-    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, bool finished)
+    public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, GestureState state)
     {
         //If the player drags on Merky,
         if (dragType == GestureInput.DragType.DRAG_PLAYER)
         {
             //Activate the ForceLaunch ability
-            Managers.Player.processDragGesture(origMPWorld, newMPWorld, finished);
+            Managers.Player.processDragGesture(origMPWorld, newMPWorld, state);
         }
         else if (dragType == GestureInput.DragType.DRAG_CAMERA)
         {
             //Drag the camera
-            Managers.Camera.processDragGesture(origMPWorld, newMPWorld, finished);
+            Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
         }
         else
         {
