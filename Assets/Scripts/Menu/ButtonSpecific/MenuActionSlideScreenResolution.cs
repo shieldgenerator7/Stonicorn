@@ -22,4 +22,6 @@ public class MenuActionSlideScreenResolution : MenuActionSlide
         Resolution resolution = Screen.resolutions[(int)currentValue];
         return "" + resolution.width + " x " + resolution.height;
     }
+
+    public override bool alwaysUpdateValue => false;
 }

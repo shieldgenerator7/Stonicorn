@@ -68,13 +68,13 @@ public class MenuFrame : MonoBehaviour
         buttons.FirstOrDefault(mb => mb.tapInArea(tapPos))?
             .processTap(tapPos);
     }
-    public bool delegateDrag(Vector3 origMPWorld, Vector3 newMPWorld)
+    public bool delegateDrag(Vector3 origMPWorld, Vector3 newMPWorld, bool finished)
     {
         foreach (MenuButton mb in buttons)
         {
             if (mb.acceptsDragGesture() && mb.tapInArea(origMPWorld))
             {
-                mb.processTap(newMPWorld);
+                mb.processDrag(newMPWorld, finished);
                 return true;
             }
         }

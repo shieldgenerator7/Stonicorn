@@ -113,4 +113,19 @@ public class MenuButtonSlide : MenuButton
                 MaxValue
                 );
     }
+
+    public override void processDrag(Vector2 tapPos, bool finished)
+    {
+        float value = Utility.convertToRange(
+                tapPos,
+                PointZero,
+                PointOne,
+                MinValue,
+                MaxValue
+                );
+        if (finished || mas.alwaysUpdateValue)
+        {
+            Value = value;
+        }
+    }
 }

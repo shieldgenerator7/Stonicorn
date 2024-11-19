@@ -17,4 +17,10 @@ public abstract class MenuActionSlide : MonoBehaviour
     {
         return ""+currentValue;
     }
+
+    /// <summary>
+    /// Should it update its value every time the slider is interacted with?
+    /// Set it to false to only update when input stops (useful for settings like video resolution)
+    /// </summary>
+    public virtual bool alwaysUpdateValue => true;
 }

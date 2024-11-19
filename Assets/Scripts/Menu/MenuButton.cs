@@ -36,6 +36,14 @@ public class MenuButton : MonoBehaviour
         return false;
     }
 
+    public virtual void processDrag(Vector2 tapPos, bool finished)
+    {
+        if (finished)
+        {
+            activate();
+        }
+    }
+
     public virtual void activate()
     {
         frame?.frameCamera();
