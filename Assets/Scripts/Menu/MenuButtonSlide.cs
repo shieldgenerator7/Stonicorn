@@ -9,21 +9,18 @@ public class MenuButtonSlide : MenuButton
     private Vector2 valueBounds = new Vector2(0, 100);//x is min, y is max
     public float MinValue
     {
-        get { return valueBounds.x; }
-        private set { valueBounds.x = value; }
+        get => valueBounds.x;
+        private set => valueBounds.x = value;
     }
     public float MaxValue
     {
-        get { return valueBounds.y; }
-        private set { valueBounds.y = value; }
+        get => valueBounds.y;
+        private set => valueBounds.y = value;
     }
     public Vector2 PointZero
     {
-        get
-        {
-            return transform.TransformPoint(validBarBounds.points[0]);
-        }
-        private set { validBarBounds.points[0] = value; }
+        get => transform.TransformPoint(validBarBounds.points[0]);
+        private set => validBarBounds.points[0] = value;
     }
     public Vector2 PointOne
     {
@@ -32,16 +29,15 @@ public class MenuButtonSlide : MenuButton
             Vector2 pointOne = transform.TransformPoint(validBarBounds.points[1]);
             Vector2 reverseDirection = (PointZero - pointOne);
             return pointOne + (reverseDirection * sliderBarWidth * 10);
-            ;
         }
-        private set { validBarBounds.points[1] = value; }
+        private set => validBarBounds.points[1] = value;
     }
 
     [SerializeField]
     private int value = 100;
     public float Value
     {
-        get { return value; }
+        get => value;
         set
         {
             this.value = (int)Mathf.Clamp(Mathf.Round(value), MinValue, MaxValue);

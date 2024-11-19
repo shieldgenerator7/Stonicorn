@@ -208,11 +208,10 @@ public class TouchGestureInput : GestureInput
                     Utility.ScreenToWorldPoint(TouchCenter),
                     DragType.DRAG_CAMERA,
                     Input.touches
-                        .Where(t =>
-                            t.phase != TouchPhase.Ended
-                            && t.phase != TouchPhase.Canceled
-                        ).ToArray()
-                        .Length == 0
+                        .All(t =>
+                            t.phase == TouchPhase.Ended
+                            || t.phase == TouchPhase.Canceled
+                        )
                     );
                 //Get the change in scale and zoom the camera
                 float adfc = AverageDistanceFromCenter;
