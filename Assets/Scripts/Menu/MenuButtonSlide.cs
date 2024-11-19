@@ -74,6 +74,7 @@ public class MenuButtonSlide : MenuButton
     public override void init()
     {
         base.init();
+        compile();
         //Update the value
         Value = Mathf.Clamp(mas.getCurrentValue(), MinValue, MaxValue);
     }
