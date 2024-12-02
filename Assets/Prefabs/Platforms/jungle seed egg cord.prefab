@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 888193058419949278}
   - component: {fileID: 6640570329730792493}
   - component: {fileID: 1020607966464131804}
-  - component: {fileID: 6696682357230682619}
   m_Layer: 0
   m_Name: jungle seed egg cord
   m_TagString: Untagged
@@ -83,17 +82,17 @@ SpriteShapeRenderer:
   m_MaskInteraction: 0
   m_ShapeTexture: {fileID: 0}
   m_Sprites:
-  - {fileID: 21300000, guid: d05631279c4c6514584a6d55b9e3180e, type: 3}
-  - {fileID: 21300000, guid: d05631279c4c6514584a6d55b9e3180e, type: 3}
-  - {fileID: 21300000, guid: d05631279c4c6514584a6d55b9e3180e, type: 3}
-  - {fileID: 21300000, guid: d05631279c4c6514584a6d55b9e3180e, type: 3}
-  - {fileID: 21300000, guid: beebf2a339a4e974086a926d87a68f91, type: 3}
-  - {fileID: 21300000, guid: beebf2a339a4e974086a926d87a68f91, type: 3}
-  - {fileID: 21300000, guid: beebf2a339a4e974086a926d87a68f91, type: 3}
-  - {fileID: 21300000, guid: 6b12de92672a3424ca7cb744a7083a65, type: 3}
+  - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
+  - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
+  - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
+  - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
+  - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
+  - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
+  - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
+  - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
   m_LocalAABB:
-    m_Center: {x: -1.5978184, y: -1.0914402, z: 0}
-    m_Extent: {x: 2.9945502, y: 0.8649914, z: 0}
+    m_Center: {x: 0.009820111, y: 2.865911, z: 0}
+    m_Extent: {x: 0.11717969, y: 2.1268244, z: 0}
   m_SpriteSortPoint: 0
 --- !u!114 &1020607966464131804
 MonoBehaviour:
@@ -110,7 +109,7 @@ MonoBehaviour:
   m_Spline:
     m_IsOpenEnded: 1
     m_ControlPoints:
-    - position: {x: -4.4780807, y: -1.5106354, z: 0}
+    - position: {x: 0.007640362, y: 4.9926176, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -118,23 +117,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -4.347332, y: -0.34100342, z: 0}
-      leftTangent: {x: 0, y: 0, z: 0}
-      rightTangent: {x: 0, y: 0, z: 0}
-      mode: 0
-      height: 1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 1.281765, y: -0.8378296, z: 0}
-      leftTangent: {x: 0, y: 0, z: 0}
-      rightTangent: {x: 0, y: 0, z: 0}
-      mode: 0
-      height: 1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 1.2548599, y: -1.953659, z: 0}
+    - position: {x: 0.0119998455, y: 0.7392044, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -163,53 +146,6 @@ MonoBehaviour:
   m_Creator: {fileID: 0}
   m_Modifiers: []
   m_ColliderSegment:
-  - {x: -4.477852, y: -1.5106609}
-  - {x: -4.347352, y: -0.34123254}
-  - {x: 1.2815351, y: -0.8378241}
-  - {x: 1.2546301, y: -1.9536535}
+  - {x: 0.0074103624, y: 4.9926176}
+  - {x: 0.01176985, y: 0.73920417}
   m_ShadowSegment: []
---- !u!68 &6696682357230682619
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3116942942911890299}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -4.477852, y: -1.5106609}
-  - {x: -4.347352, y: -0.34123254}
-  - {x: 1.2815351, y: -0.8378241}
-  - {x: 1.2546301, y: -1.9536535}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
