@@ -29,10 +29,7 @@ namespace EditorTools
         private void OnGUI()
         {
             float prevZ = _z;
-            EditorGUILayout.BeginHorizontal();
-            _z = EditorGUILayout.FloatField(_z, GUILayout.Width(30));
             _z = EditorGUILayout.Slider(_z, -180, 180);
-            EditorGUILayout.EndHorizontal();
             if (Mathf.Abs(prevZ - _z) > 0.0001f)
             {
                 SceneView view = GetWindow<SceneView>();
