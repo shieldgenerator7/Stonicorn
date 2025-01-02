@@ -607,16 +607,18 @@ public class CustomMenu
         }
 
         //Checklist
-        bool keepScenesOpen = false;
         refreshSceneSavableObjectLists();
-        //(new List<Func<bool>>()).ForEach(func => keepScenesOpen = keepScenesOpen || func);
-        keepScenesOpen = ensureSavableObjectsHaveObjectInfo() || keepScenesOpen;
-        keepScenesOpen = ensureMemoryObjectsHaveObjectInfo() || keepScenesOpen;
-        keepScenesOpen = ensureUniqueObjectIDs() || keepScenesOpen;
-        keepScenesOpen = ensureSavableObjectInfosSetupInPrefabs() || keepScenesOpen;
-        keepScenesOpen = checkSavableObjectInfosSetup() || keepScenesOpen;
-        keepScenesOpen = ensureHiddenAreasAreProperlySetup() || keepScenesOpen;
-        keepScenesOpen = checkTiledHitBoxes() || keepScenesOpen;
+        bool keepScenesOpen = new List<Func<bool>>() {
+                ensureSavableObjectsHaveObjectInfo,
+                ensureMemoryObjectsHaveObjectInfo,
+                ensureUniqueObjectIDs,
+                ensureSavableObjectInfosSetupInPrefabs,
+                checkSavableObjectInfosSetup,
+                ensureHiddenAreasAreProperlySetup,
+                checkTiledHitBoxes,
+            }
+            .ConvertAll(func => func())
+            .Any(b => b);
 
         populateObjectManagerKnownObjectsList();
 
