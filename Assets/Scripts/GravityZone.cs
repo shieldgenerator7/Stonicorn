@@ -106,6 +106,7 @@ public class GravityZone : MonoBehaviour
                     * gravityScale
                 : gravityVector;
             Vector3 vector = finalGravityVector * rb2d.mass;
+            vector *= rb2d.gravityScale;
             rb2d.AddForce(vector);
         });
     }
