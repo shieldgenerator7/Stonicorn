@@ -90,7 +90,6 @@ public class CrabController : Hazard
     private void moveHeldObject()
     {
         moveObject(heldRB2D);
-        heldRB2D.angularVelocity = 0;
     }    
 
     private bool canPickupObject
@@ -110,6 +109,7 @@ public class CrabController : Hazard
         {
             heldRB2D.transform.position = (Vector2)clawCollider.bounds.center - (heldRB2D.worldCenterOfMass - (Vector2)heldRB2D.transform.position);
             setGravityAcceptance(heldRB2D.gameObject, false);
+            heldRB2D.angularVelocity = 0;
         }
         //Pick up object
         moveHeldObject();
