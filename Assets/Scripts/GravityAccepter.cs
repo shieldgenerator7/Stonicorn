@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[DisallowMultipleComponent]
 public class GravityAccepter : SavableMonoBehaviour
 {
     //used for objects that need to know their gravity direction
@@ -11,6 +12,7 @@ public class GravityAccepter : SavableMonoBehaviour
     public bool usesSideVector = false;//whether or not this use case needs to use the side vector
 
     [SerializeField]
+    [Tooltip("True to save it in the time rewind system")]
     private bool saveValues = true;
 
     public float gravityScale = 1;
