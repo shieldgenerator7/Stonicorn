@@ -125,7 +125,7 @@ public class CrabController : Hazard
         }
         //Pick up object
         moveHeldObject();
-        heldRB2D.transform.position = clawCollider.bounds.center;
+        heldRB2D.transform.position = (Vector2)clawCollider.bounds.center - (heldRB2D.worldCenterOfMass - (Vector2)heldRB2D.transform.position);
         setGravityAcceptance(heldRB2D.gameObject, false);
 
     }
