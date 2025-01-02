@@ -28,7 +28,6 @@ public class CrabController : Hazard
     /// </summary>
     Rigidbody2D heldRB2D = null;
     private float throwStartTime = -1;
-    private bool setHeldPos = false;
 
     //
     // Properties
@@ -90,23 +89,7 @@ public class CrabController : Hazard
 
     private void moveHeldObject()
     {
-        //if (setHeldPos)
-        //{
-        //    heldRB2D.transform.position = clawCollider.bounds.center;
-        //}
-
         moveObject(heldRB2D);
-
-        //float speed = moveSpeed;
-        //if (rb2d.linearVelocity.magnitude < 0.1f)
-        //{
-        //    speed *= 2;
-        //}
-        //Vector3 forceVector = speed * transform.right * Mathf.Sign(transform.localScale.x);
-        ////heldRB2D.linearVelocity = rb2d.linearVelocity;// + (transform.up * 2 * gravityAccepter.Gravity / rb2d.mass);
-        //heldRB2D.AddForce((forceVector * heldRB2D.mass + (transform.up * (2*gravityAccepter.Gravity.magnitude*heldRB2D.mass/rb2d.mass) )) );
-        //Vector3 gravityForce = transform.up * (3 * gravityAccepter.Gravity.magnitude * heldRB2D.mass / rb2d.mass);
-        //heldRB2D.AddForce(gravityForce);
         heldRB2D.angularVelocity = 0;
     }    
 
@@ -115,7 +98,6 @@ public class CrabController : Hazard
 
     private void pickupObject(Rigidbody2D collRB2D, bool setPosition)
     {
-        setHeldPos = setPosition;
         heldRB2D = collRB2D;
         //StaticUntilTouched
         StaticUntilTouched sut = collRB2D.GetComponent<StaticUntilTouched>();
@@ -123,10 +105,14 @@ public class CrabController : Hazard
         {
             sut.Rooted = false;
         }
+        //Set Position
+        if (setPosition)
+        {
+            heldRB2D.transform.position = (Vector2)clawCollider.bounds.center - (heldRB2D.worldCenterOfMass - (Vector2)heldRB2D.transform.position);
+            setGravityAcceptance(heldRB2D.gameObject, false);
+        }
         //Pick up object
         moveHeldObject();
-        heldRB2D.transform.position = (Vector2)clawCollider.bounds.center - (heldRB2D.worldCenterOfMass - (Vector2)heldRB2D.transform.position);
-        setGravityAcceptance(heldRB2D.gameObject, false);
 
     }
 
