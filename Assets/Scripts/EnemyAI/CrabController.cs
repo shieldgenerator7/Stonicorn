@@ -18,6 +18,7 @@ public class CrabController : Hazard
     public Transform throwDirection;
 
     private Rigidbody2D rb2d;
+    private GravityAccepter gravityAccepter;
 
     //
     // Processing Variables
@@ -27,6 +28,7 @@ public class CrabController : Hazard
     /// </summary>
     Rigidbody2D heldRB2D = null;
     private float throwStartTime = -1;
+    private bool setHeldPos = false;
 
     //
     // Properties
@@ -51,6 +53,7 @@ public class CrabController : Hazard
     public override void init()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        gravityAccepter = GetComponent<GravityAccepter>();
     }
 
     void FixedUpdate()
@@ -58,9 +61,8 @@ public class CrabController : Hazard
         moveSelf();
     }
 
-    private void moveSelf()
+    private void moveObject(Rigidbody2D rb2d)
     {
-        //Move self
         float speed = moveSpeed;
         if (rb2d.linearVelocity.magnitude < 0.1f)
         {
@@ -72,19 +74,49 @@ public class CrabController : Hazard
         {
             rb2d.linearVelocity = rb2d.linearVelocity.normalized * speed;
         }
+    }
 
+    private void moveSelf()
+    {
+        //Move self
+        moveObject(rb2d);
+
+        //Move held object
         if (heldRB2D)
         {
-            heldRB2D.linearVelocity = rb2d.linearVelocity;
-            heldRB2D.angularVelocity = 0;
+            moveHeldObject();
         }
     }
+
+    private void moveHeldObject()
+    {
+        //if (setHeldPos)
+        //{
+        //    heldRB2D.transform.position = clawCollider.bounds.center;
+        //}
+
+        moveObject(heldRB2D);
+
+        //float speed = moveSpeed;
+        //if (rb2d.linearVelocity.magnitude < 0.1f)
+        //{
+        //    speed *= 2;
+        //}
+        //Vector3 forceVector = speed * transform.right * Mathf.Sign(transform.localScale.x);
+        ////heldRB2D.linearVelocity = rb2d.linearVelocity;// + (transform.up * 2 * gravityAccepter.Gravity / rb2d.mass);
+        //heldRB2D.AddForce((forceVector * heldRB2D.mass + (transform.up * (2*gravityAccepter.Gravity.magnitude*heldRB2D.mass/rb2d.mass) )) );
+        //Vector3 gravityForce = transform.up * (3 * gravityAccepter.Gravity.magnitude * heldRB2D.mass / rb2d.mass);
+        //heldRB2D.AddForce(gravityForce);
+        heldRB2D.angularVelocity = 0;
+    }    
 
     private bool canPickupObject
         => throwStartTime < 0 || Managers.Time.Time >= throwStartTime + throwDuration;
 
     private void pickupObject(Rigidbody2D collRB2D, bool setPosition)
     {
+        setHeldPos = setPosition;
+        heldRB2D = collRB2D;
         //StaticUntilTouched
         StaticUntilTouched sut = collRB2D.GetComponent<StaticUntilTouched>();
         if (sut)
@@ -92,13 +124,10 @@ public class CrabController : Hazard
             sut.Rooted = false;
         }
         //Pick up object
-        if (setPosition)
-        {
-            collRB2D.transform.position = clawCollider.bounds.center;
-        }
-        collRB2D.linearVelocity = rb2d.linearVelocity;
-        collRB2D.angularVelocity = 0;
-        heldRB2D = collRB2D;
+        moveHeldObject();
+        heldRB2D.transform.position = clawCollider.bounds.center;
+        setGravityAcceptance(heldRB2D.gameObject, false);
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -153,6 +182,7 @@ public class CrabController : Hazard
         }
         if (!HeldObjectDetected)
         {
+            setGravityAcceptance(collision.gameObject, true);
             heldRB2D = null;
         }
     }
@@ -172,5 +202,21 @@ public class CrabController : Hazard
             (throwDirection.position - transform.position)
             * throwSpeed;
         throwStartTime = Managers.Time.Time;
+
+        setGravityAcceptance(heldRB2D.gameObject, true);
+    }
+
+    void setGravityAcceptance(GameObject go, bool accept)
+    {
+        Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
+        if (rb2d)
+        {
+            rb2d.gravityScale=accept ? 1 : 0;
+        }
+        GravityAccepter ga = go.GetComponent<GravityAccepter>();
+        if (ga)
+        {
+            ga.AcceptsGravity = accept;
+        }
     }
 }

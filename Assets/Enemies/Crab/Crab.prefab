@@ -352,6 +352,7 @@ GameObject:
   - component: {fileID: 1548221666}
   - component: {fileID: 3218187188486719399}
   - component: {fileID: 264581021448296599}
+  - component: {fileID: 5354270523206819490}
   - component: {fileID: 929987493053195884}
   m_Layer: 0
   m_Name: Crab
@@ -539,6 +540,22 @@ MonoBehaviour:
   clawCollider: {fileID: 3963815321087787618}
   holdDetector: {fileID: 6745517917957444332}
   throwDirection: {fileID: 32291642123885410}
+--- !u!114 &5354270523206819490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074043541384526292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usesSideVector: 0
+  saveValues: 0
+  gravityScale: 1
+  acceptsGravity: 1
 --- !u!114 &929987493053195884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1055,7 +1072,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.46285158}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1065,7 +1082,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.6, y: 0.07}
+  m_Size: {x: 0.6, y: 0.9957031}
   m_EdgeRadius: 0
 --- !u!1 &4630048227111790071
 GameObject:
@@ -1386,7 +1403,7 @@ Transform:
   m_GameObject: {fileID: 5442513238881629807}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.01, y: 0.7, z: 0}
+  m_LocalPosition: {x: 0.01, y: 1.005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
