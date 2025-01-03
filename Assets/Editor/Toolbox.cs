@@ -7,7 +7,7 @@ public class Toolbox : EditorWindow
 {
     bool enabled = true;
 
-    List<string> abilityNames = new List<string> { 
+    List<string> abilityNames = new List<string> {
         "ForceLaunchAbility",
         "SwapAbility",
         "ElectricBeamAbility",
@@ -17,6 +17,7 @@ public class Toolbox : EditorWindow
     };
 
     private Dictionary<string, int> abilityLevelMap = new Dictionary<string, int>();
+    private Dictionary<string, bool> abilityToggleMap = new Dictionary<string, bool>();
 
     private PlayerController pc;
 
@@ -32,7 +33,8 @@ public class Toolbox : EditorWindow
         pc = GameObject.FindFirstObjectByType<PlayerController>();
         Debug.Log("found player: " + pc.name);
 
-        abilityNames.ForEach(abilityName=>abilityLevelMap[abilityName] = getAbilityLevel(abilityName));
+        abilityNames.ForEach(abilityName => abilityLevelMap[abilityName] = getAbilityLevel(abilityName));
+        abilityNames.ForEach(abilityName => abilityToggleMap[abilityName] = true || isAbilityOn(abilityName));
 
         //SceneView.duringSceneGui -= RotateCamera;
         //SceneView.duringSceneGui += RotateCamera;
@@ -50,7 +52,7 @@ public class Toolbox : EditorWindow
         }
         GUI.enabled = enabled;
         abilityNames.ForEach(abilityName =>
-            abilityLevelMap[abilityName] = makeAbilityRow(abilityName, abilityLevelMap[abilityName])
+            makeAbilityRow(abilityName)
         );
 
     }
@@ -60,15 +62,36 @@ public class Toolbox : EditorWindow
         //SceneView.duringSceneGui -= RotateCamera;
     }
 
-    int makeAbilityRow(string abilityName, int value)
+    void makeAbilityRow(string abilityName)
     {
-        int oldVal = value;
-        int newVal = (int)EditorGUILayout.Slider(abilityName, value, -1, 6);
-        if (oldVal != newVal && enabled && EditorApplication.isPlaying)
+        int oldVal = abilityLevelMap[abilityName];
+        bool oldon = abilityToggleMap[abilityName];
+
+        EditorGUILayout.BeginHorizontal();
+        bool newon = EditorGUILayout.Toggle(oldon, GUILayout.Width(10));
+        int newVal = (int)EditorGUILayout.Slider(abilityName, oldVal, -1, 6);
+        EditorGUILayout.EndHorizontal();
+
+        bool needsUpdate = false;
+        if (oldon != newon)
         {
-            checkAbility(newVal, abilityName);
+            needsUpdate = true;
         }
-        return newVal;
+        if (oldVal != newVal)
+        {
+            newon = newVal >= 0;
+            needsUpdate = true;
+        }
+        if (needsUpdate)
+        {
+            abilityLevelMap[abilityName] = newVal;
+            abilityToggleMap[abilityName] = newon;
+            if (enabled && EditorApplication.isPlaying)
+            {
+                checkAbility(newon ? newVal : -1, abilityName);
+            }
+        }
+
     }
 
     int getAbilityLevel(string abilityName)
@@ -79,6 +102,11 @@ public class Toolbox : EditorWindow
             return -1;
         }
         return ability.UpgradeLevel;
+    }
+    bool isAbilityOn(string abilityName)
+    {
+        PlayerAbility ability = (PlayerAbility)pc.GetComponent(abilityName);
+        return ability.enabled;
     }
 
     void checkAbility(int level, string abilityName)
