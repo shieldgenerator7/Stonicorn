@@ -8728,7 +8728,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 2593150204304020503}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792176465}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb861a1759711424783a1cfec9fec1f4, type: 3}
   m_Name: 
@@ -9735,6 +9735,30 @@ PrefabInstance:
       propertyPath: teleportPreviewPointer
       value: 
       objectReference: {fileID: 1385001677}
+    - target: {fileID: 4077093240442266713, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4077093240442266713, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: upgradeLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4077093240442266713, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: maxLaunchSpeed
+      value: 12.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4077093240442266713, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: maxPullBackDistance
+      value: 3.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4077093240442266713, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: accelerationBoostPercent
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4077093240442266713, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: bounceEnergyConservationPercent
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7835665536134532039, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
       propertyPath: ghostFolder
       value: 
