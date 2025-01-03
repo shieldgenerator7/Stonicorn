@@ -616,6 +616,7 @@ public class CustomMenu
                 checkSavableObjectInfosSetup,
                 ensureHiddenAreasAreProperlySetup,
                 checkTiledHitBoxes,
+                checkGravityScale,
             }
             .ConvertAll(func => func())
             .Any(b => b);
@@ -1021,6 +1022,38 @@ public class CustomMenu
                 );
         }
         return changedCount > 0;
+    }
+
+    [MenuItem("SG7/Build/Pre-Build/Check gravity scale")]
+    public static bool checkGravityScale()
+    {
+        int problemCount = 0;
+        foreach (Rigidbody2D rb2d in GameObject.FindObjectsByType<Rigidbody2D>(FindObjectsSortMode.None))
+        {
+            //if there's a GravityAccepter, it's all good
+            GravityAccepter ga = rb2d.GetComponent<GravityAccepter>();
+            if (ga)
+            {
+                continue;
+            }
+            //if the gravity scale is an accepted value, it's all good
+            if (rb2d.gravityScale == 1)
+            {
+                continue;
+            }
+            //if the rb2d is frozen in place on an axis (eg, the sun), it's all good
+            if (rb2d.constraints != RigidbodyConstraints2D.None && rb2d.constraints!= RigidbodyConstraints2D.FreezeRotation)
+            {
+                continue;
+            }
+            //If none of the above are true, there's a problem!
+            problemCount++;
+            Debug.LogError(
+                $"Object has a gravity scale of {rb2d.gravityScale}!\nIt should be 1, or you should give it a GravityAccepter.\nobject: {rb2d.name} in scene {rb2d.gameObject.scene.name}",
+                rb2d
+                );
+        }
+        return problemCount > 0;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
