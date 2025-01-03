@@ -19,7 +19,8 @@ public class SavableObjectInfoEditor : Editor
         GUI.enabled = isPrefab(info.gameObject);
         if (GUILayout.Button("Autoset (Prefab Only)"))
         {
-            if (!inAssetDatabase(info.gameObject)) {
+            if (!inAssetDatabase(info.gameObject))
+            {
                 addToAssetDatabase(info.gameObject);
             }
             info.autoset();
@@ -62,7 +63,7 @@ public class SavableObjectInfoEditor : Editor
     public virtual void addToAssetDatabase(GameObject go)
     {
         //2025-01-02: copied from https://discussions.unity.com/t/set-addressable-via-c/741902/14
-            string groupName = "Default Local Group";
+        string groupName = "Default Local Group";
         AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
         var group = settings.FindGroup(groupName);
         if (!group)
@@ -87,7 +88,7 @@ public class SavableObjectInfoEditor : Editor
         }
 
         var entriesAdded = new List<AddressableAssetEntry> { e };
-            Debug.LogWarning("Added prefab to addressables! " + e?.ToString());        
+        Debug.LogWarning("Added prefab to addressables! " + e?.ToString());
 
         group.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, e, false, true);
         settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, e, true, false);
