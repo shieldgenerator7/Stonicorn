@@ -49,7 +49,7 @@ public class CreaturePodAttacher : MonoBehaviour
         for (int i = 0; i < rca.count; i++)
         {
             RaycastHit2D rch2d = rca.rch2ds[i];
-            if (rch2d.collider.gameObject != newgo)
+            if (rch2d.collider.gameObject != newgo && !rch2d.rigidbody)
             {
                 contactPoint = rch2d.point;
                 break;
