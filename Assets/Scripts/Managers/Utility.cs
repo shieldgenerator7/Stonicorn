@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -627,6 +628,7 @@ public static class Utility
     public static void checkMaxReturnedList(string methodName, int count)
     {
 #if UNITY_EDITOR
+        if (!EditorApplication.isPlaying) { return; }
         if (count > maxReturnedList)
         {
             maxReturnedList = count;
