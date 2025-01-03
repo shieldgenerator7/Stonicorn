@@ -618,7 +618,16 @@ public class CustomMenu
                 checkTiledHitBoxes,
                 checkGravityScale,
             }
-            .ConvertAll(func => func())
+            .ConvertAll(func => {
+                try
+                {
+                    return func();
+                }
+                catch (Exception ex) {
+                    Debug.LogError($"pre build task {func.Method.Name} failed: {ex}");
+                }
+                return true;
+                })
             .Any(b => b);
 
         populateObjectManagerKnownObjectsList();
