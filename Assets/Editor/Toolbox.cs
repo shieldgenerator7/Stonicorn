@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.Arm;
 
 public class Toolbox : EditorWindow
 {
@@ -52,9 +55,33 @@ public class Toolbox : EditorWindow
         }
         GUI.enabled = enabled;
         abilityNames.ForEach(abilityName =>
-            makeAbilityRow(abilityName)
+            makeAbilityRow(
+                abilityName,
+                abilityLevelMap[abilityName],
+                abilityToggleMap[abilityName],
+                (newVal, newOn) => updateFunc(abilityName, newVal, newOn)
+                )
+        );
+        makeAbilityRow(
+            "ALL",
+            (int)abilityLevelMap.Values.Average(v => v),
+            abilityToggleMap.Values.Any(v => v),
+            (newVal, newOn) =>
+                abilityNames.ForEach(abilityName =>
+                    updateFunc(abilityName, newVal, newOn)
+                )                
         );
 
+    }
+
+    void updateFunc(string abilityName, int val, bool on)
+    {
+        abilityLevelMap[abilityName] = val;
+        abilityToggleMap[abilityName] = on;
+        if (enabled && EditorApplication.isPlaying)
+        {
+            checkAbility(on ? val : -1, abilityName);
+        }
     }
 
     private void OnDisable()
@@ -62,10 +89,8 @@ public class Toolbox : EditorWindow
         //SceneView.duringSceneGui -= RotateCamera;
     }
 
-    void makeAbilityRow(string abilityName)
+    void makeAbilityRow(string abilityName, int oldVal, bool oldon, Action<int, bool> updateFunc)
     {
-        int oldVal = abilityLevelMap[abilityName];
-        bool oldon = abilityToggleMap[abilityName];
 
         EditorGUILayout.BeginHorizontal();
         bool newon = EditorGUILayout.Toggle(oldon, GUILayout.Width(10));
@@ -84,14 +109,8 @@ public class Toolbox : EditorWindow
         }
         if (needsUpdate)
         {
-            abilityLevelMap[abilityName] = newVal;
-            abilityToggleMap[abilityName] = newon;
-            if (enabled && EditorApplication.isPlaying)
-            {
-                checkAbility(newon ? newVal : -1, abilityName);
-            }
+            updateFunc(newVal, newon);
         }
-
     }
 
     int getAbilityLevel(string abilityName)
