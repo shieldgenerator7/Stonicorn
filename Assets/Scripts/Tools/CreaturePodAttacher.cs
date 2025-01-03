@@ -31,6 +31,7 @@ public class CreaturePodAttacher : MonoBehaviour
 
     private void convert(GameObject go)
     {
+#if UNITY_EDITOR
         Transform folder = go.transform.parent;
         GameObject newgo = (GameObject)PrefabUtility.InstantiatePrefab(prefab, folder);
         newgo.transform.position = go.transform.position;
@@ -88,5 +89,6 @@ public class CreaturePodAttacher : MonoBehaviour
 
         EditorUtility.SetDirty(newgo);
         EditorUtility.SetDirty(vine);
+#endif
     }
 }
