@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 6640570329730792493}
   - component: {fileID: 1020607966464131804}
   - component: {fileID: 6521027711384787991}
+  - component: {fileID: 3167315331693308177}
   - component: {fileID: 3542620706306014901}
   m_Layer: 0
   m_Name: jungle seed egg cord
-  m_TagString: Untagged
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,7 +136,7 @@ MonoBehaviour:
   m_StretchUV: 0
   m_WorldSpaceUV: 0
   m_CornerAngleThreshold: 30
-  m_ColliderDetail: 16
+  m_ColliderDetail: 4
   m_ColliderOffset: 0
   m_UpdateCollider: 1
   m_EnableTangents: 0
@@ -148,8 +149,8 @@ MonoBehaviour:
   m_Creator: {fileID: 0}
   m_Modifiers: []
   m_ColliderSegment:
-  - {x: -0.032730974, y: 7.9927316}
-  - {x: 0.011769848, y: 0.739203}
+  - {x: -0.00022968555, y: 0.000012040587}
+  - {x: -0.30942145, y: -5.8980975}
   m_ShadowSegment: []
 --- !u!50 &6521027711384787991
 Rigidbody2D:
@@ -178,6 +179,49 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 3
+--- !u!68 &3167315331693308177
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3116942942911890299}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.00022968555, y: 0.000012040587}
+  - {x: -0.30942145, y: -5.8980975}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!114 &3542620706306014901
 MonoBehaviour:
   m_ObjectHideFlags: 0

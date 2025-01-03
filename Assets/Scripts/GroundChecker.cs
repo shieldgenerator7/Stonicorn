@@ -130,7 +130,7 @@ public class GroundChecker : SavableMonoBehaviour
         {
             RaycastHit2D rch2d = answer.rch2ds[i];
             //If the object is a solid object,
-            if (!rch2d.collider.isTrigger
+            if ((!rch2d.collider.isTrigger || rch2d.collider.CompareTag("Climbable"))
                 && !rch2d.collider.gameObject.isPlayer())
             {
                 //If the object is not a hazard or is not currently hazardous,
