@@ -172,6 +172,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7166011074393997330, guid: b43be6a820810fd43b41824280158da1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4084874432288549141}
+    - targetCorrespondingSourceObject: {fileID: 7166011074393997330, guid: b43be6a820810fd43b41824280158da1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5665424610776285528}
   m_SourcePrefab: {fileID: 100100000, guid: b43be6a820810fd43b41824280158da1, type: 3}
 --- !u!4 &3170425606130364329 stripped
 Transform:
@@ -209,6 +212,19 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: -45
     m_UpperAngle: 45
+--- !u!114 &5665424610776285528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3170425606130602091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fe5429f351f1549881cdd11b222cb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jointed: 1
 --- !u!1001 &6206794061749311420
 PrefabInstance:
   m_ObjectHideFlags: 0
