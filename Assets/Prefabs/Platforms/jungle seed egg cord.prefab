@@ -93,8 +93,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
   - {fileID: 21300000, guid: bea066e27a4a4e6478c1d31a8393cb58, type: 3}
   m_LocalAABB:
-    m_Center: {x: 0.009820111, y: 2.865911, z: 0}
-    m_Extent: {x: 0.11717969, y: 2.1268244, z: 0}
+    m_Center: {x: -0.15459588, y: -2.9490547, z: 0}
+    m_Extent: {x: 0.26943818, y: 2.9550748, z: 0}
   m_SpriteSortPoint: 0
 --- !u!114 &1020607966464131804
 MonoBehaviour:
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Spline:
     m_IsOpenEnded: 1
     m_ControlPoints:
-    - position: {x: 0.007640362, y: 4.9926176, z: 0}
+    - position: {x: 0, y: 0, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -119,7 +119,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 0.0119998455, y: 0.7392044, z: 0}
+    - position: {x: -0.30919176, y: -5.8981094, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Creator: {fileID: 0}
   m_Modifiers: []
   m_ColliderSegment:
-  - {x: 0.0074103624, y: 4.9926176}
-  - {x: 0.01176985, y: 0.73920417}
+  - {x: -0.032730974, y: 7.9927316}
+  - {x: 0.011769848, y: 0.739203}
   m_ShadowSegment: []
 --- !u!50 &6521027711384787991
 Rigidbody2D:
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
+  id: 7075
   prefabAddress:
     m_AssetGUID: 19be617130dae5b4cab754271453595f
     m_SubObjectName: 
