@@ -41,21 +41,19 @@ public class Toolbox : EditorWindow
         enabled = EditorGUILayout.Toggle("Enable tool", enabled);
         if (enabled)
         {
-            ForceLaunchAbility = (int)EditorGUILayout.Slider("Force Launch", ForceLaunchAbility, -1, 6);
-            SwapAbility = (int)EditorGUILayout.Slider("Swap", SwapAbility, -1, 6);
-            ElectricBeamAbility = (int)EditorGUILayout.Slider("Electric Beam", ElectricBeamAbility, -1, 6);
-            WallClimbAbility = (int)EditorGUILayout.Slider("Wall Climb", WallClimbAbility, -1, 6);
-            AirSliceAbility = (int)EditorGUILayout.Slider("Air Slice", AirSliceAbility, -1, 6);
-            LongTeleportAbility = (int)EditorGUILayout.Slider("Long Teleport", LongTeleportAbility, -1, 6);
-
-            //Activate abilities
-            checkAbility(ForceLaunchAbility, pc.GetComponent<ForceLaunchAbility>());
-            checkAbility(SwapAbility, pc.GetComponent<SwapAbility>());
-            checkAbility(WallClimbAbility, pc.GetComponent<WallClimbAbility>());
-            checkAbility(AirSliceAbility, pc.GetComponent<AirSliceAbility>());
-            checkAbility(ElectricBeamAbility, pc.GetComponent<ElectricBeamAbility>());
-            checkAbility(LongTeleportAbility, pc.GetComponent<LongTeleportAbility>());
+            if (pc == null || ReferenceEquals(pc.gameObject, null))
+            {
+                pc = GameObject.FindFirstObjectByType<PlayerController>();
+            }
         }
+        GUI.enabled = enabled;
+            ForceLaunchAbility = makeAbilityRow("ForceLaunchAbility", ForceLaunchAbility);
+            SwapAbility = makeAbilityRow("SwapAbility", SwapAbility);
+            ElectricBeamAbility = makeAbilityRow("ElectricBeamAbility", ElectricBeamAbility);
+            WallClimbAbility = makeAbilityRow("WallClimbAbility", WallClimbAbility);
+            AirSliceAbility = makeAbilityRow("AirSliceAbility", AirSliceAbility);
+            LongTeleportAbility = makeAbilityRow("LongTeleportAbility", LongTeleportAbility);
+
     }
 
     private void OnDisable()
@@ -63,19 +61,35 @@ public class Toolbox : EditorWindow
         //SceneView.duringSceneGui -= RotateCamera;
     }
 
-    
+    int makeAbilityRow(string abilityName, int value)
+    {
+        int oldVal = value;
+        int newVal = (int)EditorGUILayout.Slider(abilityName, value, -1, 6);
+        if (oldVal != newVal && enabled && EditorApplication.isPlaying)
+        {
+            checkAbility(newVal, abilityName);
+        }
+        return newVal;
+    }
+
+    void checkAbility(int level, string abilityName)
+    {
+        checkAbility(level, (PlayerAbility)pc.GetComponent(abilityName));
+    }
 
     void checkAbility(int level, PlayerAbility ability)
     {
         if (level >= 0)
         {
             ability.enabled = true;
-            ability.UpgradeLevel = level;
+            //ability.UpgradeLevel = level;
+            ability.setUpgradeLevel(level);
         }
         else
         {
             ability.enabled = false;
-            ability.UpgradeLevel = 0;
+            //ability.UpgradeLevel = 0;
+            ability.setUpgradeLevel(0);
         }
     }
 }

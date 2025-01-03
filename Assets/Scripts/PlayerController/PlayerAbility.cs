@@ -169,6 +169,12 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
     {
         acceptUpgradeLevel(upgradeLevel);
     }
+
+    public void setUpgradeLevel(int value)
+    {
+        upgradeLevel = Mathf.Clamp(value, 0, upgradeLevels.Count - 1);
+        acceptUpgradeLevel(upgradeLevel);
+    }
 #endif
 
 }
