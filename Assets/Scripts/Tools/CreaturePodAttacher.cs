@@ -1,7 +1,10 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.U2D;
+using static Utility;
 
 public class CreaturePodAttacher:MonoBehaviour
 {
@@ -9,6 +12,9 @@ public class CreaturePodAttacher:MonoBehaviour
     public GameObject prefab;
 
     public GameObject vinePrefab;
+    public Transform vineFolder;
+
+    public Transform anchorOffset;
 
     public List<GameObject> objectsToConvert;
 
@@ -25,7 +31,8 @@ public class CreaturePodAttacher:MonoBehaviour
 
     private void convert(GameObject go)
     {
-        GameObject newgo = (GameObject)PrefabUtility.InstantiatePrefab(prefab, go.transform.parent);
+        Transform folder = go.transform.parent;
+        GameObject newgo = (GameObject)PrefabUtility.InstantiatePrefab(prefab, folder);
         newgo.transform.position = go.transform.position;
         newgo.transform.localScale = go.transform.localScale;
         newgo.transform.rotation = go.transform.rotation;
@@ -34,6 +41,48 @@ public class CreaturePodAttacher:MonoBehaviour
 
         GameObject.DestroyImmediate(go);
 
+        //vine
+        GravityZone gravityZone = GravityZone.getGravityZone(newgo.transform.position);
+        Vector2 upDir = newgo.transform.position - gravityZone.transform.position;
+        RaycastAnswer rca = RaycastAll(newgo.transform.position, upDir, 100);
+        Vector2 contactPoint = newgo.transform.position;
+        for (int i = 0; i < rca.count; i++)
+        {
+            RaycastHit2D rch2d = rca.rch2ds[i];
+            if(rch2d.collider.gameObject != newgo)
+            {
+                contactPoint = rch2d.point;
+                break;
+            }
+        }
 
+        GameObject vine = (GameObject)PrefabUtility.InstantiatePrefab(vinePrefab, vineFolder);
+        vine.transform.position = contactPoint;
+        vine.transform.up = upDir;
+        SpriteShapeController ssc = vine.GetComponent<SpriteShapeController>();
+        Vector2 endpoint = new Vector2(0, -Vector2.Distance(contactPoint, newgo.transform.position + newgo.transform.TransformDirection( anchorOffset.localPosition)));
+        Debug.Log($"vine points: {contactPoint}, {newgo.transform.position}: {endpoint}");
+        if (ssc)
+        {
+            Spline spline = ssc.spline;
+            spline.Clear();
+            spline.setPoints(new List<Vector2>()
+            {
+                new Vector2(0, 0),
+                endpoint,
+            });
+        }
+        Debug.Log($"vine points2: {contactPoint}, {newgo.transform.position}: {endpoint}");
+
+        //hookup
+        Rigidbody2D vineRB2D = vine.GetComponent<Rigidbody2D>();
+        newgo.GetComponents<HingeJoint2D>().ToList().ForEach(joint =>
+        {
+            joint.connectedBody = vineRB2D;
+            joint.connectedAnchor = endpoint;
+        });
+
+        EditorUtility.SetDirty(newgo);
+        EditorUtility.SetDirty(vine);
     }
 }
