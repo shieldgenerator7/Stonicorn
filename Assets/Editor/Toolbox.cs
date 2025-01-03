@@ -54,14 +54,6 @@ public class Toolbox : EditorWindow
             }
         }
         GUI.enabled = enabled;
-        abilityNames.ForEach(abilityName =>
-            makeAbilityRow(
-                abilityName,
-                abilityLevelMap[abilityName],
-                abilityToggleMap[abilityName],
-                (newVal, newOn) => updateFunc(abilityName, newVal, newOn)
-                )
-        );
         makeAbilityRow(
             "ALL",
             (int)abilityLevelMap.Values.Average(v => v),
@@ -69,7 +61,15 @@ public class Toolbox : EditorWindow
             (newVal, newOn) =>
                 abilityNames.ForEach(abilityName =>
                     updateFunc(abilityName, newVal, newOn)
-                )                
+                )
+        );
+        abilityNames.ForEach(abilityName =>
+            makeAbilityRow(
+                abilityName,
+                abilityLevelMap[abilityName],
+                abilityToggleMap[abilityName],
+                (newVal, newOn) => updateFunc(abilityName, newVal, newOn)
+                )
         );
 
     }
