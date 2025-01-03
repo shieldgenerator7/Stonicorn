@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -6,18 +7,16 @@ public class Toolbox : EditorWindow
 {
     bool enabled = true;
 
-    [Range(-1, 6)]
-    public int ForceLaunchAbility = -1;
-    [Range(-1, 6)]
-    public int SwapAbility = -1;
-    [Range(-1, 6)]
-    public int WallClimbAbility = -1;
-    [Range(-1, 6)]
-    public int AirSliceAbility = -1;
-    [Range(-1, 6)]
-    public int ElectricBeamAbility = -1;
-    [Range(-1, 6)]
-    public int LongTeleportAbility = -1;
+    List<string> abilityNames = new List<string> { 
+        "ForceLaunchAbility",
+        "SwapAbility",
+        "ElectricBeamAbility",
+        "WallClimbAbility",
+        "AirSliceAbility",
+        "LongTeleportAbility",
+    };
+
+    private Dictionary<string, int> abilityLevelMap = new Dictionary<string, int>();
 
     private PlayerController pc;
 
@@ -32,6 +31,9 @@ public class Toolbox : EditorWindow
     {
         pc = GameObject.FindFirstObjectByType<PlayerController>();
         Debug.Log("found player: " + pc.name);
+
+        abilityNames.ForEach(abilityName=>abilityLevelMap[abilityName] = getAbilityLevel(abilityName));
+
         //SceneView.duringSceneGui -= RotateCamera;
         //SceneView.duringSceneGui += RotateCamera;
     }
@@ -47,12 +49,9 @@ public class Toolbox : EditorWindow
             }
         }
         GUI.enabled = enabled;
-            ForceLaunchAbility = makeAbilityRow("ForceLaunchAbility", ForceLaunchAbility);
-            SwapAbility = makeAbilityRow("SwapAbility", SwapAbility);
-            ElectricBeamAbility = makeAbilityRow("ElectricBeamAbility", ElectricBeamAbility);
-            WallClimbAbility = makeAbilityRow("WallClimbAbility", WallClimbAbility);
-            AirSliceAbility = makeAbilityRow("AirSliceAbility", AirSliceAbility);
-            LongTeleportAbility = makeAbilityRow("LongTeleportAbility", LongTeleportAbility);
+        abilityNames.ForEach(abilityName =>
+            abilityLevelMap[abilityName] = makeAbilityRow(abilityName, abilityLevelMap[abilityName])
+        );
 
     }
 
@@ -70,6 +69,16 @@ public class Toolbox : EditorWindow
             checkAbility(newVal, abilityName);
         }
         return newVal;
+    }
+
+    int getAbilityLevel(string abilityName)
+    {
+        PlayerAbility ability = (PlayerAbility)pc.GetComponent(abilityName);
+        if (!ability.Unlocked || !ability.enabled)
+        {
+            return -1;
+        }
+        return ability.UpgradeLevel;
     }
 
     void checkAbility(int level, string abilityName)
