@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 using static Utility;
 
-public class CreaturePodAttacher:MonoBehaviour
+public class CreaturePodAttacher : MonoBehaviour
 {
 
     public GameObject prefab;
@@ -49,7 +49,7 @@ public class CreaturePodAttacher:MonoBehaviour
         for (int i = 0; i < rca.count; i++)
         {
             RaycastHit2D rch2d = rca.rch2ds[i];
-            if(rch2d.collider.gameObject != newgo)
+            if (rch2d.collider.gameObject != newgo)
             {
                 contactPoint = rch2d.point;
                 break;
@@ -60,8 +60,13 @@ public class CreaturePodAttacher:MonoBehaviour
         vine.transform.position = contactPoint;
         vine.transform.up = upDir;
         SpriteShapeController ssc = vine.GetComponent<SpriteShapeController>();
-        Vector2 endpoint = new Vector2(0, -Vector2.Distance(contactPoint, newgo.transform.position + newgo.transform.TransformDirection( anchorOffset.localPosition)));
-        Debug.Log($"vine points: {contactPoint}, {newgo.transform.position}: {endpoint}");
+        Vector2 endpoint = new Vector2(
+            0,
+            -Vector2.Distance(
+                contactPoint,
+                newgo.transform.position + newgo.transform.TransformDirection(anchorOffset.localPosition)
+            )
+        );
         if (ssc)
         {
             Spline spline = ssc.spline;
@@ -72,7 +77,6 @@ public class CreaturePodAttacher:MonoBehaviour
                 endpoint,
             });
         }
-        Debug.Log($"vine points2: {contactPoint}, {newgo.transform.position}: {endpoint}");
 
         //hookup
         Rigidbody2D vineRB2D = vine.GetComponent<Rigidbody2D>();
