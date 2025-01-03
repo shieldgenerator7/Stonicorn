@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -28,11 +29,24 @@ public class SavableObjectInfo : ObjectInfo
 #if UNITY_EDITOR
     public virtual void autoset()
     {
-        prefabAddress = new AssetReference(
-            AssetDatabase.AssetPathToGUID(
-            AssetDatabase.GetAssetPath(gameObject)
-            )
+        string assetPath = AssetDatabase.GetAssetPath(gameObject);
+        string guid = "";
+        if (assetPath == null || assetPath.Trim() == "")
+        {
+            List<string> guids = AssetDatabase.FindAssets(gameObject.name).ToList();
+            guid = guids.Find(guid =>
+            {
+                string[] split = AssetDatabase.GUIDToAssetPath(guid).Split('/', '.');
+                return gameObject.name == split[split.Length - 2];
+            });
+        }
+        else
+        {
+            guid = AssetDatabase.AssetPathToGUID(
+                AssetDatabase.GetAssetPath(gameObject)
             );
+        }
+        prefabAddress = new AssetReference(guid);
         spawnStateId = 0;
         destroyStateId = int.MaxValue;
     }

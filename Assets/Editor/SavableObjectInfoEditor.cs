@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using UnityEditor.Graphs;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [CustomEditor(typeof(SavableObjectInfo))]
 public class SavableObjectInfoEditor : Editor
@@ -18,20 +19,23 @@ public class SavableObjectInfoEditor : Editor
         GUI.enabled = isPrefab(info.gameObject);
         if (GUILayout.Button("Autoset (Prefab Only)"))
         {
+            if (!inAssetDatabase(info.gameObject)) {
+                addToAssetDatabase(info.gameObject);
+            }
             info.autoset();
             EditorUtility.SetDirty(info);
         }
 
         //GUI.enabled = !isPrefab(info.gameObject);
-        GUI.enabled = true;
-        if (!inAssetDatabase(info.gameObject))
-        {
-            if (GUILayout.Button("Add to database (Prefab Only)"))
-            {
-                addToAssetDatabase(info.gameObject);
-                EditorUtility.SetDirty(info);
-            }
-        }
+        //GUI.enabled = true;
+        //if (!inAssetDatabase(info.gameObject))
+        //{
+        //    if (GUILayout.Button("Add to database (Prefab Only)"))
+        //    {
+        //        addToAssetDatabase(info.gameObject);
+        //        EditorUtility.SetDirty(info);
+        //    }
+        //}
     }
 
     bool isPrefab(GameObject go)
@@ -72,13 +76,20 @@ public class SavableObjectInfoEditor : Editor
     }
     public virtual void addToAssetDatabase(GameObject go)
     {
-        Debug.Log("is prefab? "+isPrefab(go));
+        List<string> guids = AssetDatabase.FindAssets(go.name).ToList();
+        guids.ForEach(g => Debug.Log($"guid {g}: {AssetDatabase.GUIDToAssetPath(g)}"));
+
+        //Debug.Log("is prefab? "+isPrefab(go));
             string groupName = "Default Local Group";
-        GameObject prefab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(go);
-        if (!isPrefab(go))
-        {
-            go = prefab;
-        }
+        //GameObject prefab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(go);
+        //if (!isPrefab(go))
+        //{
+        //Debug.Log($"load asset {go?.name} -> {prefab?.name}, path {AssetDatabase.GetAssetPath(go.transform.parent)}");
+        //go = prefab;
+        //}
+        //go = PrefabUtility.GetCorrespondingObjectFromSource(go);
+        //GameObject newgo = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(go));
+        //Debug.Log($"load asset {go?.name} -> {newgo?.name}, path {AssetDatabase.GetAssetPath(go)}");
         AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
 
         //2025-01-02: copied from https://discussions.unity.com/t/set-addressable-via-c/741902/14
@@ -86,18 +97,33 @@ public class SavableObjectInfoEditor : Editor
         if (!group)
         {
             Debug.LogError("cant find group! " + groupName);
+            return;
             //group = settings.CreateGroup(groupName, false, false, true, null, typeof(ContentUpdateGroupSchema), typeof(BundledAssetGroupSchema));
         }
 
-        var assetpath = AssetDatabase.GetAssetPath(go);
-        var guid = AssetDatabase.AssetPathToGUID(assetpath);
-        Debug.Log($"assetpath {assetpath}, guid {guid}");
+        //var assetpath = AssetDatabase.GetAssetPath(go);
+        //var guid = AssetDatabase.AssetPathToGUID(assetpath);
+        string guid = guids.Find(guid =>
+        {
+            string[] split = AssetDatabase.GUIDToAssetPath(guid).Split('/', '.');
+            return go.name == split[split.Length - 2];
+        });
+        //Debug.Log($"assetpath {assetpath}, guid {guid}");
 
         var e = settings.CreateOrMoveEntry(guid, group, false, false);
-        var entriesAdded = new List<AddressableAssetEntry> { e };
+        if (e == null)
+        {
+            //Debug.LogError($"Unable to add '{go?.name}' to addressables! assetpath {assetpath}, guid {guid}");
+            Debug.LogError($"Unable to add '{go?.name}' to addressables! guid {guid}");
+            return;
+        }
 
-        group.SetDirty(AddressableAssetSettings.ModificationEvent.EntryCreated, entriesAdded, false, true);
-        settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryCreated, entriesAdded, true, false);
+        var entriesAdded = new List<AddressableAssetEntry> { e };
+            Debug.Log("Added prefab to addressables! " + e?.ToString());
+        
+
+        group.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, e, false, true);
+        settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, e, true, false);
 
     }
 }
