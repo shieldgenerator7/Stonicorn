@@ -6,7 +6,8 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
 {
     public float maxEnergyPerSecond = 3;
     public float moveForce = 10;//magnitude
-    public Vector2 moveVector;//direction, relative to self
+    public Vector2 startMoveVector = Vector2.left;
+    private Vector2 moveVector;//direction, relative to self
 
     public Collider2D bumperColl;
 
@@ -23,8 +24,12 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     }
     public override SavableObject CurrentState
     {
-        get => new SavableObject(this);
-        set { }
+        get => new SavableObject(this,
+            "moveVector", moveVector
+            );
+        set {
+            moveVector = value.Vector2("moveVector");
+        }
     }
     public override void init()
     {
@@ -34,6 +39,9 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         {
             Debug.LogError("PoweredMover.bumperColl requires a collider that is a trigger!", gameObject);
         }
+
+        //init
+        moveVector = startMoveVector;
     }
 
     public float acceptPower(float power)
