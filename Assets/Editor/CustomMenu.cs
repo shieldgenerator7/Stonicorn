@@ -1073,6 +1073,32 @@ public class CustomMenu
         //overrides are problematic if the object needs to be instantiated, because then its unique overrides won't be there
         //this tool was created mostly because the breakable walls in the cave area re-instatiated as white (instead of brown) when rewinding into the forest level
 
+        List<string> allowedPropMods = new List<string>()
+        {
+            //GameObject
+            "m_Name",
+            "m_RootOrder",
+            //Transform
+            "m_LocalPosition.x",
+            "m_LocalPosition.y",
+            "m_LocalPosition.z",
+            "m_LocalRotation.w",
+            "m_LocalRotation.x",
+            "m_LocalRotation.y",
+            "m_LocalRotation.z",
+            "m_LocalEulerAnglesHint.x",
+            "m_LocalEulerAnglesHint.y",
+            "m_LocalEulerAnglesHint.z",
+            "m_ConstrainProportionsScale",
+            "m_LocalScale.x",
+            "m_LocalScale.y",
+            "m_LocalScale.z",
+            //SaveableObjectInfo
+            "id",
+            "spawnStateId",
+        };
+
+
         int overrideCount = 0;
         int problemCount = 0;
         foreach (SavableObjectInfo soi in GameObject.FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None))
@@ -1098,6 +1124,16 @@ public class CustomMenu
 
             problemCount += PrefabUtility.GetAddedComponents(soi.gameObject).Count;
             problemCount += PrefabUtility.GetAddedGameObjects(soi.gameObject).Count;
+            List<PropertyModification> propmods = PrefabUtility.GetPropertyModifications(soi.gameObject).ToList();
+            propmods.ForEach(propmod =>
+            {
+                if (!allowedPropMods.Contains(propmod.propertyPath))
+                {
+                    Debug.LogError($"propmod {soi.gameObject.name}:                                 {propmod.propertyPath}, {propmod.value}", soi.gameObject);
+                    problemCount++;
+                }
+            });
+            overrideCount += propmods.Count;
 
             if (problemCount != prevProblemCount)
             {
