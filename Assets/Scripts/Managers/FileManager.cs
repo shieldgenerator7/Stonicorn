@@ -10,6 +10,19 @@ public class FileManager : Manager
     public string fileExtension = ".txt";
     public bool saveWithTimeStamp = false;//true to save with date/timestamp in filename, even when not in demo build
 
+    private List<ISetting> settingList;
+
+
+    protected override void init()
+    {
+        base.init();
+
+        settingList = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+            .OfType<ISetting>()
+            .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
+            .ToList();
+    }
+
     private string getFileName(bool useTimeStamp = false)
     {
         string filename = this.fileName;
@@ -37,12 +50,9 @@ public class FileManager : Manager
         {
 
             string filename = getFileName(saveWithTimeStamp);
+
             //Save file settings
-            List<SettingObject> settings =
-                FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
-                    .OfType<ISetting>()
-                    .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
-                    .ToList()
+            List<SettingObject> settings = settingList
                     .ConvertAll(setting => setting.Setting)
                     .Where(so => so)
                     .ToList();
@@ -67,10 +77,7 @@ public class FileManager : Manager
         {
             //Load file settings
             List<SettingObject> settings = ES3.Load<List<SettingObject>>("settings", filename);
-                FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
-                    .OfType<ISetting>()
-                    .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
-                    .ToList()
+            settingList
                     .ForEach(setting =>
                     {
                         string id = setting.ID;

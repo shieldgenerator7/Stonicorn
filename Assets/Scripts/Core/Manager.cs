@@ -9,7 +9,9 @@ public abstract class Manager : MonoBehaviour, ISetting
     public void init(GameData data)
     {
         this.data = data;
+        init();
     }
+    protected virtual void init() { }
 
     public virtual SettingScope Scope => SettingScope.SAVE_FILE;
 
