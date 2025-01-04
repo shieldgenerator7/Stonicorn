@@ -1,5 +1,6 @@
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
+using static Utility;
 
 [RequireComponent(typeof(GravityAccepter))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -28,6 +29,36 @@ public class CloudMover : MonoBehaviour
         Vector2 sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
         rb2d.linearVelocity = sideVector.normalized * speed;
         transform.up = -gravityVector;
+    }
+
+    private void LateUpdate()
+    {
+        float MAX_DISTANCE = 200;
+        float EXTRA_DISTANCE = 10;
+        if (shadow)
+        {
+            Vector3 gravityVector = (Vector2.zero - (Vector2)transform.position).normalized;
+            //find ground point
+            Vector2 groundPoint = transform.position + (gravityVector * MAX_DISTANCE);
+            RaycastAnswer rca = Utility.RaycastAll(transform.position, gravityVector, MAX_DISTANCE);
+            for (int i = 0; i < rca.count; i++)
+            {
+                RaycastHit2D rch2d = rca.rch2ds[i];
+                if (!rch2d.collider.isTrigger && !rch2d.collider.GetComponent<Rigidbody2D>())
+                {
+                    groundPoint = rch2d.point;
+                    break;
+                }
+            }
+
+            //extend shadow
+            float distance = Vector2.Distance(groundPoint, transform.position) + EXTRA_DISTANCE;
+            shadow.transform.position = transform.position + (gravityVector * distance/2);
+            SpriteRenderer shadowSR = shadow.GetComponent<SpriteRenderer>();
+            Vector2 size = shadowSR.size;
+            size.y = distance;
+            shadowSR.size = size;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
