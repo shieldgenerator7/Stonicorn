@@ -33,7 +33,7 @@ public class Toolbox : EditorWindow
 
     public void OnEnable()
     {
-        pc = GameObject.FindFirstObjectByType<PlayerController>();
+        pc = GameObject.FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(go=>go.CompareTag("Player"));
         Debug.Log("found player: " + pc.name);
 
         abilityNames.ForEach(abilityName => abilityLevelMap[abilityName] = getAbilityLevel(abilityName));
