@@ -46,6 +46,8 @@ public class CreaturePodAttacher : MonoBehaviour
 
         GameObject.DestroyImmediate(go);
 
+        EditorUtility.SetDirty(newgo);
+
         //vine pre-check
         if (!vinePrefab)
         {
