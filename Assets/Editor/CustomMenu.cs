@@ -1070,12 +1070,14 @@ public class CustomMenu
     public static bool checkForIllegalPrefabOverrides()
     {
         //check for prefab object with unacceptable overrides (things like polygon shape, sprite color, etc; things that arent autosaved by the savableobject)
+        //overrides are problematic if the object needs to be instantiated, because then its unique overrides won't be there
+        //this tool was created mostly because the breakable walls in the cave area re-instatiated as white (instead of brown) when rewinding into the forest level
 
         int overrideCount = 0;
         int problemCount = 0;
         foreach (SavableObjectInfo soi in GameObject.FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None))
         {
-            int prevProblemCount = problemCount;
+            
             List<ObjectOverride> overrides = PrefabUtility.GetObjectOverrides(soi.gameObject);
             //overrides.ForEach(ovr =>
             //{
@@ -1085,6 +1087,15 @@ public class CustomMenu
             {
                 overrideCount += overrides.Count;
             }
+
+            //early exit: the object doesnt have to worry about overrides, go to the next one
+            if (!couldPossiblyNeedToBeInstantiated(soi.gameObject))
+            {
+                continue;
+            }
+
+            int prevProblemCount = problemCount;
+
             problemCount += PrefabUtility.GetAddedComponents(soi.gameObject).Count;
             problemCount += PrefabUtility.GetAddedGameObjects(soi.gameObject).Count;
 
@@ -1103,6 +1114,10 @@ public class CustomMenu
 
 
             return problemCount>0;
+    }
+    private static bool couldPossiblyNeedToBeInstantiated(GameObject go)
+    {
+        return go.GetComponent<Rigidbody2D>() || go.GetComponent<IBlastable>() != null;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
