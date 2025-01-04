@@ -617,6 +617,7 @@ public class CustomMenu
                 ensureHiddenAreasAreProperlySetup,
                 checkTiledHitBoxes,
                 checkGravityScale,
+                checkForIllegalPrefabOverrides,
             }
             .ConvertAll(func => {
                 try
@@ -1063,6 +1064,45 @@ public class CustomMenu
                 );
         }
         return problemCount > 0;
+    }
+
+    [MenuItem("SG7/Build/Pre-Build/Check for illegal prefab overrides")]
+    public static bool checkForIllegalPrefabOverrides()
+    {
+        //check for prefab object with unacceptable overrides (things like polygon shape, sprite color, etc; things that arent autosaved by the savableobject)
+
+        int overrideCount = 0;
+        int problemCount = 0;
+        foreach (SavableObjectInfo soi in GameObject.FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None))
+        {
+            int prevProblemCount = problemCount;
+            List<ObjectOverride> overrides = PrefabUtility.GetObjectOverrides(soi.gameObject);
+            //overrides.ForEach(ovr =>
+            //{
+            //    Debug.Log($"override: {ovr}, {ovr.GetType()}");
+            //});
+            if (overrides.Count > 0)
+            {
+                overrideCount += overrides.Count;
+            }
+            problemCount += PrefabUtility.GetAddedComponents(soi.gameObject).Count;
+            problemCount += PrefabUtility.GetAddedGameObjects(soi.gameObject).Count;
+
+            if (problemCount != prevProblemCount)
+            {
+                Debug.LogError($"GameObject {soi.gameObject.name} has {problemCount - prevProblemCount} problematic prefab overrides!", soi.gameObject);
+            }
+
+        }
+
+        Debug.Log($"there are {overrideCount} overrides");
+        if (problemCount > 0)
+        {
+            Debug.LogError($"there are {problemCount} problem overrides!");
+        }
+
+
+            return problemCount>0;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
