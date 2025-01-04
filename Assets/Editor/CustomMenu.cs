@@ -626,6 +626,7 @@ public class CustomMenu
                 }
                 catch (Exception ex) {
                     Debug.LogError($"pre build task {func.Method.Name} failed: {ex}");
+                    Debug.LogException(ex);
                 }
                 return true;
                 })
@@ -1096,6 +1097,10 @@ public class CustomMenu
             //SaveableObjectInfo
             "id",
             "spawnStateId",
+            //Known Memory Objects
+            "secretHiders.Array.size",
+            "secretHiders.Array.data[0]",
+            "secretHiders.Array.data[1]",
         };
 
 
@@ -1124,12 +1129,19 @@ public class CustomMenu
 
             problemCount += PrefabUtility.GetAddedComponents(soi.gameObject).Count;
             problemCount += PrefabUtility.GetAddedGameObjects(soi.gameObject).Count;
+            problemCount += PrefabUtility.GetRemovedComponents(soi.gameObject).Count;
+            problemCount += PrefabUtility.GetRemovedGameObjects(soi.gameObject).Count;
             List<PropertyModification> propmods = PrefabUtility.GetPropertyModifications(soi.gameObject).ToList();
             propmods.ForEach(propmod =>
             {
-                if (!allowedPropMods.Contains(propmod.propertyPath))
+                //early exit: allowed propmod
+                if (allowedPropMods.Contains(propmod.propertyPath)) { return; }
+                //propmod.target.GetType().CustomAttributes.ToList().ForEach(attr =>
+                //{
+                //    Debug.Log($"propmod === target {propmod.target.GetType()} type attr {attr}, {attr.AttributeType}");
+                //});
                 {
-                    Debug.LogError($"propmod {soi.gameObject.name}:                                 {propmod.propertyPath}, {propmod.value}", soi.gameObject);
+                    Debug.LogError($"propmod {soi.gameObject.name}: target:{propmod.target.GetType()},                              {propmod.propertyPath}: {propmod.value}", soi.gameObject);
                     problemCount++;
                 }
             });
@@ -1142,10 +1154,10 @@ public class CustomMenu
 
         }
 
-        Debug.Log($"there are {overrideCount} overrides");
+        Debug.Log($"There are {overrideCount} overrides");
         if (problemCount > 0)
         {
-            Debug.LogError($"there are {problemCount} problem overrides!");
+            Debug.LogError($"There are {problemCount} problem overrides!");
         }
 
 
@@ -1153,7 +1165,10 @@ public class CustomMenu
     }
     private static bool couldPossiblyNeedToBeInstantiated(GameObject go)
     {
-        return go.GetComponent<Rigidbody2D>() || go.GetComponent<IBlastable>() != null;
+        return go.scene.name != "PlayerScene" && (
+            go.GetComponent<Rigidbody2D>() || 
+            go.GetComponent<IBlastable>() != null
+            );
     }
 
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
