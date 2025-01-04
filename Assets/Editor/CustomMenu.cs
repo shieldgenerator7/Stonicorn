@@ -1090,6 +1090,17 @@ public class CustomMenu
             "spawnStateId",
             //Known Memory Objects
             "secretHiders",
+            //TEMP allowances
+            "m_ConnectedRigidBody",
+            "m_ConnectedAnchor.x",
+            "m_Points.Array.data[0].x",
+            "m_LocalAABB.m_Center.x",
+            "m_Spline",
+            "abilityTypeName",
+            "m_Color",
+            "m_Size",
+            "m_Offset",
+            "m_SpriteTilingProperty",
         };
 
 
@@ -1110,6 +1121,12 @@ public class CustomMenu
 
             //early exit: the object doesnt have to worry about overrides, go to the next one
             if (!couldPossiblyNeedToBeInstantiated(soi.gameObject))
+            {
+                continue;
+            }
+
+            //TEMP exception! for ability granters. TODO: fix ability granters, remove this exception
+            if (soi.gameObject.name.StartsWith("AbilityGrant"))
             {
                 continue;
             }
