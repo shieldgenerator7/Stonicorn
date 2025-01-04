@@ -1080,27 +1080,16 @@ public class CustomMenu
             "m_Name",
             "m_RootOrder",
             //Transform
-            "m_LocalPosition.x",
-            "m_LocalPosition.y",
-            "m_LocalPosition.z",
-            "m_LocalRotation.w",
-            "m_LocalRotation.x",
-            "m_LocalRotation.y",
-            "m_LocalRotation.z",
-            "m_LocalEulerAnglesHint.x",
-            "m_LocalEulerAnglesHint.y",
-            "m_LocalEulerAnglesHint.z",
+            "m_LocalPosition",
+            "m_LocalRotation",
+            "m_LocalEulerAnglesHint",
             "m_ConstrainProportionsScale",
-            "m_LocalScale.x",
-            "m_LocalScale.y",
-            "m_LocalScale.z",
+            "m_LocalScale",
             //SaveableObjectInfo
             "id",
             "spawnStateId",
             //Known Memory Objects
-            "secretHiders.Array.size",
-            "secretHiders.Array.data[0]",
-            "secretHiders.Array.data[1]",
+            "secretHiders",
         };
 
 
@@ -1136,6 +1125,8 @@ public class CustomMenu
             {
                 //early exit: allowed propmod
                 if (allowedPropMods.Contains(propmod.propertyPath)) { return; }
+                string firstPartOfPropMod = propmod.propertyPath.Split(".")[0];
+                if (allowedPropMods.Any(apm => apm.StartsWith(firstPartOfPropMod))) { return; }
                 //propmod.target.GetType().CustomAttributes.ToList().ForEach(attr =>
                 //{
                 //    Debug.Log($"propmod === target {propmod.target.GetType()} type attr {attr}, {attr.AttributeType}");
