@@ -21,8 +21,12 @@ public class CreaturePodAttacher : MonoBehaviour
     [SerializeField]
     private List<GameObject> createdObjects;
 
+    private Vector2 anchorPos;
+
     public void convertAll()
     {
+        anchorPos=anchorOffset.localPosition;
+
         createdObjects.Clear();
         objectsToConvert.ForEach(obj => convert(obj));
         objectsToConvert.Clear();
@@ -42,6 +46,14 @@ public class CreaturePodAttacher : MonoBehaviour
 
         GameObject.DestroyImmediate(go);
 
+        //vine pre-check
+        if (!vinePrefab)
+        {
+            Debug.LogWarning("No vine prefab, so not adding vine.");
+            return;
+        }
+        Transform _vineFolder = vineFolder ?? folder;
+
         //vine
         GravityZone gravityZone = GravityZone.getGravityZone(newgo.transform.position);
         Vector2 upDir = newgo.transform.position - gravityZone.transform.position;
@@ -56,8 +68,7 @@ public class CreaturePodAttacher : MonoBehaviour
                 break;
             }
         }
-
-        GameObject vine = (GameObject)PrefabUtility.InstantiatePrefab(vinePrefab, vineFolder);
+        GameObject vine = (GameObject)PrefabUtility.InstantiatePrefab(vinePrefab, _vineFolder);
         vine.transform.position = contactPoint;
         vine.transform.up = upDir;
         SpriteShapeController ssc = vine.GetComponent<SpriteShapeController>();
@@ -65,7 +76,7 @@ public class CreaturePodAttacher : MonoBehaviour
             0,
             -Vector2.Distance(
                 contactPoint,
-                newgo.transform.position + newgo.transform.TransformDirection(anchorOffset.localPosition)
+                newgo.transform.position + newgo.transform.TransformDirection(anchorPos)
             )
         );
         if (ssc)
