@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Logger: MonoBehaviour {
+public class Logger : MonoBehaviour
+{
 
     public List<GameObject> logObjects = new List<GameObject>();
     static Logger instance;
@@ -18,7 +19,7 @@ public class Logger: MonoBehaviour {
             Destroy(gameObject);
         }
     }
-    
+
     public static void log(MonoBehaviour mb, string message)
     {
         log(mb.gameObject, message);
@@ -28,7 +29,7 @@ public class Logger: MonoBehaviour {
     {
         if (instance?.logObjects.Contains(go) ?? false)
         {
-            Debug.Log(go.name + " >>> "+ message);
+            Debug.Log(go.name + " >>> " + message);
         }
     }
 }

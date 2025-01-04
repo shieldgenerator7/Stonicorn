@@ -36,23 +36,23 @@ public class FileManager : Manager
         Task.Run(() =>
         {
 
-        string filename = getFileName(saveWithTimeStamp);
-        //Save file settings
-        List<SettingObject> settings =
-            FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
-            .OfType<ISetting>()
-            .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
-            .ToList()
-            .ConvertAll(setting => setting.Setting)
-            .Where(so => so)
-            .ToList();
-        ES3.Save<List<SettingObject>>("settings", settings, filename);
+            string filename = getFileName(saveWithTimeStamp);
+            //Save file settings
+            List<SettingObject> settings =
+                FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+                    .OfType<ISetting>()
+                    .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
+                    .ToList()
+                    .ConvertAll(setting => setting.Setting)
+                    .Where(so => so)
+                    .ToList();
+            ES3.Save<List<SettingObject>>("settings", settings, filename);
 
-        //Save Game Data
-        ES3.Save<GameData>("data", data, filename);
+            //Save Game Data
+            ES3.Save<GameData>("data", data, filename);
 
-        //Delegate
-        onFileSave?.Invoke(filename);
+            //Delegate
+            onFileSave?.Invoke(filename);
         });
     }
     public event OnFileAccess onFileSave;
@@ -67,19 +67,19 @@ public class FileManager : Manager
         {
             //Load file settings
             List<SettingObject> settings = ES3.Load<List<SettingObject>>("settings", filename);
-            FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
-                .OfType<ISetting>()
-                .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
-                .ToList()
-                .ForEach(setting =>
-                {
-                    string id = setting.ID;
-                    SettingObject setObj = settings.Find(setObj => setObj.id == id);
-                    if (setObj)
+                FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+                    .OfType<ISetting>()
+                    .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
+                    .ToList()
+                    .ForEach(setting =>
                     {
+                        string id = setting.ID;
+                        SettingObject setObj = settings.Find(setObj => setObj.id == id);
+                        if (setObj)
+                        {
                             setting.Setting = setObj;
-                    }
-                });
+                        }
+                    });
 
             //Load Game Data
             GameData data = ES3.Load<GameData>("data", filename);
