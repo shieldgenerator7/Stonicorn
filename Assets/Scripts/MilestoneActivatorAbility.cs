@@ -10,6 +10,8 @@ public class MilestoneActivatorAbility : MilestoneActivator
     public override void activateEffect()
     {
         PlayerAbility pa = ((PlayerAbility)Managers.Player.GetComponent(abilityTypeName));
+        if (pa)
+        {
         if (canGrantAbility && !pa.Unlocked)
         {
             pa.Unlocked = true;
@@ -17,6 +19,11 @@ public class MilestoneActivatorAbility : MilestoneActivator
         else if (canGrantUpgrade)
         {
             pa.UpgradeLevel++;
+        }
+        }
+        else
+        {
+            Debug.LogError($"Can't find ability on player with name {abilityTypeName}!");
         }
         Fader fader = GetComponent<Fader>();
         if (fader)
