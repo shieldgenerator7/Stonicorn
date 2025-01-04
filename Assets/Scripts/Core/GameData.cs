@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
-public class GameData
+public class GameData : ICloneable
 {
     //
     // Savables
@@ -25,6 +26,22 @@ public class GameData
     /// </summary>
     [ES3NonSerializable]
     public Dictionary<int, int> objectSceneList = new Dictionary<int, int>();
+
+
+    public object Clone()
+    {
+        GameData gameData = new GameData();
+
+        gameData.memories = this.memories.ToDictionary(entry => entry.Key, entry => entry.Value);
+        gameData.knownObjects = this.knownObjects.ToList();
+        gameData.gameStates = this.gameStates.ToList();
+
+        gameData.gameObjects = this.gameObjects.ToDictionary(entry => entry.Key, entry => entry.Value);
+        gameData.objectSceneList = this.objectSceneList.ToDictionary(entry => entry.Key, entry => entry.Value);
+
+
+        return gameData;
+    }
 
     public static implicit operator bool(GameData gd)
         => gd != null;

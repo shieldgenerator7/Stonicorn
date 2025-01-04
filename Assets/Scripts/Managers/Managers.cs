@@ -153,7 +153,7 @@ public class Managers : MonoBehaviour
         instance = this;
 
         //GameData
-        gameData = gameDataContainer?.gameData;
+        gameData = gameDataContainer?.GameData;
         if (!gameData)
         {
             gameData = new GameData();

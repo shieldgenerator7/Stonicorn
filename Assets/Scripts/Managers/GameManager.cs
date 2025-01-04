@@ -360,7 +360,7 @@ public class GameManager : MonoBehaviour
         GameState.nextid = 0;
         //Unset SceneLoader static variables
         SceneLoader.ExplorerObject = null;
-        //Unload all scenes and reload PlayerScene
+        //Unload all scenes and load LoadingScreen
         SceneManager.LoadScene(0);
     }
 
