@@ -66,9 +66,9 @@ public class GravityZone : MonoBehaviour
             GravityAccepter ga = coll.GetComponent<GravityAccepter>();
             if (ga)
             {
-                if (!tenantsGAs.Contains(ga))
+                if (tenantsGAs.Contains(ga))
                 {
-                    tenantsGAs.Add(ga);
+                    tenantsGAs.Remove(ga);
                 }
             }
             Rigidbody2D rb2d = coll.GetComponent<Rigidbody2D>();
