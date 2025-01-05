@@ -15,7 +15,9 @@ public class DiscoverableActivator : MonoBehaviour, ISwappable
     {
         if (coll2D.collider.isPlayerSolid())
         {
+            if (isSafeToCollect(coll2D.gameObject, coll2D.contacts[0].point)) {
             mmb.Discovered = true;
+            }
         }
     }
 
@@ -30,5 +32,11 @@ public class DiscoverableActivator : MonoBehaviour, ISwappable
     public void nowSwapped()
     {
         mmb.Discovered = true;
+    }
+
+    private bool isSafeToCollect(GameObject go, Vector2 point)
+    {
+        PlayerController pc = go.GetComponent<PlayerController>();
+        return !pc.canBeHitByHazard(GetComponent<Hazard>(), point);
     }
 }

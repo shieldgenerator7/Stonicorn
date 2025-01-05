@@ -134,16 +134,11 @@ public class PlayerController : MonoBehaviour
             updateGroundedState();
             //If collided with a Hazard,
             Hazard hazard = collision.gameObject.GetComponent<Hazard>();
-            bool hazardous = hazard && hazard.Hazardous;
-            //If any delegate says yes there is an exception,
-            //it's no longer a hazard
-            bool hazardException = hazardous && onHazardHitException != null
-                && onHazardHitException.GetInvocationList().ToList()
-                .Any(ohhe => (bool)ohhe.DynamicInvoke(collision.contacts[0].point));
-            if (hazardous && !hazardException)
+            Vector2 point = collision.contacts[0].point;
+            if (canBeHitByHazard(hazard, point))
             {
                 //Take damage (and rewind)
-                forceRewindHazard(hazard.DamageDealt, collision.contacts[0].point);
+                forceRewindHazard(hazard.DamageDealt, point);
             }
             else
             {
@@ -157,6 +152,26 @@ public class PlayerController : MonoBehaviour
     /// Returns true if there is an exception and the hazard does not hit
     /// </summary>
     public event OnHazardHitException onHazardHitException;
+
+    public bool canBeHitByHazard(Hazard hazard, Vector2 point)
+    {
+        //no hazard
+        if (!hazard) { return false; }
+
+        //hazard exists, but is currently not hazardous
+        if (!hazard.Hazardous) { return false; }
+
+        //If any delegate says yes there is an exception,
+        //it's no longer a hazard
+        bool hazardException = onHazardHitException != null
+            && onHazardHitException.GetInvocationList().ToList()
+            .Any(ohhe => (bool)ohhe.DynamicInvoke(point));
+        if (hazardException) { return false; }
+
+        //Hazard is hazardous and there are no exceptions
+        return true;
+
+    }
 
     /// <summary>
     /// Updates the position of the copycat collider that hits the ground before Merky does
