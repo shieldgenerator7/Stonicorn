@@ -386,6 +386,11 @@ public class ScenesManager : Manager
 
     private void registerObjectInScene(GameObject go, Scene scene)
     {
+        if (!go)
+        {
+            Debug.LogError($"registerObjectInScene: go is null! go: {go}!");
+            return;
+        }
         Debug.Log(
             $"Registering object {go.name} ({go.getKey()}) in scene {scene.name}",
             go
