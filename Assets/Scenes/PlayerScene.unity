@@ -272,7 +272,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 550
+  m_Radius: 575
 --- !u!4 &35776785
 Transform:
   m_ObjectHideFlags: 0
@@ -6111,11 +6111,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698750079473606340, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 530
+      value: 573.2
       objectReference: {fileID: 0}
     - target: {fileID: 5698750079473606340, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 289
+      value: 312.5
       objectReference: {fileID: 0}
     - target: {fileID: 5698750079473606340, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7160,67 +7160,35 @@ MonoBehaviour:
   m_Spline:
     m_IsOpenEnded: 0
     m_ControlPoints:
-    - position: {x: -387, y: -387, z: 0}
-      leftTangent: {x: 90.69525, y: -90.69525, z: 0}
-      rightTangent: {x: -90.68875, y: 90.68872, z: 0}
+    - position: {x: -400, y: 0, z: 0}
+      leftTangent: {x: 1.0914612, y: -224.19923, z: 0}
+      rightTangent: {x: -1.099762, y: 225.9061, z: 0}
       mode: 1
-      height: 1
+      height: 4
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -550, y: 0, z: 0}
-      leftTangent: {x: 0.5250244, y: -147.0336, z: 0}
-      rightTangent: {x: -0.5311279, y: 148.74582, z: 0}
+    - position: {x: 0, y: 400, z: 0}
+      leftTangent: {x: -228.5863, y: 0.35708618, z: 0}
+      rightTangent: {x: 224.79771, y: -0.35116577, z: 0}
       mode: 1
-      height: 1
+      height: 4
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -387, y: 387, z: 0}
-      leftTangent: {x: -91.74487, y: -91.74484, z: 0}
-      rightTangent: {x: 90.408936, y: 90.408966, z: 0}
+    - position: {x: 400, y: 0, z: 0}
+      leftTangent: {x: -2.9573364, y: 227.06541, z: 0}
+      rightTangent: {x: 2.9440918, y: -226.04877, z: 0}
       mode: 1
-      height: 1
+      height: 4
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 0, y: 550, z: 0}
-      leftTangent: {x: -146.57747, y: -0.8005371, z: 0}
-      rightTangent: {x: 149.19685, y: 0.8151245, z: 0}
+    - position: {x: 0, y: -400, z: 0}
+      leftTangent: {x: 232.2248, y: 2.7066956, z: 0}
+      rightTangent: {x: -230.74051, y: -2.689392, z: 0}
       mode: 1
-      height: 1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 387, y: 387, z: 0}
-      leftTangent: {x: -92.02463, y: 92.02466, z: 0}
-      rightTangent: {x: 91.74371, y: -91.74371, z: 0}
-      mode: 1
-      height: 1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 550, y: 0, z: 0}
-      leftTangent: {x: 0.52996826, y: 148.74402, z: 0}
-      rightTangent: {x: -0.52386475, y: -147.03543, z: 0}
-      mode: 1
-      height: 1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 387, y: -387, z: 0}
-      leftTangent: {x: 90.68988, y: 90.68985, z: 0}
-      rightTangent: {x: -91.73831, y: -91.73834, z: 0}
-      mode: 1
-      height: 1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 0, y: -550, z: 0}
-      leftTangent: {x: 148.7353, y: -0.52453613, z: 0}
-      rightTangent: {x: -147.0442, y: 0.51849365, z: 0}
-      mode: 1
-      height: 1
+      height: 4
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7293,11 +7261,12 @@ SpriteShapeRenderer:
   m_SortingOrder: 0
   m_Color: {r: 0.6462264, g: 0.9452494, b: 1, a: 1}
   m_MaskInteraction: 0
-  m_ShapeTexture: {fileID: 2800000, guid: c5b2df9fb92399c418251d20b4f5830a, type: 3}
-  m_Sprites: []
+  m_ShapeTexture: {fileID: 2800000, guid: 521391a7dd92b474ba86058110caaee7, type: 3}
+  m_Sprites:
+  - {fileID: 21300000, guid: 8a00abc4d79258e4599a2dbdcc1c4763, type: 3}
   m_LocalAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 550.08, y: 550.08, z: 0}
+    m_Center: {x: -0.006286621, y: 0.0045776367, z: 0}
+    m_Extent: {x: 591.99146, y: 591.9952, z: 0}
   m_SpriteSortPoint: 0
 --- !u!4 &1048347776
 Transform:
