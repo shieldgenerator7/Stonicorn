@@ -137,10 +137,9 @@ public class PlayerController : MonoBehaviour
             bool hazardous = hazard && hazard.Hazardous;
             //If any delegate says yes there is an exception,
             //it's no longer a hazard
-            Vector2 point = collision.contacts[0].point;
             bool hazardException = hazardous && onHazardHitException != null
                 && onHazardHitException.GetInvocationList().ToList()
-                .Any(ohhe => (bool)ohhe.DynamicInvoke(point));
+                .Any(ohhe => (bool)ohhe.DynamicInvoke(collision.contacts[0].point));
             if (hazardous && !hazardException)
             {
                 //Take damage (and rewind)
@@ -350,11 +349,13 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Call this to force Merky to rewind due to hitting a hazard
+    /// NOTE: You should not call this directly. Instead, add a Hazard subtype to your enemy (usually StaticHazard)
+    /// It's made public for the sun controller
     /// </summary>
     /// <param name="damageToSelf"></param>
     /// <param name="damageToOther"></param>
     /// <param name="contactPoint"></param>
-    private void forceRewindHazard(int damageToSelf, Vector2 contactPoint)
+    public void forceRewindHazard(int damageToSelf, Vector2 contactPoint)
     {
         if (damageToSelf > 0)
         {

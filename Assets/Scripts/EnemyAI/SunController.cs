@@ -27,5 +27,9 @@ public class SunController : Hazard
                 cp.InWorkingOrder = !inSun;
             }
         });
+        if (Managers.Player.transform.position.y - 0.5 < transform.position.y)
+        {
+            Managers.Player.forceRewindHazard(this.DamageDealt, new Vector2(Managers.Player.transform.position.x, transform.position.y));
+        }
     }
 }
