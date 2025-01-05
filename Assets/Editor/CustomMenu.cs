@@ -619,17 +619,19 @@ public class CustomMenu
                 checkGravityScale,
                 checkForIllegalPrefabOverrides,
             }
-            .ConvertAll(func => {
+            .ConvertAll(func =>
+            {
                 try
                 {
                     return func();
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     Debug.LogError($"pre build task {func.Method.Name} failed: {ex}");
                     Debug.LogException(ex);
                 }
                 return true;
-                })
+            })
             .Any(b => b);
 
         populateObjectManagerKnownObjectsList();
@@ -1053,7 +1055,7 @@ public class CustomMenu
                 continue;
             }
             //if the rb2d is frozen in place on an axis (eg, the sun), it's all good
-            if (rb2d.constraints != RigidbodyConstraints2D.None && rb2d.constraints!= RigidbodyConstraints2D.FreezeRotation)
+            if (rb2d.constraints != RigidbodyConstraints2D.None && rb2d.constraints != RigidbodyConstraints2D.FreezeRotation)
             {
                 continue;
             }
@@ -1103,7 +1105,7 @@ public class CustomMenu
         int problemCount = 0;
         foreach (SavableObjectInfo soi in GameObject.FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None))
         {
-            
+
             List<ObjectOverride> overrides = PrefabUtility.GetObjectOverrides(soi.gameObject);
             //overrides.ForEach(ovr =>
             //{
@@ -1158,12 +1160,12 @@ public class CustomMenu
         }
 
 
-            return problemCount>0;
+        return problemCount > 0;
     }
     private static bool couldPossiblyNeedToBeInstantiated(GameObject go)
     {
         return go.scene.name != "PlayerScene" && (
-            go.GetComponent<Rigidbody2D>() || 
+            go.GetComponent<Rigidbody2D>() ||
             go.GetComponent<IBlastable>() != null
             );
     }
@@ -1290,7 +1292,7 @@ public class CustomMenu
         Debug.Log($"BUILDNAME: {buildName}");
         Debug.Log($"PATH: {path}");
         Debug.Log($"defaultPath: {defaultPath}");
-        
+
 
         string[] levels = new string[EditorBuildSettings.scenes.Length];
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
