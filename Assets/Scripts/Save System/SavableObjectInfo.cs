@@ -29,6 +29,22 @@ public class SavableObjectInfo : ObjectInfo
 #if UNITY_EDITOR
     public virtual void autoset()
     {
+
+        //revert unneeded overrides
+        SerializedObject so = new SerializedObject(this);
+        List<string> revertList = new List<string>()
+        {
+            "id",
+            "spawnStateId",
+            "destroyStateId",
+        };
+        revertList.ForEach(revert =>
+        {
+            SerializedProperty property = so.FindProperty(revert);
+            PrefabUtility.RevertPropertyOverride(property, InteractionMode.UserAction);
+        });
+
+        //set Prefab Address
         string assetPath = AssetDatabase.GetAssetPath(gameObject);
         string guid = "";
         if (assetPath == null || assetPath.Trim() == "")
@@ -47,8 +63,9 @@ public class SavableObjectInfo : ObjectInfo
             );
         }
         prefabAddress = new AssetReference(guid);
-        spawnStateId = 0;
-        destroyStateId = int.MaxValue;
+
+        //Set dirty
+        EditorUtility.SetDirty(this);
     }
 #endif
 }
