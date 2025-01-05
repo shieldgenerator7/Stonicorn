@@ -20,7 +20,7 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Terrain/Focus Terrain Tool %T")]
     public static void levelTerrainPoints()
     {
-        SpriteShapeTool sst = GameObject.FindObjectOfType<SpriteShapeTool>();
+        SpriteShapeTool sst = GameObject.FindAnyObjectByType<SpriteShapeTool>();
         if (sst)
         {
             Selection.activeGameObject = sst.gameObject;
@@ -79,8 +79,8 @@ public class CustomMenu
     private static void CheckMileStoneActivatorAbility()
     {
         int errorCount = 0;
-        PlayerController pc = GameObject.FindObjectOfType<PlayerController>();
-        GameObject.FindObjectsOfType<MilestoneActivatorAbility>(true).ToList()
+        PlayerController pc = GameObject.FindAnyObjectByType<PlayerController>();
+        GameObject.FindObjectsByType<MilestoneActivatorAbility>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList()
             .ForEach(
             maa =>
             {
@@ -172,14 +172,14 @@ public class CustomMenu
     public static void toggleEditorCameraAutoRotate()
     {
         EditorCameraRotatorObject ecro =
-            GameObject.FindObjectOfType<EditorCameraRotatorObject>();
+            GameObject.FindAnyObjectByType<EditorCameraRotatorObject>();
         ecro.toggle();
     }
 
     [MenuItem("SG7/Editor/Mechanics/Connect selected Lantern and HiddenArea %#H")]
     public static void connectLanternToHiddenArea()
     {
-        HiddenAreaConnector hac = GameObject.FindObjectOfType<HiddenAreaConnector>();
+        HiddenAreaConnector hac = GameObject.FindAnyObjectByType<HiddenAreaConnector>();
         Selection.activeGameObject = hac.gameObject;
         hac.connect();
     }
@@ -293,7 +293,7 @@ public class CustomMenu
     [MenuItem("SG7/Editor/List Prefabs")]
     public static void listPrefabs()
     {
-        GameObject.FindObjectsOfType<SavableObjectInfo>().ToList()
+        GameObject.FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None).ToList()
             .FindAll(soi => soi.PrefabAddress.editorAsset != null)
             .OrderBy(soi => soi.PrefabAddress.editorAsset.name).ToList()
             .ForEach(soi =>
@@ -306,13 +306,13 @@ public class CustomMenu
     {
         if (Application.isEditor && !Application.isPlaying)
         {
-            PlayerTestSpawnPoint playerTSP = GameObject.FindObjectOfType<PlayerTestSpawnPoint>();
+            PlayerTestSpawnPoint playerTSP = GameObject.FindAnyObjectByType<PlayerTestSpawnPoint>();
             GameObject playerSpawnObject = playerTSP.gameObject;
 
             //Enable it
             playerTSP.enabled = true;
             playerSpawnObject.SetActive(true);
-            RulerDisplayer rd = GameObject.FindObjectOfType<RulerDisplayer>();
+            RulerDisplayer rd = GameObject.FindAnyObjectByType<RulerDisplayer>();
             if (rd)
             {
                 rd.transform.position = RulerDisplayer.currentMousePos;
@@ -327,8 +327,8 @@ public class CustomMenu
         else
         {
             //Call the player
-            GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
-            if (GameObject.FindObjectOfType<RulerDisplayer>())
+            GameObject playerObject = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
+            if (GameObject.FindAnyObjectByType<RulerDisplayer>())
             {
                 playerObject.transform.position = RulerDisplayer.currentMousePos;
             }
@@ -346,12 +346,12 @@ public class CustomMenu
         if (Application.isEditor && !Application.isPlaying)
         {
             //Deactivate spawn point
-            PlayerTestSpawnPoint playerTSP = GameObject.FindObjectOfType<PlayerTestSpawnPoint>();
+            PlayerTestSpawnPoint playerTSP = GameObject.FindAnyObjectByType<PlayerTestSpawnPoint>();
             playerTSP.enabled = false;
             GameObject playerSpawnObject = playerTSP.gameObject;
             playerSpawnObject.SetActive(true);
             //Select player object
-            GameObject playerObject = GameObject.FindObjectOfType<PlayerController>().gameObject;
+            GameObject playerObject = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
             Selection.activeGameObject = playerObject;
             Debug.Log($"PTSP enabled: {playerTSP.enabled}");
         }
@@ -364,7 +364,7 @@ public class CustomMenu
     public static void toggleRulers()
     {
         bool anyOn = false;
-        foreach (RulerDisplayer rd in GameObject.FindObjectsOfType<RulerDisplayer>())
+        foreach (RulerDisplayer rd in GameObject.FindObjectsByType<RulerDisplayer>(FindObjectsSortMode.None))
         {
             if (rd.active)
             {
@@ -372,7 +372,7 @@ public class CustomMenu
                 break;
             }
         }
-        foreach (RulerDisplayer rd in GameObject.FindObjectsOfType<RulerDisplayer>())
+        foreach (RulerDisplayer rd in GameObject.FindObjectsByType<RulerDisplayer>(FindObjectsSortMode.None))
         {
             rd.active = !anyOn;
         }
@@ -381,7 +381,7 @@ public class CustomMenu
         if (anyOn)
         {
             //turn off all the range previews
-            foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+            foreach (RulerRangePreview rrp in GameObject.FindObjectsByType<RulerRangePreview>(FindObjectsSortMode.None))
             {
                 rrp.Active = false;
             }
@@ -389,7 +389,7 @@ public class CustomMenu
             //select ruler
             if (!Selection.activeGameObject)
             {
-                Selection.activeGameObject = GameObject.FindObjectOfType<RulerDisplayer>().gameObject;
+                Selection.activeGameObject = GameObject.FindAnyObjectByType<RulerDisplayer>().gameObject;
             }
         }
     }
@@ -400,7 +400,7 @@ public class CustomMenu
     /// </summary>
     public static void callRulerToPreview()
     {
-        foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+        foreach (RulerRangePreview rrp in GameObject.FindObjectsByType<RulerRangePreview>(FindObjectsSortMode.None))
         {
             rrp.callParentRuler();
         }
@@ -412,7 +412,7 @@ public class CustomMenu
     public static void toggleRulerRangePreviews()
     {
         bool anyOn = false;
-        foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+        foreach (RulerRangePreview rrp in GameObject.FindObjectsByType<RulerRangePreview>(FindObjectsSortMode.None))
         {
             if (rrp.Active)
             {
@@ -420,7 +420,7 @@ public class CustomMenu
                 break;
             }
         }
-        foreach (RulerRangePreview rrp in GameObject.FindObjectsOfType<RulerRangePreview>())
+        foreach (RulerRangePreview rrp in GameObject.FindObjectsByType<RulerRangePreview>(FindObjectsSortMode.None))
         {
             rrp.Active = !anyOn;
         }
@@ -561,7 +561,7 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Log Objects %l")]
     public static void logObjects()
     {
-        Logger logger = GameObject.FindObjectOfType<Logger>();
+        Logger logger = GameObject.FindAnyObjectByType<Logger>();
         if (logger)
         {
             logger.logObjects.AddRange(
@@ -653,7 +653,7 @@ public class CustomMenu
     [MenuItem("SG7/Build/Pre-Build/Refresh Scene Savable Object Lists")]
     public static void refreshSceneSavableObjectLists()
     {
-        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
+        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
             .ForEach(ssl => ssl.refreshList());
     }
 
@@ -661,7 +661,7 @@ public class CustomMenu
     public static bool ensureSavableObjectsHaveObjectInfo()
     {
         List<GameObject> savables = new List<GameObject>();
-        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
+        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
             .ForEach(ssl => savables.AddRange(ssl.savables));
         //Missing ObjectInfo
         List<GameObject> missingInfo = savables
@@ -708,7 +708,7 @@ public class CustomMenu
     public static bool ensureMemoryObjectsHaveObjectInfo()
     {
         List<GameObject> memories = new List<GameObject>();
-        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
+        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
             .ForEach(ssl => memories.AddRange(ssl.memories));
         //Missing ObjectInfo
         List<GameObject> missingInfo = memories
@@ -724,7 +724,7 @@ public class CustomMenu
         int nextID = 0;
         bool changedId = false;
         const int SECTION_SIZE = 1000;
-        foreach (SceneSavableList ssl in GameObject.FindObjectsOfType<SceneSavableList>())
+        foreach (SceneSavableList ssl in GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None))
         {
             //Use buildIndex to set next id
             nextID = ssl.gameObject.scene.buildIndex * SECTION_SIZE;
@@ -813,7 +813,7 @@ public class CustomMenu
         bool errorFound = false;
         const int SPAWN_STATE_ID = 0;
         const int DESTROY_STATE_ID = int.MaxValue;
-        foreach (SceneSavableList ssl in GameObject.FindObjectsOfType<SceneSavableList>())
+        foreach (SceneSavableList ssl in GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None))
         {
             List<GameObject> savables = new List<GameObject>();
 
@@ -851,7 +851,7 @@ public class CustomMenu
         int changedCount = 0;
         string TAG = "NonTeleportableArea";
         string UNTAG = "Untagged";
-        GameObject.FindObjectsOfType<HiddenArea>().ToList()
+        GameObject.FindObjectsByType<HiddenArea>(FindObjectsSortMode.None).ToList()
             .ForEach(ha =>
             {
                 Utility.doForGameObjectAndChildren(
@@ -962,7 +962,7 @@ public class CustomMenu
     public static bool checkTiledHitBoxes()
     {
         int changedCount = 0;
-        GameObject.FindObjectsOfType<SpriteRenderer>().ToList()
+        GameObject.FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None).ToList()
             .FindAll(sr => sr.drawMode == SpriteDrawMode.Tiled)
             .OrderBy(sr => sr.gameObject.scene.buildIndex)
             .ThenBy(sr => sr.name).ToList()
@@ -1173,7 +1173,7 @@ public class CustomMenu
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
     public static void populateObjectManagerKnownObjectsList()
     {
-        Managers managers = GameObject.FindObjectOfType<Managers>();
+        Managers managers = GameObject.FindAnyObjectByType<Managers>();
         if (!managers.gameDataContainer)
         {
             Debug.LogError("Managers object needs to have a game data container!", managers);
@@ -1182,7 +1182,7 @@ public class CustomMenu
         int prevCount = managers.gameDataContainer._gameData.knownObjects.Count;
         managers.gameDataContainer._gameData.knownObjects = new List<SavableObjectInfoData>();
         List<GameObject> savables = new List<GameObject>();
-        GameObject.FindObjectsOfType<SceneSavableList>().ToList()
+        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
             .ForEach(ssl =>
             {
                 managers.gameDataContainer._gameData.knownObjects.AddRange(
