@@ -64,13 +64,13 @@ public class ObjectManager : Manager, ISetting
                 AssetReference assetRef = new AssetReference(prefabGUID);
                 if (assetRef == null)
                 {
-                    Debug.LogError("Asset Ref is null! id: " + goId);
+                    Debug.LogError($"Asset Ref is null! id: {goId}, prefab: {prefabGUID}");
                     return;
                 }
 #if UNITY_EDITOR
                 if (assetRef.editorAsset == null)
                 {
-                    Debug.LogError("Asset Ref editor asset is null! id: " + goId);
+                    Debug.LogError($"Asset Ref editor asset is null! id: {goId}, prefab: {prefabGUID}");
                     EditorApplication.isPaused = true;
                     return;
                 }
@@ -78,7 +78,7 @@ public class ObjectManager : Manager, ISetting
                 //2020-12-23: copied from https://youtu.be/uNpBS0LPhaU?t=1000
                 var op = Addressables.InstantiateAsync(assetRef);
                 recreateQueue.Add(goId, op);
-                Debug.Log("Recreating object (" + goId + ")"
+                Debug.Log($"Recreating object ({goId})"
                     + $" using prefabGUID {prefabGUID},"
 #if UNITY_EDITOR
                     + $" using prefab {assetRef.editorAsset.name}"
@@ -107,7 +107,7 @@ public class ObjectManager : Manager, ISetting
                             addObject(t.gameObject);
                         }
                     }
-                    Debug.Log("Recreated object " + newGO.name + " (" + goId + "). spawned: " + soi.spawnStateId + ", destroyed: " + soi.destroyStateId);
+                    Debug.Log($"Recreated object {newGO.name} ({goId}). spawned: {soi.spawnStateId}, destroyed: {soi.destroyStateId}");
                     //Delegate
                     onObjectRecreated?.Invoke(newGO, lastStateSeen);
                     //Finish up
