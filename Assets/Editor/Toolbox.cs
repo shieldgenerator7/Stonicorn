@@ -30,10 +30,16 @@ public class Toolbox : EditorWindow
     {
         GetWindow<Toolbox>();
     }
+    //Asset Ref editor asset is null! id: 223774150
+
+    private void findPlayerController()
+    {
+        pc = GameObject.FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(go => go.CompareTag("Player"));
+    }
 
     public void OnEnable()
     {
-        pc = GameObject.FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(go=>go.CompareTag("Player"));
+        findPlayerController();
         Debug.Log("found player: " + pc.name);
 
         abilityNames.ForEach(abilityName => abilityLevelMap[abilityName] = getAbilityLevel(abilityName));
@@ -45,12 +51,13 @@ public class Toolbox : EditorWindow
 
     private void OnGUI()
     {
+        bool prevEnabled = enabled;
         enabled = EditorGUILayout.Toggle("Enable tool", enabled);
         if (enabled)
         {
-            if (pc == null || ReferenceEquals(pc.gameObject, null))
+            if (!prevEnabled || pc == null || ReferenceEquals(pc.gameObject, null))
             {
-                pc = GameObject.FindFirstObjectByType<PlayerController>();
+                findPlayerController();
             }
         }
         GUI.enabled = enabled;
