@@ -65,7 +65,7 @@ public class CloudMover : MonoBehaviour
     {
         //if it collides with a solid piece of terrain,
         Collider2D collider = collision.collider;
-        if (collider.isSolid() && !collision.collider.GetComponent<Rigidbody2D>())
+        if (collider.isSolid() && !collider.GetComponent<Rigidbody2D>())
         {
             Debug.Log($"cloud {gameObject.name} ran into {collider.name}");
             //stop it
