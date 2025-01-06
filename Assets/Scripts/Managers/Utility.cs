@@ -166,15 +166,15 @@ public static class Utility
     #region GameObject Extension Methods
 
     public static bool isPlayer(this GameObject go)
-        => go.GetComponent<PlayerController>();
+        => go == Managers.Player.gameObject || go == Managers.PlayerPilot?.gameObject;
     /// <summary>
     /// Returns true if the collider is of the player's and is not a trigger
     /// </summary>
     /// <param name="coll2d"></param>
     /// <returns></returns>
     public static bool isPlayerSolid(this Collider2D coll2d)
-        => coll2d.gameObject.CompareTag("Player")
-            && !coll2d.isTrigger;
+        => !coll2d.isTrigger
+            && coll2d.gameObject.isPlayer();
     /// <summary>
     /// Returns true if the collider can be stood on,
     /// i.e. is not a trigger
