@@ -59,7 +59,8 @@ public class FlashlightAbility : PlayerAbility
     #region Input Processing
 
     protected override bool isGrounded() => false;
-    protected override void processTeleport(Vector2 oldPos, Vector2 newPos) {
+    protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
+    {
         if (flashlightOn || flashAuraOn)
         {
             //FlashlightDirection = originalFlashlightDirection;
@@ -114,7 +115,7 @@ public class FlashlightAbility : PlayerAbility
             );
 
             //aura
-            updateFlashAuraVisuals(1-percent);
+            updateFlashAuraVisuals(1 - percent);
 
             //enable sprites
             flashlightSRs.ForEach(flsr => flsr.enabled = true);
@@ -188,13 +189,15 @@ public class FlashlightAbility : PlayerAbility
         maxPullBackDistance = aul.stat1;
     }
 
-    public override SavableObject CurrentState {
+    public override SavableObject CurrentState
+    {
         get => base.CurrentState.more(
             "flashlightDirection", flashlightDirection,
             "flashlightOn", flashlightOn,
             "flashAuraOn", flashAuraOn
             );
-        set {
+        set
+        {
             bool prevlight = flashlightOn;
             bool prevaura = flashAuraOn;
             flashlightOn = value.Bool("flashlightOn");

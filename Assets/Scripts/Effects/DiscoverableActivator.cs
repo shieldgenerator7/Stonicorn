@@ -15,8 +15,9 @@ public class DiscoverableActivator : MonoBehaviour, ISwappable
     {
         if (coll2D.collider.isPlayerSolid() || coll2D.collider.GetComponent<PlayerPilotController>())
         {
-            if (isSafeToCollect(coll2D.gameObject, coll2D.contacts[0].point)) {
-            mmb.Discovered = true;
+            if (isSafeToCollect(coll2D.gameObject, coll2D.contacts[0].point))
+            {
+                mmb.Discovered = true;
             }
         }
     }

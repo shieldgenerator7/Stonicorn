@@ -69,7 +69,7 @@ public class SimpleMovement : MonoBehaviour
                     endPosition,
                     speed * Time.deltaTime
                     );
-                if (Vector2.Distance(transform.position, startPosition) >= direction.magnitude -0.01f
+                if (Vector2.Distance(transform.position, startPosition) >= direction.magnitude - 0.01f
                     || (Vector2)transform.position == endPosition)
                 {
                     paused = true;

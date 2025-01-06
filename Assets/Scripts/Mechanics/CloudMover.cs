@@ -53,7 +53,7 @@ public class CloudMover : MonoBehaviour
 
             //extend shadow
             float distance = Vector2.Distance(groundPoint, transform.position) + EXTRA_DISTANCE;
-            shadow.transform.position = transform.position + (gravityVector * distance/2);
+            shadow.transform.position = transform.position + (gravityVector * distance / 2);
             SpriteRenderer shadowSR = shadow.GetComponent<SpriteRenderer>();
             Vector2 size = shadowSR.size;
             size.y = distance;
