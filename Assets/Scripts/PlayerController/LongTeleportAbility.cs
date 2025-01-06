@@ -29,6 +29,7 @@ public class LongTeleportAbility : PlayerAbility
                 playerController.onHazardHitException -= onHitException;
                 if (shielded)
                 {
+                    ShouldUnshield = false;
                     playerController.onHazardHitException += onHitException;
                     Debug.Log("OnHit registered!");
                 }
