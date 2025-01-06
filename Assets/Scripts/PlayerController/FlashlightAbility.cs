@@ -72,14 +72,19 @@ public class FlashlightAbility : PlayerAbility
 
     public void processDrag(Vector2 oldPos, Vector2 newPos, GestureState state)
     {
-        flashlightOn = state == GestureState.ONGOING;
         FlashlightDirection = (Vector2)playerController.transform.position - newPos;
         switch (state)
         {
             case GestureState.START:
-                afterglowStartSize = 0;
+                //TODO: implement? //2025-01-05: i suspect this hasnt been implemented yet
                 return;
             case GestureState.ONGOING:
+                if (timer)
+                {
+                    Destroy(timer);
+                }
+                afterglowStartSize = 0;
+                flashlightOn = true;
                 flashAuraOn = true;
                 originalFlashlightDirection = flashlightDirection;
                 break;
@@ -156,30 +161,28 @@ public class FlashlightAbility : PlayerAbility
     {
         if (timer)
         {
-            timer.TimeLeft = afterglowDuration;
             Destroy(timer);
         }
         timer = Timer.startTimer(afterglowDuration, () =>
         {
-            if (!flashlightOn)
-            {
+            flashlightOn = false;
+            flashAuraOn = false;
                 flashlight.SetActive(false);
                 flashAuraOn = false;
                 afterglowStartSize = 0;
-            }
+            updateFlashlightVisuals();
+            updateFlashAuraVisuals(0);
         });
         timer.onTimeLeftChanged += (timeLeft, duration) =>
         {
-            if (!flashlightOn)
-            {
-                float percent = timeLeft / duration;
-
+                float percent = Mathf.Clamp(timeLeft / duration, 0, 1);
+            float min = 0.2f;
+            FlashlightDirection = originalFlashlightDirection.normalized * (
+                percent * (originalFlashlightDirection.magnitude - min) + min
+            );
+            updateFlashlightVisuals();
                 updateFlashAuraVisuals(percent, afterglowStartSize);
-            }
-            else
-            {
-                Destroy(timer);
-            }
+
         };
     }
     #endregion
