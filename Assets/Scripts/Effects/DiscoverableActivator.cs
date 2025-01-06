@@ -25,7 +25,10 @@ public class DiscoverableActivator : MonoBehaviour, ISwappable
     {
         if (coll2D.isPlayerSolid())
         {
+            //if (isSafeToCollect(coll2D.gameObject, coll2D.transform.position))
+            //{
             mmb.Discovered = true;
+            //}
         }
     }
 
