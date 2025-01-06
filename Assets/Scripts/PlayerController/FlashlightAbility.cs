@@ -50,11 +50,24 @@ public class FlashlightAbility : PlayerAbility
         playerController.onDragGesture += processDrag;
 
         this.flashlightSRs = this.flashlight.GetComponentsInChildren<SpriteRenderer>().ToList();
+
+        ForceLaunchAbility fla = playerController.GetComponent<ForceLaunchAbility>();
+        if (fla)
+        {
+            fla.onLaunch -= turnOff;
+            fla.onLaunch += turnOff;
+        }
     }
     public override void OnDisable()
     {
         base.OnDisable();
         playerController.onDragGesture -= processDrag;
+
+        ForceLaunchAbility fla = playerController.GetComponent<ForceLaunchAbility>();
+        if (fla)
+        {
+            fla.onLaunch -= turnOff;
+        }
     }
 
     #region Input Processing
@@ -159,22 +172,25 @@ public class FlashlightAbility : PlayerAbility
         }
     }
 
+
+    void turnOff()
+    {
+        flashlightOn = false;
+        flashAuraOn = false;
+        flashlight.SetActive(false);
+        flashAuraOn = false;
+        afterglowStartSize = 0;
+        updateFlashlightVisuals(0);
+        updateFlashAuraVisuals(0);
+    }
+
     void startFade()
     {
         if (timer)
         {
             Destroy(timer);
         }
-        timer = Timer.startTimer(afterglowDuration, () =>
-        {
-            flashlightOn = false;
-            flashAuraOn = false;
-                flashlight.SetActive(false);
-                flashAuraOn = false;
-                afterglowStartSize = 0;
-            updateFlashlightVisuals(0);
-            updateFlashAuraVisuals(0);
-        });
+        timer = Timer.startTimer(afterglowDuration, turnOff);
         timer.onTimeLeftChanged += (timeLeft, duration) =>
         {
                 float percent = Mathf.Clamp(timeLeft / duration, 0, 1);
