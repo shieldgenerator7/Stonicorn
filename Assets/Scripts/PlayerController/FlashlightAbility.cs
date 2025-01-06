@@ -93,12 +93,14 @@ public class FlashlightAbility : PlayerAbility
                 startFade();
                 break;
         }
-        updateFlashlightVisuals();
+        float percent = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
+        updateFlashlightVisuals(1, percent);
+        updateFlashAuraVisuals(percent);
     }
     #endregion
 
     #region Visuals
-    void updateFlashlightVisuals()
+    void updateFlashlightVisuals(float alpaPercent, float pullpercent = -1)
     {
         flashlightBeamMask.enabled = flashlightOn;
 
@@ -107,20 +109,20 @@ public class FlashlightAbility : PlayerAbility
             flashlight.SetActive(true);
             flashlight.transform.up = flashlightDirection;
 
-
-            float percent = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
+            if (pullpercent >= 0) { 
             Vector2 size = flashlightBeamMask.transform.localScale;
-            size.y = maxBeamDistance * percent;
+            size.y = maxBeamDistance * pullpercent;
             flashlightBeamMask.transform.localScale = size;
+            }
 
             //adjust alpha
-            float alpha = (1 - percent) * (maxAlpha - minAlpha) + minAlpha;
+            float alpha = (alpaPercent) * (maxAlpha - minAlpha) + minAlpha;
             flashlightSRs.ForEach(flsr =>
                 flsr.color = flsr.color.adjustAlpha(alpha)
             );
 
             //aura
-            updateFlashAuraVisuals(1 - percent);
+            updateFlashAuraVisuals(1-alpaPercent);
 
             //enable sprites
             flashlightSRs.ForEach(flsr => flsr.enabled = true);
@@ -137,15 +139,12 @@ public class FlashlightAbility : PlayerAbility
     void updateFlashAuraVisuals(float percent, float maxSize = 0)
     {
         flashlightPlayerGlowSR.enabled = percent > 0;
-        Vector2 sizeGlow = flashlightPlayerGlowSR.transform.localScale;
-        if (maxSize > 0)
+        if (maxSize == 0)
         {
-            sizeGlow = Vector2.one * ((afterglowStartSize) * percent);
+            maxSize = maxGlowSize;
         }
-        else
-        {
-            sizeGlow = Vector2.one * ((maxGlowSize - minGlowSize) * (percent) + minGlowSize);
-        }
+        maxSize = Mathf.Clamp(maxSize, minGlowSize, maxGlowSize);
+        Vector2 sizeGlow = Vector2.one * ((maxSize - minGlowSize) * (percent) + minGlowSize);
         flashlightPlayerGlowSR.transform.localScale = sizeGlow;
         if (Utility.between(glowAlpha, 0, 1))
         {
@@ -170,17 +169,13 @@ public class FlashlightAbility : PlayerAbility
                 flashlight.SetActive(false);
                 flashAuraOn = false;
                 afterglowStartSize = 0;
-            updateFlashlightVisuals();
+            updateFlashlightVisuals(0);
             updateFlashAuraVisuals(0);
         });
         timer.onTimeLeftChanged += (timeLeft, duration) =>
         {
                 float percent = Mathf.Clamp(timeLeft / duration, 0, 1);
-            float min = 0.2f;
-            FlashlightDirection = originalFlashlightDirection.normalized * (
-                percent * (originalFlashlightDirection.magnitude - min) + min
-            );
-            updateFlashlightVisuals();
+            updateFlashlightVisuals(percent);
                 updateFlashAuraVisuals(percent, afterglowStartSize);
 
         };
@@ -209,7 +204,7 @@ public class FlashlightAbility : PlayerAbility
             if (flashlightOn != prevlight || flashAuraOn != prevaura)
             {
                 FlashlightDirection = flashlightDirection;
-                updateFlashlightVisuals();
+                updateFlashlightVisuals(1);
                 startFade();
             }
         }
