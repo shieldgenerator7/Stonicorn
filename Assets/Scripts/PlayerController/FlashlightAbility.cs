@@ -18,6 +18,7 @@ public class FlashlightAbility : PlayerAbility
     public float maxGlowSize = 3f;
     public float glowAlpha = -1;//override alpha animation if between 0 and 1
     public float afterglowDuration = 0.5f;
+    public bool beamDirFollowsTeleport = true;
     private float afterglowStartSize = 1;
 
     public GameObject flashlight;
@@ -63,8 +64,11 @@ public class FlashlightAbility : PlayerAbility
     {
         if (flashlightOn || flashAuraOn)
         {
-            //FlashlightDirection = originalFlashlightDirection;
-            //updateFlashlightVisuals();
+            if (beamDirFollowsTeleport)
+            {
+                FlashlightDirection = (newPos - oldPos).normalized * FlashlightDirection.magnitude;
+            }
+            updateFlashlightVisuals(1);
             updateFlashAuraVisuals(1, afterglowStartSize);
             startFade();
         }
