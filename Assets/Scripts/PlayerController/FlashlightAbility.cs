@@ -99,7 +99,7 @@ public class FlashlightAbility : PlayerAbility
         }
         float percent = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
         updateFlashlightVisuals(1, percent);
-        updateFlashAuraVisuals(percent);
+        updateFlashAuraVisuals(1-percent);
     }
     #endregion
 
@@ -137,7 +137,6 @@ public class FlashlightAbility : PlayerAbility
             flashlightSRs.ForEach(flsr =>
                 flsr.enabled = false
             );
-            updateFlashAuraVisuals(1, afterglowStartSize);
         }
     }
     void updateFlashAuraVisuals(float percent, float maxSize = 0)
