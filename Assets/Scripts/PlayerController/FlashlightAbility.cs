@@ -43,6 +43,7 @@ public class FlashlightAbility : PlayerAbility
     }
 
     Timer timer;
+    private bool tapOnPlayer;
 
     public override void init()
     {
@@ -50,6 +51,9 @@ public class FlashlightAbility : PlayerAbility
         playerController.onDragGesture += processDrag;
 
         this.flashlightSRs = this.flashlight.GetComponentsInChildren<SpriteRenderer>().ToList();
+
+        playerController.Teleport.findTeleportablePositionOverride
+            += findTeleportablePosition;
 
         ForceLaunchAbility fla = playerController.GetComponent<ForceLaunchAbility>();
         if (fla)
@@ -63,6 +67,9 @@ public class FlashlightAbility : PlayerAbility
         base.OnDisable();
         playerController.onDragGesture -= processDrag;
 
+        playerController.Teleport.findTeleportablePositionOverride
+            -= findTeleportablePosition;
+
         ForceLaunchAbility fla = playerController.GetComponent<ForceLaunchAbility>();
         if (fla)
         {
@@ -73,8 +80,21 @@ public class FlashlightAbility : PlayerAbility
     #region Input Processing
 
     protected override bool isGrounded() => false;
+    Vector2 findTeleportablePosition(Vector2 rangePos, Vector2 tapPos)
+    {
+        if (playerController.gestureOnPlayer(tapPos))
+        {
+            tapOnPlayer = true;
+        }
+        return Vector2.zero;
+    }
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
+        if (tapOnPlayer)
+        {
+            turnOff();
+        }
+        else { 
         if (flashlightOn || flashAuraOn)
         {
             if (beamDirFollowsTeleport)
@@ -84,6 +104,7 @@ public class FlashlightAbility : PlayerAbility
             updateFlashlightVisuals(1);
             updateFlashAuraVisuals(1, afterglowStartSize);
             startFade();
+        }
         }
     }
 
