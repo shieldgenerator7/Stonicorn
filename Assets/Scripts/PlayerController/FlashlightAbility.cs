@@ -82,10 +82,7 @@ public class FlashlightAbility : PlayerAbility
     protected override bool isGrounded() => false;
     Vector2 findTeleportablePosition(Vector2 rangePos, Vector2 tapPos)
     {
-        if (playerController.gestureOnPlayer(tapPos))
-        {
-            tapOnPlayer = true;
-        }
+        tapOnPlayer = playerController.gestureOnPlayer(tapPos);
         return Vector2.zero;
     }
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
