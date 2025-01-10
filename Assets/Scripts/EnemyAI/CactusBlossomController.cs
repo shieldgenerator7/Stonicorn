@@ -73,7 +73,7 @@ public class CactusBlossomController : SavableMonoBehaviour
             case State.CLOSED:
                 if (Managers.Time.Time - closedWaitStartTime >= closedDuration)
                 {
-                    state = State.OPENING;
+                    shiftToOpen();
                 }
                 break;
             case State.OPENING:
@@ -97,6 +97,12 @@ public class CactusBlossomController : SavableMonoBehaviour
             ta.onTeleport -= reactToTeleport;
             ta.onTeleport += reactToTeleport;
         }
+        ForceLaunchAbility fla = collision.GetComponent<ForceLaunchAbility>();
+        if (fla)
+        {
+            fla.onLaunch -= reactToLaunch;
+            fla.onLaunch += reactToLaunch;
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -105,10 +111,30 @@ public class CactusBlossomController : SavableMonoBehaviour
         {
             ta.onTeleport -= reactToTeleport;
         }
+        ForceLaunchAbility fla = collision.GetComponent<ForceLaunchAbility>();
+        if (fla)
+        {
+            fla.onLaunch -= reactToLaunch;
+        }
     }
 
     public void reactToTeleport(Vector2 oldPos, Vector2 newPos)
     {
+        shiftToOpen();
+    }
+    public void reactToLaunch()
+    {
+        shiftToClose();
+    }
+    void shiftToOpen()
+    {
+        //early exit: already open
+        if (state == State.OPEN) { return; }
+
+        //start the opening process
+        state = State.OPENING;
+    }
+    void shiftToClose() { 
         //early exit: already closed
         if (state == State.CLOSED)        {            return;        }
 
