@@ -186,25 +186,26 @@ public class ElectricBeamAbility : PlayerAbility
     #region Input Handling
     Vector2 findTeleportablePosition(Vector2 rangePos, Vector2 tapPos)
     {
-        if (playerController.gestureOnPlayer(tapPos))
-        {
-            tapOnPlayer = true;
-        }
+        tapOnPlayer = playerController.gestureOnPlayer(tapPos);
         return Vector2.zero;
     }
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        Activated = tapOnPlayer;
+        if (tapOnPlayer)
+        {
+            Activated = !Activated;
+        }
         if (Activated)
         {
             selectTarget();
         }
         else
         {
-            Target = null;
+            //Say it's been deselected, but keep it selected for easy target switching in the future
+            //(useful for situations where there's multiple items to target in the same spot)
+            onTargetChanged(Target, null);
         }
-        tapOnPlayer = false;
         wiredThisInput = false;
     }
     protected override bool isGrounded() => Activated && CanStatic;
