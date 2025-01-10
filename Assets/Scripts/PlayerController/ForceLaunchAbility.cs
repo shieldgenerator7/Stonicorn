@@ -67,6 +67,9 @@ public class ForceLaunchAbility : PlayerAbility
 
     private Vector2 currentVelocity;//used to recover the velocity when hitting a wall
     private bool affectingVelocity = false;//true if recently launched
+    /// <summary>
+    /// True if it is on fire and causing the player to be moving
+    /// </summary>
     public bool AffectingVelocity
     {
         get => affectingVelocity;

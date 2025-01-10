@@ -102,6 +102,10 @@ public class CactusBlossomController : SavableMonoBehaviour
         {
             fla.onLaunch -= reactToLaunch;
             fla.onLaunch += reactToLaunch;
+            if (fla.AffectingVelocity)
+            {
+                reactToLaunch();
+            }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
