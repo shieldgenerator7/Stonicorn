@@ -8,10 +8,14 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     public float moveForce = 10;//magnitude
     public Vector2 startMoveVector = Vector2.left;
     private Vector2 moveVector;//direction, relative to self
+    [Tooltip("How long it has to be off before flipping direction")]
+    public float offDuration = 0.2f;
 
     public Collider2D bumperColl;
 
     private Rigidbody2D rb2d;
+
+    private Timer flipDirectionTimer;
 
     public float ThroughPut => maxEnergyPerSecond;
     public GameObject GameObject => gameObject;
@@ -43,6 +47,15 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         //init
         moveVector = startMoveVector;
     }
+    float prevPoweredTime = 0;
+    private void Update()
+    {
+        if (prevPoweredTime > 0 && Managers.Time.Time >= prevPoweredTime + offDuration)
+        {
+            prevPoweredTime = 0;
+            flipDirection();
+        }
+    }
 
     public float acceptPower(float power)
     {
@@ -62,6 +75,9 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
             {
                 rb2d.linearVelocity = rb2d.linearVelocity.normalized * speed;
             }
+
+            //
+            prevPoweredTime = Managers.Time.Time;
         }
         onPowerGiven?.Invoke(energyToUse, maxEnergy);
         return power - energyToUse;
@@ -71,7 +87,12 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     {
         if (!collision.isTrigger)
         {
-            moveVector *= -1;
+            //flipDirection();
         }
+    }
+
+    void flipDirection()
+    {
+        moveVector *= -1;
     }
 }
