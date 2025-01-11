@@ -188,7 +188,6 @@ public class WallClimbAbility : PlayerAbility
     /// Plants a sticky pad at the oldPos if it's near a wall
     /// </summary>
     /// <param name="teleportPos"></param>
-    /// <param name="newPos"></param>
     public void plantSticky(Vector2 teleportPos)
     {
         if (playerController.Ground.GroundedAbilityPrev)
