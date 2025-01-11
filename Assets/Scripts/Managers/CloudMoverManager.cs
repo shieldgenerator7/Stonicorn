@@ -97,28 +97,17 @@ public class CloudMoverManager: MonoBehaviour
             .ToNativeArray(Allocator.Persistent);
 
         //raycast job stuff
-        int count = cloudMovers.Count;
-
-        for (int i = 0; i < count; i++)
+        CloudMoverRaycastJob cloudMoverRaycastJob = new CloudMoverRaycastJob()
         {
-            var cloudMover = cloudMovers[i];
-            Vector2 cloudPosition = cloudMover.transform.position;
-            Vector2 gravityVector = (gravityCenter - cloudPosition).normalized;
+            cloudPositions = cloudPositions,
+            gravityCenter = Vector2.zero,
+            maxRaycastDistance = MAX_DISTANCE,
+            layerMask = layerMask,
 
-            //RaycastHit2D rch2d = Physics2D.Raycast(
-            //    cloudPosition + (gravityVector * 10),
-            //    gravityVector,
-            //    MAX_DISTANCE,
-            //    layerMask
-            //);
-            RaycastHit2D rch2d = Utility.RaycastQuestion(
-                cloudPosition + (gravityVector * 10),
-                gravityVector,
-                MAX_DISTANCE,
-                rch2d => rch2d.collider.gameObject.layer == layerMask
-            );
-            groundPositions[i] = rch2d.point;
-        }
+            groundPositions = groundPositions,
+        };
+        JobHandle cloudMoverRaycastJobHandle = cloudMoverRaycastJob.Schedule();
+        cloudMoverRaycastJobHandle.Complete();
 
         //cloud mover shadow job stuff
         CloudMoverShadowJob cloudMoverShadowJob = new CloudMoverShadowJob()
@@ -126,9 +115,7 @@ public class CloudMoverManager: MonoBehaviour
             cloudPositions = cloudPositions,
             groundPositions = groundPositions,
             gravityCenter = Vector2.zero,
-            maxRaycastDistance = MAX_DISTANCE,
             extraShadowDistance = EXTRA_DISTANCE,
-            layerMask = layerMask,
 
             shadowPositions = shadowPositions,
             shadowHeights = shadowHeights,
@@ -156,6 +143,48 @@ public class CloudMoverManager: MonoBehaviour
         newCloudVectorUps = new NativeArray<float2>(count, Allocator.Persistent);
         shadowPositions = new NativeArray<float2>(count, Allocator.Persistent);
         shadowHeights = new NativeArray<float>(count, Allocator.Persistent);
+    }
+}
+
+public struct CloudMoverRaycastJob : IJob
+{
+    [ReadOnly]
+    public NativeArray<float2> cloudPositions;
+    [ReadOnly]
+    public float2 gravityCenter;
+    [ReadOnly]
+    public float maxRaycastDistance;
+    [ReadOnly]
+    public int layerMask;
+
+    [WriteOnly]
+    public NativeArray<float2> groundPositions;
+
+    public void Execute()
+    {
+        for (int i = 0; i < cloudPositions.Length; i++) {
+            Execute(i);
+        }
+    }
+    public void Execute(int index)
+    {
+        float2 cloudPosition = cloudPositions[index];
+        float2 gravityVector = math.normalize(gravityCenter - cloudPosition);
+
+        //RaycastHit2D rch2d = Physics2D.Raycast(
+        //    cloudPosition + (gravityVector * 10),
+        //    gravityVector,
+        //    MAX_DISTANCE,
+        //    layerMask
+        //);
+        int layerMask = this.layerMask;
+        RaycastHit2D rch2d = Utility.RaycastQuestion(
+            cloudPosition + (gravityVector * 10),
+            gravityVector,
+            maxRaycastDistance,
+            rch2d => rch2d.collider.gameObject.layer == layerMask
+        );
+        groundPositions[index] = rch2d.point;
     }
 }
 
@@ -192,11 +221,7 @@ public struct CloudMoverShadowJob : IJobParallelFor
     [ReadOnly]
     public float2 gravityCenter;
     [ReadOnly]
-    public float maxRaycastDistance;
-    [ReadOnly]
     public float extraShadowDistance;
-    [ReadOnly]
-    public int layerMask;
 
     [WriteOnly]
     public NativeArray<float2> shadowPositions;
