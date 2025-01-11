@@ -13,18 +13,16 @@ public class CloudMoverManager: MonoBehaviour
     [Tooltip("How many in a batch, ideally a multiple of 2")]
     public int jobCount = 4;
 
-    NativeList<float2> cloudPositions = new NativeList<float2>(Allocator.Persistent);
-    NativeList<float2> shadowPositions = new NativeList<float2>(Allocator.Persistent);
-    NativeList<float> shadowHeights = new NativeList<float>(Allocator.Persistent);
+    NativeArray<float2> cloudPositions;
+    NativeArray<float2> shadowPositions;
+    NativeArray<float> shadowHeights;
 
     List<CloudMover> cloudMovers = new List<CloudMover>();
 
 
     private void Start()
     {
-        cloudPositions = new NativeList<float2>(Allocator.Persistent);
-        shadowPositions = new NativeList<float2>(Allocator.Persistent);
-        shadowHeights = new NativeList<float>(Allocator.Persistent);
+        populateCloudMovers();
     }
 
 
@@ -33,8 +31,7 @@ public class CloudMoverManager: MonoBehaviour
         //get cloud movers
         if (cloudMovers.Count == 0)
         {
-            cloudMovers = Managers.Object.getObjects<CloudMover>()
-                .FindAll(cm => cm.shadow);
+            populateCloudMovers();
 
             //early exit: no cloud movers
             if (cloudMovers.Count == 0)
@@ -46,7 +43,7 @@ public class CloudMoverManager: MonoBehaviour
         //get cloud positions
         cloudPositions = cloudMovers
             .ConvertAll(cm => new float2(cm.transform.position.x, cm.transform.position.y))
-            .ToNativeList(Allocator.Persistent);
+            .ToNativeArray(Allocator.Persistent);
 
         //cloud mover job stuff
         CloudMoverJob cloudMoverJob = new CloudMoverJob()
@@ -70,12 +67,23 @@ public class CloudMoverManager: MonoBehaviour
             cloudMovers[i].acceptJobState(shadowPositions[i], shadowHeights[i]);
         }
     }
+
+    void populateCloudMovers()
+    {
+        cloudMovers = Managers.Object.getObjects<CloudMover>()
+            .FindAll(cm => cm.shadow);
+        int count = cloudMovers.Count;
+
+        cloudPositions = new NativeArray<float2>(count, Allocator.Persistent);
+        shadowPositions = new NativeArray<float2>(count, Allocator.Persistent);
+        shadowHeights = new NativeArray<float>(count, Allocator.Persistent);
+    }
 }
 
 public struct CloudMoverJob : IJobParallelFor
 {
     [ReadOnly]
-    public NativeList<float2> cloudPositions;
+    public NativeArray<float2> cloudPositions;
     [ReadOnly]
     public float2 gravityCenter;
     [ReadOnly]
@@ -86,9 +94,9 @@ public struct CloudMoverJob : IJobParallelFor
     public int layerMask;
 
     [WriteOnly]
-    public NativeList<float2> shadowPositions;
+    public NativeArray<float2> shadowPositions;
     [WriteOnly]
-    public NativeList<float> shadowHeights;
+    public NativeArray<float> shadowHeights;
 
     public void Execute(int index)
     {
