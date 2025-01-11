@@ -11,11 +11,7 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     [Tooltip("How long it has to be off before flipping direction")]
     public float offDuration = 0.2f;
 
-    public Collider2D bumperColl;
-
     private Rigidbody2D rb2d;
-
-    private Timer flipDirectionTimer;
 
     public float ThroughPut => maxEnergyPerSecond;
     public GameObject GameObject => gameObject;
@@ -38,11 +34,6 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     public override void init()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        //Error checking
-        if (!bumperColl || !bumperColl.isTrigger)
-        {
-            Debug.LogError("PoweredMover.bumperColl requires a collider that is a trigger!", gameObject);
-        }
 
         //init
         moveVector = startMoveVector;
@@ -81,14 +72,6 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         }
         onPowerGiven?.Invoke(energyToUse, maxEnergy);
         return power - energyToUse;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!collision.isTrigger)
-        {
-            //flipDirection();
-        }
     }
 
     void flipDirection()
