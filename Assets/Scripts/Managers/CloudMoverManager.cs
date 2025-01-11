@@ -7,16 +7,19 @@ using UnityEngine;
 //2025-01-10: written by following tutorial: https://www.youtube.com/watch?v=1VZaW4_quzI
 public class CloudMoverManager: MonoBehaviour
 {
+    public float speed = 0.2f;
+    public Vector2 gravityCenter = Vector2.zero;
     [Header("Shadow ground finding")]
     public float MAX_DISTANCE = 200;
     public float EXTRA_DISTANCE = 10;
     [Tooltip("How many in a batch, ideally a multiple of 2")]
     public int jobCount = 4;
-    public Vector2 gravityCenter = Vector2.zero;
     public string layerName = "Ground";
 
     NativeArray<float2> cloudPositions;
     NativeArray<float2> groundPositions;
+    NativeArray<float2> newCloudVelocities;
+    NativeArray<float2> newCloudVectorUps;
     NativeArray<float2> shadowPositions;
     NativeArray<float> shadowHeights;
 
@@ -29,6 +32,47 @@ public class CloudMoverManager: MonoBehaviour
     {
         populateCloudMovers();
         layerMask = LayerMask.NameToLayer(layerName);
+    }
+
+    private void FixedUpdate()
+    {
+
+        //get cloud movers
+        if (cloudMovers.Count == 0)
+        {
+            populateCloudMovers();
+
+            //early exit: no cloud movers
+            if (cloudMovers.Count == 0)
+            {
+                return;
+            }
+        }
+
+        //get cloud positions
+        cloudPositions = cloudMovers
+            .ConvertAll(cm => new float2(cm.transform.position.x, cm.transform.position.y))
+            .ToNativeArray(Allocator.Persistent);
+
+        //cloud mover move job stuff
+        CloudMoverMoveJob cloudMoverMoveJob = new CloudMoverMoveJob()
+        {
+            cloudPositions = cloudPositions,
+            gravityCenter = Vector2.zero,
+            speed = speed,
+
+            newCloudVelocities = newCloudVelocities,
+            newCloudVectorUps = newCloudVectorUps,
+        };
+
+        JobHandle cloudMoverShadowJobHandle = cloudMoverMoveJob.Schedule(cloudMovers.Count, jobCount);
+
+        cloudMoverShadowJobHandle.Complete();
+
+        for (int i = 0; i < cloudMovers.Count; i++)
+        {
+            cloudMovers[i].acceptMoveJobState(newCloudVelocities[i], newCloudVectorUps[i]);
+        }
     }
 
 
@@ -122,8 +166,34 @@ public class CloudMoverManager: MonoBehaviour
 
         cloudPositions = new NativeArray<float2>(count, Allocator.Persistent);
         groundPositions = new NativeArray<float2>(count,Allocator.Persistent);
+        newCloudVelocities = new NativeArray<float2>(count, Allocator.Persistent);
+        newCloudVectorUps = new NativeArray<float2>(count, Allocator.Persistent);
         shadowPositions = new NativeArray<float2>(count, Allocator.Persistent);
         shadowHeights = new NativeArray<float>(count, Allocator.Persistent);
+    }
+}
+
+public struct CloudMoverMoveJob : IJobParallelFor
+{
+    [ReadOnly]
+    public NativeArray<float2> cloudPositions;
+    [ReadOnly]
+    public float2 gravityCenter;
+    [ReadOnly]
+    public float speed;
+
+    [WriteOnly]
+    public NativeArray<float2> newCloudVelocities;
+    [WriteOnly]
+    public NativeArray<float2> newCloudVectorUps;
+
+    public void Execute(int index)
+    {
+        float2 cloudPosition = cloudPositions[index];
+        float2 gravityVector = math.normalize(gravityCenter - cloudPosition);
+        Vector2 sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
+        newCloudVelocities[index] = sideVector.normalized * speed;
+        newCloudVectorUps[index] = -gravityVector;
     }
 }
 

@@ -4,33 +4,20 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class CloudMover : MonoBehaviour
 {
-    public float speed = 0.02f;
 
     public GameObject shadow;
 
-    GravityAccepter gravityAccepter;
     Rigidbody2D rb2d;
     SpriteRenderer shadowSR;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gravityAccepter = GetComponent<GravityAccepter>();
         rb2d = GetComponent<Rigidbody2D>();
         if (shadow)
         {
         shadowSR = shadow?.GetComponent<SpriteRenderer>();
         }
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        Vector2 center = Vector2.zero;// gravityAccepter.Center.position //TODO: use gravityAccepter center
-        Vector2 gravityVector = center - (Vector2)transform.position;
-        Vector2 sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
-        rb2d.linearVelocity = sideVector.normalized * speed;
-        transform.up = -gravityVector;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -52,6 +39,12 @@ public class CloudMover : MonoBehaviour
                 shadow.SetActive(false);
             }
         }
+    }
+
+    internal void acceptMoveJobState(Vector2 velocity, Vector2 up)
+    {
+        rb2d.linearVelocity = velocity;
+        transform.up = up;
     }
 
     internal void acceptShadowJobState(Vector2 pos, float height)
