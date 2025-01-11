@@ -17,7 +17,10 @@ public class CloudMover : MonoBehaviour
     {
         gravityAccepter = GetComponent<GravityAccepter>();
         rb2d = GetComponent<Rigidbody2D>();
+        if (shadow)
+        {
         shadowSR = shadow?.GetComponent<SpriteRenderer>();
+        }
     }
 
     // Update is called once per frame
