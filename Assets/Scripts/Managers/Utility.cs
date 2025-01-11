@@ -542,6 +542,21 @@ public static class Utility
         checkMaxReturnedList("Utility.RaycastAll", count);
         return new RaycastAnswer(rch2dsNonAlloc, count);
     }
+    public static RaycastHit2D RaycastQuestion(Vector2 origin, Vector2 direction, float distance, Func<RaycastHit2D, bool> questionFunc)
+    {
+        RaycastAnswer rca = RaycastAll(origin, direction, distance);
+        for (int i = 0; i < rca.count; i++)
+        {
+            RaycastHit2D rch2d = rca.rch2ds[i];
+            if (questionFunc(rch2d)){
+                return rch2d;
+            }
+        }
+        return new RaycastHit2D()
+        {
+            point = origin + direction.normalized * distance,
+        };
+    }
     public static int Cast(Collider2D coll2d, Vector2 direction, RaycastHit2D[] results = null, float distance = 0, bool ignoreSiblingColliders = true)
     {
         results ??= rch2dsNonAlloc;
