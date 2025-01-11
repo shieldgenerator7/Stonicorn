@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -240,6 +241,14 @@ public class ObjectManager : Manager, ISetting
             );
         //Otherwise, sorry, you're out of luck
         return null;
+    }
+
+    internal List<T> getObjects<T>()
+    {
+        return data.gameObjects
+            .Values.ToList()
+            .ConvertAll(value => value.GetComponent<T>())
+            .FindAll(t => t != null);
     }
 
     /// <summary>
