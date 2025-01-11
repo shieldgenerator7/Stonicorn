@@ -26,6 +26,7 @@ public class ObjectPool<T>
         {
             T t = createFunc();
             loanedList.Add(t);
+            Debug.Log($"Object pool {typeof(T).Name} created new object; count: {loanedList.Count + pool.Count}");
             return t;
         }
         //Use an existing unused t
