@@ -12,22 +12,29 @@ public class CloudMoverManager: MonoBehaviour
     public float EXTRA_DISTANCE = 10;
     [Tooltip("How many in a batch, ideally a multiple of 2")]
     public int jobCount = 4;
+    public Vector2 gravityCenter = Vector2.zero;
+    public string layerName = "Ground";
 
     NativeArray<float2> cloudPositions;
+    NativeArray<float2> groundPositions;
     NativeArray<float2> shadowPositions;
     NativeArray<float> shadowHeights;
 
     List<CloudMover> cloudMovers = new List<CloudMover>();
 
+    int layerMask;
+
 
     private void Start()
     {
         populateCloudMovers();
+        layerMask = LayerMask.NameToLayer(layerName);
     }
 
 
     private void Update()
     {
+
         //get cloud movers
         if (cloudMovers.Count == 0)
         {
@@ -45,14 +52,53 @@ public class CloudMoverManager: MonoBehaviour
             .ConvertAll(cm => new float2(cm.transform.position.x, cm.transform.position.y))
             .ToNativeArray(Allocator.Persistent);
 
+        //raycast job stuff
+        int count = cloudMovers.Count;
+        //2025-01-11: copied from https://stackoverflow.com/a/74541903/2336212
+        var raycastCommands = new NativeArray<RaycastCommand>(count, Allocator.TempJob);
+        var raycasthits = new NativeArray<RaycastHit>(count, Allocator.TempJob);
+
+        for (int i = 0; i < count; i++)
+        {
+            var cloudMover = cloudMovers[i];
+            Vector2 cloudPosition = cloudMover.transform.position;
+            Vector2 gravityVector = (gravityCenter - cloudPosition).normalized;
+
+            raycastCommands[i] = new RaycastCommand(
+                cloudPosition, 
+                gravityVector, 
+                new QueryParameters(
+                    layerMask, 
+                    false, 
+                    QueryTriggerInteraction.Ignore,
+                    false
+                ), 
+                MAX_DISTANCE
+            );
+        }
+
+        var handle = RaycastCommand.ScheduleBatch(raycastCommands, raycasthits, 1, count, default(JobHandle));
+
+        handle.Complete();
+
+        for (int i = 0; i < count; i++)
+        {
+            RaycastHit rch = raycasthits[i];
+            groundPositions[i] = (Vector2)rch.point;
+        }
+
+        raycastCommands.Dispose();
+        raycasthits.Dispose();
+
         //cloud mover job stuff
         CloudMoverJob cloudMoverJob = new CloudMoverJob()
         {
             cloudPositions = cloudPositions,
+            groundPositions = groundPositions,
             gravityCenter = Vector2.zero,
-            maxRaycastDistance =  MAX_DISTANCE,
+            maxRaycastDistance = MAX_DISTANCE,
             extraShadowDistance = EXTRA_DISTANCE,
-            layerMask = LayerMask.NameToLayer("Ground"),
+            layerMask = layerMask,
 
             shadowPositions = shadowPositions,
             shadowHeights = shadowHeights,
@@ -75,6 +121,7 @@ public class CloudMoverManager: MonoBehaviour
         int count = cloudMovers.Count;
 
         cloudPositions = new NativeArray<float2>(count, Allocator.Persistent);
+        groundPositions = new NativeArray<float2>(count,Allocator.Persistent);
         shadowPositions = new NativeArray<float2>(count, Allocator.Persistent);
         shadowHeights = new NativeArray<float>(count, Allocator.Persistent);
     }
@@ -84,6 +131,8 @@ public struct CloudMoverJob : IJobParallelFor
 {
     [ReadOnly]
     public NativeArray<float2> cloudPositions;
+    [ReadOnly]
+    public NativeArray<float2> groundPositions;
     [ReadOnly]
     public float2 gravityCenter;
     [ReadOnly]
@@ -104,14 +153,7 @@ public struct CloudMoverJob : IJobParallelFor
         float2 gravityVector = math.normalize(gravityCenter - cloudPosition);
 
         //find ground point
-        Vector2 groundPoint = cloudPosition + (gravityVector * maxRaycastDistance);
-            cloudPosition,
-            gravityVector,
-            maxRaycastDistance,
-        RaycastHit2D rch2d = Physics2D.Raycast(
-            layerMask
-            );
-        groundPoint = rch2d.point;
+        Vector2 groundPoint = groundPositions[index];
 
         //extend shadow
         float distance = Vector2.Distance(groundPoint, cloudPosition) + extraShadowDistance;
