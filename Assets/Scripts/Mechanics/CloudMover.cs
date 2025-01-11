@@ -54,7 +54,7 @@ public class CloudMover : MonoBehaviour
         }
     }
 
-    internal void acceptJobState(Vector2 pos, float height)
+    internal void acceptShadowJobState(Vector2 pos, float height)
     {
         //shadow position
         shadow.transform.position = pos;

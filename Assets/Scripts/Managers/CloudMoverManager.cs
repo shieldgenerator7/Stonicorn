@@ -32,7 +32,7 @@ public class CloudMoverManager: MonoBehaviour
     }
 
 
-    private void Update()
+    private void LateUpdate()
     {
 
         //get cloud movers
@@ -90,8 +90,8 @@ public class CloudMoverManager: MonoBehaviour
         raycastCommands.Dispose();
         raycasthits.Dispose();
 
-        //cloud mover job stuff
-        CloudMoverJob cloudMoverJob = new CloudMoverJob()
+        //cloud mover shadow job stuff
+        CloudMoverShadowJob cloudMoverShadowJob = new CloudMoverShadowJob()
         {
             cloudPositions = cloudPositions,
             groundPositions = groundPositions,
@@ -104,13 +104,13 @@ public class CloudMoverManager: MonoBehaviour
             shadowHeights = shadowHeights,
         };
 
-        JobHandle cloudMoverJobHandle = cloudMoverJob.Schedule(cloudMovers.Count, jobCount);
+        JobHandle cloudMoverShadowJobHandle = cloudMoverShadowJob.Schedule(cloudMovers.Count, jobCount);
 
-        cloudMoverJobHandle.Complete();
+        cloudMoverShadowJobHandle.Complete();
 
         for(int i=0; i < cloudMovers.Count; i++)
         {
-            cloudMovers[i].acceptJobState(shadowPositions[i], shadowHeights[i]);
+            cloudMovers[i].acceptShadowJobState(shadowPositions[i], shadowHeights[i]);
         }
     }
 
@@ -127,7 +127,7 @@ public class CloudMoverManager: MonoBehaviour
     }
 }
 
-public struct CloudMoverJob : IJobParallelFor
+public struct CloudMoverShadowJob : IJobParallelFor
 {
     [ReadOnly]
     public NativeArray<float2> cloudPositions;
