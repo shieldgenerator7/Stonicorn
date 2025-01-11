@@ -10,6 +10,8 @@ public class CloudMoverManager: MonoBehaviour
     [Header("Shadow ground finding")]
     public float MAX_DISTANCE = 200;
     public float EXTRA_DISTANCE = 10;
+    [Tooltip("How many in a batch, ideally a multiple of 2")]
+    public int jobCount = 4;
 
     NativeList<float2> cloudPositions = new NativeList<float2>(Allocator.Persistent);
     NativeList<float2> shadowPositions = new NativeList<float2>(Allocator.Persistent);
@@ -58,7 +60,7 @@ public class CloudMoverManager: MonoBehaviour
             shadowHeights = shadowHeights,
         };
 
-        JobHandle cloudMoverJobHandle = cloudMoverJob.Schedule(cloudMovers.Count, 4);
+        JobHandle cloudMoverJobHandle = cloudMoverJob.Schedule(cloudMovers.Count, jobCount);
 
         cloudMoverJobHandle.Complete();
 
