@@ -1,6 +1,4 @@
-using System.Runtime.ConstrainedExecution;
 using UnityEngine;
-using static Utility;
 
 [RequireComponent(typeof(GravityAccepter))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -9,9 +7,6 @@ public class CloudMover : MonoBehaviour
     public float speed = 0.02f;
 
     public GameObject shadow;
-    [Header("Shadow ground finding")]
-    public float MAX_DISTANCE = 200;
-    public float EXTRA_DISTANCE = 10;
 
     GravityAccepter gravityAccepter;
     Rigidbody2D rb2d;
@@ -35,30 +30,6 @@ public class CloudMover : MonoBehaviour
         transform.up = -gravityVector;
     }
 
-    private void LateUpdate()
-    {
-        if (shadow)
-        {
-            Vector3 gravityVector = (Vector2.zero - (Vector2)transform.position).normalized;
-            //find ground point
-            Vector2 groundPoint = transform.position + (gravityVector * MAX_DISTANCE);
-            RaycastHit2D rch2d = Utility.RaycastQuestion(
-                transform.position,
-                gravityVector,
-                MAX_DISTANCE,
-                rch2d => !rch2d.collider.isTrigger && !rch2d.collider.GetComponent<Rigidbody2D>()
-                );
-            groundPoint = rch2d.point;
-
-            //extend shadow
-            float distance = Vector2.Distance(groundPoint, transform.position) + EXTRA_DISTANCE;
-            shadow.transform.position = transform.position + (gravityVector * distance / 2);
-            Vector2 size = shadowSR.size;
-            size.y = distance;
-            shadowSR.size = size;
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //if it collides with a solid piece of terrain,
@@ -78,5 +49,15 @@ public class CloudMover : MonoBehaviour
                 shadow.SetActive(false);
             }
         }
+    }
+
+    internal void acceptJobState(Vector2 pos, float height)
+    {
+        //shadow position
+        shadow.transform.position = pos;
+        //shadow height
+        Vector2 size = shadowSR.size;
+        size.y = height;
+        shadowSR.size = size;
     }
 }
