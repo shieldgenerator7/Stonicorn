@@ -620,7 +620,21 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Standalone: ES3GLOBAL_DISABLED
+    Android: ES3_TMPRO;ES3_UGUI
+    EmbeddedLinux: ES3_TMPRO;ES3_UGUI
+    LinuxHeadlessSimulation: ES3_TMPRO;ES3_UGUI
+    Nintendo Switch: ES3_TMPRO;ES3_UGUI
+    PS4: ES3_TMPRO;ES3_UGUI
+    PS5: ES3_TMPRO;ES3_UGUI
+    QNX: ES3_TMPRO;ES3_UGUI
+    Server: ES3_TMPRO;ES3_UGUI
+    Standalone: ES3GLOBAL_DISABLED;ES3_TMPRO;ES3_UGUI
+    VisionOS: ES3_TMPRO;ES3_UGUI
+    WebGL: ES3_TMPRO;ES3_UGUI
+    Windows Store Apps: ES3_TMPRO;ES3_UGUI
+    XboxOne: ES3_TMPRO;ES3_UGUI
+    iPhone: ES3_TMPRO;ES3_UGUI
+    tvOS: ES3_TMPRO;ES3_UGUI
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
