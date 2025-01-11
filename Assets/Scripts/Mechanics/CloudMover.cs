@@ -7,10 +7,15 @@ public class CloudMover : MonoBehaviour
     public float speed = 0.02f;
 
     public GameObject shadow;
+    [Header("Shadow ground finding")]
+    public float MAX_DISTANCE = 200;
+    public float EXTRA_DISTANCE = 10;
+    public string LayerName = "Ground";
 
     GravityAccepter gravityAccepter;
     Rigidbody2D rb2d;
     SpriteRenderer shadowSR;
+    int layerMask;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,6 +26,7 @@ public class CloudMover : MonoBehaviour
         {
         shadowSR = shadow?.GetComponent<SpriteRenderer>();
         }
+        layerMask = LayerMask.NameToLayer(LayerName);
     }
 
     // Update is called once per frame
@@ -31,6 +37,28 @@ public class CloudMover : MonoBehaviour
         Vector2 sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
         rb2d.linearVelocity = sideVector.normalized * speed;
         transform.up = -gravityVector;
+    }
+
+    private void LateUpdate()
+    {
+        if (shadow)
+        {
+            Vector3 gravityVector = (Vector2.zero - (Vector2)transform.position).normalized;
+
+            //find ground point
+            Vector2 groundPoint = transform.position + (gravityVector * MAX_DISTANCE);
+            RaycastHit2D rch2d = Physics2D.Raycast(
+                transform.position,
+                gravityVector,
+                MAX_DISTANCE,
+                layerMask
+                );
+            groundPoint = rch2d.point;
+
+            //extend shadow
+            float distance = Vector2.Distance(groundPoint, transform.position) + EXTRA_DISTANCE;
+            acceptJobState(transform.position + (gravityVector * distance / 2), distance);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
