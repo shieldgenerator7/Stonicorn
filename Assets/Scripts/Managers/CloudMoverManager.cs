@@ -98,9 +98,6 @@ public class CloudMoverManager: MonoBehaviour
 
         //raycast job stuff
         int count = cloudMovers.Count;
-        //2025-01-11: copied from https://stackoverflow.com/a/74541903/2336212
-        var raycastCommands = new NativeArray<RaycastCommand>(count, Allocator.TempJob);
-        var raycasthits = new NativeArray<RaycastHit>(count, Allocator.TempJob);
 
         for (int i = 0; i < count; i++)
         {
@@ -108,31 +105,20 @@ public class CloudMoverManager: MonoBehaviour
             Vector2 cloudPosition = cloudMover.transform.position;
             Vector2 gravityVector = (gravityCenter - cloudPosition).normalized;
 
-            raycastCommands[i] = new RaycastCommand(
-                cloudPosition, 
-                gravityVector, 
-                new QueryParameters(
-                    layerMask, 
-                    false, 
-                    QueryTriggerInteraction.Ignore,
-                    false
-                ), 
-                MAX_DISTANCE
+            //RaycastHit2D rch2d = Physics2D.Raycast(
+            //    cloudPosition + (gravityVector * 10),
+            //    gravityVector,
+            //    MAX_DISTANCE,
+            //    layerMask
+            //);
+            RaycastHit2D rch2d = Utility.RaycastQuestion(
+                cloudPosition + (gravityVector * 10),
+                gravityVector,
+                MAX_DISTANCE,
+                rch2d => rch2d.collider.gameObject.layer == layerMask
             );
+            groundPositions[i] = rch2d.point;
         }
-
-        var handle = RaycastCommand.ScheduleBatch(raycastCommands, raycasthits, 1, count, default(JobHandle));
-
-        handle.Complete();
-
-        for (int i = 0; i < count; i++)
-        {
-            RaycastHit rch = raycasthits[i];
-            groundPositions[i] = (Vector2)rch.point;
-        }
-
-        raycastCommands.Dispose();
-        raycasthits.Dispose();
 
         //cloud mover shadow job stuff
         CloudMoverShadowJob cloudMoverShadowJob = new CloudMoverShadowJob()
@@ -228,5 +214,6 @@ public struct CloudMoverShadowJob : IJobParallelFor
         //extend shadow
         float distance = Vector2.Distance(groundPoint, cloudPosition) + extraShadowDistance;
         shadowPositions[index] = cloudPosition + (gravityVector * distance / 2);
+        shadowHeights[index] = distance;
     }
 }
