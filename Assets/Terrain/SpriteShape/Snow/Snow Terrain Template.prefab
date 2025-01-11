@@ -92,8 +92,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: e60f3b908d6475e409788e16f8265338, type: 3}
   - {fileID: 21300000, guid: 05940f761cf27464bbc53be4dbe203cc, type: 3}
   m_LocalAABB:
-    m_Center: {x: 0, y: -0.02000022, z: -0.005}
-    m_Extent: {x: 2.1150002, y: 2.145, z: 0.005}
+    m_Center: {x: 0, y: -0.01999998, z: 0}
+    m_Extent: {x: 2.1150002, y: 2.1450002, z: 0}
   m_SpriteSortPoint: 0
 --- !u!114 &6328070243359328304
 MonoBehaviour:
@@ -117,7 +117,7 @@ MonoBehaviour:
       height: 1
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: -2, y: -1, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -125,7 +125,7 @@ MonoBehaviour:
       height: 1
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: -2, y: 1, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -133,7 +133,7 @@ MonoBehaviour:
       height: 1
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: -1, y: 2, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -141,7 +141,7 @@ MonoBehaviour:
       height: 1
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: 1, y: 2, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -149,7 +149,7 @@ MonoBehaviour:
       height: 1
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: 2, y: 1, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -157,7 +157,7 @@ MonoBehaviour:
       height: 1
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: 2, y: -1, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -165,7 +165,7 @@ MonoBehaviour:
       height: 1
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
     - position: {x: 1, y: -2, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
@@ -173,7 +173,7 @@ MonoBehaviour:
       height: 1
       spriteIndex: 0
       corner: 1
-      m_CornerMode: 0
+      m_CornerMode: 1
   m_SpriteShape: {fileID: 11400000, guid: 60d927794609ea54aa08fc9789cfb8de, type: 2}
   m_FillPixelPerUnit: 100
   m_StretchTiling: 1
@@ -194,7 +194,17 @@ MonoBehaviour:
   m_BoundsScale: 2
   m_Creator: {fileID: 0}
   m_Modifiers: []
-  m_ColliderSegment: []
+  m_ColliderSegment:
+  - {x: -1.0065054, y: -2.0065055}
+  - {x: -2.0092, y: -1}
+  - {x: -2.0092, y: 1}
+  - {x: -1.007071, y: 2.007071}
+  - {x: 1, y: 2.0100002}
+  - {x: 2.007071, y: 1.007071}
+  - {x: 2.0092, y: -1}
+  - {x: 1, y: -2.0131998}
+  - {x: -1, y: -2.0131998}
+  - {x: -1.0065054, y: -2.0065055}
   m_ShadowSegment: []
 --- !u!60 &3779025617538984569
 PolygonCollider2D:
@@ -242,15 +252,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1.0227687, y: -2.022769}
-      - {x: -2.0227687, y: -1.0227689}
-      - {x: -2.0321999, y: 1}
-      - {x: -1.0247488, y: 2.0247488}
-      - {x: 1, y: 2.0349998}
-      - {x: 2.0247488, y: 1.0247488}
-      - {x: 2.0321999, y: -1}
-      - {x: 1, y: -2.0461998}
-      - {x: -0.97451854, y: -2.0461998}
-      - {x: -1, y: -2.0461998}
-      - {x: -1.0227687, y: -2.022769}
+    - - {x: -1.0065054, y: -2.0065055}
+      - {x: -2.0092, y: -1}
+      - {x: -2.0092, y: 1}
+      - {x: -1.007071, y: 2.007071}
+      - {x: 1, y: 2.0100002}
+      - {x: 2.007071, y: 1.007071}
+      - {x: 2.0092, y: -1}
+      - {x: 1, y: -2.0131998}
+      - {x: -1, y: -2.0131998}
+      - {x: -1.0065054, y: -2.0065055}
   m_UseDelaunayMesh: 0

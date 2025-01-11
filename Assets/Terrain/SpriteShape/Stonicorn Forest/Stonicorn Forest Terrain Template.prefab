@@ -81,27 +81,39 @@ SpriteShapeRenderer:
   m_SortingOrder: 10
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_MaskInteraction: 0
-  m_ShapeTexture: {fileID: 2800000, guid: e41b76425138c8047801f50b7dc5213f, type: 3}
+  m_ShapeTexture: {fileID: 2800000, guid: f90fe8fe208cb0240bd1b1a3741fb7dc, type: 3}
   m_Sprites:
-  - {fileID: 21300000, guid: 94612f968e635084f80adc08ebbe4b60, type: 3}
-  - {fileID: 21300000, guid: 94612f968e635084f80adc08ebbe4b60, type: 3}
-  - {fileID: 21300000, guid: 94612f968e635084f80adc08ebbe4b60, type: 3}
-  - {fileID: 21300000, guid: 94612f968e635084f80adc08ebbe4b60, type: 3}
-  - {fileID: 21300000, guid: 5a43446e62275e04f98feb58080d5163, type: 3}
-  - {fileID: 21300000, guid: 5a43446e62275e04f98feb58080d5163, type: 3}
-  - {fileID: 21300000, guid: 5a43446e62275e04f98feb58080d5163, type: 3}
-  - {fileID: 21300000, guid: 94612f968e635084f80adc08ebbe4b60, type: 3}
+  - {fileID: 21300000, guid: 8988065c1ee43c84599dc33a12a49950, type: 3}
+  - {fileID: 21300000, guid: 222a8410fb82f3c4e9d111f1e9413197, type: 3}
+  - {fileID: 21300000, guid: 716553b298222c042b2004491aad1efd, type: 3}
   - {fileID: 0}
+  - {fileID: 21300000, guid: 8988065c1ee43c84599dc33a12a49950, type: 3}
+  - {fileID: 21300000, guid: 222a8410fb82f3c4e9d111f1e9413197, type: 3}
+  - {fileID: 21300000, guid: 716553b298222c042b2004491aad1efd, type: 3}
   - {fileID: 0}
+  - {fileID: 21300000, guid: 8988065c1ee43c84599dc33a12a49950, type: 3}
+  - {fileID: 21300000, guid: 222a8410fb82f3c4e9d111f1e9413197, type: 3}
+  - {fileID: 21300000, guid: 716553b298222c042b2004491aad1efd, type: 3}
   - {fileID: 0}
+  - {fileID: 21300000, guid: 8988065c1ee43c84599dc33a12a49950, type: 3}
+  - {fileID: 21300000, guid: 222a8410fb82f3c4e9d111f1e9413197, type: 3}
+  - {fileID: 21300000, guid: 716553b298222c042b2004491aad1efd, type: 3}
   - {fileID: 0}
+  - {fileID: 21300000, guid: 222a8410fb82f3c4e9d111f1e9413197, type: 3}
+  - {fileID: 21300000, guid: 18177895965e38143982645f70968bb0, type: 3}
   - {fileID: 0}
+  - {fileID: 21300000, guid: 222a8410fb82f3c4e9d111f1e9413197, type: 3}
   - {fileID: 0}
+  - {fileID: 21300000, guid: e208ac29fd7da48468c69b27f100d452, type: 3}
+  - {fileID: 21300000, guid: 18177895965e38143982645f70968bb0, type: 3}
   - {fileID: 0}
+  - {fileID: 21300000, guid: 8988065c1ee43c84599dc33a12a49950, type: 3}
+  - {fileID: 21300000, guid: 222a8410fb82f3c4e9d111f1e9413197, type: 3}
+  - {fileID: 21300000, guid: 716553b298222c042b2004491aad1efd, type: 3}
   - {fileID: 0}
   m_LocalAABB:
-    m_Center: {x: 0, y: 0.01999998, z: 0}
-    m_Extent: {x: 2.3100002, y: 2.3300002, z: 0}
+    m_Center: {x: 0, y: -0.0012500286, z: 0}
+    m_Extent: {x: 2.4262502, y: 2.4250002, z: 0}
   m_SpriteSortPoint: 0
 --- !u!114 &114311780819303452
 MonoBehaviour:
@@ -170,7 +182,16 @@ MonoBehaviour:
   m_BoundsScale: 2
   m_Creator: {fileID: 0}
   m_Modifiers: []
-  m_ColliderSegment: []
+  m_ColliderSegment:
+  - {x: -2.2898502, y: -2}
+  - {x: -2.2898502, y: 2}
+  - {x: -1.9490373, y: 2.2881498}
+  - {x: 2, y: 2.2881498}
+  - {x: 2.2898502, y: 1.9490373}
+  - {x: 2.2898502, y: -2}
+  - {x: 1.9490373, y: -2.2898502}
+  - {x: -2, y: -2.2898502}
+  - {x: -2.2898502, y: -2}
   m_ShadowSegment: []
 --- !u!60 &60259941249414702
 PolygonCollider2D:
@@ -218,12 +239,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 2.34, y: -2.14083}
-      - {x: 2.34, y: 2.14083}
-      - {x: 2.14083, y: 2.34}
-      - {x: -2.14083, y: 2.34}
-      - {x: -2.34, y: 2.14083}
-      - {x: -2.34, y: -2.14083}
-      - {x: -2.14083, y: -2.34}
-      - {x: 2.14083, y: -2.34}
+    - - {x: -2.2898502, y: -2}
+      - {x: -2.2898502, y: 2}
+      - {x: -1.9490373, y: 2.2881498}
+      - {x: 2, y: 2.2881498}
+      - {x: 2.2898502, y: 1.9490373}
+      - {x: 2.2898502, y: -2}
+      - {x: 1.9490373, y: -2.2898502}
+      - {x: -2, y: -2.2898502}
+      - {x: -2.2898502, y: -2}
   m_UseDelaunayMesh: 0
