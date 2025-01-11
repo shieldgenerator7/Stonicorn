@@ -55,6 +55,7 @@ public class CloudMoverManager: MonoBehaviour
             gravityCenter = Vector2.zero,
             maxRaycastDistance =  MAX_DISTANCE,
             extraShadowDistance = EXTRA_DISTANCE,
+            layerMask = LayerMask.NameToLayer("Ground"),
 
             shadowPositions = shadowPositions,
             shadowHeights = shadowHeights,
@@ -81,6 +82,8 @@ public struct CloudMoverJob : IJobParallelFor
     public float maxRaycastDistance;
     [ReadOnly]
     public float extraShadowDistance;
+    [ReadOnly]
+    public int layerMask;
 
     [WriteOnly]
     public NativeList<float2> shadowPositions;
@@ -94,11 +97,11 @@ public struct CloudMoverJob : IJobParallelFor
 
         //find ground point
         Vector2 groundPoint = cloudPosition + (gravityVector * maxRaycastDistance);
-        RaycastHit2D rch2d = Utility.RaycastQuestion(
             cloudPosition,
             gravityVector,
             maxRaycastDistance,
-            rch2d => !rch2d.collider.isTrigger && !rch2d.collider.GetComponent<Rigidbody2D>()
+        RaycastHit2D rch2d = Physics2D.Raycast(
+            layerMask
             );
         groundPoint = rch2d.point;
 
