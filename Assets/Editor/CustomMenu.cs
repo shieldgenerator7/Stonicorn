@@ -618,6 +618,7 @@ public class CustomMenu
                 checkTiledHitBoxes,
                 checkGravityScale,
                 checkForIllegalPrefabOverrides,
+                checkForGroundLayerObjects,
             }
             .ConvertAll(func =>
             {
@@ -1168,6 +1169,51 @@ public class CustomMenu
             go.GetComponent<Rigidbody2D>() ||
             go.GetComponent<IBlastable>() != null
             );
+    }
+
+
+    [MenuItem("SG7/Build/Pre-Build/Check for Ground layer objects")]
+    public static bool checkForGroundLayerObjects()
+    {
+        //check for Ground layers: a gameobject should be in the Ground layer IFF it meets ALL the following conditions:
+        //-has a SpriteShapeController
+        //-does NOT have a Rigidbody2D
+        //-has a Collider2D that is NOT a trigger
+        //-is NOT savable (does NOT have a SavableObjectInfo)
+
+        int groundLayer = LayerMask.NameToLayer("Ground");
+
+        int problemCount = 0;
+        GameObject.FindObjectsByType<Collider2D>(FindObjectsSortMode.None).ToList()
+            .ForEach(coll2d =>
+            {
+                bool shouldGround = shouldBeGroundLayer(coll2d.gameObject);
+                bool isGround = coll2d.gameObject.layer == groundLayer;
+                if (isGround && !shouldGround)
+                {
+                    Debug.LogError($"GameObject {coll2d.gameObject.name} should NOT be on the Ground layer!", coll2d.gameObject);
+                    problemCount++;
+                }
+                else if (!isGround && shouldGround)
+                {
+                    Debug.LogError($"GameObject {coll2d.gameObject.name} should be on the Ground layer!", coll2d.gameObject);
+                    problemCount++;
+                }
+            });
+
+        if (problemCount > 0)
+        {
+            Debug.LogError($"There are {problemCount} problems with objects and the Ground layer.");
+        }
+
+        return problemCount > 0;
+    }
+    private static bool shouldBeGroundLayer(GameObject go)
+    {
+        return go.GetComponent<SpriteShapeController>()
+            && !go.GetComponent<Rigidbody2D>()
+            && go.GetComponents<PolygonCollider2D>().Any(pc2d => !pc2d.isTrigger)
+            && !go.GetComponent<SavableObjectInfo>();
     }
 
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
