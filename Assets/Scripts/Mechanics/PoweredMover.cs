@@ -27,7 +27,8 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         get => new SavableObject(this,
             "moveVector", moveVector
             );
-        set {
+        set
+        {
             moveVector = value.Vector2("moveVector");
         }
     }

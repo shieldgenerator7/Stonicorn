@@ -5,7 +5,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 //2025-01-10: written by following tutorial: https://www.youtube.com/watch?v=1VZaW4_quzI
-public class CloudMoverManager: MonoBehaviour
+public class CloudMoverManager : MonoBehaviour
 {
     public float speed = 0.2f;
     public Vector2 gravityCenter = Vector2.zero;
@@ -126,7 +126,7 @@ public class CloudMoverManager: MonoBehaviour
 
         cloudMoverShadowJobHandle.Complete();
 
-        for(int i=0; i < cloudMovers.Count; i++)
+        for (int i = 0; i < cloudMovers.Count; i++)
         {
             cloudMovers[i].acceptShadowJobState(shadowPositions[i], shadowHeights[i]);
         }
@@ -139,7 +139,7 @@ public class CloudMoverManager: MonoBehaviour
         int count = cloudMovers.Count;
 
         cloudPositions = new NativeArray<float2>(count, Allocator.Persistent);
-        groundPositions = new NativeArray<float2>(count,Allocator.Persistent);
+        groundPositions = new NativeArray<float2>(count, Allocator.Persistent);
         newCloudVelocities = new NativeArray<float2>(count, Allocator.Persistent);
         newCloudVectorUps = new NativeArray<float2>(count, Allocator.Persistent);
         shadowPositions = new NativeArray<float2>(count, Allocator.Persistent);
@@ -163,7 +163,8 @@ public struct CloudMoverRaycastJob : IJob
 
     public void Execute()
     {
-        for (int i = 0; i < cloudPositions.Length; i++) {
+        for (int i = 0; i < cloudPositions.Length; i++)
+        {
             Execute(i);
         }
     }

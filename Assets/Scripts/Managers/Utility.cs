@@ -548,7 +548,8 @@ public static class Utility
         for (int i = 0; i < rca.count; i++)
         {
             RaycastHit2D rch2d = rca.rch2ds[i];
-            if (questionFunc(rch2d)){
+            if (questionFunc(rch2d))
+            {
                 return rch2d;
             }
         }

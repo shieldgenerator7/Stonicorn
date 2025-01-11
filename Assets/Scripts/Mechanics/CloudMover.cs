@@ -16,7 +16,7 @@ public class CloudMover : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         if (shadow)
         {
-        shadowSR = shadow?.GetComponent<SpriteRenderer>();
+            shadowSR = shadow?.GetComponent<SpriteRenderer>();
         }
     }
 
