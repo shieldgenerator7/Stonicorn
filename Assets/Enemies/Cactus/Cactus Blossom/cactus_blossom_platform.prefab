@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7592162024371016505}
   - component: {fileID: 5730783452192752154}
-  - component: {fileID: 2362171883774293268}
+  - component: {fileID: 5356692598513079931}
   m_Layer: 0
   m_Name: cactus_blossom_platform
   m_TagString: Untagged
@@ -90,8 +90,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &2362171883774293268
-PolygonCollider2D:
+--- !u!61 &5356692598513079931
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -124,7 +124,7 @@ PolygonCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.9452164, y: -0.07189094}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.995, y: 0.95}
@@ -134,16 +134,8 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -1.6340735, y: -0.2584809}
-      - {x: -1.2397327, y: -0.34770387}
-      - {x: -0.79834485, y: -0.33321363}
-      - {x: -0.41029397, y: -0.18871602}
-      - {x: 0.009001613, y: 0.013026699}
-      - {x: -1.6672595, y: -0.014829516}
-      - {x: -1.9012325, y: -0.09672837}
-  m_UseDelaunayMesh: 0
+  m_Size: {x: 1.9091198, y: 0.13004382}
+  m_EdgeRadius: 0
 --- !u!1 &8931846269074957431
 GameObject:
   m_ObjectHideFlags: 0
