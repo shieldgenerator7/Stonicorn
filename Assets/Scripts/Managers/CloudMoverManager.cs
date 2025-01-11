@@ -106,8 +106,9 @@ public class CloudMoverManager: MonoBehaviour
 
             groundPositions = groundPositions,
         };
-        JobHandle cloudMoverRaycastJobHandle = cloudMoverRaycastJob.Schedule();
-        cloudMoverRaycastJobHandle.Complete();
+        //JobHandle cloudMoverRaycastJobHandle = cloudMoverRaycastJob.Schedule();
+        //cloudMoverRaycastJobHandle.Complete();
+        cloudMoverRaycastJob.Execute();
 
         //cloud mover shadow job stuff
         CloudMoverShadowJob cloudMoverShadowJob = new CloudMoverShadowJob()
