@@ -619,6 +619,7 @@ public class CustomMenu
                 checkGravityScale,
                 checkForIllegalPrefabOverrides,
                 checkForGroundLayerObjects,
+                checkTriggersAreNotSolid,
             }
             .ConvertAll(func =>
             {
@@ -1214,6 +1215,35 @@ public class CustomMenu
             && !go.GetComponent<Rigidbody2D>()
             && go.GetComponents<PolygonCollider2D>().Any(pc2d => !pc2d.isTrigger)
             && !go.GetComponent<SavableObjectInfo>();
+    }
+
+
+    [MenuItem("SG7/Build/Pre-Build/Check for solid triggers")]
+    public static bool checkTriggersAreNotSolid()
+    {
+        int problemCount = 0;
+
+        //game objects in this list should NOT have any solid colliders
+        List<GameObject> goToCheck = new List<GameObject>();
+        goToCheck.AddRange(GameObject.FindAnyObjectByType<ScenesManager>()._SceneLoaders.ConvertAll(sl=>sl.gameObject));
+
+        goToCheck.ForEach(go =>
+        {
+            bool anySolid = go.GetComponents<Collider2D>().Any(coll2d => !coll2d.isTrigger)
+                || go.GetComponentsInChildren<Collider2D>().Any(coll2d => !coll2d.isTrigger);
+            if (anySolid) {
+                Debug.LogError($"GameObject {go.Name()} has  solid colliders!",go);
+                problemCount++;
+            }
+
+        });
+
+        if (problemCount > 0)
+        {
+            Debug.LogError($"There are {problemCount} game objects with solid colliders that shouldn't have them!");
+        }
+
+        return problemCount > 0;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
