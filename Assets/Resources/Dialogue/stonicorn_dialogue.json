@@ -489,6 +489,92 @@
         }
       ],
       "actions": []
+    },
+    {
+      "title": "Yellow Intro",
+      "conditions": [
+        {
+          "variableName": "yellowintro",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Yellow",
+          "text": "Hi Merky",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Yellow",
+          "text": "Having a nice day?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Yellow",
+          "text": "The tree is pretty and green today.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Yellow",
+          "text": "I've decided to stay here, at least while I can.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Yellow",
+          "text": "Don't remind me. Let me sit in peace.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Yellow",
+          "text": "Oh you want to explore the tree too?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Yellow",
+          "text": "Here, have a tree climb.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "yellowintro",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [],
+      "quotes": [
+        {
+          "characterName": "Yellow",
+          "text": "Hi Merky",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Yellow",
+          "text": "Enjoying the tree?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Yellow",
+          "text": "Lovely this time of day, isn't it?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": []
     }
   ]
 }
