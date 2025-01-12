@@ -18,6 +18,7 @@ public class CloudMover : MonoBehaviour
         {
             shadowSR = shadow?.GetComponent<SpriteRenderer>();
         }
+        FindAnyObjectByType<CloudMoverManager>().updateClouds();//TODO: set this up correctly
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -38,6 +39,8 @@ public class CloudMover : MonoBehaviour
             {
                 shadow.SetActive(false);
             }
+            this.enabled = false;
+            FindAnyObjectByType<CloudMoverManager>().updateClouds();//TODO: set this up correctly
         }
     }
 

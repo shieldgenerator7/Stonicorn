@@ -132,10 +132,14 @@ public class CloudMoverManager : MonoBehaviour
         }
     }
 
+    public void updateClouds()
+    {
+        populateCloudMovers();
+    }
     void populateCloudMovers()
     {
         cloudMovers = Managers.Object.getObjects<CloudMover>()
-            .FindAll(cm => cm.shadow);
+            .FindAll(cm => cm.enabled && cm.shadow);
         int count = cloudMovers.Count;
 
         cloudPositions = new NativeArray<float2>(count, Allocator.Persistent);
