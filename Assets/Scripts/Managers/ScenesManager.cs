@@ -177,6 +177,8 @@ public class ScenesManager : Manager
 
     private SceneLoader getSceneLoader(Scene scene)
         => sceneLoaders.Find(sl => sl.Scene == scene);
+    private SceneLoader getSceneLoader(int sceneId)
+        => sceneLoaders.Find(sl => sl.sceneId == sceneId);
     #endregion
 
     public void updateSceneObjectList(int gameStateId)
@@ -332,7 +334,7 @@ public class ScenesManager : Manager
         //If go is already in a scene,
         if (go.scene.buildIndex >= 0)
         {
-            SceneLoader sl = getSceneLoader(go.scene);
+            SceneLoader sl = getSceneLoader(go.scene.buildIndex);
             //And it's already in the right scene,
             if (sl && sl.overlapsPosition(go))
             {
