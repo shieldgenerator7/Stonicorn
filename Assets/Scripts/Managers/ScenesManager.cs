@@ -297,18 +297,20 @@ public class ScenesManager : Manager
         if (go == null || ReferenceEquals(go, null))
         {
             //don't register null or destroyed objects
-            Debug.LogWarning($"GameObject {go.name} is destroyed and will not be processed.");
+            Debug.LogWarning($"GameObject {go?.name} is destroyed and will not be processed.");
             removeObject(go);
             return;
         }
         SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
         if (!soi)
         {
+            Debug.LogError($"Cant register object {go.name} because it doesnt have a SavableObjectInfo!", go);
             return;
         }
         //Don't add non-Savable or Singleton objects ever
         if (soi is SingletonObjectInfo)
         {
+            Debug.LogError($"Cant register object {go.name} because it has a SingletonObjectInfo!", go);
             removeObject(go);
             return;
         }
@@ -346,7 +348,7 @@ public class ScenesManager : Manager
         {
             //just don't process it
             Debug.LogWarning(
-                $"Can't find a scene for object ({objectId}) {go} at position {go.transform.position}",
+                $"Can't find a scene for object {go.name} ({objectId}) at position {go.transform.position} ({((Vector2)go.transform.position-Vector2.zero).magnitude} from center)",
                 go
                 );
             return;
@@ -391,21 +393,22 @@ public class ScenesManager : Manager
             Debug.LogError($"registerObjectInScene: go is null! go: {go}!");
             return;
         }
+        int objectId = go.getKey();
+        if (objectId == 0)
+        {
+            Debug.LogError(
+                $"Trying to add object Id {objectId} to the objectScenesList!",
+                go
+                );
+            return;
+        }
+        int sceneId = scene.buildIndex;
         Debug.Log(
-            $"Registering object {go.name} ({go.getKey()}) in scene {scene.name}",
+            $"Registering object in scene {scene.name} ({sceneId}): {go.name} ({objectId})",
             go
             );
-        int objectId = go.getKey();
-        int sceneId = scene.buildIndex;
         if (!data.objectSceneList.ContainsKey(objectId))
         {
-            if (objectId == 0)
-            {
-                Debug.LogError(
-                    $"Trying to add object Id {objectId} to the objectScenesList!",
-                    go
-                    );
-            }
             data.objectSceneList.Add(objectId, sceneId);
         }
         else
@@ -436,15 +439,15 @@ public class ScenesManager : Manager
             }
             if (go.scene != scene)
             {
-                Debug.Log($"Moving {go.name} into scene {scene.name}", go);
+                Debug.Log($"Moving {go.Name()} into scene {scene.Name()}", go);
                 SceneManager.MoveGameObjectToScene(go, scene);
-                Debug.Log($"Moved {go.name} is now in scene {go.scene.name}", go);
+                Debug.Log($"Moved {go.Name()} is now in scene {go.scene.Name()}", go);
             }
         }
         catch (System.ArgumentException ae)
         {
             Debug.LogError(
-                $"Trying to move {go.name} into scene {scene.name} at position: {go.transform.position}" +
+                $"Trying to move {go.Name()} into scene {scene.Name()} at position: {go.transform.position}" +
                 $"\nArgumentException: {ae}"
                 );
         }
@@ -452,7 +455,11 @@ public class ScenesManager : Manager
 
     private void removeObject(GameObject go)
     {
-        Debug.Log($"Removing object {go} ({go.getKey()}) from list", go);
+        if (go == null) {
+            Debug.LogError($"Cant remove null object! {go}");
+            return; 
+        }
+        Debug.Log($"Removing object {go.Name()} from list", go);
         data.objectSceneList.Remove(go.getKey());
     }
 
