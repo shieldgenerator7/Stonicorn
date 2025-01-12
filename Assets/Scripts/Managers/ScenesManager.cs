@@ -310,13 +310,11 @@ public class ScenesManager : Manager
         SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
         if (!soi)
         {
-            Debug.LogError($"Cant register object {go.name} because it doesnt have a SavableObjectInfo!", go);
             return;
         }
         //Don't add non-Savable or Singleton objects ever
         if (soi is SingletonObjectInfo)
         {
-            Debug.LogError($"Cant register object {go.name} because it has a SingletonObjectInfo!", go);
             removeObject(go);
             return;
         }
