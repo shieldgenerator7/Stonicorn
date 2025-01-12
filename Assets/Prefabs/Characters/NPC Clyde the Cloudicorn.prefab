@@ -52,6 +52,18 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.31764707
       objectReference: {fileID: 0}
+    - target: {fileID: 6064390498224962749, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: characters.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6064390498224962749, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'characters.Array.data[0]'
+      value: Clyde
+      objectReference: {fileID: 0}
+    - target: {fileID: 6064390498224962749, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'characters.Array.data[1]'
+      value: Clyde
+      objectReference: {fileID: 0}
     - target: {fileID: 6197305010752437228, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: m_Color.b
       value: 0.9764706
@@ -66,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6359095399741344553, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: id
-      value: 8083
+      value: 8077
       objectReference: {fileID: 0}
     - target: {fileID: 6505215053507214006, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: characterName
@@ -191,7 +203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6703ab8cace9ed946823d8800b68e56d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.2
   shadow: {fileID: 0}
 --- !u!114 &4248912286102425902
 MonoBehaviour:
