@@ -328,6 +328,9 @@ public static class Utility
 
     public static string Name(this GameObject go)
     {
+#if UNITY_EDITOR
+        return $"{go.name}";
+#endif
         if (!go || ReferenceEquals(go, null))
         {
             return $"--{go?.name} ({go?.getKey()})--";
