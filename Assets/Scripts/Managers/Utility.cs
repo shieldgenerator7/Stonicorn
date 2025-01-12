@@ -326,6 +326,23 @@ public static class Utility
             || (first == second.transform.parent?.gameObject);
     }
 
+    public static string Name(this GameObject go)
+    {
+        if (!go || ReferenceEquals(go, null))
+        {
+            return $"--{go?.name} ({go?.getKey()})--";
+        }
+        return $"{go.name} ({go.getKey()})";
+    }
+    public static string Name(this Scene scene)
+    {
+        if (scene == null || ReferenceEquals(scene, null) || scene.buildIndex < 0)
+        {
+            return $"--{scene.name} ({scene.buildIndex})--";
+        }
+        return $"{scene.name} ({scene.buildIndex})";
+    }
+
     public static void doForEachGameObjectInScene(Scene s, Action<GameObject> action)
     {
         foreach (GameObject rgo in s.GetRootGameObjects())
