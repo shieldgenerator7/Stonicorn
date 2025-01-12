@@ -479,6 +479,10 @@ public static class Utility
     /// <returns></returns>
     public static GameObject Instantiate(GameObject prefab)
     {
+        return Instantiate(prefab, Vector2.zero);
+    }
+    public static GameObject Instantiate(GameObject prefab, Vector2 position)
+    {
         //Checks to make sure it's rewindable
         bool isContainer = prefab.containsSavables();
         bool isSavable = prefab.isSavable();
@@ -495,7 +499,7 @@ public static class Utility
             }
         }
         //Instantiate
-        GameObject newObj = GameObject.Instantiate(prefab);
+        GameObject newObj = GameObject.Instantiate(prefab, position, Quaternion.identity);
         int baseId = (int)System.DateTime.Now.Ticks;
         string spawnTag = $"---{baseId}";
         newObj.name += spawnTag;
@@ -530,6 +534,7 @@ public static class Utility
                 Managers.Scene.registerObjectInScene(savable);
             });
         }
+        Debug.Log($"Spawned object {newObj.Name()}", newObj);
         //Return spawned object
         return newObj;
     }

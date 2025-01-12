@@ -40,7 +40,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
                 //Break into pieces
                 if (crackedPrefab)
                 {
-                    GameObject pieces = Utility.Instantiate(crackedPrefab);
+                    GameObject pieces = Utility.Instantiate(crackedPrefab, transform.position);
                     BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
                     brokenPiece.unpack(gameObject);
                     //process broken pieces
