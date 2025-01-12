@@ -332,9 +332,12 @@ public class ScenesManager : Manager
             return;
         }
         //If go is already in a scene,
-        if (go.scene.buildIndex >= 0)
+        int sceneId = go.scene.buildIndex;
+        if (sceneId < 0)
         {
-            SceneLoader sl = getSceneLoader(go.scene.buildIndex);
+            sceneId = data.objectSceneList[go.getKey()];
+        }
+        SceneLoader sl = getSceneLoader(sceneId);
             //And it's already in the right scene,
             if (sl && sl.overlapsPosition(go))
             {
@@ -342,7 +345,6 @@ public class ScenesManager : Manager
                 registerObjectInScene(go, go.scene);
                 return;
             }
-        }
         //Else find the scene it should be in
         SceneLoader loader = sceneLoaders.Find(sl => sl.overlapsPosition(go));
         if (!loader)
@@ -362,11 +364,11 @@ public class ScenesManager : Manager
         try
         {
             Scene scene = loader.Scene;
-            int sceneId = scene.buildIndex;
-            if (sceneId < 0)
+            int sceneId2 = scene.buildIndex;
+            if (sceneId2 < 0)
             {
                 Debug.LogWarning(
-                    $"SceneLoader {loader.gameObject.name} has bad scene ({scene})! sceneId: {sceneId}",
+                    $"SceneLoader {loader.gameObject.name} has bad scene ({scene})! sceneId: {sceneId2}",
                     loader.gameObject
                     );
                 //Don't process it
