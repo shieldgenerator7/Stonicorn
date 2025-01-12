@@ -67,10 +67,7 @@ public class ObjectState
                 }
                 else
                 {
-                    throw new UnityException(
-                        "Object " + go + " (" + go.getKey()
-                        + ") is missing non-spawnable script " + so.scriptType
-                        );
+                    throw new UnityException($"Object {go} ({go.getKey()}) is missing non-spawnable script {so.scriptType}");
                 }
             }
             try
@@ -79,7 +76,7 @@ public class ObjectState
             }
             catch (InvalidCastException ice)
             {
-                Debug.Log($"InvalidCastException {ice}");
+                Debug.Log($"InvalidCastException on go {go.name} ({go.getKey()}): {ice}");
             }
         }
     }
