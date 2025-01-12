@@ -17,6 +17,11 @@ public class AbilityTeleportRangeEffect : TeleportRangeEffect
 
     public override void updateEffect()
     {
+        if (!updater)
+        {
+            Debug.LogError($"Updater is null! go: {gameObject.name}, updater: {updater}");
+            return;
+        }
         //Set the color to white
         foreach (TeleportRangeFragment fragment in updater.fragments)
         {
