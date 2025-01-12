@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
                 if (soi.spawnStateId > gameStateId)
                 {
                     Debug.Log(
-                        $"Recreation of object {go.name}({soi.Id}) is too late! " +
+                        $"Recreation of object {go.Name()} is too late! " +
                         $"Destroying permanently. Created at {soi.spawnStateId} after {gameStateId}",
                         go
                         );
@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
                 else if (soi.destroyStateId < gameStateId)
                 {
                     Debug.Log(
-                        $"Recreation of object {go.name}({soi.Id}) is too early! " +
+                        $"Recreation of object {go.Name()} is too early! " +
                         $"Destroying. Destroyed at {soi.destroyStateId} before {gameStateId}",
                         go
                         );
@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     Debug.Log(
-                        $"Recreation of object {go.name}({soi.Id}) is ok. " +
+                        $"Recreation of object {go.Name()} is ok. " +
                         $"GameState Id: {Managers.Rewind.GameStateId}",
                         go
                         );
