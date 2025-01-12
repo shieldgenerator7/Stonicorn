@@ -1225,7 +1225,17 @@ public class CustomMenu
 
         //game objects in this list should NOT have any solid colliders
         List<GameObject> goToCheck = new List<GameObject>();
-        goToCheck.AddRange(GameObject.FindAnyObjectByType<ScenesManager>()._SceneLoaders.ConvertAll(sl=>sl.gameObject));
+        List<Type> typesList = new List<Type>()
+        {
+            typeof(SceneLoader),
+            typeof(MusicZone),
+            typeof(HiddenArea),
+            typeof(GravityZone),
+        };
+        typesList.ForEach(type =>
+        {
+            goToCheck.AddRange(GameObject.FindObjectsByType(type, FindObjectsSortMode.None).ToList().ConvertAll(mb => ((MonoBehaviour)mb).gameObject));
+        });
 
         goToCheck.ForEach(go =>
         {
