@@ -20,7 +20,7 @@ public class ObjectManager : Manager, ISetting
     }
     public void LoadObjectsPostRewind(int gameStateId)
     {
-        Debug.Log("Checking objects after rewinding to state " + gameStateId);
+        Debug.Log($"Checking objects after rewinding to state {gameStateId}");
         //Remove null objects from the list
         cleanObjects();
         //Destroy objects not spawned yet in the new selected state
@@ -34,16 +34,16 @@ public class ObjectManager : Manager, ISetting
         if (goId > 0)
         {
             string prefabGUID = data.knownObjects.Find(soid => soid.id == goId).prefabGUID;
-            Debug.Log("Recreating goId: " + goId + " using prefab "
+            Debug.Log($"Recreating goId: ({goId})"
 #if UNITY_EDITOR
-                + AssetDatabase.GUIDToAssetPath(prefabGUID)
+                + $" using prefab {AssetDatabase.GUIDToAssetPath(prefabGUID)}"
 #endif
                 );
             recreateObject(goId, prefabGUID, lastStateSeen);
         }
         else
         {
-            throw new ArgumentException("Id must be 0 or greater! id: " + goId);
+            throw new ArgumentException($"Id must be 0 or greater! id: ({goId})");
         }
     }
 
@@ -108,7 +108,7 @@ public class ObjectManager : Manager, ISetting
                             addObject(t.gameObject);
                         }
                     }
-                    Debug.Log($"Recreated object {newGO.name} ({goId}). spawned: {soi.spawnStateId}, destroyed: {soi.destroyStateId}");
+                    Debug.Log($"Recreated object {newGO.Name()}: spawned: {soi.spawnStateId}, destroyed: {soi.destroyStateId}");
                     //Delegate
                     onObjectRecreated?.Invoke(newGO, lastStateSeen);
                     //Finish up
@@ -121,11 +121,11 @@ public class ObjectManager : Manager, ISetting
             }
             catch (InvalidKeyException ike)
             {
-                throw new Exception("InvalidKey: (" + prefabGUID + ") for object (" + goId + "):", ike);
+                throw new Exception($"InvalidKey: ({prefabGUID}) for object ({goId}):", ike);
             }
             catch (Exception ike)
             {
-                throw new Exception("InvalidKey: (" + prefabGUID + ") for object (" + goId + "):", ike);
+                throw new Exception($"InvalidKey: ({prefabGUID}) for object ({goId}):", ike);
             }
         }
         //return createQueue[goId];
@@ -176,7 +176,7 @@ public class ObjectManager : Manager, ISetting
         //If go is null
         if (go == null)
         {
-            throw new System.ArgumentNullException("GameObject (" + go + ") cannot be null!");
+            throw new System.ArgumentNullException($"GameObject {go} cannot be null!");
         }
 
         int key = go.getKey();
@@ -185,7 +185,7 @@ public class ObjectManager : Manager, ISetting
         if (key < 0)
         {
             Debug.LogError(
-                "GameObject " + go.name + " has an invalid key: " + key + "!",
+                $"GameObject {go.Name()} has an invalid key: {key}!",
                 go
                 );
             return;
@@ -195,7 +195,7 @@ public class ObjectManager : Manager, ISetting
         if (!go.isSavable())
         {
             throw new System.ArgumentException(
-                $"GameObject ({go.name} {key}) doesn't have any state to save! "
+                $"GameObject {go.Name()} doesn't have any state to save! "
                 + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
                 );
         }
@@ -205,8 +205,8 @@ public class ObjectManager : Manager, ISetting
             if (data.gameObjects[key] != null && go.name != data.gameObjects[key].name)
             {
                 Debug.LogWarning(
-                      "Key (" + key + ") is already inside the gameObjects dictionary: "
-                      + "GameObject " + go.name + " replacing " + data.gameObjects[key],
+                      $"Key ({key}) is already inside the gameObjects dictionary: "
+                      + $"GameObject {go.Name()} replacing {data.gameObjects[key]}",
                       go
                       );
             }
@@ -236,7 +236,7 @@ public class ObjectManager : Manager, ISetting
             return data.gameObjects[goKey];
         }
         Debug.LogError(
-            "No object with key found: " + goKey + "!\n"
+            $"No object with key found: {goKey}!\n"
             + "Check with hasObject() before getting the object."
             );
         //Otherwise, sorry, you're out of luck
@@ -265,7 +265,7 @@ public class ObjectManager : Manager, ISetting
             //don't destroy the game manager or merky
             return;
         }
-        Debug.Log("Destroying object permanently: " + go.name + " (" + soi.Id + ")", go);
+        Debug.Log($"Destroying object permanently: {go.Name()}", go);
         destroyObject(go);
         data.knownObjects.RemoveAll(soid => soid.id == soi.Id);
     }
@@ -287,12 +287,12 @@ public class ObjectManager : Manager, ISetting
                 //don't destroy the game manager or merky
                 return;
             }
-            Debug.Log("Destroying object permanently: " + go.name + " (" + id + ")", go);
+            Debug.Log($"Destroying object permanently: {go.Name()}", go);
             destroyObject(go);
         }
         else
         {
-            Debug.Log("Destroying object permanently: [unknown name] (" + id + ")");
+            Debug.Log($"Destroying object permanently: [unknown name] ({id})");
         }
         data.knownObjects.RemoveAll(soid => soid.id == id);
     }
@@ -318,7 +318,7 @@ public class ObjectManager : Manager, ISetting
             //don't destroy the game manager or merky
             return;
         }
-        Debug.Log("Destroying object (" + go.getKey() + "): " + go.name);
+        Debug.Log($"Destroying object {go.Name()}");
         int gameStateId = Managers.Rewind.GameStateId;
         if (soi.destroyStateId > gameStateId)
         {
@@ -381,7 +381,7 @@ public class ObjectManager : Manager, ISetting
         //Write out to the console which keys were cleaned
         if (cleanedKeys != "")
         {
-            Debug.LogWarning("Cleaned: " + cleanedKeys);
+            Debug.LogWarning($"Cleaned: {cleanedKeys}");
         }
     }
 
