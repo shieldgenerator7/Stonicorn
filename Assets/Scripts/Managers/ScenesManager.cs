@@ -271,6 +271,12 @@ public class ScenesManager : Manager
         return SceneManager.GetSceneByBuildIndex(data.objectSceneList[objectId]);
     }
 
+    /// <summary>
+    /// Returns true if the given object is in the scene according to the data object
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="scene"></param>
+    /// <returns></returns>
     public bool isObjectInScene(GameObject go, Scene scene)
     {
         int objectId = go.getKey();
