@@ -28,6 +28,11 @@ public class EditorCameraRotatorTool:ToolboxTool
 
     public override void display()
     {
+        bool newAR = GUILayout.Toggle(autoRotate, "Auto-Rotate");
+        if (newAR != autoRotate)
+        {
+            toggle();
+        }
         if (GUILayout.Button("Toggle"))
         {
             toggle();
