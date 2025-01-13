@@ -27,7 +27,7 @@ public class VariableSetTrigger : EventTrigger
     {
         if (coll.isPlayerSolid())
         {
-            Debug.Log("leaving trigger, activating variable effects");
+            Debug.Log("(dialogue) leaving trigger, activating variable effects");
             triggerLeaveAction?.processAllActions();
         }
     }

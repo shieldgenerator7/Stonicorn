@@ -38,10 +38,23 @@ public class DialogueTrigger : EventTrigger
         //don't start a new dialogue if one is already active
             if (Managers.Event.DialoguePlaying)
             {
+                Debug.Log($"(dialogue) not triggering because theres something already playing", this);
+                Managers.Event.OnDialoguePlayingChanged -= queueTrigger;
+                Managers.Event.OnDialoguePlayingChanged += queueTrigger;
                 return;
             }
         //
         variableSetAction?.processAllActions();
         Managers.Event.processEventTrigger(this);
+    }
+
+    void queueTrigger(bool playing)
+    {
+        if (!playing)
+        {
+            Debug.Log($"(dialogue) ok playing done, will trigger now", this);
+            Managers.Event.OnDialoguePlayingChanged -= queueTrigger;
+            triggerEvent();
+        }
     }
 }

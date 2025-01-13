@@ -23,12 +23,12 @@ public class ContinuallyCheckForDialogue : MonoBehaviour
     {
         if (variablesToListenFor.Count == 0 || variablesToListenFor.Contains(varName))
         {
-            Debug.Log($"listened to {varName} change, processing!",this);
+            Debug.Log($"(dialogue) listened to {varName} change, processing!",this);
             triggers.ForEach(trigger => trigger.ActivateTrigger());
         }
         else
         {
-            Debug.Log($"listened to {varName} change, ignoring...",this);
+            Debug.Log($"(dialogue) listened to {varName} change, ignoring...",this);
         }
     }
 }
