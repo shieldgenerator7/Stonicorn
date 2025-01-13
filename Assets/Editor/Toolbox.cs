@@ -43,10 +43,26 @@ public class Toolbox : EditorWindow
         Debug.Log("found player: " + pc.name);
 
         abilityNames.ForEach(abilityName => abilityLevelMap[abilityName] = getAbilityLevel(abilityName));
-        abilityNames.ForEach(abilityName => abilityToggleMap[abilityName] = true || isAbilityOn(abilityName));
+        abilityNames.ForEach(abilityName => abilityToggleMap[abilityName] = isAbilityOn(abilityName));
+
+        EditorApplication.playModeStateChanged -= reactToPlayMode;
+        EditorApplication.playModeStateChanged += reactToPlayMode;
+
+        if (EditorApplication.isPlaying)
+        {
+            checkAllAbilities();
+        }
 
         //SceneView.duringSceneGui -= RotateCamera;
         //SceneView.duringSceneGui += RotateCamera;
+    }
+
+    void reactToPlayMode(PlayModeStateChange pmsc)
+    {
+        if (pmsc == PlayModeStateChange.EnteredPlayMode)
+        {
+            checkAllAbilities();
+        }
     }
 
     private void OnGUI()
@@ -89,6 +105,8 @@ public class Toolbox : EditorWindow
         {
             checkAbility(on ? val : -1, abilityName);
         }
+        EditorPrefs.SetInt($"{abilityName}_level", val);
+        EditorPrefs.SetBool($"{abilityName}_on", on);
     }
 
     private void OnDisable()
@@ -122,6 +140,10 @@ public class Toolbox : EditorWindow
 
     int getAbilityLevel(string abilityName)
     {
+        if (EditorPrefs.HasKey($"{abilityName}_level"))
+        {
+            return EditorPrefs.GetInt($"{abilityName}_level");
+        }
         PlayerAbility ability = (PlayerAbility)pc.GetComponent(abilityName);
         if (!ability.Unlocked || !ability.enabled)
         {
@@ -131,8 +153,22 @@ public class Toolbox : EditorWindow
     }
     bool isAbilityOn(string abilityName)
     {
+        if (EditorPrefs.HasKey($"{abilityName}_on"))
+        {
+            return EditorPrefs.GetBool($"{abilityName}_on");
+        }
         PlayerAbility ability = (PlayerAbility)pc.GetComponent(abilityName);
         return ability.enabled;
+    }
+
+    void checkAllAbilities()
+    {
+        abilityNames.ForEach(abilityName =>
+        {
+            PlayerAbility ability = (PlayerAbility)pc.GetComponent(abilityName);
+            ability.enabled = abilityToggleMap[abilityName];
+            ability.setUpgradeLevel(abilityLevelMap[abilityName]);
+        });
     }
 
     void checkAbility(int level, string abilityName)
