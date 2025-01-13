@@ -52,9 +52,6 @@ public class Toolbox : EditorWindow
         {
             checkAllAbilities();
         }
-
-        //SceneView.duringSceneGui -= RotateCamera;
-        //SceneView.duringSceneGui += RotateCamera;
     }
 
     void reactToPlayMode(PlayModeStateChange pmsc)
@@ -111,7 +108,7 @@ public class Toolbox : EditorWindow
 
     private void OnDisable()
     {
-        //SceneView.duringSceneGui -= RotateCamera;
+        EditorApplication.playModeStateChanged -= reactToPlayMode;
     }
 
     void makeAbilityRow(string abilityName, int oldVal, bool oldon, Action<int, bool> updateFunc)
