@@ -62,6 +62,13 @@ public class Toolbox : EditorWindow
     {
         bool prevEnabled = enabled;
         enabled = EditorGUILayout.Toggle("Enable tool", enabled);
+        if (enabled)
+        {
+            if (!prevEnabled || pc == null || ReferenceEquals(pc.gameObject, null))
+            {
+                findPlayerController();
+            }
+        }
         GUI.enabled = enabled;
 
         tools.ForEach(tool => tool.display());

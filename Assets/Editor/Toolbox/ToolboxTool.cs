@@ -5,19 +5,18 @@ public abstract class ToolboxTool
     public virtual string Name => "Tool";
 
 
-    private PlayerController _pc;
-    protected PlayerController pc => _pc;
+    public PlayerController pc;
 
     public void init(PlayerController pc)
     {
-        this._pc = pc;
+        this.pc = pc;
         init();
     }
     protected abstract void init();
 
     public void initPlayMode(PlayerController pc)
     {
-        this._pc = pc;
+        this.pc = pc;
         initPlayMode();
     }
     protected abstract void initPlayMode();
