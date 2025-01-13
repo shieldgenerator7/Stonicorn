@@ -7,6 +7,8 @@ public class EditorCameraRotatorTool:ToolboxTool
     public float rotZ = 0;
     public bool autoRotate = true;
 
+    public override string Name => "Editor Camera Rotator";
+
     protected override void init()
     {
         SceneView.duringSceneGui -= rotateCamera;

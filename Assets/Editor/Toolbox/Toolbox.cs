@@ -73,7 +73,11 @@ public class Toolbox : EditorWindow
         }
         GUI.enabled = enabled;
 
-        tools.ForEach(tool => tool.display());
+        tools.ForEach(tool => {
+            GUILayout.Label(tool.Name, EditorStyles.largeLabel);
+            tool.display();
+            GUILayout.Space(10);
+        });
     }
 
     private void OnDisable()
