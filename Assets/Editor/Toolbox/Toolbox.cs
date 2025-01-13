@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.Toolbars;
 using UnityEngine;
 using static Unity.Burst.Intrinsics.Arm;
 
@@ -11,6 +12,7 @@ public class Toolbox : EditorWindow
     List<ToolboxTool> tools = new List<ToolboxTool>()
     {
         new AbilitySettingsTool(),
+        new EditorCameraRotatorTool(),
     };
 
     bool enabled = true;
@@ -77,5 +79,6 @@ public class Toolbox : EditorWindow
     private void OnDisable()
     {
         EditorApplication.playModeStateChanged -= reactToPlayMode;
+        tools.ForEach(tool => tool.dispose());
     }    
 }

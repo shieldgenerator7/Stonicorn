@@ -21,5 +21,7 @@ public abstract class ToolboxTool
     }
     protected abstract void initPlayMode();
 
+    public abstract void dispose();
+
     public abstract void display();
 }

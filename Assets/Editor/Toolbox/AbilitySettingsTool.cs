@@ -31,6 +31,11 @@ public class AbilitySettingsTool : ToolboxTool
 
         checkAllAbilities();
     }
+
+    public override void dispose()
+    {
+    }
+
     public override void display()
     {
         makeAbilityRow(
