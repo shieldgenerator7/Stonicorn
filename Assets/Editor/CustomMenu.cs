@@ -1233,6 +1233,7 @@ public class CustomMenu
             typeof(MusicZone),
             typeof(HiddenArea),
             typeof(GravityZone),
+            typeof(EventTrigger),
         };
         typesList.ForEach(type =>
         {
