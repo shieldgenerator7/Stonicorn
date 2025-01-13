@@ -431,13 +431,61 @@
           "text": "Go away and leave me alone!",
           "imageFileName": "",
           "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "kakiintro",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "kakiintro",
+          "testType": 0,
+          "testValue": 1
         },
+        {
+          "variableName": "kakiintrocantescape",
+          "testType": 3,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
         {
           "characterName": "Kaki",
           "text": "Don't act like you're stuck down here. I know full well you can teleport.",
           "imageFileName": "",
           "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "kakiintro",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "kakiintro",
+          "testType": 0,
+          "testValue": 2
         },
+        {
+          "variableName": "kakiintrocantescape",
+          "testType": 3,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
         {
           "characterName": "Kaki",
           "text": "Oh wow you really are stuck down here.",
