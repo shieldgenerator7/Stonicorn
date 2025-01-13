@@ -497,7 +497,41 @@
           "text": "Fine. I'll teach you Force Launch.",
           "imageFileName": "",
           "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "kakiintro",
+          "actionType": 1,
+          "actionValue": 1
         },
+        {
+          "variableName": "kakiteach",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "kakiintro",
+          "testType": 0,
+          "testValue": 3
+        },
+        {
+          "variableName": "kakiintrocantescape",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "kakiteach",
+          "testType": 3,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
         {
           "characterName": "Kaki",
           "text": "There you go.",
