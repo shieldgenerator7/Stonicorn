@@ -42,9 +42,9 @@ public class AbilitySettingsTool : ToolboxTool
             "ALL",
             (int)abilityLevelMap.Values.Average(v => v),
             abilityToggleMap.Values.Any(v => v),
-            (newVal, newOn) =>
+            (newVal, newOn, changeLevel) =>
                 abilityNames.ForEach(abilityName =>
-                    updateFunc(abilityName, newVal, newOn)
+                    updateFunc(abilityName, newVal, newOn, changeLevel)
                 )
         );
         abilityNames.ForEach(abilityName =>
@@ -52,15 +52,22 @@ public class AbilitySettingsTool : ToolboxTool
                 abilityName,
                 abilityLevelMap[abilityName],
                 abilityToggleMap[abilityName],
-                (newVal, newOn) => updateFunc(abilityName, newVal, newOn)
+                (newVal, newOn, changeLevel) => updateFunc(abilityName, newVal, newOn, true)
                 )
         );
     }
 
 
-    void updateFunc(string abilityName, int val, bool on)
+    void updateFunc(string abilityName, int val, bool on, bool changeLevel)
     {
-        abilityLevelMap[abilityName] = val;
+        if (changeLevel)
+        {
+            abilityLevelMap[abilityName] = val;
+        }
+        else
+        {
+            val = abilityLevelMap[abilityName];
+        }
         abilityToggleMap[abilityName] = on;
         if (EditorApplication.isPlaying)
         {
@@ -70,7 +77,7 @@ public class AbilitySettingsTool : ToolboxTool
         EditorPrefs.SetBool($"{abilityName}_on", on);
     }
 
-    void makeAbilityRow(string abilityName, int oldVal, bool oldon, Action<int, bool> updateFunc)
+    void makeAbilityRow(string abilityName, int oldVal, bool oldon, Action<int, bool, bool> updateFunc)
     {
 
         EditorGUILayout.BeginHorizontal();
@@ -90,7 +97,7 @@ public class AbilitySettingsTool : ToolboxTool
         }
         if (needsUpdate)
         {
-            updateFunc(newVal, newon);
+            updateFunc(newVal, newon, oldVal != newVal);
         }
     }
 
