@@ -40,14 +40,7 @@ public abstract class EventTrigger : MonoBehaviour
     {
         if (coll.isPlayerSolid())
         {
-            if (!Managers.Time.Paused)
-            {
-                triggerEvent();
-            }
-            else
-            {
-                Managers.Time.onPauseChanged += triggerEventOnPlay;
-            }
+            activateTrigger();
         }
     }
 
@@ -61,4 +54,29 @@ public abstract class EventTrigger : MonoBehaviour
     }
 
     protected abstract void triggerEvent();
+
+    public void ActivateTrigger()
+    {
+        //early exit: cant confirm the player can trigger it
+        if (!coll2d.OverlapPoint(Managers.Player.transform.position))
+        {
+            return;
+        }
+        //processing
+        activateTrigger();
+    }
+    public void ForceActivateTrigger()
+    {
+        activateTrigger();
+    }
+    private void activateTrigger() {
+        if (!Managers.Time.Paused)
+        {
+            triggerEvent();
+        }
+        else
+        {
+            Managers.Time.onPauseChanged += triggerEventOnPlay;
+        }
+    }
 }

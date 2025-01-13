@@ -19,7 +19,7 @@ public class VariableSetTrigger : EventTrigger
 
     protected override void triggerEvent()
     {
-        variableSetAction.processAllActions();
+        variableSetAction?.processAllActions();
     }
 
     //dirty: should be a system in super class for this
@@ -27,6 +27,7 @@ public class VariableSetTrigger : EventTrigger
     {
         if (coll.isPlayerSolid())
         {
+            Debug.Log("leaving trigger, activating variable effects");
             triggerLeaveAction?.processAllActions();
         }
     }
