@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6359095399741344553, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: id
-      value: 5237
+      value: 5234
       objectReference: {fileID: 0}
     - target: {fileID: 6505215053507214006, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: characterName
@@ -450,6 +450,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8588691648314606260, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 108122434451784841}
+    - targetCorrespondingSourceObject: {fileID: 2827327062223136444, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5499651039824137661}
   m_SourcePrefab: {fileID: 100100000, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
 --- !u!1 &801038938154893215 stripped
 GameObject:
@@ -483,3 +486,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rooted: 1
+--- !u!114 &2883990549812052374 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6064390498224962749, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 8947796107813092651}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561845660339592087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 157980bc11266644cb1bfab4867dfe74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &6561845660339592087 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2827327062223136444, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 8947796107813092651}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5499651039824137661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561845660339592087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a5e50168211884d8c901fd47a47545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggers:
+  - {fileID: 2883990549812052374}
+  variablesToListenFor:
+  - kakiintrocantescape
