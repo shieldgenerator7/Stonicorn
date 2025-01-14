@@ -4052,7 +4052,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e692eb986e458541b128f9a849b34f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minDistanceFromCenter: 0.005
   maxDistanceFromCenter: 0.025
+  origin: {fileID: 1855512593}
 --- !u!212 &1172799532
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4098,7 +4100,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 35270781db865a44d93717a456d364cf, type: 3}
-  m_Color: {r: 0.654902, g: 0.17254902, b: 0.9411765, a: 0.56078434}
+  m_Color: {r: 0.654902, g: 0.17254902, b: 0.9411765, a: 0.92156863}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -6127,6 +6129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1855512593}
   - component: {fileID: 1855512594}
+  - component: {fileID: 1855512595}
   m_Layer: 0
   m_Name: merky_eye_ring_0
   m_TagString: Untagged
@@ -6195,7 +6198,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 100099d808428a94cbdaec94d70bc8d5, type: 3}
-  m_Color: {r: 0.654902, g: 0.17254902, b: 0.9411765, a: 0.56078434}
+  m_Color: {r: 0.654902, g: 0.17254902, b: 0.9411765, a: 0.92156863}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -6205,6 +6208,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1855512595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855512592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75e77e5225b54441bed6fab75088081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: 1.1
+  duration: 1.5
+  endDelay: 0
+  pingPong: 1
+  useUnscaledTime: 1
 --- !u!1 &1867482837
 GameObject:
   m_ObjectHideFlags: 0
