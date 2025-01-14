@@ -3,20 +3,21 @@ using UnityEngine.UI;
 
 public class PupilEffect : MonoBehaviour
 {
+    public float minDistanceFromCenter = 0.1f;
     public float maxDistanceFromCenter = 1;
 
-    private Vector2 origPos;
+    public Transform origin;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        origPos = transform.localPosition;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 dir = (Vector2)transform.InverseTransformPoint( Utility.ScreenToWorldPoint(Input.mousePosition)) - origPos;
-        transform.localPosition = dir.normalized * Mathf.Clamp(dir.magnitude, 0, maxDistanceFromCenter) + origPos;
+        Vector2 dir = Utility.ScreenToWorldPoint(Input.mousePosition) - (Vector2)origin.position;
+        transform.position = dir.normalized * Mathf.Clamp(dir.magnitude, minDistanceFromCenter, maxDistanceFromCenter) + (Vector2)origin.position;
     }
 }
