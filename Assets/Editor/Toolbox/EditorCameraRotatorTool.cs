@@ -9,6 +9,8 @@ public class EditorCameraRotatorTool : ToolboxTool
 
     public override string Name => "Editor Camera Rotator";
 
+    const string PREFS_KEY = "ecr_autorotate";
+
     protected override void init()
     {
         SceneView.duringSceneGui -= rotateCamera;
@@ -21,7 +23,7 @@ public class EditorCameraRotatorTool : ToolboxTool
         SceneView.duringSceneGui += rotateCamera;
     }
 
-    public override void dispose()
+    protected override void disposeImpl()
     {
         SceneView.duringSceneGui -= rotateCamera;
     }
@@ -78,14 +80,20 @@ public class EditorCameraRotatorTool : ToolboxTool
 
     public void toggle()
     {
-        if (rotZ != 0)
+        autoRotate = !autoRotate;
+        if (!autoRotate)
         {
-            autoRotate = false;
             rotZ = 0;
         }
-        else
-        {
-            autoRotate = true;
-        }
+    }
+
+    protected override void save()
+    {
+        EditorPrefs.SetBool(PREFS_KEY, autoRotate);
+    }
+
+    protected override void load()
+    {
+        autoRotate = EditorPrefs.GetBool(PREFS_KEY,true);
     }
 }

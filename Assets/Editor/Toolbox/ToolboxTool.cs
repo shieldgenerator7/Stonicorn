@@ -11,6 +11,7 @@ public abstract class ToolboxTool
     {
         this.pc = pc;
         init();
+        load();
     }
     protected abstract void init();
 
@@ -18,10 +19,19 @@ public abstract class ToolboxTool
     {
         this.pc = pc;
         initPlayMode();
+        load();
     }
     protected abstract void initPlayMode();
 
-    public abstract void dispose();
+    public void dispose()
+    {
+        disposeImpl();
+        save();
+    }
+    protected abstract void disposeImpl();
 
     public abstract void display();
+
+    protected abstract void save();
+    protected abstract void load();
 }

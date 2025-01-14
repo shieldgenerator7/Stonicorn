@@ -22,8 +22,6 @@ public class AbilitySettingsTool : ToolboxTool
     public override string Name => "Ability Settings";
     protected override void init()
     {
-        abilityNames.ForEach(abilityName => abilityLevelMap[abilityName] = getAbilityLevel(abilityName));
-        abilityNames.ForEach(abilityName => abilityToggleMap[abilityName] = isAbilityOn(abilityName));
     }
     protected override void initPlayMode()
     {
@@ -32,7 +30,7 @@ public class AbilitySettingsTool : ToolboxTool
         checkAllAbilities();
     }
 
-    public override void dispose()
+    protected override void disposeImpl()
     {
     }
 
@@ -73,8 +71,6 @@ public class AbilitySettingsTool : ToolboxTool
         {
             checkAbility(on ? val : -1, abilityName);
         }
-        EditorPrefs.SetInt($"{abilityName}_level", val);
-        EditorPrefs.SetBool($"{abilityName}_on", on);
     }
 
     void makeAbilityRow(string abilityName, int oldVal, bool oldon, Action<int, bool, bool> updateFunc)
@@ -153,5 +149,23 @@ public class AbilitySettingsTool : ToolboxTool
             //ability.UpgradeLevel = 0;
             ability.setUpgradeLevel(0);
         }
+    }
+
+    protected override void save()
+    {
+        abilityNames.ForEach(abilityName =>
+        {
+            EditorPrefs.SetInt($"{abilityName}_level", abilityLevelMap[abilityName]);
+            EditorPrefs.SetBool($"{abilityName}_on", abilityToggleMap[abilityName]);
+        });
+    }
+
+    protected override void load()
+    {
+        abilityNames.ForEach(abilityName =>
+        {
+            abilityLevelMap[abilityName] = getAbilityLevel(abilityName);
+            abilityToggleMap[abilityName] = isAbilityOn(abilityName);
+        });
     }
 }
