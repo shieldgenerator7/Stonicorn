@@ -10,6 +10,7 @@ public class SimpleScaling : MonoBehaviour
     public float duration = 0.4f;//in seconds
     public float endDelay = 0.2f;//delay after reaching the end before resetting to the beginning
     public bool pingPong = true;//come back after going out
+    public bool useUnscaledTime = false;
 
     //Runtime constants
     private float speed;
@@ -43,9 +44,10 @@ public class SimpleScaling : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float time = (useUnscaledTime ? Time.unscaledTime : Time.time);
         if (pausing)
         {
-            if (Time.time > lastKeyFrame + endDelay)
+            if (time > lastKeyFrame + endDelay)
             {
                 lastKeyFrame = lastKeyFrame + endDelay;
                 forwards = !forwards;
@@ -59,7 +61,7 @@ public class SimpleScaling : MonoBehaviour
                 transform.localScale = Vector3.MoveTowards(
                     startScale,
                     endScale,
-                    speed * (Time.time - lastKeyFrame)
+                    speed * (time - lastKeyFrame)
                     );
                 if (transform.localScale == endScale)
                 {
@@ -79,7 +81,7 @@ public class SimpleScaling : MonoBehaviour
                 transform.localScale = Vector3.MoveTowards(
                     endScale,
                     startScale,
-                    speed * (Time.time - lastKeyFrame)
+                    speed * (time - lastKeyFrame)
                     );
                 if (transform.localScale == startScale)
                 {
