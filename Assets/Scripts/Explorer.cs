@@ -26,8 +26,8 @@ public class Explorer : MonoBehaviour
     }
 
     public bool canSee(Collider2D c2d)
-        => coll2d.bounds.Intersects(c2d.bounds);
+        => coll2d.OverlapsCollider(c2d);
 
     public bool canSeeBehind(Collider2D c2d)
-        => behindColl2d.bounds.Intersects(c2d.bounds);
+        => behindColl2d.OverlapsCollider(c2d);
 }
