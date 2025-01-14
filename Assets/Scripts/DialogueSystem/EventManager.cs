@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
+    public float talkSpeedMultiplier = 1f;
+
     public GameObject dialogueBoxPrefab;
 
     private DialogueBoxUpdater dialogueBox;
@@ -122,6 +124,7 @@ public class EventManager : MonoBehaviour
         dbu.setSource(ch.transform);
         //Setup dp
         DialoguePlayer dp = dbu.GetComponent<DialoguePlayer>();
+        dp.charsPerSecond *= talkSpeedMultiplier;
         dp.onDialogueChanged += dbu.setText;
         //dp.onDialogueAdvanced += (quote) => dbu.setSource(Character.getCharacterByName(quote.characterName));
         dp.playDialogue(path);

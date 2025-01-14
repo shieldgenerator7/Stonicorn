@@ -2043,6 +2043,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4653168201120268909, guid: 3ba0706457f3f264784555b01d8a053a, type: 3}
   m_PrefabInstance: {fileID: 341237949}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &354591972 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 1703437246}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &355105494
 GameObject:
   m_ObjectHideFlags: 0
@@ -5128,14 +5133,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 160591702}
     m_Modifications:
+    - target: {fileID: 2289187149847834518, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1534212
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550153086607534, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Text
       value: SPEED
       objectReference: {fileID: 0}
+    - target: {fileID: 3377550153422869272, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 7.373661
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780680, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Points.Array.data[1].x
+      value: 4.3379307
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780680, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Points.Array.data[1].y
+      value: 0.0017943513
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: mas
       value: 
-      objectReference: {fileID: 1703437250}
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: sliderFillSR
       value: 
@@ -5204,10 +5225,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Dialogue Speak Speed
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3377550154208942316, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Text
+      value: x0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550154208942316, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550154208942317, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 38.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550154208942317, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 82.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550154432312778, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5720050836687861020, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1534212
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3377550153525780686, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1703437258}
   m_SourcePrefab: {fileID: 100100000, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
 --- !u!4 &1703437247 stripped
 Transform:
@@ -5224,28 +5273,31 @@ EdgeCollider2D:
   m_CorrespondingSourceObject: {fileID: 3377550154432312776, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
   m_PrefabInstance: {fileID: 1703437246}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1703437250 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3377550153525780686, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
-  m_PrefabInstance: {fileID: 1703437246}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 938331af42de81a4bae49294b9f97bdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1703437251 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
   m_PrefabInstance: {fileID: 1703437246}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 354591972}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61499a302c3661e48a4eab2b3c8c7a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1703437258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354591972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5f59dded97f824c9363a29d5fd8e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minValue: 25
+  maxValue: 200
 --- !u!1 &1741114993
 GameObject:
   m_ObjectHideFlags: 0
