@@ -36,13 +36,13 @@ public class DialogueTrigger : EventTrigger
     protected override void triggerEvent()
     {
         //don't start a new dialogue if one is already active
-            if (Managers.Event.DialoguePlaying)
-            {
-                Debug.Log($"(dialogue) not triggering because theres something already playing", this);
-                Managers.Event.OnDialoguePlayingChanged -= queueTrigger;
-                Managers.Event.OnDialoguePlayingChanged += queueTrigger;
-                return;
-            }
+        if (Managers.Event.DialoguePlaying)
+        {
+            Debug.Log($"(dialogue) not triggering because theres something already playing", this);
+            Managers.Event.OnDialoguePlayingChanged -= queueTrigger;
+            Managers.Event.OnDialoguePlayingChanged += queueTrigger;
+            return;
+        }
         //
         variableSetAction?.processAllActions();
         Managers.Event.processEventTrigger(this);

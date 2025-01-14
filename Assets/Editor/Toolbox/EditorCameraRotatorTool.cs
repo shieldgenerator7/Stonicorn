@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class EditorCameraRotatorTool:ToolboxTool
+public class EditorCameraRotatorTool : ToolboxTool
 {
     [Range(0, 360)]
     public float rotZ = 0;

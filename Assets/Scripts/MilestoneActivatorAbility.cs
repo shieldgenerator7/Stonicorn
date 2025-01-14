@@ -12,14 +12,14 @@ public class MilestoneActivatorAbility : MilestoneActivator
         PlayerAbility pa = ((PlayerAbility)Managers.Player.GetComponent(abilityTypeName));
         if (pa)
         {
-        if (canGrantAbility && !pa.Unlocked)
-        {
-            pa.Unlocked = true;
-        }
-        else if (canGrantUpgrade)
-        {
-            pa.UpgradeLevel++;
-        }
+            if (canGrantAbility && !pa.Unlocked)
+            {
+                pa.Unlocked = true;
+            }
+            else if (canGrantUpgrade)
+            {
+                pa.UpgradeLevel++;
+            }
         }
         else
         {

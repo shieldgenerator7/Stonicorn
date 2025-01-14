@@ -1244,8 +1244,9 @@ public class CustomMenu
         {
             bool anySolid = go.GetComponents<Collider2D>().Any(coll2d => !coll2d.isTrigger)
                 || go.GetComponentsInChildren<Collider2D>().Any(coll2d => !coll2d.isTrigger);
-            if (anySolid) {
-                Debug.LogError($"GameObject {go.Name()} has  solid colliders!",go);
+            if (anySolid)
+            {
+                Debug.LogError($"GameObject {go.Name()} has  solid colliders!", go);
                 problemCount++;
             }
 
@@ -1294,7 +1295,7 @@ public class CustomMenu
     }
 
     [MenuItem("SG7/Build/Pre-Build/Check dialogue events")]
-    public static  bool checkDialogueEvents()
+    public static bool checkDialogueEvents()
     {
         int changeCount = 0;
         GameObject.FindObjectsByType<ContinuallyCheckForDialogue>(FindObjectsSortMode.None).ToList()

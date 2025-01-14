@@ -57,7 +57,7 @@ public class Toolbox : EditorWindow
         else if (pmsc == PlayModeStateChange.EnteredEditMode)
         {
             tools.ForEach(tool => tool.init(pc));
-        } 
+        }
     }
 
     private void OnGUI()
@@ -73,7 +73,8 @@ public class Toolbox : EditorWindow
         }
         GUI.enabled = enabled;
 
-        tools.ForEach(tool => {
+        tools.ForEach(tool =>
+        {
             GUILayout.Label(tool.Name, EditorStyles.largeLabel);
             tool.display();
             GUILayout.Space(10);
@@ -84,5 +85,5 @@ public class Toolbox : EditorWindow
     {
         EditorApplication.playModeStateChanged -= reactToPlayMode;
         tools.ForEach(tool => tool.dispose());
-    }    
+    }
 }

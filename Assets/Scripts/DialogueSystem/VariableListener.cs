@@ -27,7 +27,7 @@ public class VariableListener : MonoBehaviour
         if (varName == variableToListenFor)
         {
             bool enable = newValue >= minValue;
-            objectsToEnable.ForEach(go=>go.SetActive(enable));
+            objectsToEnable.ForEach(go => go.SetActive(enable));
         }
     }
 }
