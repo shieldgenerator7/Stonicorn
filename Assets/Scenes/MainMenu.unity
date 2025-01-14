@@ -6137,9 +6137,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 160591702}
     m_Modifications:
+    - target: {fileID: 2289187149847834518, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.3270006
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550153086607534, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Text
-      value: VOLUME
+      value: WAIT
       objectReference: {fileID: 0}
     - target: {fileID: 3377550153086607534, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_FontData.m_MinSize
@@ -6149,10 +6153,30 @@ PrefabInstance:
       propertyPath: m_FontData.m_FontSize
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 3377550153422869272, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780680, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Points.Array.data[0].x
+      value: -4.3178873
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780680, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Points.Array.data[0].y
+      value: -0.0065428503
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780680, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Points.Array.data[1].x
+      value: 3.7581885
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780680, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Points.Array.data[1].y
+      value: -0.010155141
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: mas
       value: 
-      objectReference: {fileID: 1928916788}
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: sliderFillSR
       value: 
@@ -6219,11 +6243,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Name
-      value: Sound Slider Control
+      value: NPC Dialogue Wait Duration
       objectReference: {fileID: 0}
-    - target: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 3377550154208942316, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Text
+      value: 9.9sec
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550154432312778, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5720050836687861020, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.3270006
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3377550153525780686, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
@@ -6232,7 +6264,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1928916788}
+      addedObject: {fileID: 1928916793}
   m_SourcePrefab: {fileID: 100100000, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
 --- !u!114 &1928916783 stripped
 MonoBehaviour:
@@ -6265,7 +6297,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
   m_PrefabInstance: {fileID: 1928916782}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1928916788
+--- !u!114 &1928916793
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6274,9 +6306,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1928916787}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 291c8a8d4c5a637449e7a211d4772207, type: 3}
+  m_Script: {fileID: 11500000, guid: fcc9a7fa6d3ccb644896beaff4719705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxWaitDuration: 10
 --- !u!1 &1983156190
 GameObject:
   m_ObjectHideFlags: 0

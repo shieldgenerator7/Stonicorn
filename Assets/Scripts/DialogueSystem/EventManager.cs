@@ -7,6 +7,7 @@ using UnityEngine;
 public class EventManager : MonoBehaviour, ISetting
 {
     public float talkSpeedMultiplier = 1f;
+    public float talkWaitDuration = 1f;
 
     public GameObject dialogueBoxPrefab;
 
@@ -22,9 +23,14 @@ public class EventManager : MonoBehaviour, ISetting
     public SettingObject Setting
     {
         get => new SettingObject(ID,
-            "talkSpeedMultiplier", talkSpeedMultiplier
+            "talkSpeedMultiplier", talkSpeedMultiplier,
+            "talkWaitDuration", talkWaitDuration
             );
-        set => talkSpeedMultiplier = (float)value.data["talkSpeedMultiplier"];
+        set
+        {
+            talkSpeedMultiplier = (float)value.data["talkSpeedMultiplier"];
+            talkWaitDuration = (float)value.data["talkWaitDuration"];
+        }
     }
 
     public Action<bool> OnDialoguePlayingChanged;
@@ -138,6 +144,7 @@ public class EventManager : MonoBehaviour, ISetting
         //Setup dp
         DialoguePlayer dp = dbu.GetComponent<DialoguePlayer>();
         dp.charsPerSecond *= talkSpeedMultiplier;
+        dp.autoAdvanceDelay = talkWaitDuration;
         dp.onDialogueChanged += dbu.setText;
         //dp.onDialogueAdvanced += (quote) => dbu.setSource(Character.getCharacterByName(quote.characterName));
         dp.playDialogue(path);
