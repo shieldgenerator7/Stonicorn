@@ -26,8 +26,8 @@ public class Explorer : MonoBehaviour
     }
 
     public bool canSee(Collider2D c2d)
-        => coll2d.OverlapsCollider(c2d);
+        => c2d.OverlapPoint(transform.position) || coll2d.OverlapsCollider(c2d);
 
     public bool canSeeBehind(Collider2D c2d)
-        => behindColl2d.OverlapsCollider(c2d);
+        => c2d.OverlapPoint(transform.position) || behindColl2d.OverlapsCollider(c2d);
 }
