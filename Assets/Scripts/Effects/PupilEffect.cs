@@ -6,18 +6,25 @@ public class PupilEffect : MonoBehaviour
     public float minDistanceFromCenter = 0.1f;
     public float maxDistanceFromCenter = 1;
 
+    private Vector2 originalScale;
+
     public Transform origin;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        originalScale = origin.localScale;
     }
 
     // Update is called once per frame
     void Update()
     {
+        float scaleFactor = origin.localScale.magnitude/originalScale.magnitude;
         Vector2 dir = Utility.ScreenToWorldPoint(Input.mousePosition) - (Vector2)origin.position;
-        transform.position = dir.normalized * Mathf.Clamp(dir.magnitude, minDistanceFromCenter, maxDistanceFromCenter) + (Vector2)origin.position;
+        transform.position = dir.normalized * Mathf.Clamp(
+            dir.magnitude,
+            minDistanceFromCenter*scaleFactor, 
+            maxDistanceFromCenter*scaleFactor
+            ) + (Vector2)origin.position;
     }
 }
