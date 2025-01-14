@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EventManager : MonoBehaviour
+public class EventManager : MonoBehaviour, ISetting
 {
     public float talkSpeedMultiplier = 1f;
 
@@ -14,6 +14,19 @@ public class EventManager : MonoBehaviour
 
     private List<DialoguePlayer> dialoguePlayingList = new List<DialoguePlayer>();
     public bool DialoguePlaying => dialoguePlayingList.Count > 0;
+
+    public SettingScope Scope => SettingScope.SAVE_FILE;
+
+    public string ID => "EventManager";
+
+    public SettingObject Setting
+    {
+        get => new SettingObject(ID,
+            "talkSpeedMultiplier", talkSpeedMultiplier
+            );
+        set => talkSpeedMultiplier = (float)value.data["talkSpeedMultiplier"];
+    }
+
     public Action<bool> OnDialoguePlayingChanged;
 
     // Start is called before the first frame update
