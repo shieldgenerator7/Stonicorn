@@ -962,8 +962,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8503b107cf44a4886ecb17b6953b17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sightRadius: 30
-  hindSightRadius: 80
+  sightRadius: 15
+  hindSightRadius: 30
   coll2d: {fileID: 756930644}
   behindColl2d: {fileID: 756930643}
 --- !u!58 &756930644
@@ -1001,7 +1001,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 30
+  m_Radius: 15
 --- !u!58 &756930643
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1037,7 +1037,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 80
+  m_Radius: 30
 --- !u!1 &1809435737
 GameObject:
   m_ObjectHideFlags: 0
