@@ -737,6 +737,80 @@
         }
       ],
       "actions": []
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "transistorintro",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Transistor",
+          "text": "Thank you for powering me.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "You have obtained the Electric Beam ability.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Your current task is to power the factory.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "WARNING WARNING WARNING",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Threat imminent! Threat imminent! Threat imminent!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Powering down...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "transistorintro",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [],
+      "quotes": [
+        {
+          "characterName": "Transistor",
+          "text": "WARNING WARNING WARNING",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Powering down...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": []
     }
   ]
 }
