@@ -36,6 +36,7 @@ public class LanternActivator : MemoryMonoBehaviour
         foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
         {
             ps.Play();
+            ps.Emit(10);
         }
         Destroy(this);//delete this script
     }
