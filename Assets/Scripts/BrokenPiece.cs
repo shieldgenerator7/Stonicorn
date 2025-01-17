@@ -28,6 +28,14 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
 
     public void unpack(GameObject original)
     {
+        //Reparent child objects to this object
+        foreach (GameObject go in Savables)
+        {
+            //(apparently something else is unparenting it before this)
+            //TODO: find out how it gets unparent and figure out if it should be doing that
+            go.transform.SetParent(transform);
+        }
+
         //Initialize this object
         Scene scene = original.scene;
         transform.position = original.transform.position;
