@@ -117,6 +117,11 @@ public class StickyPadChecker : SavableMonoBehaviour
     void stickToObject(GameObject go)
     {
         Debug.Log($"StickyPad.stickToObject({go})");
+        if (go == null)
+        {
+            Debug.LogError($"Trying to stick to null object! {go}",this);
+            return;
+        }
         Rigidbody2D goRB2D = go.GetComponent<Rigidbody2D>();
         if (goRB2D)
         {
