@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class StickyPadChecker : SavableMonoBehaviour
 {
-    private HashSet<string> connectedObjs = new HashSet<string>();
+    private List<string> connectedObjs = new List<string>();
+    private List<int> connectedIds = new List<int>();
 
     private Rigidbody2D rb2d;
     private Collider2D coll2d;
@@ -36,66 +37,80 @@ public class StickyPadChecker : SavableMonoBehaviour
         {
             Debug.Log($"StickyPad.CurrentState:get()");
             SavableObject so = new SavableObject(this);
-            int counter = 0;
-            foreach (string str in connectedObjs)
+            //connectedObjs
+            for (int i = 0; i < connectedObjs.Count; i++)
             {
-                so.more("conObj" + counter, str);
-                counter++;
+                so.more($"conObj{i}", connectedObjs[i]);
             }
-            so.more("conObjCount", counter);
+            so.more("conObjCount", connectedObjs.Count);
+            //connectedIds
+            for (int i = 0; i < connectedIds.Count; i++)
+            {
+                so.more($"conId{i}", connectedIds[i]);
+            }
+            so.more("conIdCount", connectedIds.Count);
+            //
             return so;
         }
         set
         {
             Debug.Log($"StickyPad.CurrentState:set({value})");
-            connectedObjs = new HashSet<string>();
+
+            //connect objects
+            List<string> newConnectedObjs = new List<string>();
             int count = value.Int("conObjCount");
             for (int i = 0; i < count; i++)
             {
-                connectedObjs.Add(value.String("conObj" + i));
+                newConnectedObjs.Add(value.String($"conObj{i}"));
             }
-            foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
+            //check for joints that need deleted
+            for(int i = connectedObjs.Count - 1; i >= 0; i--)
             {
-                if (!fj2d.connectedBody || !connectedObjs.Contains(fj2d.connectedBody.gameObject.name))
+                string goName = connectedObjs[i];
+                if (!newConnectedObjs.Contains(goName))
                 {
-                    Destroy(fj2d);
+                    deleteJoint(goName);
                 }
             }
-            //Get list of objects in area
-            int colliderCount = Utility.Cast(coll2d, Vector2.zero, rch2ds, 0);
-            //Find names that don't have a FixedJoint2D
-            foreach (string objname in connectedObjs)
+            //check for joints that need added
+            for (int i = 0;i < newConnectedObjs.Count; i++)
             {
-                bool foundone = false;
-                foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
+                string goName = newConnectedObjs[i];
+                if (!connectedObjs.Contains(goName))
                 {
-                    if (fj2d.connectedBody.gameObject.name == objname)
-                    {
-                        //found one, break the inner loop
-                        foundone = true;
-                        break;
-                    }
-                }
-                if (!foundone)
-                {
-                    //Find the name's object
-                    GameObject conObj = null;
-                    for (int i = 0; i < colliderCount; i++)
-                    {
-                        RaycastHit2D rch2d = rch2ds[i];
-                        if (rch2d.collider.gameObject.name == objname)
-                        {
-                            conObj = rch2d.collider.gameObject;
-                            break;
-                        }
-                    }
-                    //create new FixedJoint2D
-                    if (conObj != null)
-                    {
-                        stickToObject(conObj);
-                    }
+                    createJoint(GameObject.Find(goName));
                 }
             }
+            connectedObjs = newConnectedObjs;
+
+            //connect ids
+            List<int> newConnectedIds = new List<int>();
+            int count2 = value.Int("conIdCount");
+            for (int i = 0; i < count2; i++)
+            {
+                newConnectedIds.Add(value.Int($"conId{i}"));
+            }
+            //check for joints that need deleted
+            for (int i = connectedIds.Count - 1; i >= 0; i--)
+            {
+                int goKey = connectedIds[i];
+                if (!newConnectedIds.Contains(goKey))
+                {
+                    deleteJoint(goKey);
+                }
+            }
+            //check for joints that need added
+            for (int i = 0; i < newConnectedIds.Count; i++)
+            {
+                int goKey = newConnectedIds[i];
+                if (!connectedIds.Contains(goKey))
+                {
+                    Rigidbody2D rb2d = FindObjectsByType<Rigidbody2D>(FindObjectsSortMode.None)
+                        .First(rb2d => rb2d.gameObject.getKey() == goKey);
+                    createJoint(rb2d);
+                }
+            }
+            connectedIds = newConnectedIds;
         }
     }
 
@@ -126,24 +141,62 @@ public class StickyPadChecker : SavableMonoBehaviour
         Rigidbody2D goRB2D = go.GetComponent<Rigidbody2D>();
         if (goRB2D)
         {
-            bool foundObj = GetComponents<FixedJoint2D>().ToList()
-                .Any(fj2d => fj2d.connectedBody == goRB2D);
-            if (!foundObj)
+            int goKey = go.getKey();
+            if (!connectedIds.Contains(goKey))
             {
-                FixedJoint2D fj2d = gameObject.AddComponent<FixedJoint2D>();
-                fj2d.connectedBody = goRB2D;
-                fj2d.autoConfigureConnectedAnchor = false;
+                createJoint(goRB2D);
+                connectedIds.Add(goKey);
             }
         }
         else
         {
-            if (!connectedObjs.Contains(go.name))
+            string goName = go.name;
+            if (!connectedObjs.Contains(goName))
             {
-                TargetJoint2D tj2d = gameObject.AddComponent<TargetJoint2D>();
-                tj2d.autoConfigureTarget = false;
-                rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
-                connectedObjs.Add(go.name);
+                createJoint(go);
+                connectedObjs.Add(goName);
             }
         }
     }
+
+    void createJoint(GameObject go)
+    {
+        TargetJoint2D tj2d = gameObject.AddComponent<TargetJoint2D>();
+        tj2d.autoConfigureTarget = false;
+        updateConstraints();
+    }
+
+    void deleteJoint(string name)
+    {
+        TargetJoint2D tj2d = GetComponents<TargetJoint2D>().FirstOrDefault(tj2d => tj2d.name == name);
+        if (tj2d)
+        {
+            Destroy(tj2d);
+            updateConstraints();
+        }
+    }
+
+    void createJoint(Rigidbody2D rb2d)
+    {
+        FixedJoint2D fj2d = gameObject.AddComponent<FixedJoint2D>();
+        fj2d.connectedBody = rb2d;
+        fj2d.autoConfigureConnectedAnchor = false;
+    }
+
+    void deleteJoint(int goKey)
+    {
+        FixedJoint2D fj2d = GetComponents<FixedJoint2D>().FirstOrDefault(fj2d => fj2d.connectedBody.gameObject.getKey() == goKey);
+        if (fj2d)
+        {
+            Destroy(fj2d);
+        }
+    }
+
+    void updateConstraints()
+    {
+        TargetJoint2D tj2d = gameObject.GetComponent<TargetJoint2D>();
+        rb2d.constraints = (tj2d)
+            ? RigidbodyConstraints2D.FreezeAll
+            : RigidbodyConstraints2D.None;
+    } 
 }
