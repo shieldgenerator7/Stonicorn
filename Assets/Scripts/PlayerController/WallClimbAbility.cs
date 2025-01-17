@@ -19,6 +19,10 @@ public class WallClimbAbility : PlayerAbility
     private bool groundedRight = false;
     private bool groundedCeiling = false;
 
+    private bool prevGroundedLeft = false;
+    private bool prevGroundedRight = false;
+    private bool prevGroundedCeiling = false;
+
     private float magnetStartTime = -1;
     public bool Magneted
     {
@@ -62,6 +66,7 @@ public class WallClimbAbility : PlayerAbility
 
     bool isGroundedWall()
     {
+        prevGroundedLeft = groundedLeft;
         groundedLeft = groundedRight = false;
         Vector2 gravity = playerController.GravityDir;
         //Test left side
@@ -70,6 +75,7 @@ public class WallClimbAbility : PlayerAbility
             wallDetectRange
             );
         //Test right side
+        prevGroundedRight = groundedRight;
         groundedRight = playerController.Ground.isGroundedInDirection(
             -gravity.PerpendicularRight(),
             wallDetectRange
@@ -78,6 +84,7 @@ public class WallClimbAbility : PlayerAbility
     }
     bool isGroundedCeiling()
     {
+        prevGroundedCeiling = groundedCeiling;
         groundedCeiling = false;
         groundedCeiling = playerController.Ground.isGroundedInDirection(
             -playerController.GravityDir,
@@ -97,6 +104,14 @@ public class WallClimbAbility : PlayerAbility
     /// <param name="newPos"></param>
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
+        if (prevGroundedLeft || prevGroundedRight || prevGroundedCeiling)
+        {
+            //Plant Sticky
+            if (CanSticky)
+            {
+                plantSticky(oldPos, playerController.Ground.GroundedAbilityPrev,  prevGroundedLeft, prevGroundedRight, prevGroundedCeiling);
+            }
+        }
         if (groundedLeft || groundedRight || groundedCeiling)
         {
             //Update Stats
@@ -106,7 +121,7 @@ public class WallClimbAbility : PlayerAbility
             //Plant Sticky
             if (CanSticky)
             {
-                plantSticky(newPos);
+                plantSticky(newPos, playerController.Ground.GroundedAbility, groundedLeft, groundedRight, groundedCeiling);
             }
             //Effect Teleport
             effectTeleport(oldPos, newPos);
@@ -188,23 +203,23 @@ public class WallClimbAbility : PlayerAbility
     /// Plants a sticky pad at the oldPos if it's near a wall
     /// </summary>
     /// <param name="teleportPos"></param>
-    public void plantSticky(Vector2 teleportPos)
+    public void plantSticky(Vector2 teleportPos, bool atAll, bool left, bool right, bool ceil)
     {
-        if (playerController.Ground.GroundedAbilityPrev)
+        if (atAll)
         {
             //Get the gravity direction
             Vector2 gravity = playerController.GravityDir;
-            if (groundedLeft)
+            if (left)
             {
                 //Look left
                 plantStickyInDirection(teleportPos, -gravity.PerpendicularLeft());
             }
-            if (groundedRight)
+            if (right)
             {
                 //Look right
                 plantStickyInDirection(teleportPos, -gravity.PerpendicularRight());
             }
-            if (groundedCeiling)
+            if (ceil)
             {
                 //Look up
                 plantStickyInDirection(teleportPos, -gravity);
