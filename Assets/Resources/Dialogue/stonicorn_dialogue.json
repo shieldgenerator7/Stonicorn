@@ -511,6 +511,47 @@
           "actionValue": 1
         }
       ]
+    },    
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "kakiintro",
+          "testType": 0,
+          "testValue": 3
+        },
+        {
+          "variableName": "kakiteach",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "kakiintrocantescape",
+          "testType": 3,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Kaki",
+          "text": "Come on!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kaki",
+          "text": "What are you waiting for?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kaki",
+          "text": "Do you want to learn Force Launch or not?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": []
     },
     {
       "title": "Dialogue Title",
@@ -806,47 +847,6 @@
         {
           "characterName": "Transistor",
           "text": "Powering down...",
-          "imageFileName": "",
-          "voiceLineFileName": ""
-        }
-      ],
-      "actions": []
-    },
-    {
-      "title": "Dialogue Title",
-      "conditions": [
-        {
-          "variableName": "kakiintro",
-          "testType": 0,
-          "testValue": 3
-        },
-        {
-          "variableName": "kakiteach",
-          "testType": 0,
-          "testValue": 1
-        },
-        {
-          "variableName": "kakiintrocantescape",
-          "testType": 3,
-          "testValue": 1
-        }
-      ],
-      "quotes": [
-        {
-          "characterName": "Kaki",
-          "text": "Come on!",
-          "imageFileName": "",
-          "voiceLineFileName": ""
-        },
-        {
-          "characterName": "Kaki",
-          "text": "What are you waiting for?",
-          "imageFileName": "",
-          "voiceLineFileName": ""
-        },
-        {
-          "characterName": "Kaki",
-          "text": "Do you want to learn Force Launch or not?",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
