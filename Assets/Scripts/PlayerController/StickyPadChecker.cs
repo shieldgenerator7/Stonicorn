@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StickyPadChecker : SavableMonoBehaviour
@@ -119,15 +120,8 @@ public class StickyPadChecker : SavableMonoBehaviour
         Rigidbody2D goRB2D = go.GetComponent<Rigidbody2D>();
         if (goRB2D)
         {
-            bool foundObj = false;
-            foreach (FixedJoint2D fj2d in GetComponents<FixedJoint2D>())
-            {
-                if (fj2d.connectedBody == goRB2D)
-                {
-                    foundObj = true;
-                    break;
-                }
-            }
+            bool foundObj = GetComponents<FixedJoint2D>().ToList()
+                .Any(fj2d => fj2d.connectedBody == goRB2D);
             if (!foundObj)
             {
                 FixedJoint2D fj2d = gameObject.AddComponent<FixedJoint2D>();
