@@ -13,16 +13,19 @@ public class StickyPadChecker : SavableMonoBehaviour
     // Use this for initialization
     void OnEnable()
     {
+        Debug.Log($"StickyPad.OnEnable()");
         init();
     }
     public override void init()
     {
+        Debug.Log($"StickyPad.init()");
         rb2d = GetComponent<Rigidbody2D>();
         coll2d = GetComponent<Collider2D>();
     }
 
     public void init(Vector2 normal)
     {
+        Debug.Log($"StickyPad.init({normal})");
         transform.right = -normal;
     }
 
@@ -30,6 +33,7 @@ public class StickyPadChecker : SavableMonoBehaviour
     {
         get
         {
+            Debug.Log($"StickyPad.CurrentState:get()");
             SavableObject so = new SavableObject(this);
             int counter = 0;
             foreach (string str in connectedObjs)
@@ -42,6 +46,7 @@ public class StickyPadChecker : SavableMonoBehaviour
         }
         set
         {
+            Debug.Log($"StickyPad.CurrentState:set({value})");
             connectedObjs = new HashSet<string>();
             for (int i = 0; i < value.Int("conObjCount"); i++)
             {
@@ -94,6 +99,7 @@ public class StickyPadChecker : SavableMonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log($"StickyPad.OnCollisionEnter2D({collision})");
         if (!collision.collider.isTrigger)
         {
             stickToObject(collision.gameObject);
@@ -101,6 +107,7 @@ public class StickyPadChecker : SavableMonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D coll)
     {
+        Debug.Log($"StickyPad.OnTriggerEnter2D({coll})");
         if (!coll.isTrigger)
         {
             stickToObject(coll.gameObject);
@@ -108,6 +115,7 @@ public class StickyPadChecker : SavableMonoBehaviour
     }
     void stickToObject(GameObject go)
     {
+        Debug.Log($"StickyPad.stickToObject({go})");
         Rigidbody2D goRB2D = go.GetComponent<Rigidbody2D>();
         if (goRB2D)
         {
