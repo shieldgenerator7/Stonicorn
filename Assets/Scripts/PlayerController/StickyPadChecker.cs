@@ -49,7 +49,8 @@ public class StickyPadChecker : SavableMonoBehaviour
         {
             Debug.Log($"StickyPad.CurrentState:set({value})");
             connectedObjs = new HashSet<string>();
-            for (int i = 0; i < value.Int("conObjCount"); i++)
+            int count = value.Int("conObjCount");
+            for (int i = 0; i < count; i++)
             {
                 connectedObjs.Add(value.String("conObj" + i));
             }
