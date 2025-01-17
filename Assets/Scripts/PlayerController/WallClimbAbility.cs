@@ -106,7 +106,7 @@ public class WallClimbAbility : PlayerAbility
             //Plant Sticky
             if (CanSticky)
             {
-                plantSticky(oldPos);
+                plantSticky(newPos);
             }
             //Effect Teleport
             effectTeleport(oldPos, newPos);
