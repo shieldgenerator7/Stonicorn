@@ -9,8 +9,6 @@ public class StickyPadChecker : SavableMonoBehaviour
     private List<int> connectedIds = new List<int>();
 
     private Rigidbody2D rb2d;
-    private Collider2D coll2d;
-    private static RaycastHit2D[] rch2ds = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
     // Use this for initialization
     void OnEnable()
@@ -22,7 +20,6 @@ public class StickyPadChecker : SavableMonoBehaviour
     {
         Debug.Log($"StickyPad.init()");
         rb2d = GetComponent<Rigidbody2D>();
-        coll2d = GetComponent<Collider2D>();
     }
 
     public void init(Vector2 normal)
