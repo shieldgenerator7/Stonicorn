@@ -454,6 +454,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1249487551732489422, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       insertIndex: 5
       addedObject: {fileID: 572332061816238524}
+    - targetCorrespondingSourceObject: {fileID: 1249487551732489422, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6736249712589552563}
+    - targetCorrespondingSourceObject: {fileID: 1249487551732489422, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3810766233597629055}
     - targetCorrespondingSourceObject: {fileID: 2827327062223136444, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5499651039824137661}
@@ -584,3 +590,34 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.75
+--- !u!114 &6736249712589552563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7889153614598103525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c136d1bb557f17048bf3bac4a9a0845b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionList:
+  - variableName: kakiteach
+    actionType: 1
+    actionValue: 1
+--- !u!114 &3810766233597629055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7889153614598103525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bec80bab206a5347b3d564ad9ec8c44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: 
+  variableSetAction: {fileID: 6736249712589552563}
+  triggerLeaveAction: {fileID: 0}
