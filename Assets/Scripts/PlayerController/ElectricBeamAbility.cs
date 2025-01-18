@@ -123,6 +123,7 @@ public class ElectricBeamAbility : PlayerAbility
                 if (charge == 0)
                 {
                     Activated = false;
+                    Target = null;
                 }
             }
             else
