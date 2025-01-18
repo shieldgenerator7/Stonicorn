@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -68,12 +69,14 @@ public class ElectricBeamAbility : PlayerAbility
         base.init();
         playerController.Teleport.findTeleportablePositionOverride
             += findTeleportablePosition;
+        playerController.Teleport.onRangeChanged += rangeChanged;
     }
     public override void OnDisable()
     {
         base.OnDisable();
         playerController.Teleport.findTeleportablePositionOverride
             -= findTeleportablePosition;
+        playerController.Teleport.onRangeChanged -= rangeChanged;
     }
 
     void FixedUpdate()
@@ -177,6 +180,13 @@ public class ElectricBeamAbility : PlayerAbility
         }
     }
 
+    void rangeChanged(float range)
+    {
+        this.range = range;
+        onRangeChanged?.Invoke(this.range);
+    }
+    public event Action<float> onRangeChanged;
+
     bool inRange(GameObject go, float range = 0)
     {
         range = (range > 0) ? range : this.range;
@@ -216,6 +226,7 @@ public class ElectricBeamAbility : PlayerAbility
     {
         range = aul.stat1;
         energyPerSecond = aul.stat2;
+        staticSpeed = aul.stat3;
     }
     public override SavableObject CurrentState
     {

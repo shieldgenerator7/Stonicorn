@@ -16,6 +16,7 @@ public class ElectricRingDisplayer : MonoBehaviour
         spline = GetComponent<SpriteShapeController>().spline;
         electricBeamAbility = Managers.Player.GetComponent<ElectricBeamAbility>();
         electricBeamAbility.onTargetChanged += targetChanged;
+        electricBeamAbility.onRangeChanged += generateGeometry;
         targetChanged(null, electricBeamAbility.Target);
     }
 
