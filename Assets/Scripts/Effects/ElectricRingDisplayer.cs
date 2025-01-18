@@ -16,15 +16,15 @@ public class ElectricRingDisplayer : MonoBehaviour
     {
         spline = GetComponent<SpriteShapeController>().spline;
         electricBeamAbility = Managers.Player.GetComponent<ElectricBeamAbility>();
-        electricBeamAbility.onTargetChanged += targetChanged;
+        electricBeamAbility.onActivatedChanged += updateOn;
         electricBeamAbility.onRangeChanged += updateRange;
         electricBeamAbility.onChargeChanged += updateCharge;
-        targetChanged(null, electricBeamAbility.Target);
+        updateOn(electricBeamAbility.Activated);
     }
 
-    void targetChanged(GameObject oldGO, GameObject newGO)
+    void updateOn(bool active)
     {
-        if (!newGO && electricBeamAbility.Activated)
+        if (active)
         {
             gameObject.SetActive(true);
             generateGeometry();
