@@ -33,6 +33,7 @@ public class ElectricBeamAbility : PlayerAbility
     public delegate void OnActivatedChanged(bool activated);
     public event OnActivatedChanged onActivatedChanged;
 
+    private Vector2 tapPos;
     private bool wiredThisInput = false;//true if it has wired since the last user input
 
     GameObject target;
@@ -217,7 +218,7 @@ public class ElectricBeamAbility : PlayerAbility
     #region Input Handling
     Vector2 findTeleportablePosition(Vector2 rangePos, Vector2 tapPos)
     {
-        selectTarget(tapPos);
+        this.tapPos = tapPos;
         return Vector2.zero;
     }
 
@@ -229,6 +230,8 @@ public class ElectricBeamAbility : PlayerAbility
         {
             Activated = true;
         }
+        //select target
+        selectTarget(tapPos);
         //
         wiredThisInput = false;
     }
