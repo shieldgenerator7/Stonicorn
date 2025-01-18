@@ -18,8 +18,10 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer, IPowerable
     }
 
     public float maxEnergy;
-    public float maxEnergyPerSecond;
-    public float ThroughPut => Mathf.Min(energy, maxEnergyPerSecond);
+    public float maxEnergyPerSecondIn;
+    public float maxEnergyPerSecondOut;
+
+    public float ThroughPut => Mathf.Min(energy, maxEnergyPerSecondOut);
 
     public GameObject GameObject => gameObject;
 
@@ -36,7 +38,7 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer, IPowerable
 
     public float givePower(float requestedPower)
     {
-        float maxAmount = maxEnergyPerSecond * Time.fixedDeltaTime;
+        float maxAmount = maxEnergyPerSecondOut * Time.fixedDeltaTime;
         float amount = Mathf.Min(requestedPower, maxAmount, energy);
         Energy -= amount;
         return amount;
@@ -44,7 +46,7 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer, IPowerable
 
     public float acceptPower(float power)
     {
-        float maxAmount = maxEnergyPerSecond * Time.fixedDeltaTime;
+        float maxAmount = maxEnergyPerSecondIn * Time.fixedDeltaTime;
         float amount = Mathf.Min(power, maxAmount);
         Energy += amount;
         return power - amount;
