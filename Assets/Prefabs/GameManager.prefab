@@ -137,6 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4d9bfb3f3804c44c9037b381e268d0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  talkSpeedMultiplier: 1
+  talkWaitDuration: 1
   dialogueBoxPrefab: {fileID: 3668902425520989893, guid: 6beeb4802dd1ec24c9fb1e521b372890, type: 3}
 --- !u!114 &2859978935190022878
 MonoBehaviour:
@@ -330,10 +332,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9618562f123a8249939c9ecc7ed2475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0.2
+  gravityCenter: {x: 0, y: 0}
   MAX_DISTANCE: 200
   EXTRA_DISTANCE: 10
   jobCount: 8
-  gravityCenter: {x: 0, y: 0}
   layerName: Ground
 --- !u!1 &4948078954240296993
 GameObject:
