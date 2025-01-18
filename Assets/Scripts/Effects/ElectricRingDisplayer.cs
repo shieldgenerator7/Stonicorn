@@ -7,6 +7,7 @@ public class ElectricRingDisplayer : MonoBehaviour
 {
     [Header("Settings")]
     public float pointSpacing = 1;//distance between two points
+    public float rangeOffset = -0.2f;
 
     private Spline spline;
     private ElectricBeamAbility electricBeamAbility;
@@ -16,7 +17,8 @@ public class ElectricRingDisplayer : MonoBehaviour
         spline = GetComponent<SpriteShapeController>().spline;
         electricBeamAbility = Managers.Player.GetComponent<ElectricBeamAbility>();
         electricBeamAbility.onTargetChanged += targetChanged;
-        electricBeamAbility.onRangeChanged += generateGeometry;
+        electricBeamAbility.onRangeChanged += updateRange;
+        electricBeamAbility.onChargeChanged += updateCharge;
         targetChanged(null, electricBeamAbility.Target);
     }
 
@@ -25,7 +27,7 @@ public class ElectricRingDisplayer : MonoBehaviour
         if (!newGO && electricBeamAbility.Activated)
         {
             gameObject.SetActive(true);
-            generateGeometry(electricBeamAbility.range - 0.2f);
+            generateGeometry();
         }
         else
         {
@@ -33,7 +35,22 @@ public class ElectricRingDisplayer : MonoBehaviour
         }
     }
 
-    void generateGeometry(float range)
+    void updateRange(float range)
+    {
+        generateGeometry(range + rangeOffset, electricBeamAbility.Charge / electricBeamAbility.maxCharge);
+    }
+
+    void updateCharge(float charge)
+    {
+        generateGeometry(electricBeamAbility.range + rangeOffset, charge / electricBeamAbility.maxCharge);
+    } 
+
+    void generateGeometry()
+    {
+        generateGeometry(electricBeamAbility.range + rangeOffset, electricBeamAbility.Charge / electricBeamAbility.maxCharge);
+    }
+
+    void generateGeometry(float range, float percent)
     {
         spline.Clear();
         float circumference = 2 * range * Mathf.PI;
@@ -42,7 +59,7 @@ public class ElectricRingDisplayer : MonoBehaviour
         float angleSpacing = 2 * Mathf.PI / (float)pointCount;
         Vector2 startPos = Vector2.up * range;
         Vector2 placer = startPos;
-        for (int i = 0; i < pointCount; i++)
+        for (int i = 0; i < pointCount * percent; i++)
         {
             spline.InsertPointAt(0, placer);
             placer = Utility.RotateZ(placer, angleSpacing);

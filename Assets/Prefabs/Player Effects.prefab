@@ -21082,6 +21082,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 40955384309270304}
     m_Modifications:
     - target: {fileID: 1402873093944261224, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
+      propertyPath: m_Spline.m_IsOpenEnded
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402873093944261224, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_ColliderSegment.Array.size
       value: 46
       objectReference: {fileID: 0}
@@ -21467,7 +21471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1402873093944261227, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_Points.Array.size
-      value: 46
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 1402873093944261227, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_Points.Array.data[7].y
@@ -21480,6 +21484,14 @@ PrefabInstance:
     - target: {fileID: 1402873093944261227, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_Points.Array.data[17].y
       value: -2.4463782
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402873093944261227, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
+      propertyPath: m_Points.Array.data[44].x
+      value: 0.4632365
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402873093944261227, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
+      propertyPath: m_Points.Array.data[44].y
+      value: 3.3966928
       objectReference: {fileID: 0}
     - target: {fileID: 1402873093944261227, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_Points.Array.data[45].x
