@@ -11,6 +11,8 @@ public class ElectricBeamAbility : PlayerAbility
     public float energyPerSecond = 100;//how much energy it generates each second
     public float staticSpeed = 2;//how fast it converges your velocity into your target's velocity
     public float rangeBuffer = 1;//how much more outside the range a target can be before being disconnected
+    public float maxCharge = 50;//how much energy he can store at once
+    public float chargePerTeleport = 10;//how much energy he generates per teleport
 
     [Header("Components")]
     public GameObject wirePrefab;
@@ -64,6 +66,18 @@ public class ElectricBeamAbility : PlayerAbility
     public delegate void OnTargetChanged(GameObject oldGO, GameObject newGO);
     public event OnTargetChanged onTargetChanged;
 
+    private float charge = 0;
+    public float Charge
+    {
+        get => charge;
+        set
+        {
+            charge = Mathf.Clamp(value, 0, maxCharge);
+            onChargeChanged?.Invoke(charge);
+        }
+    }
+    public event Action<float> onChargeChanged;
+
     public override void init()
     {
         base.init();
@@ -86,7 +100,9 @@ public class ElectricBeamAbility : PlayerAbility
             if (target)
             {
                 //Power
-                targetPowerable.acceptPower(energyPerSecond * Time.fixedDeltaTime);
+                float power = energyPerSecond * Time.fixedDeltaTime;
+                float leftOver = targetPowerable.acceptPower(power);
+                Charge -= (power - leftOver);
 
                 //Move relative to the target
                 if (CanStatic)
@@ -102,6 +118,12 @@ public class ElectricBeamAbility : PlayerAbility
 
                 //Make sure target is still in range
                 checkTarget();
+
+                //Check to see if it still has power
+                if (charge == 0)
+                {
+                    Activated = false;
+                }
             }
             else
             {
@@ -202,10 +224,13 @@ public class ElectricBeamAbility : PlayerAbility
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        if (tapOnPlayer)
+        //charge
+        Charge += chargePerTeleport * (newPos - oldPos).magnitude / playerController.Teleport.baseRange;
+        if (charge > 0)
         {
-            Activated = !Activated;
+            Activated = true;
         }
+        //
         if (Activated)
         {
             selectTarget();
@@ -227,12 +252,14 @@ public class ElectricBeamAbility : PlayerAbility
         range = aul.stat1;
         energyPerSecond = aul.stat2;
         staticSpeed = aul.stat3;
+        maxCharge = aul.stat4;
     }
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
             "activated", activated,
-            "target", target.getKey()
+            "target", target.getKey(),
+            "charge", charge
             );
         set
         {
@@ -247,6 +274,7 @@ public class ElectricBeamAbility : PlayerAbility
             {
                 Target = null;
             }
+            Charge = value.Int("charge");
         }
     }
 }
