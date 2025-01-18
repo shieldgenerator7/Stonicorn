@@ -11,6 +11,8 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     [Tooltip("How long it has to be off before flipping direction")]
     public float offDuration = 0.2f;
     public float stabilizationPower = 0;//how good it is at keeping itself upright
+    public bool stopOnPowerLost = false;//if true, itll reset all momentum when it loses power
+
     private Vector2 gravityCenter = Vector2.zero;//TODO: make this rely on a gravity zone to find
 
     private Rigidbody2D rb2d;
@@ -48,6 +50,11 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         {
             prevPoweredTime = 0;
             flipDirection();
+            if (stopOnPowerLost)
+            {
+                rb2d.linearVelocity = Vector2.zero;
+                rb2d.angularVelocity = 0;
+            }
         }
     }
 
