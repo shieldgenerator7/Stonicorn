@@ -385,7 +385,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1000
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 50
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -397,7 +397,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!61 &1957137953947215984
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -506,6 +506,7 @@ MonoBehaviour:
   moveForce: 25
   startMoveVector: {x: 0, y: 0.1}
   offDuration: 0.1
+  stabilizationPower: 10
 --- !u!114 &-660404770502702471
 MonoBehaviour:
   m_ObjectHideFlags: 0

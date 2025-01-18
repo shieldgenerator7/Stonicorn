@@ -10,6 +10,8 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     private Vector2 moveVector;//direction, relative to self
     [Tooltip("How long it has to be off before flipping direction")]
     public float offDuration = 0.2f;
+    public float stabilizationPower = 0;//how good it is at keeping itself upright
+    private Vector2 gravityCenter = Vector2.zero;//TODO: make this rely on a gravity zone to find
 
     private Rigidbody2D rb2d;
 
@@ -55,8 +57,17 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         float energyToUse = Mathf.Min(power, maxEnergy);
         if (energyToUse > 0)
         {
+            float energyPercent = (energyToUse / maxEnergy);
+
+            //Stabilize self
+            if (stabilizationPower > 0)
+            {
+                Vector2 up = ((Vector2)transform.position - gravityCenter).normalized;
+                transform.up = Vector2.Lerp(transform.up, up, stabilizationPower * Time.fixedDeltaTime * energyPercent);
+            }
+
             //Move self
-            float speed = (energyToUse / maxEnergy) * moveForce;
+            float speed = energyPercent * moveForce;
             if (rb2d.linearVelocity.magnitude < 0.1f)
             {
                 speed *= 2;
