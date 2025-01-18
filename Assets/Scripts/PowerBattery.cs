@@ -47,7 +47,7 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer, IPowerable
         float maxAmount = maxEnergyPerSecond * Time.fixedDeltaTime;
         float amount = Mathf.Min(power, maxAmount);
         Energy += amount;
-        return amount;
+        return power - amount;
     }
 
     public override SavableObject CurrentState
