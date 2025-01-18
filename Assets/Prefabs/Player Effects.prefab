@@ -5290,6 +5290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnSpeed: 250
   useUnscaledTime: 1
+  resetOnDisable: 0
 --- !u!1 &2592284710190843711
 GameObject:
   m_ObjectHideFlags: 0
@@ -21081,13 +21082,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 40955384309270304}
     m_Modifications:
+    - target: {fileID: 583146075163630259, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
+      propertyPath: fullChargeEffect
+      value: 
+      objectReference: {fileID: 8656816366058421172}
     - target: {fileID: 1402873093944261224, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_Spline.m_IsOpenEnded
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1402873093944261224, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_ColliderSegment.Array.size
-      value: 46
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 1402873093944261224, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_ColliderSegment.Array.data[0].x
@@ -21443,11 +21448,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1402873093944261224, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_ColliderSegment.Array.data[44].x
-      value: 0.07297761
+      value: 0.4632365
       objectReference: {fileID: 0}
     - target: {fileID: 1402873093944261224, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_ColliderSegment.Array.data[44].y
-      value: 3.1975014
+      value: 3.3966928
       objectReference: {fileID: 0}
     - target: {fileID: 1402873093944261224, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
       propertyPath: m_ColliderSegment.Array.data[45].x
@@ -21545,6 +21550,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6618767165890494255, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6618767165890494255, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
+      propertyPath: resetOnDisable
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21555,6 +21568,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1402873093944261230, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
   m_PrefabInstance: {fileID: 2592284711562298523}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8656816366058421172 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6618767165890494255, guid: 3a8e0d85dd0edba49be5ee8f625e5b00, type: 3}
+  m_PrefabInstance: {fileID: 2592284711562298523}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad873a44f759af04db3e8dee06c6a3be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3437934712747404642
 PrefabInstance:
   m_ObjectHideFlags: 0
