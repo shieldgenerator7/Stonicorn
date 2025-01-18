@@ -33,7 +33,6 @@ public class ElectricBeamAbility : PlayerAbility
     public delegate void OnActivatedChanged(bool activated);
     public event OnActivatedChanged onActivatedChanged;
 
-    private bool tapOnPlayer = false;
     private bool wiredThisInput = false;//true if it has wired since the last user input
 
     GameObject target;
@@ -127,7 +126,7 @@ public class ElectricBeamAbility : PlayerAbility
             }
             else
             {
-                selectTarget();
+                selectTarget(transform.position);
             }
         }
     }
@@ -163,18 +162,16 @@ public class ElectricBeamAbility : PlayerAbility
         wiredThisInput = true;
     }
 
-    void selectTarget()
+    void selectTarget(Vector2 targetPos)
     {
         List<GameObject> powerables = Physics2D.OverlapCircleAll(transform.position, range).ToList()
             .FindAll(coll => coll.GetComponent<IPowerable>() != null)
             .FindAll(coll => inRange(coll.gameObject))
-            .OrderBy(coll => (coll.transform.position - transform.position).sqrMagnitude).ToList()
+            .OrderBy(coll => ((Vector2)coll.transform.position - targetPos).sqrMagnitude).ToList()
             .ConvertAll(coll => coll.gameObject);
         if (powerables.Count > 0)
         {
-            int index = (target) ? powerables.IndexOf(target) : -1;
-            int newIndex = (index + 1) % powerables.Count;
-            Target = powerables[newIndex];
+            Target = powerables.First();
             playerController.updateGroundedState();
         }
         else
@@ -218,7 +215,7 @@ public class ElectricBeamAbility : PlayerAbility
     #region Input Handling
     Vector2 findTeleportablePosition(Vector2 rangePos, Vector2 tapPos)
     {
-        tapOnPlayer = playerController.gestureOnPlayer(tapPos);
+        selectTarget(tapPos);
         return Vector2.zero;
     }
 
@@ -231,16 +228,6 @@ public class ElectricBeamAbility : PlayerAbility
             Activated = true;
         }
         //
-        if (Activated)
-        {
-            selectTarget();
-        }
-        else
-        {
-            //Say it's been deselected, but keep it selected for easy target switching in the future
-            //(useful for situations where there's multiple items to target in the same spot)
-            onTargetChanged(Target, null);
-        }
         wiredThisInput = false;
     }
     protected override bool isGrounded() => Activated && CanStatic;
