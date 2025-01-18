@@ -7,12 +7,12 @@ public class MenuActionSlideNPCTalkSpeed : MenuActionSlide
 
     public override float getCurrentValue()
     {
-        return (Managers.Event.talkSpeedMultiplier * 100)-minValue;
+        return (Managers.Event.TalkSpeedMultiplier * 100)-minValue;
     }
 
     public override void valueAdjusted(float value)
     {
-        Managers.Event.talkSpeedMultiplier = (value + minValue) / 100;
+        Managers.Event.TalkSpeedMultiplier = (value + minValue) / 100;
     }
 
 

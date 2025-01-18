@@ -6,8 +6,27 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour, ISetting
 {
-    public float talkSpeedMultiplier = 1f;
-    public float talkWaitDuration = 1f;
+    [SerializeField]
+    private float talkSpeedMultiplier = 1f;
+    public float TalkSpeedMultiplier
+    {
+        get=>talkSpeedMultiplier;
+        set{
+            talkSpeedMultiplier = value;
+            updateExistingDIaloguesPostSettingChange();
+        }
+    }
+    [SerializeField]
+    private float talkWaitDuration = 1f;
+    public float TalkWaitDuration
+    {
+        get => talkWaitDuration;
+        set
+        {
+            talkWaitDuration = value;
+            updateExistingDIaloguesPostSettingChange();
+        }
+    }
 
     public GameObject dialogueBoxPrefab;
 
@@ -161,5 +180,14 @@ public class EventManager : MonoBehaviour, ISetting
             dialoguePlayingList.Add(dp);
         }
         OnDialoguePlayingChanged?.Invoke(DialoguePlaying);
+    }
+
+    void updateExistingDIaloguesPostSettingChange()
+    {
+        FindObjectsByType<DialoguePlayer>(FindObjectsSortMode.None).ToList().ForEach(dp =>
+        {
+            dp.charsPerSecond *= talkSpeedMultiplier;
+            dp.autoAdvanceDelay = talkWaitDuration;
+        });
     }
 }
