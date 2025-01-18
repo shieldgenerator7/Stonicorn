@@ -53,13 +53,15 @@ public class ElectricRingDisplayer : MonoBehaviour
     void generateGeometry(float range, float percent)
     {
         spline.Clear();
-        float circumference = 2 * range * Mathf.PI;
-        float spacing = pointSpacing;
-        int pointCount = Mathf.RoundToInt(circumference / spacing);
-        float angleSpacing = 2 * Mathf.PI / (float)pointCount;
+        float arc = 2 * Mathf.PI * percent;
+        float circumference = range * arc;
+        float spacing = circumference / Mathf.Ceil(circumference / pointSpacing);
+        int pointCount = Mathf.FloorToInt(circumference / spacing);
+        float angleSpacing = arc / pointCount;
         Vector2 startPos = Vector2.up * range;
         Vector2 placer = startPos;
-        for (int i = 0; i < pointCount * percent; i++)
+        Mathf.RoundToInt(pointCount);
+        for (int i = 0; i <= pointCount; i++)
         {
             spline.InsertPointAt(0, placer);
             placer = Utility.RotateZ(placer, angleSpacing);
