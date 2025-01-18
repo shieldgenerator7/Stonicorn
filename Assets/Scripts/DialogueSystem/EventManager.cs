@@ -10,8 +10,9 @@ public class EventManager : MonoBehaviour, ISetting
     private float talkSpeedMultiplier = 1f;
     public float TalkSpeedMultiplier
     {
-        get=>talkSpeedMultiplier;
-        set{
+        get => talkSpeedMultiplier;
+        set
+        {
             talkSpeedMultiplier = value;
             updateExistingDIaloguesPostSettingChange();
         }
@@ -155,7 +156,7 @@ public class EventManager : MonoBehaviour, ISetting
         this.dialogueBox = dbu;
         Quote q = path.quotes[0];
         Character ch = Character.getCharacterByName(q.characterName);
-        if(ch == null)
+        if (ch == null)
         {
             Debug.LogError($"Character not found: {q.characterName}! {ch}");
         }

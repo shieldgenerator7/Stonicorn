@@ -21,6 +21,6 @@ public class MenuActionSlideNPCTalkWaitDuration : MenuActionSlide
 
     public override string getValueLabel(float currentValue)
     {
-        return $"{currentValue/10}sec";
+        return $"{currentValue / 10}sec";
     }
 }

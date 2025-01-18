@@ -7,7 +7,7 @@ public class MenuActionSlideNPCTalkSpeed : MenuActionSlide
 
     public override float getCurrentValue()
     {
-        return (Managers.Event.TalkSpeedMultiplier * 100)-minValue;
+        return (Managers.Event.TalkSpeedMultiplier * 100) - minValue;
     }
 
     public override void valueAdjusted(float value)
@@ -19,11 +19,11 @@ public class MenuActionSlideNPCTalkSpeed : MenuActionSlide
 
     public override string getValueLabel(float currentValue)
     {
-        return $"x{(currentValue+minValue)/100}";
+        return $"x{(currentValue + minValue) / 100}";
     }
 
     public override float getOverriddenMaxValue(float currentMaxValue)
     {
-        return maxValue-minValue;
+        return maxValue - minValue;
     }
 }

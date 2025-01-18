@@ -11,7 +11,7 @@ public class ElectricRingDisplayer : MonoBehaviour
 
     private Spline spline;
     private ElectricBeamAbility electricBeamAbility;
-    public MonoBehaviour fullChargeEffect; 
+    public MonoBehaviour fullChargeEffect;
 
     private void Start()
     {
@@ -50,7 +50,7 @@ public class ElectricRingDisplayer : MonoBehaviour
         {
             fullChargeEffect.enabled = fullCharge;
         }
-    } 
+    }
 
     void generateGeometry()
     {

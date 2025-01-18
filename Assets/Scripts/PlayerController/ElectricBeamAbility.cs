@@ -169,7 +169,7 @@ public class ElectricBeamAbility : PlayerAbility
     void selectTarget(Vector2 targetPos)
     {
         List<GameObject> powerables = Physics2D.OverlapCircleAll(transform.position, range)
-            .Where(coll => 
+            .Where(coll =>
                 coll.GetComponent<IPowerable>() != null
                 && inRange(coll.gameObject)
             )
