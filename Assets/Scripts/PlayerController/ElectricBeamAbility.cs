@@ -167,9 +167,11 @@ public class ElectricBeamAbility : PlayerAbility
 
     void selectTarget(Vector2 targetPos)
     {
-        List<GameObject> powerables = Physics2D.OverlapCircleAll(transform.position, range).ToList()
-            .FindAll(coll => coll.GetComponent<IPowerable>() != null)
-            .FindAll(coll => inRange(coll.gameObject))
+        List<GameObject> powerables = Physics2D.OverlapCircleAll(transform.position, range)
+            .Where(coll => 
+                coll.GetComponent<IPowerable>() != null
+                && inRange(coll.gameObject)
+            )
             .OrderBy(coll => ((Vector2)coll.transform.position - targetPos).sqrMagnitude).ToList()
             .ConvertAll(coll => coll.gameObject);
         if (powerables.Count > 0)
