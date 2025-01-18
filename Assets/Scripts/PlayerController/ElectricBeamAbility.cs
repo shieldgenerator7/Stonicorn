@@ -34,6 +34,7 @@ public class ElectricBeamAbility : PlayerAbility
     public event OnActivatedChanged onActivatedChanged;
 
     private Vector2 tapPos;
+    private bool tapOnPlayer;
     private bool wiredThisInput = false;//true if it has wired since the last user input
 
     GameObject target;
@@ -221,11 +222,20 @@ public class ElectricBeamAbility : PlayerAbility
     Vector2 findTeleportablePosition(Vector2 rangePos, Vector2 tapPos)
     {
         this.tapPos = tapPos;
+        tapOnPlayer = playerController.gestureOnPlayer(tapPos);
         return Vector2.zero;
     }
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
+        //deactivate
+        if (tapOnPlayer)
+        {
+            Charge = 0;
+            Activated = false;
+            Target = null;
+            return;
+        }
         //charge
         Charge += chargePerTeleport * (newPos - oldPos).magnitude / playerController.Teleport.baseRange;
         if (charge > 0)
