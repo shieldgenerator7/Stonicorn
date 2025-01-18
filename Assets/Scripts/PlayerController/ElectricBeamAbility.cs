@@ -83,6 +83,7 @@ public class ElectricBeamAbility : PlayerAbility
         playerController.Teleport.findTeleportablePositionOverride
             += findTeleportablePosition;
         playerController.Teleport.onRangeChanged += rangeChanged;
+        rangeChanged(playerController.Teleport.Range);
     }
     public override void OnDisable()
     {
