@@ -114,16 +114,19 @@ public class SceneLoader : MonoBehaviour, ISetting
     }
     void loadLevel()
     {
+        Debug.Log($"SceneLoader ({sceneName}): loadLevel");
         isLoading = true;
         LoadingScreen.LoadScene(sceneId);
     }
     void unloadLevel()
     {
+        Debug.Log($"SceneLoader ({sceneName}): unloadLevel");
         isLoading = false;
         SceneManager.UnloadSceneAsync(sceneId);
     }
     public void loadLevelIfUnLoaded()
     {
+        Debug.Log($"SceneLoader ({sceneName}): loadLevelIfUnLoaded");
         if (!IsLoaded)
         {
             loadLevel();
@@ -131,6 +134,7 @@ public class SceneLoader : MonoBehaviour, ISetting
     }
     public void unloadLevelIfLoaded()
     {
+        Debug.Log($"SceneLoader ({sceneName}): unloadLevelIfLoaded");
         if (IsLoaded)
         {
             unloadLevel();
