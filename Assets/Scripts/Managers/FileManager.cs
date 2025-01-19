@@ -51,6 +51,9 @@ public class FileManager : Manager
 
             string filename = getFileName(saveWithTimeStamp);
 
+            //Save progress variables
+            ES3.Save<ProgressManager>("progress", Managers.Progress, filename);
+
             //Save file settings
             List<SettingObject> settings = settingList
                     .ConvertAll(setting => setting.Setting)
@@ -75,6 +78,10 @@ public class FileManager : Manager
         string filename = getFileName(false);
         try
         {
+            //Load progress variables
+            ProgressManager progMan = ES3.Load<ProgressManager>("progress", filename);
+            Managers.Progress.clearAndLoadValues(progMan);
+
             //Load file settings
             List<SettingObject> settings = ES3.Load<List<SettingObject>>("settings", filename);
             settingList

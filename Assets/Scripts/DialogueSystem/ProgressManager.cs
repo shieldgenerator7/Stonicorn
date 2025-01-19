@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -112,4 +113,14 @@ public class ProgressManager
             Debug.Log($"Data[\"{pair.Key}\"] = {pair.Value}");
         }
     }
+
+    internal void clearAndLoadValues(ProgressManager progMan)
+    {
+        //data
+        data.Clear();
+        progMan.data.ToList().ForEach(entry => data[entry.Key] = entry.Value);
+        //activated triggers
+        activatedTriggers.Clear();
+        activatedTriggers.AddRange(progMan.activatedTriggers);
+}
 }
