@@ -30,10 +30,27 @@ public class PlayGestureProfile : GestureProfile
     }
     public override void processHoldGesture(Vector3 curMPWorld, float holdTime, GestureState state)
     {
+        if (Managers.Rewind.Rewinding)
+        {
+            if (state == GestureState.FINISH)
+            {
+                if (Managers.Rewind.rewindInterruptableByPlayer)
+                {
+                    Managers.Rewind.cancelRewind();
+                }
+            }
+        }
+        else
+        {
         Managers.Player.processHoldGesture(curMPWorld, holdTime, state);
+        }
     }
     public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, GestureState state)
     {
+        if (Managers.Rewind.Rewinding)
+        {
+            return;
+        }
         //If the player drags on Merky,
         if (dragType == GestureInput.DragType.DRAG_PLAYER)
         {
