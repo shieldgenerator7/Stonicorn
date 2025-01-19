@@ -253,7 +253,7 @@ public class ElectricBeamAbility : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        range = aul.stat1;
+        //range = aul.stat1;
         energyPerSecond = aul.stat2;
         staticSpeed = aul.stat3;
         maxCharge = aul.stat4;
