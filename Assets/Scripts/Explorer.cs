@@ -19,6 +19,13 @@ public class Explorer : MonoBehaviour
 
     private void Start()
     {
+        if (sightRadius > hindSightRadius)
+        {
+            Debug.LogError(
+                $"sightRadius is greater than hindSightRadius! sightRadius: {sightRadius}, hindSightRadius: {hindSightRadius}",
+                this
+            );
+        }
         coll2d.radius = sightRadius;
         coll2d.isTrigger = true;
         behindColl2d.radius = hindSightRadius;
