@@ -13,7 +13,7 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
         set
         {
             rooted = value;
-            GetComponent<Rigidbody2D>().isKinematic = rooted;
+            GetComponent<Rigidbody2D>().bodyType = (rooted) ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
             onRootedChanged?.Invoke(rooted);
         }
     }
