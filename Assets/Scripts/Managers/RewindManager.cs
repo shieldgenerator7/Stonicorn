@@ -15,6 +15,7 @@ public class RewindManager : Manager
     private float minRewindDuration = 1;//how many seconds a rewind should last for
     [SerializeField]
     private float maxRewindDuration = 30;
+    public float rewindSpeedFactor = 1;//multiplied to baseRewindDelay and maxRewindDuration to effect setting of rewindDelay
 
     //Runtime vars
     private int rewindId;//the id to eventually load back to
@@ -255,12 +256,12 @@ public class RewindManager : Manager
                 }
                 //Set rewindDelay
                 int count = chosenId - rewindId;
-                rewindDelay = baseRewindDelay;
+                rewindDelay = baseRewindDelay * rewindSpeedFactor;
                 if (count * rewindDelay < minRewindDuration)
                 {
                     rewindDelay = minRewindDuration / count;
                 }
-                if (count * rewindDelay > maxRewindDuration)
+                if (count * rewindDelay > maxRewindDuration * rewindSpeedFactor)
                 {
                     rewindDelay = maxRewindDuration / count;
                 }
@@ -290,6 +291,18 @@ public class RewindManager : Manager
         Rewinding = false;
         //Load the current game state
         Load(chosenId);
+    }
+
+    public override string ID => "RewindManager";
+    public override SettingObject Setting
+    {
+        get => new SettingObject(ID,
+            "rewindSpeedFactor", rewindSpeedFactor
+            );
+        set
+        {
+            rewindSpeedFactor = (float)value.data["rewindSpeedFactor"];
+        }
     }
 
 }
