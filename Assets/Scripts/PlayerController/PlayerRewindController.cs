@@ -174,7 +174,7 @@ public class PlayerRewindController : Manager
     }
 
     /// <summary>
-    /// Returns the player ghost that is closest to the given position
+    /// Returns the player ghost that is closest to the given position, based on the game state's merky position
     /// </summary>
     /// <param name="pos">The ideal position of the closest ghost</param>
     /// <returns>The player ghost that is closest to the given position</returns>
@@ -184,13 +184,12 @@ public class PlayerRewindController : Manager
         GameObject closestObject = null;
         foreach (GameState gs in data.gameStates)
         {
-            GameObject rep = getRepresentation(gs);
-            Vector2 gsPos = rep.transform.position;
+            Vector2 gsPos = gs.Merky.position;
             float gsDistance = Vector2.Distance(gsPos, pos);
             if (gsDistance < closestDistance)
             {
                 closestDistance = gsDistance;
-                closestObject = rep;
+                closestObject = getRepresentation(gs);
             }
         }
         return closestObject;
