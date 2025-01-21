@@ -44,11 +44,19 @@ public class RewindManager : Manager
     {
         //Assuming it's rewinding,
         //If it's time to rewind the next step,
-        if (Time.unscaledTime > lastRewindTime + rewindDelay)
+        float timeDiff = Time.unscaledTime - (lastRewindTime + rewindDelay);
+        if (timeDiff >= 0)
         {
             //Rewind to the next previous game state
             lastRewindTime = Time.unscaledTime;
-            Load(chosenId - 1);
+            //Find next id to load
+            int rewindAmount = Mathf.CeilToInt(timeDiff / rewindDelay);
+            int idToLoad = chosenId - rewindAmount;
+            if (idToLoad < rewindId)
+            {
+                idToLoad = rewindId;
+            }
+            Load(idToLoad);
         }
     }
 
@@ -265,6 +273,8 @@ public class RewindManager : Manager
                 {
                     rewindDelay = maxRewindDuration / count;
                 }
+                //Set lastRewindTime
+                lastRewindTime = Time.unscaledTime;
                 //Rewind Started Delegate
                 onRewindStarted?.Invoke(rewindId);
             }
