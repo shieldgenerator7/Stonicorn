@@ -14,6 +14,10 @@ public class SavableObjectInfo : ObjectInfo
     public int spawnStateId = -1;//-1 is an invalid Id but it forces save on new objects
     public int destroyStateId = int.MaxValue;//the game state id in which this object was destroyed (max value for not destroyed)
 
+    [Header("Components to save")]
+    public Rigidbody2D rb2d;
+    public List<SavableMonoBehaviour> savables;
+
     public SavableObjectInfoData Data
     {
         get => new SavableObjectInfoData(this);
@@ -63,6 +67,10 @@ public class SavableObjectInfo : ObjectInfo
             );
         }
         prefabAddress = new AssetReference(guid);
+
+        //Populate savable components
+        rb2d = GetComponent<Rigidbody2D>();
+        savables = GetComponents<SavableMonoBehaviour>().ToList();
 
         //Set dirty
         EditorUtility.SetDirty(this);
