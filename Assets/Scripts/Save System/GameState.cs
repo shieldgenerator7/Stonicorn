@@ -44,14 +44,14 @@ public class GameState
                 ObjectState os = new ObjectState(go);
                 if (os.objectId < 0)
                 {
-                    throw new UnityException("Object state object id is " + os.objectId + " for object: " + go);
+                    throw new UnityException($"Object state object id is ({os.objectId}) for object: {go.name}");
                 }
                 states.Add(os);
             }
             catch (NullReferenceException nre)
             {
                 Debug.LogError(
-                    "Object " + go.name + " does not have an ObjectInfo. NRE: " + nre,
+                    $"Object {go.name} does not have an ObjectInfo. NRE: {nre}",
                     go
                     );
             }
@@ -68,14 +68,14 @@ public class GameState
             }
             else
             {
-                Debug.Log("Object (" + os.objectId + ") not found");
+                Debug.Log($"Object ({os.objectId}) not found");
                 if (Managers.Scene.isObjectSceneOpen(os.objectId))
                 {
                     Managers.Object.recreateObject(os.objectId);
                 }
                 else
                 {
-                    Debug.Log("Object (" + os.objectId + ") scene not open, so ignoring");
+                    Debug.Log($"Object ({os.objectId}) scene not open, so ignoring");
                 }
             }
         });
@@ -92,7 +92,7 @@ public class GameState
     {
         if (go == null)
         {
-            throw new System.ArgumentNullException("GameState.hasGameObject() cannot accept null for go! go: " + go);
+            throw new System.ArgumentNullException($"GameState.hasGameObject() cannot accept null for go! go: {go}");
         }
         int key = go.getKey();
         return states.Any(os => os.objectId == key);
