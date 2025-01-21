@@ -2826,6 +2826,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Dialogue Wait Duration
       objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550154208942316, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Text
       value: 9.9sec
@@ -3640,7 +3644,7 @@ PrefabInstance:
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: mas
       value: 
-      objectReference: {fileID: 808291613}
+      objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: sliderFillSR
       value: 
@@ -3744,7 +3748,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       insertIndex: 3
-      addedObject: {fileID: 808291613}
+      addedObject: {fileID: 808291616}
   m_SourcePrefab: {fileID: 100100000, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
 --- !u!4 &808291608 stripped
 Transform:
@@ -3777,7 +3781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61499a302c3661e48a4eab2b3c8c7a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &808291613
+--- !u!114 &808291616
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3786,11 +3790,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 808291611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f5f59dded97f824c9363a29d5fd8e88, type: 3}
+  m_Script: {fileID: 11500000, guid: dee1628fc3d4bb544a8fed9c7ba7fc42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   minValue: 25
-  maxValue: 200
+  maxValue: 300
 --- !u!1 &871410732
 GameObject:
   m_ObjectHideFlags: 0
