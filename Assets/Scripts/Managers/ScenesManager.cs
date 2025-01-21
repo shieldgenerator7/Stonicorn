@@ -425,6 +425,12 @@ public class ScenesManager : Manager
         }
     }
 
+    /// <summary>
+    /// Moves the given game object into the given scene,
+    /// BUT if the scene is unloaded, it will destroy the object instead
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="scene"></param>
     public void moveToScene(GameObject go, Scene scene)
     {
         try
@@ -447,9 +453,17 @@ public class ScenesManager : Manager
             }
             if (go.scene != scene)
             {
+                if (scene.isLoaded)
+                {
                 Debug.Log($"Moving {go.Name()} into scene {scene.Name()}", go);
                 SceneManager.MoveGameObjectToScene(go, scene);
                 Debug.Log($"Moved {go.Name()} is now in scene {go.scene.Name()}", go);
+                }
+                else
+                {
+                    Debug.Log($"Moving {go.Name()} into scene {scene.Name()}, BUT scene is unloaded, destroying instead", go);
+                    Destroy(go);
+                }
             }
         }
         catch (System.ArgumentException ae)
