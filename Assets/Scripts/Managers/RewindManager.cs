@@ -15,7 +15,21 @@ public class RewindManager : Manager
     private float minRewindDuration = 1;//how many seconds a rewind should last for
     [SerializeField]
     private float maxRewindDuration = 30;
-    public float rewindSpeedFactor = 1;//multiplied to baseRewindDelay and maxRewindDuration to effect setting of rewindDelay
+    [SerializeField]
+    private float rewindSpeedFactor = 1;//multiplied to baseRewindDelay and maxRewindDuration to effect setting of rewindDelay
+    public float RewindSpeedFactor
+    {
+        get=> rewindSpeedFactor;
+        set
+        {
+            rewindSpeedFactor = value;
+            if (Rewinding)
+            {
+                //recalculate rewindSpeed
+                calculateRewindDelay();
+            }
+        }
+    }
 
     //Runtime vars
     private int rewindId;//the id to eventually load back to
@@ -263,16 +277,7 @@ public class RewindManager : Manager
                     rewindId = 0;
                 }
                 //Set rewindDelay
-                int count = chosenId - rewindId;
-                rewindDelay = baseRewindDelay * rewindSpeedFactor;
-                if (count * rewindDelay < minRewindDuration)
-                {
-                    rewindDelay = minRewindDuration / count;
-                }
-                if (count * rewindDelay > maxRewindDuration * rewindSpeedFactor)
-                {
-                    rewindDelay = maxRewindDuration / count;
-                }
+                calculateRewindDelay();
                 //Set lastRewindTime
                 lastRewindTime = Time.unscaledTime;
                 //Rewind Started Delegate
@@ -292,6 +297,21 @@ public class RewindManager : Manager
     public event OnRewind onRewindStarted;
     public event OnRewind onRewindFinished;
     public event OnRewind onRewindState;
+
+    private void calculateRewindDelay()
+    {
+        int count = chosenId - rewindId;
+        rewindDelay = baseRewindDelay * rewindSpeedFactor;
+        if (count * rewindDelay < minRewindDuration)
+        {
+            rewindDelay = minRewindDuration / count;
+        }
+        if (count * rewindDelay > maxRewindDuration * rewindSpeedFactor)
+        {
+            rewindDelay = maxRewindDuration / count;
+        }
+    }
+
     /// <summary>
     /// Ends the rewind at the current game state
     /// </summary>
