@@ -7,6 +7,14 @@ public class RewindGestureProfile : GestureProfile
     {
         //Show Previous Teleport Points
         showPlayerGhostsBasedOnZoom(Managers.Camera.ZoomLevel);
+        //Stop rewinding, if possible
+        if (Managers.Rewind.Rewinding)
+        {
+            if (Managers.Rewind.rewindInterruptableByPlayer)
+            {
+                Managers.Rewind.cancelRewind();
+            }
+        }
         //Pause game
         Managers.Time.setPause(Managers.Gesture, true);
     }

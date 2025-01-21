@@ -39,7 +39,10 @@ public abstract class GestureProfile
             }
             else
             {
+                if (!Managers.Rewind.Rewinding || Managers.Rewind.rewindInterruptableByPlayer)
+                {
                 Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
+                }
             }
         }
         else
