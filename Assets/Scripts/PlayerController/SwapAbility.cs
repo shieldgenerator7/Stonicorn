@@ -42,8 +42,8 @@ public class SwapAbility : PlayerAbility
         List<GameObject> swappables = Physics2D.OverlapCircleAll(
             transform.position,
             playerController.Teleport.Range
-            ).ToList()
-            .FindAll(coll => isObjectSwappable(coll.gameObject))
+            )
+            .Where(coll => isObjectSwappable(coll.gameObject)).ToList()
             .ConvertAll(coll => coll.gameObject);
         //Hide current effects
         Managers.Effect.hideSwapCircleEffects(swappables);

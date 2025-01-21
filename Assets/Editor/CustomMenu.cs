@@ -223,11 +223,11 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Mechanics/Autosize BoxColliider2D to tiled sprite")]
     public static void autosizeBC2DtoTiledSprite()
     {
-        List<GameObject> gos = Selection.gameObjects.ToList();
-        gos = gos.FindAll(go =>
+        List<GameObject> gos = Selection.gameObjects
+                 .Where(go =>
             go.GetComponent<SpriteRenderer>()?.drawMode == SpriteDrawMode.Tiled
             && go.GetComponent<BoxCollider2D>()
-            );
+            ).ToList();
         if (gos.Count == 0)
         {
             Debug.LogWarning("Select 1 or more gameobjects with both a SpriteRenderer in Tiled mode, and a BoxCollider2D");
@@ -252,11 +252,11 @@ public class CustomMenu
     [MenuItem("SG7/Editor/Mechanics/Auto-extend platform width")]
     public static void autoextendPlatformWidth()
     {
-        List<GameObject> gos = Selection.gameObjects.ToList();
-        gos = gos.FindAll(go =>
+        List<GameObject> gos = Selection.gameObjects
+                 .Where(go =>
             go.GetComponent<SpriteRenderer>()?.drawMode == SpriteDrawMode.Tiled
             && go.GetComponent<BoxCollider2D>()
-            );
+            ).ToList();
         if (gos.Count == 0)
         {
             Debug.LogWarning("Select 1 or more gameobjects with both a SpriteRenderer in Tiled mode, and a BoxCollider2D");
@@ -293,8 +293,8 @@ public class CustomMenu
     [MenuItem("SG7/Editor/List Prefabs")]
     public static void listPrefabs()
     {
-        GameObject.FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None).ToList()
-            .FindAll(soi => soi.PrefabAddress.editorAsset != null)
+        GameObject.FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None)
+            .Where(soi => soi.PrefabAddress.editorAsset != null)
             .OrderBy(soi => soi.PrefabAddress.editorAsset.name).ToList()
             .ForEach(soi =>
                 Debug.Log($"Prefab: {soi.PrefabAddress.editorAsset.name}", soi.gameObject)
@@ -1014,8 +1014,8 @@ public class CustomMenu
     public static bool checkTiledHitBoxes()
     {
         int changedCount = 0;
-        GameObject.FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None).ToList()
-            .FindAll(sr => sr.drawMode == SpriteDrawMode.Tiled)
+        GameObject.FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None)
+            .Where(sr => sr.drawMode == SpriteDrawMode.Tiled)
             .OrderBy(sr => sr.gameObject.scene.buildIndex)
             .ThenBy(sr => sr.name).ToList()
             .ForEach(sr =>

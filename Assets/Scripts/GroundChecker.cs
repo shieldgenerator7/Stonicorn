@@ -102,8 +102,8 @@ public class GroundChecker : SavableMonoBehaviour
             //If at least 1 delegate returns true,
             //Merky is grounded
             isGroundedCheck.GetInvocationList()
-                .Cast<IsGroundedCheck>().ToList()
-                .FindAll(igc => igc.Invoke())
+                .Cast<IsGroundedCheck>()
+                .Where(igc => igc.Invoke()).ToList()
                 .ForEach(igc => groundedAbilities.Add((PlayerAbility)igc.Target));
             GroundedAbility = groundedAbilities.Count > 0;
         }

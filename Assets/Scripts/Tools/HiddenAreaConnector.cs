@@ -35,10 +35,10 @@ public class HiddenAreaConnector : MonoBehaviour
         //Connect lantern to hidden area
         lanternActivator.secretHider = hiddenArea;
         //Prepare hidden area for lantern
-        hiddenArea.GetComponentsInChildren<Collider2D>().ToList()
-            .FindAll(coll => coll.isTrigger)
-            .FindAll(coll => !coll.gameObject.CompareTag("NonTeleportableArea"))
-            .FindAll(coll => coll.OverlapPoint(lanternActivator.transform.position))
+        hiddenArea.GetComponentsInChildren<Collider2D>()
+            .Where(coll => coll.isTrigger)
+            .Where(coll => !coll.gameObject.CompareTag("NonTeleportableArea"))
+            .Where(coll => coll.OverlapPoint(lanternActivator.transform.position)).ToList()
             .ForEach(coll => coll.enabled = false);
         Debug.Log(
             "Connected! Lantern " + lanternActivator.name

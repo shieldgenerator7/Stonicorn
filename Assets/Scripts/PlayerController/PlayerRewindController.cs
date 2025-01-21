@@ -49,7 +49,7 @@ public class PlayerRewindController : Manager
                 );
             selectionHighlighter.SetActive(false);
 #if UNITY_EDITOR
-            int count = representations.FindAll(rep => rep == null).Count;
+            int count = representations.Count(rep => rep == null);
             if (count > 0)
             {
                 Debug.LogError("PlayerRewindController has " + count + " null representations in it!");
@@ -215,14 +215,14 @@ public class PlayerRewindController : Manager
 
         //Sprite detection pass
         List<GameState> states = data.gameStates
-            .FindAll(gs => checkRepresentation(gs, pos))
+            .Where(gs => checkRepresentation(gs, pos))
             .OrderBy(gs => gs.id).ToList();
 
         //Collider detection pass
         if (states.Count == 0)
         {
             states = data.gameStates
-                .FindAll(gs => checkRepresentation(gs, pos, false))
+                .Where(gs => checkRepresentation(gs, pos, false))
                 .OrderBy(gs => gs.id).ToList();
         }
 

@@ -60,8 +60,8 @@ public class PlayerController : MonoBehaviour
     /// Returns a list of active abilities
     /// </summary>
     public List<PlayerAbility> ActiveAbilities
-        => GetComponents<PlayerAbility>().ToList()
-            .FindAll(ability => ability.enabled);
+        => GetComponents<PlayerAbility>()
+            .Where(ability => ability.enabled).ToList();
 
     public void abilityActivated(PlayerAbility ability, bool active)
     {

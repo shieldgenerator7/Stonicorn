@@ -19,8 +19,8 @@ public class AbilityUpgradeTeleportRangeEffect : TeleportRangeEffect
     public override void updateEffect()
     {
         //Get list of all TeleportRangeSegments
-        List<List<float>> segmentAngles = Managers.Player.GetComponents<PlayerAbility>().ToList()
-            .FindAll(ability => ability.teleportRangeSegment && ability.UpgradeLevel > 0)
+        List<List<float>> segmentAngles = Managers.Player.GetComponents<PlayerAbility>()
+            .Where(ability => ability.teleportRangeSegment && ability.UpgradeLevel > 0).ToList()
             .ConvertAll(ability =>
                 ability.teleportRangeSegment.getAngles(ability.UpgradeLevel)
                 );

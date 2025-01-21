@@ -69,8 +69,8 @@ public class PowerManager : MonoBehaviour
     private List<IPowerable> getPowerables(IPowerer source)
     {
         HashSet<IPowerable> powerables = new HashSet<IPowerable>();
-        List<IPowerTransferer> wires = connectionMap[source].ToList()
-            .FindAll(ipc => ipc is IPowerTransferer)
+        List<IPowerTransferer> wires = connectionMap[source]
+            .Where(ipc => ipc is IPowerTransferer).ToList()
             .ConvertAll(ipc => (IPowerTransferer)ipc);
         int i = 0;
         while (i < wires.Count)
@@ -105,8 +105,8 @@ public class PowerManager : MonoBehaviour
     {
         Stack<IPowerTransferer> path = new Stack<IPowerTransferer>();
         Stack<IPowerTransferer> stack = new Stack<IPowerTransferer>(
-            connectionMap[source].ToList()
-            .FindAll(ipc => ipc is IPowerTransferer)
+            connectionMap[source]
+            .Where(ipc => ipc is IPowerTransferer).ToList()
             .ConvertAll(ipc => (IPowerTransferer)ipc)
             );
         HashSet<IPowerTransferer> tried = new HashSet<IPowerTransferer>();
@@ -150,7 +150,7 @@ public class PowerManager : MonoBehaviour
         powerConduits.AddRange(
             FindObjectsByType<GameObject>(FindObjectsSortMode.None).ToList()
            .ConvertAll(go => go.GetComponent<IPowerConduit>())
-           .FindAll(ipc=>ipc!= null)
+           .Where(ipc=>ipc!= null)
         );
     }
 
