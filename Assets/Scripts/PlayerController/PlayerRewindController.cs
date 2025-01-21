@@ -68,13 +68,6 @@ public class PlayerRewindController : Manager
                 rep => rep?.SetActive(false)
                 );
             selectionHighlighter.SetActive(false);
-#if UNITY_EDITOR
-            int count = representations.Count(rep => rep == null);
-            if (count > 0)
-            {
-                Debug.LogError("PlayerRewindController has " + count + " null representations in it!");
-            }
-#endif
         }
     }
 
