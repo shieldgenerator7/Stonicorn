@@ -87,7 +87,12 @@ public class GameState
         state.loadState(go);
     }
 
-    //Returns true IFF the given GameObject has an ObjectState in this GameState
+    /// <summary>
+    /// Returns true IFF the given GameObject has an ObjectState in this GameState
+    /// </summary>
+    /// <param name="go"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentNullException"></exception>
     public bool hasGameObject(GameObject go)
     {
         if (go == null)
@@ -95,6 +100,15 @@ public class GameState
             throw new System.ArgumentNullException($"GameState.hasGameObject() cannot accept null for go! go: {go}");
         }
         int key = go.getKey();
+        return hasGameObject(key);
+    }
+
+    /// <summary>
+    /// Returns true IFF the given GameObject has an ObjectState in this GameState
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public bool hasGameObject(int key) { 
         return states.Any(os => os.objectId == key);
     }
 }

@@ -113,11 +113,12 @@ public class RewindManager : Manager
     {
         foreach (GameObject go in goList)
         {
+            int key = go.getKey();
             //Search through the game states to see when it was last saved
             for (int stateid = lastStateSeen; stateid >= 0; stateid--)
             {
                 //If the game object was last saved in this game state,
-                if (data.gameStates[stateid].hasGameObject(go))
+                if (data.gameStates[stateid].hasGameObject(key))
                 {
                     data.gameStates[stateid].loadObject(go);
                     //Great! It's loaded,
@@ -172,11 +173,12 @@ public class RewindManager : Manager
         {
             lastStateSeen = data.gameStates.Count - 1;
         }
+        int key = go.getKey();
         //Search through the game states to see when it was last saved
         for (int stateid = lastStateSeen; stateid >= 0; stateid--)
         {
             //If the game object was last saved in this game state,
-            if (data.gameStates[stateid].hasGameObject(go))
+            if (data.gameStates[stateid].hasGameObject(key))
             {
                 data.gameStates[stateid].loadObject(go);
                 //Great! It's loaded
