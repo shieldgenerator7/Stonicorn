@@ -202,6 +202,10 @@ public class PlayerRewindController : Manager
             return false;
         }
         GameObject rep = getRepresentation(gs);
+        if (!rep.activeSelf)
+        {
+            return false;
+        }
             if (checkSprite)
             {
                 return rep.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
