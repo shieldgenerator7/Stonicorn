@@ -763,7 +763,7 @@ public class CustomMenu
     public static bool ensureSavableObjectInfosSetupInPrefabs()
     {
         //2021-07-12: got help from: https://forum.unity.com/threads/how-do-i-edit-prefabs-from-scripts.685711/
-        bool changed = false;
+        int changeCount = 0;
         const int SPAWN_STATE_ID = 0;
         const int DESTROY_STATE_ID = int.MaxValue;
         List<SavableObjectInfo> savables = new List<SavableObjectInfo>();
@@ -800,7 +800,7 @@ public class CustomMenu
                         }
                         if (changedThis)
                         {
-                            changed = true;
+                            changeCount++;
                             EditorUtility.SetDirty(soi);
                             PrefabUtility.SaveAsPrefabAsset(go, assetPath);
                         }
@@ -808,7 +808,11 @@ public class CustomMenu
                     PrefabUtility.UnloadPrefabContents(go);
                 }
             );
-        return changed;
+        if (changeCount > 0)
+        {
+            Debug.LogWarning($"Changed {changeCount} SavableObjectInfos in prefabs");
+        }
+        return changeCount > 0;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Ensure SavableObjectInfos are properly setup")]
