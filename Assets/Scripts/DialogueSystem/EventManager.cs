@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EventManager : MonoBehaviour, ISetting
+public class EventManager : Manager
 {
     [SerializeField]
     private float talkSpeedMultiplier = 1f;
@@ -36,11 +36,9 @@ public class EventManager : MonoBehaviour, ISetting
     private List<DialoguePlayer> dialoguePlayingList = new List<DialoguePlayer>();
     public bool DialoguePlaying => dialoguePlayingList.Count > 0;
 
-    public SettingScope Scope => SettingScope.SAVE_FILE;
+    public override string ID => "EventManager";
 
-    public string ID => "EventManager";
-
-    public SettingObject Setting
+    public override SettingObject Setting
     {
         get => new SettingObject(ID,
             "talkSpeedMultiplier", talkSpeedMultiplier,
