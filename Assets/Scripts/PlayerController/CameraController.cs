@@ -179,7 +179,7 @@ public class CameraController : MonoBehaviour
         PORTRAIT = 1,//shows Merky's body close up
         RANGE = 2,//camera size is as large as Merky's teleport range
         DEFAULT = 3,//the index of the default scalepoint
-        TIMEREWIND = 4//the index of the time rewind mechanic
+        TIMEREWIND = 4,//the index of the time rewind mechanic
     }
 
     // Use this for initialization

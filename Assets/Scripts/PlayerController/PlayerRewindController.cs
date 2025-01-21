@@ -84,7 +84,7 @@ public class PlayerRewindController : Manager
         }
         catch (System.NullReferenceException)
         {
-            Debug.LogError("GameState (" + gs.id + ") does not have a Merky! merky: " + gs.Merky);
+            Debug.LogError($"GameState ({gs.id}) does not have a Merky! merky: {gs.Merky}");
         }
         //If this is the first game state,
         if (gs.id == 0)
