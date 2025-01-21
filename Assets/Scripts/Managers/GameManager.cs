@@ -270,6 +270,7 @@ public class GameManager : MonoBehaviour
         }
         //Update the list of game objects to save
         Managers.Object.refreshGameObjects();
+        FindAnyObjectByType<CloudMoverManager>().updateClouds();//TODO: set this up correctly
     }
     #endregion
 
