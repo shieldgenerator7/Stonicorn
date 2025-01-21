@@ -24,25 +24,24 @@ public class ObjectState
         SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
         objectId = info.Id;
         sceneId = go.scene.buildIndex;
-        saveState(go);
+        saveState(info);
     }
 
-    private void saveState(GameObject go)
+    private void saveState(SavableObjectInfo info)
     {
         //Transform
-        position = go.transform.position;
-        localScale = go.transform.localScale;
-        rotation = go.transform.rotation;
+        position = info.transform.position;
+        localScale = info.transform.localScale;
+        rotation = info.transform.rotation;
         //Rigidbody2D
-        Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
+        Rigidbody2D rb2d = info.rb2d;
         if (rb2d != null)
         {
             velocity = rb2d.linearVelocity;
             angularVelocity = rb2d.angularVelocity;
         }
         //SavableMonoBehaviours
-        List<SavableMonoBehaviour> smbs = go.GetComponents<SavableMonoBehaviour>().ToList();
-        soList = smbs.ConvertAll<SavableObject>(smb => smb.CurrentState);
+        soList = info.savables.ConvertAll<SavableObject>(smb => smb.CurrentState);
     }
     public void loadState(GameObject go)
     {
@@ -61,15 +60,14 @@ public class ObjectState
                 (SavableMonoBehaviour)go.GetComponent(so.ScriptType);
             if (smb == null)
             {
-                if (so.isSpawnedScript)
-                {
-                    smb = (SavableMonoBehaviour)so.addScript(go);
-                }
-                else
+                if (!so.isSpawnedScript)
                 {
                     throw new UnityException($"Object {go} ({go.getKey()}) is missing non-spawnable script {so.scriptType}");
                 }
+                //Add the spawnable script
+                    smb = (SavableMonoBehaviour)so.addScript(go);
             }
+            //load state of the savable script
             try
             {
                 smb.CurrentState = so;
