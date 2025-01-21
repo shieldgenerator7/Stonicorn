@@ -89,6 +89,10 @@ PrefabInstance:
       value: LongTeleportAbility
       objectReference: {fileID: 0}
     - target: {fileID: 8898606664567096382, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 1001059705020202015}
+    - target: {fileID: 8898606664567096382, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
       propertyPath: prefabAddress.m_AssetGUID
       value: 624931acf8608f1429f9627e7e2ba780
       objectReference: {fileID: 0}
@@ -97,3 +101,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+--- !u!50 &1001059705020202015 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 8994538265500980664, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+  m_PrefabInstance: {fileID: 8158128453342177703}
+  m_PrefabAsset: {fileID: 0}

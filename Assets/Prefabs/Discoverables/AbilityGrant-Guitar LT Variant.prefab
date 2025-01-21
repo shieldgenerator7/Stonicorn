@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1949048741696044756, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 624023503023441108}
+    - target: {fileID: 1949048741696044756, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
       propertyPath: prefabAddress.m_AssetGUID
       value: b0dd6ac7b00c6374d8c572d45f934cbf
       objectReference: {fileID: 0}
@@ -97,3 +101,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+--- !u!50 &624023503023441108 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 2063034531712921426, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+  m_PrefabInstance: {fileID: 1443866472880925574}
+  m_PrefabAsset: {fileID: 0}

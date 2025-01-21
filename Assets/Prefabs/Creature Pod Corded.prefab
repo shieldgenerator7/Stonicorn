@@ -13,9 +13,25 @@ PrefabInstance:
       value: 7020
       objectReference: {fileID: 0}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 9138107498160020751}
+    - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: spawnStateId
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
+      propertyPath: savables.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
+      propertyPath: 'savables.Array.data[0]'
+      value: 
+      objectReference: {fileID: 6406103792280724763}
+    - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
+      propertyPath: 'savables.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1111405468591867820}
     - target: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
       propertyPath: prefabAddress.m_AssetGUID
       value: 0c1a964b5a81c5a44b0dda666d026043
@@ -209,3 +225,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rooted: 1
   reverse: 0
+--- !u!50 &9138107498160020751 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 1515204236062646659, guid: b43be6a820810fd43b41824280158da1, type: 3}
+  m_PrefabInstance: {fileID: 7770400831828343948}
+  m_PrefabAsset: {fileID: 0}

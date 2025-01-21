@@ -188,6 +188,18 @@ PrefabInstance:
       value: 5183
       objectReference: {fileID: 0}
     - target: {fileID: 6255754041063219808, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 1806147000984248416}
+    - target: {fileID: 6255754041063219808, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: savables.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255754041063219808, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: 'savables.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5911128790826070625}
+    - target: {fileID: 6255754041063219808, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: prefabAddress.m_AssetGUID
       value: 978452a430228c247badff1d8289adb0
       objectReference: {fileID: 0}
@@ -346,6 +358,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5911128790826070625}
   m_SourcePrefab: {fileID: 100100000, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+--- !u!50 &1806147000984248416 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 5872078595725439974, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 5218943540640224134}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6261100641845864174 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}

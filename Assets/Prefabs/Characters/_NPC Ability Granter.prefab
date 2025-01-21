@@ -385,6 +385,10 @@ PrefabInstance:
       value: _NPC Ability Granter
       objectReference: {fileID: 0}
     - target: {fileID: 7218120628489264192, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 8612325288248208684}
+    - target: {fileID: 7218120628489264192, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
       propertyPath: destroyStateId
       value: 2147483647
       objectReference: {fileID: 0}
@@ -423,5 +427,10 @@ MonoBehaviour:
 --- !u!4 &8588691648315041688 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1613659933863623834, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
+  m_PrefabInstance: {fileID: 7013783185730706178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &8612325288248208684 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 1644049836694304302, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
   m_PrefabInstance: {fileID: 7013783185730706178}
   m_PrefabAsset: {fileID: 0}

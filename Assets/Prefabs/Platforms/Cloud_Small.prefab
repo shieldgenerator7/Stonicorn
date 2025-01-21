@@ -381,6 +381,18 @@ PrefabInstance:
       value: 8058
       objectReference: {fileID: 0}
     - target: {fileID: 3252409094762772300, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 4762765223490571132}
+    - target: {fileID: 3252409094762772300, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+      propertyPath: savables.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3252409094762772300, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+      propertyPath: 'savables.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2186495749193023702}
+    - target: {fileID: 3252409094762772300, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
       propertyPath: prefabAddress.m_AssetGUID
       value: 87dfd3be56da58240961be0d66232280
       objectReference: {fileID: 0}
@@ -417,3 +429,19 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+--- !u!114 &2186495749193023702 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5527956641338764716, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+  m_PrefabInstance: {fileID: 5971985355749944698}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!50 &4762765223490571132 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 1222864423378626054, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+  m_PrefabInstance: {fileID: 5971985355749944698}
+  m_PrefabAsset: {fileID: 0}

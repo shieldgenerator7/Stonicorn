@@ -100,9 +100,21 @@ PrefabInstance:
       value: 9065
       objectReference: {fileID: 0}
     - target: {fileID: 395785507437774658, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 4727148560663692045}
+    - target: {fileID: 395785507437774658, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: destroyStateId
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 395785507437774658, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: savables.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 395785507437774658, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'savables.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8171162567553786409}
     - target: {fileID: 395785507437774658, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: prefabAddress.m_AssetGUID
       value: 4b9efe74fd1abe348b7e72e79451cde2
@@ -321,3 +333,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxEnergyPerSecond: 1
+--- !u!50 &4727148560663692045 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 8612325288248208684, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 3899858523759980065}
+  m_PrefabAsset: {fileID: 0}
