@@ -654,16 +654,8 @@ public static class Utility
             //then these colliders definitely don't overlap
             return false;
         }
-        //Cast the first one to find if it has it
-        RaycastAnswer answer = coll.CastAnswer(Vector2.zero, 0, false);
-        for (int i = 0; i < answer.count; i++)
-        {
-            if (answer.rch2ds[i].collider == other)
-            {
-                return true;
-            }
-        }
-        return false;
+        //If the colliders are touching, they overlap
+        return Physics2D.IsTouching(coll, other);
     }
 
     public static void checkMaxReturnedList(string methodName, int count)
