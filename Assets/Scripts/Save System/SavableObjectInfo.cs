@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
+[DisallowMultipleComponent]
 public class SavableObjectInfo : ObjectInfo
 {
     [SerializeField]
