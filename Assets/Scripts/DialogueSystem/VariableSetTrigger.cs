@@ -11,9 +11,9 @@ public class VariableSetTrigger : EventTrigger
     protected override void checkErrors()
     {
         base.checkErrors();
-        if (!variableSetAction)
+        if (!variableSetAction && !triggerLeaveAction)
         {
-            Debug.LogError($"VariableSetTrigger doesn't have a variableSetAction! {variableSetAction}");
+            Debug.LogError($"VariableSetTrigger doesn't have a variableSetAction or triggerLeaveAction! {variableSetAction}, {triggerLeaveAction}");
         }
     }
 
