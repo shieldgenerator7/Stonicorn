@@ -778,6 +778,7 @@ public class CustomMenu
                     if (soi)
                     {
                         bool changedThis = false;
+                        //Spawn State Id
                         if (soi.spawnStateId != SPAWN_STATE_ID)
                         {
                             int prev = soi.spawnStateId;
@@ -788,6 +789,7 @@ public class CustomMenu
                                 );
                             changedThis = true;
                         }
+                        //Destroy State Id
                         if (soi.destroyStateId != DESTROY_STATE_ID)
                         {
                             int prev = soi.destroyStateId;
@@ -798,6 +800,48 @@ public class CustomMenu
                                 );
                             changedThis = true;
                         }
+                        //Savables: Rigidbody2D
+                        if (!soi.rb2d)
+                        {
+                            Rigidbody2D rb2d = soi.GetComponent<Rigidbody2D>();
+                            if (rb2d)
+                            {
+                                soi.rb2d = rb2d;
+                                Debug.LogWarning(
+                                    $"Set rb2d on SavableObjectInfo: {rb2d}",
+                                    soi.gameObject
+                                    );
+                                changedThis = true;
+                            }
+                        }
+                        if (soi.rb2d)
+                        {
+                            Rigidbody2D rb2d = soi.GetComponent<Rigidbody2D>();
+                            if (!rb2d)
+                            {
+                                soi.rb2d = null;
+                                Debug.LogWarning(
+                                    $"Unset rb2d on SavableObjectInfo: {soi}",
+                                    soi.gameObject
+                                    );
+                                changedThis = true;
+                            }
+                        }
+                        //Savables: SavableMonoBehaviour
+                        List<SavableMonoBehaviour> smbs = soi.GetComponents<SavableMonoBehaviour>().ToList();
+                        smbs.ForEach(smb =>
+                        {
+                            if (!soi.savables.Contains(smb))
+                            {
+                                soi.savables.Add(smb);
+                                Debug.LogWarning(
+                                    $"Add component to SavableObjectInfo: {smb}",
+                                    soi.gameObject
+                                    );
+                                changedThis = true;
+                            }
+                        });
+                        //changed?
                         if (changedThis)
                         {
                             changeCount++;
