@@ -6,10 +6,10 @@ public class MenuActionSwitchWindowed : MenuActionSwitch
 {
     public override void doAction(bool active)
     {
-        Managers.Video.Windowed = active;
+        Managers.Video.Windowed = !active;
     }
     public override bool getActiveState()
     {
-        return Managers.Video.Windowed;
+        return !Managers.Video.Windowed;
     }
 }
