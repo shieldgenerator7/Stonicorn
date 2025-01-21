@@ -6,7 +6,7 @@ public class RewindGestureProfile : GestureProfile
     public override void activate()
     {
         //Show Previous Teleport Points
-        Managers.PlayerRewind.showPlayerGhosts(true);
+        showPlayerGhostsBasedOnZoom(Managers.Camera.ZoomLevel);
         //Pause game
         Managers.Time.setPause(Managers.Gesture, true);
     }
@@ -36,5 +36,21 @@ public class RewindGestureProfile : GestureProfile
     {
         //Drag the camera
         Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
+    }
+    public override void processZoomLevelChange(float zoomLevel)
+    {
+        base.processZoomLevelChange(zoomLevel);
+        showPlayerGhostsBasedOnZoom(zoomLevel);
+    }
+    private void showPlayerGhostsBasedOnZoom(float zoomLevel)
+    {
+        float minZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND - 1);
+        if (zoomLevel <= minZoomLevel)
+        {
+            return;
+        }
+        float maxZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.TIMEREWIND);
+        float percent = (zoomLevel - minZoomLevel) / (maxZoomLevel - minZoomLevel);
+        Managers.PlayerRewind.showPlayerGhosts(percent);
     }
 }

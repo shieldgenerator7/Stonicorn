@@ -27,17 +27,33 @@ public class PlayerRewindController : Manager
     /// </summary>
     public void showPlayerGhosts(bool show)
     {
-        this.enabled = show;
+        showPlayerGhosts((show) ? 1 : 0);
+    }
+    public void showPlayerGhosts(float percent) {
+        bool showAny = percent > 0;
+        this.enabled = showAny;
         //If the game state representations should be shown,
-        if (show)
+        if (showAny)
         {
+            int minId = (int)((float)data.gameStates.Count * (1-percent));
             //Loop through all game states
-            foreach (GameState gs in data.gameStates)
+            for (int i = 0; i < data.gameStates.Count; i++)
             {
+                GameState gs = data.gameStates[i];
+                if (gs.id >= minId || gs.id == 0) {
                 //Update its representation
                 updateRepresentation(gs);
                 //Show a sprite to represent them on screen
                 showRepresentation(gs, Managers.Rewind.GameStateId);
+                }
+                else
+                {
+                    if (hasRepresentation(gs))
+                    {
+                        GameObject rep = getRepresentation(gs);
+                        rep.SetActive(false);
+                    }
+                }
             }
         }
         //Else, they should be hidden
@@ -61,7 +77,7 @@ public class PlayerRewindController : Manager
     private void updateRepresentation(GameState gs)
     {
         //If the representation is not already in the list,
-        if (gs.id >= representations.Count || representations[gs.id] == null)
+        if (!hasRepresentation(gs))
         {
             //Populate the list with null values
             while (gs.id >= representations.Count)
@@ -92,6 +108,11 @@ public class PlayerRewindController : Manager
             //make its representation slightly bigger
             rep.transform.localScale *= 2f;
         }
+    }
+
+    private bool hasRepresentation(GameState gs)
+    {
+        return gs.id < representations.Count && representations[gs.id] != null;
     }
 
     private GameObject getRepresentation(GameState gs)
@@ -173,9 +194,11 @@ public class PlayerRewindController : Manager
 
     public bool checkRepresentation(GameState gs, Vector3 touchPoint, bool checkSprite = true)
     {
-        GameObject rep = getRepresentation(gs);
-        if (rep)
+        if (!hasRepresentation(gs))
         {
+            return false;
+        }
+        GameObject rep = getRepresentation(gs);
             if (checkSprite)
             {
                 return rep.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
@@ -184,15 +207,6 @@ public class PlayerRewindController : Manager
             {
                 return rep.GetComponent<Collider2D>().OverlapPoint(touchPoint);
             }
-        }
-        else
-        {
-            Debug.LogError(
-                "ERROR: PlayerRewindController cant find rep for gamestate: " + gs,
-                gameObject
-                );
-            return false;
-        }
     }
     private void hideOldRepresentations(int gameStateId)
     {
