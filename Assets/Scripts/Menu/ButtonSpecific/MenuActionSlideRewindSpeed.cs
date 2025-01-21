@@ -7,12 +7,12 @@ public class MenuActionSlideRewindSpeed : MenuActionSlide
 
     public override float getCurrentValue()
     {
-        return (Managers.Rewind.rewindSpeedFactor * 100) - minValue;
+        return (1/(Managers.Rewind.rewindSpeedFactor) * 100) - minValue;
     }
 
     public override void valueAdjusted(float value)
     {
-        Managers.Rewind.rewindSpeedFactor = (value + minValue) / 100;
+        Managers.Rewind.rewindSpeedFactor = 1/((value + minValue) / 100);
     }
 
 
