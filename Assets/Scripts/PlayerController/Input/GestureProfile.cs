@@ -43,6 +43,10 @@ public abstract class GestureProfile
                 {
                 Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
                 }
+                else
+                {
+                    Managers.Camera.ZoomScalePoint = CameraController.CameraScalePoints.TIMEREWIND - 1;
+                }
             }
         }
         else
