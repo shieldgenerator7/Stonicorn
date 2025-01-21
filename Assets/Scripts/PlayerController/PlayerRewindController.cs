@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerRewindController : Manager
 {
+    public int minAmountOfPastMerkysToShow = 5;
     [Header("Objects")]
     public GameObject playerGhostPrefab;//this is to show Merky in the past (prefab)
     public GameObject ghostFolder;//object that the preview ghosts will be parented under
@@ -35,7 +36,10 @@ public class PlayerRewindController : Manager
         //If the game state representations should be shown,
         if (showAny)
         {
-            int minId = (int)((float)data.gameStates.Count * (1-percent));
+            int minId = Mathf.Min(
+                (int)((float)data.gameStates.Count * (1-percent)),
+                Mathf.Max(0,data.gameStates.Count-minAmountOfPastMerkysToShow)
+            );
             //Loop through all game states
             for (int i = 0; i < data.gameStates.Count; i++)
             {
