@@ -13,7 +13,28 @@ public abstract class SavableMonoBehaviour : MonoBehaviour
 
     /// <summary>
     /// True if this script was spawned during runtime
+    /// If a subtype overrides this to true, make sure to call register() within it
     /// </summary>
     /// <returns></returns>
     public virtual bool IsSpawnedScript => false;
+
+    /// <summary>
+    /// If a subscript overrides IsSpawnedScript, they need to call this method when they get created and destroyed
+    /// </summary>
+    /// <param name="register"></param>
+    protected void register(bool register = true)
+    {
+        SavableObjectInfo soi = GetComponent<SavableObjectInfo>();
+        if (register)
+        {
+            if (!soi.savables.Contains(this))
+            {
+                soi.savables.Add(this);
+            }
+        }
+        else
+        {
+            soi.savables.Remove(this);
+        }
+    }
 }

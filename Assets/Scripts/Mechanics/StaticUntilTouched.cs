@@ -34,6 +34,9 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
     {
         //Initialize state
         Rooted = rooted;
+
+        //register if not
+        register();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -59,6 +62,11 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
                 GetComponent<Rigidbody2D>().linearVelocity = collision.relativeVelocity;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        register(false);
     }
 
     public float checkForce(float force, Vector2 direction)
