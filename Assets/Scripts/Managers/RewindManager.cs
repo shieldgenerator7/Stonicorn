@@ -16,7 +16,7 @@ public class RewindManager : Manager
     [SerializeField]
     private float maxRewindDuration = 30;
     [SerializeField]
-    private float rewindSpeedFactor = 1;//multiplied to baseRewindDelay and maxRewindDuration to effect setting of rewindDelay
+    private float rewindSpeedFactor = 1;
     public float RewindSpeedFactor
     {
         get=> rewindSpeedFactor;
@@ -302,7 +302,7 @@ public class RewindManager : Manager
     {
         int count = chosenId - rewindId;
         rewindDelay = baseRewindDelay * rewindSpeedFactor;
-        if (count * rewindDelay < minRewindDuration)
+        if (count * rewindDelay < minRewindDuration * rewindSpeedFactor)
         {
             rewindDelay = minRewindDuration / count;
         }
