@@ -17,6 +17,7 @@ public class CloudMoverManager : MonoBehaviour
     public string layerName = "Ground";
 
     NativeArray<float2> cloudPositions;
+    NativeArray<bool> hasShadowList;
     NativeArray<float2> groundPositions;
     NativeArray<float2> newCloudVelocities;
     NativeArray<float2> newCloudVectorUps;
@@ -52,6 +53,9 @@ public class CloudMoverManager : MonoBehaviour
         //get cloud positions
         cloudPositions = cloudMovers
             .ConvertAll(cm => new float2(cm.transform.position.x, cm.transform.position.y))
+            .ToNativeArray(Allocator.Persistent);
+        hasShadowList = cloudMovers
+            .ConvertAll(cm => cm.shadow != null)
             .ToNativeArray(Allocator.Persistent);
 
         //cloud mover move job stuff
@@ -95,11 +99,15 @@ public class CloudMoverManager : MonoBehaviour
         cloudPositions = cloudMovers
             .ConvertAll(cm => new float2(cm.transform.position.x, cm.transform.position.y))
             .ToNativeArray(Allocator.Persistent);
+        hasShadowList = cloudMovers
+            .ConvertAll(cm => cm.shadow != null)
+            .ToNativeArray(Allocator.Persistent);
 
         //raycast job stuff
         CloudMoverRaycastJob cloudMoverRaycastJob = new CloudMoverRaycastJob()
         {
             cloudPositions = cloudPositions,
+            hasShadowList = hasShadowList,
             gravityCenter = Vector2.zero,
             maxRaycastDistance = MAX_DISTANCE,
             layerMask = layerMask,
@@ -113,6 +121,7 @@ public class CloudMoverManager : MonoBehaviour
         //cloud mover shadow job stuff
         CloudMoverShadowJob cloudMoverShadowJob = new CloudMoverShadowJob()
         {
+            hasShadowList = hasShadowList,
             cloudPositions = cloudPositions,
             groundPositions = groundPositions,
             gravityCenter = Vector2.zero,
@@ -128,6 +137,7 @@ public class CloudMoverManager : MonoBehaviour
 
         for (int i = 0; i < cloudMovers.Count; i++)
         {
+            if (!hasShadowList[i]) { continue; }
             cloudMovers[i].acceptShadowJobState(shadowPositions[i], shadowHeights[i]);
         }
     }
@@ -139,10 +149,11 @@ public class CloudMoverManager : MonoBehaviour
     void populateCloudMovers()
     {
         cloudMovers = Managers.Object.getObjects<CloudMover>()
-            .FindAll(cm => cm.enabled && cm.shadow);
+            .FindAll(cm => cm.enabled);
         int count = cloudMovers.Count;
 
         cloudPositions = new NativeArray<float2>(count, Allocator.Persistent);
+        hasShadowList = new NativeArray<bool>(count, Allocator.Persistent);
         groundPositions = new NativeArray<float2>(count, Allocator.Persistent);
         newCloudVelocities = new NativeArray<float2>(count, Allocator.Persistent);
         newCloudVectorUps = new NativeArray<float2>(count, Allocator.Persistent);
@@ -155,6 +166,8 @@ public struct CloudMoverRaycastJob : IJob
 {
     [ReadOnly]
     public NativeArray<float2> cloudPositions;
+    [ReadOnly]
+    public NativeArray<bool> hasShadowList;
     [ReadOnly]
     public float2 gravityCenter;
     [ReadOnly]
@@ -174,6 +187,8 @@ public struct CloudMoverRaycastJob : IJob
     }
     public void Execute(int index)
     {
+        if (!hasShadowList[index]) { return; }
+
         float2 cloudPosition = cloudPositions[index];
         float2 gravityVector = math.normalize(gravityCenter - cloudPosition);
 
@@ -221,6 +236,8 @@ public struct CloudMoverMoveJob : IJobParallelFor
 public struct CloudMoverShadowJob : IJobParallelFor
 {
     [ReadOnly]
+    public NativeArray<bool> hasShadowList;
+    [ReadOnly]
     public NativeArray<float2> cloudPositions;
     [ReadOnly]
     public NativeArray<float2> groundPositions;
@@ -236,6 +253,9 @@ public struct CloudMoverShadowJob : IJobParallelFor
 
     public void Execute(int index)
     {
+        if (!hasShadowList[index]) { return; }
+
+        //
         float2 cloudPosition = cloudPositions[index];
         float2 gravityVector = math.normalize(gravityCenter - cloudPosition);
 
