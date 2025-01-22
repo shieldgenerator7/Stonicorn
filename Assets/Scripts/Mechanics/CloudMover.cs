@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class CloudMover : MonoBehaviour
 {
-
+    public bool destroyOnCollisionWithUnmovableSolid = true;
     public GameObject shadow;
 
     Rigidbody2D rb2d;
@@ -23,6 +23,7 @@ public class CloudMover : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!destroyOnCollisionWithUnmovableSolid) { return; }
         //if it collides with a solid piece of terrain,
         Collider2D collider = collision.collider;
         if (collider.isSolid() && !collider.GetComponent<Rigidbody2D>())
