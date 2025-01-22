@@ -36,6 +36,13 @@ public class DialogueBoxUpdater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //check source still exists
+        if (!source || ReferenceEquals(source, null))
+        {
+            //if not, destroy this
+            Destroy(gameObject);
+            return;
+        }
         ////resize dialogue box
         //resizeToCamera();
         //update position
