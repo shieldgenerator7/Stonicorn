@@ -19,10 +19,14 @@ public class DialogueBoxUpdater : MonoBehaviour
     [Header("Components")]
     public ParticleSystem talkEffect;//the particle system for the visual part of NPC talking
     public TMP_Text txtDialogue;
+    public TMP_Text txtDialogueGoal;
     public Canvas canvas;
     public GameObject quoteBox;
     public GameObject quoteBoxTail;
 
+
+    private string text = "";
+    private string goalText = "";
     SpriteRenderer quoteSR;
 
     [SerializeField]
@@ -50,13 +54,22 @@ public class DialogueBoxUpdater : MonoBehaviour
         updatePosition();
     }
 
-    public void setText(string text)
+    public void setText(string value)
     {
 #if UNITY_EDITOR
         Start();
 #endif
+        text = value;
         txtDialogue.text = text;
-        txtDialogue.ForceMeshUpdate();
+        //txtDialogue.ForceMeshUpdate();
+    }
+
+    public void setGoalText(string value)
+    {
+        goalText = value;
+        txtDialogueGoal.text = goalText;
+        txtDialogueGoal.ForceMeshUpdate();
+
         updateSize();
         updatePosition();
     }
@@ -104,6 +117,7 @@ public class DialogueBoxUpdater : MonoBehaviour
     private void updateSize()
     {
         Vector2 textBoxSize = getTextSize();
+        //txtDialogue.rectTransform.sizeDelta = textBoxSize;
         quoteSR.size = textBoxSize;
         quoteBoxTail.transform.position = quoteSR.transform.position - (quoteBox.transform.up * quoteSR.size.y / 2);
     }
@@ -111,7 +125,7 @@ public class DialogueBoxUpdater : MonoBehaviour
     private Vector2 getTextSize(bool usePadding = true)
     {
         //assumes canvas scale x and y are the same
-        Vector2 size = txtDialogue.GetRenderedValues(true) * canvas.transform.localScale.x;
+        Vector2 size = txtDialogueGoal.GetRenderedValues(true) * canvas.transform.localScale.x;
         if (size.x < minWidth)
         {
             size.x = minWidth;

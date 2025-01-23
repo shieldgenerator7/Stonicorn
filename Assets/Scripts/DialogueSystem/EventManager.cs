@@ -164,6 +164,7 @@ public class EventManager : Manager
         dp.charsPerSecond *= talkSpeedMultiplier;
         dp.autoAdvanceDelay = talkWaitDuration;
         dp.onDialogueChanged += dbu.setText;
+        dp.onDialogueAdvanced += dbu.setGoalText;
         //dp.onDialogueAdvanced += (quote) => dbu.setSource(Character.getCharacterByName(quote.characterName));
         dp.playDialogue(path);
         dp.onDialogueEnded += (path) =>
