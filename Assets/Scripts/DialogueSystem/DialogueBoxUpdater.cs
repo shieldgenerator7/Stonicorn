@@ -117,7 +117,7 @@ public class DialogueBoxUpdater : MonoBehaviour
     private void updateSize()
     {
         Vector2 textBoxSize = getTextSize();
-        //txtDialogue.rectTransform.sizeDelta = textBoxSize;
+        txtDialogue.rectTransform.sizeDelta = textBoxSize * 100;
         quoteSR.size = textBoxSize;
         quoteBoxTail.transform.position = quoteSR.transform.position - (quoteBox.transform.up * quoteSR.size.y / 2);
     }
