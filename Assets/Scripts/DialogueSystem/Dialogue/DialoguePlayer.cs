@@ -116,6 +116,15 @@ public class DialoguePlayer : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        stopDialogue();
+    }
+    private void OnDisable()
+    {
+        stopDialogue();
+    }
+
     void advanceDialogue()
     {
         //If not all characters are revealed yet,
