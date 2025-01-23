@@ -61,7 +61,7 @@ public class DialogueBoxUpdater : MonoBehaviour
 #endif
         text = value;
         txtDialogue.text = text + Utility.repeatCharacter(' ', goalText.Length-text.Length);
-        //txtDialogue.ForceMeshUpdate();
+        txtDialogue.ForceMeshUpdate();
     }
 
     public void setGoalText(string value)
