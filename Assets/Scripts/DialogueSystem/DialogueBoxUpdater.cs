@@ -11,8 +11,9 @@ public class DialogueBoxUpdater : MonoBehaviour
     public float padding = 1;
     [Tooltip("The minimum amount of width the dialogue box can have")]
     public float minWidth = 1;
-    [Tooltip("The scale point at which the NPC quote box should be full screen")]
+    [Tooltip("THe distance between the source position and the box position")]
     public float offsetLength = 3;
+    [Tooltip("The scale point at which the NPC quote box should be full screen")]
     public CameraController.CameraScalePoints baseCameraScalePoint;
 
     [Header("Components")]
