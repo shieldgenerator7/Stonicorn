@@ -64,6 +64,7 @@ public class PilotGestureProfile : GestureProfile
                 pilot.OnActiveChanged -= reactToPilotActivate;
             }
             Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
+            Managers.Camera.ZoomScalePoint = CameraController.CameraScalePoints.DEFAULT;
         }
     }
 }
