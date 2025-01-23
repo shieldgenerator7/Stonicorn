@@ -8,8 +8,8 @@ public class PilotGestureProfile : GestureProfile
         if (pilot && pilot.enabled)
         {
             pilot.activate(true);
-            //pilot.OnActiveChanged -= reactToPilotActivate;
-            //pilot.OnActiveChanged += reactToPilotActivate;
+            pilot.OnActiveChanged -= reactToPilotActivate;
+            pilot.OnActiveChanged += reactToPilotActivate;
         }
         else
         {
@@ -58,12 +58,12 @@ public class PilotGestureProfile : GestureProfile
     {
         if (!active)
         {
-            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
             PlayerPilotController pilot = CheckPointChecker.current?.GetComponentInParent<PlayerPilotController>();
             if (pilot)
             {
                 pilot.OnActiveChanged -= reactToPilotActivate;
             }
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
         }
     }
 }
