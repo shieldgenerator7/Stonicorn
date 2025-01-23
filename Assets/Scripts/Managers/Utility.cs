@@ -471,6 +471,16 @@ public static class Utility
         return y;
     }
 
+    public static string repeatCharacter(char c, int count)
+    {
+        string str = "";
+        for (int i = 0; i < count; i++)
+        {
+            str += c;
+        }
+        return str;
+    }
+
     /// <summary>
     /// Instantiates a GameObject so that it can be rewound.
     /// Only works on game objects that are "registered" to be rewound
