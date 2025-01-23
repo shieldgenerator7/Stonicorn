@@ -8,8 +8,8 @@ public class PilotGestureProfile : GestureProfile
         if (pilot && pilot.enabled)
         {
             pilot.activate(true);
-            pilot.OnActiveChanged -= reactToPilotActivate;
-            pilot.OnActiveChanged += reactToPilotActivate;
+            //pilot.OnActiveChanged -= reactToPilotActivate;
+            //pilot.OnActiveChanged += reactToPilotActivate;
         }
         else
         {
