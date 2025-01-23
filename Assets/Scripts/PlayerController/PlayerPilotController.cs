@@ -39,8 +39,11 @@ public class PlayerPilotController : MonoBehaviour
         else
         {
             Managers.Player.Teleport.Range = Managers.Player.Teleport.baseRange;
-            //CheckPointChecker.current = null;//dirty: the checkpoint system should handle this better
+            if (checkPointChecker && CheckPointChecker.current == checkPointChecker)
+            {
+            CheckPointChecker.current = null;//dirty: the checkpoint system should handle this better
             checkPointChecker?.trigger();
+            }
             if (Managers.PlayerPilot == this)
             {
                 Managers.PlayerPilot = null;
