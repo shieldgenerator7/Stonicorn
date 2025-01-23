@@ -262,7 +262,7 @@ public class PlayerRewindController : Manager
             return final;
         }
         //Return nothing
-        return null;
+        return new GameState(-1);
     }
 
     #endregion
@@ -272,7 +272,7 @@ public class PlayerRewindController : Manager
     public void processHoverGesture(Vector3 pos)
     {
         GameState gs = getGameStateAtPosition(pos);
-        if (gs != null)
+        if (gs.valid)
         {
             //Show selection highlighter
             selectionHighlighter.SetActive(true);
@@ -292,7 +292,7 @@ public class PlayerRewindController : Manager
     public void processTapGesture(Vector3 curMPWorld)
     {
         GameState final = getGameStateAtPosition(curMPWorld);
-        if (final != null)
+        if (final.valid)
         {
             //Rewind back to the selected game state
             Managers.Rewind.RewindTo(final.id);

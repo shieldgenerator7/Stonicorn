@@ -3,35 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-public class GameState
+public struct GameState
 {
     public int id;
-    public List<ObjectState> states = new List<ObjectState>();
+    public List<ObjectState> states;
     private ObjectState merky;//the object state in the list specifically for Merky
-    public ObjectState Merky
-    {
-        get
-        {
-            if (merky == null)
-            {
-                merky = states.Find(os => os.objectId == 0);
-            }
-            return merky;
-        }
-        private set => merky = value;
-    }
+    public ObjectState Merky => merky;
 
     public static int nextid = 0;
 
     //Instantiation
-    public GameState()
+    public GameState(int testId)
     {
+        this.id = testId;
+        states = new List<ObjectState>();
+        merky = null;
+    }
+    public GameState(List<GameObject> list)
+    {
+        //id
         id = nextid;
         nextid++;
-    }
-    public GameState(List<GameObject> list) : this()
-    {
+
         //Object States
+        states = new List<ObjectState>();
         foreach (GameObject go in list)
         {
             if (!go || ReferenceEquals(go, null))
@@ -56,6 +51,9 @@ public class GameState
                     );
             }
         }
+
+        //Merky
+        merky = states.Find(os => os.objectId == 0);
     }
     //Loading
     public void load()
@@ -111,4 +109,6 @@ public class GameState
     public bool hasGameObject(int key) { 
         return states.Any(os => os.objectId == key);
     }
+
+    public bool valid => id >= 0;
 }
