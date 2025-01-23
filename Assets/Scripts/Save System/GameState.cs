@@ -6,7 +6,7 @@ using System;
 public struct GameState
 {
     public int id;
-    public List<ObjectState> states;
+    private ObjectState[] states;
     private ObjectState merky;//the object state in the list specifically for Merky
     public ObjectState Merky => merky;
 
@@ -16,7 +16,7 @@ public struct GameState
     public GameState(int testId)
     {
         this.id = testId;
-        states = new List<ObjectState>();
+        states = new ObjectState[0];
         merky = null;
     }
     public GameState(List<GameObject> list)
@@ -26,14 +26,9 @@ public struct GameState
         nextid++;
 
         //Object States
-        states = new List<ObjectState>();
-        foreach (GameObject go in list)
-        {
-            if (!go || ReferenceEquals(go, null))
-            {
-                //skip null objects
-                continue;
-            }
+        states = list
+            .Where(go => !(!go || ReferenceEquals(go, null))).ToList()
+            .ConvertAll(go => {
             try
             {
                 ObjectState os = new ObjectState(go);
@@ -41,7 +36,7 @@ public struct GameState
                 {
                     throw new UnityException($"Object state object id is ({os.objectId}) for object: {go.name}");
                 }
-                states.Add(os);
+                return os;
             }
             catch (NullReferenceException nre)
             {
@@ -49,17 +44,22 @@ public struct GameState
                     $"Object {go.name} does not have an ObjectInfo. NRE: {nre}",
                     go
                     );
+                return null;
             }
-        }
+        })
+            .Where(os => os != null)
+            .OrderBy(os=>os.objectId)
+            .ToArray();
 
         //Merky
-        merky = states.Find(os => os.objectId == 0);
+        merky = states.First(os => os.objectId == 0);
     }
     //Loading
     public void load()
     {
-        states.ForEach(os =>
+        for(int i = 0; i < states.Length; i++) 
         {
+            ObjectState os = states[i];
             if (Managers.Object.hasObject(os.objectId))
             {
                 os.loadState(Managers.Object.getObject(os.objectId));
@@ -69,19 +69,20 @@ public struct GameState
                 Debug.Log($"Object ({os.objectId}) not found");
                 if (Managers.Scene.isObjectSceneOpen(os.objectId))
                 {
+                    Debug.Log($"Object ({os.objectId}) scene open, recreating");
                     Managers.Object.recreateObject(os.objectId);
                 }
                 else
                 {
-                    Debug.Log($"Object ({os.objectId}) scene not open, so ignoring");
+                    Debug.Log($"Object ({os.objectId}) scene not open, so not recreating");
                 }
             }
-        });
+        };
     }
     public void loadObject(GameObject go)
     {
         int key = go.getKey();
-        ObjectState state = states.Find(os => os.objectId == key);
+        ObjectState state = states.First(os => os.objectId == key);
         state.loadState(go);
     }
 
@@ -108,6 +109,14 @@ public struct GameState
     /// <returns></returns>
     public bool hasGameObject(int key) { 
         return states.Any(os => os.objectId == key);
+    }
+
+    internal void processStates(Func<ObjectState, int> func)
+    {
+        for (int i = 0; i < states.Length; i++)
+        {
+            func(states[i]);
+        }
     }
 
     public bool valid => id >= 0;

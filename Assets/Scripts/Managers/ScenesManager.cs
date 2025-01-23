@@ -181,9 +181,13 @@ public class ScenesManager : Manager
         => sceneLoaders.Find(sl => sl.sceneId == sceneId);
     #endregion
 
+    /// <summary>
+    /// updates cache: which scene each object is in during the given state
+    /// </summary>
+    /// <param name="gameStateId"></param>
     public void updateSceneObjectList(int gameStateId)
     {
-        data.gameStates[gameStateId].states.ForEach(
+        data.gameStates[gameStateId].processStates(
             os => data.objectSceneList[os.objectId] = os.sceneId
             );
     }
