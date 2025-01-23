@@ -5,9 +5,11 @@ public class PilotGestureProfile : GestureProfile
     public override void activate()
     {
         PlayerPilotController pilot = CheckPointChecker.current?.GetComponentInParent<PlayerPilotController>();
-        if (pilot)
+        if (pilot && pilot.enabled)
         {
             pilot.activate(true);
+            pilot.OnActiveChanged -= reactToPilotActivate;
+            pilot.OnActiveChanged += reactToPilotActivate;
         }
         else
         {
@@ -49,6 +51,19 @@ public class PilotGestureProfile : GestureProfile
         else
         {
             throw new System.ArgumentException("DragType must be a valid value! dragType: " + dragType);
+        }
+    }
+
+    void reactToPilotActivate(bool active)
+    {
+        if (!active)
+        {
+            Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.MAIN);
+            PlayerPilotController pilot = CheckPointChecker.current?.GetComponentInParent<PlayerPilotController>();
+            if (pilot)
+            {
+                pilot.OnActiveChanged -= reactToPilotActivate;
+            }
         }
     }
 }

@@ -32,7 +32,8 @@ public abstract class GestureProfile
         {
             if (CheckPointChecker.InCheckPoint)
             {
-                if (CheckPointChecker.current.GetComponentInParent<PlayerPilotController>())
+                PlayerPilotController pilot = CheckPointChecker.current.GetComponentInParent<PlayerPilotController>();
+                if (pilot && pilot.enabled)
                 {
                     Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.PILOT);
                 }

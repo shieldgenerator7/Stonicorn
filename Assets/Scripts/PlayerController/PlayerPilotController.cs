@@ -21,6 +21,11 @@ public class PlayerPilotController : MonoBehaviour
         };
     }
 
+    private void OnDisable()
+    {
+        activate(false);
+    }
+
     public void activate(bool active)
     {
         playerController.Teleport.onRangeChanged -= updateRange;
@@ -34,14 +39,16 @@ public class PlayerPilotController : MonoBehaviour
         else
         {
             Managers.Player.Teleport.Range = Managers.Player.Teleport.baseRange;
-            CheckPointChecker.current = null;//dirty: the checkpoint system should handle this better
+            //CheckPointChecker.current = null;//dirty: the checkpoint system should handle this better
             checkPointChecker?.trigger();
             if (Managers.PlayerPilot == this)
             {
                 Managers.PlayerPilot = null;
             }
         }
+        OnActiveChanged?.Invoke(active);
     }
+    public event Action<bool> OnActiveChanged;
 
     void updateRange(float range)
     {
