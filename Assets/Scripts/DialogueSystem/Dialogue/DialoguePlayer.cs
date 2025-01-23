@@ -94,7 +94,7 @@ public class DialoguePlayer : MonoBehaviour
         //OnStop delegate
         onDialogueEnded?.Invoke(path);
         //Unset path
-        this.path = null;
+        //this.path = null;
     }
 
     // Update is called once per frame
