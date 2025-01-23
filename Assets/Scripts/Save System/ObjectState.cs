@@ -13,7 +13,7 @@ public class ObjectState
     public Vector2 velocity;
     public float angularVelocity;
     //Saveable Object
-    public List<SavableObject> soList;
+    public SavableObject[] soList;
     //Name
     public int objectId = -1;
     public int sceneId = -1;
@@ -41,7 +41,7 @@ public class ObjectState
             angularVelocity = rb2d.angularVelocity;
         }
         //SavableMonoBehaviours
-        soList = info.savables.ConvertAll<SavableObject>(smb => smb.CurrentState);
+        soList = info.savables.ConvertAll<SavableObject>(smb => smb.CurrentState).ToArray();
     }
     public void loadState(GameObject go)
     {
