@@ -323,6 +323,18 @@ public class RewindManager : Manager
         Load(chosenId);
     }
 
+    /// <summary>
+    /// Destroys a state to save space
+    /// it destroys least important states first, ie states near the beginning of the time loop
+    /// it doesnt destroy the first state ever, and tries not to destroy one of the most recent 100 states
+    /// first piece to solving #622, possibly
+    /// </summary>
+    public void destroyStateToSaveSpace()
+    {
+        data.gameStates.RemoveAt(1);
+        chosenId--;
+    }
+
     public override string ID => "RewindManager";
     public override SettingObject Setting
     {
