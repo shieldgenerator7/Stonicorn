@@ -6,12 +6,17 @@ public class PlayerPilotController : MonoBehaviour
 
     public PlayerController playerController;//the player controller specific to this particular pod
     public CheckPointChecker checkPointChecker;
+    public IPowerConduit powerConduit;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        if (powerConduit != null)
+        {
+            powerConduit.OnPowerFlowed += acceptPower;
+        }
     }
+
     public void init()
     {
         playerController.init();
@@ -61,6 +66,14 @@ public class PlayerPilotController : MonoBehaviour
     void Update()
     {
 
+    }
+
+    private void acceptPower(float power, float maxPower)
+    {
+        float percent = power / maxPower;
+        float min = playerController.Teleport.exhaustRange;
+        float max = playerController.Teleport.baseRange;
+        playerController.Teleport.Range = (max - min) * percent + min;
     }
 
     /// <summary>
