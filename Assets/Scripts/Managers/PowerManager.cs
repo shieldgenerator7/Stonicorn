@@ -22,9 +22,12 @@ public class PowerManager : MonoBehaviour
     List<KeyValuePair<IPowerer, List<PowerPath>>> powerPaths = new List<KeyValuePair<IPowerer, List<PowerPath>>>();
     List<IPowerable> noPowerPowerables = new List<IPowerable>();
 
+    private ElectricBeamAbility electricBeamAbility;
+
     private void Start()
     {
         generateConnectionMap();
+        electricBeamAbility = Managers.Player.GetComponent<ElectricBeamAbility>();
     }
 
     private void FixedUpdate()
@@ -35,7 +38,10 @@ public class PowerManager : MonoBehaviour
               .ConvertAll(ipc => (PowerWire)ipc)
               .ForEach(pw => pw.reset());
         //Process powerables with no power
-        noPowerPowerables.ForEach(pwr => pwr.acceptPower(0));
+        noPowerPowerables.ForEach(pwr => {
+            if (pwr.GameObject == electricBeamAbility.Target) { return; }
+            pwr.acceptPower(0);
+        });
         //Have powerers dish out their power
         powerPaths.ForEach(
             entry =>
