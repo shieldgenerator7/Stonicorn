@@ -119,5 +119,23 @@ public struct GameState
         }
     }
 
+    /// <summary>
+    /// Work around a bug that causes merky to not be found in a gamestate
+    /// </summary>
+    /// <param name="merky"></param>
+    internal void setMerky(GameObject merky)
+    {
+        if (Merky != null)
+        {
+            Debug.LogError($"GameState.setMerky(): game state ({id}) already has a Merky! {Merky}");
+            return;
+        }
+        ObjectState os = new ObjectState(merky);
+        List<ObjectState> ls = states.ToList();
+        ls.Add(os);
+        states = ls.ToArray();
+        this.merky = os;
+    }
+
     public bool valid => id >= 0;
 }

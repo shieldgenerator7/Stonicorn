@@ -80,11 +80,15 @@ public class RewindManager : Manager
     public void Save()
     {
         //Create a new game state
-        data.gameStates.Add(
-            new GameState(
+        GameState gameState = new GameState(
                 data.gameObjects.Values.ToList()
-                )
             );
+        if (gameState.Merky == null)
+        {
+            gameState.setMerky(Managers.Player.gameObject);
+        }
+        data.gameStates.Add(gameState);
+
         //Update game state id variables
         chosenId++;
         rewindId++;

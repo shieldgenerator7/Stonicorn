@@ -271,9 +271,19 @@ public class PlayerRewindController : Manager
 
     public void processHoverGesture(Vector3 pos)
     {
+        if (selectionHighlighter == null)
+        {
+            Debug.LogError($"PlayerRewindController.processHoverGesture({pos}): selectionHighlighter: {selectionHighlighter}");
+            return;
+        }
         GameState gs = getGameStateAtPosition(pos);
         if (gs.valid)
         {
+        if (gs.Merky == null)
+        {
+            Debug.LogError($"PlayerRewindController.processHoverGesture({pos}): gs.Merky: {gs.Merky}");
+            return;
+        }
             //Show selection highlighter
             selectionHighlighter.SetActive(true);
             selectionHighlighter.transform.localScale = transform.localScale;
