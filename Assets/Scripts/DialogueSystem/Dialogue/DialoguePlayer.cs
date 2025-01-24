@@ -30,7 +30,7 @@ public class DialoguePlayer : MonoBehaviour
     private float revealStartTime = -1;
     private string revealedString = "";
 
-    public bool Playing => path != null && index >= 0;
+    public bool Playing => path != null && index >= 0 && this.enabled;
     public Quote CurrentQuote
         => (path != null && index >= 0) ? path.quotes[index] : null;
     public bool FullyRevealed
@@ -118,11 +118,17 @@ public class DialoguePlayer : MonoBehaviour
 
     private void OnDestroy()
     {
-        stopDialogue();
+        if (Playing)
+        {
+            stopDialogue();
+        }
     }
     private void OnDisable()
     {
-        stopDialogue();
+        if (Playing)
+        {
+            stopDialogue();
+        }
     }
 
     void advanceDialogue()
