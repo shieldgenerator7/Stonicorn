@@ -55,7 +55,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followName: 
   followObject: {fileID: 0}
+  positionOffset: {x: 0, y: 0}
+  scaleFactor: 1
   orientToCamera: 1
+  scaleToCameraZoomLevel: 0
   shakeOnStop: 1
   bounceBackSpeed: 5
 --- !u!114 &40073705359149296
@@ -195,7 +198,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followName: 
   followObject: {fileID: 0}
+  positionOffset: {x: 0, y: 0}
+  scaleFactor: 1
   orientToCamera: 0
+  scaleToCameraZoomLevel: 0
   shakeOnStop: 0
   bounceBackSpeed: 0
 --- !u!114 &1404192947651301418
