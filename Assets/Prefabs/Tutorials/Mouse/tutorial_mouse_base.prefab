@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 316553189168530142}
   - component: {fileID: 737704285479814476}
+  - component: {fileID: 2847348554986250018}
   m_Layer: 0
   m_Name: tutorial_mouse_base
   m_TagString: Untagged
@@ -51,6 +52,21 @@ MonoBehaviour:
   orientToCamera: 1
   shakeOnStop: 1
   bounceBackSpeed: 2
+--- !u!114 &2847348554986250018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115765260656410361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8dd7ea7cc782da408e5f1c237bccfa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  origin: {fileID: 0}
+  range: 2
+  whenLeaveRangeDeactivate: 1
 --- !u!1 &1338872628531175861
 GameObject:
   m_ObjectHideFlags: 0
