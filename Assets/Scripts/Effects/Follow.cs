@@ -12,7 +12,9 @@ public class Follow : MonoBehaviour
     public string followName = "";
     public GameObject followObject;
     public Vector2 positionOffset = Vector2.zero;
+    public float scaleFactor = 1f;
     public bool orientToCamera = false;
+    public bool scaleToCameraZoomLevel = false;
     public bool shakeOnStop = true;
 
     public float bounceBackSpeed = 2;
@@ -106,13 +108,19 @@ public class Follow : MonoBehaviour
     {
         Transform tf = (useCameraUp) ? Managers.Camera.transform : followObject.transform;
         Vector3 startOffsetTransformed = tf.TransformDirection(positionOffset);
+        float camScale = Managers.Camera.ZoomLevel / Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
         //Position
         transform.position = followObject.transform.position
             + ((useOffset) ? (Vector3)offset : Vector3.zero)
-            + startOffsetTransformed;
+            + startOffsetTransformed * ((scaleToCameraZoomLevel)?camScale:1);
         //Rotation
             transform.up = tf.up;
         //Scale
-        transform.localScale = followObject.transform.localScale;
+        if (scaleToCameraZoomLevel) {
+            transform.localScale = Vector3.one * scaleFactor * camScale;
+        }
+        else {
+            transform.localScale = followObject.transform.localScale * scaleFactor;
+        }
     }
 }
