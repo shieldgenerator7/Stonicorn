@@ -11,7 +11,7 @@ public class Follow : MonoBehaviour
 
     public string followName = "";
     public GameObject followObject;
-    public Vector2 startOffset = Vector2.zero;
+    public Vector2 positionOffset = Vector2.zero;
     public bool orientToCamera = false;
     public bool shakeOnStop = true;
 
@@ -105,7 +105,7 @@ public class Follow : MonoBehaviour
     void updateTransform(bool useOffset, bool useCameraUp)
     {
         Transform tf = (useCameraUp) ? Managers.Camera.transform : followObject.transform;
-        Vector3 startOffsetTransformed = tf.TransformDirection(startOffset);
+        Vector3 startOffsetTransformed = tf.TransformDirection(positionOffset);
         //Position
         transform.position = followObject.transform.position
             + ((useOffset) ? (Vector3)offset : Vector3.zero)
