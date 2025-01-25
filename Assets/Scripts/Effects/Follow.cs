@@ -104,15 +104,14 @@ public class Follow : MonoBehaviour
 
     void updateTransform(bool useOffset, bool useCameraUp)
     {
+        Transform tf = (useCameraUp) ? Managers.Camera.transform : followObject.transform;
+        Vector3 startOffsetTransformed = tf.TransformDirection(startOffset);
         //Position
         transform.position = followObject.transform.position
             + ((useOffset) ? (Vector3)offset : Vector3.zero)
-            + (Vector3)startOffset;
+            + startOffsetTransformed;
         //Rotation
-        if (!useCameraUp)
-        {
-            transform.up = followObject.transform.up;
-        }
+            transform.up = tf.up;
         //Scale
         transform.localScale = followObject.transform.localScale;
     }
