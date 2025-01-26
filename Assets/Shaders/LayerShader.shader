@@ -146,7 +146,7 @@ Shader "SG7/LayerShader"
 					// 	)
 					// );
 					// col = curColor * i.color * (pattern.x * _DetailColor0 + pattern.z * _DetailColor1);
-					col = getLayerColor(layer);
+					col = curColor * getLayerColor(layer);
 				}
 				col.rgb *= col.a;
 				return col;
