@@ -12,7 +12,6 @@ Shader "SG7/LayerShader"
 		
 		_CenterPos ("Center Position", Vector) = (0, 0, 0)
 		_LayerHeight ("Layer Height", float) = 10.0
-		_TestThreshold ("Test Threshold", float) = 50.0
 		_LayerColor1 ("Layer Color 1", Color) = (1,0,0,1)
 		_LayerColor2 ("Layer Color 2", Color) = (0,1,0,1)
 		_LayerColor3 ("Layer Color 3", Color) = (0,0,1,1)
@@ -118,7 +117,6 @@ Shader "SG7/LayerShader"
 			
 			fixed4 _FilterColor;
 			float _FilterThreshold;
-			float _TestThreshold;
 
 			bool colorEqual(fixed4 a, fixed4 b){
 				return
@@ -138,7 +136,6 @@ Shader "SG7/LayerShader"
 				fixed4 col = curColor * i.color;
 				int layer = getLayer(i.worldPos);
 
-				if (layer < _TestThreshold){
 					// fixed4 pattern = tex2D(_PatternTex, 
 					// 	float2(
 					// 		modFunction(i.uv.x*_MainTex_TexelSize.z,_PatternTex_TexelSize.z) *_PatternTex_TexelSize.x,
@@ -147,7 +144,6 @@ Shader "SG7/LayerShader"
 					// );
 					// col = curColor * i.color * (pattern.x * _DetailColor0 + pattern.z * _DetailColor1);
 					col = curColor * getLayerColor(layer);
-				}
 				col.rgb *= col.a;
 				return col;
 			}
