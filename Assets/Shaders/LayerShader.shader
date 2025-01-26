@@ -71,15 +71,39 @@ Shader "SG7/LayerShader"
 
 			fixed4 _Color;
 			float3 _CenterPos;
+			fixed4 _LayerColor1;
+			fixed4 _LayerColor2;
+			fixed4 _LayerColor3;
+			float _LayerHeight;
+
+			fixed4 getLayerColor(int layer){
+				int index = layer % 3;
+				if (index == 0){
+					return _LayerColor1;
+				}
+				if (index == 1){
+					return _LayerColor2;
+				}
+				if (index == 2){
+					return _LayerColor3;
+				}
+				return _Color;
+			}
+
+			int getLayer(float3 v){
+				return floor(distance(v, _CenterPos) / _LayerHeight);
+			}
 
 			v2f vert (appdata IN)
 			{
 				v2f OUT;
                 OUT.vertex = UnityObjectToClipPos(IN.vertex);
                 OUT.uv = IN.uv;
-                OUT.color = IN.color * _Color;
+                // OUT.color = IN.color * _Color;
 				//2025-01-25: copied from https://discussions.unity.com/t/getting-the-world-position-of-the-pixel-in-the-fragment-shader/177100/2
 				OUT.worldPos =  mul (unity_ObjectToWorld, IN.vertex);
+				//
+				OUT.color = IN.color * getLayerColor(getLayer(OUT.worldPos));
 
                 return OUT;
 			}
@@ -94,7 +118,6 @@ Shader "SG7/LayerShader"
 			
 			fixed4 _FilterColor;
 			float _FilterThreshold;
-			float _LayerHeight;
 			float _TestThreshold;
 
 			bool colorEqual(fixed4 a, fixed4 b){
@@ -102,10 +125,6 @@ Shader "SG7/LayerShader"
 					abs(a.x - b.x) < _FilterThreshold
 					&& abs(a.y - b.y) < _FilterThreshold
 					&& abs(a.z - b.z) < _FilterThreshold;
-			}
-
-			float getLayer(float3 v){
-				return floor(distance(v, _CenterPos) / _LayerHeight);
 			}
 
 			sampler2D _MainTex;
@@ -117,15 +136,17 @@ Shader "SG7/LayerShader"
 			{
 				fixed4 curColor = tex2D(_MainTex, i.uv);
 				fixed4 col = curColor * i.color;
-				
-				if (getLayer(i.worldPos) < _TestThreshold){
-					fixed4 pattern = tex2D(_PatternTex, 
-						float2(
-							modFunction(i.uv.x*_MainTex_TexelSize.z,_PatternTex_TexelSize.z) *_PatternTex_TexelSize.x,
-							modFunction(i.uv.y*_MainTex_TexelSize.w,_PatternTex_TexelSize.w) *_PatternTex_TexelSize.y
-						)
-					);
-					col = curColor * i.color * (pattern.x * _DetailColor0 + pattern.z * _DetailColor1);
+				int layer = getLayer(i.worldPos);
+
+				if (layer < _TestThreshold){
+					// fixed4 pattern = tex2D(_PatternTex, 
+					// 	float2(
+					// 		modFunction(i.uv.x*_MainTex_TexelSize.z,_PatternTex_TexelSize.z) *_PatternTex_TexelSize.x,
+					// 		modFunction(i.uv.y*_MainTex_TexelSize.w,_PatternTex_TexelSize.w) *_PatternTex_TexelSize.y
+					// 	)
+					// );
+					// col = curColor * i.color * (pattern.x * _DetailColor0 + pattern.z * _DetailColor1);
+					col = getLayerColor(layer);
 				}
 				col.rgb *= col.a;
 				return col;
