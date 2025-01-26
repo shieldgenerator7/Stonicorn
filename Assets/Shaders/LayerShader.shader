@@ -105,7 +105,7 @@ Shader "SG7/LayerShader"
 			}
 
 			float getLayer(float3 v){
-				return floor(length(v) / _LayerHeight);
+				return floor(distance(v, _CenterPos) / _LayerHeight);
 			}
 
 			sampler2D _MainTex;
