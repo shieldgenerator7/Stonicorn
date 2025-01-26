@@ -98,11 +98,9 @@ Shader "SG7/LayerShader"
 				v2f OUT;
                 OUT.vertex = UnityObjectToClipPos(IN.vertex);
                 OUT.uv = IN.uv;
-                // OUT.color = IN.color * _Color;
+                OUT.color = IN.color * _Color;
 				//2025-01-25: copied from https://discussions.unity.com/t/getting-the-world-position-of-the-pixel-in-the-fragment-shader/177100/2
 				OUT.worldPos =  mul (unity_ObjectToWorld, IN.vertex);
-				//
-				OUT.color = IN.color * getLayerColor(getLayer(OUT.worldPos));
 
                 return OUT;
 			}
@@ -136,14 +134,8 @@ Shader "SG7/LayerShader"
 				fixed4 col = curColor * i.color;
 				int layer = getLayer(i.worldPos);
 
-					// fixed4 pattern = tex2D(_PatternTex, 
-					// 	float2(
-					// 		modFunction(i.uv.x*_MainTex_TexelSize.z,_PatternTex_TexelSize.z) *_PatternTex_TexelSize.x,
-					// 		modFunction(i.uv.y*_MainTex_TexelSize.w,_PatternTex_TexelSize.w) *_PatternTex_TexelSize.y
-					// 	)
-					// );
-					// col = curColor * i.color * (pattern.x * _DetailColor0 + pattern.z * _DetailColor1);
-					col = curColor * getLayerColor(layer);
+					col = curColor * i.color * getLayerColor(layer);
+
 				col.rgb *= col.a;
 				return col;
 			}
