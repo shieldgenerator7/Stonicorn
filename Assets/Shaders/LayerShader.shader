@@ -126,6 +126,30 @@ Shader "SG7/LayerShader"
 				col.rgb *= col.a;
 				return col;
 			}
+
+
+			//2025-01-25: copied from https://stackoverflow.com/questions/13252891/hlsl-getting-world-position-of-pixel
+			cbuffer cbmat : register( b0 )
+			{
+				float4x4 tW; //World transform
+				float4x4 tWVP: //World * View * Projection
+			}
+
+			struct vs2ps
+			{
+				float4 Pos : POSITION;
+				float4 TexCd : TEXCOORD0;
+				float3 PosW : TEXCOORD1;
+			}
+
+			vs2ps VS(float4 Pos : POSITION,float4 TexCd : TEXCOORD0)
+			{
+				vs2ps Out;
+				Out.Pos = mul(Pos, tWVP);
+				Out.TexCd = TexCd;
+				Out.PosW = mul(Pos, tW);
+				return Out;
+			}
 			
 			ENDCG
 		}
