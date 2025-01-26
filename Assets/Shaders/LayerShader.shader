@@ -8,17 +8,23 @@ Shader "SG7/LayerShader"
 	Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-		// _Color ("Tint", Color) = (1,1,1,1)
-		// _PatternTex ("Pattern Texture", 2D) = "white" {}
-		// _FilterColor ("Filter Color", Color) = (1,1,1,1)
-		// _FilterThreshold ("Filter Threshold", float) = 0.1
 
-		// _DetailColor1 ("Detail Color 1", Color) = (1,1,1,1)
-		// _DetailColor0 ("Detail Color 0", Color) = (0,0,0,1)
 		
+		_CenterPos ("Center Position", Vector) = (0, 0, 0, 0)
+		_LayerHeight ("Layer Height", float) = 10.0
+		_TestThreshold ("Test Threshold", float) = 50.0
 		_LayerColor1 ("Layer Color 1", Color) = (1,0,0,1)
 		_LayerColor2 ("Layer Color 2", Color) = (0,1,0,1)
 		_LayerColor3 ("Layer Color 3", Color) = (0,0,1,1)
+
+
+		_Color ("Tint", Color) = (1,1,1,1)
+		_PatternTex ("Pattern Texture", 2D) = "white" {}
+		_FilterColor ("Filter Color", Color) = (1,1,1,1)
+		_FilterThreshold ("Filter Threshold", float) = 0.1
+
+		_DetailColor1 ("Detail Color 1", Color) = (1,1,1,1)
+		_DetailColor0 ("Detail Color 0", Color) = (0,0,0,1)
 	}
 	SubShader
 	{
@@ -84,12 +90,18 @@ Shader "SG7/LayerShader"
 			
 			fixed4 _FilterColor;
 			float _FilterThreshold;
+			float _LayerHeight;
+			float _TestThreshold;
 
 			bool colorEqual(fixed4 a, fixed4 b){
 				return
 					abs(a.x - b.x) < _FilterThreshold
 					&& abs(a.y - b.y) < _FilterThreshold
 					&& abs(a.z - b.z) < _FilterThreshold;
+			}
+
+			float getLayer(Vector v){
+				return floor(length(v) / _LayerHeight);
 			}
 
 			sampler2D _MainTex;
@@ -102,7 +114,7 @@ Shader "SG7/LayerShader"
 				fixed4 curColor = tex2D(_MainTex, i.uv);
 				fixed4 col = curColor * i.color;
 				
-				if (colorEqual(curColor, _FilterColor)){
+				if (getLayer(i.vertex) < _TestThreshold){
 					fixed4 pattern = tex2D(_PatternTex, 
 						float2(
 							modFunction(i.uv.x*_MainTex_TexelSize.z,_PatternTex_TexelSize.z) *_PatternTex_TexelSize.x,
