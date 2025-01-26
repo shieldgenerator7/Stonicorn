@@ -96,9 +96,20 @@ public class CloudMoverManager : MonoBehaviour
         }
 
         //get cloud positions
-        cloudPositions = cloudMovers
-            .ConvertAll(cm => new float2(cm.transform.position.x, cm.transform.position.y))
-            .ToNativeArray(Allocator.Persistent);
+        try
+        {
+            cloudPositions = cloudMovers
+                .ConvertAll(cm => new float2(cm.transform.position.x, cm.transform.position.y))
+                .ToNativeArray(Allocator.Persistent);
+        }
+        catch(MissingReferenceException mre)
+        {
+            Debug.Log("Cant access missing reference for a cloud mover, updating list...");
+            populateCloudMovers();
+            cloudPositions = cloudMovers
+                .ConvertAll(cm => new float2(cm.transform.position.x, cm.transform.position.y))
+                .ToNativeArray(Allocator.Persistent);
+        }
         hasShadowList = cloudMovers
             .ConvertAll(cm => cm.shadow != null)
             .ToNativeArray(Allocator.Persistent);
