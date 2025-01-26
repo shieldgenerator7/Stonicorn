@@ -9,21 +9,12 @@ Shader "SG7/LayerShader"
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 
-		
 		_CenterPos ("Center Position", Vector) = (0, 0, 0)
 		_LayerHeight ("Layer Height", float) = 10.0
 		_LayerColor1 ("Layer Color 1", Color) = (1,0,0,1)
 		_LayerColor2 ("Layer Color 2", Color) = (0,1,0,1)
 		_LayerColor3 ("Layer Color 3", Color) = (0,0,1,1)
-
-
-		_Color ("Tint", Color) = (1,1,1,1)
-		_PatternTex ("Pattern Texture", 2D) = "white" {}
-		_FilterColor ("Filter Color", Color) = (1,1,1,1)
-		_FilterThreshold ("Filter Threshold", float) = 0.1
-
-		_DetailColor1 ("Detail Color 1", Color) = (1,1,1,1)
-		_DetailColor0 ("Detail Color 0", Color) = (0,0,0,1)
+		_Color ("Tint", Color) = (0,0,0,1)
 	}
 	SubShader
 	{
@@ -49,9 +40,6 @@ Shader "SG7/LayerShader"
 			#pragma fragment frag
 			
 			#include "UnityCG.cginc"
-
-			float4 _MainTex_TexelSize;
-			float4 _PatternTex_TexelSize;
 
 			struct appdata
 			{
@@ -105,28 +93,7 @@ Shader "SG7/LayerShader"
                 return OUT;
 			}
 
-			float modFunction(float number, float divisor){
-				//2018-05-24: copied from an answer by Nicol Bolas: https://stackoverflow.com/questions/35155598/unable-to-use-in-glsl
-				return (number - (divisor * floor(number/divisor)));
-			}
-			float modFunction100(float number, float divisor){
-				return modFunction(number*100,divisor*100)/100;
-			}
-			
-			fixed4 _FilterColor;
-			float _FilterThreshold;
-
-			bool colorEqual(fixed4 a, fixed4 b){
-				return
-					abs(a.x - b.x) < _FilterThreshold
-					&& abs(a.y - b.y) < _FilterThreshold
-					&& abs(a.z - b.z) < _FilterThreshold;
-			}
-
 			sampler2D _MainTex;
-			sampler2D _PatternTex;
-			fixed4 _DetailColor1;
-			fixed4 _DetailColor0;
 
 			fixed4 frag (v2f i) : SV_Target
 			{
