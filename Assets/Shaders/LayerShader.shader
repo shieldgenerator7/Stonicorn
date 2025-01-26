@@ -10,7 +10,7 @@ Shader "SG7/LayerShader"
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 
 		
-		_CenterPos ("Center Position", Vector) = (0, 0, 0, 0)
+		_CenterPos ("Center Position", Vector) = (0, 0, 0)
 		_LayerHeight ("Layer Height", float) = 10.0
 		_TestThreshold ("Test Threshold", float) = 50.0
 		_LayerColor1 ("Layer Color 1", Color) = (1,0,0,1)
@@ -66,9 +66,11 @@ Shader "SG7/LayerShader"
 				float2 uv : TEXCOORD0;
 				fixed4 color: COLOR;
 				float4 vertex : SV_POSITION;
+				float3 worldPos : TEXCOORD1;
 			};
 
 			fixed4 _Color;
+			float3 _CenterPos;
 
 			v2f vert (appdata IN)
 			{
@@ -76,6 +78,8 @@ Shader "SG7/LayerShader"
                 OUT.vertex = UnityObjectToClipPos(IN.vertex);
                 OUT.uv = IN.uv;
                 OUT.color = IN.color * _Color;
+				//2025-01-25: copied from https://discussions.unity.com/t/getting-the-world-position-of-the-pixel-in-the-fragment-shader/177100/2
+				OUT.worldPos =  mul (unity_ObjectToWorld, IN.vertex);
 
                 return OUT;
 			}
@@ -100,7 +104,7 @@ Shader "SG7/LayerShader"
 					&& abs(a.z - b.z) < _FilterThreshold;
 			}
 
-			float getLayer(Vector v){
+			float getLayer(float3 v){
 				return floor(length(v) / _LayerHeight);
 			}
 
@@ -114,7 +118,7 @@ Shader "SG7/LayerShader"
 				fixed4 curColor = tex2D(_MainTex, i.uv);
 				fixed4 col = curColor * i.color;
 				
-				if (getLayer(i.vertex) < _TestThreshold){
+				if (getLayer(i.worldPos) < _TestThreshold){
 					fixed4 pattern = tex2D(_PatternTex, 
 						float2(
 							modFunction(i.uv.x*_MainTex_TexelSize.z,_PatternTex_TexelSize.z) *_PatternTex_TexelSize.x,
@@ -128,28 +132,6 @@ Shader "SG7/LayerShader"
 			}
 
 
-			//2025-01-25: copied from https://stackoverflow.com/questions/13252891/hlsl-getting-world-position-of-pixel
-			cbuffer cbmat : register( b0 )
-			{
-				float4x4 tW; //World transform
-				float4x4 tWVP: //World * View * Projection
-			}
-
-			struct vs2ps
-			{
-				float4 Pos : POSITION;
-				float4 TexCd : TEXCOORD0;
-				float3 PosW : TEXCOORD1;
-			}
-
-			vs2ps VS(float4 Pos : POSITION,float4 TexCd : TEXCOORD0)
-			{
-				vs2ps Out;
-				Out.Pos = mul(Pos, tWVP);
-				Out.TexCd = TexCd;
-				Out.PosW = mul(Pos, tW);
-				return Out;
-			}
 			
 			ENDCG
 		}
