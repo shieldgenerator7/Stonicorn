@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 1860854369752757168}
   - component: {fileID: 5923274928833234893}
   - component: {fileID: 3791549047780784814}
-  - component: {fileID: 3293927986347570174}
+  - component: {fileID: 5567612183839018834}
   - component: {fileID: 2052509436612794839}
   m_Layer: 0
   m_Name: minecart_wheel
@@ -351,8 +351,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!255 &3293927986347570174
-FixedJoint2D:
+--- !u!232 &5567612183839018834
+DistanceJoint2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -367,9 +367,10 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.5, y: -0.135}
-  m_DampingRatio: 1
-  m_Frequency: 5
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 0.51790446
+  m_MaxDistanceOnly: 0
 --- !u!114 &2052509436612794839
 MonoBehaviour:
   m_ObjectHideFlags: 0
