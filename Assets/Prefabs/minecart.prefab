@@ -97,6 +97,8 @@ GameObject:
   m_Component:
   - component: {fileID: 286837819762870516}
   - component: {fileID: 8591565781023391973}
+  - component: {fileID: 5467758729870257400}
+  - component: {fileID: 7850640234550880130}
   - component: {fileID: 174885010948432950}
   m_Layer: 0
   m_Name: minecart
@@ -181,6 +183,88 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &5467758729870257400
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4323424489881680518}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 100
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!60 &7850640234550880130
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4323424489881680518}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1.6275706, y: 0.64586353}
+    newSize: {x: 1.6275706, y: 0.64586353}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.5817707, y: 0.06631802}
+      - {x: -0.5812019, y: 0.063163534}
+      - {x: -0.75124544, y: 0.64570796}
+      - {x: -0.8134598, y: 0.64577353}
+      - {x: -0.6287064, y: 0.00018934533}
+      - {x: 0.62963605, y: 0.0012738258}
+      - {x: 0.81411743, y: 0.6460942}
+      - {x: 0.7431478, y: 0.64651567}
+  m_UseDelaunayMesh: 0
 --- !u!114 &174885010948432950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,14 +279,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: -1
   prefabAddress:
-    m_AssetGUID: 
+    m_AssetGUID: a5050af252cc36747a77d312beac5e9c
     m_SubObjectName: 
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   spawnStateId: -1
   destroyStateId: 2147483647
-  rb2d: {fileID: 0}
+  rb2d: {fileID: 5467758729870257400}
   savables: []
 --- !u!1 &6910357933391074905
 GameObject:
