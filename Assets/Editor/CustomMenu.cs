@@ -1150,6 +1150,11 @@ public class CustomMenu
             "m_Points",
             "m_LocalAABB",
             "m_Spline",
+            //2025-01-26: these ones i might decide to keep? related to minecart
+            "m_AngularOffset",
+            "m_LinearOffset",
+            "m_Distance",
+            "m_Target",
         };
 
 
