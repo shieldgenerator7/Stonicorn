@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 5923274928833234893}
   - component: {fileID: 3791549047780784814}
   - component: {fileID: 2052509436612794839}
+  - component: {fileID: 5885762868585816037}
   m_Layer: 0
   m_Name: minecart_wheel
   m_TagString: Untagged
@@ -335,7 +336,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 50
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -373,3 +374,28 @@ MonoBehaviour:
   destroyStateId: 2147483647
   rb2d: {fileID: 3791549047780784814}
   savables: []
+--- !u!235 &5885762868585816037
+WheelJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4500764821803695289}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_BreakAction: 3
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_Suspension:
+    m_DampingRatio: 1
+    m_Frequency: 10
+    m_Angle: 90
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000

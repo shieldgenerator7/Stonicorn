@@ -195,7 +195,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 100
+  m_Mass: 500
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -387,6 +387,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: minecart_wheel
       objectReference: {fileID: 0}
+    - target: {fileID: 5885762868585816037, guid: e946693950758ec4dbb6295fe2bf61ff, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: -0.521
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885762868585816037, guid: e946693950758ec4dbb6295fe2bf61ff, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885762868585816037, guid: e946693950758ec4dbb6295fe2bf61ff, type: 3}
+      propertyPath: m_ConnectedRigidBody
+      value: 
+      objectReference: {fileID: 5467758729870257400}
     - target: {fileID: 8894847786959093311, guid: e946693950758ec4dbb6295fe2bf61ff, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.521
@@ -577,6 +589,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: minecart_wheel (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5885762868585816037, guid: e946693950758ec4dbb6295fe2bf61ff, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 0.521
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885762868585816037, guid: e946693950758ec4dbb6295fe2bf61ff, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885762868585816037, guid: e946693950758ec4dbb6295fe2bf61ff, type: 3}
+      propertyPath: m_ConnectedRigidBody
+      value: 
+      objectReference: {fileID: 5467758729870257400}
     - target: {fileID: 8894847786959093311, guid: e946693950758ec4dbb6295fe2bf61ff, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.521
