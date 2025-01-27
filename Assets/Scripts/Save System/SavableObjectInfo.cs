@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -46,7 +47,14 @@ public class SavableObjectInfo : ObjectInfo
         revertList.ForEach(revert =>
         {
             SerializedProperty property = so.FindProperty(revert);
+            try
+            {
             PrefabUtility.RevertPropertyOverride(property, InteractionMode.UserAction);
+            }
+            catch(ArgumentException ae)
+            {
+                Debug.LogError($"Trying to revert override on {property.name}, but failed. Moving on. error:  {ae.Message}");
+            }
         });
 
         //set Prefab Address
