@@ -7,6 +7,7 @@ using UnityEngine.U2D;
 [ExecuteInEditMode]
 public class SpriteShapeTool : MonoBehaviour
 {
+#if UNITY_EDITOR
     public SpriteShapeController ssc;
     public Color lineColor = Color.green;
     public Color circleColor = Color.blue;
@@ -144,4 +145,5 @@ public class SpriteShapeTool : MonoBehaviour
         //    }
         //}
     }
+#endif
 }
