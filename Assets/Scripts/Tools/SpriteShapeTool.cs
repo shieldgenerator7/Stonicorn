@@ -60,6 +60,7 @@ public class SpriteShapeTool : MonoBehaviour
                     .normalized * rValue + gz.transform.position;
                 ssc.spline.SetPosition(i % pointCount, ssc.transform.InverseTransformPoint(newPoint));
             }
+            EditorUtility.SetDirty(ssc);
         }
         //Straight Gravity
         else
