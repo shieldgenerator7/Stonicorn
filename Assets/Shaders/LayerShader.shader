@@ -11,6 +11,7 @@ Shader "SG7/LayerShader"
 
 		_CenterPos ("Center Position", Vector) = (0, 0, 0)
 		_LayerHeight ("Layer Height", float) = 10.0
+		_Offset ("Offset", float) = 5
 		_LayerColor1 ("Layer Color 1", Color) = (1,0,0,1)
 		_LayerColor2 ("Layer Color 2", Color) = (0,1,0,1)
 		_LayerColor3 ("Layer Color 3", Color) = (0,0,1,1)
@@ -62,6 +63,7 @@ Shader "SG7/LayerShader"
 			fixed4 _LayerColor2;
 			fixed4 _LayerColor3;
 			float _LayerHeight;
+			float _Offset;
 
 			fixed4 getLayerColor(int layer){
 				int index = layer % 3;
@@ -78,7 +80,7 @@ Shader "SG7/LayerShader"
 			}
 
 			int getLayer(float3 v){
-				return floor(distance(v, _CenterPos) / _LayerHeight);
+				return floor((distance(v, _CenterPos) - _Offset) / _LayerHeight);
 			}
 
 			v2f vert (appdata IN)
