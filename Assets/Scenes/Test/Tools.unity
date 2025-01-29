@@ -26586,7 +26586,7 @@ Transform:
   m_GameObject: {fileID: 578159050}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.0028429776, w: 0.99999595}
-  m_LocalPosition: {x: 0.057614923, y: -2.999443, z: 0}
+  m_LocalPosition: {x: -1.185304, y: 2.7559128, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26994,8 +26994,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942494481}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.96606696, w: -0.25829184}
-  m_LocalPosition: {x: 2.5877345, y: -4.4934072, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9166058, w: -0.39979234}
+  m_LocalPosition: {x: 183.7558, y: -170.57486, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -27291,7 +27291,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 80
+  m_Radius: 60
 --- !u!58 &1087707835
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -27327,7 +27327,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 30
+  m_Radius: 20
 --- !u!114 &1087707836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27340,8 +27340,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8503b107cf44a4886ecb17b6953b17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sightRadius: 30
-  hindSightRadius: 80
+  sightRadius: 20
+  hindSightRadius: 60
   coll2d: {fileID: 1087707835}
   behindColl2d: {fileID: 1087707834}
 --- !u!1 &1093184299
