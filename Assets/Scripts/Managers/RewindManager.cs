@@ -316,6 +316,7 @@ public class RewindManager : Manager
         {
             rewindDelay = maxRewindDuration / count;
         }
+        Debug.Log($"rewindDelay: {rewindDelay}");
     }
 
     /// <summary>
