@@ -61,15 +61,17 @@ public class RewindManager : Manager
         float timeDiff = Time.unscaledTime - (lastRewindTime + rewindDelay);
         if (timeDiff >= 0)
         {
+            //Calculate rewind amount
+            int rewindAmount = Mathf.RoundToInt(timeDiff / rewindDelay);
             //Rewind to the next previous game state
-            lastRewindTime = Time.unscaledTime;
+            lastRewindTime += rewindDelay * rewindAmount;
             //Find next id to load
-            int rewindAmount = Mathf.CeilToInt(timeDiff / rewindDelay);
             int idToLoad = chosenId - rewindAmount;
             if (idToLoad < rewindId)
             {
                 idToLoad = rewindId;
             }
+            //Load state
             Load(idToLoad);
         }
     }
