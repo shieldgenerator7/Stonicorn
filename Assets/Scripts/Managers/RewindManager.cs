@@ -283,7 +283,7 @@ public class RewindManager : Manager
                 //Set rewindDelay
                 calculateRewindDelay();
                 //Set lastRewindTime
-                lastRewindTime = Time.unscaledTime;
+                lastRewindTime = Time.unscaledTime - rewindDelay;
                 //Rewind Started Delegate
                 onRewindStarted?.Invoke(rewindId);
             }
