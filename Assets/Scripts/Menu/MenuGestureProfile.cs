@@ -33,7 +33,7 @@ public class MenuGestureProfile : GestureProfile
     }
     public override void processDragGesture(Vector3 origMPWorld, Vector3 newMPWorld, GestureInput.DragType dragType, GestureState state)
     {
-        if (MenuManager.Open && !Managers.Menu.processDragGesture(origMPWorld, newMPWorld, state))
+        if (MenuManager.Open)
         {
             switch (dragType)
             {
@@ -42,6 +42,7 @@ public class MenuGestureProfile : GestureProfile
             Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
                     break;
                 case GestureInput.DragType.DRAG_PLAYER:
+                    Managers.Menu.processDragGesture(origMPWorld, newMPWorld, state);
                     break;
                 case GestureInput.DragType.UNKNOWN:
                     break;
