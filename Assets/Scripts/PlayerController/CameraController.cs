@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour
     public float maxTapDelay = 1;//the maximum amount of time (sec) between two taps that can activate auto offset
     public GameObject planModeCanvas;//the canvas that has the UI for plan mode
     public float defaultOffsetZ = -10;
+    public float allowedOutOfCameraAmount = 0.1f;
 
 
     private Vector3 offset;
@@ -450,7 +451,8 @@ public class CameraController : MonoBehaviour
         if (ZoomLevel > toZoomLevel(CameraScalePoints.MENU))
         {
             //Check to make sure Merky doesn't get dragged off camera
-            Vector2 playerUIpos = Cam.WorldToViewportPoint(playerPos + (Vector2)Cam.transform.position - (Vector2)newPos);
+            Vector2 newOffset = Cam.transform.position - newPos;
+            Vector2 playerUIpos = Cam.WorldToViewportPoint(playerPos + newOffset);
             if (playerUIpos.x >= 0 && playerUIpos.x <= 1 && playerUIpos.y >= 0 && playerUIpos.y <= 1)
             {
                 canMove = true;
@@ -463,17 +465,30 @@ public class CameraController : MonoBehaviour
                     Vector2.one,
                     new Vector2(0,1),
                 };
-                Vector2 camCenter = Vector2.one * 0.5f;
-                Vector2 pointToPlayer = playerUIpos - camCenter;
+                Vector2 camCenterUI = Vector2.one * 0.5f;
                 for (int i = 0; i < 4; i++)
                 {
                     Vector2 v1 = (i == 0 || i == 3) ? corners[0] : corners[2];
                     Vector2 v2 = (i < 2) ? corners[1] : corners[3];
-                    if (Utility.lineSegmentIntersects(camCenter, playerUIpos, v1, v2))
+                    if (Utility.lineSegmentIntersects(camCenterUI, playerUIpos, v1, v2))
                     {
-                        Vector2 intersectionUI = Utility.getLineIntersection(camCenter, playerUIpos, v1, v2);
-                        Vector2 intersection = Cam.ViewportToWorldPoint(intersectionUI);
-                        newPos += (Vector3)(playerPos - intersection);
+                        if (playerUIpos.x < -0.4f)
+                        {
+                            int j = 0;
+                        }
+                        Vector2 intersectionUI = Utility.getLineIntersection(camCenterUI, playerUIpos, v1, v2);
+                        //Debug.Log($"Cam processDragGesture(): intersectionUI: {intersectionUI}");
+                        //Vector2 intersection = (Vector2)Cam.ViewportToWorldPoint(intersectionUI);
+                        float percent = (intersectionUI - camCenterUI).magnitude / (playerUIpos - camCenterUI).magnitude;
+                        //intersection = intersection - newOffset;
+                        Debug.Log($"Cam processDragGesture(): playerUIPos: {playerUIpos}");
+                        //Vector2 diff = (playerPos - intersection);
+                        //Vector2 d = ((Vector2)newPos - intersection);
+                        //Debug.Log($"Cam processDragGesture(): diff: {d}, {d.magnitude}");
+                        //Vector2 newPos2 = playerPos + ((Vector2)newPos - intersection);// (Vector2)newPos + diff;
+                        Vector2 dir = (Vector2)newPos - playerPos;
+
+                        newPos = playerPos + (dir.normalized * (dir.magnitude * percent + allowedOutOfCameraAmount));
                         canMove = true;
                         break;
                     }
