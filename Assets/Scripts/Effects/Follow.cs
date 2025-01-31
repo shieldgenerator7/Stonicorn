@@ -53,8 +53,8 @@ public class Follow : MonoBehaviour
         if (orientToCamera)
         {
             //Camera delegate
-            Managers.Camera.onRotated +=
-                (up) => transform.up = up;
+            Managers.Camera.onRotated -= orientToCameraDel;
+            Managers.Camera.onRotated += orientToCameraDel;
         }
 
         //Rewind delegates
@@ -65,10 +65,14 @@ public class Follow : MonoBehaviour
 
     private void OnDestroy()
     {
+        Managers.Camera.onRotated -= orientToCameraDel;
         Managers.Rewind.onRewindStarted -= rewindStarted;
         Managers.Rewind.onRewindState -= rewindState;
         Managers.Rewind.onRewindFinished -= rewindFinished;
     }
+
+    void orientToCameraDel(Vector2 up)
+        => transform.up = up;
 
     void rewindStarted(int gs)
         => this.enabled = false;
