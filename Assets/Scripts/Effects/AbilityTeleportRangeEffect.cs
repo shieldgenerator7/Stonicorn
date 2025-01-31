@@ -6,7 +6,13 @@ public class AbilityTeleportRangeEffect : TeleportRangeEffect
     public override void init(TeleportRangeUpdater updater)
     {
         base.init(updater);
+        Managers.Player.onAbilityActivated -= abilityActivated;
         Managers.Player.onAbilityActivated += abilityActivated;
+    }
+
+    private void OnDestroy()
+    {
+        Managers.Player.onAbilityActivated -= abilityActivated;
     }
 
     private void abilityActivated(PlayerAbility ability, bool active)
