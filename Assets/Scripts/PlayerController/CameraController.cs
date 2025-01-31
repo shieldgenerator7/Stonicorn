@@ -459,6 +459,7 @@ public class CameraController : MonoBehaviour
             }
             else
             {
+                //check all four camera edges to see which one is "closest" to merky
                 List<Vector2> corners = new List<Vector2>() {
                     Vector2.zero,
                     new Vector2(1,0),
@@ -470,24 +471,13 @@ public class CameraController : MonoBehaviour
                 {
                     Vector2 v1 = (i == 0 || i == 3) ? corners[0] : corners[2];
                     Vector2 v2 = (i < 2) ? corners[1] : corners[3];
+                    //if found the closest camera edge,
                     if (Utility.lineSegmentIntersects(camCenterUI, playerUIpos, v1, v2))
                     {
-                        if (playerUIpos.x < -0.4f)
-                        {
-                            int j = 0;
-                        }
+                        //find the new position that wont put merky off screen
                         Vector2 intersectionUI = Utility.getLineIntersection(camCenterUI, playerUIpos, v1, v2);
-                        //Debug.Log($"Cam processDragGesture(): intersectionUI: {intersectionUI}");
-                        //Vector2 intersection = (Vector2)Cam.ViewportToWorldPoint(intersectionUI);
                         float percent = (intersectionUI - camCenterUI).magnitude / (playerUIpos - camCenterUI).magnitude;
-                        //intersection = intersection - newOffset;
-                        Debug.Log($"Cam processDragGesture(): playerUIPos: {playerUIpos}");
-                        //Vector2 diff = (playerPos - intersection);
-                        //Vector2 d = ((Vector2)newPos - intersection);
-                        //Debug.Log($"Cam processDragGesture(): diff: {d}, {d.magnitude}");
-                        //Vector2 newPos2 = playerPos + ((Vector2)newPos - intersection);// (Vector2)newPos + diff;
                         Vector2 dir = (Vector2)newPos - playerPos;
-
                         newPos = playerPos + (dir.normalized * (dir.magnitude * percent + allowedOutOfCameraAmount));
                         canMove = true;
                         break;
