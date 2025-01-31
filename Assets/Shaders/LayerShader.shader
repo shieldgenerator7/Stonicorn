@@ -15,7 +15,7 @@ Shader "SG7/LayerShader"
 		_LayerColor1 ("Layer Color 1", Color) = (1,0,0,1)
 		_LayerColor2 ("Layer Color 2", Color) = (0,1,0,1)
 		_LayerColor3 ("Layer Color 3", Color) = (0,0,1,1)
-		_Color ("Tint", Color) = (0,0,0,1)
+		_RendererColor ("Tint", Color) = (0,0,0,1)
 	}
 	SubShader
 	{
@@ -57,7 +57,7 @@ Shader "SG7/LayerShader"
 				float3 worldPos : TEXCOORD1;
 			};
 
-			fixed4 _Color;
+			fixed4 _RendererColor;
 			float3 _CenterPos;
 			fixed4 _LayerColor1;
 			fixed4 _LayerColor2;
@@ -76,7 +76,7 @@ Shader "SG7/LayerShader"
 				if (index == 2){
 					return _LayerColor3;
 				}
-				return _Color;
+				return _RendererColor;
 			}
 
 			int getLayer(float3 v){
@@ -88,7 +88,7 @@ Shader "SG7/LayerShader"
 				v2f OUT;
                 OUT.vertex = UnityObjectToClipPos(IN.vertex);
                 OUT.uv = IN.uv;
-                OUT.color = IN.color * _Color;
+                OUT.color = IN.color * _RendererColor;
 				//2025-01-25: copied from https://discussions.unity.com/t/getting-the-world-position-of-the-pixel-in-the-fragment-shader/177100/2
 				OUT.worldPos =  mul (unity_ObjectToWorld, IN.vertex);
 
@@ -105,6 +105,7 @@ Shader "SG7/LayerShader"
 
 					col = curColor * i.color * getLayerColor(layer);
 
+				col *= _RendererColor;
 				col.rgb *= col.a;
 				return col;
 			}
