@@ -33,6 +33,7 @@ public class CloudMeter : MonoBehaviour
             {
                 Managers.Player.onGroundedStateUpdated -= groundStateChanged;
                 airSliceAbility.onAirPortsUsedChanged -= airPortsUsedChanged;
+                showClouds(false);
             }
         }
     }
