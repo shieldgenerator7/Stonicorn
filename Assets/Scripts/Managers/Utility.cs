@@ -98,6 +98,48 @@ public static class Utility
         dir = Quaternion.AngleAxis(angle, axis) * dir;
         return dir + center;
     }
+
+    public static bool lineSegmentIntersects(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+    {
+        //2025-01-30: copied from https://discussions.unity.com/t/line-intersection/387261/25
+        float d1 = Vector3.Cross(a1 - b1, b2 - b1).z;
+        float d2 = Vector3.Cross(a2 - b1, b2 - b1).z;
+        //if no intersection point
+        if (d1 - d2 == 0)
+        {
+            return false;
+        }
+        //calculate intersection point
+        Vector2 point = (d1 * a2 - d2 * a1) / (d1 - d2);
+        //check to make the intersection point is within both line segments
+        return true
+            //a1 a2
+            && point.x >= Mathf.Min(a1.x, a2.x)
+            && point.x <= Mathf.Max(a1.x, a2.x)
+            && point.y >= Mathf.Min(a1.y, a2.y)
+            && point.y <= Mathf.Max(a1.y, a2.y)
+            //b1 b2
+            && point.x >= Mathf.Min(b1.x, b2.x)
+            && point.x <= Mathf.Max(b1.x, b2.x)
+            && point.y >= Mathf.Min(b1.y, b2.y)
+            && point.y <= Mathf.Max(b1.y, b2.y)
+            ;
+    }
+
+    public static Vector2 getLineIntersection(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+    {
+        //2025-01-30: copied from https://discussions.unity.com/t/line-intersection/387261/25
+        float d1 = Vector3.Cross(a1 - b1, b2 - b1).z;
+        float d2 = Vector3.Cross(a2 - b1, b2 - b1).z;
+        //if no intersection point (parallel)
+        if (d1 - d2 == 0)
+        {
+            return Vector2.negativeInfinity;
+        }
+        //calculate intersection point
+        Vector2 point = (d1 * a2 - d2 * a1) / (d1 - d2);
+        return point;
+    }
     #endregion
 
     #region Rigidbody2D Extension Methods

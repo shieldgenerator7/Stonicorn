@@ -455,6 +455,35 @@ public class CameraController : MonoBehaviour
             {
                 canMove = true;
             }
+            else
+            {
+                List<Vector2> corners = new List<Vector2>() {
+                    Vector2.zero,
+                    new Vector2(1,0),
+                    Vector2.one,
+                    new Vector2(0,1),
+                };
+                Vector2 camCenter = Vector2.one * 0.5f;
+                Vector2 pointToPlayer = playerUIpos - camCenter;
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 v1 = (i == 0 || i == 3) ? corners[0] : corners[2];
+                    Vector2 v2 = (i < 2) ? corners[1] : corners[3];
+                    if (Utility.lineSegmentIntersects(camCenter, playerUIpos, v1, v2))
+                    {
+                        Vector2 intersectionUI = Utility.getLineIntersection(camCenter, playerUIpos, v1, v2);
+                        Vector2 intersection = Cam.ViewportToWorldPoint(intersectionUI);
+                        newPos += (Vector3)(playerPos - intersection);
+                        canMove = true;
+                        break;
+                    }
+                }
+                //by now, can move should be true and newPos should be updated to a valid value
+                if (!canMove)
+                {
+                    Debug.LogError($"Can't move camera to position {newPos}! player pos: {playerPos}, player pos ui: {playerUIpos}");
+                }
+            }
         }
         else
         {
