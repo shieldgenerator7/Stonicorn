@@ -175,6 +175,15 @@ public class EventManager : Manager
             dialoguePlayingList.Remove(dp);
             OnDialoguePlayingChanged?.Invoke(DialoguePlaying);
         };
+        //
+        dbu.OnSourceDestroyed += (destroyed) =>
+        {
+            if (destroyed)
+            {
+                dp.stopDialogue();
+            }
+        };
+        //
         if (!dialoguePlayingList.Contains(dp))
         {
             dialoguePlayingList.Add(dp);

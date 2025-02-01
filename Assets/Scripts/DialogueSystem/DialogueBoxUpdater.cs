@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -46,6 +47,7 @@ public class DialogueBoxUpdater : MonoBehaviour
         {
             //if not, destroy this
             Destroy(gameObject);
+            OnSourceDestroyed?.Invoke(true);
             return;
         }
         ////resize dialogue box
@@ -53,6 +55,7 @@ public class DialogueBoxUpdater : MonoBehaviour
         //update position
         updatePosition();
     }
+    public event Action<bool> OnSourceDestroyed;//only have bool here because it wont compile without at least 1
 
     public void setText(string value)
     {
