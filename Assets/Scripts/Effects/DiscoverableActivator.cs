@@ -25,7 +25,7 @@ public class DiscoverableActivator : MonoBehaviour, ISwappable
     private void OnTriggerEnter2D(Collider2D coll2D)
     {
         //early exit: it's off
-        if (!mmb.enabled || !mmb.gameObject.activeSelf) { return; }
+        if (!mmb || !mmb.enabled || !mmb.gameObject.activeSelf) { return; }
         //processing
         if (coll2D.isPlayerSolid() || coll2D.GetComponent<PlayerPilotController>())
         {
