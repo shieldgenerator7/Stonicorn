@@ -1374,9 +1374,12 @@ public class CustomMenu
             .ForEach(setup =>
             {
                 int changes = setup.setup();
+                if (changes > 0)
+                {
                 EditorUtility.SetDirty((MonoBehaviour)setup);
                 Debug.LogWarning($"Check ISetupables: changes {changes}",(MonoBehaviour)setup);
                 changeCount += changes;
+                }
             });
         if (changeCount > 0)
         {
