@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AfterWind : SavableMonoBehaviour, ICuttable
+public class AfterWind : SavableMonoBehaviour, ICuttable, ISetupable
 {//2018-01-25: copied from GravityZone
 
     public Vector2 windVector;//direction
     public float windForce = 10;//magnitude
 
+    [SerializeField]
     private BoxCollider2D coll;
     private RaycastHit2D[] rch2dStartup = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
@@ -18,7 +19,6 @@ public class AfterWind : SavableMonoBehaviour, ICuttable
     }
     public override void init()
     {
-        coll = GetComponent<BoxCollider2D>();
         if (windVector == Vector2.zero)
         {
             windVector = transform.up;
@@ -76,4 +76,22 @@ public class AfterWind : SavableMonoBehaviour, ICuttable
     {
         Managers.Object.destroyObject(gameObject);
     }
+
+#if UNITY_EDITOR
+    public int setup()
+    {
+        int changes = 0;
+        if (!coll)
+        {
+            coll = GetComponent<BoxCollider2D>();
+            changes++;
+        }
+        if (windVector == Vector2.zero)
+        {
+            init();
+            changes++;
+        }
+        return changes;
+    }
+#endif
 }
