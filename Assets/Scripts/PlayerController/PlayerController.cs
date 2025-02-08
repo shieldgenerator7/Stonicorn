@@ -605,24 +605,46 @@ public class PlayerController : MonoBehaviour, ISetupable
 #if UNITY_EDITOR
     public int setup()
     {
+        int changes = 0;
 
         //Retrieve components
+        if (!rb2d)
+        {
         rb2d = GetComponent<Rigidbody2D>();
+            changes++;
+        }
+        if (!groundChecker)
+        {
         groundChecker = GetComponent<GroundChecker>();
+            changes++;
+        }
+        if (!gravityAccepter)
+        {
         gravityAccepter = GetComponent<GravityAccepter>();
+            changes++;
+        }
+        if (!pc2d)
+        {
         pc2d = GetComponent<PolygonCollider2D>();
+            changes++;
+        }
 
         //Estimate the halfWidth
         if (_halfWidth == 0)
         {
             Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
             _halfWidth = (extents.x + extents.y) / 2;
+            changes++;
         }
 
         //Teleport Ability
+        if (!teleportAbility)
+        {
         teleportAbility = GetComponent<TeleportAbility>();
+            changes++;
+        }
 
-        return 1;//TODO: actually track changes
+        return changes;
     }
 #endif
 }
