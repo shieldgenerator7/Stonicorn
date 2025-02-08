@@ -622,6 +622,7 @@ public class CustomMenu
                 checkTriggersAreNotSolid,
                 ensureNPCsHaveDialogueTriggers,
                 checkDialogueEvents,
+                checkISetupables,
             }
             .ConvertAll(func =>
             {
@@ -1362,6 +1363,25 @@ public class CustomMenu
                     Debug.LogWarning($"Populated triggers of ccfd {ccfd.name}. count: {ccfd.triggers.Count}", ccfd);
                 }
             });
+        return changeCount > 0;
+    }
+
+    [MenuItem("SG7/Build/Pre-Build/Check ISetupables")]
+    public static bool checkISetupables()
+    {
+        int changeCount = 0;
+        GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<ISetupable>().ToList()
+            .ForEach(setup =>
+            {
+                int changes = setup.setup();
+                EditorUtility.SetDirty((MonoBehaviour)setup);
+                Debug.LogWarning($"Check ISetupables: changes {changes}",(MonoBehaviour)setup);
+                changeCount += changes;
+            });
+        if (changeCount > 0)
+        {
+            Debug.LogWarning($"Check ISetupables: {changeCount} changes");
+        }
         return changeCount > 0;
     }
 
