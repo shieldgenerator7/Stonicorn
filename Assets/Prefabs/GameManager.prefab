@@ -64,6 +64,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameDataContainer: {fileID: 11400000, guid: a94a81a75ff1ecb45816e2c3ee00bff0, type: 2}
+  managerList:
+  - {fileID: 2859978935190022872}
+  - {fileID: 4159430573843667809}
+  - {fileID: 2859978935190022865}
+  - {fileID: 0}
+  - {fileID: 2995129134111674952}
+  - {fileID: 8383923072451418251}
+  gameManager: {fileID: 2859978935190022698}
+  gestureManager: {fileID: 2859978935190022867}
+  dialogueManager: {fileID: 5898409314609114241}
+  eventManager: {fileID: 4159430573843667809}
+  gameStatistics: {fileID: 2859978935190022870}
+  timeManager: {fileID: 2859978935190022878}
+  rewindManager: {fileID: 2859978935190022872}
+  objectManager: {fileID: 2859978935190022865}
+  physics2DSurrogate: {fileID: 2859978935190022877}
+  musicManager: {fileID: 0}
+  soundManager: {fileID: 0}
+  videoManager: {fileID: 2859978935190022879}
+  effectManager: {fileID: 0}
+  scenesManager: {fileID: 2995129134111674952}
+  menuManager: {fileID: 0}
+  settingsManager: {fileID: 2859978935190022876}
+  fileManager: {fileID: 8383923072451418251}
+  demoModeManager: {fileID: 5270741036896818801}
+  powerManager: {fileID: 8527496253138998994}
+  playerController: {fileID: 0}
+  playerRewindController: {fileID: 0}
+  playerPilotController: {fileID: 0}
+  cameraController: {fileID: 0}
 --- !u!114 &2859978935190022698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneLoaders:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

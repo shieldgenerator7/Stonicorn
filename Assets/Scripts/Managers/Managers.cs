@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Managers : MonoBehaviour
+public class Managers : MonoBehaviour, ISetupable
 {
     //
     // Game Data
@@ -16,62 +16,96 @@ public class Managers : MonoBehaviour
     // Managers
     //
 
+    [SerializeField]
+    private List<Manager> managerList = new List<Manager>();
+
     //Game Manager
-    public static GameManager Game { get; private set; }
+    [SerializeField]
+    private GameManager gameManager;
+    public static GameManager Game => instance.gameManager;
 
     //Gesture Manager
-    public static GestureManager Gesture { get; private set; }
+    [SerializeField]
+    private GestureManager gestureManager;
+    public static GestureManager Gesture =>instance.gestureManager;
 
     //Dialogue Manager
-    public static DialogueManager Dialogue { get; private set; }
+    [SerializeField]
+    private DialogueManager dialogueManager;
+    public static DialogueManager Dialogue =>instance.dialogueManager;
 
     //Progress Manager
-    public static ProgressManager Progress { get; private set; }
+    [SerializeField]
+    private ProgressManager progressManager;
+    public static ProgressManager Progress =>instance.progressManager;
 
     //Event Manager
     //Used to store which NPC voicelines have been played
-    public static EventManager Event { get; private set; }
+    [SerializeField]
+    private EventManager eventManager;
+    public static EventManager Event => instance.eventManager;
 
     //Game Statistics
     //Keeps track of how many times everything has happened
-    public static GameStatistics Stats { get; private set; }
+    [SerializeField]
+    private GameStatistics gameStatistics;
+    public static GameStatistics Stats =>instance.gameStatistics;
 
     //Time Manager
     //Used to keep track of the time since the game began,
     //Taking into account time rewind and dilation
-    public static TimeManager Time { get; private set; }
+    [SerializeField]
+    private TimeManager timeManager;
+    public static TimeManager Time => instance.timeManager;
 
     //Rewind Manager
     //Used to save and load gamestates,
     //Allowing for time to be rewound
-    public static RewindManager Rewind { get; private set; }
+    [SerializeField]
+    private RewindManager rewindManager;
+    public static RewindManager Rewind =>instance.rewindManager;
 
     //Object Manager
     //Manages the list of known objects
-    public static ObjectManager Object { get; private set; }
+    [SerializeField]
+    private ObjectManager objectManager;
+    public static ObjectManager Object => instance.objectManager;
 
     //Physics 2D Surrogate
     //Used to enable triggers while main physics is disabled during time rewind
-    public static Physics2DSurrogate Physics2DSurrogate { get; private set; }
+    [SerializeField]
+    private Physics2DSurrogate physics2DSurrogate;
+    public static Physics2DSurrogate Physics2DSurrogate => instance.physics2DSurrogate;
 
     //Music Manager
-    public static MusicManager Music { get; private set; }
+    [SerializeField]
+    private MusicManager musicManager;
+    public static MusicManager Music => instance.musicManager;
 
     //Sound Manager
-    public static SoundManager Sound { get; private set; }
+    [SerializeField]
+    private SoundManager soundManager;
+    public static SoundManager Sound => instance.soundManager;
 
     //Video Manager
-    public static VideoManager Video { get; private set; }
+    [SerializeField]
+    private VideoManager videoManager;
+    public static VideoManager Video => instance.videoManager;
 
     //Effect Manager
-    public static EffectManager Effect { get; private set; }
+    [SerializeField]
+    private EffectManager effectManager;
+    public static EffectManager Effect => instance.effectManager;
 
     //Scenes Manager
-    public static ScenesManager Scene { get; private set; }
+    [SerializeField]
+    private ScenesManager scenesManager;
+    public static ScenesManager Scene => instance.scenesManager;
 
     //Menu Manager
+    [SerializeField]
     private MenuManager menuManager;
-    public static MenuManager Menu
+    public static MenuManager Menu //TODO: update this later when menu is part of PlayerScene
     {
         get
         {
@@ -84,32 +118,51 @@ public class Managers : MonoBehaviour
     }
 
     //Settings Manager
-    public static SettingsManager Settings { get; private set; }
+    [SerializeField]
+    private SettingsManager settingsManager;
+    public static SettingsManager Settings => instance.settingsManager;
 
     //File Manager
-    public static FileManager File { get; private set; }
+    [SerializeField]
+    private FileManager fileManager;
+    public static FileManager File => instance.fileManager;
 
     //Demo Mode
-    public static DemoModeManager DemoMode { get; private set; }
+    [SerializeField]
+    private DemoModeManager demoModeManager;
+    public static DemoModeManager DemoMode => instance.demoModeManager;
 
     //Power Manager
-    public static PowerManager Power { get; private set; }
+    [SerializeField]
+    private PowerManager powerManager;
+    public static PowerManager Power => instance.powerManager;
 
     //
     // Controllers
     //
 
     //Player Controller
-    public static PlayerController Player { get; private set; }
+    [SerializeField]
+    private PlayerController playerController;
+    public static PlayerController Player => instance.playerController;
 
     //Player Rewind Controller
-    public static PlayerRewindController PlayerRewind { get; private set; }
+    [SerializeField]
+    private PlayerRewindController playerRewindController;
+    public static PlayerRewindController PlayerRewind => instance.playerRewindController;
 
     //Player Pilot Controller
-    public static PlayerPilotController PlayerPilot { get; set; }
+    [SerializeField]
+    private PlayerPilotController playerPilotController;
+    public static PlayerPilotController PlayerPilot{
+    get=> instance.playerPilotController;
+        set=> instance.playerPilotController = value;
+    }
 
     //Camera Controller
-    public static CameraController Camera { get; private set; }
+    [SerializeField]
+    private CameraController cameraController;
+    public static CameraController Camera => instance.cameraController;
 
     //
     // Lists
@@ -159,36 +212,42 @@ public class Managers : MonoBehaviour
             gameData = new GameData();
         }
 
-        //Populate other managers
-        Game = FindAnyObjectByType<GameManager>();
-        Gesture = FindAnyObjectByType<GestureManager>();
-        Dialogue = FindAnyObjectByType<DialogueManager>();
-        Progress = new ProgressManager();
-        Event = FindAnyObjectByType<EventManager>();
-        Stats = FindAnyObjectByType<GameStatistics>();
-        Time = FindAnyObjectByType<TimeManager>();
-        Rewind = FindAnyObjectByType<RewindManager>();
-        Object = FindAnyObjectByType<ObjectManager>();
-        Physics2DSurrogate = FindAnyObjectByType<Physics2DSurrogate>();
-        Music = FindAnyObjectByType<MusicManager>();
-        Sound = FindAnyObjectByType<SoundManager>();
-        Video = FindAnyObjectByType<VideoManager>();
-        Effect = FindAnyObjectByType<EffectManager>();
-        Scene = FindAnyObjectByType<ScenesManager>();
-        Settings = FindAnyObjectByType<SettingsManager>();
-        File = FindAnyObjectByType<FileManager>();
-        DemoMode = FindAnyObjectByType<DemoModeManager>();
-        Power = FindAnyObjectByType<PowerManager>();
-        Player = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
-        PlayerRewind = FindAnyObjectByType<PlayerRewindController>();
-        Camera = FindAnyObjectByType<CameraController>();
-
         //Init with game data
-        FindObjectsByType<Manager>(FindObjectsSortMode.None)
-            .ToList()
+        managerList
             .ForEach(m =>
             {
                 m.init(gameData);
             });
+    }
+
+    public int setup()
+    {
+        managerList = FindObjectsByType<Manager>(FindObjectsSortMode.None).ToList();
+
+        //Populate other managers
+        gameManager = FindAnyObjectByType<GameManager>();
+        gestureManager = FindAnyObjectByType<GestureManager>();
+        dialogueManager = FindAnyObjectByType<DialogueManager>();
+        progressManager = new ProgressManager();
+        eventManager = FindAnyObjectByType<EventManager>();
+        gameStatistics = FindAnyObjectByType<GameStatistics>();
+        timeManager = FindAnyObjectByType<TimeManager>();
+        rewindManager = FindAnyObjectByType<RewindManager>();
+        objectManager = FindAnyObjectByType<ObjectManager>();
+        physics2DSurrogate = FindAnyObjectByType<Physics2DSurrogate>();
+        musicManager = FindAnyObjectByType<MusicManager>();
+        soundManager = FindAnyObjectByType<SoundManager>();
+        videoManager = FindAnyObjectByType<VideoManager>();
+        effectManager = FindAnyObjectByType<EffectManager>();
+        scenesManager = FindAnyObjectByType<ScenesManager>();
+        settingsManager = FindAnyObjectByType<SettingsManager>();
+        fileManager = FindAnyObjectByType<FileManager>();
+        demoModeManager = FindAnyObjectByType<DemoModeManager>();
+        powerManager = FindAnyObjectByType<PowerManager>();
+        playerController = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
+        playerRewindController = FindAnyObjectByType<PlayerRewindController>();
+        cameraController = FindAnyObjectByType<CameraController>();
+
+        return 0;//TODO: check to see if anything changed
     }
 }
