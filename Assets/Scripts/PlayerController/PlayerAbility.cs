@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
+public abstract class PlayerAbility : SavableMonoBehaviour, ISetting, ISetupable
 {
     //the color used for the particle system upon activation
     public Color EffectColor => teleportRangeSegment.color;
@@ -55,14 +55,15 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
         }
     }
 
+    [Header("Components")]
+    [SerializeField]
     protected PlayerController playerController;
+    [SerializeField]
     protected Rigidbody2D rb2d;
 
     // Use this for initialization
     public override void init()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-        playerController = GetComponent<PlayerController>();
         //Upgrade Levels
         acceptUpgradeLevel(upgradeLevel);
 
@@ -81,10 +82,6 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
             playerController.Teleport.onTeleport += processTeleport;
             playerController.Ground.isGroundedCheck += isGrounded;
         }
-    }
-    public void acceptPlayerController(PlayerController playerController)
-    {
-        this.playerController = playerController;
     }
     public virtual void OnDisable()
     {
@@ -174,6 +171,13 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
     {
         upgradeLevel = Mathf.Clamp(value, 0, upgradeLevels.Count - 1);
         acceptUpgradeLevel(upgradeLevel);
+    }
+
+    public int setup()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+        playerController = GetComponent<PlayerController>();
+        return 0;//TODO: actually track changes
     }
 #endif
 

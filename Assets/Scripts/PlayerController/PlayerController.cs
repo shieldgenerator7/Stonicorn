@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Controls Merky's teleport ability and other abilities
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ISetupable
 {
     //
     //Settings
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     private float[] rotations = new float[] { 285, 155, 90, 0 };//the default rotations for Merky
     [SerializeField]
     private float _halfWidth = 0;
-    public float halfWidth { get => _halfWidth; }//half of Merky's sprite width
+    public float halfWidth  => _halfWidth;//half of Merky's sprite width
 
     //
     // Components
@@ -54,7 +54,9 @@ public class PlayerController : MonoBehaviour
 
     public GroundChecker Ground { get; private set; }
 
-    public TeleportAbility Teleport { get; private set; }
+    [SerializeField]
+    private TeleportAbility teleportAbility;
+    public TeleportAbility Teleport =>teleportAbility;
 
     /// <summary>
     /// Returns a list of active abilities
@@ -80,26 +82,8 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     public void init()
     {
-        //Retrieve components
-        rb2d = GetComponent<Rigidbody2D>();
-        Ground = GetComponent<GroundChecker>();
-        GravityAccepter = GetComponent<GravityAccepter>();
-        pc2d = GetComponent<PolygonCollider2D>();
-        //Estimate the halfWidth
-        if (_halfWidth == 0)
-        {
-            Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
-            _halfWidth = (extents.x + extents.y) / 2;
-        }
         //Initialize the ground trigger
         updateGroundTrigger();
-        //Teleport Ability
-        Teleport = GetComponent<TeleportAbility>();
-        //Register with abilities
-        GetComponents<PlayerAbility>().ToList()
-            .ForEach(
-                pa => pa.acceptPlayerController(this)
-            );
         //Register the delegates
         registerDelegates();
     }
@@ -609,6 +593,30 @@ public class PlayerController : MonoBehaviour
         //Grant gravity immunity
         MovementPaused = true;
     }
+
+#if UNITY_EDITOR
+    public int setup()
+    {
+
+        //Retrieve components
+        rb2d = GetComponent<Rigidbody2D>();
+        Ground = GetComponent<GroundChecker>();
+        GravityAccepter = GetComponent<GravityAccepter>();
+        pc2d = GetComponent<PolygonCollider2D>();
+
+        //Estimate the halfWidth
+        if (_halfWidth == 0)
+        {
+            Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
+            _halfWidth = (extents.x + extents.y) / 2;
+        }
+
+        //Teleport Ability
+        teleportAbility = GetComponent<TeleportAbility>();
+
+        return 0;//TODO: actually track changes
+    }
+#endif
 }
 
 

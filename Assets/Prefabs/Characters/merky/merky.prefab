@@ -239,7 +239,8 @@ MonoBehaviour:
   bigHitThreshold: 50
   scoutColliderMin: {fileID: 530089677}
   scoutColliderMax: {fileID: 1809435738}
-  _halfWidth: 0
+  _halfWidth: 0.6403108
+  teleportAbility: {fileID: 1792176476}
 --- !u!114 &7835665536134532039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,6 +275,8 @@ MonoBehaviour:
   unlocked: 1
   upgradeLevel: 0
   upgradeLevels: []
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
   baseRange: 3
   exhaustRange: 1
   dampenSpeed: 2
@@ -303,6 +306,8 @@ MonoBehaviour:
   unlocked: 1
   upgradeLevel: 0
   upgradeLevels: []
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
   maxPullBackDistance: 4
   maxBeamDistance: 10
   minAlpha: 0.4
@@ -368,6 +373,8 @@ MonoBehaviour:
     stat3: 0.9
     stat4: 1
     featureLevel: 2
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
   maxPullBackDistance: 3.75
   maxLaunchSpeed: 12.5
   bounceEnergyConservationPercent: 0.5
@@ -433,6 +440,8 @@ MonoBehaviour:
     stat3: 0
     stat4: 0
     featureLevel: 2
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
   swapSizeScaleLimit: 2
 --- !u!114 &1792176473
 MonoBehaviour:
@@ -487,6 +496,8 @@ MonoBehaviour:
     stat3: 0
     stat4: 0
     featureLevel: 2
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
   wallDetectRange: 1
   wallMagnetAntiGravity: 0.5
   magnetDuration: 2
@@ -545,6 +556,8 @@ MonoBehaviour:
     stat3: 0
     stat4: 0
     featureLevel: 2
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
   maxAirPorts: 2
   excludeAbilityFromGrounding:
   - {fileID: 1792176480}
@@ -603,6 +616,8 @@ MonoBehaviour:
     stat3: 9
     stat4: 200
     featureLevel: 2
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
   range: 1.5
   energyPerSecond: 10
   staticSpeed: 3
@@ -663,6 +678,8 @@ MonoBehaviour:
     stat3: 0
     stat4: 0
     featureLevel: 2
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
   maxRangeIncreaseFactor: 2
   maxDragDistance: 6
   postShieldKnockbackSpeed: 10

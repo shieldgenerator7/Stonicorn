@@ -555,6 +555,7 @@ MonoBehaviour:
   scoutColliderMin: {fileID: 4929173334847975896}
   scoutColliderMax: {fileID: 1588145810226468117}
   _halfWidth: 3
+  teleportAbility: {fileID: 5833017399287066018}
 --- !u!114 &3542227308590006569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,6 +588,8 @@ MonoBehaviour:
   unlocked: 1
   upgradeLevel: 0
   upgradeLevels: []
+  playerController: {fileID: 8922263234358820577}
+  rb2d: {fileID: 5811160810763895016}
   baseRange: 21
   exhaustRange: 9
   dampenSpeed: 2
