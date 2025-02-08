@@ -30,25 +30,27 @@ public class PlayerRewindController : Manager
     {
         showPlayerGhosts((show) ? 1 : 0);
     }
-    public void showPlayerGhosts(float percent) {
+    public void showPlayerGhosts(float percent)
+    {
         bool showAny = percent > 0;
         this.enabled = showAny;
         //If the game state representations should be shown,
         if (showAny)
         {
             int minId = Mathf.Min(
-                (int)((float)data.gameStates.Count * (1-percent)),
-                Mathf.Max(0,data.gameStates.Count-minAmountOfPastMerkysToShow)
+                (int)((float)data.gameStates.Count * (1 - percent)),
+                Mathf.Max(0, data.gameStates.Count - minAmountOfPastMerkysToShow)
             );
             //Loop through all game states
             for (int i = 0; i < data.gameStates.Count; i++)
             {
                 GameState gs = data.gameStates[i];
-                if (gs.id >= minId || gs.id == 0) {
-                //Update its representation
-                updateRepresentation(gs);
-                //Show a sprite to represent them on screen
-                showRepresentation(gs, Managers.Rewind.GameStateId);
+                if (gs.id >= minId || gs.id == 0)
+                {
+                    //Update its representation
+                    updateRepresentation(gs);
+                    //Show a sprite to represent them on screen
+                    showRepresentation(gs, Managers.Rewind.GameStateId);
                 }
                 else
                 {
@@ -199,14 +201,14 @@ public class PlayerRewindController : Manager
         {
             return false;
         }
-            if (checkSprite)
-            {
-                return rep.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
-            }
-            else
-            {
-                return rep.GetComponent<Collider2D>().OverlapPoint(touchPoint);
-            }
+        if (checkSprite)
+        {
+            return rep.GetComponent<SpriteRenderer>().bounds.Contains(touchPoint);
+        }
+        else
+        {
+            return rep.GetComponent<Collider2D>().OverlapPoint(touchPoint);
+        }
     }
     private void hideOldRepresentations(int gameStateId)
     {
@@ -279,11 +281,11 @@ public class PlayerRewindController : Manager
         GameState gs = getGameStateAtPosition(pos);
         if (gs.valid)
         {
-        if (gs.Merky == null)
-        {
-            Debug.LogError($"PlayerRewindController.processHoverGesture({pos}): gs.Merky: {gs.Merky}");
-            return;
-        }
+            if (gs.Merky == null)
+            {
+                Debug.LogError($"PlayerRewindController.processHoverGesture({pos}): gs.Merky: {gs.Merky}");
+                return;
+            }
             //Show selection highlighter
             selectionHighlighter.SetActive(true);
             selectionHighlighter.transform.localScale = transform.localScale;
