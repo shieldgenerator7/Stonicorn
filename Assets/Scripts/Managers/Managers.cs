@@ -35,7 +35,6 @@ public class Managers : MonoBehaviour, ISetupable
     public static DialogueManager Dialogue =>instance.dialogueManager;
 
     //Progress Manager
-    [SerializeField]
     private ProgressManager progressManager;
     public static ProgressManager Progress =>instance.progressManager;
 
@@ -212,6 +211,9 @@ public class Managers : MonoBehaviour, ISetupable
             gameData = new GameData();
         }
 
+        //ProgressManager
+        progressManager = new ProgressManager();
+
         //Init with game data
         managerList
             .ForEach(m =>
@@ -229,7 +231,6 @@ public class Managers : MonoBehaviour, ISetupable
         gameManager = FindAnyObjectByType<GameManager>();
         gestureManager = FindAnyObjectByType<GestureManager>();
         dialogueManager = FindAnyObjectByType<DialogueManager>();
-        progressManager = new ProgressManager();
         eventManager = FindAnyObjectByType<EventManager>();
         gameStatistics = FindAnyObjectByType<GameStatistics>();
         timeManager = FindAnyObjectByType<TimeManager>();
