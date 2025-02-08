@@ -49,10 +49,14 @@ public class PlayerController : MonoBehaviour, ISetupable
     public float Speed
         => rb2d.linearVelocity.magnitude;
 
-    public GravityAccepter GravityAccepter { get; private set; }
+    [SerializeField]
+    private GravityAccepter gravityAccepter;
+    public GravityAccepter GravityAccepter =>gravityAccepter;
     public Vector2 GravityDir => GravityAccepter.Gravity;
 
-    public GroundChecker Ground { get; private set; }
+    [SerializeField]
+    private GroundChecker groundChecker;
+    public GroundChecker Ground => groundChecker;
 
     [SerializeField]
     private TeleportAbility teleportAbility;
@@ -600,8 +604,8 @@ public class PlayerController : MonoBehaviour, ISetupable
 
         //Retrieve components
         rb2d = GetComponent<Rigidbody2D>();
-        Ground = GetComponent<GroundChecker>();
-        GravityAccepter = GetComponent<GravityAccepter>();
+        groundChecker = GetComponent<GroundChecker>();
+        gravityAccepter = GetComponent<GravityAccepter>();
         pc2d = GetComponent<PolygonCollider2D>();
 
         //Estimate the halfWidth
