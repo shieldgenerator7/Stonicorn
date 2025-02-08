@@ -189,7 +189,7 @@ public class CameraController : MonoBehaviour
         Managers.Player.Teleport.onTeleport += checkForAutoMovement;
         if (planModeCanvas.GetComponent<Canvas>() == null)
         {
-            Debug.LogError("Camera " + gameObject.name + "'s planModeCanvas object (" + planModeCanvas.name + ") doesn't have a Canvas component!");
+            Debug.LogError($"Camera {gameObject.name}'s planModeCanvas object ({planModeCanvas.name}) doesn't have a Canvas component!");
         }
         scale = Cam.fieldOfView;
         Up = transform.up;
@@ -589,7 +589,7 @@ public class CameraController : MonoBehaviour
         if (scalePoint < 0 || scalePoint >= scalePoints.Count)
         {
             throw new System.ArgumentOutOfRangeException("scalePoint", scalePoint,
-                "scalePoint should be between " + 0 + " and " + (scalePoints.Count - 1) + ", inclusive. scalePoint: " + scalePoint);
+                $"scalePoint should be between {0} and { scalePoints.Count - 1 }, inclusive. scalePoint: { scalePoint}");
         }
         return scalePoints[scalePoint].absoluteScalePoint();
     }
