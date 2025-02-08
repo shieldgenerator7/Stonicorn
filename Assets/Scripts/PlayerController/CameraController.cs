@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : MonoBehaviour, ISetupable
 {
     public float zoomSpeed = 0.5f;//how long it takes to fully change to a new zoom level
     public float cameraOffsetGestureThreshold = 2.0f;//how far off the center of the screen Merky must be for the hold gesture to behave differently
@@ -154,7 +154,7 @@ public class CameraController : MonoBehaviour
             TargetZoomLevel = scalePoints[(int)value].absoluteScalePoint();
         }
     }
-    struct ScalePoint
+    public struct ScalePoint
     {
         private float scalePoint;
         private bool relative;//true if relative to player's range, false if absolute
@@ -172,7 +172,9 @@ public class CameraController : MonoBehaviour
             return scalePoint;
         }
     }
-    List<ScalePoint> scalePoints = new List<ScalePoint>();
+    //TODO: get this to show up in the editor (i think maybe the ScalePoint struct might need to be in its own file)
+    [SerializeField]
+    private List<ScalePoint> scalePoints = new List<ScalePoint>();
     public enum CameraScalePoints
     {
         NONE = -1,//invalid index, used for ActivationTrigger
@@ -593,4 +595,18 @@ public class CameraController : MonoBehaviour
         }
         return scalePoints[scalePoint].absoluteScalePoint();
     }
+
+#if UNITY_EDITOR
+    public int setup()
+    {
+        //Initialize ScalePoints
+        scalePoints.Add(new ScalePoint(0.2f * 11, false));//Main Menu zoom level
+        scalePoints.Add(new ScalePoint(1 * 11, false));
+        scalePoints.Add(new ScalePoint(1 * 11, true));
+        scalePoints.Add(new ScalePoint(2 * 11, true));
+        scalePoints.Add(new ScalePoint(4 * 11, true));
+
+        return 0;
+    }
+#endif
 }
