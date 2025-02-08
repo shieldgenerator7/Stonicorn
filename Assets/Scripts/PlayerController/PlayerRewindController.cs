@@ -288,8 +288,9 @@ public class PlayerRewindController : Manager
             }
             //Show selection highlighter
             selectionHighlighter.SetActive(true);
-            selectionHighlighter.transform.localScale = transform.localScale;
-            selectionHighlighter.transform.position = gs.Merky.position;
+            GameObject rep = getRepresentation(gs);
+            selectionHighlighter.transform.localScale = rep.transform.localScale;
+            selectionHighlighter.transform.position = rep.transform.position;
         }
         else
         {
