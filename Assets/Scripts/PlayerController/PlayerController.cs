@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour, ISetupable
     // Runtime Constants
     //
     private float[] rotations = new float[] { 285, 155, 90, 0 };//the default rotations for Merky
+    [Header("Auto-Setup")]
     [SerializeField]
     private float _halfWidth = 0;
     public float halfWidth  => _halfWidth;//half of Merky's sprite width
@@ -43,8 +44,11 @@ public class PlayerController : MonoBehaviour, ISetupable
     // Components
     //
 
+    [SerializeField]
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
+    [SerializeField]
     private Rigidbody2D rb2d;
+    [SerializeField]
     private PolygonCollider2D pc2d;
     public float Speed
         => rb2d.linearVelocity.magnitude;
@@ -618,7 +622,7 @@ public class PlayerController : MonoBehaviour, ISetupable
         //Teleport Ability
         teleportAbility = GetComponent<TeleportAbility>();
 
-        return 0;//TODO: actually track changes
+        return 1;//TODO: actually track changes
     }
 #endif
 }
