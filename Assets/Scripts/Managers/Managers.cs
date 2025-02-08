@@ -220,6 +220,7 @@ public class Managers : MonoBehaviour, ISetupable
             });
     }
 
+#if UNITY_EDITOR
     public int setup()
     {
         managerList = FindObjectsByType<Manager>(FindObjectsSortMode.None).ToList();
@@ -250,4 +251,5 @@ public class Managers : MonoBehaviour, ISetupable
 
         return 0;//TODO: check to see if anything changed
     }
+#endif
 }
