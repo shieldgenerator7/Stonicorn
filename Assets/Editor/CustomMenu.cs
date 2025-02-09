@@ -919,18 +919,18 @@ public class CustomMenu
 
                                         //Set the value
                                         Component component = mb.GetComponent(field.FieldType);
-                                        if (!component)
+                                        if (component == null)
                                         {
                                             AutoInitialize auto = field.GetCustomAttribute<AutoInitialize>();
-                                            if (!component && auto.SearchParent)
+                                            if (component == null && auto.SearchParent)
                                             {
                                                 component = mb.GetComponentInParent(field.FieldType);
                                             }
-                                            if (!component && auto.SearchChildren)
+                                            if (component == null && auto.SearchChildren)
                                             {
                                                 component = mb.GetComponentInChildren(field.FieldType);
                                             }
-                                            if (!component && auto.SearchScene)
+                                            if (component == null && auto.SearchScene)
                                             {
                                                 Scene scene = mb.gameObject.scene;
                                                 component = (Component)GameObject.FindObjectsByType(field.FieldType, FindObjectsSortMode.None)
@@ -939,12 +939,12 @@ public class CustomMenu
                                                         ((Component)obj).gameObject.scene == scene
                                                     );
                                                 //Allow graceful exit if its a prefab expecting the component to be in the scene, and thus not in the prefab
-                                                if (!component)
+                                                if (component == null)
                                                 {
                                                     return;
                                                 }
                                             }
-                                            if (!component && auto.AllowUnfound)
+                                            if (component == null && auto.AllowUnfound)
                                             {
                                                 return;
                                             }
