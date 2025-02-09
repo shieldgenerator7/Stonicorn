@@ -1393,6 +1393,7 @@ public class CustomMenu
     [MenuItem("SG7/Build/Pre-Build/Check AutoInitialize Tags")]
     public static bool checkAutoInitializeTags()
     {
+        const string NULL_STRING = "null";
         int changeCount = 0;
         List<MonoBehaviour> mblist = GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).ToList();
         Debug.Log($"checkAutoInitializeTags: {mblist.Count} MonoBehaviours found");
@@ -1402,7 +1403,15 @@ public class CustomMenu
 
                 mb.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                     .Where(field => field.GetCustomAttribute<AutoInitialize>() != null)
-                    .Where(field => field.GetValue(mb) == null)
+                    .Where(field => {
+
+                        object value = field.GetValue(mb);
+                        return value == null
+                            || ReferenceEquals(value, null)
+                            //this string comparison seems weird, but its for Rigidboyd2D, PolygonCollider2D and other Unity components
+                            //that dont play nice with regular null checks
+                            || $"{value}" == NULL_STRING;
+                        })
                     .ToList()
                     .ForEach(field =>
                     {
