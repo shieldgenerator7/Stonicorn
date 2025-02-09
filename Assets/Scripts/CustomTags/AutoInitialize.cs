@@ -4,4 +4,5 @@ using System;
 [AttributeUsage(AttributeTargets.Field)]
 public class AutoInitialize:Attribute
 {
+    public bool AllowUnfound = false;
 }

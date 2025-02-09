@@ -1430,6 +1430,11 @@ public class CustomMenu
                         Component component = mb.GetComponent(field.FieldType);
                         if (!component)
                         {
+                            AutoInitialize auto = field.GetCustomAttribute<AutoInitialize>();
+                            if (auto.AllowUnfound)
+                            {
+                                return;
+                            }
                             Debug.LogError($"Component not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
                             errors++;
                             return;
