@@ -14,6 +14,7 @@ public class GroundChecker : SavableMonoBehaviour
     [SerializeField]
     private Collider2D coll2d;
 
+    [AutoInitialize]
     public GravityAccepter Gravity;
 
     private List<PlayerAbility> groundedAbilities = new List<PlayerAbility>();
@@ -25,7 +26,6 @@ public class GroundChecker : SavableMonoBehaviour
     }
     public override void init()
     {
-        Gravity = GetComponent<GravityAccepter>();
         Grounded = false;
         GroundedNormal = false;
         GroundedAbility = false;

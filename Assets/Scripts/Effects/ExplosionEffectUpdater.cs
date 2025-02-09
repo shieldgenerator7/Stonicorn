@@ -15,6 +15,7 @@ public class ExplosionEffectUpdater : MonoBehaviour
     private Vector3 newV;
     private float startTime;
     private float ratio;
+    [AutoInitialize, SerializeField, HideInInspector]
     private SpriteRenderer sr;
     private float baseWidth = 5;//2017-01-30: if the size of the sprite asset changes, this value needs updated
     private float baseHeight = 5;
@@ -28,7 +29,6 @@ public class ExplosionEffectUpdater : MonoBehaviour
     }
     public void init()
     {
-        sr = GetComponent<SpriteRenderer>();
         Vector3 bsize = sr.bounds.size;
         baseWidth = bsize.x;
         baseHeight = bsize.y;

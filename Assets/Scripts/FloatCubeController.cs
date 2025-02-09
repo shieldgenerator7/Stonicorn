@@ -17,7 +17,9 @@ public class FloatCubeController : MonoBehaviour
     public float forceMultiplierSteady = 1.0f;//how much to multiply when trying to remain steady
     public float variance;//the amount of variance in either direction the propulsionHeight is allowed to be
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Rigidbody2D rb;
+    [AutoInitialize, SerializeField, HideInInspector]
     private BoxCollider2D bc2d;
     private Vector3 upDirection;//used to determine the up direction of the float cube
     private Quaternion upAngle;//used to determine which direction the float cube should rotate towards
@@ -32,8 +34,6 @@ public class FloatCubeController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        bc2d = GetComponent<BoxCollider2D>();
         psTrail = psgoTrail.GetComponent<ParticleSystem>();
         if (psTrail != null)
         {

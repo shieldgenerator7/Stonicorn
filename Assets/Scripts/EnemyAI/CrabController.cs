@@ -17,7 +17,9 @@ public class CrabController : Hazard
     public Collider2D holdDetector;
     public Transform throwDirection;
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
+    [AutoInitialize, SerializeField, HideInInspector]
     private GravityAccepter gravityAccepter;
 
     //
@@ -51,8 +53,6 @@ public class CrabController : Hazard
     }
     public override void init()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-        gravityAccepter = GetComponent<GravityAccepter>();
     }
 
     void FixedUpdate()

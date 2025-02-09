@@ -9,12 +9,12 @@ public class FaderProximity : MonoBehaviour
     public float fadeInStartRange = 5;//how far to start fading it in
     public float fullInRadius = 1;//how far out it will always be fully opaque
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private SpriteRenderer sr;
 
     // Use this for initialization
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame

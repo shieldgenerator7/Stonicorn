@@ -7,11 +7,13 @@ public class BoulderFriendChecker : MonoBehaviour {
 
     public bool bounce = false;
     public bool grounded = false;
+    [AutoInitialize, SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
+    [AutoInitialize, SerializeField, HideInInspector]
+    private CircleCollider2D circleCollider;
 
 	// Use this for initialization
 	void Start () {
-        rb2d = GetComponent<Rigidbody2D>();
 	}
 
     void FixedUpdate()
@@ -40,7 +42,7 @@ public class BoulderFriendChecker : MonoBehaviour {
         Vector3 pos = transform.position;
         Vector2 pos2 = new Vector2(pos.x, pos.y);
         int numberOfLines = 5;
-        Bounds bounds = GetComponent<CircleCollider2D>().bounds;
+        Bounds bounds = circleCollider.bounds;
         float width = bounds.max.x - bounds.min.x;
         float increment = width / (numberOfLines - 1);//-1 because the last one doesn't take up any space
         Vector3 startV = bounds.min;

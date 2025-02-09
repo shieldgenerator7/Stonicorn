@@ -9,13 +9,12 @@ public class PoweredScrollEffect : MonoBehaviour
     private float parentHeight;
     private float selfHeight;
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private RectTransform rectTransform;
 
     // Start is called before the first frame update
     void Start()
     {
-        //get RectTransform
-        rectTransform = GetComponent<RectTransform>();
         //set heights
         parentHeight = transform.parent.GetComponent<RectTransform>().sizeDelta.y;
         selfHeight = rectTransform.sizeDelta.y;

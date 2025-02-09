@@ -79,18 +79,9 @@ public class GravityAccepter : SavableMonoBehaviour
         set { acceptsGravity = value; }
     }
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
-    public Rigidbody2D Rigidbody2D
-    {
-        get
-        {
-            if (!rb2d)
-            {
-                rb2d = GetComponent<Rigidbody2D>();
-            }
-            return rb2d;
-        }
-    }
+    public Rigidbody2D Rigidbody2D => rb2d;
 
     public void addGravity(Vector2 newGravity)
     {
@@ -101,7 +92,6 @@ public class GravityAccepter : SavableMonoBehaviour
 
     public override void init()
     {
-        rb2d = GetComponent<Rigidbody2D>();
     }
     private void LateUpdate()
     {

@@ -56,7 +56,9 @@ public class SnailController : Hazard
     [Header("Components")]
     public Collider2D bottomDetector;//used to make sure the snail is at the right orientation before coming out
     private Animator animator;
+    [AutoInitialize, SerializeField, HideInInspector]
     private GroundChecker ground;
+    [AutoInitialize, SerializeField, HideInInspector]
     private GravityAccepter gravity;
     private Rigidbody2D rb2d;
 
@@ -68,8 +70,6 @@ public class SnailController : Hazard
     public override void init()
     {
         animator = GetComponentInChildren<Animator>();
-        ground = GetComponent<GroundChecker>();
-        gravity = GetComponent<GravityAccepter>();
         rb2d = GetComponentInChildren<Rigidbody2D>();
         Awake = false;
         FloorDirection = transform.up;

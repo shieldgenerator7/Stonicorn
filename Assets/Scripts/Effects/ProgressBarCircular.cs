@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProgressBarCircular : MonoBehaviour
 {//2017-07-29: copied from AbilityGainEffect
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private new ParticleSystem particleSystem;
     private float originalEmission;
     private float originalArc = 0;
@@ -15,7 +16,6 @@ public class ProgressBarCircular : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        particleSystem = GetComponent<ParticleSystem>();
         originalEmission = particleSystem.emission.rateOverTime.constant;
         originalArc = particleSystem.shape.arc;
         originalQuat = particleSystem.gameObject.transform.localRotation;

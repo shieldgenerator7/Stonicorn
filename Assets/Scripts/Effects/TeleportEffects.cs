@@ -13,13 +13,13 @@ public class TeleportEffects : MonoBehaviour
     }
     public PlayPosition playPosition = PlayPosition.OLD_POS;
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private ParticleSystemController effectParticleController;
+    [AutoInitialize, SerializeField, HideInInspector]
     private ParticleSystem effectParticleSystem;
 
     private void OnEnable()
     {
-        effectParticleController = GetComponent<ParticleSystemController>();
-        effectParticleSystem = GetComponent<ParticleSystem>();
         ParticleSystem.MainModule psmm = effectParticleSystem.main;
         psmm.startColor = playerAbility.EffectColor.adjustAlpha(psmm.startColor.color.a);
         playerAbility.onEffectedTeleport += processTeleport;

@@ -11,6 +11,8 @@ public class AbilityGainEffect : MonoBehaviour
     public float disengageRange = 5.0f;
     public ParticleSystem abilityRangeIndicator;//the particles that show the range of the ability, if applicable
 
+
+    [AutoInitialize, SerializeField, HideInInspector]
     private new ParticleSystem particleSystem;
     private float originalEmission;
     private float originalArc;
@@ -24,7 +26,6 @@ public class AbilityGainEffect : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        particleSystem = GetComponent<ParticleSystem>();
         originalEmission = particleSystem.emission.rateOverTime.constant;
         originalArc = particleSystem.shape.arc;
         originalQuat = particleSystem.gameObject.transform.localRotation;

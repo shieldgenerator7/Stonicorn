@@ -18,12 +18,12 @@ public class RippleEffect : MonoBehaviour
 
     private float lastStartTime = 0;
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private SpriteRenderer sr;
 
     // Start is called before the first frame update
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
         lastStartTime = Time.time + offset;
     }
 
