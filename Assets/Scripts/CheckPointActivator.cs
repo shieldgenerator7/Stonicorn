@@ -7,6 +7,10 @@ public class CheckPointActivator : MonoBehaviour
     // w/ isTrigger checked
     //and whose parent is a Checkpoint_Root
 
+
+    [AutoInitialize(SearchParent =true), SerializeField, HideInInspector]
+    private CheckPointChecker checker;
+
     private void Start()
     {
         //Check for errors
@@ -14,7 +18,7 @@ public class CheckPointActivator : MonoBehaviour
         {
             throw new UnityException("The object ("+name+") has no parent! parent: " + transform.parent);
         }
-        if (transform.parent.GetComponent<CheckPointChecker>() == null)
+        if (checker == null)
         {
             throw new UnityException("The child object (" + gameObject.name + ") has a parent object (" + transform.parent.name + ") with no CheckPointChecker!");
         }
@@ -41,7 +45,7 @@ public class CheckPointActivator : MonoBehaviour
     {
         if (coll.gameObject.isPlayer())
         {
-            transform.parent.GetComponent<CheckPointChecker>().activate();
+            checker.activate();
         }
     }
 }
