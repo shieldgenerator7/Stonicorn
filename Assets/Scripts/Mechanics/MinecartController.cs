@@ -29,6 +29,7 @@ public class MinecartController : MonoBehaviour, ISetupable
     public int setup()
     {
         int changeCount = 0;
+        rotators?.RemoveAll(rot => !rot);
         int prevCount = (rotators!=null)?rotators.Count:0;
         rotators = wheels.ConvertAll(wheel => wheel.GetComponent<SimpleRotation>());
         if (prevCount != rotators.Count)
