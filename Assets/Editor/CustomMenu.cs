@@ -901,6 +901,14 @@ public class CustomMenu
                                     .ToList()
                                     .ForEach(field =>
                                     {
+                                        //Check to make sure it is not an interface
+                                        if (field.FieldType.IsInterface)
+                                        {
+                                            Debug.LogError($"Field({className}.{field.Name}) is an interface. Unfortunately, Unity does not support serializing interfaces. Thus they also can't be auto-initialized", mb);
+                                            errors++;
+                                            return;
+                                        }
+
                                         //Check to make sure it is public (or private with SerializeField)
                                         if (!(field.IsPublic || field.GetCustomAttribute<SerializeField>() != null))
                                         {
@@ -1576,6 +1584,14 @@ public class CustomMenu
                     .ToList()
                     .ForEach(field =>
                     {
+                        //Check to make sure it is not an interface
+                        if (field.FieldType.IsInterface)
+                        {
+                            Debug.LogError($"Field({ className}.{ field.Name}) is an interface. Unfortunately, Unity does not support serializing interfaces. Thus they also can't be auto-initialized", mb);
+                            errors++;
+                            return;
+                        }
+
                         //Check to make sure it is public (or private with SerializeField)
                         if (!(field.IsPublic || field.GetCustomAttribute<SerializeField>() != null))
                         {
