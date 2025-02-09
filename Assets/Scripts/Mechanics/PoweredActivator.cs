@@ -10,11 +10,11 @@ public class PoweredActivator : MonoBehaviour
     public float percentRequired = 1f;
     public bool allowTurnOff = true;
 
-    [AutoInitialize(SearchParent =true),SerializeField, HideInInspector]
     private IPowerConduit conduit;
 
     void Start()
     {
+        conduit = GetComponent<IPowerConduit>() ?? GetComponentInParent<IPowerConduit>();
         conduit.OnPowerFlowed += onPowerFlowed;
     }
 
