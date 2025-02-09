@@ -1444,7 +1444,7 @@ public class CustomMenu
                                 Scene scene = mb.gameObject.scene;
                                 component = (Component)GameObject.FindObjectsByType(field.FieldType, FindObjectsSortMode.None)
                                     //don't allow setting it to an object in a different scene
-                                    .First(obj =>
+                                    .FirstOrDefault(obj =>
                                         ((Component)obj).gameObject.scene == scene
                                     );
                             }
@@ -1452,7 +1452,7 @@ public class CustomMenu
                             {
                                 return;
                             }
-                            if (!component)
+                            if (component == null)
                             {
                             Debug.LogError($"Component not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
                             errors++;
