@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class CheckPointActivator : MonoBehaviour, ISetupable
@@ -35,31 +36,24 @@ public class CheckPointActivator : MonoBehaviour, ISetupable
         //Check for errors
         if (transform.parent == null)
         {
-            Debug.LogError("The object ("+name+") has no parent! parent: " + transform.parent);
+            Debug.LogError($"The object ({name}) has no parent! parent: {transform.parent}");
             errorCount++;
         }
         if (checker == null)
         {
-            Debug.LogError("The child object (" + gameObject.name + ") has a parent object (" + transform.parent.name + ") with no CheckPointChecker!");
+            Debug.LogError($"The child object ({gameObject.name}) has a parent object ({transform.parent.name}) with no CheckPointChecker!");
             errorCount++;
         }
         if (GetComponent<Collider2D>() == null)
         {
-            Debug.LogError("The object ("+name+") has no Collider2D!");
+            Debug.LogError($"The object ({name}) has no Collider2D!");
             errorCount++;
         }
-        bool foundTrigger = false;
-        foreach (Collider2D coll2d in GetComponents<Collider2D>())
-        {
-            if (coll2d.isTrigger)
-            {
-                foundTrigger = true;
-                break;
-            }
-        }
+        bool foundTrigger = GetComponents<Collider2D>()
+            .Any(coll2d => coll2d.isTrigger);
         if (!foundTrigger)
         {
-            Debug.LogError("The object ("+name+") has no trigger collider!");
+            Debug.LogError($"The object ({name}) has no trigger collider!");
             errorCount++;
         }
 
