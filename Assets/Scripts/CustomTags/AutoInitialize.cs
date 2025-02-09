@@ -4,5 +4,8 @@ using System;
 [AttributeUsage(AttributeTargets.Field)]
 public class AutoInitialize:Attribute
 {
+    public bool SearchParent = false;
+    public bool SearchChildren = false;
+    public bool SearchScene = false;
     public bool AllowUnfound = false;
 }
