@@ -25,18 +25,28 @@ public class CheckPointActivator : MonoBehaviour, ISetupable
 
     public int setup()
     {
+        return 0;
+    }
+
+    public int checkForErrors()
+    {
+        int errorCount = 0;
+
         //Check for errors
         if (transform.parent == null)
         {
-            throw new UnityException("The object ("+name+") has no parent! parent: " + transform.parent);
+            Debug.LogError("The object ("+name+") has no parent! parent: " + transform.parent);
+            errorCount++;
         }
         if (checker == null)
         {
-            throw new UnityException("The child object (" + gameObject.name + ") has a parent object (" + transform.parent.name + ") with no CheckPointChecker!");
+            Debug.LogError("The child object (" + gameObject.name + ") has a parent object (" + transform.parent.name + ") with no CheckPointChecker!");
+            errorCount++;
         }
         if (GetComponent<Collider2D>() == null)
         {
-            throw new UnityException("The object ("+name+") has no Collider2D!");
+            Debug.LogError("The object ("+name+") has no Collider2D!");
+            errorCount++;
         }
         bool foundTrigger = false;
         foreach (Collider2D coll2d in GetComponents<Collider2D>())
@@ -49,9 +59,10 @@ public class CheckPointActivator : MonoBehaviour, ISetupable
         }
         if (!foundTrigger)
         {
-            throw new UnityException("The object ("+name+") has no trigger collider!");
+            Debug.LogError("The object ("+name+") has no trigger collider!");
+            errorCount++;
         }
 
-        return 0;
+        return errorCount;
     }
 }
