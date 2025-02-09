@@ -102,7 +102,7 @@ public class Managers : MonoBehaviour, ISetupable
     public static ScenesManager Scene => instance.scenesManager;
 
     //Menu Manager
-    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
+    //[AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private MenuManager menuManager;
     public static MenuManager Menu //TODO: update this later when menu is part of PlayerScene
     {
