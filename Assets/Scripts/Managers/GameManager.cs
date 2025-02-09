@@ -330,17 +330,21 @@ public class GameManager : MonoBehaviour
     //Auto-save on exit
     void OnApplicationQuit()
     {
-        //Save the game state and then
-        Managers.Rewind.Save();
-        //Save the game to file
-        Managers.File.saveToFile();
+        saveGame();
     }
     private void OnApplicationPause(bool pause)
     {
         if (pause)
         {
-            OnApplicationQuit();
+            saveGame();
         }
+    }
+    private void saveGame()
+    {
+        //Save the game state and then
+        Managers.Rewind.Save();
+        //Save the game to file
+        Managers.File.saveToFile();
     }
 
     /// <summary>
@@ -352,8 +356,7 @@ public class GameManager : MonoBehaviour
         //Save previous game
         if (savePrevGame)
         {
-            Managers.Rewind.Save();
-            Managers.File.saveToFile();
+            saveGame();
         }
         //Empty object lists
         Managers.Object.clearObjects();
