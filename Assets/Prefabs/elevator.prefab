@@ -101,6 +101,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectColor: {r: 1, g: 1, b: 1, a: 1}
+  lightEffectRenderer: {fileID: 5460701681715422507}
+  spriteShapeRenderer: {fileID: 0}
+  text: {fileID: 0}
 --- !u!1 &8936743496459471979
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,6 +527,7 @@ MonoBehaviour:
   saveValues: 0
   gravityScale: 0
   acceptsGravity: 0
+  rb2d: {fileID: 1321678896005676338}
 --- !u!114 &7011040195514066655
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -542,6 +542,8 @@ MonoBehaviour:
   clawCollider: {fileID: 3963815321087787618}
   holdDetector: {fileID: 6745517917957444332}
   throwDirection: {fileID: 32291642123885410}
+  rb2d: {fileID: 1548221666}
+  gravityAccepter: {fileID: 5354270523206819490}
 --- !u!114 &5354270523206819490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,6 +560,7 @@ MonoBehaviour:
   saveValues: 0
   gravityScale: 1
   acceptsGravity: 1
+  rb2d: {fileID: 1548221666}
 --- !u!114 &929987493053195884
 MonoBehaviour:
   m_ObjectHideFlags: 0

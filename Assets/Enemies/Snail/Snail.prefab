@@ -200,6 +200,8 @@ MonoBehaviour:
   stickForce: 9.81
   restickAngleAdjustment: 45
   bottomDetector: {fileID: 3118900764096104388}
+  ground: {fileID: 1521082661794283007}
+  gravity: {fileID: 3318912744836079946}
 --- !u!50 &2897467820420327000
 Rigidbody2D:
   serializedVersion: 5
@@ -315,6 +317,7 @@ MonoBehaviour:
   saveValues: 0
   gravityScale: 1
   acceptsGravity: 0
+  rb2d: {fileID: 2897467820420327000}
 --- !u!114 &1521082661794283007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,7 +332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundTestDistance: 0.25
   coll2d: {fileID: 8435740046917698784}
-  Gravity: {fileID: 0}
+  Gravity: {fileID: 3318912744836079946}
 --- !u!114 &-3234076151460085041
 MonoBehaviour:
   m_ObjectHideFlags: 0
