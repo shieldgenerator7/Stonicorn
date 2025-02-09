@@ -13,6 +13,9 @@ public class CloudDrifter : MonoBehaviour {
     private float baseSpeed;//test changed line
     //comment for test commit
 
+    [AutoInitialize, SerializeField, HideInInspector]
+    private SpriteRenderer sr;
+
 	// Use this for initialization
 	void Start () {
          maxDiff = Vector3.Distance(new Vector3(0f, 0f), new Vector3(range, range));
@@ -23,7 +26,7 @@ public class CloudDrifter : MonoBehaviour {
     {
         //float diff = Vector3.Distance(parentCloud.transform.position, transform.position);
         float alpha = 1f - (diff / maxDiff);
-        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, alpha);
+        sr.color = new Color(1f, 1f, 1f, alpha);
     }
 
     void FixedUpdate()
