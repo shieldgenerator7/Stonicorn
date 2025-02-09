@@ -28,15 +28,14 @@ public class DialogueBoxUpdater : MonoBehaviour
 
     private string text = "";
     private string goalText = "";
+    [SerializeField]
     SpriteRenderer quoteSR;
 
-    [SerializeField]
     private Transform source;
 
     // Start is called before the first frame update
     public void Start()
     {
-        quoteSR = quoteBox.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame

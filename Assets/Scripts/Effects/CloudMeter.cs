@@ -8,6 +8,7 @@ public class CloudMeter : MonoBehaviour
     public Sprite availableSprite;
     public Sprite usedSprite;
 
+    [SerializeField]
     private AirSliceAbility airSliceAbility;
 
     private List<SpriteRenderer> clouds = new List<SpriteRenderer>();
