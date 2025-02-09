@@ -1395,9 +1395,8 @@ public class CustomMenu
     {
         const string NULL_STRING = "null";
         int changeCount = 0;
-        List<MonoBehaviour> mblist = GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).ToList();
-        Debug.Log($"checkAutoInitializeTags: {mblist.Count} MonoBehaviours found");
-            mblist.ForEach(mb =>
+        GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).ToList()
+            .ForEach(mb =>
             {
                 int changes = 0;
 
@@ -1415,7 +1414,7 @@ public class CustomMenu
                     .ToList()
                     .ForEach(field =>
                     {
-                        Debug.LogWarning($"Changing field {field.Name}:{field.FieldType.Name} on MonoBehaviour {mb.GetType().Name}");
+                        Debug.LogWarning($"Changing field on {mb.name}: {mb.GetType().Name}.{field.Name}:{field.FieldType.Name}");
                         field.SetValue(mb, mb.GetComponent(field.FieldType));
                         changes++;
                     });
