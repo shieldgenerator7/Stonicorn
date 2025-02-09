@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TeleportRangeFragment : MonoBehaviour
 {
-    [SerializeField]
+    [AutoInitialize, SerializeField]
     private SpriteRenderer spriteRenderer;
     public SpriteRenderer SpriteRenderer => spriteRenderer;
 
