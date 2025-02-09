@@ -1398,6 +1398,8 @@ public class CustomMenu
         GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).ToList()
             .ForEach(mb =>
             {
+                string className = mb.GetType().Name;
+
                 int changes = 0;
 
                 mb.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
@@ -1414,6 +1416,14 @@ public class CustomMenu
                     .ToList()
                     .ForEach(field =>
                     {
+                        //Check to make sure it is public (or private with SerializeField)
+                        if (!(field.IsPublic || field.GetCustomAttribute<SerializeField>() != null))
+                        {
+                            Debug.LogError($"Field ({className}.{field.Name}) has AutoInitialize tag but is not public! It needs to be public or have the SerializeField tag", mb);
+                            return;
+                        }
+
+                        //Set the value
                         Debug.LogWarning($"Changing field on {mb.name}: {mb.GetType().Name}.{field.Name}:{field.FieldType.Name}");
                         field.SetValue(mb, mb.GetComponent(field.FieldType));
                         changes++;
