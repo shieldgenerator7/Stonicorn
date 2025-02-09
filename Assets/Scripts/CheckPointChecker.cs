@@ -13,7 +13,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
     private CheckPointGhostMover cpGhostMover;
     public CheckPointGhostMover GhostMover => cpGhostMover;
     public GameObject ghostPrefab;
-    private static Camera checkpointCamera;
     private static bool inCheckPoint = false;
 
     public int defaultTelepadIndex = 0;
@@ -47,15 +46,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
     void Start()
     {
         initializeGhost();
-        if (checkpointCamera == null)
-        {
-            GameObject cpBgCamera = GameObject.Find("CP BG Camera");
-            if (cpBgCamera)
-            {
-                checkpointCamera = cpBgCamera.GetComponent<Camera>();
-                checkpointCamera.gameObject.SetActive(false);
-            }
-        }
     }
     void initializeGhost()
     {
@@ -263,12 +253,10 @@ public class CheckPointChecker : MemoryMonoBehaviour
     //TODO: maybe make this available in game? and auto-update checkpoint preview?
     public string grabCheckPointCameraData()//2016-12-06: grabs image data from the camera designated for checkpoints
     {
-        if (checkpointCamera == null)
-        {
-            checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();
-            checkpointCamera.gameObject.SetActive(false);
-        }
+        //initialize camera
+        Camera checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();
         checkpointCamera.gameObject.SetActive(true);
+
         checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0, 0, -10);
         //Orient the camera to the gravity collider it's in
         GravityZone gravityZone = GravityZone.getGravityZone(checkpointCamera.gameObject.transform.position);
@@ -314,6 +302,11 @@ public class CheckPointChecker : MemoryMonoBehaviour
         checkpointCamera.gameObject.SetActive(false);
         string filename = gameObject.transform.parent.name + ".png";
         ES3.SaveImage(screenShot, filename);
+
+        //hide camera
+        checkpointCamera.gameObject.SetActive(false);
+
+        //return
         return filename;
     }
 #endif
