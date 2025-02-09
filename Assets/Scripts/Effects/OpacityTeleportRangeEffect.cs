@@ -13,13 +13,13 @@ public class OpacityTeleportRangeEffect : TimedTeleportRangeEffect
     {
         ttre.fragmentsBurned.ForEach(fragment =>
         {
-            SpriteRenderer sr = fragment.GetComponent<SpriteRenderer>();
+            SpriteRenderer sr = fragment.SpriteRenderer;
             float newAlpha = transparency;
             sr.color = sr.color.adjustAlpha(newAlpha);
         });
         ttre.fragmentsFuse.ForEach(fragment =>
         {
-            SpriteRenderer sr = fragment.GetComponent<SpriteRenderer>();
+            SpriteRenderer sr = fragment.SpriteRenderer;
             float newAlpha = timeTransparency;
             sr.color = sr.color.adjustAlpha(newAlpha);
         });
