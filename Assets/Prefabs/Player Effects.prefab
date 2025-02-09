@@ -354,6 +354,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAbility: {fileID: 0}
   playPosition: 0
+  effectParticleController: {fileID: 2592284710000840359}
+  effectParticleSystem: {fileID: 2592284710000840353}
 --- !u!114 &2592284710000840359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,6 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 2592284710000840353}
   dependsOnTeleportRange: 0
 --- !u!199 &2592284710000840358
 ParticleSystemRenderer:
@@ -5346,6 +5349,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAbility: {fileID: 0}
   playPosition: 0
+  effectParticleController: {fileID: 2592284710190843075}
+  effectParticleSystem: {fileID: 2592284710190843709}
 --- !u!114 &2592284710190843075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5358,6 +5363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 2592284710190843709}
   dependsOnTeleportRange: 0
 --- !u!199 &2592284710190843074
 ParticleSystemRenderer:
@@ -10287,6 +10293,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAbility: {fileID: 0}
   playPosition: 0
+  effectParticleController: {fileID: 2592284710347091809}
+  effectParticleSystem: {fileID: 2592284710347091808}
 --- !u!114 &2592284710347091809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10299,6 +10307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 2592284710347091808}
   dependsOnTeleportRange: 0
 --- !u!199 &2592284710347091811
 ParticleSystemRenderer:
@@ -15488,6 +15497,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAbility: {fileID: 0}
   playPosition: 0
+  effectParticleController: {fileID: 2592284711339129595}
+  effectParticleSystem: {fileID: 2592284711339129589}
 --- !u!114 &2311455765568097077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15513,6 +15524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 2592284711339129589}
   dependsOnTeleportRange: 0
 --- !u!199 &2592284711339129594
 ParticleSystemRenderer:
@@ -20680,6 +20692,7 @@ MonoBehaviour:
   cloudPrefab: {fileID: 1036009570883399250, guid: 9c5cc08b4ff4cdd42b9ea31d1b9fee75, type: 3}
   availableSprite: {fileID: 21300000, guid: 5720e7f931c6f204cb7078967747cc74, type: 3}
   usedSprite: {fileID: 21300000, guid: 8ab626c028229414f909f46e9fe8e8bc, type: 3}
+  airSliceAbility: {fileID: 0}
 --- !u!1 &4818699489449635323
 GameObject:
   m_ObjectHideFlags: 0

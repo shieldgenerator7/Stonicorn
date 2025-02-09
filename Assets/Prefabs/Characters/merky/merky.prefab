@@ -707,6 +707,7 @@ MonoBehaviour:
   saveValues: 0
   gravityScale: 1
   acceptsGravity: 1
+  rb2d: {fileID: 5068768}
 --- !u!114 &1792176466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -721,7 +722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundTestDistance: 0.25
   coll2d: {fileID: 6075330}
-  Gravity: {fileID: 0}
+  Gravity: {fileID: 1792176475}
 --- !u!114 &3807953469792525793
 MonoBehaviour:
   m_ObjectHideFlags: 0
