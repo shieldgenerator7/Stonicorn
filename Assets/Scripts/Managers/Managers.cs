@@ -20,17 +20,17 @@ public class Managers : MonoBehaviour, ISetupable
     private List<Manager> managerList = new List<Manager>();
 
     //Game Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private GameManager gameManager;
     public static GameManager Game => instance.gameManager;
 
     //Gesture Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private GestureManager gestureManager;
     public static GestureManager Gesture => instance.gestureManager;
 
     //Dialogue Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private DialogueManager dialogueManager;
     public static DialogueManager Dialogue => instance.dialogueManager;
 
@@ -40,69 +40,69 @@ public class Managers : MonoBehaviour, ISetupable
 
     //Event Manager
     //Used to store which NPC voicelines have been played
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private EventManager eventManager;
     public static EventManager Event => instance.eventManager;
 
     //Game Statistics
     //Keeps track of how many times everything has happened
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private GameStatistics gameStatistics;
     public static GameStatistics Stats => instance.gameStatistics;
 
     //Time Manager
     //Used to keep track of the time since the game began,
     //Taking into account time rewind and dilation
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private TimeManager timeManager;
     public static TimeManager Time => instance.timeManager;
 
     //Rewind Manager
     //Used to save and load gamestates,
     //Allowing for time to be rewound
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private RewindManager rewindManager;
     public static RewindManager Rewind => instance.rewindManager;
 
     //Object Manager
     //Manages the list of known objects
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private ObjectManager objectManager;
     public static ObjectManager Object => instance.objectManager;
 
     //Physics 2D Surrogate
     //Used to enable triggers while main physics is disabled during time rewind
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private Physics2DSurrogate physics2DSurrogate;
     public static Physics2DSurrogate Physics2DSurrogate => instance.physics2DSurrogate;
 
     //Music Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private MusicManager musicManager;
     public static MusicManager Music => instance.musicManager;
 
     //Sound Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private SoundManager soundManager;
     public static SoundManager Sound => instance.soundManager;
 
     //Video Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private VideoManager videoManager;
     public static VideoManager Video => instance.videoManager;
 
     //Effect Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private EffectManager effectManager;
     public static EffectManager Effect => instance.effectManager;
 
     //Scenes Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private ScenesManager scenesManager;
     public static ScenesManager Scene => instance.scenesManager;
 
     //Menu Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private MenuManager menuManager;
     public static MenuManager Menu //TODO: update this later when menu is part of PlayerScene
     {
@@ -117,22 +117,22 @@ public class Managers : MonoBehaviour, ISetupable
     }
 
     //Settings Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private SettingsManager settingsManager;
     public static SettingsManager Settings => instance.settingsManager;
 
     //File Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private FileManager fileManager;
     public static FileManager File => instance.fileManager;
 
     //Demo Mode
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private DemoModeManager demoModeManager;
     public static DemoModeManager DemoMode => instance.demoModeManager;
 
     //Power Manager
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
     private PowerManager powerManager;
     public static PowerManager Power => instance.powerManager;
 
@@ -146,7 +146,7 @@ public class Managers : MonoBehaviour, ISetupable
     public static PlayerController Player => instance.playerController;
 
     //Player Rewind Controller
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField]
     private PlayerRewindController playerRewindController;
     public static PlayerRewindController PlayerRewind => instance.playerRewindController;
 
@@ -160,7 +160,7 @@ public class Managers : MonoBehaviour, ISetupable
     }
 
     //Camera Controller
-    [SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField]
     private CameraController cameraController;
     public static CameraController Camera => instance.cameraController;
 
@@ -229,27 +229,7 @@ public class Managers : MonoBehaviour, ISetupable
         managerList = FindObjectsByType<Manager>(FindObjectsSortMode.None).ToList();
 
         //Populate other managers
-        gameManager = FindAnyObjectByType<GameManager>();
-        gestureManager = FindAnyObjectByType<GestureManager>();
-        dialogueManager = FindAnyObjectByType<DialogueManager>();
-        eventManager = FindAnyObjectByType<EventManager>();
-        gameStatistics = FindAnyObjectByType<GameStatistics>();
-        timeManager = FindAnyObjectByType<TimeManager>();
-        rewindManager = FindAnyObjectByType<RewindManager>();
-        objectManager = FindAnyObjectByType<ObjectManager>();
-        physics2DSurrogate = FindAnyObjectByType<Physics2DSurrogate>();
-        musicManager = FindAnyObjectByType<MusicManager>();
-        soundManager = FindAnyObjectByType<SoundManager>();
-        videoManager = FindAnyObjectByType<VideoManager>();
-        effectManager = FindAnyObjectByType<EffectManager>();
-        scenesManager = FindAnyObjectByType<ScenesManager>();
-        settingsManager = FindAnyObjectByType<SettingsManager>();
-        fileManager = FindAnyObjectByType<FileManager>();
-        demoModeManager = FindAnyObjectByType<DemoModeManager>();
-        powerManager = FindAnyObjectByType<PowerManager>();
         playerController = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
-        playerRewindController = FindAnyObjectByType<PlayerRewindController>();
-        cameraController = FindAnyObjectByType<CameraController>();
 
         return 0;//TODO: check to see if anything changed
     }
