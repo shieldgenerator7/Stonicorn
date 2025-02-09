@@ -27,16 +27,16 @@ public class Managers : MonoBehaviour, ISetupable
     //Gesture Manager
     [SerializeField]
     private GestureManager gestureManager;
-    public static GestureManager Gesture =>instance.gestureManager;
+    public static GestureManager Gesture => instance.gestureManager;
 
     //Dialogue Manager
     [SerializeField]
     private DialogueManager dialogueManager;
-    public static DialogueManager Dialogue =>instance.dialogueManager;
+    public static DialogueManager Dialogue => instance.dialogueManager;
 
     //Progress Manager
     private ProgressManager progressManager;
-    public static ProgressManager Progress =>instance.progressManager;
+    public static ProgressManager Progress => instance.progressManager;
 
     //Event Manager
     //Used to store which NPC voicelines have been played
@@ -48,7 +48,7 @@ public class Managers : MonoBehaviour, ISetupable
     //Keeps track of how many times everything has happened
     [SerializeField]
     private GameStatistics gameStatistics;
-    public static GameStatistics Stats =>instance.gameStatistics;
+    public static GameStatistics Stats => instance.gameStatistics;
 
     //Time Manager
     //Used to keep track of the time since the game began,
@@ -62,7 +62,7 @@ public class Managers : MonoBehaviour, ISetupable
     //Allowing for time to be rewound
     [SerializeField]
     private RewindManager rewindManager;
-    public static RewindManager Rewind =>instance.rewindManager;
+    public static RewindManager Rewind => instance.rewindManager;
 
     //Object Manager
     //Manages the list of known objects
@@ -153,9 +153,10 @@ public class Managers : MonoBehaviour, ISetupable
     //Player Pilot Controller
     [SerializeField]
     private PlayerPilotController playerPilotController;
-    public static PlayerPilotController PlayerPilot{
-    get=> instance.playerPilotController;
-        set=> instance.playerPilotController = value;
+    public static PlayerPilotController PlayerPilot
+    {
+        get => instance.playerPilotController;
+        set => instance.playerPilotController = value;
     }
 
     //Camera Controller

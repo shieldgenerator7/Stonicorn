@@ -122,5 +122,5 @@ public class ProgressManager
         //activated triggers
         activatedTriggers.Clear();
         activatedTriggers.AddRange(progMan.activatedTriggers);
-}
+    }
 }

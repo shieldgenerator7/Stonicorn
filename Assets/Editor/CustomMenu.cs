@@ -1377,9 +1377,9 @@ public class CustomMenu
                 if (changes > 0)
                 {
                     MonoBehaviour mb = (MonoBehaviour)setup;
-                EditorUtility.SetDirty(mb);
-                Debug.LogWarning($"Check ISetupables: {mb.name} changes: {changes}", mb);
-                changeCount += changes;
+                    EditorUtility.SetDirty(mb);
+                    Debug.LogWarning($"Check ISetupables: {mb.name} changes: {changes}", mb);
+                    changeCount += changes;
                 }
             });
         if (changeCount > 0)

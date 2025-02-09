@@ -28,27 +28,28 @@ public struct GameState
         //Object States
         states = list
             .Where(go => !(!go || ReferenceEquals(go, null))).ToList()
-            .ConvertAll(go => {
-            try
+            .ConvertAll(go =>
             {
-                ObjectState os = new ObjectState(go);
-                if (os.objectId < 0)
+                try
                 {
-                    throw new UnityException($"Object state object id is ({os.objectId}) for object: {go.name}");
+                    ObjectState os = new ObjectState(go);
+                    if (os.objectId < 0)
+                    {
+                        throw new UnityException($"Object state object id is ({os.objectId}) for object: {go.name}");
+                    }
+                    return os;
                 }
-                return os;
-            }
-            catch (NullReferenceException nre)
-            {
-                Debug.LogError(
-                    $"Object {go.name} does not have an ObjectInfo. NRE: {nre}",
-                    go
-                    );
-                return null;
-            }
-        })
+                catch (NullReferenceException nre)
+                {
+                    Debug.LogError(
+                        $"Object {go.name} does not have an ObjectInfo. NRE: {nre}",
+                        go
+                        );
+                    return null;
+                }
+            })
             .Where(os => os != null)
-            .OrderBy(os=>os.objectId)
+            .OrderBy(os => os.objectId)
             .ToArray();
 
         //Merky
@@ -57,7 +58,7 @@ public struct GameState
     //Loading
     public void load()
     {
-        for(int i = 0; i < states.Length; i++) 
+        for (int i = 0; i < states.Length; i++)
         {
             ObjectState os = states[i];
             if (Managers.Object.hasObject(os.objectId))
@@ -107,7 +108,8 @@ public struct GameState
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public bool hasGameObject(int key) { 
+    public bool hasGameObject(int key)
+    {
         return states.Any(os => os.objectId == key);
     }
 

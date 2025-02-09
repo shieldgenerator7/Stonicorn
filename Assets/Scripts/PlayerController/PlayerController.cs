@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour, ISetupable
     [Header("Auto-Setup")]
     [SerializeField]
     private float _halfWidth = 0;
-    public float halfWidth  => _halfWidth;//half of Merky's sprite width
+    public float halfWidth => _halfWidth;//half of Merky's sprite width
 
     //
     // Components
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour, ISetupable
 
     [SerializeField]
     private GravityAccepter gravityAccepter;
-    public GravityAccepter GravityAccepter =>gravityAccepter;
+    public GravityAccepter GravityAccepter => gravityAccepter;
     public Vector2 GravityDir => GravityAccepter.Gravity;
 
     [SerializeField]
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour, ISetupable
 
     [SerializeField]
     private TeleportAbility teleportAbility;
-    public TeleportAbility Teleport =>teleportAbility;
+    public TeleportAbility Teleport => teleportAbility;
 
     /// <summary>
     /// Returns a list of active abilities
@@ -610,22 +610,22 @@ public class PlayerController : MonoBehaviour, ISetupable
         //Retrieve components
         if (!rb2d)
         {
-        rb2d = GetComponent<Rigidbody2D>();
+            rb2d = GetComponent<Rigidbody2D>();
             changes++;
         }
         if (!groundChecker)
         {
-        groundChecker = GetComponent<GroundChecker>();
+            groundChecker = GetComponent<GroundChecker>();
             changes++;
         }
         if (!gravityAccepter)
         {
-        gravityAccepter = GetComponent<GravityAccepter>();
+            gravityAccepter = GetComponent<GravityAccepter>();
             changes++;
         }
         if (!pc2d)
         {
-        pc2d = GetComponent<PolygonCollider2D>();
+            pc2d = GetComponent<PolygonCollider2D>();
             changes++;
         }
 
@@ -640,7 +640,7 @@ public class PlayerController : MonoBehaviour, ISetupable
         //Teleport Ability
         if (!teleportAbility)
         {
-        teleportAbility = GetComponent<TeleportAbility>();
+            teleportAbility = GetComponent<TeleportAbility>();
             changes++;
         }
 
