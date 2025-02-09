@@ -17,6 +17,14 @@ PrefabInstance:
       value: d4cd9297cece2784c88c23a3eba8cee0
       objectReference: {fileID: 0}
     - target: {fileID: 4502633035234811662, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: fader
+      value: 
+      objectReference: {fileID: 8072823639453386806}
+    - target: {fileID: 4502633035234811662, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: scaling
+      value: 
+      objectReference: {fileID: 3700331544801436675}
+    - target: {fileID: 4502633035234811662, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
       propertyPath: abilityTypeName
       value: LongTeleportAbility
       objectReference: {fileID: 0}
@@ -106,3 +114,25 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 2263741106396958085, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
   m_PrefabInstance: {fileID: 3553764424702178226}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3700331544801436675 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 147411546128308145, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+  m_PrefabInstance: {fileID: 3553764424702178226}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75e77e5225b54441bed6fab75088081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8072823639453386806 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4709058486698638212, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+  m_PrefabInstance: {fileID: 3553764424702178226}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

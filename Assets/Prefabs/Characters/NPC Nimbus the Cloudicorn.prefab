@@ -45,6 +45,14 @@ PrefabInstance:
       value: 0.31764707
       objectReference: {fileID: 0}
     - target: {fileID: 2781270073562823497, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: fader
+      value: 
+      objectReference: {fileID: 3295088728038046976}
+    - target: {fileID: 2781270073562823497, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: scaling
+      value: 
+      objectReference: {fileID: 7991875059837358389}
+    - target: {fileID: 2781270073562823497, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: abilityTypeName
       value: AirSliceAbility
       objectReference: {fileID: 0}
@@ -245,3 +253,25 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 8612325288248208684, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
   m_PrefabInstance: {fileID: 8360634215906337475}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3295088728038046976 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 8360634215906337475}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7991875059837358389 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1940533036692681718, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 8360634215906337475}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75e77e5225b54441bed6fab75088081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -17,6 +17,14 @@ PrefabInstance:
       value: e8c84186ac61e2f4da2ce15e6906786f
       objectReference: {fileID: 0}
     - target: {fileID: 3538548682406545346, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+      propertyPath: fader
+      value: 
+      objectReference: {fileID: 506697492183247245}
+    - target: {fileID: 3538548682406545346, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+      propertyPath: scaling
+      value: 
+      objectReference: {fileID: 4925388868017505720}
+    - target: {fileID: 3538548682406545346, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
       propertyPath: abilityTypeName
       value: LongTeleportAbility
       objectReference: {fileID: 0}
@@ -101,6 +109,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+--- !u!114 &506697492183247245 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5637957091981075272, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+  m_PrefabInstance: {fileID: 5275450973077424837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4925388868017505720 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 967242173220917117, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+  m_PrefabInstance: {fileID: 5275450973077424837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75e77e5225b54441bed6fab75088081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &6429914980658814860 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 1156738107947963721, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
