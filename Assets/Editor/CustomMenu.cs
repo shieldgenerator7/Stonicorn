@@ -1424,7 +1424,7 @@ public class CustomMenu
                         }
 
                         //Set the value
-                        Debug.LogWarning($"Changing field on {mb.name}: {mb.GetType().Name}.{field.Name}:{field.FieldType.Name}");
+                        Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name}");
                         field.SetValue(mb, mb.GetComponent(field.FieldType));
                         changes++;
                     });
