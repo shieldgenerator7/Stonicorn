@@ -955,7 +955,7 @@ public class CustomMenu
                                                 return;
                                             }
                                         }
-                                        Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
+                                        Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {component}", mb);
                                         field.SetValue(mb, component);
                                         changes++;
                                     });
@@ -1633,7 +1633,7 @@ public class CustomMenu
                             return;
                             }
                         }
-                        Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
+                        Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {component}", mb);
                         field.SetValue(mb, component);
                         changes++;
                     });
