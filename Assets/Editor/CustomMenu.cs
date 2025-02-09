@@ -1513,13 +1513,25 @@ public class CustomMenu
     public static bool checkISetupables()
     {
         int changeCount = 0;
+        int errorCount = 0;
         GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<ISetupable>().ToList()
             .ForEach(setup =>
             {
+                MonoBehaviour mb = (MonoBehaviour)setup;
+
+                //Check for Errors
+                int errors = setup.checkForErrors();
+                if (errors > 0)
+                {
+                    Debug.LogError($"Check ISetupables: {mb.name} ({mb.GetType().Name}) errors: {errors}", mb);
+                    errorCount += errors;
+                    return;
+                }
+
+                //Setup
                 int changes = setup.setup();
                 if (changes > 0)
                 {
-                    MonoBehaviour mb = (MonoBehaviour)setup;
                     EditorUtility.SetDirty(mb);
                     Debug.LogWarning($"Check ISetupables: {mb.name} ({mb.GetType().Name}) changes: {changes}", mb);
                     changeCount += changes;
@@ -1528,6 +1540,10 @@ public class CustomMenu
         if (changeCount > 0)
         {
             Debug.LogWarning($"Check ISetupables: {changeCount} changes");
+        }
+        if (errorCount > 0)
+        {
+            Debug.LogError($"Check ISetupables: {errorCount} errors");
         }
         return changeCount > 0;
     }

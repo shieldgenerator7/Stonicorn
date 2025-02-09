@@ -8,6 +8,11 @@ public interface ISetupable
 #if UNITY_EDITOR
 
     /// <summary>
+    /// Checks for errors, and reports how many there were
+    /// </summary>
+    public int checkForErrors() { return 0; }
+
+    /// <summary>
     /// Setup, returns how many changes were made, 0 if no changes were made
     /// </summary>
     /// <returns></returns>
