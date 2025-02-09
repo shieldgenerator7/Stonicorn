@@ -113,6 +113,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3706183531131014218}
   m_SourcePrefab: {fileID: 100100000, guid: 57170385b5ed646499dfd174766a0779, type: 3}
+--- !u!212 &3686006692613168248 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 21229248, guid: 57170385b5ed646499dfd174766a0779, type: 3}
+  m_PrefabInstance: {fileID: 3686006692625543864}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3686006692625689020 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 187140, guid: 57170385b5ed646499dfd174766a0779, type: 3}
@@ -173,6 +178,7 @@ MonoBehaviour:
   soundDamageOne: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   secretHiders: []
+  sr: {fileID: 3686006692613168248}
 --- !u!114 &3706183531131014218
 MonoBehaviour:
   m_ObjectHideFlags: 0

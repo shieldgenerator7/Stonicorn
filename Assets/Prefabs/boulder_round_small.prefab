@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beaad298723faa5448af3d1020e2afdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb2d: {fileID: 5058070}
   rooted: 1
   reverse: 0
 --- !u!114 &5028076917332354078
@@ -182,6 +183,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   haListToUncover: []
+  concealRange: 0
+  startPos: {x: 0, y: 0}
+  staticUntilTouched: {fileID: 1055852198592699439}
 --- !u!114 &7335996721853891950
 MonoBehaviour:
   m_ObjectHideFlags: 0
