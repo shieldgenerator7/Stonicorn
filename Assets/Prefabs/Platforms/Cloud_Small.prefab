@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2761856487625864048, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+      propertyPath: shadowSR
+      value: 
+      objectReference: {fileID: 2594338455552171729}
     - target: {fileID: 2891230181969961443, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
       propertyPath: m_RootOrder
       value: 25
@@ -440,6 +444,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &2594338455552171729 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8565899397523436459, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+  m_PrefabInstance: {fileID: 5971985355749944698}
+  m_PrefabAsset: {fileID: 0}
 --- !u!50 &4762765223490571132 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 1222864423378626054, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}

@@ -6631,6 +6631,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2946010386384065859, guid: 4c53f70319e855749b9c22579f3a8550, type: 3}
+      propertyPath: coll2d
+      value: 
+      objectReference: {fileID: 1986257763071878907}
     - target: {fileID: 7097610638833298088, guid: 4c53f70319e855749b9c22579f3a8550, type: 3}
       propertyPath: m_Size.x
       value: 1
@@ -6723,5 +6727,10 @@ PrefabInstance:
 --- !u!4 &1359842569472893112 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7723809909595253995, guid: 4c53f70319e855749b9c22579f3a8550, type: 3}
+  m_PrefabInstance: {fileID: 8786344391371639891}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &1986257763071878907 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 7097610638833298088, guid: 4c53f70319e855749b9c22579f3a8550, type: 3}
   m_PrefabInstance: {fileID: 8786344391371639891}
   m_PrefabAsset: {fileID: 0}
