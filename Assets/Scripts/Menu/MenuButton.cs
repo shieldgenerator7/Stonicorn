@@ -8,7 +8,7 @@ public class MenuButton : MonoBehaviour
     public MenuFrame frame;
     public MenuActionButton mab;
 
-    [SerializeField]
+    [AutoInitialize, SerializeField, HideInInspector]
     private BoxCollider2D bc2d;
 
     public virtual void init()
@@ -18,7 +18,7 @@ public class MenuButton : MonoBehaviour
 
     public virtual void compile()
     {
-        bc2d = GetComponent<BoxCollider2D>();
+        //bc2d = GetComponent<BoxCollider2D>();
     }
 
     public bool tapInArea(Vector2 pos)

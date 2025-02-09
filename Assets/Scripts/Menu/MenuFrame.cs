@@ -10,7 +10,7 @@ public class MenuFrame : MonoBehaviour
 {
     public List<MenuButton> buttons = new List<MenuButton>();
 
-    [SerializeField]
+    [AutoInitialize, SerializeField, HideInInspector]
     private BoxCollider2D bc2d;
 
     public void init()
@@ -20,7 +20,6 @@ public class MenuFrame : MonoBehaviour
 
     public void compile()
     {
-        bc2d = GetComponent<BoxCollider2D>();
         buttons.Clear();
         foreach (Transform t in transform)
         {

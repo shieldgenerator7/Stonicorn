@@ -13,19 +13,14 @@ public class MenuButtonSwitch : MenuButton
 
     private bool active = true;
 
-    [SerializeField]
+    [AutoInitialize(SearchChildren =true,AllowUnfound =true), SerializeField, HideInInspector]
     private SpriteRenderer sr;
-    [SerializeField]
+    [AutoInitialize, SerializeField, HideInInspector]
     private MenuActionSwitch mas;
 
     public override void compile()
     {
         base.compile();
-        sr = GetComponent<SpriteRenderer>();
-        if (sr == null)
-        {
-            sr = GetComponentInChildren<SpriteRenderer>();
-        }
         if (sr)
         {
             if (activatedSprite == null && deactivatedSprite == null)
@@ -57,7 +52,6 @@ public class MenuButtonSwitch : MenuButton
                 }
             }
         }
-        mas = GetComponent<MenuActionSwitch>();
 
     }
 

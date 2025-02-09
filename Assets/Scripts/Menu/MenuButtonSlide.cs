@@ -59,13 +59,12 @@ public class MenuButtonSlide : MenuButton
     private EdgeCollider2D sliderBarEC2D;
     [SerializeField]
     private float sliderBarWidth;
-    [SerializeField, HideInInspector]
+    [AutoInitialize, SerializeField, HideInInspector]
     private MenuActionSlide mas;
 
     public override void compile()
     {
         base.compile();
-        mas = GetComponent<MenuActionSlide>();
         MaxValue = mas.getOverriddenMaxValue(MaxValue);
         sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
         sliderBarEC2D = sliderBar.GetComponent<EdgeCollider2D>();
