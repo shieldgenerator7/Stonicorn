@@ -330,6 +330,7 @@ public class GameManager : MonoBehaviour
     //Auto-save on exit
     void OnApplicationQuit()
     {
+        Debug.Log("OnApplicationQuit() called");
         saveGame();
     }
     private void OnApplicationPause(bool pause)
@@ -341,6 +342,7 @@ public class GameManager : MonoBehaviour
     }
     private void saveGame()
     {
+        Debug.Log("GameManager.saveGame() called");
         //Save the game state and then
         Managers.Rewind.Save();
         //Save the game to file

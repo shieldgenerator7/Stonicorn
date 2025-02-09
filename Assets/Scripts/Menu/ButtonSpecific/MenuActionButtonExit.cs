@@ -6,6 +6,7 @@ public class MenuActionButtonExit : MenuActionButton
 {
     public override void activate()
     {
+        Debug.Log("Quitting...");
         Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
