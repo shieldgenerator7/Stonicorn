@@ -14,8 +14,9 @@ public class SceneSavableList : MonoBehaviour
     public List<GameObject> memories = new List<GameObject>();
 
     public static SceneSavableList getFromScene(Scene s)
-        => s.GetRootGameObjects().ToList()
-            .Find(go => go.GetComponent<SceneSavableList>())
+        => s.GetRootGameObjects()
+            .Where(go => go.GetComponent<SceneSavableList>())
+            .FirstOrDefault()
             .GetComponent<SceneSavableList>();
 
 
