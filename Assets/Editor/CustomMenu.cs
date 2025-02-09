@@ -1431,13 +1431,28 @@ public class CustomMenu
                         if (!component)
                         {
                             AutoInitialize auto = field.GetCustomAttribute<AutoInitialize>();
-                            if (auto.AllowUnfound)
+                            if (!component && auto.SearchParent)
+                            {
+                                component = mb.GetComponentInParent(field.FieldType);
+                            }
+                            if (!component && auto.SearchChildren)
+                            {
+                                component = mb.GetComponentInChildren(field.FieldType);
+                            }
+                            if (!component && auto.SearchScene)
+                            {
+                                component = (Component)GameObject.FindAnyObjectByType(field.FieldType);
+                            }
+                            if (!component && auto.AllowUnfound)
                             {
                                 return;
                             }
+                            if (!component)
+                            {
                             Debug.LogError($"Component not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
                             errors++;
                             return;
+                            }
                         }
                         Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
                         field.SetValue(mb, component);
