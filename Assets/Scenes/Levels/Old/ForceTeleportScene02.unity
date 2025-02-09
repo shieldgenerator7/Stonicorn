@@ -550,6 +550,7 @@ MonoBehaviour:
   planModeCanvas: {fileID: 0}
   defaultOffsetZ: -10
   allowedOutOfCameraAmount: 0.1
+  camera: {fileID: 0}
   originalCameraPosition: {x: 0, y: 0}
 --- !u!81 &41450817
 AudioListener:
@@ -11958,6 +11959,8 @@ MonoBehaviour:
   friend: {fileID: 1990337877}
   bounce: 0
   grounded: 0
+  rb2d: {fileID: 0}
+  circleCollider: {fileID: 0}
 --- !u!58 &986269613
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -15280,6 +15283,8 @@ MonoBehaviour:
   forceMultiplierHeavy: 2
   forceMultiplierSteady: 1
   variance: 0
+  rb: {fileID: 0}
+  bc2d: {fileID: 0}
 --- !u!61 &1295932211
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -37724,6 +37729,8 @@ MonoBehaviour:
   friend: {fileID: 986269608}
   bounce: 0
   grounded: 0
+  rb2d: {fileID: 0}
+  circleCollider: {fileID: 0}
 --- !u!58 &1990337882
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -299,6 +299,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  cam: {fileID: 0}
+  camCntr: {fileID: 0}
 --- !u!1 &180589087
 GameObject:
   m_ObjectHideFlags: 0
@@ -5225,6 +5227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 0}
   dependsOnTeleportRange: 0
 --- !u!1 &240129648
 GameObject:
@@ -5512,6 +5515,7 @@ MonoBehaviour:
   gravityScale: 9.81
   mainGravityZone: 1
   radialGravity: 1
+  coll2d: {fileID: 0}
 --- !u!58 &709419340
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10668,6 +10672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 0}
   dependsOnTeleportRange: 0
 --- !u!1 &982325230
 GameObject:
@@ -15510,6 +15515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 0}
   dependsOnTeleportRange: 0
 --- !u!1 &988373620
 GameObject:
@@ -20539,6 +20545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 0}
   dependsOnTeleportRange: 0
 --- !u!1 &1125714640
 GameObject:
@@ -25643,6 +25650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 0}
   dependsOnTeleportRange: 0
 --- !u!1001 &1254834896
 PrefabInstance:
@@ -26511,6 +26519,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameDataContainer: {fileID: 0}
+  managerList: []
+  gameManager: {fileID: 0}
+  gestureManager: {fileID: 0}
+  dialogueManager: {fileID: 0}
+  eventManager: {fileID: 0}
+  gameStatistics: {fileID: 0}
+  timeManager: {fileID: 0}
+  rewindManager: {fileID: 0}
+  objectManager: {fileID: 0}
+  physics2DSurrogate: {fileID: 0}
+  musicManager: {fileID: 0}
+  soundManager: {fileID: 0}
+  videoManager: {fileID: 0}
+  effectManager: {fileID: 0}
+  scenesManager: {fileID: 0}
+  settingsManager: {fileID: 0}
+  fileManager: {fileID: 0}
+  demoModeManager: {fileID: 0}
+  powerManager: {fileID: 0}
+  playerController: {fileID: 0}
+  playerRewindController: {fileID: 0}
+  playerPilotController: {fileID: 0}
+  cameraController: {fileID: 0}
 --- !u!4 &1786363961
 Transform:
   m_ObjectHideFlags: 0

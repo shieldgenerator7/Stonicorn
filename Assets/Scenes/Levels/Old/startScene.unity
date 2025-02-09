@@ -1135,6 +1135,11 @@ MonoBehaviour:
   scoutColliderMin: {fileID: 0}
   scoutColliderMax: {fileID: 0}
   _halfWidth: 0
+  rb2d: {fileID: 0}
+  pc2d: {fileID: 0}
+  gravityAccepter: {fileID: 0}
+  groundChecker: {fileID: 0}
+  teleportAbility: {fileID: 0}
 --- !u!60 &502139758
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2703,6 +2708,7 @@ MonoBehaviour:
   planModeCanvas: {fileID: 0}
   defaultOffsetZ: -10
   allowedOutOfCameraAmount: 0.1
+  camera: {fileID: 0}
   originalCameraPosition: {x: 0, y: 0}
 --- !u!82 &670054751
 AudioSource:
@@ -4682,6 +4688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentObj: {fileID: 502139756}
+  sr: {fileID: 0}
 --- !u!212 &1156560958
 SpriteRenderer:
   m_ObjectHideFlags: 0

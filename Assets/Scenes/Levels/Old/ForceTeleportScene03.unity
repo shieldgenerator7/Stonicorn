@@ -8054,6 +8054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportParticles: {fileID: 0}
   dependsOnTeleportRange: 0
 --- !u!4 &201134534
 Transform:
@@ -19768,6 +19769,8 @@ MonoBehaviour:
   friend: {fileID: 917414193}
   bounce: 0
   grounded: 0
+  rb2d: {fileID: 0}
+  circleCollider: {fileID: 0}
 --- !u!58 &807140623
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -21887,6 +21890,8 @@ MonoBehaviour:
   friend: {fileID: 807140621}
   bounce: 0
   grounded: 0
+  rb2d: {fileID: 0}
+  circleCollider: {fileID: 0}
 --- !u!58 &917414195
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -26014,6 +26019,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64aed6d732f749949b9d3db926e912d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  music: {fileID: 0}
+  coll2d: {fileID: 0}
 --- !u!60 &1118626204
 PolygonCollider2D:
   m_ObjectHideFlags: 0
