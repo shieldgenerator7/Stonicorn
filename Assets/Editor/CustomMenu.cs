@@ -623,6 +623,7 @@ public class CustomMenu
                 ensureNPCsHaveDialogueTriggers,
                 checkDialogueEvents,
                 checkISetupables,
+                checkAutoInitializeTags,
             }
             .ConvertAll(func =>
             {
@@ -1385,6 +1386,41 @@ public class CustomMenu
         if (changeCount > 0)
         {
             Debug.LogWarning($"Check ISetupables: {changeCount} changes");
+        }
+        return changeCount > 0;
+    }
+
+    [MenuItem("SG7/Build/Pre-Build/Check AutoInitialize Tags")]
+    public static bool checkAutoInitializeTags()
+    {
+        int changeCount = 0;
+        List<MonoBehaviour> mblist = GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).ToList();
+        Debug.Log($"checkAutoInitializeTags: {mblist.Count} MonoBehaviours found");
+            mblist.ForEach(mb =>
+            {
+                int changes = 0;
+
+                mb.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    .Where(field => field.GetCustomAttribute<AutoInitialize>() != null)
+                    .Where(field => field.GetValue(mb) == null)
+                    .ToList()
+                    .ForEach(field =>
+                    {
+                        Debug.LogWarning($"Changing field {field.Name}:{field.FieldType.Name} on MonoBehaviour {mb.GetType().Name}");
+                        field.SetValue(mb, mb.GetComponent(field.FieldType));
+                        changes++;
+                    });
+
+                if (changes > 0)
+                {
+                    EditorUtility.SetDirty(mb);
+                    Debug.LogWarning($"Check AutoInitialize Tags: {mb.name} ({mb.GetType().Name}) changes: {changes}", mb);
+                    changeCount += changes;
+                }
+            });
+        if (changeCount > 0)
+        {
+            Debug.LogWarning($"Check AutoInitialize Tags: {changeCount} changes");
         }
         return changeCount > 0;
     }
