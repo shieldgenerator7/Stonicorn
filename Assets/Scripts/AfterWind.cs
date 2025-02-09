@@ -9,6 +9,7 @@ public class AfterWind : SavableMonoBehaviour, ICuttable, ISetupable
     public float windForce = 10;//magnitude
 
     [SerializeField]
+    [AutoInitialize]
     private BoxCollider2D coll;
     private RaycastHit2D[] rch2dStartup = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
@@ -81,16 +82,13 @@ public class AfterWind : SavableMonoBehaviour, ICuttable, ISetupable
     public int setup()
     {
         int changes = 0;
-        if (!coll)
-        {
-            coll = GetComponent<BoxCollider2D>();
-            changes++;
-        }
+
         if (windVector == Vector2.zero)
         {
             init();
             changes++;
         }
+
         return changes;
     }
 #endif
