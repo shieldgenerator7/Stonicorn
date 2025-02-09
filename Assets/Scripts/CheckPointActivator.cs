@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class CheckPointActivator : MonoBehaviour
+public class CheckPointActivator : MonoBehaviour, ISetupable
 {
     //Place this on an object with a Collider
     // w/ isTrigger checked
@@ -12,6 +12,18 @@ public class CheckPointActivator : MonoBehaviour
     private CheckPointChecker checker;
 
     private void Start()
+    {
+    }
+
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.isPlayer())
+        {
+            checker.activate();
+        }
+    }
+
+    public int setup()
     {
         //Check for errors
         if (transform.parent == null)
@@ -39,13 +51,7 @@ public class CheckPointActivator : MonoBehaviour
         {
             throw new UnityException("The object ("+name+") has no trigger collider!");
         }
-    }
 
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.isPlayer())
-        {
-            checker.activate();
-        }
+        return 0;
     }
 }
