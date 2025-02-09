@@ -242,6 +242,11 @@ MonoBehaviour:
   scoutColliderMin: {fileID: 0}
   scoutColliderMax: {fileID: 0}
   _halfWidth: 0
+  rb2d: {fileID: 0}
+  pc2d: {fileID: 0}
+  gravityAccepter: {fileID: 0}
+  groundChecker: {fileID: 0}
+  teleportAbility: {fileID: 0}
 --- !u!114 &-4868601944940776909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +265,8 @@ MonoBehaviour:
   unlocked: 0
   upgradeLevel: 0
   upgradeLevels: []
+  playerController: {fileID: 439012610715115051}
+  rb2d: {fileID: 6331572983030962032}
   baseRange: 3
   exhaustRange: 1
   dampenSpeed: 1
@@ -324,6 +331,8 @@ MonoBehaviour:
     stat3: 0.9
     stat4: 1
     featureLevel: 2
+  playerController: {fileID: 439012610715115051}
+  rb2d: {fileID: 6331572983030962032}
   maxPullBackDistance: 3
   maxLaunchSpeed: 20
   bounceEnergyConservationPercent: 0.9
@@ -352,6 +361,7 @@ MonoBehaviour:
   saveValues: 1
   gravityScale: 1
   acceptsGravity: 1
+  rb2d: {fileID: 6331572983030962032}
 --- !u!114 &2245492183899647457
 MonoBehaviour:
   m_ObjectHideFlags: 0

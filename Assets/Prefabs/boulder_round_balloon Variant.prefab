@@ -115,6 +115,7 @@ MonoBehaviour:
   saveValues: 1
   gravityScale: 1
   acceptsGravity: 1
+  rb2d: {fileID: 3686006692629535918}
 --- !u!114 &1013786527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,6 +131,7 @@ MonoBehaviour:
   peakMax: 0.02
   peakMin: -0.02
   cycleLength: 2
+  ga: {fileID: 1013786526}
 --- !u!114 &4594351025644047362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,3 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageDealt: 2
+--- !u!50 &3686006692629535918 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 5058070, guid: 57170385b5ed646499dfd174766a0779, type: 3}
+  m_PrefabInstance: {fileID: 3686006692625543864}
+  m_PrefabAsset: {fileID: 0}
