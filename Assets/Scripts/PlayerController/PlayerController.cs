@@ -47,22 +47,27 @@ public class PlayerController : MonoBehaviour, ISetupable
     [SerializeField]
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
     [SerializeField]
+    [AutoInitialize]
     private Rigidbody2D rb2d;
     [SerializeField]
+    [AutoInitialize]
     private PolygonCollider2D pc2d;
     public float Speed
         => rb2d.linearVelocity.magnitude;
 
     [SerializeField]
+    [AutoInitialize]
     private GravityAccepter gravityAccepter;
     public GravityAccepter GravityAccepter => gravityAccepter;
     public Vector2 GravityDir => GravityAccepter.Gravity;
 
     [SerializeField]
+    [AutoInitialize]
     private GroundChecker groundChecker;
     public GroundChecker Ground => groundChecker;
 
     [SerializeField]
+    [AutoInitialize]
     private TeleportAbility teleportAbility;
     public TeleportAbility Teleport => teleportAbility;
 
@@ -607,40 +612,11 @@ public class PlayerController : MonoBehaviour, ISetupable
     {
         int changes = 0;
 
-        //Retrieve components
-        if (!rb2d)
-        {
-            rb2d = GetComponent<Rigidbody2D>();
-            changes++;
-        }
-        if (!groundChecker)
-        {
-            groundChecker = GetComponent<GroundChecker>();
-            changes++;
-        }
-        if (!gravityAccepter)
-        {
-            gravityAccepter = GetComponent<GravityAccepter>();
-            changes++;
-        }
-        if (!pc2d)
-        {
-            pc2d = GetComponent<PolygonCollider2D>();
-            changes++;
-        }
-
         //Estimate the halfWidth
         if (_halfWidth == 0)
         {
             Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
             _halfWidth = (extents.x + extents.y) / 2;
-            changes++;
-        }
-
-        //Teleport Ability
-        if (!teleportAbility)
-        {
-            teleportAbility = GetComponent<TeleportAbility>();
             changes++;
         }
 
