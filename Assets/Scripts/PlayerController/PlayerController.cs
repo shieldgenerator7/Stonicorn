@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour, ISetupable
     // Components
     //
 
-    [SerializeField]
     private PolygonCollider2D groundedTrigger;//used to determine when Merky is near ground
     [SerializeField]
     [AutoInitialize]
