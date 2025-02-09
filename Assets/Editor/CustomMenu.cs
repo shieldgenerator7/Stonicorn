@@ -1341,7 +1341,7 @@ public class CustomMenu
                 //    Debug.Log($"propmod === target {propmod.target.GetType()} type attr {attr}, {attr.AttributeType}");
                 //});
                 {
-                    Debug.LogError($"propmod {soi.gameObject.name}: target:{propmod.target?.GetType()},                              {propmod.propertyPath}: {propmod.value}", soi.gameObject);
+                    Debug.LogError($"Problematic prefab override!: {soi.gameObject.name}: target:{propmod.target?.GetType()},                              {propmod.propertyPath}: {propmod.value}", soi.gameObject);
                     problemCount++;
                 }
             });
