@@ -7,6 +7,13 @@ public class MilestoneActivatorAbility : MilestoneActivator
     public bool canGrantAbility = true;
     public bool canGrantUpgrade = true;
 
+
+    [AutoInitialize(AllowUnfound =true), SerializeField, HideInInspector]
+    private Fader fader;
+
+    [AutoInitialize(AllowUnfound =true,SearchChildren =true), SerializeField, HideInInspector]
+    private SimpleScaling scaling;
+
     public override void activateEffect()
     {
         PlayerAbility pa = ((PlayerAbility)Managers.Player.GetComponent(abilityTypeName));
@@ -25,12 +32,10 @@ public class MilestoneActivatorAbility : MilestoneActivator
         {
             Debug.LogError($"Can't find ability on player with name {abilityTypeName}!");
         }
-        Fader fader = GetComponent<Fader>();
         if (fader)
         {
             fader.enabled = true;
         }
-        SimpleScaling scaling = GetComponent<SimpleScaling>() ?? GetComponentInChildren<SimpleScaling>();
         if (scaling)
         {
             scaling.enabled = true;

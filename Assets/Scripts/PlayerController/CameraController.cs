@@ -72,18 +72,10 @@ public class CameraController : MonoBehaviour, ISetupable
 
     private float scale = 1;//scale used to determine fieldOfView, independent of (landscape or portrait) orientation
     private float desiredScale = 0;//the value that scale should move towards
+
+    [AutoInitialize, SerializeField, HideInInspector]
     private new Camera camera;
-    private Camera Cam
-    {
-        get
-        {
-            if (camera == null)
-            {
-                camera = GetComponent<Camera>();
-            }
-            return camera;
-        }
-    }
+    private Camera Cam => camera;
 
     /// <summary>
     /// While true, the camera cannot move or rotate

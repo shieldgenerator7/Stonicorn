@@ -8,6 +8,7 @@ public class StickyPadChecker : SavableMonoBehaviour
     private List<string> connectedObjs = new List<string>();
     private List<int> connectedIds = new List<int>();
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
 
     // Use this for initialization
@@ -19,7 +20,6 @@ public class StickyPadChecker : SavableMonoBehaviour
     public override void init()
     {
         Debug.Log($"StickyPad.init()");
-        rb2d = GetComponent<Rigidbody2D>();
     }
 
     public void init(Vector2 normal)

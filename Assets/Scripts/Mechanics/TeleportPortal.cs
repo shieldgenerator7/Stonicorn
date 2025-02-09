@@ -7,6 +7,8 @@ public class TeleportPortal : SavableMonoBehaviour
     private int otherEndId;
 
     private TeleportPortal otherEnd;
+
+    [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
     public override SavableObject CurrentState
@@ -27,7 +29,6 @@ public class TeleportPortal : SavableMonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        coll2d = GetComponent<Collider2D>();
         //Avoid being at Vector2.zero
         if ((Vector2)transform.position == Vector2.zero)
         {

@@ -7,6 +7,7 @@ public class SwapAbility : PlayerAbility
 {
     public float swapSizeScaleLimit = 1;
 
+    [AutoInitialize,SerializeField,HideInInspector]
     private PolygonCollider2D pc2d;
 
     private GameObject swapTarget;
@@ -28,7 +29,6 @@ public class SwapAbility : PlayerAbility
         base.init();
         playerController.Teleport.findTeleportablePositionOverride += findSwapPosition;
         playerController.Teleport.onRangeChanged += onRangeChanged;
-        pc2d = GetComponent<PolygonCollider2D>();
     }
     public override void OnDisable()
     {
@@ -210,9 +210,10 @@ public class SwapAbility : PlayerAbility
             rb2d.nullifyMovement();
             //Swap object
             Vector2 swapPos = (Vector2)gameObject.transform.position - newPos + oldPos;
-            if (isOccupiedForObject(gameObject.GetComponent<Collider2D>(), swapPos))
+            Collider2D swapColl = swapTarget.GetComponent<Collider2D>();
+            if (isOccupiedForObject(swapColl, swapPos))
             {
-                swapPos = adjustForOccupant(gameObject.GetComponent<Collider2D>(), swapPos);
+                swapPos = adjustForOccupant(swapColl, swapPos);
             }
             swapTarget.transform.position = swapPos;
             swappedSomething = true;

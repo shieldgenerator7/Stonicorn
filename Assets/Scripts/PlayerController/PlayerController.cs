@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour, ISetupable
     [SerializeField]
     [AutoInitialize]
     private PolygonCollider2D pc2d;
+    public Collider2D Collider2D => pc2d;
     public float Speed
         => rb2d.linearVelocity.magnitude;
 
@@ -181,7 +182,6 @@ public class PlayerController : MonoBehaviour, ISetupable
         {
             //Make a new ground trigger collider
             //by copying Merky's collider
-            PolygonCollider2D pc2d = GetComponent<PolygonCollider2D>();
             groundedTrigger = gameObject.AddComponent<PolygonCollider2D>();
             groundedTrigger.points = pc2d.points;
             groundedTrigger.isTrigger = true;

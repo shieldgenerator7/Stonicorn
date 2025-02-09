@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class ForceLaunchProjectile : MonoBehaviour
 {
+
+    [AutoInitialize, SerializeField, HideInInspector]
+    private ForceLaunchAbility forceLaunchAbility;
+
     private void Start()
     {
-        GetComponent<ForceLaunchAbility>().setOnFire();
+        forceLaunchAbility.setOnFire();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

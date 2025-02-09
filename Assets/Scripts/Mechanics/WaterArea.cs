@@ -8,11 +8,11 @@ public class WaterArea : MonoBehaviour
     public float maxSpeed;//the maximum speed allowed underwater
     public float slowDuration;//how long it takes the water to slow something from maxSpeed to minSpeed
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
     private void Start()
     {
-        coll2d = GetComponent<Collider2D>();
     }
 
     private void FixedUpdate()

@@ -2,22 +2,21 @@ using UnityEngine;
 
 [RequireComponent(typeof(GravityAccepter))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class CloudMover : MonoBehaviour
+public class CloudMover : MonoBehaviour, ISetupable
 {
     public bool destroyOnCollisionWithUnmovableSolid = true;
     public GameObject shadow;
 
+    [AutoInitialize, SerializeField, HideInInspector]
     Rigidbody2D rb2d;
+    [SerializeField, HideInInspector]
     SpriteRenderer shadowSR;
+    [AutoInitialize, SerializeField, HideInInspector]
+    Fader fader;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-        if (shadow)
-        {
-            shadowSR = shadow?.GetComponent<SpriteRenderer>();
-        }
         FindAnyObjectByType<CloudMoverManager>().updateClouds();//TODO: set this up correctly
     }
 
@@ -33,7 +32,6 @@ public class CloudMover : MonoBehaviour
             rb2d.linearVelocity = Vector2.zero;
             this.enabled = false;
             //make it disappear
-            Fader fader = GetComponent<Fader>();
             fader.enabled = true;
             //make shadow disappear
             if (shadow)
@@ -59,5 +57,19 @@ public class CloudMover : MonoBehaviour
         Vector2 size = shadowSR.size;
         size.y = height;
         shadowSR.size = size;
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+        if (shadow)
+        {
+            SpriteRenderer newShadowSR = shadow.GetComponent<SpriteRenderer>();
+            if (newShadowSR != shadowSR) { 
+            shadowSR = newShadowSR;
+                changeCount++;
+            }
+        }
+        return changeCount;
     }
 }

@@ -9,10 +9,13 @@ public class OnTriggerActivate : MonoBehaviour
     public bool activeOnPlayerOut = false;
     public bool waitForDialogueFinish = true;
 
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
+
     private void Start()
     {
-        bool playerInTrigger = GetComponent<Collider2D>()
-            .OverlapsCollider(Managers.Player.GetComponent<PolygonCollider2D>());//dirty: assumes player is using PolygonCollider2D
+        bool playerInTrigger = coll2d
+            .OverlapsCollider(Managers.Player.Collider2D);//dirty: assumes player is using PolygonCollider2D
         //activate objects
         activateObjects((playerInTrigger) ? activeOnPlayerIn : activeOnPlayerOut);
     }

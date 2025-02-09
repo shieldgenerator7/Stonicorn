@@ -82,12 +82,12 @@ public class TeleportAbility : PlayerAbility
 
     private bool hasFreeTeleport = true;//allow teleporting once in the air
 
+    [AutoInitialize,SerializeField,HideInInspector]
     private PolygonCollider2D pc2d;
 
     public override void init()
     {
         base.init();
-        pc2d = GetComponent<PolygonCollider2D>();
         playerController.onGroundedStateUpdated += onGroundedChanged;
         Managers.Rewind.onRewindFinished += onRewindFinished;
         //TeleportAbility doesn't need an onTeleport delegate

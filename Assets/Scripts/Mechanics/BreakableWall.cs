@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakableWall : SavableMonoBehaviour, IBlastable
+public class BreakableWall : SavableMonoBehaviour, IBlastable, ISetupable
 {
     public float minForceThreshold = 2.5f;//the minimum amount of force required to crack it
     public float maxForceThreshold = 50;//the maximum amount of force consumed per damage
@@ -23,10 +23,6 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
             {
                 if (crackStages.Count > 0)
                 {
-                    if (sr == null)
-                    {
-                        sr = GetComponent<SpriteRenderer>();
-                    }
                     int index = (int)Mathf.Clamp(
                         maxIntegrity - integrity,
                         0,
@@ -69,6 +65,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
     public List<HiddenArea> secretHiders;
 
     //Components
+    [AutoInitialize, SerializeField, HideInInspector]
     private SpriteRenderer sr;
 
     // Start is called before the first frame update
@@ -78,17 +75,8 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
     }
     public override void init()
     {
-        //Components
-        sr = GetComponent<SpriteRenderer>();
         //Initialize integrity
-        if (integrity == 0)
-        {
-            Integrity = maxIntegrity;
-        }
-        else
-        {
             Integrity = Integrity;
-        }
     }
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -135,6 +123,17 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable
     public float getDistanceFromExplosion(Vector2 explosionPos)
     {
         return explosionPos.distanceToObject(gameObject);
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+        if (integrity == 0)
+        {
+            Integrity = maxIntegrity;
+            changeCount++;
+        }
+        return changeCount;
     }
 
     public override SavableObject CurrentState

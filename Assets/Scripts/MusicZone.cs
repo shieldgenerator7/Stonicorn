@@ -5,7 +5,9 @@ using UnityEngine;
 public class MusicZone : MonoBehaviour
 {
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private AudioSource music;
+    [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
     // Use this for initialization
@@ -16,9 +18,7 @@ public class MusicZone : MonoBehaviour
 
     public void init()
     {
-        music = GetComponent<AudioSource>();
         music.volume = 0;
-        coll2d = GetComponent<Collider2D>();
     }
 
     void OnTriggerEnter2D(Collider2D coll)

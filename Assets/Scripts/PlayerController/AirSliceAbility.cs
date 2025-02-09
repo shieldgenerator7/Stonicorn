@@ -24,21 +24,23 @@ public class AirSliceAbility : PlayerAbility
     public delegate void OnAirPortsUsedChanged(int airPortsUsed, int maxAirPorts);
     public event OnAirPortsUsedChanged onAirPortsUsedChanged;
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private SwapAbility swapAbility;
+    [AutoInitialize, SerializeField, HideInInspector]
+    private ForceLaunchAbility forceLaunchAbility;
 
     // Use this for initialization
     public override void init()
     {
         base.init();
         playerController.onGroundedStateUpdated += resetAirPorts;
-        swapAbility = GetComponent<SwapAbility>();
-        GetComponent<ForceLaunchAbility>().onLaunch += useAirPort;
+        forceLaunchAbility.onLaunch += useAirPort;
     }
     public override void OnDisable()
     {
         base.OnDisable();
         playerController.onGroundedStateUpdated -= resetAirPorts;
-        GetComponent<ForceLaunchAbility>().onLaunch -= useAirPort;
+        forceLaunchAbility.onLaunch -= useAirPort;
     }
 
     protected override bool isGrounded()

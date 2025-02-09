@@ -36,14 +36,14 @@ public class CinematicCameraController : MonoBehaviour
 
     private Vector2 targetUp;//used to smoothly rotate the camera between gravity zones
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Camera cam;
+    [AutoInitialize, SerializeField, HideInInspector]
     private CameraController camCntr;
 
     // Start is called before the first frame update
     void Start()
     {
-        cam = GetComponent<Camera>();
-        camCntr = GetComponent<CameraController>();
     }
 
     // Update is called once per frame

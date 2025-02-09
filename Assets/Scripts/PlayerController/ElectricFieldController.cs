@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElectricFieldController : SavableMonoBehaviour, IBlastable
+public class ElectricFieldController : SavableMonoBehaviour, IBlastable, ISetupable
 {//2018-01-07: copied from ShieldBubbleController
     public float range = 3;//how big the shield is
 
@@ -11,11 +11,18 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
     public float energyToSlowRatio;//used to "convert" energy to momentum dampening on all objects in aoe, regardless of how close to the center
 
     //2018-01-07: copied from ElectricFieldAbility
+    [AutoInitialize, SerializeField, HideInInspector]
     private TeleportRangeIndicatorUpdater friu;//"field range indicator updater"
+    [AutoInitialize, SerializeField, HideInInspector]
     private CircleCollider2D aoeCollider;//the collider that is used to determine which objects are in the electric field's area of effect
     public float maxForceResistance = 500f;//if it gets this much force, it takes out the field, but it will come right back up
 
+    [AutoInitialize(SearchChildren =true), SerializeField, HideInInspector]
     private ParticleSystemController particleController;
+
+    [AutoInitialize, SerializeField, HideInInspector]
+    private SpriteRenderer sr;
+    [SerializeField]
     private Color effectColor;
     /// <summary>
     /// Used to determine which objects this field can power
@@ -24,19 +31,10 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
 
     private void Start()
     {
-        if (!friu)
-        {
-            init();
-        }
     }
 
     public override void init()
     {
-        effectColor = GetComponent<SpriteRenderer>().color;
-        effectColor.a = 1;
-        friu = GetComponent<TeleportRangeIndicatorUpdater>();
-        aoeCollider = GetComponent<CircleCollider2D>();
-        particleController = GetComponentInChildren<ParticleSystemController>();
     }
 
     public override SavableObject CurrentState
@@ -134,5 +132,17 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
     void dissipate()
     {
         Managers.Object.destroyObject(gameObject);
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+        if (effectColor != sr.color)
+        {
+            effectColor = sr.color;
+            effectColor.a = 1;
+            changeCount++;
+        }
+        return changeCount;
     }
 }

@@ -5,6 +5,9 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
 {
+    [AutoInitialize,SerializeField,HideInInspector]
+    private Rigidbody2D rb2d;
+
     [SerializeField]
     private bool rooted = true;
     public bool Rooted
@@ -13,7 +16,7 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
         set
         {
             rooted = value;
-            GetComponent<Rigidbody2D>().bodyType = (rooted) ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
+            rb2d.bodyType = (rooted) ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
             onRootedChanged?.Invoke(rooted);
         }
     }
@@ -36,6 +39,7 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
         Rooted = rooted;
 
         //register if not
+        //this is because the SwapAbility can add this script to objects
         register();
     }
 
