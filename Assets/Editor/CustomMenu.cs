@@ -1441,7 +1441,12 @@ public class CustomMenu
                             }
                             if (!component && auto.SearchScene)
                             {
-                                component = (Component)GameObject.FindAnyObjectByType(field.FieldType);
+                                Scene scene = mb.gameObject.scene;
+                                component = (Component)GameObject.FindObjectsByType(field.FieldType, FindObjectsSortMode.None)
+                                    //don't allow setting it to an object in a different scene
+                                    .First(obj =>
+                                        ((Component)obj).gameObject.scene == scene
+                                    );
                             }
                             if (!component && auto.AllowUnfound)
                             {
