@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Launcher : SavableMonoBehaviour, IPowerable
+public class Launcher : SavableMonoBehaviour, IPowerable, ISetupable
 {
     public float maxEnergyPerSecond = 3;
     public float maxEnergyStore = 100;
@@ -42,13 +42,13 @@ public class Launcher : SavableMonoBehaviour, IPowerable
             EnergyStored = value.Float("energyStored");
         }
     }
+
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
+    public Collider2D Collider2D => coll2d;
+
     public override void init()
     {
-        //Error checking
-        if (!launchColl || !launchColl.isTrigger)
-        {
-            Debug.LogError("Launcher.launchColl requires a collider that is a trigger!", gameObject);
-        }
     }
 
     public float acceptPower(float power)
@@ -93,5 +93,21 @@ public class Launcher : SavableMonoBehaviour, IPowerable
     {
         //Discharge energy based on how much energy is already stored
         EnergyStored -= energyEntropy * Time.deltaTime * energyStored / maxEnergyStore;
+    }
+
+    public int setup()
+    {
+        return 0;
+    }
+    public int checkForErrors()
+    {
+        int errorCount = 0;
+        //Error checking
+        if (!launchColl || !launchColl.isTrigger)
+        {
+            Debug.LogError("Launcher.launchColl requires a collider that is a trigger!", gameObject);
+            errorCount++;
+        }
+        return errorCount;
     }
 }

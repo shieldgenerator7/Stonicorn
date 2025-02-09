@@ -14,11 +14,11 @@ public class PoweredEnabler : MonoBehaviour
     public List<MonoBehaviour> compList;
 
     private bool currentlyOn = false;
+    [AutoInitialize(SearchParent = true), SerializeField, HideInInspector]
     private IPowerConduit conduit;
 
     void Start()
     {
-        conduit = GetComponent<IPowerConduit>() ?? GetComponentInParent<IPowerConduit>();
         conduit.OnPowerFlowed += onPowerFlowed;
         turnOn(false);
     }

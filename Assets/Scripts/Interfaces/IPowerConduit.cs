@@ -29,4 +29,9 @@ public interface IPowerConduit
     {
         get;
     }
+
+    Collider2D Collider2D
+    {
+        get;
+    }
 }

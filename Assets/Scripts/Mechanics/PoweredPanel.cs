@@ -20,6 +20,11 @@ public class PoweredPanel : SavableMonoBehaviour, IPowerable
         get => new SavableObject(this);
         set { }
     }
+
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
+    public Collider2D Collider2D => coll2d;
+
     public override void init()
     {
     }

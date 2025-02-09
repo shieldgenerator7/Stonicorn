@@ -27,6 +27,10 @@ public class PoweredDoorOpener : SavableMonoBehaviour, IPowerable
 
     private RaycastHit2D[] rch2dStartup = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
+    public Collider2D Collider2D => coll2d;
+
     public override void init()
     {
         moveVector = transform.up;

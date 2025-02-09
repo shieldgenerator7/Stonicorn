@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerWire : SavableMonoBehaviour, IPowerTransferer, ICuttable
+public class PowerWire : SavableMonoBehaviour, IPowerTransferer, ICuttable, ISetupable
 {
     public float throughPut;
 
@@ -31,19 +31,12 @@ public class PowerWire : SavableMonoBehaviour, IPowerTransferer, ICuttable
         set { }
     }
 
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
+    public Collider2D Collider2D => coll2d;
+
     public override void init()
     {
-        //Autoset BoxCollider2D size
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        //TODO: get rid of this code, and/or move it to prebuild tasks (maybe?)
-        if (sr)
-        {
-            GetComponent<BoxCollider2D>().size = sr.size;
-            foreach (SpriteRenderer sr1 in GetComponentsInChildren<SpriteRenderer>())
-            {
-                sr1.size = sr.size;
-            }
-        }
     }
 
     public float transferPower(float power)
@@ -67,5 +60,33 @@ public class PowerWire : SavableMonoBehaviour, IPowerTransferer, ICuttable
     private void OnTriggerExit2D(Collider2D collision)
     {
         Managers.Power.generateConnectionMap();
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr)
+        {
+            Vector2 size = sr.size;
+            //Autoset BoxCollider2D size
+            BoxCollider2D bc2d = GetComponent<BoxCollider2D>();
+            if (bc2d.size != size)
+            {
+                bc2d.size = size;
+                changeCount++;
+            }
+            foreach (SpriteRenderer sr1 in GetComponentsInChildren<SpriteRenderer>())
+            {
+                if (sr1.size != size)
+                {
+                sr1.size = size;
+                    changeCount++;
+                }
+            }
+        }
+
+        return changeCount;
     }
 }

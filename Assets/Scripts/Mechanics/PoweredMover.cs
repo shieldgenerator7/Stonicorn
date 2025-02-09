@@ -15,7 +15,12 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
 
     private Vector2 gravityCenter = Vector2.zero;//TODO: make this rely on a gravity zone to find
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
+    public Collider2D Collider2D => coll2d;
+
 
     public float ThroughPut => maxEnergyPerSecond;
     public GameObject GameObject => gameObject;
@@ -38,7 +43,6 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     }
     public override void init()
     {
-        rb2d = GetComponent<Rigidbody2D>();
 
         //init
         moveVector = startMoveVector;

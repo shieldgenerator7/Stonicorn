@@ -9,6 +9,7 @@ public class PoweredWallController : MonoBehaviour, IPowerable
     public float efficiency = 100;//how much force one unit of energy can generate
     public float maxEnergyPerSecond = 3;
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Rigidbody2D rb;
     private Vector3 upDirection;//used to determine the up direction of the powered door
 
@@ -22,11 +23,14 @@ public class PoweredWallController : MonoBehaviour, IPowerable
         set => onPowerGiven = value;
     }
 
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
+    public Collider2D Collider2D => coll2d;
+
     // Use this for initialization
     void Start()
     {
         upDirection = transform.up;
-        rb = GetComponent<Rigidbody2D>();
     }
 
     public float acceptPower(float power)

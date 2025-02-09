@@ -416,6 +416,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7481295740926076579, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
+      propertyPath: coll2d
+      value: 
+      objectReference: {fileID: 8559196901267687028}
     - target: {fileID: 7659771117124049304, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
       propertyPath: id
       value: 10030
@@ -568,5 +572,10 @@ MonoBehaviour:
 --- !u!4 &6591729812287779741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7981319394032975260, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
+  m_PrefabInstance: {fileID: 3871355037817409025}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &8559196901267687028 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 4859859944367310965, guid: 8ee93d3b2261b86498ad983b71194af7, type: 3}
   m_PrefabInstance: {fileID: 3871355037817409025}
   m_PrefabAsset: {fileID: 0}

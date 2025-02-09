@@ -25,6 +25,11 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer, IPowerable
 
     public GameObject GameObject => gameObject;
 
+
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
+    public Collider2D Collider2D => coll2d;
+
     public override void init()
     {
     }

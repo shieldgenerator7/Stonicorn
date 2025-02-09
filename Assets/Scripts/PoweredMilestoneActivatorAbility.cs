@@ -3,9 +3,12 @@ using UnityEngine;
 [RequireComponent (typeof(PoweredActivator))]
 public class PoweredMilestoneActivatorAbility : MilestoneActivatorAbility
 {
+    [AutoInitialize, SerializeField, HideInInspector]
+    private PoweredActivator poweredActivator;
+
     public override void activateEffect()
     {
         base.activateEffect();
-        GetComponent<PoweredActivator>().allowTurnOff = false;
+        poweredActivator.allowTurnOff = false;
     }
 }

@@ -215,7 +215,7 @@ public class PowerManager : MonoBehaviour
 
     public List<IPowerConduit> getConnectingConduits(IPowerConduit ipc)
     {
-        Collider2D coll2d = ipc.GameObject.GetComponent<Collider2D>();
+        Collider2D coll2d = ipc.Collider2D;
         Collider2D[] colls = new Collider2D[Utility.MAX_HIT_COUNT];
         ContactFilter2D filter = new ContactFilter2D();
         filter.NoFilter();
