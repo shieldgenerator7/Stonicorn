@@ -1209,6 +1209,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectColor: {r: 1, g: 1, b: 1, a: 1}
+  lightEffectRenderer: {fileID: 0}
+  spriteShapeRenderer: {fileID: 0}
+  text: {fileID: 402415946}
 --- !u!114 &402415945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1222,6 +1225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollSpeed: 10
+  rectTransform: {fileID: 402415943}
 --- !u!114 &402415946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4190,6 +4194,7 @@ MonoBehaviour:
   gravityScale: 9.81
   mainGravityZone: 1
   radialGravity: 1
+  coll2d: {fileID: 1234771322}
 --- !u!58 &1234771322
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -11568,6 +11573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollSpeed: 10
+  rectTransform: {fileID: 2129085853}
 --- !u!114 &2129085857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11581,6 +11587,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectColor: {r: 1, g: 1, b: 1, a: 1}
+  lightEffectRenderer: {fileID: 0}
+  spriteShapeRenderer: {fileID: 0}
+  text: {fileID: 2129085854}
 --- !u!1001 &2134427586
 PrefabInstance:
   m_ObjectHideFlags: 0
