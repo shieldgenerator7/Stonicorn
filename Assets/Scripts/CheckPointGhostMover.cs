@@ -28,12 +28,15 @@ public class CheckPointGhostMover : MonoBehaviour
     //Going home
     private bool goingHome = false;//true when about to be hidden
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private SpriteRenderer sr;
+    public SpriteRenderer SpriteRenderer => sr;
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
 
     // Use this for initialization
     void Awake()
     {
-        sr = GetComponent<SpriteRenderer>();
     }
 
     public void showRelativeTo(GameObject currentCP)
@@ -174,7 +177,7 @@ public class CheckPointGhostMover : MonoBehaviour
     /// And the other one is closer to the current CP than this one is
     /// </summary>
     /// <returns></returns>
-    public bool overlapAny()
+    private bool overlapAny()
     {
         foreach (CheckPointChecker cpc in Managers.ActiveCheckPoints)
         {
@@ -200,10 +203,15 @@ public class CheckPointGhostMover : MonoBehaviour
     /// </summary>
     /// <param name="b"></param>
     /// <returns></returns>
-    public bool overlaps(Bounds otherBounds, float otherRadius)
+    private bool overlaps(Bounds otherBounds, float otherRadius)
     {
         return sr.bounds.Intersects(otherBounds)
         //because they're circles, using the extents gives us how far apart (at minimum) they're supposed to be 
         && sr.bounds.center.inRange(otherBounds.center, spriteRadius + otherRadius);
+    }
+
+    public bool Overlaps(Vector2 point)
+    {
+        return coll2d.OverlapPoint(point);
     }
 }

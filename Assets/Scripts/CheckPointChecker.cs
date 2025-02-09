@@ -64,7 +64,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         ghost.SetActive(false);
         cpGhostMover = ghost.GetComponent<CheckPointGhostMover>();
         cpGhostMover.parentCPC = this;
-        ghost.GetComponent<SpriteRenderer>().sprite = ghostSprite;
+        cpGhostMover.SpriteRenderer.sprite = ghostSprite;
         //Color ghost sprite
         InWorkingOrder = InWorkingOrder;
     }
@@ -259,6 +259,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
+    //TODO: maybe make this available in game? and auto-update checkpoint preview?
     public string grabCheckPointCameraData()//2016-12-06: grabs image data from the camera designated for checkpoints
     {
         if (checkpointCamera == null)
@@ -314,6 +316,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         ES3.SaveImage(screenShot, filename);
         return filename;
     }
+#endif
 
     /**
     * Displays this checkpoint relative to currentCheckpoint
@@ -338,7 +341,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
             return false;
         }
         //Check if its ghost overlaps the point
-        return ghost.GetComponent<Collider2D>().OverlapPoint(targetPos);
+        return cpGhostMover.Overlaps(targetPos);
     }
     /// <summary>
     /// So now the player has teleported out and the checkpoint ghosts need to go away
