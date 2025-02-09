@@ -13,6 +13,8 @@ public class BalloonController : SavableMonoBehaviour
     private float pingpong;
     private float timeElapsed = 0;
 
+    [SerializeField]
+    [AutoInitialize]
     private GravityAccepter ga;
 
     // Start is called before the first frame update
@@ -22,7 +24,6 @@ public class BalloonController : SavableMonoBehaviour
     }
     public override void init()
     {
-        ga = GetComponent<GravityAccepter>();
     }
 
     private void FixedUpdate()
