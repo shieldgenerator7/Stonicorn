@@ -18,43 +18,6 @@ public class MenuButtonSwitch : MenuButton
     [AutoInitialize, SerializeField, HideInInspector]
     private MenuActionSwitch mas;
 
-    public override void compile()
-    {
-        base.compile();
-        if (sr)
-        {
-            if (activatedSprite == null && deactivatedSprite == null)
-            {
-                useColor = true;
-            }
-            if (activatedSprite == null)
-            {
-                activatedSprite = sr.sprite;
-            }
-            if (deactivatedSprite == null)
-            {
-                deactivatedSprite = sr.sprite;
-            }
-            if (useColor)
-            {
-                if (activeColor == deactiveColor)
-                {
-                    if (sr.color == Color.white)
-                    {
-                        activeColor = sr.color;
-                        deactiveColor = Color.black;
-                    }
-                    else
-                    {
-                        activeColor = sr.color;
-                        deactiveColor = Color.white;
-                    }
-                }
-            }
-        }
-
-    }
-
     public override void init()
     {
         base.init();
@@ -94,5 +57,42 @@ public class MenuButtonSwitch : MenuButton
                 }
             }
         }
+    }
+
+    public override int setup()
+    {
+        int changeCount = base.setup();
+        if (sr)
+        {
+            if (activatedSprite == null && deactivatedSprite == null)
+            {
+                if (!useColor)
+                {
+                    useColor = true;
+                    changeCount++;
+                }
+            }
+            if (activatedSprite == null)
+            {
+                activatedSprite = sr.sprite;
+                changeCount++;
+            }
+            if (deactivatedSprite == null)
+            {
+                deactivatedSprite = sr.sprite;
+                changeCount++;
+            }
+            if (useColor)
+            {
+                if (activeColor == deactiveColor)
+                {
+                    activeColor = sr.color;
+                    deactiveColor = (sr.color == Color.white) ? Color.black : Color.white;
+                    changeCount++;
+                }
+            }
+        }
+
+        return changeCount;
     }
 }

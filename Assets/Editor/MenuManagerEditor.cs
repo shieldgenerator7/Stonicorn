@@ -14,7 +14,7 @@ public class MenuManagerEditor : Editor
             targets.ToList().ForEach(target =>
             {
                 MenuManager mm = target as MenuManager;
-                mm.compile();
+                mm.setup();
                 EditorUtility.SetDirty(mm);
                 EditorUtility.SetDirty(mm.gameObject);
                 foreach (Transform t in mm.transform)

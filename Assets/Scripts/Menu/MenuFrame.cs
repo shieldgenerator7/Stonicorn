@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// Defines an area for the camera to see a certain area of the menu screen
 /// </summary>
-public class MenuFrame : MonoBehaviour
+public class MenuFrame : MonoBehaviour, ISetupable
 {
     public List<MenuButton> buttons = new List<MenuButton>();
 
@@ -16,20 +16,6 @@ public class MenuFrame : MonoBehaviour
     public void init()
     {
         buttons.ForEach(button => button.init());
-    }
-
-    public void compile()
-    {
-        buttons.Clear();
-        foreach (Transform t in transform)
-        {
-            MenuButton mb = t.GetComponent<MenuButton>();
-            if (mb != null)
-            {
-                mb.compile();
-                buttons.Add(mb);
-            }
-        }
     }
 
     /// <summary>
@@ -83,5 +69,28 @@ public class MenuFrame : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+
+        int prevButtonCount = buttons.Count;
+        buttons.Clear();
+        foreach (Transform t in transform)
+        {
+            MenuButton mb = t.GetComponent<MenuButton>();
+            if (mb != null)
+            {
+                changeCount += mb.setup();
+                buttons.Add(mb);
+            }
+        }
+        if (buttons.Count != prevButtonCount)
+        {
+            changeCount++;
+        }
+
+        return changeCount;
     }
 }

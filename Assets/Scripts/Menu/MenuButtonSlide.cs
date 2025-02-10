@@ -62,18 +62,9 @@ public class MenuButtonSlide : MenuButton
     [AutoInitialize, SerializeField, HideInInspector]
     private MenuActionSlide mas;
 
-    public override void compile()
-    {
-        base.compile();
-        MaxValue = mas.getOverriddenMaxValue(MaxValue);
-        sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
-        sliderBarEC2D = sliderBar.GetComponent<EdgeCollider2D>();
-        sliderBarWidth = (transform.TransformPoint(sliderBarEC2D.points[1]) - transform.TransformPoint(sliderBarEC2D.points[0])).magnitude;
-    }
     public override void init()
     {
         base.init();
-        compile();
         //Update the value
         Value = Mathf.Clamp(mas.getCurrentValue(), MinValue, MaxValue);
     }
@@ -134,5 +125,36 @@ public class MenuButtonSlide : MenuButton
         size.x = (size.x * sliderFill.transform.localScale.x) / sliderFill.transform.lossyScale.x;
         size.y = sliderFill.transform.localScale.y;
         sliderFill.transform.localScale = size;
+    }
+
+    public override int setup()
+    {
+        int changeCount = base.setup();
+
+        float omv = mas.getOverriddenMaxValue(MaxValue);
+        if (omv != MaxValue)
+        {
+            MaxValue = omv;
+            changeCount++;
+        }
+
+        if (!sliderFillSR)
+        {
+            sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
+            changeCount++;
+        }
+        if (!sliderBarEC2D)
+        {
+            sliderBarEC2D = sliderBar.GetComponent<EdgeCollider2D>();
+            changeCount++;
+        }
+        float sbw = (transform.TransformPoint(sliderBarEC2D.points[1]) - transform.TransformPoint(sliderBarEC2D.points[0])).magnitude;
+        if (sbw != sliderBarWidth)
+        {
+            sliderBarWidth = sbw;
+            changeCount++;
+        }
+
+        return changeCount;
     }
 }

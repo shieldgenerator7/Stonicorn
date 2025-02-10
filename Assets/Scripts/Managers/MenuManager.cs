@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : MonoBehaviour, ISetupable
 {
     public static int MENU_SCENE_ID = 2;
 
@@ -39,20 +39,6 @@ public class MenuManager : MonoBehaviour
         startFrame.frameCamera();
         //pause game
         Managers.Time.setPause(this, true);
-    }
-
-    public void compile()
-    {
-        //populate frames
-        frames = FindObjectsByType<MenuFrame>(FindObjectsSortMode.None)
-            .Where(mf => mf.canDelegateTaps()).ToList();
-        //set start frame
-        if (!startFrame)
-        {
-            startFrame = frames.First();
-        }
-        //init menu buttons
-        gameObject.GetComponentsInChildren<MenuFrame>().ToList().ForEach((mf) => mf.compile());
     }
 
     private void OnDestroy()
@@ -130,4 +116,33 @@ public class MenuManager : MonoBehaviour
     }
     public delegate void OnOpenedChanged(bool open);
     public static event OnOpenedChanged onOpenedChanged;
+
+    public int setup()
+    {
+        int changeCount = 0;
+
+        //populate frames
+        int prevFrameCount = frames.Count;
+        frames.Clear();
+        frames = FindObjectsByType<MenuFrame>(FindObjectsSortMode.None)
+            .Where(mf => mf.canDelegateTaps()).ToList();
+        if (prevFrameCount != frames.Count)
+        {
+            changeCount++;
+        }
+
+        //set start frame
+        if (!startFrame)
+        {
+            startFrame = frames.First();
+            changeCount++;
+        }
+
+        //init menu buttons
+        gameObject.GetComponentsInChildren<MenuFrame>().ToList().ForEach((mf) => {
+            changeCount += mf.setup();
+            });
+
+        return changeCount;
+    }
 }

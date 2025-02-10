@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuButton : MonoBehaviour
+public class MenuButton : MonoBehaviour, ISetupable
 {
 
     public MenuFrame frame;
@@ -14,11 +14,6 @@ public class MenuButton : MonoBehaviour
     public virtual void init()
     {
 
-    }
-
-    public virtual void compile()
-    {
-        //bc2d = GetComponent<BoxCollider2D>();
     }
 
     public bool tapInArea(Vector2 pos)
@@ -48,5 +43,10 @@ public class MenuButton : MonoBehaviour
     {
         frame?.frameCamera();
         mab?.activate();
+    }
+
+    public virtual int setup()
+    {
+        return 0;
     }
 }
