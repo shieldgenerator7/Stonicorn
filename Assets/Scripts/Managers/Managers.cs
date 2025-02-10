@@ -226,12 +226,32 @@ public class Managers : MonoBehaviour, ISetupable
 #if UNITY_EDITOR
     public int setup()
     {
-        managerList = FindObjectsByType<Manager>(FindObjectsSortMode.None).ToList();
+        int changeCount = 0;
+
+        int prevCount = managerList.Count;
+        managerList.Clear();
+        List<Manager> list = FindObjectsByType<Manager>(FindObjectsSortMode.None).ToList();
+        list.AddRange(GetComponents<Manager>());
+        list.ForEach(manager =>
+        {
+            if (!managerList.Contains(manager))
+            {
+                managerList.Add(manager);
+            }
+        });        
+        if (prevCount != managerList.Count)
+        {
+            changeCount++;
+        }
 
         //Populate other managers
+        if (!playerController)
+        {
         playerController = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
+            changeCount++;
+        }
 
-        return 0;//TODO: check to see if anything changed
+        return changeCount;
     }
 #endif
 }
