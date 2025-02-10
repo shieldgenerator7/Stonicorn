@@ -19,6 +19,8 @@ public class SunController : Hazard
 
     private void Update()
     {
+        //Check if checkpoints are in working order
+        //"in owrking order" == not in sun
         Managers.ActiveCheckPoints.ForEach(cp =>
         {
             bool inSun = cp.transform.position.y - 2 < transform.position.y;
@@ -27,6 +29,7 @@ public class SunController : Hazard
                 cp.InWorkingOrder = !inSun;
             }
         });
+        //Check if player has made contact with the sun
         if (Managers.Player.transform.position.y - 0.5 < transform.position.y)
         {
             Managers.Player.forceRewindHazard(this.DamageDealt, new Vector2(Managers.Player.transform.position.x, transform.position.y));

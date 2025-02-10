@@ -105,7 +105,7 @@ public class ConcealingUntilMoved : MonoBehaviour, ISetupable
         //Error checking: soft check for at least one valid HA
         if (!haListToUncover.Any(ha => ha))
         {
-            Debug.LogWarning($"ConcealingUntilMoved script on gameobject {gameObject.name} has no HiddenAreas to reveal!");
+            Debug.LogError($"ConcealingUntilMoved script on gameobject {gameObject.name} has no HiddenAreas to reveal!");
             errorCount++;
         }
         return errorCount;

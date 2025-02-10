@@ -1498,7 +1498,6 @@ public class CustomMenu
     }
     private static (int, int) _checkISetupables(List<ISetupable> list)
     {
-        Debug.Log($"_checkISetupables count: {list.Count}");
         int changeCount = 0;
         int errorCount = 0;
         list.ForEach(setup =>
