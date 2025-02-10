@@ -869,7 +869,6 @@ public class CustomMenu
         //2021-07-12: got help from: https://forum.unity.com/threads/how-do-i-edit-prefabs-from-scripts.685711/
         int changeCount = 0;
         int errorCount = 0;
-        Type TYPE_MONOBEHAVIOUR = typeof(MonoBehaviour);
         //
         GetFiles("Assets/")
             .Where(s => s.EndsWith(".prefab"))
@@ -877,113 +876,10 @@ public class CustomMenu
                 assetPath =>
                 {
                     GameObject go = PrefabUtility.LoadPrefabContents(assetPath);
-                        const string NULL_STRING = "null";
-                        int changesGO = 0;
-                        int errorsGO = 0;
-                        go.GetComponents<MonoBehaviour>().ToList()
-                            .ForEach(mb =>
-                            {
-                                string className = mb.GetType().Name;
 
-                                int changes = 0;
-                                int errors = 0;
-
-                                Type classInfo = mb.GetType();
-                                List<FieldInfo> fields = new List<FieldInfo>();
-                                while(classInfo != TYPE_MONOBEHAVIOUR)
-                                {
-                                    fields.AddRange(classInfo.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
-                                    classInfo = classInfo.BaseType;
-                                }
-
-                                fields
-                                    .Where(field => field.GetCustomAttribute<AutoInitialize>() != null)
-                                    .Where(field => {
-
-                                        object value = field.GetValue(mb);
-                                        return value == null
-                                            || ReferenceEquals(value, null)
-                                            //this string comparison seems weird, but its for Rigidboyd2D, PolygonCollider2D and other Unity components
-                                            //that dont play nice with regular null checks
-                                            || $"{value}" == NULL_STRING;
-                                    })
-                                    .ToList()
-                                    .ForEach(field =>
-                                    {
-                                        //Check to make sure it is not an interface
-                                        if (field.FieldType.IsInterface)
-                                        {
-                                            Debug.LogError($"Field({className}.{field.Name}) is an interface. Unfortunately, Unity does not support serializing interfaces. Thus they also can't be auto-initialized", mb);
-                                            errors++;
-                                            return;
-                                        }
-
-                                        //Check to make sure it is public (or private with SerializeField)
-                                        if (!(field.IsPublic || field.GetCustomAttribute<SerializeField>() != null))
-                                        {
-                                            Debug.LogError($"Field ({className}.{field.Name}) has AutoInitialize tag but is not public! It needs to be public or have the SerializeField tag", mb);
-                                            errors++;
-                                            return;
-                                        }
-
-                                        //Set the value
-                                        Component component = mb.GetComponent(field.FieldType);
-                                        if (component == null)
-                                        {
-                                            AutoInitialize auto = field.GetCustomAttribute<AutoInitialize>();
-                                            if (component == null && auto.SearchParent)
-                                            {
-                                                component = mb.GetComponentInParent(field.FieldType);
-                                            }
-                                            if (component == null && auto.SearchChildren)
-                                            {
-                                                component = mb.GetComponentInChildren(field.FieldType);
-                                            }
-                                            if (component == null && auto.SearchScene)
-                                            {
-                                                Scene scene = mb.gameObject.scene;
-                                                component = (Component)GameObject.FindObjectsByType(field.FieldType, FindObjectsSortMode.None)
-                                                    //don't allow setting it to an object in a different scene
-                                                    .FirstOrDefault(obj =>
-                                                        ((Component)obj).gameObject.scene == scene
-                                                    );
-                                                //Allow graceful exit if its a prefab expecting the component to be in the scene, and thus not in the prefab
-                                                if (component == null)
-                                                {
-                                                    return;
-                                                }
-                                            }
-                                            if (component == null && auto.AllowUnfound)
-                                            {
-                                                return;
-                                            }
-                                            if (component == null)
-                                            {
-                                                Debug.LogError($"Component not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
-                                                errors++;
-                                                return;
-                                            }
-                                        }
-                                        Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {component}", mb);
-                                        field.SetValue(mb, component);
-                                        changes++;
-                                    });
-
-                                if (changes > 0)
-                                {
-                                    EditorUtility.SetDirty(mb);
-                                    Debug.LogWarning($"Check AutoInitialize Tags: {mb.name} ({className}) changes: {changes}", mb);
-                                    changesGO += changes;
-                                }
-                                if (errors > 0)
-                                {
-                                    if (errors > 1)
-                                    {
-                                        Debug.LogError($"Check AutoInitialize Tags: {mb.name} ({className}) errors: {errors}", mb);
-                                    }
-                                    errorsGO += errors;
-                                }
-                            });
+                        (int changesGO, int errorsGO) = _autoInitializeTags(
+                            go.GetComponents<MonoBehaviour>().ToList()
+                            );
 
                         //changed?
                         if (changesGO > 0)
@@ -1568,11 +1464,28 @@ public class CustomMenu
     [MenuItem("SG7/Build/Pre-Build/Check AutoInitialize Tags")]
     public static bool checkAutoInitializeTags()
     {
+        (int changeCount, int errorCount) = _autoInitializeTags(
+            GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).ToList()
+            );
+        if (changeCount > 0)
+        {
+            Debug.LogWarning($"Check AutoInitialize Tags: {changeCount} changes");
+        }
+        if (errorCount > 0)
+        {
+            Debug.LogError($"Check AutoInitialize Tags: {errorCount} errors");
+        }
+        return changeCount > 0 || errorCount > 0;
+    }
+    private static (int, int) _autoInitializeTags(List<MonoBehaviour> mbList)
+    {
         Type TYPE_MONOBEHAVIOUR = typeof(MonoBehaviour);
         const string NULL_STRING = "null";
+
         int changeCount = 0;
         int errorCount = 0;
-        GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).ToList()
+
+        mbList
             .ForEach(mb =>
             {
                 string className = mb.GetType().Name;
@@ -1671,15 +1584,7 @@ public class CustomMenu
                     errorCount += errors;
                 }
             });
-        if (changeCount > 0)
-        {
-            Debug.LogWarning($"Check AutoInitialize Tags: {changeCount} changes");
-        }
-        if (errorCount > 0)
-        {
-            Debug.LogError($"Check AutoInitialize Tags: {errorCount} errors");
-        }
-        return changeCount > 0 || errorCount > 0;
+        return (changeCount, errorCount);
     }
 
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
