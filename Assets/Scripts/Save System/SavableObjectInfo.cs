@@ -69,10 +69,11 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
             SerializedProperty property = so.FindProperty(revert);
             try
             {
-                Debug.Log($"SavableObjectInfo setup: {revert} overridden? {property.prefabOverride}");
                 if (property.prefabOverride)
                 {
             PrefabUtility.RevertPropertyOverride(property, InteractionMode.UserAction);
+
+                    Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: {revert} override reverted", this);
                     changeCount++;
                 }
             }
@@ -106,6 +107,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         if (prefabAddress != assetRef)
         {
             prefabAddress = assetRef;
+                Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: prefabAddress updated: {assetRef}", this);
             changeCount++;
         }
         }
@@ -120,6 +122,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         rb2d = GetComponent<Rigidbody2D>();
             if (rb2d)
             {
+            Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: Rigidbody2D set: {rb2d}", this);
             changeCount++;
             }
         }
@@ -128,6 +131,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         savables = GetComponents<SavableMonoBehaviour>().ToList();
         if (savables.Count != prevCount)
         {
+            Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: savables list updated: {prevCount} -> {savables.Count}", this);
             changeCount++;
         }
 
