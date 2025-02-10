@@ -17,7 +17,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
     public int destroyStateId = int.MaxValue;//the game state id in which this object was destroyed (max value for not destroyed)
 
     [Header("Components to save")]
-    [AutoInitialize, SerializeField, HideInInspector]
+    [AutoInitialize(AllowUnfound =true), SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
     public Rigidbody2D Rigidbody2D => rb2d;
     //[AutoInitialize, SerializeField, HideInInspector]
@@ -47,6 +47,13 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
 
     public virtual int setup()
     {
+        //dont process this in scene objects
+        if (gameObject.scene.buildIndex > 0)
+        {
+            return 0;
+        }
+
+        //we're in a prefab object now, so all good to process
         int changeCount = 0;
 
         //revert unneeded overrides
@@ -62,7 +69,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
             SerializedProperty property = so.FindProperty(revert);
             try
             {
-                Debug.Log($"SaveableObjectInfo setup: {revert} overridden? {property.prefabOverride}");
+                Debug.Log($"SavableObjectInfo setup: {revert} overridden? {property.prefabOverride}");
                 if (property.prefabOverride)
                 {
             PrefabUtility.RevertPropertyOverride(property, InteractionMode.UserAction);
@@ -93,11 +100,18 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
                 AssetDatabase.GetAssetPath(gameObject)
             );
         }
+        //TODO: investigate why unity auto-setting this isnt working anymore
         AssetReference assetRef = new AssetReference(guid);
+        if (assetRef != null && assetRef.IsValid()){//!string.IsNullOrEmpty(assetRef.AssetGUID)) {
         if (prefabAddress != assetRef)
         {
             prefabAddress = assetRef;
             changeCount++;
+        }
+        }
+        else
+        {
+            //Debug.LogError($"Cant find assetRef for {gameObject.name}: assetPath: {assetPath}, guid: {guid}, assetRef: {assetRef}, {assetRef?.AssetGUID}");
         }
 
         //Populate savable components
