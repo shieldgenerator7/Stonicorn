@@ -623,8 +623,8 @@ public class CustomMenu
                 checkTriggersAreNotSolid,
                 ensureNPCsHaveDialogueTriggers,
                 checkDialogueEvents,
-                checkISetupables,
                 checkAutoInitializeTags,
+                checkISetupables,
             }
             .ConvertAll(func =>
             {
