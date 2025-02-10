@@ -869,6 +869,7 @@ public class CustomMenu
         //2021-07-12: got help from: https://forum.unity.com/threads/how-do-i-edit-prefabs-from-scripts.685711/
         int changeCount = 0;
         int errorCount = 0;
+        Type TYPE_MONOBEHAVIOUR = typeof(MonoBehaviour);
         //
         GetFiles("Assets/")
             .Where(s => s.EndsWith(".prefab"))
@@ -887,7 +888,15 @@ public class CustomMenu
                                 int changes = 0;
                                 int errors = 0;
 
-                                mb.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                Type classInfo = mb.GetType();
+                                List<FieldInfo> fields = new List<FieldInfo>();
+                                while(classInfo != TYPE_MONOBEHAVIOUR)
+                                {
+                                    fields.AddRange(classInfo.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
+                                    classInfo = classInfo.BaseType;
+                                }
+
+                                fields
                                     .Where(field => field.GetCustomAttribute<AutoInitialize>() != null)
                                     .Where(field => {
 
@@ -1559,6 +1568,7 @@ public class CustomMenu
     [MenuItem("SG7/Build/Pre-Build/Check AutoInitialize Tags")]
     public static bool checkAutoInitializeTags()
     {
+        Type TYPE_MONOBEHAVIOUR = typeof(MonoBehaviour);
         const string NULL_STRING = "null";
         int changeCount = 0;
         int errorCount = 0;
@@ -1570,7 +1580,15 @@ public class CustomMenu
                 int changes = 0;
                 int errors = 0;
 
-                mb.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                Type classInfo = mb.GetType();
+                List<FieldInfo> fields = new List<FieldInfo>();
+                while (classInfo != TYPE_MONOBEHAVIOUR)
+                {
+                    fields.AddRange(classInfo.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
+                    classInfo = classInfo.BaseType;
+                }
+
+                fields
                     .Where(field => field.GetCustomAttribute<AutoInitialize>() != null)
                     .Where(field => {
 
