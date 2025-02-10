@@ -1553,6 +1553,11 @@ public class CustomMenu
                                     .FirstOrDefault(obj =>
                                         ((Component)obj).gameObject.scene == scene
                                     );
+                                //Allow graceful exit if its a prefab expecting the component to be in the scene, and thus not in the prefab
+                                if (component == null && scene.buildIndex < 0)
+                                {
+                                    return;
+                                }
                             }
                             if (!component && auto.AllowUnfound)
                             {
