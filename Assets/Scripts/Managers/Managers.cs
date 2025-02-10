@@ -230,15 +230,11 @@ public class Managers : MonoBehaviour, ISetupable
 
         int prevCount = managerList.Count;
         managerList.Clear();
-        List<Manager> list = FindObjectsByType<Manager>(FindObjectsSortMode.None).ToList();
-        list.AddRange(GetComponents<Manager>());
-        list.ForEach(manager =>
-        {
-            if (!managerList.Contains(manager))
-            {
-                managerList.Add(manager);
-            }
-        });        
+        managerList = (gameObject.scene.buildIndex < 0)
+            //prefab
+            ? GetComponents<Manager>().ToList()
+            //scene
+            : FindObjectsByType<Manager>(FindObjectsSortMode.InstanceID).ToList();
         if (prevCount != managerList.Count)
         {
             changeCount++;
