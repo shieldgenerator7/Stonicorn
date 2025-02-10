@@ -612,10 +612,8 @@ public class CustomMenu
                 ensureSavableObjectsHaveObjectInfo,
                 ensureMemoryObjectsHaveObjectInfo,
                 ensureUniqueObjectIDs,
-                ensureSavableObjectInfosSetupInPrefabs,
                 autoInitializeInPrefabs,
                 checkISetupablesInPrefabs,
-                checkSavableObjectInfosSetup,
                 ensureHiddenAreasAreProperlySetup,
                 checkTiledHitBoxes,
                 checkGravityScale,
@@ -763,106 +761,6 @@ public class CustomMenu
         return changedId;
     }
 
-    [MenuItem("SG7/Build/Pre-Build/Ensure SavableObjectInfos are properly setup in Prefabs")]
-    public static bool ensureSavableObjectInfosSetupInPrefabs()
-    {
-        //2021-07-12: got help from: https://forum.unity.com/threads/how-do-i-edit-prefabs-from-scripts.685711/
-        int changeCount = 0;
-        const int SPAWN_STATE_ID = 0;
-        const int DESTROY_STATE_ID = int.MaxValue;
-        List<SavableObjectInfo> savables = new List<SavableObjectInfo>();
-        //
-        GetFiles("Assets/")
-            .Where(s => s.EndsWith(".prefab"))
-            .ToList().ForEach(
-                assetPath =>
-                {
-                    GameObject go = PrefabUtility.LoadPrefabContents(assetPath);
-                    SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
-                    if (soi)
-                    {
-                        bool changedThis = false;
-                        //Spawn State Id
-                        if (soi.spawnStateId != SPAWN_STATE_ID)
-                        {
-                            int prev = soi.spawnStateId;
-                            soi.spawnStateId = SPAWN_STATE_ID;
-                            Debug.LogWarning(
-                                $"Changed spawnStateId: {prev} -> {soi.spawnStateId}",
-                                soi.gameObject
-                                );
-                            changedThis = true;
-                        }
-                        //Destroy State Id
-                        if (soi.destroyStateId != DESTROY_STATE_ID)
-                        {
-                            int prev = soi.destroyStateId;
-                            soi.destroyStateId = DESTROY_STATE_ID;
-                            Debug.LogWarning(
-                                $"Changed destroyStateId: {prev} -> {soi.destroyStateId}",
-                                soi.gameObject
-                                );
-                            changedThis = true;
-                        }
-                        //Savables: Rigidbody2D
-                        if (!soi.rb2d)
-                        {
-                            Rigidbody2D rb2d = soi.GetComponent<Rigidbody2D>();
-                            if (rb2d)
-                            {
-                                soi.rb2d = rb2d;
-                                Debug.LogWarning(
-                                    $"Set rb2d on SavableObjectInfo: {rb2d}",
-                                    soi.gameObject
-                                    );
-                                changedThis = true;
-                            }
-                        }
-                        if (soi.rb2d)
-                        {
-                            Rigidbody2D rb2d = soi.GetComponent<Rigidbody2D>();
-                            if (!rb2d)
-                            {
-                                soi.rb2d = null;
-                                Debug.LogWarning(
-                                    $"Unset rb2d on SavableObjectInfo: {soi}",
-                                    soi.gameObject
-                                    );
-                                changedThis = true;
-                            }
-                        }
-                        //Savables: SavableMonoBehaviour
-                        List<SavableMonoBehaviour> smbs = soi.GetComponents<SavableMonoBehaviour>().ToList();
-                        smbs.ForEach(smb =>
-                        {
-                            if (!soi.savables.Contains(smb))
-                            {
-                                soi.savables.Add(smb);
-                                Debug.LogWarning(
-                                    $"Add component to SavableObjectInfo: {smb}",
-                                    soi.gameObject
-                                    );
-                                changedThis = true;
-                            }
-                        });
-                        //changed?
-                        if (changedThis)
-                        {
-                            changeCount++;
-                            EditorUtility.SetDirty(soi);
-                            PrefabUtility.SaveAsPrefabAsset(go, assetPath);
-                        }
-                    }
-                    PrefabUtility.UnloadPrefabContents(go);
-                }
-            );
-        if (changeCount > 0)
-        {
-            Debug.LogWarning($"Changed {changeCount} SavableObjectInfos in prefabs");
-        }
-        return changeCount > 0;
-    }
-
     //2025-02-08: copied from ensureSavableObjectInfosSetupInPrefabs()
     [MenuItem("SG7/Build/Pre-Build/Auto Initialize components in Prefabs")]
     public static bool autoInitializeInPrefabs()
@@ -971,44 +869,6 @@ public class CustomMenu
             Debug.LogError($"Checked Prefabs ISetupables: {errorCount} errors");
         }
         return changeCount > 0 || errorCount > 0;
-    }
-
-    [MenuItem("SG7/Build/Pre-Build/Ensure SavableObjectInfos are properly setup")]
-    public static bool checkSavableObjectInfosSetup()
-    {
-        bool errorFound = false;
-        const int SPAWN_STATE_ID = 0;
-        const int DESTROY_STATE_ID = int.MaxValue;
-        foreach (SceneSavableList ssl in GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None))
-        {
-            List<GameObject> savables = new List<GameObject>();
-
-            //savables.AddRange(ssl.savables);
-            savables.FindAll(go => go.GetComponent<SavableObjectInfo>())
-            .ConvertAll(go => go.GetComponent<SavableObjectInfo>())
-                .ForEach(info =>
-                {
-                    if (info.spawnStateId != SPAWN_STATE_ID)
-                    {
-                        int prev = info.spawnStateId;
-                        Debug.LogError(
-                            $"spawnStateId: {prev}",
-                            info.gameObject
-                            );
-                        errorFound = true;
-                    }
-                    if (info.destroyStateId != DESTROY_STATE_ID)
-                    {
-                        int prev = info.destroyStateId;
-                        Debug.LogError(
-                            $"destroyStateId: {prev}",
-                            info.gameObject
-                            );
-                        errorFound = true;
-                    }
-                });
-        }
-        return errorFound;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Ensure Hidden Areas are Properly Setup")]
