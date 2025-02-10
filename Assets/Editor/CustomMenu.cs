@@ -1426,31 +1426,10 @@ public class CustomMenu
     [MenuItem("SG7/Build/Pre-Build/Check ISetupables")]
     public static bool checkISetupables()
     {
-        int changeCount = 0;
-        int errorCount = 0;
-        GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None).OfType<ISetupable>().ToList()
-            .ForEach(setup =>
-            {
-                MonoBehaviour mb = (MonoBehaviour)setup;
-
-                //Check for Errors
-                int errors = setup.checkForErrors();
-                if (errors > 0)
-                {
-                    Debug.LogError($"Check ISetupables: {mb.name} ({mb.GetType().Name}) errors: {errors}", mb);
-                    errorCount += errors;
-                    return;
-                }
-
-                //Setup
-                int changes = setup.setup();
-                if (changes > 0)
-                {
-                    EditorUtility.SetDirty(mb);
-                    Debug.LogWarning($"Check ISetupables: {mb.name} ({mb.GetType().Name}) changes: {changes}", mb);
-                    changeCount += changes;
-                }
-            });
+        (int changeCount, int errorCount) = _checkISetupables(
+            GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .OfType<ISetupable>().ToList()
+            );
         if (changeCount > 0)
         {
             Debug.LogWarning($"Check ISetupables: {changeCount} changes");
@@ -1460,6 +1439,35 @@ public class CustomMenu
             Debug.LogError($"Check ISetupables: {errorCount} errors");
         }
         return changeCount > 0;
+    }
+    private static (int, int) _checkISetupables(List<ISetupable> list)
+    {
+        Debug.Log($"_checkISetupables count: {list.Count}");
+        int changeCount = 0;
+        int errorCount = 0;
+        list.ForEach(setup =>
+         {
+             MonoBehaviour mb = (MonoBehaviour)setup;
+
+             //Check for Errors
+             int errors = setup.checkForErrors();
+             if (errors > 0)
+             {
+                 Debug.LogError($"ISetupable: {mb.name} ({mb.GetType().Name}) errors: {errors}", mb);
+                 errorCount += errors;
+                 return;
+             }
+
+             //Setup
+             int changes = setup.setup();
+             if (changes > 0)
+             {
+                 EditorUtility.SetDirty(mb);
+                 Debug.LogWarning($"ISetupable: {mb.name} ({mb.GetType().Name}) changes: {changes}", mb);
+                 changeCount += changes;
+             }
+         });
+        return (changeCount, errorCount);
     }
 
     [MenuItem("SG7/Build/Pre-Build/Check AutoInitialize Tags")]
