@@ -118,7 +118,10 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         if (!rb2d)
         {
         rb2d = GetComponent<Rigidbody2D>();
+            if (rb2d)
+            {
             changeCount++;
+            }
         }
         int prevCount = savables.Count;
         savables.Clear();
