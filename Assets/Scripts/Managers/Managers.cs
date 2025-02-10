@@ -229,6 +229,7 @@ public class Managers : MonoBehaviour, ISetupable
         bool isPrefab = gameObject.scene.buildIndex < 0;
         int changeCount = 0;
 
+        //Populate manager list
         int prevCount = managerList.Count;
         managerList.Clear();
         managerList = (isPrefab)
@@ -238,13 +239,15 @@ public class Managers : MonoBehaviour, ISetupable
             : FindObjectsByType<Manager>(FindObjectsSortMode.InstanceID).ToList();
         if (prevCount != managerList.Count)
         {
+            Debug.LogWarning($"Managers.setup(): isPrefab? {isPrefab}, changed manager list: {prevCount} -> {managerList.Count}");
             changeCount++;
         }
 
-        //Populate other managers
+        //Populate specific managers
         if (!playerController && !isPrefab)
         {
         playerController = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
+            Debug.LogWarning($"Managers.setup(): isPrefab? {isPrefab}, set playerController: {playerController}");
             changeCount++;
         }
 
