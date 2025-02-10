@@ -614,6 +614,7 @@ public class CustomMenu
                 ensureUniqueObjectIDs,
                 ensureSavableObjectInfosSetupInPrefabs,
                 autoInitializeInPrefabs,
+                checkISetupablesInPrefabs,
                 checkSavableObjectInfosSetup,
                 ensureHiddenAreasAreProperlySetup,
                 checkTiledHitBoxes,
@@ -913,6 +914,61 @@ public class CustomMenu
         if (errorCount > 0)
         {
             Debug.LogError($"Auto Initializer: {errorCount} errors");
+        }
+        return changeCount > 0 || errorCount > 0;
+    }
+
+    //2025-02-09: copied from autoInitializeInPrefabs()
+    [MenuItem("SG7/Build/Pre-Build/Check ISetupables in Prefabs")]
+    public static bool checkISetupablesInPrefabs()
+    {
+        //2021-07-12: got help from: https://forum.unity.com/threads/how-do-i-edit-prefabs-from-scripts.685711/
+        int changeCount = 0;
+        int errorCount = 0;
+        //
+        GetFiles("Assets/")
+            .Where(s => s.EndsWith(".prefab"))
+            .ToList().ForEach(
+                assetPath =>
+                {
+                    //Debug.Log($"Auto Initialize in Prefab: {assetPath}");
+                    GameObject go = PrefabUtility.LoadPrefabContents(assetPath);
+
+                    List<ISetupable> mbList = go.GetComponents<MonoBehaviour>().OfType<ISetupable>().ToList();
+                    mbList.AddRange(go.GetComponentsInChildren<MonoBehaviour>().OfType<ISetupable>());
+                    (int changesGO, int errorsGO) = _checkISetupables(mbList);
+
+                    //changed?
+                    if (changesGO > 0)
+                    {
+                        changeCount += changesGO;
+                        PrefabUtility.SaveAsPrefabAsset(go, assetPath);
+                        EditorUtility.SetDirty(go);
+                        if (changesGO > 1)
+                        {
+                            Debug.LogWarning($"Check Prefab ISetupables: {go.name} changes: {changesGO}", go);
+                        }
+                        changeCount += changesGO;
+                    }
+                    if (errorsGO > 0)
+                    {
+                        if (errorsGO > 1)
+                        {
+                            Debug.LogError($"Check Prefabs ISetupables: {go.name} errors: {errorsGO}", go);
+                        }
+                        errorCount += errorsGO;
+                    }
+
+                    PrefabUtility.UnloadPrefabContents(go);
+                }
+            );
+        if (changeCount > 0)
+        {
+            Debug.LogWarning($"Checked ISetupables {changeCount} in prefabs");
+        }
+        if (errorCount > 0)
+        {
+            Debug.LogError($"Checked Prefabs ISetupables: {errorCount} errors");
         }
         return changeCount > 0 || errorCount > 0;
     }
