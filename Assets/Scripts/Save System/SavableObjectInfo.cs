@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 [DisallowMultipleComponent]
-public class SavableObjectInfo : ObjectInfo
+public class SavableObjectInfo : ObjectInfo, ISetupable
 {
     [SerializeField]
     private AssetReference prefabAddress;
@@ -17,7 +17,10 @@ public class SavableObjectInfo : ObjectInfo
     public int destroyStateId = int.MaxValue;//the game state id in which this object was destroyed (max value for not destroyed)
 
     [Header("Components to save")]
-    public Rigidbody2D rb2d;
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Rigidbody2D rb2d;
+    public Rigidbody2D Rigidbody2D => rb2d;
+    //[AutoInitialize, SerializeField, HideInInspector]
     public List<SavableMonoBehaviour> savables;
 
     public SavableObjectInfoData Data
@@ -35,6 +38,16 @@ public class SavableObjectInfo : ObjectInfo
 #if UNITY_EDITOR
     public virtual void autoset()
     {
+        if (setup() > 0)
+        {
+        //Set dirty
+        EditorUtility.SetDirty(this);
+        }
+    }
+
+    public virtual int setup()
+    {
+        int changeCount = 0;
 
         //revert unneeded overrides
         SerializedObject so = new SerializedObject(this);
@@ -49,7 +62,12 @@ public class SavableObjectInfo : ObjectInfo
             SerializedProperty property = so.FindProperty(revert);
             try
             {
+                Debug.Log($"SaveableObjectInfo setup: {revert} overridden? {property.prefabOverride}");
+                if (property.prefabOverride)
+                {
             PrefabUtility.RevertPropertyOverride(property, InteractionMode.UserAction);
+                    changeCount++;
+                }
             }
             catch(ArgumentException ae)
             {
@@ -75,14 +93,29 @@ public class SavableObjectInfo : ObjectInfo
                 AssetDatabase.GetAssetPath(gameObject)
             );
         }
-        prefabAddress = new AssetReference(guid);
+        AssetReference assetRef = new AssetReference(guid);
+        if (prefabAddress != assetRef)
+        {
+            prefabAddress = assetRef;
+            changeCount++;
+        }
 
         //Populate savable components
+        if (!rb2d)
+        {
         rb2d = GetComponent<Rigidbody2D>();
+            changeCount++;
+        }
+        int prevCount = savables.Count;
+        savables.Clear();
         savables = GetComponents<SavableMonoBehaviour>().ToList();
+        if (savables.Count != prevCount)
+        {
+            changeCount++;
+        }
 
-        //Set dirty
-        EditorUtility.SetDirty(this);
+        //
+        return changeCount;
     }
 #endif
 }
