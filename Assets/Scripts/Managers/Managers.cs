@@ -226,11 +226,12 @@ public class Managers : MonoBehaviour, ISetupable
 #if UNITY_EDITOR
     public int setup()
     {
+        bool isPrefab = gameObject.scene.buildIndex < 0;
         int changeCount = 0;
 
         int prevCount = managerList.Count;
         managerList.Clear();
-        managerList = (gameObject.scene.buildIndex < 0)
+        managerList = (isPrefab)
             //prefab
             ? GetComponents<Manager>().ToList()
             //scene
@@ -241,7 +242,7 @@ public class Managers : MonoBehaviour, ISetupable
         }
 
         //Populate other managers
-        if (!playerController)
+        if (!playerController && !isPrefab)
         {
         playerController = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
             changeCount++;
