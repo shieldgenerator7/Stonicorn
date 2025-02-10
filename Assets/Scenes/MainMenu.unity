@@ -499,6 +499,10 @@ PrefabInstance:
       value: 0.66700006
       objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: mas
+      value: 
+      objectReference: {fileID: 37299006}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: value
       value: 0
       objectReference: {fileID: 0}
@@ -1760,7 +1764,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frame: {fileID: 389973475}
   mab: {fileID: 0}
-  bc2d: {fileID: 0}
+  bc2d: {fileID: 274763616}
 --- !u!61 &274763616
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2259,7 +2263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttons: []
-  bc2d: {fileID: 0}
+  bc2d: {fileID: 389973476}
 --- !u!61 &389973476
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2757,7 +2761,7 @@ PrefabInstance:
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: mas
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 478914322}
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: sliderFillSR
       value: 
@@ -2768,7 +2772,7 @@ PrefabInstance:
       objectReference: {fileID: 478914319}
     - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: sliderBarWidth
-      value: 0.0022308826
+      value: 0.0022377549
       objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_RootOrder
@@ -3858,14 +3862,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frame: {fileID: 0}
   mab: {fileID: 0}
-  bc2d: {fileID: 0}
+  bc2d: {fileID: 871410736}
   activatedSprite: {fileID: 0}
   deactivatedSprite: {fileID: 0}
   useColor: 0
   activeColor: {r: 1, g: 1, b: 1, a: 1}
   deactiveColor: {r: 1, g: 1, b: 1, a: 1}
-  sr: {fileID: 0}
-  mas: {fileID: 0}
+  sr: {fileID: 660243615}
+  mas: {fileID: 871410734}
 --- !u!61 &871410736
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4334,14 +4338,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frame: {fileID: 0}
   mab: {fileID: 0}
-  bc2d: {fileID: 0}
+  bc2d: {fileID: 970097361}
   activatedSprite: {fileID: 0}
   deactivatedSprite: {fileID: 0}
   useColor: 1
   activeColor: {r: 0.69411767, g: 1, b: 0.7058824, a: 1}
   deactiveColor: {r: 1, g: 1, b: 1, a: 1}
-  sr: {fileID: 0}
-  mas: {fileID: 0}
+  sr: {fileID: 970097363}
+  mas: {fileID: 970097362}
 --- !u!1 &993430338
 GameObject:
   m_ObjectHideFlags: 0
@@ -5150,7 +5154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frame: {fileID: 0}
   mab: {fileID: 1479369079}
-  bc2d: {fileID: 0}
+  bc2d: {fileID: 1479369081}
 --- !u!1 &1491327179
 GameObject:
   m_ObjectHideFlags: 0
@@ -5884,13 +5888,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startFrame: {fileID: 11584382}
   frames:
-  - {fileID: 160591700}
-  - {fileID: 1037794870}
-  - {fileID: 539739725}
+  - {fileID: 953867115}
   - {fileID: 11584382}
+  - {fileID: 160591700}
   - {fileID: 1972838764}
   - {fileID: 298357110}
-  - {fileID: 953867115}
+  - {fileID: 1037794870}
+  - {fileID: 539739725}
 --- !u!4 &1627845402
 Transform:
   m_ObjectHideFlags: 0
