@@ -303,6 +303,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1803200150408293677, guid: 8d6bfb022dcb2904285f96f96d833b0c, type: 3}
+      propertyPath: coll2d
+      value: 
+      objectReference: {fileID: 3358967447682213504}
     - target: {fileID: 1959002116193326918, guid: 8d6bfb022dcb2904285f96f96d833b0c, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 0.92
@@ -371,5 +375,10 @@ PrefabInstance:
 --- !u!4 &2251354950679639896 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3066070041369790110, guid: 8d6bfb022dcb2904285f96f96d833b0c, type: 3}
+  m_PrefabInstance: {fileID: 3869354125133345222}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &3358967447682213504 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 1959002116193326918, guid: 8d6bfb022dcb2904285f96f96d833b0c, type: 3}
   m_PrefabInstance: {fileID: 3869354125133345222}
   m_PrefabAsset: {fileID: 0}
