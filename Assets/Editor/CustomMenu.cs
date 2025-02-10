@@ -875,11 +875,12 @@ public class CustomMenu
             .ToList().ForEach(
                 assetPath =>
                 {
+                    //Debug.Log($"Auto Initialize in Prefab: {assetPath}");
                     GameObject go = PrefabUtility.LoadPrefabContents(assetPath);
 
-                    (int changesGO, int errorsGO) = _autoInitializeTags(
-                        go.GetComponents<MonoBehaviour>().ToList()
-                        );
+                    List<MonoBehaviour> mbList = go.GetComponents<MonoBehaviour>().ToList();
+                    mbList.AddRange(go.GetComponentsInChildren<MonoBehaviour>());
+                    (int changesGO, int errorsGO) = _autoInitializeTags(mbList);
 
                     //changed?
                     if (changesGO > 0)
