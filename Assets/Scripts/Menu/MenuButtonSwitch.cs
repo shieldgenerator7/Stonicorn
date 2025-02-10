@@ -72,6 +72,7 @@ public class MenuButtonSwitch : MenuButton
                     changeCount++;
                 }
             }
+            if (sr.sprite) { 
             if (activatedSprite == null)
             {
                 activatedSprite = sr.sprite;
@@ -81,6 +82,7 @@ public class MenuButtonSwitch : MenuButton
             {
                 deactivatedSprite = sr.sprite;
                 changeCount++;
+            }
             }
             if (useColor)
             {
