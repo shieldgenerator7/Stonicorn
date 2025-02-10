@@ -877,30 +877,30 @@ public class CustomMenu
                 {
                     GameObject go = PrefabUtility.LoadPrefabContents(assetPath);
 
-                        (int changesGO, int errorsGO) = _autoInitializeTags(
-                            go.GetComponents<MonoBehaviour>().ToList()
-                            );
+                    (int changesGO, int errorsGO) = _autoInitializeTags(
+                        go.GetComponents<MonoBehaviour>().ToList()
+                        );
 
-                        //changed?
-                        if (changesGO > 0)
-                        {
-                            changeCount += changesGO;
-                            PrefabUtility.SaveAsPrefabAsset(go, assetPath);
-                            EditorUtility.SetDirty(go);
+                    //changed?
+                    if (changesGO > 0)
+                    {
+                        changeCount += changesGO;
+                        PrefabUtility.SaveAsPrefabAsset(go, assetPath);
+                        EditorUtility.SetDirty(go);
                         if (changesGO > 1)
                         {
                             Debug.LogWarning($"Check AutoInitialize Tags: {go.name} changes: {changesGO}", go);
                         }
-                            changeCount += changesGO;
-                        }
-                        if (errorsGO > 0)
+                        changeCount += changesGO;
+                    }
+                    if (errorsGO > 0)
+                    {
+                        if (errorsGO > 1)
                         {
-                            if (errorsGO > 1)
-                            {
-                                Debug.LogError($"Check AutoInitialize Tags: {go.name} errors: {errorsGO}", go);
-                            }
-                            errorCount += errorsGO;
+                            Debug.LogError($"Check AutoInitialize Tags: {go.name} errors: {errorsGO}", go);
                         }
+                        errorCount += errorsGO;
+                    }
 
                     PrefabUtility.UnloadPrefabContents(go);
                 }
@@ -1503,7 +1503,8 @@ public class CustomMenu
 
                 fields
                     .Where(field => field.GetCustomAttribute<AutoInitialize>() != null)
-                    .Where(field => {
+                    .Where(field =>
+                    {
 
                         object value = field.GetValue(mb);
                         return value == null
@@ -1511,14 +1512,14 @@ public class CustomMenu
                             //this string comparison seems weird, but its for Rigidboyd2D, PolygonCollider2D and other Unity components
                             //that dont play nice with regular null checks
                             || $"{value}" == NULL_STRING;
-                        })
+                    })
                     .ToList()
                     .ForEach(field =>
                     {
                         //Check to make sure it is not an interface
                         if (field.FieldType.IsInterface)
                         {
-                            Debug.LogError($"Field({ className}.{ field.Name}) is an interface. Unfortunately, Unity does not support serializing interfaces. Thus they also can't be auto-initialized", mb);
+                            Debug.LogError($"Field({className}.{field.Name}) is an interface. Unfortunately, Unity does not support serializing interfaces. Thus they also can't be auto-initialized", mb);
                             errors++;
                             return;
                         }
@@ -1559,9 +1560,9 @@ public class CustomMenu
                             }
                             if (component == null)
                             {
-                            Debug.LogError($"Component not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
-                            errors++;
-                            return;
+                                Debug.LogError($"Component not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
+                                errors++;
+                                return;
                             }
                         }
                         Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {component}", mb);
