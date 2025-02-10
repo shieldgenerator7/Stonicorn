@@ -1,0 +1,623 @@
+Stoned Builds Change Log					
+"*This log was created on 2016-03-03, so entries listed before then might be inaccurate or have missing info"					
+"*(2016-07-29) And it doesn't always get updated on a regular basis, so any entry could have inaccurate or missing info"					
+					
+Build	Date	State	Issues Fixed	Major Changes	
+0_00	2015-12-21	Funny		Initial Build	
+0_01	2015-12-20	Playable		"Added floating blocks, weight switches, repulser orbs, simple background, teleport range, zooming function; Removed rotation on camera"	
+0_02	2015-12-21	Playable		Added zoom in and out range limit; Fixed infinite air-port bug; Changed how the float cubes work	
+0_03	2015-12-21	Playable		"Changed how the float cubes work, where the beginning position is (temporarily)"	
+0_04	2015-12-21	Playable		Added the third puzzle platform to the test level	
+0_04a	2015-12-22	Playable		Changed how the float cubes work	
+0_04b	2015-12-31	Playable		Added the ESC button command to close	
+0_05	2015-12-31	Playable		Added out-of-bounds fix: objects out of bounds appear in the center of the level	
+0_06	2015-12-31	Playable		"Added icon, settings window banner, teleport sound effect, music (Wind Wolf's ""Sunny Day"")"	
+0_07	2016-01-01	Playable		Added forgiveness: it will still teleport even if you click out of range	
+0_08	2016-01-02	Playable			
+0_09	2016-01-04	Playable		Added Merky	
+0_10	2016-01-04	Unplayable		Switched out the test level for the first version of the first tutorial level	
+0_11	2016-01-05	Unplayable		Added some blocks to the first tutorial level	
+0_12	2016-01-08	Unplayable		Limited Merky's number of air-ports	
+0_13a	2016-01-12	Unplayable		"Added spikes, content to first tutorial level"	
+0_14	2016-01-17	Unplayable		Improved first tutorial level; Changed spike pit to be deeper	
+0_15	2016-01-18	Unplayable		Added fog	
+0_15a	2016-01-18	Unplayable			
+0_16	2016-01-23	Playable		"Added ramps, finished initial version of tutorial level"	
+0_17	2016-01-25	Playable		Fixed wall telefragging bug	
+0_18	2016-01-27	Playable		"Added light beams, lanterns, cave wall background"	
+0_19	2016-02-08	Playable		Added forgiveness: it will try to teleport to a valid location if you click on an invalid location	
+0_20	2016-02-15	Funny		"Changed Merky's pixel-to-units scale, which made him really small"	
+0_21	2016-03-02	Unplayable		Switched out the tutorial level for a new level	
+0_21a	2016-03-02	Funny		Shrunk the first tutorial level (temporarily)	
+0_22	2016-03-03	Unplayable		Changed the teleport streak to a teleport star	
+0_23	2016-03-04	Unplayable		Added some ground to the second tutorial level	
+0_24	2016-03-06	Playable		Added some ground to the second tutorial level	
+0_25	2016-03-12	Playable		Finished the layout of the second tutorial level	
+0_26	2016-03-13	Playable		Removed Teleport XP and fixed the tutorial level to match	
+0_27	2016-03-16	Playable		Added secret areas	
+0_28	2016-03-17	Playable		"Improved secret areas, added milestones"	
+0_29	2016-03-18	Playable		"Added trees, grass, and hills"	
+0_30	2016-03-22	Playable		"Improved tutorial level, added gravity immunity, fixed camera-losing-focus-of-Merky issue"	
+0_31	2016-03-24	Unplayable		Allowed the camera to be moved	
+0_32	2016-03-25	Playable		Fixed camera controlling issues	
+0_32a	2016-03-25	Funny		"Changed the level out, added force teleport on every teleport"	
+0_33	2016-03-28	Funny		Refactored the gesture processing system	
+0_33a	2016-03-28	Playable		"Added more boulders, updated the first tutorial scene to accommodate the new gesture processing system"	
+					
+					
+0_35a	2016-04-04	Playable		"Nothing (yet), just testing to make sure the build works with new version of Unity"	
+					
+					
+0_37	2016-04-07	Playable		"Added more to the force teleport tutorial level, improved cracked ground"	
+0_38	2016-04-12	Unplayable		"Added more to the force teleport tutorial level, messed with float cube controllers"	
+					
+					
+					
+0_42	2016-04-25	Playable		Added particle effects to the float cubes	
+0_43	2016-04-26	Playable		Cracked ground now splits into rubble	
+0_44	2016-05-02	Playable		"Added particle effects to weight switches, Added 3-tap cheat code"	
+					
+0_46	2016-07-26	UnPlayable		Combined the two levels together	
+0_47	2016-07-27	Playable		Fixed what broke in force teleport level from the last version	
+0_48	2016-07-28	Playable		Cracked ground rubble disappears	
+0_49	2016-07-29	Playable		"Fixed unwinnable conditions in force teleport level, Added boulder friends"	
+0_50	2016-08-01	UnPlayable		Terrain'd half of the force teleport level	
+0_51	2016-08-05	Playable		Terrain'd the other half of the force teleport level	
+0_52	2016-08-16	Playable		"Added cracked ground back in, decorated force teleport level"	
+0_53					
+0_54					
+0_55					
+0_56					
+0_57					
+0_58					
+0_59					
+0_60					
+0_61					
+0_62					
+0_63					
+0_64					
+0_65					
+0_66					
+0_67					
+0_68					
+0_69					
+0_70					
+0_71					
+0_72					
+0_73					
+0_74					
+0_75					
+0_76					
+0_77					
+0_78					
+0_79	2016-12-06	Playable		The checkpoint ghosts show the checkpoint's environment and not just the checkpoint's sprite	
+0_80	2016-12-13	Playable	"61, 65"	The checkpoint ghosts show correctly between sessions and at start of sessions	
+0_81	2016-12-20	Playable	"62, 63"	The checkpoint ghosts now wave around and are circular	
+0_81a	2016-12-20	Funny		"The force teleport scene has its own gravity implemented, but with several bugs (this one is in the same folder as 0_81)"	
+					
+					
+0_84	2017-01-04	Playable	"81, 82, 85"	Fixed several bugs with the gravity shift	
+0_85	2017-01-06	Playable	71	Patched float cubes and made force teleport level beatable	
+0_85a	2017-01-06	Playable		"FIRST DEMO BUILD: now save files have optional date/time stamps and game optionally doesn't load on open, plus exit sign added for easy exiting"	
+0_86	2017-01-10	Playable	"80, 84"	"Camera rotation on gravity shift, Merky ground detection rotates with gravity shift"	
+0_87	2017-01-17	Playable	89	Added Shield Bubble ability	
+0_88	2017-01-18	Playable	98	Shields now get saved	
+0_89	2017-01-19	Playable	"93, 99, 103"	"Shield milestone added, Shields delete when time rewinds"	
+0_90	2017-01-24	Playable	"104, 105,106"	"Added Power Cube and Powered Door, Shield Bubble powers Power Cube"	
+0_91	2017-01-26	Playable	108	"Constructed a small Shield Bubble Intro level, force wave damages shield bubble"	
+0_92	2017-01-30	Playable	"15, 94, 112"	"Patched out Shield Bubble Towers and Bridges, corrected range indicator sizes"	
+0_93	2017-01-31	Playable	"77, 92, 107, 111, 113, 114"	"Shields don’t mess up powered doors, Shield Bubble sounds and looks better, other bug fixes"	
+0_94	2017-02-07	Playable	119	"Camera scaling is based on base range instead of range, Going back in time no longer causes powered wall to lose a RB2DLock (tho closing/opening does)"	
+					
+					
+0_97	2017-02-21	Playable	"110, 123, 127, 128"	Finished teleport spot finding system upgrades	
+0_98	2017-02-22	Playable	"129, 130, 132"	"Smoothed camera movement, Time rewind can tap to cancel, time rewind chooses previous one if current one overlaps it"	
+					
+0_100	2017-02-28	Playable	136	"Added the wall jump level, adjusted several other things"	
+					
+					
+					
+0-104	2017-03-08	Playable	158	"Added particle effects to Force Wave and Shield Bubble, Force Wave no longer teleports"	
+					
+					
+					
+					
+					
+0_110	2017-03-16	Playable	"131, 178"	"Terrained the Stonicorn Nestling Grounds, fixed the Time Rewind bug"	
+0_111					
+0_112					
+0_113					
+0_114					
+0_115					
+0_116					
+0_117					
+0_118					
+0_119					
+0_120					
+0_121					
+0_122					
+0_123					
+0_124					
+0_125					
+0_126					
+0_127					
+0_128					
+0_129					
+0_130					
+0_131					
+0_132					
+0_133					
+0_134					
+0_135					
+0_136					
+0_137					
+0_138					
+0_139					
+0_140					
+0_141					
+0_142	2017-06-14	Playable		"Added hay, ability gain effect, tree covers, fixed the last CP in the desert area"	
+0_143					
+0_144					
+0_145					
+0_146					
+0_147					
+0_148					
+0_149					
+0_150					
+0_151					
+0_152					
+0_153					
+0_154					
+0_155					
+0_156					
+0_157					
+0_158					
+0_159					
+0_160					
+0_161					
+0_162					
+0_163					
+0_164					
+0_165					
+0_166					
+0_167					
+0_168					
+0_169					
+0_170					
+0_171					
+0_172					
+0_173					
+0_174					
+0_175					
+0_176					
+0_177					
+0_178					
+0_179					
+0_180					
+0_181					
+0_182					
+0_183					
+0_184					
+0_185					
+0_186					
+0_187					
+0_188					
+0_189					
+0_190					
+0_191					
+0_192					
+0_193					
+0_194					
+0_195					
+0_196					
+0_197					
+0_198					
+0_199					
+0_200					
+0_201					
+0_202					
+0_203					
+0_204					
+0_205					
+0_206					
+0_207					
+0_208					
+0_209					
+0_210					
+0_211					
+0_212					
+0_213					
+0_214					
+0_215					
+0_216					
+0_217					
+0_218					
+0_219					
+0_220					
+0_221	2018-02-12	Playable		Added the Swap Ability	
+0_222					
+0_223					
+0_224	2018-02-15	Playable		Added the Air Slice Ability	
+0_225					
+0_226					
+0_227	2018-02-19	Playable	382	Added sticky pads to the Wall Jump Ability	
+0_228					
+0_229					
+0_230					
+0_231					
+0_232	2018-03-05	Unplayable	"384, 389"	Fixed time rewind bugs with the StickyPads	
+0_233	2018-03-06	Unplayable			
+0_234	2018-03-07	Unplayable	383	Force Charge gains no charge on first teleport	
+0_235					
+0_236					
+0_237					
+0_238					
+0_239					
+0_240					
+0_241	2018-03-15	Playable	397	Upgraded the diamond sprites	
+0_242	2018-03-22	Unplayable		New improvements for Force Charge & Electric Field	
+0_243					
+0_244	2018-04-12	Playable		Added new Time Rewind tutorial visuals	
+0_245					
+0_246					
+0_247	2018-04-23	Unplayable		Added camera auto offset	
+0_248					
+0_249					
+0_250					
+0_251					
+0_252					
+0_253					
+0_254					
+0_255					
+0_256	2018-06-04	Playable		"Added lots of new art to the game, updated Merky's sprite"	
+0_257					
+0_258					
+0_259					
+0_260	2018-06-30	Unplayable		Added greybox	
+0_261					
+0_262					
+0_263					
+0_264					
+0_265					
+0_266					
+0_267					
+0_268					
+0_269					
+0_270					
+0_271					
+0_272					
+0_273					
+0_274					
+0_275	2018-08-14	Playable		DiamondShell AI updates mostly stable	
+0_276					
+0_277					
+0_278					
+0_279					
+0_280					
+0_281					
+0_282					
+0_283					
+0_284					
+0_285					
+0_286					
+0_287					
+0_288					
+0_289					
+0_290					
+0_291					
+0_292					
+0_293					
+0_294					
+0_295					
+0_296					
+0_297					
+0_298					
+0_299					
+0_300					
+0_301	2018-12-04	Playable		Szymon added a bunch of decorations for the new art style	
+0_302					
+0_303					
+0_304					
+0_305					
+0_306					
+0_307					
+0_308					
+0_309					
+0_310					
+0_311					
+0_312					
+0_313	2018-12-19	Playable	"451, 453"	Added Splash Screen	
+0_314	2018-12-20	Playable	429	Added Speedrun Timer	
+0_315					
+0_316					
+0_317					
+0_318					
+0_319					
+0_320					
+0_321					
+0_322					
+0_323	2019-01-03	Playable		Added NPC Quote Box	
+0_324					
+0_325					
+0_326					
+0_327					
+0_328					
+0_329					
+0_330					
+0_331					
+0_332					
+0_333					
+0_334					
+0_335					
+0_336					
+0_337					
+0_338					
+0_339					
+0_340					
+0_341					
+0_342					
+0_343					
+0_344					
+0_345					
+0_346					
+0_347					
+0_348					
+0_349					
+0_350					
+0_351					
+0_352					
+0_353					
+0_354					
+0_355					
+0_356					
+0_357					
+0_358					
+0_359	2019-08-29	Funny		"Added world sketch, and modified (shoe-horned) existing levels to conform to it, added central gravity"	
+0_360					
+0_361					
+0_362					
+0_363					
+0_364					
+0_365					
+0_366					
+0_367					
+0_368					
+0_369					
+0_370	2019-11-22	Playable		Updated teleport range indicator	
+0_371					
+0_372					
+0_373					
+0_374					
+0_375					
+0_376					
+0_377					
+0_378					
+0_379					
+0_380	2019-12-09	Unplayable		"Scenes load when Merky is near, and pause game when he enters a scene that is still loading"	
+0_381					
+0_382					
+0_383					
+0_384					
+0_385					
+0_386					
+0_387					
+0_388					
+0_389					
+0_390					
+0_391					
+0_392	2019-12-20	Playable		Added Rewind visual effect	
+0_393	2019-12-21	Playable		Groundhog Day Mechanic	
+0_394					
+0_395					
+0_396					
+0_397	2019-12-25	Playable		Added Groundhog Day Rewind Warning	
+0_398					
+0_399					
+0_400	2019-12-28	Playable		Added snails back in	
+0_401					
+0_402					
+0_403	2019-12-31	Playable		Fixed bug where forest scene doesn't load when starting a new game	
+0_404					
+0_405					
+0_406					
+0_407					
+0_408					
+0_409					
+0_410					
+0_411	2020-03-31	Playable		Refined the Force Dash ability	
+0_412					
+0_413					
+0_414					
+0_415					
+0_416					
+0_417					
+0_418					
+0_419					
+0_420	2020-04-10	Playable		Snails have spikes while rolling	
+0_421					
+0_422					
+0_423					
+0_424					
+0_425	2020-04-16	Unplayable		Started GestureManager refactor	
+0_426					
+0_427					
+0_428					
+0_429					
+0_430					
+0_431					
+0_432					
+0_433	2020-11-08	Playable		Added Force Launch ability	
+0_434					
+0_435					
+0_436					
+0_437					
+0_438	2020-11-17	Playable		"Added Flashlight ability, Readded Touch controls"	
+0_439	2020-11-18	Playable		Added Crab and Cactus enemies	
+0_440	2020-11-19	Playable		Added Cactus Round and Cactus Surface enemies	
+0_441					
+0_442	2020-11-23	Playable		"Add checkpoint pods, teleport cooldown"	
+0_443					
+0_444	2020-11-25	Playable		Add ability upgrade levels	
+0_445					
+0_446					
+0_447	2020-11-28	Playable		Extract managers out of GameManager	
+0_448					
+0_449					
+0_450					
+0_451					
+0_452					
+0_453					
+0_454					
+0_455					
+0_456					
+0_457					
+0_458					
+0_459					
+0_460					
+0_461					
+0_462					
+0_463					
+0_464					
+0_465					
+0_466					
+0_467					
+0_468					
+0_469					
+0_470					
+0_471					
+0_472					
+0_473					
+0_474					
+0_475					
+0_476					
+0_477					
+0_478					
+0_479					
+0_480					
+0_481					
+0_482					
+0_483					
+0_484					
+0_485					
+0_486					
+0_487					
+0_488					
+0_489					
+0_490					
+0_491					
+0_492					
+0_493					
+0_494					
+0_495					
+0_496					
+0_497					
+0_498					
+0_499					
+0_500					
+0_501					
+0_502					
+0_503					
+0_504					
+0_505					
+0_506					
+0_507					
+0_508					
+0_509					
+0_510					
+0_511					
+0_512					
+0_513					
+0_514					
+0_515					
+0_516					
+0_517					
+0_518					
+0_519					
+0_520					
+0_521					
+0_522					
+0_523					
+0_524					
+0_525					
+0_526					
+0_527					
+0_528					
+0_529					
+0_530					
+0_531					
+0_532					
+0_533					
+0_534					
+0_535					
+0_536					
+0_537					
+0_538	2021-11-09	Playable		Separate levels version	recorded 2024-07-07
+0_539	2022-09-02	Unplayable		Fixed some roadblock errors	
+0_540	2022-09-05	Funny		Reduced size of planet	
+0_541					
+0_542	2022-09-08	Playable		"Removed Time Rewind ability, Pre-Rough draft of Forest cave level"	
+0_543	2022-09-10	Playable		"Added blocking rock, Drafted Forest cave level"	
+0_544	2022-09-21	Playable		Drafted Forest cave level	
+0_545					
+0_546					
+0_547					
+0_548					
+0_549					
+0_550					
+0_551	2024-07-07	Playable		First try for 2024 Version	
+0_552	2024-07-08	Playable	#595	"Fixed sun performance issue, doodled in Jungle level"	
+0_553	2024-07-09	Playable		flesh out giant tree in jungle	
+0_554	2024-07-11	Playable		"fixed lots of bugs with sun and rewind, decorated first checkpoint"	
+0_555					
+0_556					
+0_557					
+0_558	2024-07-17	Playable	#542	add skins	
+0_559	2024-07-18	Playable	"#596, #542"	skin: Shield Flux	
+0_560	2024-07-19	Unplayable	#597		recorded (and built) 2024-07-20
+0_561	2024-07-20	Playable	#597		recorded (and built) 2024-07-21
+0_562	2024-07-21	Playable	"#598, #596, #599, #600"	"make panels give electric ability upgrade, add ice traps to tundra level"	
+0_563	2024-07-28	Playable	#542		
+0_564	2024-07-29	Unplayable	#601	make clouds grant air slice ability upgrades	
+0_565	2024-08-06	Playable	"#601, #602"	"big clouds move too, added first dialogue with moonicorn"	
+0_566	2024-08-09	Playable	#602	"Moonicorn voicelines, moss in well"	
+0_567	2024-08-10	Playable	"#603, #602"	Added route for red npc to get to core	
+0_568	2024-08-11	Playable	"#604, #605, #603"	Added route for other NPCs to get to core	
+0_569	2024-08-14	Playable	"#606, #607"	"Moon is pilotable, add vases to explode"	
+0_570	2024-09-09	Playable	"#608, #609"	"add cactus blossom, refactor Managers.gameData"	
+0_571	2024-09-11	Playable	#610	add balancing rocks	
+0_572	2024-09-12	Playable	#611	develop core shaft path	
+0_573	2024-11-19	Playable	#542	"fix some menu bugs, skin: top hat"	
+0_574	2024-12-01	Playable		jungle seed pods	
+0_575	2025-01-01	Playable		"GravityZone honors Rigidbody2D gravityScale, changed crab grab code"	
+0_576	2025-01-02	Playable		"Fix floating objects, jungle seed pods dangle with physics"	
+0_577	2025-01-03	Playable		"Fix save bugs, Fix some object-specific time rewind bugs"	
+0_578	2025-01-04	Playable		"Fix bugs, Fix prefab override issues with ability overrides, Change how the sun collides with player, Make skybox have a gradient"	
+0_579	2025-01-05	Playable		"Shield improvements, Flashlight improvements, Fix bug: pilot pod stealing blue upgrades, Fix issues with blue clouds and orange spikeballs"	
+0_580	2025-01-06	Playable		Added road signs	
+0_581	2025-01-09	Playable		"Improved cactus blossoms, powered movers, Electric Beam ability"	
+0_582	2025-01-10	Playable		"Fixed some framerate issues caused by too many PolygonCollider2Ds, Burst'd CloudMovers, Changed MechFactory entrance"	
+0_583	2025-01-11	Playable		"SceneLoaders take up entire planet area, Yellow has dialogue now"	
+0_584	2025-01-12	Unplayable		NPC interaction: Kaki	
+0_585	2025-01-13	Playable		"Reduce level load range, Add menu option: NPC dialogue speed and wait time, Add purple eye in menu"	
+0_586	2025-01-14	Playable		NPC base dialogue: Silt the Pebblecorn	
+0_587	2025-01-15	Playable		NPC base dialogue: Transistor	
+0_588	2025-01-16	Playable		"Adjust sticky pads, Fix bugs, Red vases now contain ability granter, but is not same prefab"	
+0_589	2025-01-17	Playable	#612	"Reworked Electric Beam ability, add elevators, NPC base dialogue: Nimbus"	R18: added an issue that was fixed in this build
+0_590	2025-01-18	Playable	#613		
+0_591	2025-01-19	Playable	"#614, #542"	Skin: Diogenes (Getting Over It)	
+0_592	2025-01-20	Playable	"#419, #615"	"Fix bugs, Make ObjectState saving more efficient, Past Merkys don’t show up all at once, Setting: Time Rewind Speed"	
+0_593	2025-01-21	Playable	"#617, #618, #619"	"Town: enterable windmill, visitor's center"	
+0_594	2025-01-22	Unplayable	"#620, #621, #622, #623, #624"	"Stabilize dialogue box sizes, Pilotable Pods now require power, Make GameState a struct"	
+0_595	2025-01-23	Playable	"#620, #625, #626"		
+0_596	2025-01-24	Playable	#627	Improve tutorial visuals	
+0_597	2025-01-25	Playable	#628	Add layers to desert terrain	
+0_598	2025-01-26	Playable	#629	Add minecarts to desert	
+0_599	2025-01-27	Playable	"#628, #630, #542"	Hide Diogenes (Getting Over It) better	
+0_600	2025-01-28	Playable		Expand Jungle area around Well entrance	
+0_601	2025-01-29	Playable	"#631, #617, #629"	Rework minecart	
+0_602	2025-01-30	Playable	"#375, #628"	Fix major camera drag issue when dragging near max drag range	
+0_603	2025-01-31	Playable	"#620, #629"		
+0_604	2025-02-06	Playable	#632		
+0_605	2025-02-07	Playable	"#633, #634"	Make treetops rounder in jungle	
+0_606	2025-02-08	Unplayable	"#635, #634"	Refactor: AutoInitialize tag	
+0_607	2025-02-09	Playable	#634		
