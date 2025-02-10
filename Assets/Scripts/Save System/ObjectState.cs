@@ -34,7 +34,7 @@ public class ObjectState
         localScale = info.transform.localScale;
         rotation = info.transform.rotation;
         //Rigidbody2D
-        Rigidbody2D rb2d = info.rb2d;
+        Rigidbody2D rb2d = info.Rigidbody2D;
         if (rb2d != null)
         {
             velocity = rb2d.linearVelocity;

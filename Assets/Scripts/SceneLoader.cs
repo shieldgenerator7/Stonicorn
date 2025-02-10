@@ -64,18 +64,9 @@ public class SceneLoader : MonoBehaviour, ISetting
             return false;
         }
     }
+    [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D c2d;
-    protected Collider2D Collider
-    {
-        get
-        {
-            if (c2d == null)
-            {
-                c2d = GetComponent<Collider2D>();
-            }
-            return c2d;
-        }
-    }
+    protected Collider2D Collider=>c2d;
 
     public void check()
     {

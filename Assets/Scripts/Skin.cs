@@ -7,13 +7,13 @@ public class Skin : MonoBehaviour
 
     public static Skin attachedSkin;
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
     private bool canBePickedUp = true;
 
     private void Start()
     {
-        coll2d = GetComponent<Collider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -13,7 +13,7 @@ public class StaticUntilSwapped : SavableMonoBehaviour, ISwappable
         set
         {
             rooted = value;
-            GetComponent<Rigidbody2D>().bodyType = (rooted)
+            rb2d.bodyType = (rooted)
                 ? RigidbodyType2D.Static
                 : RigidbodyType2D.Dynamic;
             onRootedChanged?.Invoke(rooted);
@@ -21,6 +21,10 @@ public class StaticUntilSwapped : SavableMonoBehaviour, ISwappable
     }
     public delegate void OnRootedChanged(bool rooted);
     public event OnRootedChanged onRootedChanged;
+
+
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Rigidbody2D rb2d;
 
     private void Start()
     {
