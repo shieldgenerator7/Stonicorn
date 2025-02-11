@@ -416,6 +416,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.06713573
       objectReference: {fileID: 0}
+    - target: {fileID: 8183533687579090971, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+      propertyPath: srs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8183533687579090971, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8862933994023046302}
     - target: {fileID: 8565899397523436459, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
       propertyPath: m_Size.x
       value: 0.19576134
@@ -448,5 +456,10 @@ SpriteRenderer:
 --- !u!50 &4762765223490571132 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 1222864423378626054, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
+  m_PrefabInstance: {fileID: 5971985355749944698}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1971053207 &8862933994023046302 stripped
+SpriteShapeRenderer:
+  m_CorrespondingSourceObject: {fileID: 2891230181969961444, guid: c92abec211cde0040b2ae80abb00e9c2, type: 3}
   m_PrefabInstance: {fileID: 5971985355749944698}
   m_PrefabAsset: {fileID: 0}

@@ -32,6 +32,22 @@ PrefabInstance:
       propertyPath: id
       value: 7169
       objectReference: {fileID: 0}
+    - target: {fileID: 4709058486698638212, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4709058486698638212, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 9202366409098685465}
+    - target: {fileID: 4709058486698638212, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 9202366409098685465}
+    - target: {fileID: 4709058486698638212, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 7666253677800431784}
     - target: {fileID: 5684913358203740075, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
       propertyPath: m_Color.b
       value: 0.9411765
@@ -125,6 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75e77e5225b54441bed6fab75088081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &7666253677800431784 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6572301000883344154, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+  m_PrefabInstance: {fileID: 3553764424702178226}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8072823639453386806 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4709058486698638212, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
@@ -136,3 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &9202366409098685465 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5684913358203740075, guid: 21122bef574514343bd50376cbd7e9b5, type: 3}
+  m_PrefabInstance: {fileID: 3553764424702178226}
+  m_PrefabAsset: {fileID: 0}

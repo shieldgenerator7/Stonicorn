@@ -84,6 +84,22 @@ PrefabInstance:
       propertyPath: id
       value: 7170
       objectReference: {fileID: 0}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3806273829845026575}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3806273829845026575}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2378964405007453118}
     - target: {fileID: 6505215053507214006, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: characterName
       value: Yellow
@@ -176,6 +192,16 @@ PrefabInstance:
 --- !u!50 &1537690973390705103 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 8612325288248208684, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 7121275074231074019}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &2378964405007453118 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4886439090245236573, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 7121275074231074019}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &3806273829845026575 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6197305010752437228, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
   m_PrefabInstance: {fileID: 7121275074231074019}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &4282827362655658784 stripped

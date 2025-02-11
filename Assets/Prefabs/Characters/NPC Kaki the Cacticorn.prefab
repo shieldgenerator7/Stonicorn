@@ -84,6 +84,22 @@ PrefabInstance:
       propertyPath: id
       value: 5234
       objectReference: {fileID: 0}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3039284564971734727}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3039284564971734727}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4610818854303828598}
     - target: {fileID: 6505215053507214006, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: characterName
       value: Kaki
@@ -544,6 +560,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 157980bc11266644cb1bfab4867dfe74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &3039284564971734727 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6197305010752437228, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 8947796107813092651}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &4610818854303828598 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4886439090245236573, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 8947796107813092651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6561845660339592087 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2827327062223136444, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}

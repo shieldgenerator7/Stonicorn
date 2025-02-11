@@ -84,6 +84,22 @@ PrefabInstance:
       propertyPath: id
       value: 9114
       objectReference: {fileID: 0}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5432252268187570307}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 5432252268187570307}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 6823625013927779378}
     - target: {fileID: 6505215053507214006, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: characterName
       value: Grunhardt
@@ -171,6 +187,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &5432252268187570307 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6197305010752437228, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 2117391915355007855}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &6823625013927779378 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4886439090245236573, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 2117391915355007855}
+  m_PrefabAsset: {fileID: 0}
 --- !u!50 &7703227404229084739 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 8612325288248208684, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}

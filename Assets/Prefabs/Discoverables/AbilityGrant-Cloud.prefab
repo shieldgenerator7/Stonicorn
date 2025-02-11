@@ -215,7 +215,12 @@ MonoBehaviour:
   delayTime: 0
   destroyColliders: 1
   finishAction: 0
+  isEffectOnly: 1
   ignorePause: 0
+  srs:
+  - {fileID: 1979434374728408627}
+  - {fileID: 1979434374728408627}
+  - {fileID: 1667261754925162046}
 --- !u!114 &7298586240856341040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,6 +323,22 @@ PrefabInstance:
       propertyPath: finishAction
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5424422690625631310, guid: f1c26d3af0b60294dba087a63f7a5ed8, type: 3}
+      propertyPath: srs.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5424422690625631310, guid: f1c26d3af0b60294dba087a63f7a5ed8, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1979434374728408627}
+    - target: {fileID: 5424422690625631310, guid: f1c26d3af0b60294dba087a63f7a5ed8, type: 3}
+      propertyPath: 'srs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1667261754925162046}
+    - target: {fileID: 5424422690625631310, guid: f1c26d3af0b60294dba087a63f7a5ed8, type: 3}
+      propertyPath: 'srs.Array.data[4]'
+      value: 
+      objectReference: {fileID: 7571184921512629813}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

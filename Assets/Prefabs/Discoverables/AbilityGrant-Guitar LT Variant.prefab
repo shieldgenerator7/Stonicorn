@@ -28,6 +28,22 @@ PrefabInstance:
       propertyPath: abilityTypeName
       value: LongTeleportAbility
       objectReference: {fileID: 0}
+    - target: {fileID: 4797140426951006547, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4797140426951006547, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 6423901149053835002}
+    - target: {fileID: 4797140426951006547, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 6423901149053835002}
+    - target: {fileID: 4797140426951006547, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 5545926116315765323}
     - target: {fileID: 4859005109314047417, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
       propertyPath: id
       value: 5204
@@ -125,6 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75e77e5225b54441bed6fab75088081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &5545926116315765323 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6412759196923195853, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+  m_PrefabInstance: {fileID: 1443866472880925574}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6240714910439666389 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4797140426951006547, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
@@ -136,3 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &6423901149053835002 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5561924543699369340, guid: 759a7c45b93a8034fa5db929c5f20ec4, type: 3}
+  m_PrefabInstance: {fileID: 1443866472880925574}
+  m_PrefabAsset: {fileID: 0}

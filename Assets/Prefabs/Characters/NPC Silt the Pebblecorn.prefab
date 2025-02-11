@@ -68,6 +68,22 @@ PrefabInstance:
       propertyPath: id
       value: 6162
       objectReference: {fileID: 0}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1498474890385977757}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1498474890385977757}
+    - target: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 79649297268718892}
     - target: {fileID: 6505215053507214006, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: characterName
       value: Silt
@@ -168,6 +184,16 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 201013618075143082}
   m_SourcePrefab: {fileID: 100100000, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+--- !u!212 &79649297268718892 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4886439090245236573, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 4812913051624393329}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1498474890385977757 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6197305010752437228, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 4812913051624393329}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1978936018818225586 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6466167653182152643, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}

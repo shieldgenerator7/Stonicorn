@@ -399,6 +399,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -83.105
       objectReference: {fileID: 0}
+    - target: {fileID: 114720037287011148, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114720037287011148, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5615049915071233628}
+    - target: {fileID: 114720037287011148, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 5615049915071233628}
+    - target: {fileID: 114720037287011148, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 6121330764840824696}
     - target: {fileID: 114806904641426842, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: ghostSprite
       value: 
@@ -479,6 +495,22 @@ PrefabInstance:
       propertyPath: prefabAddress.m_AssetGUID
       value: 8fe05c73e0276d84c9f87c9ce9b73337
       objectReference: {fileID: 0}
+    - target: {fileID: 8120361591583746152, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120361591583746152, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4295911473792111519}
+    - target: {fileID: 8120361591583746152, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 4295911473792111519}
+    - target: {fileID: 8120361591583746152, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 3871867845774498992}
     - target: {fileID: 8770732656700638892, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: id
       value: 1025
@@ -518,6 +550,21 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7382761555085351764}
   m_SourcePrefab: {fileID: 100100000, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+--- !u!331 &3871867845774498992 stripped
+SpriteMask:
+  m_CorrespondingSourceObject: {fileID: 8836982838331270976, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 5699558596624268272}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &4295911473792111519 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8396612827400857711, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 5699558596624268272}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &5615049915071233628 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 212879183351137708, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 5699558596624268272}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5698750079473606340 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4188424702584116, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
@@ -738,6 +785,11 @@ MonoBehaviour:
 --- !u!50 &5811160810763895016 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 2287131174219348760, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 5699558596624268272}
+  m_PrefabAsset: {fileID: 0}
+--- !u!331 &6121330764840824696 stripped
+SpriteMask:
+  m_CorrespondingSourceObject: {fileID: 2011899284614665352, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
   m_PrefabInstance: {fileID: 5699558596624268272}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6211864534545686674 stripped

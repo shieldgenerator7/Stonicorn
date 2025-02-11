@@ -40,6 +40,22 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.654902
       objectReference: {fileID: 0}
+    - target: {fileID: 5637957091981075272, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5637957091981075272, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 627433583195671970}
+    - target: {fileID: 5637957091981075272, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 627433583195671970}
+    - target: {fileID: 5637957091981075272, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2117898955932336403}
     - target: {fileID: 5747286576220698530, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
       propertyPath: id
       value: 4054
@@ -120,6 +136,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &627433583195671970 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4720684113579968359, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+  m_PrefabInstance: {fileID: 5275450973077424837}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &2117898955932336403 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6076028062837787606, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}
+  m_PrefabInstance: {fileID: 5275450973077424837}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4925388868017505720 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 967242173220917117, guid: 763cc2e9c3052cc4da9659514d1b9a32, type: 3}

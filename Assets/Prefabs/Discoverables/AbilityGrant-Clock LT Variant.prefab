@@ -52,6 +52,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -150.8
       objectReference: {fileID: 0}
+    - target: {fileID: 2513157924089521081, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513157924089521081, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 6659355321783905841}
+    - target: {fileID: 2513157924089521081, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 6659355321783905841}
+    - target: {fileID: 2513157924089521081, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 5313005137794081408}
     - target: {fileID: 2530175796501034835, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
       propertyPath: id
       value: 11024
@@ -125,6 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75e77e5225b54441bed6fab75088081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &5313005137794081408 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4074887533358287655, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+  m_PrefabInstance: {fileID: 8158128453342177703}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6041571529360656926 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2513157924089521081, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
@@ -136,3 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &6659355321783905841 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3268970094390069142, guid: cc51d505bf2aa08419ef7a2c19841822, type: 3}
+  m_PrefabInstance: {fileID: 8158128453342177703}
+  m_PrefabAsset: {fileID: 0}

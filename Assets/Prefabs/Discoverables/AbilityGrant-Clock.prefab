@@ -8,6 +8,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1102910680722032103, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: srs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1102910680722032103, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: 'srs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3268970094390069142}
+    - target: {fileID: 1102910680722032103, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: 'srs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3268970094390069142}
+    - target: {fileID: 1102910680722032103, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+      propertyPath: 'srs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4074887533358287655}
     - target: {fileID: 1193524872285762181, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -572,6 +588,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &3268970094390069142 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 68506453199380936, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 3291802276183385694}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &4074887533358287655 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1522845755961159033, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 3291802276183385694}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7039933715675434892 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5484270338786912722, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
