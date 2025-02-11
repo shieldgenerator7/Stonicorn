@@ -1403,8 +1403,6 @@ public class CustomMenu
     }
     private static (int, int) _autoInitializeTags(List<MonoBehaviour> mbList)
     {
-        Type TYPE_MONOBEHAVIOUR = typeof(MonoBehaviour);
-        const string NULL_STRING = "null";
 
         int changeCount = 0;
         int errorCount = 0;
@@ -1412,7 +1410,18 @@ public class CustomMenu
         mbList
             .ForEach(mb =>
             {
-                string className = mb.GetType().Name;
+                (int changes, int errors)=_autoInitializeTags(mb);
+                changeCount += changes;
+                errorCount += errors;
+            });
+        return (changeCount, errorCount);
+    }
+    private static (int, int) _autoInitializeTags(MonoBehaviour mb)
+    {
+        Type TYPE_MONOBEHAVIOUR = typeof(MonoBehaviour);
+        const string NULL_STRING = "null";
+
+        string className = mb.GetType().Name;
 
                 int changes = 0;
                 int errors = 0;
@@ -1551,7 +1560,6 @@ public class CustomMenu
                 {
                     EditorUtility.SetDirty(mb);
                     Debug.LogWarning($"Check AutoInitialize Tags: {mb.name} ({className}) changes: {changes}", mb);
-                    changeCount += changes;
                 }
                 if (errors > 0)
                 {
@@ -1559,10 +1567,8 @@ public class CustomMenu
                     {
                         Debug.LogError($"Check AutoInitialize Tags: {mb.name} ({className}) errors: {errors}", mb);
                     }
-                    errorCount += errors;
                 }
-            });
-        return (changeCount, errorCount);
+        return (changes, errors);
     }
 
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
