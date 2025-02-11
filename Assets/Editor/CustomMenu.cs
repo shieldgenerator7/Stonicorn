@@ -696,31 +696,21 @@ public class CustomMenu
                     ssl.getSavablesAndMemories()
                     .ForEach(info =>
                     {
-                    try
-                    {
                         int id = nextID;
                         nextID++;
                         if (info.Id != id)
                         {
                             int prevID = info.Id;
                             info.Id = id;
-                            Debug.Log($"ssl savables count 2: {ssl.savables.Count}");
-                            EditorUtility.SetDirty(info);
+                                Debug.LogWarning(
+                                    $"Changed Id: {prevID} -> {info.Id}",
+                                    info.gameObject
+                                    );
+                            changedIdCount++;
+                                EditorUtility.SetDirty(info);
                             EditorSceneManager.MarkSceneDirty(scene);
 
-                            changedIdCount++;
-                            Debug.LogWarning(
-                                $"Changed Id: {id}: {prevID} -> {info.Id}",
-                                info.gameObject
-                                );
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogError($"oh yeah? it does exist see? {ssl.savables.Count}", ssl);
-                            Debug.LogException(e, ssl);
-                            changedIdCount++;
-                        }
                     });
         });
         if (changedIdCount > 0)
