@@ -38,6 +38,8 @@ public class Fader : MonoBehaviour, ISetupable
     [SerializeField, HideInInspector]
     private List<Component> srs = new List<Component>();
     private float startTime;
+    [SerializeField,HideInInspector]
+    private bool presetup = false;
 
     // Use this for initialization
     void OnEnable()
@@ -56,6 +58,12 @@ public class Fader : MonoBehaviour, ISetupable
             {
                 Destroy(bc);
             }
+        }
+
+        //setup if added
+        if (!presetup)
+        {
+            setup();
         }
     }
 
@@ -160,6 +168,9 @@ public class Fader : MonoBehaviour, ISetupable
             isEffectOnly = !isSavable;
             changeCount++;
         }
+
+        //presetup
+        presetup = true;
 
         return changeCount;
     }
