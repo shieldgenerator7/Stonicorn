@@ -25,6 +25,7 @@ public class Fader : MonoBehaviour, ISetupable
         DISABLE_SCRIPT
     }
     public FinishAction finishAction = FinishAction.DESTROY_GAMEOBJECT;
+    [SerializeField,HideInInspector]
     private bool isEffectOnly = true;
     [Tooltip("True to use unscaled time, false to use scaled time")]
     public bool ignorePause = true;
@@ -34,6 +35,7 @@ public class Fader : MonoBehaviour, ISetupable
         get => (ignorePause) ? Time.unscaledTime : Time.time;
     }
 
+    [SerializeField, HideInInspector]
     private List<Component> srs;
     private float startTime;
 
