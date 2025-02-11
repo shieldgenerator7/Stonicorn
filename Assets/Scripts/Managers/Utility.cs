@@ -725,6 +725,12 @@ public static class Utility
 #endif
     }
 
+    //2025-02-10: copied from https://stackoverflow.com/a/45488074/2336212
+    public static bool IsList(this Type type)
+    {
+        return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
+    }
+
     public static void copyTransform(this Transform toTransform, Transform fromTransform)
     {
         toTransform.position = fromTransform.position;

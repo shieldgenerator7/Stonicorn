@@ -1461,29 +1461,29 @@ public class CustomMenu
                         //Set the value
                         if (field.FieldType.IsList())
                         {
-                            List<Manager> list = (List<Manager>)field.GetValue(mb);
+                            IList list = (IList)field.GetValue(mb);
                             int prevcount = list.Count;
                             Type componentType = field.FieldType.GetGenericArguments()[0];
 
-                            List<Manager> compsToAdd = new List<Manager>();
-                            //compsToAdd.AddRange(mb.GetComponents(componentType));
-                            //if (auto.SearchParent)
-                            //{
-                            //    compsToAdd.AddRange(mb.GetComponentsInParent(componentType));
-                            //}
-                            //if (auto.SearchChildren)
-                            //{
-                            //    compsToAdd.AddRange(mb.GetComponentsInChildren(componentType));
-                            //}
+                            List<Component> compsToAdd = new List<Component>();
+                            compsToAdd.AddRange(mb.GetComponents(componentType));
+                            if (auto.SearchParent)
+                            {
+                                compsToAdd.AddRange(mb.GetComponentsInParent(componentType));
+                            }
+                            if (auto.SearchChildren)
+                            {
+                                compsToAdd.AddRange(mb.GetComponentsInChildren(componentType));
+                            }
                             if (auto.SearchScene)
                             {
-                                compsToAdd.AddRange((Manager[])GameObject.FindObjectsByType(componentType,FindObjectsInactive.Include, FindObjectsSortMode.InstanceID));
+                                compsToAdd.AddRange((Component[])GameObject.FindObjectsByType(componentType,FindObjectsInactive.Include, FindObjectsSortMode.InstanceID));
                             }
                             compsToAdd.ForEach(comp =>
                             {
                                 if (!list.Contains(comp))
                                 {
-                                    list.Add((Manager)comp);
+                                    list.Add(comp);
                                 }
                             });
 
