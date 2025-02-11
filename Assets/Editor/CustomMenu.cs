@@ -687,8 +687,6 @@ public class CustomMenu
             //Use buildIndex to set next id
             Scene scene = ssl.gameObject.scene;
             nextID = ssl.gameObject.scene.buildIndex * SECTION_SIZE;
-                try
-                {
                     //Get list of savables
                     Debug.Log($"ssl savables count 1: {ssl.savables.Count}");
                     //List<ObjectInfo> savables = new List<ObjectInfo>();
@@ -698,6 +696,8 @@ public class CustomMenu
                     ssl.getSavablesAndMemories()
                     .ForEach(info =>
                     {
+                    try
+                    {
                         int id = nextID;
                         nextID++;
                         if (info.Id != id)
@@ -705,22 +705,23 @@ public class CustomMenu
                             int prevID = info.Id;
                             info.Id = id;
                             Debug.Log($"ssl savables count 2: {ssl.savables.Count}");
-                            Debug.LogWarning(
-                                $"Changed Id: {id}: {prevID} -> {info.Id}",
-                                info
-                                );
                             EditorUtility.SetDirty(info);
                             EditorSceneManager.MarkSceneDirty(scene);
+
+                            changedIdCount++;
+                            Debug.LogWarning(
+                                $"Changed Id: {id}: {prevID} -> {info.Id}",
+                                info.gameObject
+                                );
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError($"oh yeah? it does exist see? {ssl.savables.Count}", ssl);
+                            Debug.LogException(e, ssl);
                             changedIdCount++;
                         }
                     });
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"oh yeah? it does exist see? {ssl.savables.Count}", ssl);
-                    Debug.LogException(e,ssl);
-                    changedIdCount++;
-                }
         });
         if (changedIdCount > 0)
         {

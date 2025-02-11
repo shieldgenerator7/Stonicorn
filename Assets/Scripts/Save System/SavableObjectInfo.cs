@@ -100,14 +100,13 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         //dont process this in scene objects
         if (gameObject.scene.buildIndex > 0)
         {
-            Debug.Log($"SavableObjectInfo is in scene, not setting up {gameObject.scene.buildIndex}, {Id}");
+            //Debug.Log($"SavableObjectInfo is in scene, not setting up {gameObject.scene.buildIndex}, {Id}");
 
             return 0;
         }
-        return 0;
 
         //we're in a prefab object now, so all good to process
-        Debug.Log($"SavableObjectInfo is in prefab, setting up {gameObject.scene.buildIndex}, {Id}");
+        //Debug.Log($"SavableObjectInfo is in prefab, setting up {gameObject.scene.buildIndex}, {Id}");
         int changeCount = 0;
 
         //revert unneeded overrides
