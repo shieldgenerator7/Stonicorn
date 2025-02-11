@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LoadingScreen : MonoBehaviour
+public class LoadingScreen : MonoBehaviour, ISetupable
 {
     public string sceneName;
     public float growSpeed = 0.5f;
 
+    [AutoInitialize]
     public Camera initialCamera;
+    [AutoInitialize]
     public SplashScreenUpdater splashScreenUpdater;
 
     //Runtime vars
@@ -22,18 +24,13 @@ public class LoadingScreen : MonoBehaviour
     private static LoadingScreen instance;
 
     //Components
-    private List<Image> images = new List<Image>();
+    [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
+    private List<Image> images;
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
-        images.Add(GetComponent<Image>());
-        images.AddRange(GetComponentsInChildren<Image>());
-        foreach (Image image in images)
-        {
-            image.fillAmount = 0;
-        }
         //Managers.Time.Paused = false;
         Time.timeScale = 0;
         //Set Splash Screen delegate
@@ -138,6 +135,22 @@ public class LoadingScreen : MonoBehaviour
             Managers.Time.setPause(this, false);
             SceneManager.UnloadSceneAsync("LoadingScreen");
         }
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+
+        foreach (Image image in images)
+        {
+            if (image.fillAmount != 0)
+            {
+                image.fillAmount = 0;
+                changeCount++;
+            }
+        }
+
+        return changeCount;
     }
 
     public static bool FinishedLoading
