@@ -608,10 +608,12 @@ public class CustomMenu
 
         //Checklist
         bool keepScenesOpen = new List<Func<bool>>() {
-                //checkSceneSavableListSetup,//dont need to call this separately anymore
-                ensureUniqueObjectIDs,
                 autoInitializeInPrefabs,
                 checkISetupablesInPrefabs,
+                //checkSceneSavableListSetup,//dont need to call this separately anymore
+                checkAutoInitializeTags,
+                checkISetupables,
+                ensureUniqueObjectIDs,
                 ensureHiddenAreasAreProperlySetup,
                 checkTiledHitBoxes,
                 checkGravityScale,
@@ -620,8 +622,6 @@ public class CustomMenu
                 checkTriggersAreNotSolid,
                 ensureNPCsHaveDialogueTriggers,
                 checkDialogueEvents,
-                checkAutoInitializeTags,
-                checkISetupables,
             }
             .ConvertAll(func =>
             {
