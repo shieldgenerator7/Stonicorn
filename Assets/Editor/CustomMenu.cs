@@ -1433,9 +1433,10 @@ public class CustomMenu
                         object value = field.GetValue(mb);
                         return value == null
                             || ReferenceEquals(value, null)
-                            //this string comparison seems weird, but its for Rigidboyd2D, PolygonCollider2D and other Unity components
+                            //this string comparison seems weird, but its for Rigidbody2D, PolygonCollider2D and other Unity components
                             //that dont play nice with regular null checks
-                            || $"{value}" == NULL_STRING;
+                            || $"{value}" == NULL_STRING
+                            || (field.FieldType.IsList() && ((ICollection)field.GetValue(mb)).Count == 0);
                     })
                     .ToList()
                     .ForEach(field =>
@@ -1456,11 +1457,57 @@ public class CustomMenu
                             return;
                         }
 
+                            AutoInitialize auto = field.GetCustomAttribute<AutoInitialize>();
                         //Set the value
+                        if (field.FieldType.IsList())
+                        {
+                            List<Manager> list = (List<Manager>)field.GetValue(mb);
+                            int prevcount = list.Count;
+                            Type componentType = field.FieldType.GetGenericArguments()[0];
+
+                            List<Manager> compsToAdd = new List<Manager>();
+                            //compsToAdd.AddRange(mb.GetComponents(componentType));
+                            //if (auto.SearchParent)
+                            //{
+                            //    compsToAdd.AddRange(mb.GetComponentsInParent(componentType));
+                            //}
+                            //if (auto.SearchChildren)
+                            //{
+                            //    compsToAdd.AddRange(mb.GetComponentsInChildren(componentType));
+                            //}
+                            if (auto.SearchScene)
+                            {
+                                compsToAdd.AddRange((Manager[])GameObject.FindObjectsByType(componentType,FindObjectsInactive.Include, FindObjectsSortMode.InstanceID));
+                            }
+                            compsToAdd.ForEach(comp =>
+                            {
+                                if (!list.Contains(comp))
+                                {
+                                    list.Add((Manager)comp);
+                                }
+                            });
+
+                            if (list.Count != prevcount)
+                            {
+                                Debug.LogWarning($"Changing list field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name}<{componentType.Name}> = {list}", mb);
+                                field.SetValue(mb, list);
+                                changes++;
+                            }
+                            else if (list.Count == 0)
+                            {
+                                if (auto.AllowUnfound)
+                                {
+                                    return;
+                                }
+                                Debug.LogError($"Components for list not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}<{componentType.Name}>", mb);
+                                errors++;
+                                return;
+                            }
+                        }
+                        else {
                         Component component = mb.GetComponent(field.FieldType);
                         if (!component)
                         {
-                            AutoInitialize auto = field.GetCustomAttribute<AutoInitialize>();
                             if (!component && auto.SearchParent)
                             {
                                 component = mb.GetComponentInParent(field.FieldType);
@@ -1497,6 +1544,7 @@ public class CustomMenu
                         Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {component}", mb);
                         field.SetValue(mb, component);
                         changes++;
+                        }
                     });
 
                 if (changes > 0)
