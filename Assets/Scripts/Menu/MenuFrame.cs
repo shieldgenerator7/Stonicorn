@@ -75,21 +75,9 @@ public class MenuFrame : MonoBehaviour, ISetupable
     {
         int changeCount = 0;
 
-        int prevButtonCount = buttons.Count;
-        buttons.Clear();
-        foreach (Transform t in transform)
-        {
-            MenuButton mb = t.GetComponent<MenuButton>();
-            if (mb != null)
-            {
+        buttons.ForEach(mb => {
                 changeCount += mb.setup();
-                buttons.Add(mb);
-            }
-        }
-        if (buttons.Count != prevButtonCount)
-        {
-            changeCount++;
-        }
+        });
 
         return changeCount;
     }

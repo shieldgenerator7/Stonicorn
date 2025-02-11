@@ -12,7 +12,6 @@ public class MenuActionSwitchActivate : MenuActionSwitch
         MenuFrame mf = objectToActivate.GetComponent<MenuFrame>();
         if (active && mf)
         {
-            mf.setup();
             mf.frameCamera();
             MenuManager mm = Managers.Menu;
             mm.AddFrame(mf);

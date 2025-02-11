@@ -16,8 +16,8 @@ public class Managers : MonoBehaviour, ISetupable
     // Managers
     //
 
-    [SerializeField]
-    private List<Manager> managerList = new List<Manager>();
+    [AutoInitialize(SearchScene =true), SerializeField]
+    private List<Manager> managerList;
 
     //Game Manager
     [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
@@ -226,24 +226,10 @@ public class Managers : MonoBehaviour, ISetupable
 #if UNITY_EDITOR
     public int setup()
     {
-        bool isPrefab = gameObject.scene.buildIndex < 0;
         int changeCount = 0;
 
-        //Populate manager list
-        int prevCount = managerList.Count;
-        managerList.Clear();
-        managerList = (isPrefab)
-            //prefab
-            ? GetComponents<Manager>().ToList()
-            //scene
-            : FindObjectsByType<Manager>(FindObjectsSortMode.InstanceID).ToList();
-        if (prevCount != managerList.Count)
-        {
-            Debug.LogWarning($"Managers.setup(): isPrefab? {isPrefab}, changed manager list: {prevCount} -> {managerList.Count}");
-            changeCount++;
-        }
-
         //Populate specific managers
+        bool isPrefab = gameObject.scene.buildIndex < 0;
         if (!playerController && !isPrefab)
         {
         playerController = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));

@@ -137,6 +137,7 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable, ISetupa
     public int setup()
     {
         int changeCount = 0;
+
         Color color = sr.color;
         color.a = 1;
         if (effectColor != color)
@@ -144,6 +145,7 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable, ISetupa
             effectColor = color;
             changeCount++;
         }
+
         return changeCount;
     }
 }

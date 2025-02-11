@@ -2,13 +2,11 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinecartController : MonoBehaviour, ISetupable
+public class MinecartController : MonoBehaviour
 {
     public float wheelRadius = 1;
 
-    public List<GameObject> wheels;
-
-    [SerializeField,HideInInspector]
+    [AutoInitialize(SearchChildren =true), SerializeField,HideInInspector]
     private List<SimpleRotation> rotators;
     [AutoInitialize,SerializeField,HideInInspector]
     private Rigidbody2D rb2d;
@@ -24,18 +22,5 @@ public class MinecartController : MonoBehaviour, ISetupable
         float speed = rb2d.linearVelocity.magnitude * 2 * wheelRadius * wheelRadius * Mathf.PI * 360
             * -Mathf.Sign(transform.InverseTransformDirection(rb2d.linearVelocity).x);
         rotators.ForEach(r=>r.turnSpeed = speed);
-    }
-
-    public int setup()
-    {
-        int changeCount = 0;
-        rotators?.RemoveAll(rot => !rot);
-        int prevCount = (rotators!=null)?rotators.Count:0;
-        rotators = wheels.ConvertAll(wheel => wheel.GetComponent<SimpleRotation>());
-        if (prevCount != rotators.Count)
-        {
-            changeCount++;
-        }
-        return changeCount;
     }
 }

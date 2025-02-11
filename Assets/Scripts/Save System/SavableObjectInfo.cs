@@ -20,7 +20,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
     [AutoInitialize(AllowUnfound =true), SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
     public Rigidbody2D Rigidbody2D => rb2d;
-    //[AutoInitialize, SerializeField, HideInInspector]
+    [AutoInitialize(AllowUnfound =true), SerializeField, HideInInspector]
     public List<SavableMonoBehaviour> savables;
 
     public SavableObjectInfoData Data
@@ -38,11 +38,48 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
 #if UNITY_EDITOR
     public virtual void autoset()
     {
-        if (setup() > 0)
+        int changeCount = 0; 
+
+        //Populate savable components
+        if (!rb2d)
         {
+            rb2d = GetComponent<Rigidbody2D>();
+            if (rb2d)
+            {
+                Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: Rigidbody2D set: {rb2d}", this);
+                changeCount++;
+            }
+        }
+        int prevCount = savables.Count;
+        savables.Clear();
+        savables = GetComponents<SavableMonoBehaviour>().ToList();
+        if (savables.Count != prevCount)
+        {
+            Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: savables list updated: {prevCount} -> {savables.Count}", this);
+            changeCount++;
+        }
+
+        //setup
+        changeCount += setup();
+
         //Set dirty
+        if (changeCount > 0)
+        {
         EditorUtility.SetDirty(this);
         }
+    }
+
+    public virtual int checkForErrors()
+    {
+        int errorCount = 0;
+
+        if (!rb2d && (savables == null || savables.Count == 0))
+        {
+            Debug.LogError($"SavableObjectInfo has no Rigidbody2D or any SavableMonoBehaviours! {gameObject.name}", this);
+            errorCount++;
+        }
+
+        return errorCount;
     }
 
     public virtual int setup()
@@ -79,7 +116,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
             }
             catch(ArgumentException ae)
             {
-                Debug.LogError($"Trying to revert override on {property.name}, but failed. Moving on. error:  {ae.Message}");
+                Debug.LogError($"Trying to revert override on {property.name}, but failed. Moving on. error:  {ae.Message}", this);
             }
         });
 
@@ -116,24 +153,6 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
             //Debug.LogError($"Cant find assetRef for {gameObject.name}: assetPath: {assetPath}, guid: {guid}, assetRef: {assetRef}, {assetRef?.AssetGUID}");
         }
 
-        //Populate savable components
-        if (!rb2d)
-        {
-        rb2d = GetComponent<Rigidbody2D>();
-            if (rb2d)
-            {
-            Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: Rigidbody2D set: {rb2d}", this);
-            changeCount++;
-            }
-        }
-        int prevCount = savables.Count;
-        savables.Clear();
-        savables = GetComponents<SavableMonoBehaviour>().ToList();
-        if (savables.Count != prevCount)
-        {
-            Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: savables list updated: {prevCount} -> {savables.Count}", this);
-            changeCount++;
-        }
 
         //
         return changeCount;
