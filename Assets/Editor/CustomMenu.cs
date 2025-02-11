@@ -1486,7 +1486,12 @@ public class CustomMenu
                             }
                             if (auto.SearchScene)
                             {
-                                compsToAdd.AddRange((Component[])GameObject.FindObjectsByType(componentType,FindObjectsInactive.Include, FindObjectsSortMode.InstanceID));
+                                Scene scene = mb.gameObject.scene;
+                                UnityEngine.Object[] arr = GameObject.FindObjectsByType(componentType, FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
+                                    .Where(comp => ((Component)comp).gameObject.scene == scene).ToArray();
+                                compsToAdd.AddRange(
+                                    arr.Cast<Component>().ToArray()
+                                    );
                             }
                             compsToAdd.ForEach(comp =>
                             {
