@@ -607,9 +607,8 @@ public class CustomMenu
         }
 
         //Checklist
-        refreshSceneSavableObjectLists();
         bool keepScenesOpen = new List<Func<bool>>() {
-                checkSceneSavableListSetup,
+                //checkSceneSavableListSetup,//dont need to call this separately anymore
                 ensureUniqueObjectIDs,
                 autoInitializeInPrefabs,
                 checkISetupablesInPrefabs,
@@ -655,16 +654,15 @@ public class CustomMenu
     static bool allLevelScenesLoaded(List<Scene> levels)
         => levels.All(s => s.isLoaded);
 
-    [MenuItem("SG7/Build/Pre-Build/Refresh Scene Savable Object Lists")]
-    public static void refreshSceneSavableObjectLists()
-    {
-        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
-            .ForEach(ssl => _autoInitializeTags(ssl));
-    }
-
-    [MenuItem("SG7/Build/Pre-Build/Ensure savable objects have ObjectInfo")]
+    [MenuItem("SG7/Build/Pre-Build/Check SceneSavableList setup")]
     public static bool checkSceneSavableListSetup()
     {
+        //2025-02-10: NOTE: this no longer gets called as part of all prebuild tasks, bc its redundant. 
+        //if you change anything in here, you might want to call it again when running all prebuild tasks (in performAllPreBuildTasks() function)
+        //this is here so you can do this part separately in the menu, if you want to do that for some reason
+        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
+            .ForEach(ssl => _autoInitializeTags(ssl));
+
         List<SavableObjectInfo> savables = new List<SavableObjectInfo>();
         List<SceneSavableList> sslList = GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList();
         sslList.ForEach(ssl => savables.AddRange(ssl.savables));
