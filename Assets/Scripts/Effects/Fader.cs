@@ -36,7 +36,7 @@ public class Fader : MonoBehaviour, ISetupable
     }
 
     [SerializeField, HideInInspector]
-    private List<Component> srs;
+    private List<Component> srs = new List<Component>();
     private float startTime;
 
     // Use this for initialization
