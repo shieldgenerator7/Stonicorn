@@ -8,10 +8,12 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Saves a list of the game objects of the savable objects in its scene
 /// </summary>
-public class SceneSavableList : MonoBehaviour
+public class SceneSavableList : MonoBehaviour, ISetupable
 {
-    public List<GameObject> savables = new List<GameObject>();
-    public List<GameObject> memories = new List<GameObject>();
+    [AutoInitialize(SearchScene = true)]
+    public List<SavableObjectInfo> savables = new List<SavableObjectInfo>();
+    [AutoInitialize(SearchScene = true)]
+    public List<MemoryObjectInfo> memories = new List<MemoryObjectInfo>();
 
     public static SceneSavableList getFromScene(Scene s)
         => s.GetRootGameObjects()
@@ -21,40 +23,62 @@ public class SceneSavableList : MonoBehaviour
 
 
 #if UNITY_EDITOR
-    public void refreshList()
+
+    public int checkForErrors()
     {
-        //Savables
-        savables.Clear();
+        int errorCount = 0;
+
+        //anti-prefab check
+        if (gameObject.scene.buildIndex < 0)
+        {
+            Debug.LogError($"SceneSavableList cannot be added to a prefab!");
+            errorCount++;
+        }
+
+        //make sure everyone has savable object info that need it
         Utility.doForEachGameObjectInScene(
             gameObject.scene,
             (go) =>
             {
                 if (go.isSavable())
                 {
-                    savables.Add(go);
+                    SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
+                    if (!soi)
+                    {
+                        Debug.LogError($"GameObject {go} is savable but doesnt have a SavableObjectInfo!");
+                        errorCount++;
+                    }
                 }
             }
             );
-        //Memories
-        memories.Clear();
+
+        //make sure everyone has memory object info that need it
         Utility.doForEachGameObjectInScene(
             gameObject.scene,
             (go) =>
             {
                 if (go.isMemory())
                 {
-                    memories.Add(go);
+                    MemoryObjectInfo moi = go.GetComponent<MemoryObjectInfo>();
+                    if (!moi)
+                    {
+                        Debug.LogError($"GameObject {go} is a memory but doesnt have a MemoryObjectInfo!");
+                        errorCount++;
+                    }
                 }
             }
             );
-        //Save
-        EditorUtility.SetDirty(gameObject);
-        Debug.Log(
-            $"Found {savables.Count} savables " +
-            $"and {memories.Count} memories " +
-            $"in scene {gameObject.scene.name}",
-            gameObject
-            );
+
+        return errorCount;
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+
+        //so far, no setup other than auto init savables and memories
+
+        return changeCount;
     }
 #endif
 }

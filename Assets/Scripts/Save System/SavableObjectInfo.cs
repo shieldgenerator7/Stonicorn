@@ -73,9 +73,17 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
     {
         int errorCount = 0;
 
+        //error: on an object that's not savable
         if (!rb2d && (savables == null || savables.Count == 0))
         {
             Debug.LogError($"SavableObjectInfo has no Rigidbody2D or any SavableMonoBehaviours! {gameObject.name}", this);
+            errorCount++;
+        }
+
+        //error: no prefabGUID
+        if (!(prefabAddress?.IsValid() ?? false))
+        {
+            Debug.LogError($"SavableObjectInfo has invalid prefabAddress! {prefabAddress}");
             errorCount++;
         }
 

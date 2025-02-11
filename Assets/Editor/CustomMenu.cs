@@ -609,8 +609,7 @@ public class CustomMenu
         //Checklist
         refreshSceneSavableObjectLists();
         bool keepScenesOpen = new List<Func<bool>>() {
-                ensureSavableObjectsHaveObjectInfo,
-                ensureMemoryObjectsHaveObjectInfo,
+                checkSceneSavableListSetup,
                 ensureUniqueObjectIDs,
                 autoInitializeInPrefabs,
                 checkISetupablesInPrefabs,
@@ -660,82 +659,36 @@ public class CustomMenu
     public static void refreshSceneSavableObjectLists()
     {
         GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
-            .ForEach(ssl => ssl.refreshList());
+            .ForEach(ssl => _autoInitializeTags(ssl));
     }
 
     [MenuItem("SG7/Build/Pre-Build/Ensure savable objects have ObjectInfo")]
-    public static bool ensureSavableObjectsHaveObjectInfo()
+    public static bool checkSceneSavableListSetup()
     {
-        List<GameObject> savables = new List<GameObject>();
-        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
-            .ForEach(ssl => savables.AddRange(ssl.savables));
-        //Missing ObjectInfo
-        List<GameObject> missingInfo = savables
-            .FindAll(go => !go.GetComponent<SavableObjectInfo>());
-        missingInfo.ForEach(
-            go => Debug.LogError($"{go.name} does not have an SavableObjectInfo!", go)
-            );
-        //Null info in ObjectInfo
-        List<GameObject> nullInfo = savables
-            .FindAll(go =>
-            {
-                SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
-                return info && (info.PrefabGUID == null || info.PrefabGUID == "");
-            }
-            );
-        nullInfo.ForEach(
-            go => Debug.LogError($"{go.name} has SavableObjectInfo with missing prefabGUID!", go)
-            );
-        //Spawn State 0
-        List<GameObject> spawn0 = savables
-            .FindAll(go =>
-            {
-                SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
-                return info && info.spawnStateId != 0;
-            }
-            );
-        spawn0.ForEach(
-            go =>
-            {
-                SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
-                Debug.LogWarning(
-                    $"{go.name} has non-zero spawn state; zeroing it out... {info.spawnStateId}",
-                    go
-                    );
-                info.spawnStateId = 0;
-                EditorUtility.SetDirty(info);
-                EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
-            }
-            );
-        return missingInfo.Count > 0 || nullInfo.Count > 0 || spawn0.Count > 0;
-    }
-
-    [MenuItem("SG7/Build/Pre-Build/Ensure memory objects have ObjectInfo")]
-    public static bool ensureMemoryObjectsHaveObjectInfo()
-    {
-        List<GameObject> memories = new List<GameObject>();
-        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
-            .ForEach(ssl => memories.AddRange(ssl.memories));
-        //Missing ObjectInfo
-        List<GameObject> missingInfo = memories
-            .FindAll(go => !go.GetComponent<MemoryObjectInfo>());
-        missingInfo.ForEach(
-            go => Debug.LogError($"{go.name} does not have an MemoryObjectInfo!", go)
-            );
-        return missingInfo.Count > 0;
+        List<SavableObjectInfo> savables = new List<SavableObjectInfo>();
+        List<SceneSavableList> sslList = GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList();
+        sslList.ForEach(ssl => savables.AddRange(ssl.savables));
+        int changeCount = 0;
+        int errorCount = 0;
+        sslList.ForEach(ssl =>
+        {
+            errorCount += ssl.checkForErrors();
+            changeCount += ssl.setup();
+        });
+        return changeCount > 0 || errorCount > 0;
     }
     [MenuItem("SG7/Build/Pre-Build/Ensure unique object IDs among open scenes")]
     public static bool ensureUniqueObjectIDs()
     {
         int nextID = 0;
-        bool changedId = false;
+        int changedIdCount = 0;
         const int SECTION_SIZE = 1000;
         foreach (SceneSavableList ssl in GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None))
         {
             //Use buildIndex to set next id
             nextID = ssl.gameObject.scene.buildIndex * SECTION_SIZE;
             //Get list of savables
-            List<GameObject> savables = new List<GameObject>();
+            List<ObjectInfo> savables = new List<ObjectInfo>();
             savables.AddRange(ssl.savables);
             savables.AddRange(ssl.memories);
             savables.ConvertAll(go => go.GetComponent<ObjectInfo>())
@@ -745,20 +698,24 @@ public class CustomMenu
                     int id = nextID;
                     nextID++;
                     int prevID = info.Id;
-                    info.Id = id;
                     if (id != prevID)
                     {
+                    info.Id = id;
                         Debug.LogWarning(
                             $"Changed Id: {prevID} -> {id}",
                             info.gameObject
                             );
                         EditorUtility.SetDirty(info);
                         EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
-                        changedId = true;
+                        changedIdCount++;
                     }
                 });
         }
-        return changedId;
+        if (changedIdCount > 0)
+        {
+            Debug.LogWarning($"ensureUniqueObjectIDs: changed {changedIdCount} IDs");
+        }
+        return changedIdCount > 0;
     }
 
     //2025-02-08: copied from ensureSavableObjectInfosSetupInPrefabs()

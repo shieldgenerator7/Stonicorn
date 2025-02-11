@@ -138,7 +138,7 @@ public class ScenesManager : Manager
     public void LoadObjectsFromScene(Scene scene)
     {
         //Get list of savables
-        List<GameObject> sceneGOs = SceneSavableList.getFromScene(scene).savables;
+        List<GameObject> sceneGOs = SceneSavableList.getFromScene(scene).savables.ConvertAll(soi=>soi.gameObject);
         //If an object from this scene is known not to be currently in this scene,
         List<GameObject> unsceneGOs = sceneGOs.FindAll(
             go => !isObjectInScene(go, scene)
