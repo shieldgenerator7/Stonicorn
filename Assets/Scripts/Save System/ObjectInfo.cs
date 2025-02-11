@@ -19,6 +19,9 @@ public abstract class ObjectInfo : MonoBehaviour
     public int Id
     {
         get => id;
-        set => id = value;
+        set  {
+            Debug.Log($"Setting ObjectInfo.Id to {value}");
+            id = value;
+        }
     }
 }

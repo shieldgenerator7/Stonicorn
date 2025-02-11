@@ -663,9 +663,7 @@ public class CustomMenu
         GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList()
             .ForEach(ssl => _autoInitializeTags(ssl));
 
-        List<SavableObjectInfo> savables = new List<SavableObjectInfo>();
         List<SceneSavableList> sslList = GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None).ToList();
-        sslList.ForEach(ssl => savables.AddRange(ssl.savables));
         int changeCount = 0;
         int errorCount = 0;
         sslList.ForEach(ssl =>
@@ -681,34 +679,49 @@ public class CustomMenu
         int nextID = 0;
         int changedIdCount = 0;
         const int SECTION_SIZE = 1000;
-        foreach (SceneSavableList ssl in GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None))
-        {
+        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None)
+            .OrderBy(ssl=>ssl.gameObject.scene.buildIndex)
+            .ToList()
+            .ForEach(ssl => {
+
             //Use buildIndex to set next id
+            Scene scene = ssl.gameObject.scene;
             nextID = ssl.gameObject.scene.buildIndex * SECTION_SIZE;
-            //Get list of savables
-            List<ObjectInfo> savables = new List<ObjectInfo>();
-            savables.AddRange(ssl.savables);
-            savables.AddRange(ssl.memories);
-            savables.ConvertAll(go => go.GetComponent<ObjectInfo>())
-                .FindAll(info => !(info is SingletonObjectInfo))
-                .ForEach(info =>
+                try
                 {
-                    int id = nextID;
-                    nextID++;
-                    int prevID = info.Id;
-                    if (id != prevID)
+                    //Get list of savables
+                    Debug.Log($"ssl savables count 1: {ssl.savables.Count}");
+                    //List<ObjectInfo> savables = new List<ObjectInfo>();
+                    //List<GameObject> gos = ssl.savables.ConvertAll(soi => soi.gameObject);
+
+                    //Debug.Log($"ssl savables go count: {gos.Count}");
+                    ssl.getSavablesAndMemories()
+                    .ForEach(info =>
                     {
-                    info.Id = id;
-                        Debug.LogWarning(
-                            $"Changed Id: {prevID} -> {id}",
-                            info.gameObject
-                            );
-                        EditorUtility.SetDirty(info);
-                        EditorSceneManager.MarkSceneDirty(info.gameObject.scene);
-                        changedIdCount++;
-                    }
-                });
-        }
+                        int id = nextID;
+                        nextID++;
+                        if (info.Id != id)
+                        {
+                            int prevID = info.Id;
+                            info.Id = id;
+                            Debug.Log($"ssl savables count 2: {ssl.savables.Count}");
+                            Debug.LogWarning(
+                                $"Changed Id: {id}: {prevID} -> {info.Id}",
+                                info
+                                );
+                            EditorUtility.SetDirty(info);
+                            EditorSceneManager.MarkSceneDirty(scene);
+                            changedIdCount++;
+                        }
+                    });
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"oh yeah? it does exist see? {ssl.savables.Count}", ssl);
+                    Debug.LogException(e,ssl);
+                    changedIdCount++;
+                }
+        });
         if (changedIdCount > 0)
         {
             Debug.LogWarning($"ensureUniqueObjectIDs: changed {changedIdCount} IDs");
@@ -1548,7 +1561,17 @@ public class CustomMenu
             {
                 managers.gameDataContainer._gameData.knownObjects.AddRange(
                     ssl.savables.ConvertAll(
-                        go => go.GetComponent<SavableObjectInfo>().Data
+                        soi => {
+                            try
+                            {
+                                return soi.Data;
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.LogException(e,soi);
+                                return new SavableObjectInfoData();
+                            }
+                            }
                         )
                     );
             });

@@ -15,6 +15,26 @@ public class SceneSavableList : MonoBehaviour, ISetupable
     [AutoInitialize(SearchScene = true)]
     public List<MemoryObjectInfo> memories = new List<MemoryObjectInfo>();
 
+    public List<ObjectInfo> getSavablesAndMemories()
+    {
+        List<ObjectInfo> objectInfos = new List<ObjectInfo>();
+        savables.ForEach(sav =>
+        {
+            if (!(sav is SingletonObjectInfo))
+            {
+                objectInfos.Add(sav);
+            }
+        });
+        memories.ForEach(mem =>
+        {
+            objectInfos.Add(mem);
+        });
+        //objectInfos.AddRange(savables);
+        //objectInfos.AddRange(memories);
+        //objectInfos.RemoveAll(ssl => ssl is SingletonObjectInfo);
+        return objectInfos;
+    }
+
     public static SceneSavableList getFromScene(Scene s)
         => s.GetRootGameObjects()
             .Where(go => go.GetComponent<SceneSavableList>())

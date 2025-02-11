@@ -12,7 +12,8 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
     [SerializeField]
     private AssetReference prefabAddress;
     public AssetReference PrefabAddress => prefabAddress;
-    public virtual string PrefabGUID => prefabAddress.AssetGUID;
+    //TODO: find out how this keeps getting set to null
+    public virtual string PrefabGUID => prefabAddress?.AssetGUID ?? "";
     public int spawnStateId = -1;//-1 is an invalid Id but it forces save on new objects
     public int destroyStateId = int.MaxValue;//the game state id in which this object was destroyed (max value for not destroyed)
 
@@ -99,17 +100,21 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         //dont process this in scene objects
         if (gameObject.scene.buildIndex > 0)
         {
+            Debug.Log($"SavableObjectInfo is in scene, not setting up {gameObject.scene.buildIndex}, {Id}");
+
             return 0;
         }
+        return 0;
 
         //we're in a prefab object now, so all good to process
+        Debug.Log($"SavableObjectInfo is in prefab, setting up {gameObject.scene.buildIndex}, {Id}");
         int changeCount = 0;
 
         //revert unneeded overrides
         SerializedObject so = new SerializedObject(this);
         List<string> revertList = new List<string>()
         {
-            "id",
+            //"id",
             "spawnStateId",
             "destroyStateId",
         };
