@@ -207,7 +207,6 @@ GameObject:
   - component: {fileID: 8894847786959093311}
   - component: {fileID: 1860854369752757168}
   - component: {fileID: 2146961853971007049}
-  - component: {fileID: 2052509436612794839}
   m_Layer: 0
   m_Name: minecart_wheel
   m_TagString: Untagged
@@ -301,26 +300,3 @@ MonoBehaviour:
   turnSpeed: 250
   useUnscaledTime: 0
   resetOnDisable: 0
---- !u!114 &2052509436612794839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4500764821803695289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: -1
-  prefabAddress:
-    m_AssetGUID: e946693950758ec4dbb6295fe2bf61ff
-    m_SubObjectName: 
-    m_SubObjectGUID: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  spawnStateId: 0
-  destroyStateId: 2147483647
-  rb2d: {fileID: 0}
-  savables: []
