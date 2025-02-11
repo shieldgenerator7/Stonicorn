@@ -1452,6 +1452,8 @@ public class CustomMenu
                                     arr.Cast<Component>().ToArray()
                                     );
                             }
+
+                            list.Clear();
                             compsToAdd.ForEach(comp =>
                             {
                                 if (!list.Contains(comp))
