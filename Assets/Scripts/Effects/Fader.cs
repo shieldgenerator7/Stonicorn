@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Collections.Generic;
 
-public class Fader : MonoBehaviour
+public class Fader : MonoBehaviour, ISetupable
 {
     [Range(0, 1)]
     public float startfade = 1.0f;
@@ -40,20 +40,14 @@ public class Fader : MonoBehaviour
     // Use this for initialization
     void OnEnable()
     {
+        //Start time
         startTime = CurrentTime + delayTime;
         if (duration <= 0)
         {
             duration = Mathf.Abs(startfade - endfade);
         }
-        srs = new List<Component>();
-        srs.Add(GetComponent<SpriteRenderer>());
-        srs.Add(GetComponent<SpriteShapeRenderer>());
-        srs.Add(GetComponent<CanvasRenderer>());
-        srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
-        srs.AddRange(GetComponentsInChildren<SpriteShapeRenderer>());
-        srs.AddRange(GetComponentsInChildren<Image>());
-        srs.Add(GetComponent<SpriteMask>());
-        srs.RemoveAll(sr => sr == null);
+
+        //destroy colliders
         if (destroyColliders)
         {
             foreach (Collider2D bc in GetComponentsInChildren<Collider2D>().ToList())
@@ -61,8 +55,6 @@ public class Fader : MonoBehaviour
                 Destroy(bc);
             }
         }
-        //It's an effect if there are no savable components on the game object
-        isEffectOnly = !gameObject.isSavable();
     }
 
     // Update is called once per frame
@@ -139,5 +131,35 @@ public class Fader : MonoBehaviour
 
     public delegate void OnFadeFinished();
     public event OnFadeFinished onFadeFinished;
+
+    public int setup()
+    {
+        int changeCount = 0;
+
+        int prevcount = srs?.Count ?? 0;
+        srs = new List<Component>();
+        srs.Add(GetComponent<SpriteRenderer>());
+        srs.Add(GetComponent<SpriteShapeRenderer>());
+        srs.Add(GetComponent<CanvasRenderer>());
+        srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
+        srs.AddRange(GetComponentsInChildren<SpriteShapeRenderer>());
+        srs.AddRange(GetComponentsInChildren<Image>());
+        srs.Add(GetComponent<SpriteMask>());
+        srs.RemoveAll(sr => sr == null);
+        if (srs.Count != prevcount)
+        {
+            changeCount++;
+        }
+
+        //It's an effect if there are no savable components on the game object
+        bool isSavable = gameObject.isSavable();
+        if (isEffectOnly == isSavable)
+        {
+            isEffectOnly = !isSavable;
+            changeCount++;
+        }
+
+        return changeCount;
+    }
 
 }

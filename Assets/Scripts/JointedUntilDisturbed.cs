@@ -7,7 +7,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class JointedUntilDisturbed : SavableMonoBehaviour, ISwappable
 {
-
+    [AutoInitialize, SerializeField, HideInInspector]
     private List<Joint2D> joints;
 
     [SerializeField]
@@ -31,7 +31,6 @@ public class JointedUntilDisturbed : SavableMonoBehaviour, ISwappable
     public override void init()
     {
         //Initialize state
-        joints = GetComponents<Joint2D>().ToList();
         Jointed = jointed;
     }
 
