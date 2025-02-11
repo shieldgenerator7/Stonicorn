@@ -1436,7 +1436,7 @@ public class CustomMenu
                             //this string comparison seems weird, but its for Rigidbody2D, PolygonCollider2D and other Unity components
                             //that dont play nice with regular null checks
                             || $"{value}" == NULL_STRING
-                            || (field.FieldType.IsList() && ((ICollection)field.GetValue(mb)).Count == 0);
+                            || field.FieldType.IsList();
                     })
                     .ToList()
                     .ForEach(field =>
