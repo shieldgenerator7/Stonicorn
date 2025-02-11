@@ -1298,7 +1298,7 @@ public class CustomMenu
     public static bool checkISetupables()
     {
         (int changeCount, int errorCount) = _checkISetupables(
-            GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
             .OfType<ISetupable>().ToList()
             );
         if (changeCount > 0)
@@ -1344,7 +1344,7 @@ public class CustomMenu
     public static bool checkAutoInitializeTags()
     {
         (int changeCount, int errorCount) = _autoInitializeTags(
-            GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include,FindObjectsSortMode.None).ToList()
+            GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include,FindObjectsSortMode.InstanceID).ToList()
             );
         if (changeCount > 0)
         {
