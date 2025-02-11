@@ -81,9 +81,13 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         }
 
         //error: no prefabGUID
-        if (!(prefabAddress?.IsValid() ?? false))
+        string[] exceptionList = new string[]
         {
-            Debug.LogError($"SavableObjectInfo has invalid prefabAddress! {prefabAddress}");
+            "_NPC",
+        };
+        if (string.IsNullOrEmpty(PrefabGUID) && !exceptionList.Any(ex=>gameObject.name.Contains(ex)))
+        {
+            Debug.LogError($"SavableObjectInfo has invalid PrefabGUID! prefabAddress: {prefabAddress}, PrefabGUID: {PrefabGUID}, go: {gameObject.name}", this);
             errorCount++;
         }
 
