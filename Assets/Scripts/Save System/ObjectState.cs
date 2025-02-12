@@ -74,7 +74,7 @@ public class ObjectState
             }
             catch (InvalidCastException ice)
             {
-                Debug.Log($"InvalidCastException on go {go.name} ({go.getKey()}): {ice}");
+                Debug.Log($"InvalidCastException on go {go.name} ({go.getKey()}): {smb.GetType()}: {ice}");
             }
         }
     }
