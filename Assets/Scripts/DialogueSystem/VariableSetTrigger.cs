@@ -10,7 +10,6 @@ public class VariableSetTrigger : EventTrigger
 
     public override int checkForErrors()
     {
-        base.checkErrors();
         int errorCount = base.checkForErrors();
         if (!variableSetAction && !triggerLeaveAction)
         {
