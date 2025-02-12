@@ -1,29 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BoundsChecker : MonoBehaviour
+public class BoundsChecker : MonoBehaviour, ISetupable
 {
 
     public Vector3 resetPoint = Vector3.zero;
     public bool loopSpace = true;
     public bool rewindTimeForPlayer = true;
-
-    //// Use this for initialization
-    void Start()
-    {
-        if (resetPoint == Vector3.zero)
-        {
-            resetPoint = gameObject.getCollectiveColliderCenter();
-        }
-        //Error checking
-        foreach (Collider2D coll2d in GetComponents<Collider2D>())
-        {
-            if (!coll2d.isTrigger)
-            {
-                throw new UnityException("Bounds Checker ("+name+") has a collider that is not a trigger!");
-            }
-        }
-    }
 
     void OnTriggerExit2D(Collider2D coll)
     {
@@ -52,5 +35,19 @@ public class BoundsChecker : MonoBehaviour
                 collGO.transform.position = new Vector3(resetPoint.x, resetPoint.y, collGO.transform.position.z);
             }
         }
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+        if (resetPoint == Vector3.zero)
+        {
+            resetPoint = gameObject.getCollectiveColliderCenter();
+            if (resetPoint != Vector3.zero)
+            {
+                changeCount++;
+            }
+        }
+        return changeCount;
     }
 }

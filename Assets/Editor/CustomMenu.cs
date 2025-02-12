@@ -1221,6 +1221,7 @@ public class CustomMenu
             typeof(HiddenArea),
             typeof(GravityZone),
             typeof(EventTrigger),
+            typeof(BoundsChecker),
         };
         typesList.ForEach(type =>
         {
