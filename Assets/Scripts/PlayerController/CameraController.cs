@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour, ISetupable
     public float autoOffsetDuration = 1;//how long autoOffset lasts after the latest teleport
     public float autoOffsetAngleThreshold = 15f;//how close two teleport directions have to be to activate auto offset
     public float maxTapDelay = 1;//the maximum amount of time (sec) between two taps that can activate auto offset
-    public GameObject planModeCanvas;//the canvas that has the UI for plan mode
+    public Canvas planModeCanvas;//the canvas that has the UI for plan mode
     public float defaultOffsetZ = -10;
     public float allowedOutOfCameraAmount = 0.1f;
 
@@ -86,7 +86,7 @@ public class CameraController : MonoBehaviour, ISetupable
         set
         {
             lockCamera = value;
-            planModeCanvas.SetActive(lockCamera);
+            planModeCanvas.gameObject.SetActive(lockCamera);
         }
     }
     private bool lockCamera = false;
@@ -181,10 +181,6 @@ public class CameraController : MonoBehaviour, ISetupable
     public void init()
     {
         Managers.Player.Teleport.onTeleport += checkForAutoMovement;
-        if (planModeCanvas.GetComponent<Canvas>() == null)
-        {
-            Debug.LogError($"Camera {gameObject.name}'s planModeCanvas object ({planModeCanvas.name}) doesn't have a Canvas component!");
-        }
         scale = Cam.fieldOfView;
         Up = transform.up;
         //Initialize ScalePoints
@@ -589,16 +585,34 @@ public class CameraController : MonoBehaviour, ISetupable
     }
 
 #if UNITY_EDITOR
+    public int checkForErrors()
+    {
+        int errorCount = 0;
+        bool isPrefab = gameObject.scene.buildIndex < 0;
+        if (!isPrefab)
+        {
+            if (!planModeCanvas)
+            {
+                Debug.LogError($"Camera {gameObject.name}'s doesnt have a planModeCanvas!", this);
+                errorCount++;
+            }
+        }
+        return errorCount;
+    }
     public int setup()
     {
+        int changeCount = 0;
         //Initialize ScalePoints
-        scalePoints.Add(new ScalePoint(0.2f * 11, false));//Main Menu zoom level
-        scalePoints.Add(new ScalePoint(1 * 11, false));
-        scalePoints.Add(new ScalePoint(1 * 11, true));
-        scalePoints.Add(new ScalePoint(2 * 11, true));
-        scalePoints.Add(new ScalePoint(4 * 11, true));
-
-        return 0;
+        //if (scalePoints.Count == 0)
+        //{
+        //    scalePoints.Add(new ScalePoint(0.2f * 11, false));//Main Menu zoom level
+        //    scalePoints.Add(new ScalePoint(1 * 11, false));
+        //    scalePoints.Add(new ScalePoint(1 * 11, true));
+        //    scalePoints.Add(new ScalePoint(2 * 11, true));
+        //    scalePoints.Add(new ScalePoint(4 * 11, true));
+        //    changeCount++;
+        //}
+        return changeCount;
     }
 #endif
 }
