@@ -4,6 +4,7 @@ using UnityEngine.U2D;
 using UnityEngine.UI;
 using System.Linq;
 using System.Collections.Generic;
+using Unity.Hierarchy;
 
 public class Fader : MonoBehaviour, ISetupable
 {
@@ -37,6 +38,8 @@ public class Fader : MonoBehaviour, ISetupable
 
     [SerializeField, HideInInspector]
     private List<Component> srs = new List<Component>();
+    [AutoInitialize(SearchChildren = true, AllowUnfound =true), SerializeField, HideInInspector]
+    private List<Collider2D> coll2DList;
     private float startTime;
     [SerializeField, HideInInspector]
     private bool presetup = false;
@@ -54,7 +57,7 @@ public class Fader : MonoBehaviour, ISetupable
         //destroy colliders
         if (destroyColliders)
         {
-            foreach (Collider2D bc in GetComponentsInChildren<Collider2D>().ToList())
+            foreach (Collider2D bc in coll2DList)
             {
                 Destroy(bc);
             }
@@ -146,6 +149,7 @@ public class Fader : MonoBehaviour, ISetupable
     {
         int changeCount = 0;
 
+        //TODO: allow saying what search types to include
         int prevcount = srs?.Count ?? 0;
         srs = new List<Component>();
         srs.Add(GetComponent<SpriteRenderer>());
