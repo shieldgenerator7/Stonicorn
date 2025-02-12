@@ -1526,7 +1526,7 @@ public class CustomMenu
                         }
                     });
 
-                    if (list.Count != prevcount)
+                    if (list.Count != prevcount || field.GetValue(mb) == null)
                     {
                         Debug.LogWarning($"Changing list field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name}<{componentType.Name}> = {list}", mb);
                         field.SetValue(mb, list);

@@ -39,7 +39,7 @@ public class Fader : MonoBehaviour, ISetupable
     [SerializeField, HideInInspector]
     private List<Component> srs = new List<Component>();
     [AutoInitialize(SearchChildren = true, AllowUnfound =true), SerializeField, HideInInspector]
-    private List<Collider2D> coll2DList;
+    private List<Collider2D> coll2DList = new List<Collider2D>();
     private float startTime;
     [SerializeField, HideInInspector]
     private bool presetup = false;
