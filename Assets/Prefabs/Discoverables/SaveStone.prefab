@@ -111,6 +111,8 @@ MonoBehaviour:
   srs:
   - {fileID: 212057318093880960}
   - {fileID: 212057318093880960}
+  coll2DList: []
+  presetup: 0
 --- !u!1 &1525577818639202
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +312,8 @@ MonoBehaviour:
   srs:
   - {fileID: 212046479944410816}
   - {fileID: 212046479944410816}
+  coll2DList: []
+  presetup: 0
 --- !u!1 &1683505881288688
 GameObject:
   m_ObjectHideFlags: 0
@@ -5400,6 +5404,11 @@ MonoBehaviour:
   ghostPrefab: {fileID: 141096, guid: 63cbdda1c598bff47922999c8fdbd100, type: 3}
   defaultTelepadIndex: 0
   telepads: []
+  workingColor: {r: 1, g: 1, b: 1, a: 1}
+  notWorkingColor: {r: 1, g: 0.7929859, b: 0, a: 1}
+  particleSystemList:
+  - {fileID: 198979115144688760}
+  coll2d: {fileID: 58300638570769922}
 --- !u!1 &1945187498460326
 GameObject:
   m_ObjectHideFlags: 0
@@ -5511,6 +5520,8 @@ MonoBehaviour:
   srs:
   - {fileID: 212879183351137708}
   - {fileID: 212879183351137708}
+  coll2DList: []
+  presetup: 0
 --- !u!1 &7827040703690236712
 GameObject:
   m_ObjectHideFlags: 0

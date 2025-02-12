@@ -440,9 +440,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1488479641167960267, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: coll2d
+      value: 
+      objectReference: {fileID: 4079999799290888026}
+    - target: {fileID: 1488479641167960267, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: ghostSprite
       value: 
       objectReference: {fileID: 21300000, guid: a1ca466b5d005ab43b4b3f834b47ee54, type: 3}
+    - target: {fileID: 1488479641167960267, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: particleSystemList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1488479641167960267, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: 'particleSystemList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5609809668621438856}
     - target: {fileID: 1813859630529469282, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.9817419
@@ -467,6 +479,14 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4339392429519346708, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: srList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4339392429519346708, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+      propertyPath: 'srList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4807467762591700868}
     - target: {fileID: 6078120289835900274, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
       propertyPath: rb2d
       value: 
@@ -555,9 +575,24 @@ SpriteMask:
   m_CorrespondingSourceObject: {fileID: 8836982838331270976, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
   m_PrefabInstance: {fileID: 5699558596624268272}
   m_PrefabAsset: {fileID: 0}
+--- !u!58 &4079999799290888026 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 8613121556932314282, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 5699558596624268272}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &4295911473792111519 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8396612827400857711, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 5699558596624268272}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &4807467762591700868 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 986121386340363380, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 5699558596624268272}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5609809668621438856 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198979115144688760, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
   m_PrefabInstance: {fileID: 5699558596624268272}
   m_PrefabAsset: {fileID: 0}
 --- !u!212 &5615049915071233628 stripped
@@ -599,6 +634,8 @@ MonoBehaviour:
   gravityAccepter: {fileID: 1346122948243000570}
   groundChecker: {fileID: 3867412507330431961}
   teleportAbility: {fileID: 5833017399287066018}
+  playerAbilities:
+  - {fileID: 5833017399287066018}
 --- !u!114 &3542227308590006569
 MonoBehaviour:
   m_ObjectHideFlags: 0

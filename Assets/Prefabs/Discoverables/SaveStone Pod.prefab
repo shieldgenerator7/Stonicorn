@@ -5110,6 +5110,8 @@ MonoBehaviour:
   - {fileID: 212879183351137708}
   - {fileID: 212879183351137708}
   - {fileID: 2011899284614665352}
+  coll2DList: []
+  presetup: 0
 --- !u!331 &2011899284614665352
 SpriteMask:
   m_ObjectHideFlags: 0
@@ -5312,6 +5314,8 @@ MonoBehaviour:
   - {fileID: 8396612827400857711}
   - {fileID: 8396612827400857711}
   - {fileID: 8836982838331270976}
+  coll2DList: []
+  presetup: 0
 --- !u!331 &8836982838331270976
 SpriteMask:
   m_ObjectHideFlags: 0
@@ -5473,6 +5477,8 @@ MonoBehaviour:
   offOnTransition: 0
   timeOffset: 0
   blinkState: 0
+  srList:
+  - {fileID: 986121386340363380}
 --- !u!1 &4606879247409551579
 GameObject:
   m_ObjectHideFlags: 0
@@ -6023,6 +6029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mmb: {fileID: 1488479641167960267}
+  hazard: {fileID: 0}
 --- !u!1 &8412103709058295066
 GameObject:
   m_ObjectHideFlags: 0
@@ -6118,6 +6125,11 @@ MonoBehaviour:
   - {fileID: 2753094067228482982}
   - {fileID: 1753567051432101641}
   - {fileID: 7343842584380505042}
+  workingColor: {r: 1, g: 1, b: 1, a: 1}
+  notWorkingColor: {r: 1, g: 0.7929859, b: 0, a: 1}
+  particleSystemList:
+  - {fileID: 198979115144688760}
+  coll2d: {fileID: 8613121556932314282}
 --- !u!114 &4092644100254002584
 MonoBehaviour:
   m_ObjectHideFlags: 0
