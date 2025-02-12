@@ -1564,6 +1564,12 @@ public class CustomMenu
                     field.SetValue(mb, component);
                     changes++;
                 }
+                else
+                {
+                    Debug.LogError($"Cannot AutoInitialize field because it is not a Component! obj: {mb.name}, Field: {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
+                    errors++;
+                    return;
+                }
             });
 
         if (changes > 0)
