@@ -2674,6 +2674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToActivate: {fileID: 389973473}
+  mf: {fileID: 389973475}
 --- !u!114 &467464544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6009,13 +6010,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startFrame: {fileID: 11584382}
   frames:
+  - {fileID: 11584382}
+  - {fileID: 160591700}
+  - {fileID: 298357110}
+  - {fileID: 539739725}
   - {fileID: 953867115}
   - {fileID: 1037794870}
-  - {fileID: 160591700}
-  - {fileID: 539739725}
-  - {fileID: 11584382}
   - {fileID: 1972838764}
-  - {fileID: 298357110}
+  follow: {fileID: 1627845403}
 --- !u!4 &1627845402
 Transform:
   m_ObjectHideFlags: 0

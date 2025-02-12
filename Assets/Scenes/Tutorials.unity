@@ -1770,6 +1770,13 @@ MonoBehaviour:
   offOnTransition: 0.2
   timeOffset: 0
   blinkState: 0
+  srList:
+  - {fileID: 1122441542}
+  - {fileID: 1122441541}
+  - {fileID: 1122441540}
+  - {fileID: 1122441539}
+  - {fileID: 1122441538}
+  - {fileID: 2043657050}
 --- !u!4 &230750359 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7976865616737010556, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
@@ -5856,6 +5863,31 @@ MonoBehaviour:
   requiredTriggers:
   - {fileID: 1112584137}
   - {fileID: 1112584134}
+--- !u!212 &1122441538 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6762717752904571416, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 230750354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1122441539 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7191721556198238865, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 230750354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1122441540 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1829218977988554728, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 230750354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1122441541 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3410838746008537766, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 230750354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1122441542 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4217299522313815921, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 230750354}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1135538836 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1406277790810922, guid: ef7f26eb421dc92418cd6ededc9933eb, type: 3}
@@ -10406,6 +10438,9 @@ MonoBehaviour:
   offOnTransition: 0.2
   timeOffset: 0
   blinkState: 0
+  srList:
+  - {fileID: 412027765}
+  - {fileID: 1437304160}
 --- !u!114 &2053986465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10802,6 +10837,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 316553189168530142, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
   m_PrefabInstance: {fileID: 1403722515034852804}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &1403722515034852806 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6762717752904571416, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 1403722515034852804}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1403722515034852807 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1115765260656410361, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
@@ -10825,6 +10865,13 @@ MonoBehaviour:
   offOnTransition: 0.2
   timeOffset: 0
   blinkState: 0
+  srList:
+  - {fileID: 1403722515034852813}
+  - {fileID: 1403722515034852812}
+  - {fileID: 1403722515034852811}
+  - {fileID: 1403722515034852810}
+  - {fileID: 1403722515034852806}
+  - {fileID: 9814870}
 --- !u!114 &1403722515034852809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10848,6 +10895,26 @@ MonoBehaviour:
   actorName: Main Camera
   startFromActor: 0
   pointAway: 0
+--- !u!212 &1403722515034852810 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7191721556198238865, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 1403722515034852804}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1403722515034852811 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1829218977988554728, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 1403722515034852804}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1403722515034852812 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3410838746008537766, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 1403722515034852804}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1403722515034852813 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4217299522313815921, guid: 074cdafca2c2dc54390c5a5c770c41ff, type: 3}
+  m_PrefabInstance: {fileID: 1403722515034852804}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3824343379126905370
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11012,6 +11079,9 @@ MonoBehaviour:
   offOnTransition: 0.2
   timeOffset: 0
   blinkState: 0
+  srList:
+  - {fileID: 149105986}
+  - {fileID: 5877247339616215343}
 --- !u!114 &6008367539667652949
 MonoBehaviour:
   m_ObjectHideFlags: 0
