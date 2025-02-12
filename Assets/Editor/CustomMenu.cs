@@ -680,39 +680,40 @@ public class CustomMenu
         int changedIdCount = 0;
         const int SECTION_SIZE = 1000;
         GameObject.FindObjectsByType<SceneSavableList>(FindObjectsSortMode.None)
-            .OrderBy(ssl=>ssl.gameObject.scene.buildIndex)
+            .OrderBy(ssl => ssl.gameObject.scene.buildIndex)
             .ToList()
-            .ForEach(ssl => {
+            .ForEach(ssl =>
+            {
 
-            //Use buildIndex to set next id
-            Scene scene = ssl.gameObject.scene;
-            nextID = ssl.gameObject.scene.buildIndex * SECTION_SIZE;
-                    //Get list of savables
-                    Debug.Log($"ssl savables count 1: {ssl.savables.Count}");
-                    //List<ObjectInfo> savables = new List<ObjectInfo>();
-                    //List<GameObject> gos = ssl.savables.ConvertAll(soi => soi.gameObject);
+                //Use buildIndex to set next id
+                Scene scene = ssl.gameObject.scene;
+                nextID = ssl.gameObject.scene.buildIndex * SECTION_SIZE;
+                //Get list of savables
+                Debug.Log($"ssl savables count 1: {ssl.savables.Count}");
+                //List<ObjectInfo> savables = new List<ObjectInfo>();
+                //List<GameObject> gos = ssl.savables.ConvertAll(soi => soi.gameObject);
 
-                    //Debug.Log($"ssl savables go count: {gos.Count}");
-                    ssl.getSavablesAndMemories()
-                    .ForEach(info =>
+                //Debug.Log($"ssl savables go count: {gos.Count}");
+                ssl.getSavablesAndMemories()
+                .ForEach(info =>
+                {
+                    int id = nextID;
+                    nextID++;
+                    if (info.Id != id)
                     {
-                        int id = nextID;
-                        nextID++;
-                        if (info.Id != id)
-                        {
-                            int prevID = info.Id;
-                            info.Id = id;
-                                Debug.LogWarning(
-                                    $"Changed Id: {prevID} -> {info.Id}",
-                                    info.gameObject
-                                    );
-                            changedIdCount++;
-                                EditorUtility.SetDirty(info);
-                            EditorSceneManager.MarkSceneDirty(scene);
+                        int prevID = info.Id;
+                        info.Id = id;
+                        Debug.LogWarning(
+                                $"Changed Id: {prevID} -> {info.Id}",
+                                info.gameObject
+                                );
+                        changedIdCount++;
+                        EditorUtility.SetDirty(info);
+                        EditorSceneManager.MarkSceneDirty(scene);
 
-                            }
-                    });
-        });
+                    }
+                });
+            });
         if (changedIdCount > 0)
         {
             Debug.LogWarning($"ensureUniqueObjectIDs: changed {changedIdCount} IDs");
@@ -1348,7 +1349,7 @@ public class CustomMenu
     public static bool checkAutoInitializeTags()
     {
         (int changeCount, int errorCount) = _autoInitializeTags(
-            GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include,FindObjectsSortMode.InstanceID).ToList()
+            GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).ToList()
             );
         if (changeCount > 0)
         {
@@ -1369,7 +1370,7 @@ public class CustomMenu
         mbList
             .ForEach(mb =>
             {
-                (int changes, int errors)=_autoInitializeTags(mb);
+                (int changes, int errors) = _autoInitializeTags(mb);
                 changeCount += changes;
                 errorCount += errors;
             });
@@ -1382,158 +1383,159 @@ public class CustomMenu
 
         string className = mb.GetType().Name;
 
-                int changes = 0;
-                int errors = 0;
+        int changes = 0;
+        int errors = 0;
 
-                Type classInfo = mb.GetType();
-                List<FieldInfo> fields = new List<FieldInfo>();
-                while (classInfo != TYPE_MONOBEHAVIOUR)
+        Type classInfo = mb.GetType();
+        List<FieldInfo> fields = new List<FieldInfo>();
+        while (classInfo != TYPE_MONOBEHAVIOUR)
+        {
+            fields.AddRange(classInfo.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
+            classInfo = classInfo.BaseType;
+        }
+
+        fields
+            .Where(field => field.GetCustomAttribute<AutoInitialize>() != null)
+            .Where(field =>
+            {
+
+                object value = field.GetValue(mb);
+                return value == null
+                    || ReferenceEquals(value, null)
+                    //this string comparison seems weird, but its for Rigidbody2D, PolygonCollider2D and other Unity components
+                    //that dont play nice with regular null checks
+                    || $"{value}" == NULL_STRING
+                    || field.FieldType.IsList();
+            })
+            .ToList()
+            .ForEach(field =>
+            {
+                //Check to make sure it is not an interface
+                if (field.FieldType.IsInterface)
                 {
-                    fields.AddRange(classInfo.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
-                    classInfo = classInfo.BaseType;
+                    Debug.LogError($"Field({className}.{field.Name}) is an interface. Unfortunately, Unity does not support serializing interfaces. Thus they also can't be auto-initialized", mb);
+                    errors++;
+                    return;
                 }
 
-                fields
-                    .Where(field => field.GetCustomAttribute<AutoInitialize>() != null)
-                    .Where(field =>
+                //Check to make sure it is public (or private with SerializeField)
+                if (!(field.IsPublic || field.GetCustomAttribute<SerializeField>() != null))
+                {
+                    Debug.LogError($"Field ({className}.{field.Name}) has AutoInitialize tag but is not public! It needs to be public or have the SerializeField tag", mb);
+                    errors++;
+                    return;
+                }
+
+                AutoInitialize auto = field.GetCustomAttribute<AutoInitialize>();
+                //Set the value
+                if (field.FieldType.IsList())
+                {
+                    IList list = (IList)field.GetValue(mb);
+                    int prevcount = list.Count;
+                    Type componentType = field.FieldType.GetGenericArguments()[0];
+
+                    List<Component> compsToAdd = new List<Component>();
+                    compsToAdd.AddRange(mb.GetComponents(componentType));
+                    if (auto.SearchParent)
                     {
-
-                        object value = field.GetValue(mb);
-                        return value == null
-                            || ReferenceEquals(value, null)
-                            //this string comparison seems weird, but its for Rigidbody2D, PolygonCollider2D and other Unity components
-                            //that dont play nice with regular null checks
-                            || $"{value}" == NULL_STRING
-                            || field.FieldType.IsList();
-                    })
-                    .ToList()
-                    .ForEach(field =>
+                        compsToAdd.AddRange(mb.GetComponentsInParent(componentType));
+                    }
+                    if (auto.SearchChildren)
                     {
-                        //Check to make sure it is not an interface
-                        if (field.FieldType.IsInterface)
+                        compsToAdd.AddRange(mb.GetComponentsInChildren(componentType));
+                    }
+                    if (auto.SearchScene)
+                    {
+                        Scene scene = mb.gameObject.scene;
+                        UnityEngine.Object[] arr = GameObject.FindObjectsByType(componentType, FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
+                            .Where(comp => ((Component)comp).gameObject.scene == scene).ToArray();
+                        compsToAdd.AddRange(
+                            arr.Cast<Component>().ToArray()
+                            );
+                    }
+
+                    list.Clear();
+                    compsToAdd.ForEach(comp =>
+                    {
+                        if (!list.Contains(comp))
                         {
-                            Debug.LogError($"Field({className}.{field.Name}) is an interface. Unfortunately, Unity does not support serializing interfaces. Thus they also can't be auto-initialized", mb);
-                            errors++;
-                            return;
-                        }
-
-                        //Check to make sure it is public (or private with SerializeField)
-                        if (!(field.IsPublic || field.GetCustomAttribute<SerializeField>() != null))
-                        {
-                            Debug.LogError($"Field ({className}.{field.Name}) has AutoInitialize tag but is not public! It needs to be public or have the SerializeField tag", mb);
-                            errors++;
-                            return;
-                        }
-
-                            AutoInitialize auto = field.GetCustomAttribute<AutoInitialize>();
-                        //Set the value
-                        if (field.FieldType.IsList())
-                        {
-                            IList list = (IList)field.GetValue(mb);
-                            int prevcount = list.Count;
-                            Type componentType = field.FieldType.GetGenericArguments()[0];
-
-                            List<Component> compsToAdd = new List<Component>();
-                            compsToAdd.AddRange(mb.GetComponents(componentType));
-                            if (auto.SearchParent)
-                            {
-                                compsToAdd.AddRange(mb.GetComponentsInParent(componentType));
-                            }
-                            if (auto.SearchChildren)
-                            {
-                                compsToAdd.AddRange(mb.GetComponentsInChildren(componentType));
-                            }
-                            if (auto.SearchScene)
-                            {
-                                Scene scene = mb.gameObject.scene;
-                                UnityEngine.Object[] arr = GameObject.FindObjectsByType(componentType, FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
-                                    .Where(comp => ((Component)comp).gameObject.scene == scene).ToArray();
-                                compsToAdd.AddRange(
-                                    arr.Cast<Component>().ToArray()
-                                    );
-                            }
-
-                            list.Clear();
-                            compsToAdd.ForEach(comp =>
-                            {
-                                if (!list.Contains(comp))
-                                {
-                                    list.Add(comp);
-                                }
-                            });
-
-                            if (list.Count != prevcount)
-                            {
-                                Debug.LogWarning($"Changing list field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name}<{componentType.Name}> = {list}", mb);
-                                field.SetValue(mb, list);
-                                changes++;
-                            }
-                            else if (list.Count == 0)
-                            {
-                                if (auto.AllowUnfound)
-                                {
-                                    return;
-                                }
-                                Debug.LogError($"Components for list not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}<{componentType.Name}>", mb);
-                                errors++;
-                                return;
-                            }
-                        }
-                        else {
-                        Component component = mb.GetComponent(field.FieldType);
-                        if (!component)
-                        {
-                            if (!component && auto.SearchParent)
-                            {
-                                component = mb.GetComponentInParent(field.FieldType);
-                            }
-                            if (!component && auto.SearchChildren)
-                            {
-                                component = mb.GetComponentInChildren(field.FieldType);
-                            }
-                            if (!component && auto.SearchScene)
-                            {
-                                Scene scene = mb.gameObject.scene;
-                                component = (Component)GameObject.FindObjectsByType(field.FieldType, FindObjectsSortMode.None)
-                                    //don't allow setting it to an object in a different scene
-                                    .FirstOrDefault(obj =>
-                                        ((Component)obj).gameObject.scene == scene
-                                    );
-                                //Allow graceful exit if its a prefab expecting the component to be in the scene, and thus not in the prefab
-                                if (component == null && scene.buildIndex < 0)
-                                {
-                                    return;
-                                }
-                            }
-                            if (!component && auto.AllowUnfound)
-                            {
-                                return;
-                            }
-                            if (component == null)
-                            {
-                                Debug.LogError($"Component not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
-                                errors++;
-                                return;
-                            }
-                        }
-                        Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {component}", mb);
-                        field.SetValue(mb, component);
-                        changes++;
+                            list.Add(comp);
                         }
                     });
 
-                if (changes > 0)
-                {
-                    EditorUtility.SetDirty(mb);
-                    Debug.LogWarning($"Check AutoInitialize Tags: {mb.name} ({className}) changes: {changes}", mb);
-                }
-                if (errors > 0)
-                {
-                    if (errors > 1)
+                    if (list.Count != prevcount)
                     {
-                        Debug.LogError($"Check AutoInitialize Tags: {mb.name} ({className}) errors: {errors}", mb);
+                        Debug.LogWarning($"Changing list field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name}<{componentType.Name}> = {list}", mb);
+                        field.SetValue(mb, list);
+                        changes++;
+                    }
+                    else if (list.Count == 0)
+                    {
+                        if (auto.AllowUnfound)
+                        {
+                            return;
+                        }
+                        Debug.LogError($"Components for list not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}<{componentType.Name}>", mb);
+                        errors++;
+                        return;
                     }
                 }
+                else
+                {
+                    Component component = mb.GetComponent(field.FieldType);
+                    if (!component)
+                    {
+                        if (!component && auto.SearchParent)
+                        {
+                            component = mb.GetComponentInParent(field.FieldType);
+                        }
+                        if (!component && auto.SearchChildren)
+                        {
+                            component = mb.GetComponentInChildren(field.FieldType);
+                        }
+                        if (!component && auto.SearchScene)
+                        {
+                            Scene scene = mb.gameObject.scene;
+                            component = (Component)GameObject.FindObjectsByType(field.FieldType, FindObjectsSortMode.None)
+                                        //don't allow setting it to an object in a different scene
+                                        .FirstOrDefault(obj =>
+                                            ((Component)obj).gameObject.scene == scene
+                                        );
+                            //Allow graceful exit if its a prefab expecting the component to be in the scene, and thus not in the prefab
+                            if (component == null && scene.buildIndex < 0)
+                            {
+                                return;
+                            }
+                        }
+                        if (!component && auto.AllowUnfound)
+                        {
+                            return;
+                        }
+                        if (component == null)
+                        {
+                            Debug.LogError($"Component not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
+                            errors++;
+                            return;
+                        }
+                    }
+                    Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {component}", mb);
+                    field.SetValue(mb, component);
+                    changes++;
+                }
+            });
+
+        if (changes > 0)
+        {
+            EditorUtility.SetDirty(mb);
+            Debug.LogWarning($"Check AutoInitialize Tags: {mb.name} ({className}) changes: {changes}", mb);
+        }
+        if (errors > 0)
+        {
+            if (errors > 1)
+            {
+                Debug.LogError($"Check AutoInitialize Tags: {mb.name} ({className}) errors: {errors}", mb);
+            }
+        }
         return (changes, errors);
     }
 
@@ -1554,17 +1556,18 @@ public class CustomMenu
             {
                 managers.gameDataContainer._gameData.knownObjects.AddRange(
                     ssl.savables.ConvertAll(
-                        soi => {
+                        soi =>
+                        {
                             try
                             {
                                 return soi.Data;
                             }
                             catch (Exception e)
                             {
-                                Debug.LogException(e,soi);
+                                Debug.LogException(e, soi);
                                 return new SavableObjectInfoData();
                             }
-                            }
+                        }
                         )
                     );
             });

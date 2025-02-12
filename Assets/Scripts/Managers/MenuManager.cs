@@ -139,9 +139,10 @@ public class MenuManager : MonoBehaviour, ISetupable
         }
 
         //init menu buttons
-        gameObject.GetComponentsInChildren<MenuFrame>().ToList().ForEach((mf) => {
+        gameObject.GetComponentsInChildren<MenuFrame>().ToList().ForEach((mf) =>
+        {
             changeCount += mf.setup();
-            });
+        });
 
         return changeCount;
     }

@@ -16,7 +16,7 @@ public class Managers : MonoBehaviour, ISetupable
     // Managers
     //
 
-    [AutoInitialize(SearchScene =true), SerializeField]
+    [AutoInitialize(SearchScene = true), SerializeField]
     private List<Manager> managerList;
 
     //Game Manager
@@ -232,7 +232,7 @@ public class Managers : MonoBehaviour, ISetupable
         bool isPrefab = gameObject.scene.buildIndex < 0;
         if (!playerController && !isPrefab)
         {
-        playerController = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
+            playerController = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
             Debug.LogWarning($"Managers.setup(): isPrefab? {isPrefab}, set playerController: {playerController}");
             changeCount++;
         }

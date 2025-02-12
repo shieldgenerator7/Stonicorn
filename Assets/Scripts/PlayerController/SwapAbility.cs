@@ -7,7 +7,7 @@ public class SwapAbility : PlayerAbility
 {
     public float swapSizeScaleLimit = 1;
 
-    [AutoInitialize,SerializeField,HideInInspector]
+    [AutoInitialize, SerializeField, HideInInspector]
     private PolygonCollider2D pc2d;
 
     private GameObject swapTarget;
