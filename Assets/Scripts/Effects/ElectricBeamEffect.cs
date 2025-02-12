@@ -6,12 +6,12 @@ public class ElectricBeamEffect : MonoBehaviour
 {
     public ElectricBeamAbility electricBeamAbility;
 
-    SpriteRenderer sr;
+    [AutoInitialize,SerializeField,HideInInspector]
+    private SpriteRenderer sr;
 
     // Start is called before the first frame update
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
         sr.enabled = false;
         electricBeamAbility.onActivatedChanged += processActivated;
         electricBeamAbility.onTargetChanged += updateStaticEffect;

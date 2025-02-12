@@ -16,9 +16,12 @@ public class MenuManager : MonoBehaviour, ISetupable
 
     private MenuButton currentButton;
 
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Follow follow;
+
     private void Awake()
     {
-        GetComponent<Follow>().followObject = Managers.Player.gameObject;
+        follow.followObject = Managers.Player.gameObject;
     }
 
     private void Start()

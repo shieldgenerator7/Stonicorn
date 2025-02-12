@@ -9,14 +9,14 @@ public class ElectricRingDisplayer : MonoBehaviour
     public float pointSpacing = 1;//distance between two points
     public float rangeOffset = -0.2f;
 
-    private Spline spline;
+    [SerializeField,HideInInspector]
+    private SpriteShapeController ssc;
+    [SerializeField]
     private ElectricBeamAbility electricBeamAbility;
     public MonoBehaviour fullChargeEffect;
 
     private void Start()
     {
-        spline = GetComponent<SpriteShapeController>().spline;
-        electricBeamAbility = Managers.Player.GetComponent<ElectricBeamAbility>();
         electricBeamAbility.onActivatedChanged += updateOn;
         electricBeamAbility.onRangeChanged += updateRange;
         electricBeamAbility.onChargeChanged += updateCharge;
@@ -59,6 +59,7 @@ public class ElectricRingDisplayer : MonoBehaviour
 
     void generateGeometry(float range, float percent)
     {
+        Spline spline = ssc.spline;
         spline.Clear();
         float arc = 2 * Mathf.PI * percent;
         float circumference = range * arc;

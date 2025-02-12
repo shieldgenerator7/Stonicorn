@@ -24,6 +24,9 @@ public class Follow : MonoBehaviour
 
     private void Awake()
     {
+        //DO NOT AutoInitialize OR ISetupable this Awake(),
+        //it's very likely that this class and its follow object will NOT be in the same scene!
+
         //Follow Object
         if (!followObject)
         {

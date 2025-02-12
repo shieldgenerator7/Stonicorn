@@ -6,9 +6,10 @@ public class FloatCubeController : MonoBehaviour
     public const float MAX_FLOAT_HEIGHT = 15.0f;//the max propulsion height, only for visual communication, not an enforced cap
     public const float MIN_FLOAT_HEIGHT = 2.0f;//the min propulsion height, only for visual communication, not an enforced cap
 
-    public GameObject switchObj;
+    public WeightSwitchActivator switchObj;
     public GameObject psgoTrail;
     public GameObject psgoSparks;
+    public Transform propulsionHeightIndicator;
     public float propulsionHeight;//how far off the ground the float cube can go
     public float liftForce = 0;//how much force can be applied each frame
     public float expectedGravity = 9.81f;//the expected gravity scale for this float cube
@@ -28,39 +29,30 @@ public class FloatCubeController : MonoBehaviour
     /// </summary>
     private RaycastHit2D[] rch2dsGround = new RaycastHit2D[Utility.MAX_HIT_COUNT];
     //Particles
+    [AutoInitialize(Container ="psgoTrail"),SerializeField, HideInInspector]
     private ParticleSystem psTrail;
+    [AutoInitialize(Container = "psgoSparks"), SerializeField, HideInInspector]
     private ParticleSystem psSparks;
 
     // Use this for initialization
     void Start()
     {
-        psTrail = psgoTrail.GetComponent<ParticleSystem>();
         if (psTrail != null)
         {
             psTrail.Pause();
             psTrail.Clear();
         }
-        psSparks = psgoSparks.GetComponent<ParticleSystem>();
         if (psSparks != null)
         {
             psSparks.Pause();
             psSparks.Clear();
         }
         //Propulsion Height Indicator
-        GameObject phi = null;
-        foreach (Transform t in GetComponentsInChildren<Transform>())
-        {
-            if (t.gameObject.name.Contains("indicator"))
-            {
-                phi = t.gameObject;
-                break;
-            }
-        }
         float newY = Utility.convertToRange(
             Mathf.Min(propulsionHeight, MAX_FLOAT_HEIGHT),
             MIN_FLOAT_HEIGHT, MAX_FLOAT_HEIGHT,
             -0.5f, 0.5f);
-        phi.transform.localPosition = new Vector2(phi.transform.localPosition.x, newY);
+        propulsionHeightIndicator.localPosition = new Vector2(propulsionHeightIndicator.localPosition.x, newY);
         //
         if (liftForce == 0)
         {
@@ -73,7 +65,7 @@ public class FloatCubeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (switchObj.GetComponent<WeightSwitchActivator>().pressed)
+        if (switchObj.pressed)
         {
             if (psTrail != null)
             {
@@ -102,7 +94,7 @@ public class FloatCubeController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (switchObj.GetComponent<WeightSwitchActivator>().pressed)
+        if (switchObj.pressed)
         {
             if (propulsionHeight > 0)
             {

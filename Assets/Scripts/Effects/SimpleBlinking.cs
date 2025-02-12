@@ -27,6 +27,8 @@ public class SimpleBlinking : MonoBehaviour
     private float currentDuration = 0;//the current span between keyframes
     private float currentTransitionDuration = 0;//the current time it takes to transition to current state
 
+    [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
+    private List<SpriteRenderer> srList;
     void OnEnable()
     {
         lastKeyFrame = Time.time + timeOffset;
@@ -80,7 +82,7 @@ public class SimpleBlinking : MonoBehaviour
     void updateAlpha(float percent = 1)
     {
         float newAlpha = (blinkState == BlinkState.ON) ? 0 + percent : 1 - percent;
-        foreach (SpriteRenderer tsr in GetComponentsInChildren<SpriteRenderer>())
+        foreach (SpriteRenderer tsr in srList)
         {
             tsr.color = tsr.color.adjustAlpha(newAlpha);
         }

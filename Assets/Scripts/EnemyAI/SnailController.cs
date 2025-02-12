@@ -55,11 +55,13 @@ public class SnailController : Hazard
 
     [Header("Components")]
     public Collider2D bottomDetector;//used to make sure the snail is at the right orientation before coming out
+    [AutoInitialize(SearchChildren = true), SerializeField,HideInInspector]
     private Animator animator;
     [AutoInitialize, SerializeField, HideInInspector]
     private GroundChecker ground;
     [AutoInitialize, SerializeField, HideInInspector]
     private GravityAccepter gravity;
+    [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
 
     // Start is called before the first frame update
@@ -69,8 +71,7 @@ public class SnailController : Hazard
     }
     public override void init()
     {
-        animator = GetComponentInChildren<Animator>();
-        rb2d = GetComponentInChildren<Rigidbody2D>();
+        //2025-02-11: this needs to be here in init(), NOT in setup()
         Awake = false;
         FloorDirection = transform.up;
     }
@@ -206,10 +207,6 @@ public class SnailController : Hazard
         set
         {
             base.CurrentState = value;
-            if (!animator)
-            {
-                Start();
-            }
             Vector3 animScale = animator.transform.localScale;
             animScale.x = Mathf.Abs(animScale.x) * value.Float("flipDir");
             animator.transform.localScale = animScale;

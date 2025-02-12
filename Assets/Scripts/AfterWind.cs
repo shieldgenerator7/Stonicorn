@@ -5,7 +5,6 @@ using UnityEngine;
 public class AfterWind : SavableMonoBehaviour, ICuttable, ISetupable
 {//2018-01-25: copied from GravityZone
 
-    [AutoInitialize(InitFunc =()=>transform.up)]
     public Vector2 windVector;//direction
     public float windForce = 10;//magnitude
 

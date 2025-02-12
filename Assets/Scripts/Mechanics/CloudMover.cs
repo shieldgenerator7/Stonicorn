@@ -2,14 +2,14 @@ using UnityEngine;
 
 [RequireComponent(typeof(GravityAccepter))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class CloudMover : MonoBehaviour, ISetupable
+public class CloudMover : MonoBehaviour
 {
     public bool destroyOnCollisionWithUnmovableSolid = true;
     public GameObject shadow;
 
     [AutoInitialize, SerializeField, HideInInspector]
     Rigidbody2D rb2d;
-    [SerializeField, HideInInspector]
+    [AutoInitialize(Container ="shadow", AllowNullContainer =true), SerializeField, HideInInspector]
     SpriteRenderer shadowSR;
     [AutoInitialize, SerializeField, HideInInspector]
     Fader fader;
@@ -57,19 +57,5 @@ public class CloudMover : MonoBehaviour, ISetupable
         Vector2 size = shadowSR.size;
         size.y = height;
         shadowSR.size = size;
-    }
-
-    public int setup()
-    {
-        int changeCount = 0;
-        if (shadow)
-        {
-            SpriteRenderer newShadowSR = shadow.GetComponent<SpriteRenderer>();
-            if (newShadowSR != shadowSR) { 
-            shadowSR = newShadowSR;
-                changeCount++;
-            }
-        }
-        return changeCount;
     }
 }

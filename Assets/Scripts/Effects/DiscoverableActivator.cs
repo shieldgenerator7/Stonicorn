@@ -6,6 +6,9 @@ public class DiscoverableActivator : MonoBehaviour, ISwappable
 {
     public MemoryMonoBehaviour mmb;
 
+    [AutoInitialize(AllowUnfound = true), SerializeField, HideInInspector]
+    private Hazard hazard;
+
     private void Start()
     {
         mmb.onDiscovered += () => Destroy(this);
@@ -44,6 +47,6 @@ public class DiscoverableActivator : MonoBehaviour, ISwappable
     private bool isSafeToCollect(GameObject go, Vector2 point)
     {
         PlayerController pc = go.GetComponent<PlayerController>();
-        return !pc.canBeHitByHazard(GetComponent<Hazard>(), point);
+        return !pc.canBeHitByHazard(hazard, point);
     }
 }

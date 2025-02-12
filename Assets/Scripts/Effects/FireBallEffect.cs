@@ -2,22 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBallEffect : MonoBehaviour
+public class FireBallEffect : MonoBehaviour, ISetupable
 {
     public ForceLaunchAbility forceLaunchAbility;
 
+    [AutoInitialize(Container = "forceLaunchAbility"),SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
 
     // Start is called before the first frame update
     void Start()
     {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        if (!forceLaunchAbility)
-        {
-            Debug.LogError("FireBallEffect is missing ForceLaunchAbility!", gameObject);
-        }
-        sr.color = forceLaunchAbility.EffectColor.adjustAlpha(sr.color.a);
-        rb2d = forceLaunchAbility.GetComponent<Rigidbody2D>();
         forceLaunchAbility.onAffectingVelocityChanged += onAbilityUsed;
         onAbilityUsed(forceLaunchAbility.AffectingVelocity);
     }
@@ -36,5 +30,34 @@ public class FireBallEffect : MonoBehaviour
     void Update()
     {
         transform.up = -rb2d.linearVelocity;
+    }
+
+    public int checkForErrors()
+    {
+        int errors = 0;
+        if (!gameObject.isPrefab())
+        {
+            if (!forceLaunchAbility)
+            {
+                Debug.LogError("FireBallEffect is missing ForceLaunchAbility!", gameObject);
+                errors++;
+            }
+        }
+        return errors;
+    }
+    public int setup()
+    {
+        int changeCount = 0;
+        if (!gameObject.isPrefab())
+        {
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            Color color = forceLaunchAbility.EffectColor.adjustAlpha(sr.color.a);
+            if (sr.color != color)
+            {
+                sr.color = color;
+                changeCount++;
+            }
+        }
+        return changeCount;
     }
 }

@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistanceYTimer : Timer
+public class DistanceYTimer : Timer, ISetupable
 {
     [Header("Distance Timer Settings")]
     public Transform timerObject;
     public Transform targetObject;
 
+    [AutoInitialize(Container ="timerObject"),SerializeField,HideInInspector]
     private Rigidbody2D rb2dTimer;
 
+    [SerializeField, HideInInspector]
     private Vector2 origPos;
     public override float Duration
     {
@@ -51,12 +53,6 @@ public class DistanceYTimer : Timer
         //do nothing
     }
 
-    protected override void Start()
-    {
-        origPos = timerObject.position;
-        rb2dTimer = timerObject.GetComponent<Rigidbody2D>();
-    }
-
     protected override void Update()
     {
         if (Active)
@@ -69,5 +65,19 @@ public class DistanceYTimer : Timer
                 Active = false;
             }
         }
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+        if (timerObject)
+        {
+            if (origPos != (Vector2)timerObject.position)
+            {
+                origPos = timerObject.position;
+                changeCount++;
+            }
+        }
+        return changeCount;
     }
 }

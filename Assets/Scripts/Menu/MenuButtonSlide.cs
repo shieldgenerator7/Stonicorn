@@ -53,9 +53,9 @@ public class MenuButtonSlide : MenuButton
     public EdgeCollider2D validBarBounds;//the box that binds where the slider bar can be
     public Text valueText;
 
-    [SerializeField, HideInInspector]
+    [AutoInitialize(Container ="sliderFill"), SerializeField, HideInInspector]
     private SpriteRenderer sliderFillSR;
-    [SerializeField, HideInInspector]
+    [AutoInitialize(Container = "sliderBar"), SerializeField, HideInInspector]
     private EdgeCollider2D sliderBarEC2D;
     [SerializeField]
     private float sliderBarWidth;
@@ -131,6 +131,7 @@ public class MenuButtonSlide : MenuButton
     {
         int changeCount = base.setup();
 
+        //Get max value
         float omv = mas.getOverriddenMaxValue(MaxValue);
         if (omv != MaxValue)
         {
@@ -138,16 +139,7 @@ public class MenuButtonSlide : MenuButton
             changeCount++;
         }
 
-        if (!sliderFillSR)
-        {
-            sliderFillSR = sliderFill.GetComponent<SpriteRenderer>();
-            changeCount++;
-        }
-        if (!sliderBarEC2D)
-        {
-            sliderBarEC2D = sliderBar.GetComponent<EdgeCollider2D>();
-            changeCount++;
-        }
+        //Slider bar width
         float sbw = (transform.TransformPoint(sliderBarEC2D.points[1]) - transform.TransformPoint(sliderBarEC2D.points[0])).magnitude;
         if (sbw != sliderBarWidth)
         {

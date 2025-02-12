@@ -6,7 +6,7 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D))]
-public abstract class EventTrigger : MonoBehaviour
+public abstract class EventTrigger : MonoBehaviour, ISetupable
 {
     [Tooltip("The title of the dialogue path to play")]
     public string title;
@@ -20,20 +20,6 @@ public abstract class EventTrigger : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        checkErrors();
-    }
-
-    protected virtual void checkErrors()
-    {
-        coll2d = GetComponents<Collider2D>().FirstOrDefault(c2d => c2d.isTrigger == true);
-        if (!coll2d)
-        {
-            Debug.LogError(
-                $"{this.GetType().Name} requires a Collider2D with isTrigger set to true. " +
-                $"This one on GameObject {gameObject.name} has none.",
-                this
-                );
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D coll)
@@ -78,5 +64,14 @@ public abstract class EventTrigger : MonoBehaviour
         {
             Managers.Time.onPauseChanged += triggerEventOnPlay;
         }
+    }
+
+    public virtual int checkForErrors()
+    {
+        return 0;
+    }
+    public int setup()
+    {
+        return 0;
     }
 }

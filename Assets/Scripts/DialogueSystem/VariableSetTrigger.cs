@@ -8,13 +8,16 @@ public class VariableSetTrigger : EventTrigger
     public VariableSetAction variableSetAction;
     public VariableSetAction triggerLeaveAction;
 
-    protected override void checkErrors()
+    public override int checkForErrors()
     {
         base.checkErrors();
+        int errorCount = base.checkForErrors();
         if (!variableSetAction && !triggerLeaveAction)
         {
-            Debug.LogError($"VariableSetTrigger doesn't have a variableSetAction or triggerLeaveAction! {variableSetAction}, {triggerLeaveAction}");
+            Debug.LogError($"VariableSetTrigger doesn't have a variableSetAction or triggerLeaveAction! {variableSetAction}, {triggerLeaveAction}", this);
+            errorCount++;
         }
+        return errorCount;
     }
 
     protected override void triggerEvent()
@@ -27,7 +30,7 @@ public class VariableSetTrigger : EventTrigger
     {
         if (coll.isPlayerSolid())
         {
-            Debug.Log("(dialogue) leaving trigger, activating variable effects");
+            Debug.Log("(dialogue) leaving trigger, activating variable effects", this);
             triggerLeaveAction?.processAllActions();
         }
     }

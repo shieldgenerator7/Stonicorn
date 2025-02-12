@@ -6,6 +6,7 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour
 
     public GameObject parentObj;
 
+    [AutoInitialize(Container ="parentObj"), SerializeField, HideInInspector]
     private PlayerController controller;
     private float baseRange = 2.5f;//2017-01-30: got this measurement from a test run. If the sprite size ever changes, this value will also have to change
     private float baseScale = 1;
@@ -15,10 +16,6 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if (parentObj != null)
-        {
-            controller = parentObj.GetComponent<PlayerController>();
-        }
         sr.enabled = true;
     }
 

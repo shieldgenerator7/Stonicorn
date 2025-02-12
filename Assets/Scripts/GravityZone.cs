@@ -3,25 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GravityZone : MonoBehaviour
+public class GravityZone : MonoBehaviour, ISetupable
 {
     public float gravityScale = 9.81f;
     public bool mainGravityZone = true;//true to change camera angle, false to not
     public bool radialGravity = true;//true to make it gravitate towards the center of the gravity zone
 
+    [SerializeField]
     private Vector2 gravityVector;
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of Rigidbody2D in this zone
     private List<GravityAccepter> tenantsGAs = new List<GravityAccepter>();//the list of GravityAccepter in this zone
 
     [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
-
-    // Use this for initialization
-    void Start()
-    {
-        coll2d = GetComponent<Collider2D>();
-        gravityVector = -transform.up.normalized * gravityScale;
-    }
 
     void OnTriggerEnter2D(Collider2D coll)
     {
@@ -122,4 +116,15 @@ public class GravityZone : MonoBehaviour
             .FirstOrDefault(
                 gz => gz.mainGravityZone && gz.coll2d.OverlapPoint(pos)
             );
+
+    public int setup()
+    {
+        int changeCount = 0;
+        if (gravityVector == Vector2.zero)
+        {
+            gravityVector = -transform.up.normalized * gravityScale;
+            changeCount++;
+        }
+        return changeCount;
+    }
 }

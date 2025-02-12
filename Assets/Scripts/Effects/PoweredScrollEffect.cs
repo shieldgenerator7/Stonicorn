@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoweredScrollEffect : MonoBehaviour
+public class PoweredScrollEffect : MonoBehaviour, ISetupable
 {
     public float scrollSpeed = 3;
 
+    [SerializeField,HideInInspector]
     private float parentHeight;
+    [SerializeField, HideInInspector]
     private float selfHeight;
 
     [AutoInitialize, SerializeField, HideInInspector]
@@ -15,9 +17,6 @@ public class PoweredScrollEffect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //set heights
-        parentHeight = transform.parent.GetComponent<RectTransform>().sizeDelta.y;
-        selfHeight = rectTransform.sizeDelta.y;
         //register delegate
         IPowerConduit conduit = GetComponent<IPowerConduit>();
         if (conduit == null)
@@ -41,5 +40,22 @@ public class PoweredScrollEffect : MonoBehaviour
         {
             resetPosition();
         }
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+        //set heights
+        if (parentHeight == 0)
+        {
+            parentHeight = transform.parent.GetComponent<RectTransform>().sizeDelta.y;
+            changeCount++;            
+        }
+        if (selfHeight == 0)
+        {
+            selfHeight = rectTransform.sizeDelta.y;
+            changeCount++;
+        }
+        return changeCount;
     }
 }

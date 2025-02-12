@@ -41,7 +41,7 @@ public class AbilityTeleportRangeEffect : TeleportRangeEffect
             }
         }
         //Segment consulting
-        foreach (PlayerAbility ability in Managers.Player.GetComponents<PlayerAbility>())
+        foreach (PlayerAbility ability in Managers.Player.Abilities)
         {
             if (ability.enabled)
             {

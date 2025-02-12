@@ -22,12 +22,12 @@ public class PowerManager : MonoBehaviour
     List<KeyValuePair<IPowerer, List<PowerPath>>> powerPaths = new List<KeyValuePair<IPowerer, List<PowerPath>>>();
     List<IPowerable> noPowerPowerables = new List<IPowerable>();
 
+    [SerializeField]
     private ElectricBeamAbility electricBeamAbility;
 
     private void Start()
     {
         generateConnectionMap();
-        electricBeamAbility = Managers.Player.GetComponent<ElectricBeamAbility>();
     }
 
     private void FixedUpdate()

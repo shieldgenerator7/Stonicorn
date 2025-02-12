@@ -15,9 +15,12 @@ public class LanternActivator : MemoryMonoBehaviour
     /// </summary>
     public HiddenArea secretHider;
 
+    [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
+    private List<ParticleSystem> particleSystemList;
+
     protected override void nowDiscovered()
     {
-        foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
+        foreach (ParticleSystem ps in particleSystemList)
         {
             ps.Play();
         }
@@ -33,7 +36,7 @@ public class LanternActivator : MemoryMonoBehaviour
 
     protected override void previouslyDiscovered()
     {
-        foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
+        foreach (ParticleSystem ps in particleSystemList)
         {
             ps.Play();
         }

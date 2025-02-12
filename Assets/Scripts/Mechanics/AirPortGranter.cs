@@ -17,11 +17,16 @@ public class AirPortGranter : SavableMonoBehaviour
             }
             else
             {
-                GetComponent<SpriteRenderer>().color =
-                    GetComponent<SpriteRenderer>().color.adjustAlpha(1);
+                sr.color = sr.color.adjustAlpha(1);
             }
         }
     }
+
+    [AutoInitialize, SerializeField, HideInInspector]
+    private SpriteRenderer sr;
+
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Fader fader;
 
     public override void init()
     {
@@ -36,7 +41,7 @@ public class AirPortGranter : SavableMonoBehaviour
             {
                 asa.grantAirPort();
             }
-            Fader fader = GetComponent<Fader>();
+            //fade
             fader.onFadeFinished -= disappear;
             fader.onFadeFinished += disappear;
             fader.enabled = true;

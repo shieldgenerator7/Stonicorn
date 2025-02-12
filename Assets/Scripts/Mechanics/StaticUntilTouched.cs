@@ -5,7 +5,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
 {
-    [AutoInitialize,SerializeField,HideInInspector]
+    [AutoInitialize, SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
 
     [SerializeField]
@@ -63,7 +63,7 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
             if (collision.collider.isSolid())
             {
                 Rooted = false;
-                GetComponent<Rigidbody2D>().linearVelocity = collision.relativeVelocity;
+                rb2d.linearVelocity = collision.relativeVelocity;
             }
         }
     }
