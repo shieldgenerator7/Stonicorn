@@ -28,8 +28,8 @@ public class DialogueBoxUpdater : MonoBehaviour
 
     private string text = "";
     private string goalText = "";
-    [SerializeField]
-    SpriteRenderer quoteSR;
+    [AutoInitialize(Container = "quoteBox"), SerializeField,HideInInspector]
+    private SpriteRenderer quoteSR;
 
     private Transform source;
 
