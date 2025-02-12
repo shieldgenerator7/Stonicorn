@@ -1382,6 +1382,7 @@ public class CustomMenu
         const string NULL_STRING = "null";
 
         string className = mb.GetType().Name;
+        bool isPrefab = mb.gameObject.scene.buildIndex < 0;
 
         int changes = 0;
         int errors = 0;
@@ -1452,6 +1453,12 @@ public class CustomMenu
                         {
                             //it's ok, it's allowed to be null
                             //just move on to the next field
+                            return;
+                        }
+                        else if (isPrefab)
+                        {
+                            //sometimes you cant find it in prefab,
+                            //and thats ok
                             return;
                         }
                         else
@@ -1530,14 +1537,14 @@ public class CustomMenu
                         }
                         if (!component && auto.SearchScene)
                         {
-                            Scene scene = container.scene;
+                            Scene scene = mb.gameObject.scene;
                             component = (Component)GameObject.FindObjectsByType(field.FieldType, FindObjectsSortMode.None)
                                         //don't allow setting it to an object in a different scene
                                         .FirstOrDefault(obj =>
                                             ((Component)obj).gameObject.scene == scene
                                         );
                             //Allow graceful exit if its a prefab expecting the component to be in the scene, and thus not in the prefab
-                            if (component == null && scene.buildIndex < 0)
+                            if (component == null && isPrefab)
                             {
                                 return;
                             }
