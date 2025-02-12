@@ -9,5 +9,8 @@ public class AutoInitialize : Attribute
     public bool SearchChildren = false;
     public bool SearchScene = false;
     public bool AllowUnfound = false;
-    public Func<object> InitFunc = null;
+    /// <summary>
+    /// The name of the variable of type GameObject that has the component you're looking for
+    /// </summary>
+    public string Container = null;
 }

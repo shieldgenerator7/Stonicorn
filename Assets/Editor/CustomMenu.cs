@@ -1427,6 +1427,11 @@ public class CustomMenu
                 }
 
                 AutoInitialize auto = field.GetCustomAttribute<AutoInitialize>();
+                GameObject container = mb.gameObject;
+                if (auto.Container != null)
+                {
+                    container = (GameObject)mb.GetType().GetField(auto.Container).GetValue(mb);
+                }
                 //Set the value
                 if (field.FieldType.IsList())
                 {
@@ -1435,25 +1440,18 @@ public class CustomMenu
                     Type componentType = field.FieldType.GetGenericArguments()[0];
 
                     List<Component> compsToAdd = new List<Component>();
-                    if (auto.InitFunc != null)
-                    {
-                        compsToAdd.AddRange((IEnumerable<Component>)auto.InitFunc());
-                    }
-                    else
-                    {
-                        compsToAdd.AddRange(mb.GetComponents(componentType));
-                    }
+                    compsToAdd.AddRange(container.GetComponents(componentType));
                     if (auto.SearchParent)
                     {
-                        compsToAdd.AddRange(mb.GetComponentsInParent(componentType));
+                        compsToAdd.AddRange(container.GetComponentsInParent(componentType));
                     }
                     if (auto.SearchChildren)
                     {
-                        compsToAdd.AddRange(mb.GetComponentsInChildren(componentType));
+                        compsToAdd.AddRange(container.GetComponentsInChildren(componentType));
                     }
                     if (auto.SearchScene)
                     {
-                        Scene scene = mb.gameObject.scene;
+                        Scene scene = container.scene;
                         UnityEngine.Object[] arr = GameObject.FindObjectsByType(componentType, FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
                             .Where(comp => ((Component)comp).gameObject.scene == scene).ToArray();
                         compsToAdd.AddRange(
@@ -1489,22 +1487,20 @@ public class CustomMenu
                 }
                 else if (field.FieldType.IsSubclassOf(typeof(Component)))
                 {
-                    Component component = (auto.InitFunc != null)
-                        ? (Component)auto.InitFunc()
-                        : mb.GetComponent(field.FieldType);
+                    Component component = container.GetComponent(field.FieldType);
                     if (!component)
                     {
                         if (!component && auto.SearchParent)
                         {
-                            component = mb.GetComponentInParent(field.FieldType);
+                            component = container.GetComponentInParent(field.FieldType);
                         }
                         if (!component && auto.SearchChildren)
                         {
-                            component = mb.GetComponentInChildren(field.FieldType);
+                            component = container.GetComponentInChildren(field.FieldType);
                         }
                         if (!component && auto.SearchScene)
                         {
-                            Scene scene = mb.gameObject.scene;
+                            Scene scene = container.scene;
                             component = (Component)GameObject.FindObjectsByType(field.FieldType, FindObjectsSortMode.None)
                                         //don't allow setting it to an object in a different scene
                                         .FirstOrDefault(obj =>
@@ -1530,29 +1526,6 @@ public class CustomMenu
                     Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {component}", mb);
                     field.SetValue(mb, component);
                     changes++;
-                }
-                else
-                {
-                    object value = null;
-                    if (auto.InitFunc != null)
-                    {
-                        value = auto.InitFunc();
-                    }
-                    if (value != null)
-                    {
-                        if (value != field.GetValue(mb))
-                        {
-                            Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {value}", mb);
-                            field.SetValue(mb, value);
-                            changes++;
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError($"Value not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
-                        errors++;
-                        return;
-                    }
                 }
             });
 
