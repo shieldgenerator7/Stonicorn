@@ -325,6 +325,7 @@ MonoBehaviour:
   gravityScale: 9.81
   mainGravityZone: 1
   radialGravity: 1
+  gravityVector: {x: -0, y: -9.81}
   coll2d: {fileID: 35776784}
 --- !u!1 &64629406
 GameObject:
@@ -9842,6 +9843,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2892061735829011439, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 2593150204304020508}
+    - target: {fileID: 2892061735829011439, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: forceLaunchAbility
       value: 
       objectReference: {fileID: 1792176466}
@@ -9873,6 +9878,14 @@ PrefabInstance:
       propertyPath: followObject
       value: 
       objectReference: {fileID: 1792176465}
+    - target: {fileID: 8432395896714382648, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_Color.b
+      value: 0.40392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432395896714382648, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
+      propertyPath: m_Color.g
+      value: 0.48235294
+      objectReference: {fileID: 0}
     - target: {fileID: 8801921851476805430, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: followObject
       value: 
@@ -10000,6 +10013,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f226e1a029e61f5408883be589e5ecf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &2593150204304020508 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 5068768, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+  m_PrefabInstance: {fileID: 2593150204304020503}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2859978935247260757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10125,6 +10143,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2034127421}
     - target: {fileID: 6020679409768259350, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
+      propertyPath: origPos.y
+      value: -2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6020679409768259350, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
+      propertyPath: rb2dTimer
+      value: 
+      objectReference: {fileID: 7731386571285518057}
+    - target: {fileID: 6020679409768259350, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
       propertyPath: timerObject
       value: 
       objectReference: {fileID: 7731386571285518055}
@@ -10225,6 +10251,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f226e1a029e61f5408883be589e5ecf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &7731386571285518057 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 7731386570801727933, guid: 856da4dbe1d56134692e4488ddf52fc6, type: 3}
+  m_PrefabInstance: {fileID: 7731386571285518054}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8392682662392136999
 PrefabInstance:
   m_ObjectHideFlags: 0

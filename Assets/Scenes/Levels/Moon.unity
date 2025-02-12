@@ -1265,6 +1265,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollSpeed: 10
+  parentHeight: 187.5
+  selfHeight: 855
   rectTransform: {fileID: 402415943}
 --- !u!114 &402415946
 MonoBehaviour:
@@ -4232,6 +4234,7 @@ MonoBehaviour:
   gravityScale: 9.81
   mainGravityZone: 1
   radialGravity: 1
+  gravityVector: {x: -0.09738829, y: -9.809517}
   coll2d: {fileID: 1234771322}
 --- !u!58 &1234771322
 CircleCollider2D:
@@ -11626,6 +11629,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollSpeed: 10
+  parentHeight: 187.5
+  selfHeight: 855
   rectTransform: {fileID: 2129085853}
 --- !u!114 &2129085857
 MonoBehaviour:
