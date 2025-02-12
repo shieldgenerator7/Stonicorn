@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PowerManager : MonoBehaviour
+public class PowerManager : MonoBehaviour, ISetupable
 {
     private Dictionary<IPowerConduit, HashSet<IPowerConduit>> connectionMap
         = new Dictionary<IPowerConduit, HashSet<IPowerConduit>>();
@@ -230,5 +230,27 @@ public class PowerManager : MonoBehaviour
             }
         }
         return conduits;
+    }
+
+    public int checkForErrors()
+    {
+        int errorCount = 0;
+
+        if (!gameObject.isPrefab())
+        {
+            if (!electricBeamAbility)
+            {
+                Debug.LogError("PowerManager needs an EelectricBeamAbility!", this);
+                errorCount++;
+            }
+        }
+
+        return errorCount;
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+        return changeCount;
     }
 }
