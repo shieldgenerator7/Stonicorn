@@ -1435,7 +1435,14 @@ public class CustomMenu
                     Type componentType = field.FieldType.GetGenericArguments()[0];
 
                     List<Component> compsToAdd = new List<Component>();
-                    compsToAdd.AddRange(mb.GetComponents(componentType));
+                    if (auto.InitFunc != null)
+                    {
+                        compsToAdd.AddRange((IEnumerable<Component>)auto.InitFunc());
+                    }
+                    else
+                    {
+                        compsToAdd.AddRange(mb.GetComponents(componentType));
+                    }
                     if (auto.SearchParent)
                     {
                         compsToAdd.AddRange(mb.GetComponentsInParent(componentType));
@@ -1480,9 +1487,11 @@ public class CustomMenu
                         return;
                     }
                 }
-                else
+                else if (field.FieldType.IsSubclassOf(typeof(Component)))
                 {
-                    Component component = mb.GetComponent(field.FieldType);
+                    Component component = (auto.InitFunc != null)
+                        ? (Component)auto.InitFunc()
+                        : mb.GetComponent(field.FieldType);
                     if (!component)
                     {
                         if (!component && auto.SearchParent)
@@ -1521,6 +1530,29 @@ public class CustomMenu
                     Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {component}", mb);
                     field.SetValue(mb, component);
                     changes++;
+                }
+                else
+                {
+                    object value = null;
+                    if (auto.InitFunc != null)
+                    {
+                        value = auto.InitFunc();
+                    }
+                    if (value != null)
+                    {
+                        if (value != field.GetValue(mb))
+                        {
+                            Debug.LogWarning($"Changing field on {mb.name}: {className}.{field.Name}:{field.FieldType.Name} = {value}", mb);
+                            field.SetValue(mb, value);
+                            changes++;
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError($"Value not found! {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
+                        errors++;
+                        return;
+                    }
                 }
             });
 
