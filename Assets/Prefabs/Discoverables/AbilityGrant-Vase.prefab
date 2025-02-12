@@ -359,6 +359,11 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 5872078595725439974, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
   m_PrefabInstance: {fileID: 5218943540640224134}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &1856507416684909113 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 5218943540640224134}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6261100641845864174 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
@@ -433,7 +438,7 @@ MonoBehaviour:
   minForceThreshold: 700
   maxForceThreshold: 700
   maxIntegrity: 1
-  integrity: 0
+  integrity: 1
   crackedPrefab: {fileID: 0}
   contents: []
   soundDamageNone: {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
@@ -441,6 +446,7 @@ MonoBehaviour:
   soundDamageTwoOrMore: {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
   dicoverables:
   - {fileID: 0}
+  sr: {fileID: 1856507416684909113}
 --- !u!4 &7800436665770949004 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2606984600078756362, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}

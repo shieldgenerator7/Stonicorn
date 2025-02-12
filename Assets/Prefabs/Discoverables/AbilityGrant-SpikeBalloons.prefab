@@ -365,6 +365,8 @@ MonoBehaviour:
   - {fileID: 8817465205266617627}
   - {fileID: 469108320397413176}
   - {fileID: 8503141468310964198}
+  coll2DList: []
+  presetup: 0
 --- !u!114 &8054968824689524204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,6 +475,17 @@ PrefabInstance:
       insertIndex: 6
       addedObject: {fileID: 7712909568378001653}
   m_SourcePrefab: {fileID: 100100000, guid: f8a10e508b19c9844b5baa87ae286b12, type: 3}
+--- !u!114 &4186778730690056737 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5837762927501142555, guid: f8a10e508b19c9844b5baa87ae286b12, type: 3}
+  m_PrefabInstance: {fileID: 7717352686736603194}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4202488289949398999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 256136996d958014895bd9f14138ed23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4202488289949141013 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5857977724659773487, guid: f8a10e508b19c9844b5baa87ae286b12, type: 3}
@@ -496,3 +509,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mmb: {fileID: 3505387542047669831}
+  hazard: {fileID: 4186778730690056737}

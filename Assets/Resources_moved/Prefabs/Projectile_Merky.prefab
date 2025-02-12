@@ -248,6 +248,9 @@ MonoBehaviour:
   gravityAccepter: {fileID: -7019585274277617807}
   groundChecker: {fileID: 2245492183899647457}
   teleportAbility: {fileID: -4868601944940776909}
+  playerAbilities:
+  - {fileID: -4868601944940776909}
+  - {fileID: 5887216383974312283}
 --- !u!114 &-4868601944940776909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,12 +462,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 547000143323158157, guid: d53754db496b2a84398bb0ba24fbc7ba, type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 6331572983030962032}
+    - target: {fileID: 547000143323158157, guid: d53754db496b2a84398bb0ba24fbc7ba, type: 3}
       propertyPath: forceLaunchAbility
       value: 
       objectReference: {fileID: 5887216383974312283}
     - target: {fileID: 5411689275469518566, guid: d53754db496b2a84398bb0ba24fbc7ba, type: 3}
       propertyPath: m_Name
       value: fireball
+      objectReference: {fileID: 0}
+    - target: {fileID: 6534753897973833818, guid: d53754db496b2a84398bb0ba24fbc7ba, type: 3}
+      propertyPath: m_Color.b
+      value: 0.40392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 6534753897973833818, guid: d53754db496b2a84398bb0ba24fbc7ba, type: 3}
+      propertyPath: m_Color.g
+      value: 0.48235294
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
