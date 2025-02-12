@@ -127,7 +127,7 @@ public class MenuManager : MonoBehaviour, ISetupable
         //populate frames
         int prevFrameCount = frames.Count;
         frames.Clear();
-        frames = FindObjectsByType<MenuFrame>(FindObjectsSortMode.None)
+        frames = FindObjectsByType<MenuFrame>(FindObjectsSortMode.InstanceID)
             .Where(mf => mf.canDelegateTaps()).ToList();
         if (prevFrameCount != frames.Count)
         {

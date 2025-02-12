@@ -154,9 +154,8 @@ public class PowerManager : MonoBehaviour
     {
         powerConduits.Clear();
         powerConduits.AddRange(
-            FindObjectsByType<GameObject>(FindObjectsSortMode.None).ToList()
-           .ConvertAll(go => go.GetComponent<IPowerConduit>())
-           .Where(ipc=>ipc!= null)
+            FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+            .OfType<IPowerConduit>()
         );
     }
 

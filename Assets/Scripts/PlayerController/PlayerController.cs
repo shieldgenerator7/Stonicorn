@@ -71,11 +71,15 @@ public class PlayerController : MonoBehaviour, ISetupable
     private TeleportAbility teleportAbility;
     public TeleportAbility Teleport => teleportAbility;
 
+    [AutoInitialize, SerializeField, HideInInspector]
+    private List<PlayerAbility> playerAbilities;
+    public List<PlayerAbility > Abilities => playerAbilities;
+
     /// <summary>
     /// Returns a list of active abilities
     /// </summary>
     public List<PlayerAbility> ActiveAbilities
-        => GetComponents<PlayerAbility>()
+        => playerAbilities
             .Where(ability => ability.enabled).ToList();
 
     public void abilityActivated(PlayerAbility ability, bool active)

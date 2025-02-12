@@ -16,7 +16,7 @@ public class DiscoverableActivator : MonoBehaviour, ISwappable
 
     private void OnCollisionEnter2D(Collision2D coll2D)
     {
-        if (coll2D.collider.isPlayerSolid() || coll2D.collider.GetComponent<PlayerPilotController>())
+        if (coll2D.collider.isPlayerSolid())
         {
             if (isSafeToCollect(coll2D.gameObject, coll2D.contacts[0].point))
             {
@@ -30,7 +30,7 @@ public class DiscoverableActivator : MonoBehaviour, ISwappable
         //early exit: it's off
         if (!mmb || !mmb.enabled || !mmb.gameObject.activeSelf) { return; }
         //processing
-        if (coll2D.isPlayerSolid() || coll2D.GetComponent<PlayerPilotController>())
+        if (coll2D.isPlayerSolid())
         {
             //if (isSafeToCollect(coll2D.gameObject, coll2D.transform.position))
             //{

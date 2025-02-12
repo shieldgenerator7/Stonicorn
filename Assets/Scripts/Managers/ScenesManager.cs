@@ -155,7 +155,8 @@ public class ScenesManager : Manager
         sceneGOs.ForEach(go => registerObjectInScene(go, scene));
         //Init the savables
         sceneGOs.ForEach(
-            go => go.GetComponents<SavableMonoBehaviour>().ToList()
+            go => go.GetComponent<SavableObjectInfo>()
+                .savables
                 .ForEach(smb => smb.init())
             );
         //Find the last state that this scene was saved in
