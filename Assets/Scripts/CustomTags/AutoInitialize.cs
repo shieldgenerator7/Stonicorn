@@ -13,4 +13,8 @@ public class AutoInitialize : Attribute
     /// The name of the variable of type GameObject that has the component you're looking for
     /// </summary>
     public string Container = null;
+    /// <summary>
+    /// If Container is defined, is it ok if the container isn't set?
+    /// </summary>
+    public bool AllowNullContainer = false;
 }

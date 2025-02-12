@@ -1431,6 +1431,22 @@ public class CustomMenu
                 if (auto.Container != null)
                 {
                     container = (GameObject)mb.GetType().GetField(auto.Container).GetValue(mb);
+                    //check if container is set
+                    if (!container)
+                    {
+                        if (auto.AllowNullContainer)
+                        {
+                            //it's ok, it's allowed to be null
+                            //just move on to the next field
+                            return;
+                        }
+                        else
+                        {
+                            Debug.LogError($"Container ({auto.Container} is null! Can't set variable {className}.{field.Name}", mb);
+                            errors++;
+                            return;
+                        }
+                    }
                 }
                 //Set the value
                 if (field.FieldType.IsList())
