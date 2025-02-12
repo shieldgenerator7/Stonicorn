@@ -201,6 +201,11 @@ MonoBehaviour:
   ghostPrefab: {fileID: 141096, guid: 63cbdda1c598bff47922999c8fdbd100, type: 3}
   defaultTelepadIndex: 0
   telepads: []
+  workingColor: {r: 1, g: 1, b: 1, a: 1}
+  notWorkingColor: {r: 1, g: 0.7929859, b: 0, a: 1}
+  particleSystemList:
+  - {fileID: 198248604462812038}
+  coll2d: {fileID: 6184978}
 --- !u!198 &198248604462812038
 ParticleSystem:
   m_ObjectHideFlags: 0

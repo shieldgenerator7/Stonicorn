@@ -19,6 +19,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public List<Transform> telepads;
     public int telepadIndex { get; private set; } = -1;//the current telepad the player is in
 
+    public Color workingColor = Color.white;
+    public Color notWorkingColor = new Color(1, 0.7929859f, 0);
     private bool inWorkingOrder = true;
     public bool InWorkingOrder
     {
@@ -26,18 +28,21 @@ public class CheckPointChecker : MemoryMonoBehaviour
         set
         {
             inWorkingOrder = value;
-            if (ghost)
+            if (cpGhostMover)
             {
                 Color color = (inWorkingOrder)
-                    ? Color.white
-                    : new Color(1, 0.7929859f, 0);
-                Utility.doForGameObjectAndChildren(
-                    ghost,
-                    go => go.GetComponent<SpriteRenderer>().color = color
-                    );
+                    ? workingColor
+                    : notWorkingColor;
+                cpGhostMover.changeColor(color);
             }
         }
     }
+
+    [AutoInitialize(SearchChildren =true),SerializeField,HideInInspector]
+    private List<ParticleSystem> particleSystemList;
+
+    [AutoInitialize, SerializeField, HideInInspector]
+    private Collider2D coll2d;
 
     // Use this for initialization
     void Start()
@@ -66,7 +71,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         if (activeCPCs.Count > 1)
         {
             //Start the particles
-            foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
+            foreach (ParticleSystem ps in particleSystemList)
             {
                 ps.Play();
             }
@@ -223,7 +228,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
             Vector2 telepadPos = checkPoint.getTelepadPosition(current);
             Vector2 foundPos = Managers.Player.Teleport
                 .findTeleportablePosition(telepadPos, telepadPos);
-            if (checkPoint.GetComponent<Collider2D>().OverlapPoint(foundPos))
+            if (checkPoint.coll2d.OverlapPoint(foundPos))
             {
                 return foundPos;
             }

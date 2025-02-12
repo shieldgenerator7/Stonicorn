@@ -31,6 +31,8 @@ public class CheckPointGhostMover : MonoBehaviour
     [AutoInitialize, SerializeField, HideInInspector]
     private SpriteRenderer sr;
     public SpriteRenderer SpriteRenderer => sr;
+    [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
+    private List<SpriteRenderer> srList;
     [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
@@ -213,5 +215,10 @@ public class CheckPointGhostMover : MonoBehaviour
     public bool Overlaps(Vector2 point)
     {
         return coll2d.OverlapPoint(point);
+    }
+
+    public void changeColor(Color color)
+    {
+        srList.ForEach(sr => sr.color = color);
     }
 }
