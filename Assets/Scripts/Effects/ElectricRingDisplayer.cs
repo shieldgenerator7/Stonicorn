@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class ElectricRingDisplayer : MonoBehaviour
+public class ElectricRingDisplayer : MonoBehaviour, ISetupable
 {
     [Header("Settings")]
     public float pointSpacing = 1;//distance between two points
@@ -74,5 +74,24 @@ public class ElectricRingDisplayer : MonoBehaviour
             spline.InsertPointAt(0, placer);
             placer = Utility.RotateZ(placer, angleSpacing);
         }
+    }
+
+    public int checkForErrors()
+    {
+        int errors = 0;
+        if (!gameObject.isPrefab())
+        {
+            if (electricBeamAbility == null)
+            {
+                Debug.LogError("ElectricRingDisplayer needs an EelectricBeamAbility!", this);
+                errors++;
+            }
+        }
+        return errors;
+    }
+
+    public int setup()
+    {
+        return 0;
     }
 }
