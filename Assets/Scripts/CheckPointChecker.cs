@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CheckPointChecker : MemoryMonoBehaviour
 {
@@ -256,7 +257,9 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public string grabCheckPointCameraData()//2016-12-06: grabs image data from the camera designated for checkpoints
     {
         //initialize camera
-        Camera checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();
+        Camera checkpointCamera = FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(cam=>cam.gameObject.name == "CP BG Camera")
+            .FirstOrDefault();
         checkpointCamera.gameObject.SetActive(true);
 
         checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0, 0, -10);
