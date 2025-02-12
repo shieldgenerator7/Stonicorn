@@ -1430,7 +1430,21 @@ public class CustomMenu
                 GameObject container = mb.gameObject;
                 if (auto.Container != null)
                 {
-                    container = (GameObject)mb.GetType().GetField(auto.Container).GetValue(mb);
+                    object contobj = mb.GetType().GetField(auto.Container).GetValue(mb);
+
+                    //check type of object to get gameobject
+                    if (contobj != null)
+                    {
+                        if (contobj is Transform)
+                        {
+                            container = ((Transform) contobj).gameObject;
+                        }
+                        else if (contobj is GameObject)
+                        {
+                            container = (GameObject)contobj;
+                        }
+                    }
+
                     //check if container is set
                     if (!container)
                     {
