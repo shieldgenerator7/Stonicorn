@@ -10,7 +10,7 @@ public class AutoInitialize : Attribute
     public bool SearchScene = false;
     public bool AllowUnfound = false;
     /// <summary>
-    /// The name of the variable of type GameObject or Transform that has the component you're looking for
+    /// The name of the variable of type GameObject, Transform, Component that has the component you're looking for
     /// </summary>
     public string Container = null;
     /// <summary>

@@ -1431,18 +1431,38 @@ public class CustomMenu
                 GameObject container = mb.gameObject;
                 if (auto.Container != null)
                 {
-                    object contobj = mb.GetType().GetField(auto.Container).GetValue(mb);
+                    container = null;
+                    FieldInfo containerField = mb.GetType().GetField(auto.Container);
+                    object contobj = containerField.GetValue(mb);
 
                     //check type of object to get gameobject
                     if (contobj != null)
                     {
-                        if (contobj is Transform)
+                        if (containerField.FieldType == typeof(Transform))
                         {
-                            container = ((Transform) contobj).gameObject;
+                            try
+                            {
+                                container = ((Transform)contobj)?.gameObject;
+                            }
+                            catch (Exception)
+                            {
+                                container = null;
+                            }
                         }
-                        else if (contobj is GameObject)
+                        else if (containerField.FieldType == typeof(GameObject))
                         {
                             container = (GameObject)contobj;
+                        }
+                        else if (containerField.FieldType.IsSubclassOf(typeof(Component)))
+                        {
+                            try
+                            {
+                                container = ((Component)contobj)?.gameObject;
+                            }
+                            catch (Exception)
+                            {
+                                container = null;
+                            }
                         }
                     }
 
