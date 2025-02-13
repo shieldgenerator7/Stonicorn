@@ -1381,6 +1381,7 @@ public class CustomMenu
     {
         Type TYPE_MONOBEHAVIOUR = typeof(MonoBehaviour);
         const string NULL_STRING = "null";
+        BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
         string className = mb.GetType().Name;
         bool isPrefab = mb.gameObject.scene.buildIndex < 0;
@@ -1390,12 +1391,15 @@ public class CustomMenu
 
         Type classInfo = mb.GetType();
         List<FieldInfo> fields = new List<FieldInfo>();
+        List<MethodInfo> methods = new List<MethodInfo>();
         while (classInfo != TYPE_MONOBEHAVIOUR)
         {
-            fields.AddRange(classInfo.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
+            fields.AddRange(classInfo.GetFields(bindingFlags));
+            methods.AddRange(classInfo.GetMethods(bindingFlags));
             classInfo = classInfo.BaseType;
         }
 
+        //AutoInitialize Fields
         fields
             .Where(field => field.GetCustomAttribute<AutoInitialize>() != null)
             .Where(field =>
@@ -1590,6 +1594,42 @@ public class CustomMenu
                     Debug.LogError($"Cannot AutoInitialize field because it is not a Component! obj: {mb.name}, Field: {mb.name}: {className}.{field.Name}:{field.FieldType.Name}", mb);
                     errors++;
                     return;
+                }
+            });
+
+        //Initializer Methods
+        methods
+            .Where(method => method.GetCustomAttribute<Initializer>()!= null
+    )
+            .ToList()
+            .ForEach(method =>
+            {
+                Initializer init = method.GetCustomAttribute<Initializer>();
+                FieldInfo field = mb.GetType().GetField(init.name,bindingFlags);
+
+                //error checking
+                if (field == null)
+                {
+                    Debug.LogError($"Can't find field of name {init.name}! class: {className}",mb);
+                    errors++;
+                    return;
+                }
+                Type fieldType = field.FieldType;
+                if (!(fieldType == method.ReturnType || method.ReturnType.IsSubclassOf(fieldType)))
+                {
+                    Debug.LogError($"Can't init field bc its wrong type! class: {className}, method return type: {method.ReturnType}, field type: {fieldType}", mb);
+                    errors++;
+                    return;
+                }
+
+                //processing
+                object value = field.GetValue(mb);
+                object result = method.Invoke(mb,null);
+                if (value != result)
+                {
+                    field.SetValue (mb, result);
+                    Debug.LogWarning($"Initialized variable using {className}.{method.Name}: {field.Name}:{fieldType} = {value} -> {result}. go: {mb.gameObject.name}", mb);
+                    changes++;
                 }
             });
 
