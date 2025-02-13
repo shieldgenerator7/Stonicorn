@@ -283,7 +283,11 @@ public static class Utility
         }
         else
         {
-            Collider2D coll2d = go.GetComponent<Collider2D>();
+            Collider2D coll2d =
+                go.GetComponents<Collider2D>()
+                    .Where(coll2d=>!coll2d.isTrigger)
+                    .FirstOrDefault() 
+                ?? go.GetComponent<Collider2D>();
             if (coll2d)
             {
                 b = coll2d.bounds;

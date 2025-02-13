@@ -611,13 +611,11 @@ public class PlayerController : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+
+    //Estimate the halfWidth
     [Initializer("_halfWidth")]
-    private float init__halfWidth()
-    {
-        //Estimate the halfWidth
-        Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
-        return (extents.x + extents.y) / 2;
-    }
+    private float init__halfWidth => gameObject.getSize().magnitude / 2;
+
 #endif
 }
 
