@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistanceYTimer : Timer, ISetupable
+public class DistanceYTimer : Timer
 {
     [Header("Distance Timer Settings")]
     public Transform timerObject;
@@ -67,17 +67,8 @@ public class DistanceYTimer : Timer, ISetupable
         }
     }
 
-    public int setup()
-    {
-        int changeCount = 0;
-        if (timerObject)
-        {
-            if (origPos != (Vector2)timerObject.position)
-            {
-                origPos = timerObject.position;
-                changeCount++;
-            }
-        }
-        return changeCount;
-    }
+    [Initializer("origPos")]
+    public Vector2 initOrigPos()
+        => (timerObject) ? timerObject.position : Vector2.zero;
+
 }

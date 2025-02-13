@@ -67,6 +67,7 @@ public class Fader : MonoBehaviour, ISetupable
         if (!presetup)
         {
             setup();
+            isEffectOnly= initIsEffectOnly();
         }
     }
 
@@ -145,6 +146,12 @@ public class Fader : MonoBehaviour, ISetupable
     public delegate void OnFadeFinished();
     public event OnFadeFinished onFadeFinished;
 
+
+    //It's an effect if there are no savable components on the game object
+    [Initializer("isEffectOnly")]
+    private bool initIsEffectOnly()
+        => !gameObject.isSavable();
+
     public int setup()
     {
         int changeCount = 0;
@@ -162,14 +169,6 @@ public class Fader : MonoBehaviour, ISetupable
         srs.RemoveAll(sr => sr == null);
         if (srs.Count != prevcount)
         {
-            changeCount++;
-        }
-
-        //It's an effect if there are no savable components on the game object
-        bool isSavable = gameObject.isSavable();
-        if (isEffectOnly == isSavable)
-        {
-            isEffectOnly = !isSavable;
             changeCount++;
         }
 

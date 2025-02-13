@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Managers : MonoBehaviour, ISetupable
+public class Managers : MonoBehaviour
 {
     //
     // Game Data
@@ -224,20 +224,9 @@ public class Managers : MonoBehaviour, ISetupable
     }
 
 #if UNITY_EDITOR
-    public int setup()
-    {
-        int changeCount = 0;
 
-        //Populate specific managers
-        bool isPrefab = gameObject.scene.buildIndex < 0;
-        if (!playerController && !isPrefab)
-        {
-            playerController = FindObjectsByType<PlayerController>(FindObjectsSortMode.None).First(pc => pc.gameObject.CompareTag("Player"));
-            Debug.LogWarning($"Managers.setup(): isPrefab? {isPrefab}, set playerController: {playerController}");
-            changeCount++;
-        }
-
-        return changeCount;
-    }
+    [Initializer]
+    private PlayerController init_playerController
+        => FindObjectsByType<PlayerController>(FindObjectsSortMode.None).FirstOrDefault(pc => pc.gameObject.CompareTag("Player"));
 #endif
 }

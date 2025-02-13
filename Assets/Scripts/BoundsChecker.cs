@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BoundsChecker : MonoBehaviour, ISetupable
+public class BoundsChecker : MonoBehaviour
 {
 
     public Vector3 resetPoint = Vector3.zero;
@@ -37,17 +37,7 @@ public class BoundsChecker : MonoBehaviour, ISetupable
         }
     }
 
-    public int setup()
-    {
-        int changeCount = 0;
-        if (resetPoint == Vector3.zero)
-        {
-            resetPoint = gameObject.getCollectiveColliderCenter();
-            if (resetPoint != Vector3.zero)
-            {
-                changeCount++;
-            }
-        }
-        return changeCount;
-    }
+    [Initializer("resetPoint")]
+    public Vector3 initResetPoint()
+        => gameObject.getCollectiveColliderCenter();
 }

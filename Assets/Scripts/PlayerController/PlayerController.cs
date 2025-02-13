@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Controls Merky's teleport ability and other abilities
 /// </summary>
-public class PlayerController : MonoBehaviour, ISetupable
+public class PlayerController : MonoBehaviour
 {
     //
     //Settings
@@ -611,19 +611,12 @@ public class PlayerController : MonoBehaviour, ISetupable
     }
 
 #if UNITY_EDITOR
-    public int setup()
+    [Initializer("_halfWidth")]
+    private float init__halfWidth()
     {
-        int changes = 0;
-
         //Estimate the halfWidth
-        if (_halfWidth == 0)
-        {
-            Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
-            _halfWidth = (extents.x + extents.y) / 2;
-            changes++;
-        }
-
-        return changes;
+        Vector3 extents = GetComponent<SpriteRenderer>().bounds.extents;
+        return (extents.x + extents.y) / 2;
     }
 #endif
 }

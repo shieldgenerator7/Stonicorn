@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoweredScrollEffect : MonoBehaviour, ISetupable
+public class PoweredScrollEffect : MonoBehaviour
 {
     public float scrollSpeed = 3;
 
@@ -42,20 +42,12 @@ public class PoweredScrollEffect : MonoBehaviour, ISetupable
         }
     }
 
-    public int setup()
-    {
-        int changeCount = 0;
-        //set heights
-        if (parentHeight == 0)
-        {
-            parentHeight = transform.parent.GetComponent<RectTransform>().sizeDelta.y;
-            changeCount++;            
-        }
-        if (selfHeight == 0)
-        {
-            selfHeight = rectTransform.sizeDelta.y;
-            changeCount++;
-        }
-        return changeCount;
-    }
+
+    [Initializer("parentHeight")]
+    private float initParentHeight()
+        => transform.parent.GetComponent<RectTransform>().sizeDelta.y;
+
+    [Initializer("selfHeight")]
+    private float initSelfHeight()
+       => rectTransform.sizeDelta.y;
 }

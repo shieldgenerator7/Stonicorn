@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GravityZone : MonoBehaviour, ISetupable
+public class GravityZone : MonoBehaviour
 {
     public float gravityScale = 9.81f;
     public bool mainGravityZone = true;//true to change camera angle, false to not
@@ -117,14 +117,7 @@ public class GravityZone : MonoBehaviour, ISetupable
                 gz => gz.mainGravityZone && gz.coll2d.OverlapPoint(pos)
             );
 
-    public int setup()
-    {
-        int changeCount = 0;
-        if (gravityVector == Vector2.zero)
-        {
-            gravityVector = -transform.up.normalized * gravityScale;
-            changeCount++;
-        }
-        return changeCount;
-    }
+    [Initializer]
+    private Vector2 init_gravityVector => -transform.up.normalized * gravityScale;
+
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElectricFieldController : SavableMonoBehaviour, IBlastable, ISetupable
+public class ElectricFieldController : SavableMonoBehaviour, IBlastable
 {//2018-01-07: copied from ShieldBubbleController
     public float range = 3;//how big the shield is
 
@@ -134,18 +134,6 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable, ISetupa
         Managers.Object.destroyObject(gameObject);
     }
 
-    public int setup()
-    {
-        int changeCount = 0;
-
-        Color color = sr.color;
-        color.a = 1;
-        if (effectColor != color)
-        {
-            effectColor = color;
-            changeCount++;
-        }
-
-        return changeCount;
-    }
+    [Initializer]
+    private Color init_effectColor => sr.color.adjustAlpha(1);
 }
