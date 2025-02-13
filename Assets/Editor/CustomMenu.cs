@@ -1608,7 +1608,12 @@ public class CustomMenu
             .ForEach(method =>
             {
                 Initializer init = method.GetCustomAttribute<Initializer>();
-                FieldInfo field = mb.GetType().GetField(init.name,bindingFlags);
+                string fieldName = init.name
+                    //get field name from method name.
+                    //assumes method name like "init_gravityVector",
+                    //where "gravityVector" is the field name
+                    ?? method.Name.Split('_')[1];
+                FieldInfo field = mb.GetType().GetField(fieldName, bindingFlags);
 
                 //error checking
                 if (field == null)
@@ -1664,7 +1669,6 @@ public class CustomMenu
             .ForEach(property =>
             {
                 Initializer init = property.GetCustomAttribute<Initializer>();
-                Debug.Log($"prop name {property.Name}");
                 string fieldName = init.name
                     //get field name from property name.
                     //assumes proprety name like "init_gravityVector",
