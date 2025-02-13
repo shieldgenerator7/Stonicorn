@@ -1412,12 +1412,16 @@ public class CustomMenu
             .ToList()
             .ForEach(field =>
             {
+                //Check to make sure it is not an interface
+                if (field.FieldType.IsInterface)
+                {
+                    Debug.LogError($"Field({className}.{field.Name}) is an interface. Unfortunately, Unity does not support serializing interfaces. Thus they also can't be auto-initialized", mb);
+                    errors++;
+                    return;
+                }
 
                 //Check to make sure it is public (or private with SerializeField)
-                if (!(field.IsPublic || 
-                (field.FieldType.IsClass && field.GetCustomAttribute<SerializeField>() != null) ||
-                (field.FieldType.IsInterface && field.GetCustomAttribute<SerializeReference>() != null)
-                ))
+                if (!(field.IsPublic || field.GetCustomAttribute<SerializeField>() != null))
                 {
                     Debug.LogError($"Field ({className}.{field.Name}) has AutoInitialize tag but is not public! It needs to be public or have the SerializeField tag", mb);
                     errors++;
@@ -1539,7 +1543,7 @@ public class CustomMenu
                         return;
                     }
                 }
-                else if (field.FieldType.IsSubclassOf(typeof(Component)) || field.FieldType.IsInterface)
+                else if (field.FieldType.IsSubclassOf(typeof(Component)))
                 {
                     Component component = container.GetComponent(field.FieldType);
                     if (!component)
