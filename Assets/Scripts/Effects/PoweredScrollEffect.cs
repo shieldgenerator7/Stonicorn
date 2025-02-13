@@ -14,15 +14,13 @@ public class PoweredScrollEffect : MonoBehaviour, ISetupable
     [AutoInitialize, SerializeField, HideInInspector]
     private RectTransform rectTransform;
 
+    [AutoInitialize(SearchParent =true), SerializeReference]
+    public IPowerConduit conduit;
+
     // Start is called before the first frame update
     void Start()
     {
         //register delegate
-        IPowerConduit conduit = GetComponent<IPowerConduit>();
-        if (conduit == null)
-        {
-            conduit = GetComponentInParent<IPowerConduit>();
-        }
         conduit.OnPowerFlowed += onPowerFlowed;
         //set position
         resetPosition();
