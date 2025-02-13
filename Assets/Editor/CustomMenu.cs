@@ -1621,6 +1621,13 @@ public class CustomMenu
                     errors++;
                     return;
                 }
+                //is field savable?
+                if (!(field.IsPublic || field.GetCustomAttribute<SerializeField>() != null))
+                {
+                    Debug.LogError($"Field ({className}.{field.Name}) cannot be set by Initializer because it is not public! It needs to be public or have the SerializeField tag", mb);
+                    errors++;
+                    return;
+                }
 
                 //processing
                 object value = field.GetValue(mb);
