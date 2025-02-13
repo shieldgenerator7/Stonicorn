@@ -1603,6 +1603,7 @@ public class CustomMenu
         methods
             .Where(method => method.GetCustomAttribute<Initializer>()!= null
     )
+            .OrderBy(property => property.GetCustomAttribute<Initializer>().order)
             .ToList()
             .ForEach(method =>
             {
@@ -1658,6 +1659,7 @@ public class CustomMenu
         //Initializer Properties
         properties
             .Where(property => property.GetCustomAttribute<Initializer>() != null)
+            .OrderBy(property=> property.GetCustomAttribute<Initializer>().order)
             .ToList()
             .ForEach(property =>
             {
