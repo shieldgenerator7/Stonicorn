@@ -61,6 +61,10 @@ PrefabInstance:
       value: 0.48235294
       objectReference: {fileID: 0}
     - target: {fileID: 6064390498224962749, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: coll2d
+      value: 
+      objectReference: {fileID: 3993641043428710848}
+    - target: {fileID: 6064390498224962749, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: characters.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -573,6 +577,11 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6197305010752437228, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
   m_PrefabInstance: {fileID: 8947796107813092651}
   m_PrefabAsset: {fileID: 0}
+--- !u!58 &3993641043428710848 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 5422534585268266219, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 8947796107813092651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &4610818854303828598 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 4886439090245236573, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
@@ -698,5 +707,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  coll2d: {fileID: 572332061816238524}
   variableSetAction: {fileID: 6736249712589552563}
   triggerLeaveAction: {fileID: 0}

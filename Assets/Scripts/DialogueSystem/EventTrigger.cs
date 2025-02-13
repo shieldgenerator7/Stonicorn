@@ -15,6 +15,7 @@ public abstract class EventTrigger : MonoBehaviour, ISetupable
 
     public bool HasTitle => !string.IsNullOrWhiteSpace(title);
 
+    [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
     // Start is called before the first frame update
