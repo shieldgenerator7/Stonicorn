@@ -1615,6 +1615,16 @@ public class CustomMenu
                     ?? method.Name.Split('_')[1];
                 FieldInfo field = mb.GetType().GetField(fieldName, bindingFlags);
 
+                if (field == null)
+                {
+                    Type type = mb.GetType();
+                    while(type != TYPE_MONOBEHAVIOUR && field == null)
+                    {
+                        field = type.GetField(fieldName, bindingFlags);
+                        type=type.BaseType;
+                    }
+                }
+
                 //error checking
                 if (field == null)
                 {
@@ -1675,6 +1685,16 @@ public class CustomMenu
                     //where "gravityVector" is the field name
                     ?? property.Name.Split('_')[1];
                 FieldInfo field = mb.GetType().GetField(fieldName, bindingFlags);
+
+                if (field == null)
+                {
+                    Type type = mb.GetType();
+                    while (type != TYPE_MONOBEHAVIOUR && field == null)
+                    {
+                        field = type.GetField(fieldName, bindingFlags);
+                        type = type.BaseType;
+                    }
+                }
 
                 //error checking
                 if (field == null)
