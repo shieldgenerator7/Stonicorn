@@ -600,11 +600,20 @@ public static class Utility
     {
         if (a == null && b == null) { return true; }
         if (a == null || b == null) { return false; }
-        if (a.GetType() != b.GetType()) { return false; }
+        Type atype = a.GetType();
+        Type btype = b.GetType();
+        if (!(atype==btype || atype.IsSubclassOf(btype) || btype.IsSubclassOf(atype))) { return false; }
 
-        if (a.GetType().Equals(typeof(float)))
+        //float
+        if (atype.Equals(typeof(float)))
         {
             return (float)a == (float)b;
+        }
+
+        //Vector2
+        if (atype.Equals(typeof(Vector2)))
+        {
+            return (Vector2)a == (Vector2)b;
         }
 
         //TODO: fill this out with more types

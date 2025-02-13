@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AfterWind : SavableMonoBehaviour, ICuttable, ISetupable
+public class AfterWind : SavableMonoBehaviour, ICuttable
 {//2018-01-25: copied from GravityZone
 
     public Vector2 windVector;//direction
@@ -79,17 +79,8 @@ public class AfterWind : SavableMonoBehaviour, ICuttable, ISetupable
     }
 
 #if UNITY_EDITOR
-    public int setup()
-    {
-        int changes = 0;
-
-        if (windVector == Vector2.zero)
-        {
-            init();
-            changes++;
-        }
-
-        return changes;
-    }
+    [Initializer("windVector")]
+    private Vector2 initWindVector()
+        => transform.up;
 #endif
 }
