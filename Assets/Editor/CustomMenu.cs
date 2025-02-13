@@ -1625,7 +1625,7 @@ public class CustomMenu
                 //processing
                 object value = field.GetValue(mb);
                 object result = method.Invoke(mb,null);
-                if (!Utility.equals(value,result))
+                if (!object.Equals(value,result))
                 {
                     field.SetValue (mb, result);
                     Debug.LogWarning($"Initialized variable using {className}.{method.Name}: {field.Name}:{fieldType} = {value} -> {result}. go: {mb.gameObject.name}", mb);

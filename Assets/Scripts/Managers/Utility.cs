@@ -596,30 +596,6 @@ public static class Utility
     public static bool isPrefab(this GameObject go)
         => go.scene.buildIndex < 0;
 
-    public static bool equals(object a, object b)
-    {
-        if (a == null && b == null) { return true; }
-        if (a == null || b == null) { return false; }
-        Type atype = a.GetType();
-        Type btype = b.GetType();
-        if (!(atype==btype || atype.IsSubclassOf(btype) || btype.IsSubclassOf(atype))) { return false; }
-
-        //float
-        if (atype.Equals(typeof(float)))
-        {
-            return (float)a == (float)b;
-        }
-
-        //Vector2
-        if (atype.Equals(typeof(Vector2)))
-        {
-            return (Vector2)a == (Vector2)b;
-        }
-
-        //TODO: fill this out with more types
-
-        return a == b;
-    }
 
 
 
