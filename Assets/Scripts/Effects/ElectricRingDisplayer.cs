@@ -9,7 +9,7 @@ public class ElectricRingDisplayer : MonoBehaviour, ISetupable
     public float pointSpacing = 1;//distance between two points
     public float rangeOffset = -0.2f;
 
-    [SerializeField,HideInInspector]
+    [AutoInitialize, SerializeField,HideInInspector]
     private SpriteShapeController ssc;
     [SerializeField]
     private ElectricBeamAbility electricBeamAbility;
