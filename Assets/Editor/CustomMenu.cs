@@ -1634,6 +1634,19 @@ public class CustomMenu
                 //processing
                 object value = field.GetValue(mb);
                 object result = method.Invoke(mb,null);
+                //Check to make sure it's in the same scene, if applicable
+                if (result != null && result.GetType().IsSubclassOf(typeof(Component)))
+                {
+                    Scene scene = mb.gameObject.scene;
+                    Scene sceneResult = ((Component)result).gameObject.scene;
+                    if (scene != sceneResult)
+                    {
+                        //if not same scene, set to null
+                        //(this can happen when prefab searches for object and finds one in an open scene)
+                        result = null;
+                    }
+                }
+                //
                 if (!object.Equals(value,result))
                 {
                     field.SetValue (mb, result);
@@ -1682,6 +1695,19 @@ public class CustomMenu
                 //processing
                 object value = field.GetValue(mb);
                 object result = property.GetValue(mb, null);
+                //Check to make sure it's in the same scene, if applicable
+                if (result != null && result.GetType().IsSubclassOf(typeof(Component)))
+                {
+                    Scene scene = mb.gameObject.scene;
+                    Scene sceneResult = ((Component)result).gameObject.scene;
+                    if (scene != sceneResult)
+                    {
+                        //if not same scene, set to null
+                        //(this can happen when prefab searches for object and finds one in an open scene)
+                        result = null;
+                    }
+                }
+                //
                 if (!object.Equals(value, result))
                 {
                     field.SetValue(mb, result);
