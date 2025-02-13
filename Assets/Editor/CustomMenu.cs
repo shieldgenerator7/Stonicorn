@@ -1392,10 +1392,12 @@ public class CustomMenu
         Type classInfo = mb.GetType();
         List<FieldInfo> fields = new List<FieldInfo>();
         List<MethodInfo> methods = new List<MethodInfo>();
+        List<PropertyInfo> properties = new List<PropertyInfo>();
         while (classInfo != TYPE_MONOBEHAVIOUR)
         {
             fields.AddRange(classInfo.GetFields(bindingFlags));
             methods.AddRange(classInfo.GetMethods(bindingFlags));
+            properties.AddRange(classInfo.GetProperties(bindingFlags));
             classInfo = classInfo.BaseType;
         }
 
@@ -1636,6 +1638,54 @@ public class CustomMenu
                 {
                     field.SetValue (mb, result);
                     Debug.LogWarning($"Initialized variable using {className}.{method.Name}: {field.Name}:{fieldType} = {value} -> {result}. go: {mb.gameObject.name}", mb);
+                    changes++;
+                }
+            });
+
+        //Initializer Properties
+        properties
+            .Where(property => property.GetCustomAttribute<Initializer>() != null)
+            .ToList()
+            .ForEach(property =>
+            {
+                Initializer init = property.GetCustomAttribute<Initializer>();
+                Debug.Log($"prop name {property.Name}");
+                string fieldName = init.name
+                    //get field name from property name.
+                    //assumes proprety name like "init_gravityVector",
+                    //where "gravityVector" is the field name
+                    ?? property.Name.Split('_')[1];
+                FieldInfo field = mb.GetType().GetField(fieldName, bindingFlags);
+
+                //error checking
+                if (field == null)
+                {
+                    Debug.LogError($"Can't find field of name {init.name}! class: {className}", mb);
+                    errors++;
+                    return;
+                }
+                Type fieldType = field.FieldType;
+                if (!(fieldType == property.PropertyType || property.PropertyType.IsSubclassOf(fieldType)))
+                {
+                    Debug.LogError($"Can't init field bc its wrong type! class: {className}, method return type: {property.PropertyType}, field type: {fieldType}", mb);
+                    errors++;
+                    return;
+                }
+                //is field savable?
+                if (!(field.IsPublic || field.GetCustomAttribute<SerializeField>() != null))
+                {
+                    Debug.LogError($"Field ({className}.{field.Name}) cannot be set by Initializer because it is not public! It needs to be public or have the SerializeField tag", mb);
+                    errors++;
+                    return;
+                }
+
+                //processing
+                object value = field.GetValue(mb);
+                object result = property.GetValue(mb, null);
+                if (!object.Equals(value, result))
+                {
+                    field.SetValue(mb, result);
+                    Debug.LogWarning($"Initialized variable using {className}.{property.Name}: {field.Name}:{fieldType} = {value} -> {result}. go: {mb.gameObject.name}", mb);
                     changes++;
                 }
             });
