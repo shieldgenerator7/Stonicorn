@@ -596,6 +596,22 @@ public static class Utility
     public static bool isPrefab(this GameObject go)
         => go.scene.buildIndex < 0;
 
+    public static bool equals(object a, object b)
+    {
+        if (a == null && b == null) { return true; }
+        if (a == null || b == null) { return false; }
+        if (a.GetType() != b.GetType()) { return false; }
+
+        if (a.GetType().Equals(typeof(float)))
+        {
+            return (float)a == (float)b;
+        }
+
+        //TODO: fill this out with more types
+
+        return a == b;
+    }
+
 
 
     public class RaycastAnswer
