@@ -34,12 +34,13 @@ public class PowerManager : MonoBehaviour, ISetupable
     {
         //Reset all power wires
         powerConduits
-              .FindAll(ipc => ipc is PowerWire)
-              .ConvertAll(ipc => (PowerWire)ipc)
+              .Where(ipc => ipc is PowerWire)
+              .Cast<PowerWire>().ToList()
               .ForEach(pw => pw.reset());
         //Process powerables with no power
-        noPowerPowerables.ForEach(pwr => {
-            if (pwr.GameObject == electricBeamAbility.Target) { return; }
+        noPowerPowerables
+            .Where(pwr => pwr != electricBeamAbility.Target).ToList()
+            .ForEach(pwr => {
             pwr.acceptPower(0);
         });
         //Have powerers dish out their power
