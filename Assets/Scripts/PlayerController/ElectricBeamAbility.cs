@@ -286,7 +286,7 @@ public class ElectricBeamAbility : PlayerAbility
     {
         get => base.CurrentState.more(
             "activated", activated,
-            "targetId", targetPowerable.GameObject.getKey(),
+            "targetId", targetId,
             "charge", charge
             );
         set
