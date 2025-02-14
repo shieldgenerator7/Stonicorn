@@ -364,6 +364,17 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 5885864787867320767, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
   m_PrefabInstance: {fileID: 5218943540640224134}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2215083101039079910 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6255754041063219808, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
+  m_PrefabInstance: {fileID: 5218943540640224134}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6261100641845864174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6261100641845864174 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2201851902467994984, guid: b2d9d2099ded4244cb69fd3b91dc9dbe, type: 3}
@@ -434,6 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c881664a3ae6c5e4690d0bcab81fb7e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 2215083101039079910}
   destroyDelay: 1
   minForceThreshold: 700
   maxForceThreshold: 700

@@ -4818,6 +4818,7 @@ GameObject:
   - component: {fileID: 60941321775251656}
   - component: {fileID: 61445903594457412}
   - component: {fileID: 114804689931073530}
+  - component: {fileID: 2657116941397309652}
   m_Layer: 0
   m_Name: Enemy_CrystalBeetle
   m_TagString: Untagged
@@ -5075,11 +5076,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 2657116941397309652}
   usesSideVector: 0
   saveValues: 1
   gravityScale: 1
   acceptsGravity: 1
   rb2d: {fileID: 50579635140963704}
+--- !u!114 &2657116941397309652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281986865519288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  prefabAddress:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  spawnStateId: -1
+  destroyStateId: 2147483647
+  rb2d: {fileID: 50579635140963704}
+  savables:
+  - {fileID: 114804689931073530}
 --- !u!1 &1305512690581342
 GameObject:
   m_ObjectHideFlags: 0

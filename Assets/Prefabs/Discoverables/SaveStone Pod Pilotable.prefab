@@ -571,6 +571,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7382761555085351764}
   m_SourcePrefab: {fileID: 100100000, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+--- !u!114 &1963908550192490114 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6078120289835900274, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
+  m_PrefabInstance: {fileID: 5699558596624268272}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5701054934826806084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!331 &3871867845774498992 stripped
 SpriteMask:
   m_CorrespondingSourceObject: {fileID: 8836982838331270976, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
@@ -663,6 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133a0fa65996aab42b3cedf42663522e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 1963908550192490114}
   teleportRangeSegment: {fileID: 0}
   soundEffect: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
   addsOnTeleportSoundEffect: 1
@@ -770,6 +782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 1963908550192490114}
   usesSideVector: 0
   saveValues: 0
   gravityScale: 0
@@ -787,6 +800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d277e46ec8930334dbe52a86dc8fa717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 1963908550192490114}
   groundTestDistance: 0.25
   coll2d: {fileID: 8131238938922093249}
   Gravity: {fileID: 1346122948243000570}
@@ -802,6 +816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8732a31c895400c44bf10507a1ce9521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 1963908550192490114}
   maxEnergyPerSecond: 25
   coll2d: {fileID: 8131238938922093249}
 --- !u!114 &7382761555085351764

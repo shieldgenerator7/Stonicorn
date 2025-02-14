@@ -5003,6 +5003,7 @@ GameObject:
   - component: {fileID: 60724201114969290}
   - component: {fileID: 61258214649711694}
   - component: {fileID: 114034568566402158}
+  - component: {fileID: -8454040342237778799}
   m_Layer: 0
   m_Name: enemy_diamondshell
   m_TagString: Untagged
@@ -5239,11 +5240,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: -8454040342237778799}
   usesSideVector: 0
   saveValues: 1
   gravityScale: 1
   acceptsGravity: 1
   rb2d: {fileID: 50296816695870928}
+--- !u!114 &-8454040342237778799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173338696982238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  prefabAddress:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  spawnStateId: -1
+  destroyStateId: 2147483647
+  rb2d: {fileID: 50296816695870928}
+  savables:
+  - {fileID: 114034568566402158}
 --- !u!1 &1507965442913440
 GameObject:
   m_ObjectHideFlags: 0
