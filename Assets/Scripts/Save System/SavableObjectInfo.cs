@@ -117,10 +117,13 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         SerializedObject so = new SerializedObject(this);
         List<string> revertList = new List<string>()
         {
-            //"id",
             "spawnStateId",
             "destroyStateId",
         };
+        if (gameObject.isPrefab())
+        {
+            revertList.Add("id");
+        }
         revertList.ForEach(revert =>
         {
             SerializedProperty property = so.FindProperty(revert);
@@ -160,8 +163,8 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         }
         //TODO: investigate why unity auto-setting this isnt working anymore
         AssetReference assetRef = new AssetReference(guid);
-        if (assetRef != null && assetRef.IsValid()){//!string.IsNullOrEmpty(assetRef.AssetGUID)) {
-        if (prefabAddress != assetRef)
+        if (assetRef != null && !string.IsNullOrEmpty(assetRef.AssetGUID)) {
+        if (prefabAddress.AssetGUID != assetRef.AssetGUID)
         {
             prefabAddress = assetRef;
                 Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: prefabAddress updated: {assetRef}", this);
