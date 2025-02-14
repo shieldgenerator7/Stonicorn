@@ -83,7 +83,7 @@ public class RewindManager : Manager
     {
         //Create a new game state
         GameState gameState = new GameState(
-                data.gameObjects.Values.ToList()
+                data.savables.Values.ToList()
             );
         if (gameState.Merky == null)
         {
@@ -138,18 +138,18 @@ public class RewindManager : Manager
     /// </summary>
     /// <param name="goList"></param>
     /// <param name="lastStateSeen"></param>
-    public void LoadObjects(List<GameObject> goList, int lastStateSeen)
+    public void LoadObjects(List<SavableObjectInfo> goList, int lastStateSeen)
     {
-        foreach (GameObject go in goList)
+        foreach (SavableObjectInfo soi in goList)
         {
-            int key = go.getKey();
+            int key = soi.Id;
             //Search through the game states to see when it was last saved
             for (int stateid = lastStateSeen; stateid >= 0; stateid--)
             {
                 //If the game object was last saved in this game state,
                 if (data.gameStates[stateid].hasGameObject(key))
                 {
-                    data.gameStates[stateid].loadObject(go);
+                    data.gameStates[stateid].loadObject(soi);
                     //Great! It's loaded,
                     //Let's move onto the next object
                     break;
@@ -164,7 +164,7 @@ public class RewindManager : Manager
         }
     }
 
-    public void LoadSceneObjects(List<GameObject> sceneGOs, List<int> foreignIds, int lastStateSeen)
+    public void LoadSceneObjects(List<SavableObjectInfo> sceneGOs, List<int> foreignIds, int lastStateSeen)
     {
         lastStateSeen = Mathf.Min(lastStateSeen, GameStateId);
         //If this scene has been open before,
@@ -178,14 +178,14 @@ public class RewindManager : Manager
         }
     }
 
-    public void LoadObjectAndChildren(GameObject go, int lastStateSeen)
+    public void LoadObjectAndChildren(SavableObjectInfo soi, int lastStateSeen)
     {
-        LoadObject(go, lastStateSeen);
-        foreach (Transform t in go.transform)
+        LoadObject(soi, lastStateSeen);
+        foreach (Transform t in soi.gameObject.transform)
         {
             if (t.gameObject.isSavable())
             {
-                LoadObject(t.gameObject, lastStateSeen);
+                LoadObject(t.gameObject.GetComponent<SavableObjectInfo>(), lastStateSeen);
             }
         }
     }
@@ -196,20 +196,20 @@ public class RewindManager : Manager
     /// </summary>
     /// <param name="go"></param>
     /// <param name="lastStateSeen"></param>
-    public void LoadObject(GameObject go, int lastStateSeen = -1)
+    public void LoadObject(SavableObjectInfo soi, int lastStateSeen = -1)
     {
         if (lastStateSeen < 0)
         {
             lastStateSeen = data.gameStates.Count - 1;
         }
-        int key = go.getKey();
+        int key = soi.Id;
         //Search through the game states to see when it was last saved
         for (int stateid = lastStateSeen; stateid >= 0; stateid--)
         {
             //If the game object was last saved in this game state,
             if (data.gameStates[stateid].hasGameObject(key))
             {
-                data.gameStates[stateid].loadObject(go);
+                data.gameStates[stateid].loadObject(soi);
                 //Great! It's loaded
                 break;
             }
