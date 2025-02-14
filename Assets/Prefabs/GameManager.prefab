@@ -331,6 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4104680f2a35e8f48a03dcbdc51d3686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  electricBeamAbility: {fileID: 0}
 --- !u!114 &4795780357477204615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,3 +424,5 @@ MonoBehaviour:
   startFromZeroOnStart: 0
   timerObject: {fileID: 0}
   targetObject: {fileID: 0}
+  rb2dTimer: {fileID: 0}
+  origPos: {x: 0, y: 0}
