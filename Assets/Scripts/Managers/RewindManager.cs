@@ -87,7 +87,7 @@ public class RewindManager : Manager
             );
         if (gameState.Merky == null)
         {
-            gameState.setMerky(Managers.Player.gameObject);
+            gameState.setMerky(Managers.PlayerSingletonObjectInfo);
         }
         data.gameStates.Add(gameState);
 
