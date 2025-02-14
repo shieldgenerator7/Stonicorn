@@ -589,9 +589,10 @@ public static class Utility
     static int getUniqueId(int baseId, int index)
         => Mathf.Abs(Mathf.Abs(baseId * 10) + index);
 
+#if UNITY_EDITOR
     public static bool isPrefab(this GameObject go)
         => go.scene.buildIndex < 0;
-
+#endif
 
 
 
