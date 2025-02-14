@@ -12,9 +12,9 @@ public class ObjectManager : Manager, ISetting
     private Dictionary<int, AsyncOperationHandle<GameObject>> recreateQueue = new Dictionary<int, AsyncOperationHandle<GameObject>>();
 
 
-    public void LoadSceneObjects(List<GameObject> sceneGOs, List<int> foreignIds, int lastStateSeen)
+    public void LoadSceneObjects(List<SavableObjectInfo> sceneGOs, List<int> foreignIds, int lastStateSeen)
     {
-        sceneGOs.ForEach(go => addObject(go));
+        sceneGOs.ForEach(soi => addObject(soi));
         foreignIds.FindAll(id => !hasObject(id))
             .ForEach(id => recreateObject(id, lastStateSeen));
     }
@@ -97,7 +97,7 @@ public class ObjectManager : Manager, ISetting
                     SavableObjectInfo soi = newGO.GetComponent<SavableObjectInfo>();
                     SavableObjectInfoData soid = data.knownObjects.Find(soid => soid.id == goId);
                     soi.Data = soid;
-                    addObject(newGO);
+                    addObject(soi);
                     foreach (Transform t in newGO.transform)
                     {
                         if (t.gameObject.isSavable())
@@ -105,12 +105,12 @@ public class ObjectManager : Manager, ISetting
                             SavableObjectInfo soiT = t.gameObject.GetComponent<SavableObjectInfo>();
                             SavableObjectInfoData soidT = data.knownObjects.Find(soid => soid.id == soiT.Id);
                             soiT.Data = soidT;
-                            addObject(t.gameObject);
+                            addObject(soiT);
                         }
                     }
                     Debug.Log($"Recreated object {newGO.Name()}: spawned: {soi.spawnStateId}, destroyed: {soi.destroyStateId}");
                     //Delegate
-                    onObjectRecreated?.Invoke(newGO, lastStateSeen);
+                    onObjectRecreated?.Invoke(soi, lastStateSeen);
                     //Finish up
                     recreateQueue.Remove(goId);
                     if (!RecreatingObjects)
@@ -130,7 +130,7 @@ public class ObjectManager : Manager, ISetting
         }
         //return createQueue[goId];
     }
-    public delegate void OnObjectRecreated(GameObject go, int lastStateSeen);
+    public delegate void OnObjectRecreated(SavableObjectInfo soi, int lastStateSeen);
     public event OnObjectRecreated onObjectRecreated;
     public delegate void OnAllObjectsRecreated();
     public event OnAllObjectsRecreated onAllObjectsRecreated;
@@ -152,88 +152,75 @@ public class ObjectManager : Manager, ISetting
     /// <summary>
     /// Adds a newly created object to the list
     /// </summary>
-    /// <param name="go"></param>
-    public void addNewObject(GameObject go)
+    /// <param name="soi"></param>
+    public void addNewObject(SavableObjectInfo soi)
     {
-        SavableObjectInfoData soid = go.GetComponent<SavableObjectInfo>().Data;
+        SavableObjectInfoData soid = soi.Data;
         if (!data.knownObjects.Contains(soid))
         {
             data.knownObjects.Add(soid);
         }
-        addObject(go);
+        addObject(soi);
     }
 
     /// <summary>
     /// Adds an object to list of objects that have state to save
     /// </summary>
     /// <param name="go">The GameObject to add to the list</param>
-    public void addObject(GameObject go)
+    public void addObject(SavableObjectInfo soi)
     {
         //
         //Error checking
         //
 
-        //If go is null
-        if (go == null)
-        {
-            throw new System.ArgumentNullException($"GameObject {go} cannot be null!");
-        }
 
-        int key = go.getKey();
+        int key = soi.Id;
 
         //If the key is invalid,
         if (key < 0)
         {
             Debug.LogError(
-                $"GameObject {go.Name()} has an invalid key: {key}!",
-                go
+                $"GameObject {soi.TextLine} has an invalid key: {key}!",
+                soi
                 );
             return;
         }
 
-        //If the game object doesn't have any state to save...
-        if (!go.isSavable())
-        {
-            throw new System.ArgumentException(
-                $"GameObject {go.Name()} doesn't have any state to save! "
-                + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
-                );
-        }
         //If the game object's name is already in the dictionary,
-        if (data.gameObjects.ContainsKey(key))
+        if (data.savables.ContainsKey(key))
         {
-            if (data.gameObjects[key] != null && go.name != data.gameObjects[key].name)
+            if (data.savables[key] != null && soi.name != data.savables[key].name)
             {
                 Debug.LogWarning(
                       $"Key ({key}) is already inside the gameObjects dictionary: "
-                      + $"GameObject {go.Name()} replacing {data.gameObjects[key]}",
-                      go
+                      + $"GameObject {soi.TextLine} replacing {data.savables[key]}",
+                      soi
                       );
             }
-            data.gameObjects[key] = go;
+            data.savables[key] = soi;
         }
         else
         {
             //Else if all good, add the object
-            data.gameObjects.Add(key, go);
+            data.savables.Add(key, soi);
         }
     }
 
     public bool hasObject(int goKey)
-        => data.gameObjects.ContainsKey(goKey) && data.gameObjects[goKey] != null;
+        => data.savables.ContainsKey(goKey) && data.savables[goKey] != null;
 
     /// <summary>
     /// Retrieves the GameObject from the gameObjects list with the given key
     /// </summary>
     /// <param name="goKey">The unique inter-scene key of the object</param>
     /// <returns></returns>
-    public GameObject getObject(int goKey)
+    public SavableObjectInfo getObject(int goKey)
     {
         //If the gameObjects list has the game object,
-        if (data.gameObjects.ContainsKey(goKey))
+        if (data.savables.ContainsKey(goKey))
         {
             //Return it
-            return data.gameObjects[goKey];
+            return data.savables[goKey];
         }
         Debug.LogError(
             $"No object with key found: {goKey}!\n"
@@ -245,7 +232,7 @@ public class ObjectManager : Manager, ISetting
 
     internal List<T> getObjects<T>()
     {
-        return data.gameObjects
+        return data.savables
             .Values.ToList()
             .ConvertAll(value => value.GetComponent<T>())
             .FindAll(t => t != null);
@@ -257,16 +244,15 @@ public class ObjectManager : Manager, ISetting
     /// use destroyObject() instead.
     /// </summary>
     /// <param name="go"></param>
-    public void destroyAndForgetObject(GameObject go)
+    public void destroyAndForgetObject(SavableObjectInfo soi)
     {
-        SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
         if (soi is SingletonObjectInfo)
         {
             //don't destroy the game manager or merky
             return;
         }
-        Debug.Log($"Destroying object permanently: {go.Name()}", go);
-        destroyObject(go);
+        Debug.Log($"Destroying object permanently: {soi.TextLine}", soi);
+        destroyObject(soi);
         data.knownObjects.RemoveAll(soid => soid.id == soi.Id);
     }
 
@@ -280,15 +266,14 @@ public class ObjectManager : Manager, ISetting
     {
         if (hasObject(id))
         {
-            GameObject go = getObject(id);
-            SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
+            SavableObjectInfo soi = getObject(id);
             if (soi is SingletonObjectInfo)
             {
                 //don't destroy the game manager or merky
                 return;
             }
-            Debug.Log($"Destroying object permanently: {go.Name()}", go);
-            destroyObject(go);
+            Debug.Log($"Destroying object permanently: {soi.TextLine}", soi);
+            destroyObject(soi);
         }
         else
         {
@@ -299,53 +284,52 @@ public class ObjectManager : Manager, ISetting
 
     public void destroyObject(int goKey)
     {
-        GameObject go = getObject(goKey);
-        if (go)
+        SavableObjectInfo soi = getObject(goKey);
+        if (soi)
         {
-            destroyObject(go);
+            destroyObject(soi);
         }
     }
 
     /// <summary>
     /// Destroys the given GameObject and updates lists
     /// </summary>
-    /// <param name="go">The GameObject to destroy</param>
-    public void destroyObject(GameObject go)
+    /// <param name="soi">The GameObject to destroy</param>
+    public void destroyObject(SavableObjectInfo soi)
     {
-        SavableObjectInfo soi = (SavableObjectInfo)go.GetComponent<ObjectInfo>();
         if (soi is SingletonObjectInfo)
         {
             //don't destroy the game manager or merky
             return;
         }
-        Debug.Log($"Destroying object {go.Name()}");
+        Debug.Log($"Destroying object {soi.TextLine}");
         int gameStateId = Managers.Rewind.GameStateId;
         if (soi.destroyStateId > gameStateId)
         {
             soi.destroyStateId = gameStateId;
             updateDestroyStateId(soi.Id, gameStateId);
         }
-        removeObject(go);
-        Destroy(go);
+        removeObject(soi);
+        Destroy(soi);
     }
 
     /// <summary>
     /// Removes the given GameObject from the gameObjects list
     /// </summary>
-    /// <param name="go">The GameObject to remove from the list</param>
-    private void removeObject(GameObject go)
+    /// <param name="soi">The GameObject to remove from the list</param>
+    private void removeObject(SavableObjectInfo soi)
     {
-        data.gameObjects.Remove(go.getKey());
+        data.savables.Remove(soi.Id);
         //If go is not null and has children,
-        if (go && go.transform.childCount > 0)
+        if (soi && soi.transform.childCount > 0)
         {
             //For each of its children,
-            foreach (Transform t in go.transform)
+            foreach (Transform t in soi.transform)
             {
                 if (t.gameObject.hasKey())
                 {
                     //Remove it from the gameObjects list
-                    data.gameObjects.Remove(t.gameObject.getKey());
+                    data.savables.Remove(t.gameObject.getKey());
                 }
             }
         }
@@ -365,17 +349,17 @@ public class ObjectManager : Manager, ISetting
     {
         string cleanedKeys = "";
         //Copy the game object keys
-        List<int> keys = new List<int>(data.gameObjects.Keys);
+        List<int> keys = new List<int>(data.savables.Keys);
         //Loop over copy list
         foreach (int key in keys)
         {
             //If the key's value is null,
-            if (data.gameObjects[key] == null
-                || ReferenceEquals(data.gameObjects[key], null))
+            if (data.savables[key] == null
+                || ReferenceEquals(data.savables[key], null))
             {
                 //Clean the key out
                 cleanedKeys += key + ", ";
-                data.gameObjects.Remove(key);
+                data.savables.Remove(key);
             }
         }
         //Write out to the console which keys were cleaned
@@ -390,7 +374,7 @@ public class ObjectManager : Manager, ISetting
     /// </summary>
     public void clearObjects()
     {
-        data.gameObjects.Clear();
+        data.savables.Clear();
         data.memories.Clear();
     }
 
@@ -400,16 +384,11 @@ public class ObjectManager : Manager, ISetting
     public void refreshGameObjects()
     {
         //Clear the list
-        data.gameObjects.Clear();
-        //Add objects that can move
-        foreach (Rigidbody2D rb in FindObjectsByType<Rigidbody2D>(FindObjectsSortMode.None))
-        {
-            addObject(rb.gameObject);
-        }
+        data.savables.Clear();
         //Add objects that have other variables that can get rewound
         foreach (SavableMonoBehaviour smb in FindObjectsByType<SavableMonoBehaviour>(FindObjectsSortMode.None))
         {
-            addObject(smb.gameObject);
+            addObject(smb.GetComponent<SavableObjectInfo>());
         }
         //Memories
         refreshMemoryObjects();

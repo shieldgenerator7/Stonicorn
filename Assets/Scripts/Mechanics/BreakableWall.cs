@@ -51,7 +51,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ISetupable
                     .ForEach(ha => ha.Discovered = true);
 
                 //Destroy object
-                Managers.Object.destroyObject(gameObject);
+                Managers.Object.destroyObject(SavableObjectInfo);
             }
         }
     }

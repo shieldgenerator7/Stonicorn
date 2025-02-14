@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
                         );
                     //(it's possible for an object recreation to be finished
                     //after it should have been rewound out of existence)
-                    Managers.Object.destroyAndForgetObject(go);
+                    Managers.Object.destroyAndForgetObject(soi);
                 }
                 else if (soi.destroyStateId < gameStateId)
                 {
@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
                         go
                         );
                     //Destroy this object because it's still after it was originally destroyed
-                    Managers.Object.destroyObject(go);
+                    Managers.Object.destroyObject(soi);
                 }
                 else if (soi.destroyStateId > gameStateId)
                 {

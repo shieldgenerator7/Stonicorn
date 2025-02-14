@@ -564,7 +564,7 @@ public static class Utility
             SavableObjectInfo soi = newObj.GetComponent<SavableObjectInfo>();
             soi.Id = getUniqueId(baseId, 0);
             soi.spawnStateId = Managers.Rewind.GameStateId;
-            Managers.Object.addNewObject(newObj);
+            Managers.Object.addNewObject(soi);
             Managers.Scene.registerObjectInScene(newObj);
         }
         //Container children
