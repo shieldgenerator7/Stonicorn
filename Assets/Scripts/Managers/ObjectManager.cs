@@ -310,7 +310,7 @@ public class ObjectManager : Manager, ISetting
             updateDestroyStateId(soi.Id, gameStateId);
         }
         removeObject(soi);
-        Destroy(soi);
+        Destroy(soi.gameObject);
     }
 
     /// <summary>
