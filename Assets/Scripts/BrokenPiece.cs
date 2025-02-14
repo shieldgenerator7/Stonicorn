@@ -48,7 +48,7 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
             //Unparent it
             go.transform.SetParent(null);
             //Put it in the scene
-            Managers.Scene.moveToScene(go, scene);
+            Managers.Scene.moveToScene(soi, scene);
         }
         //Delete this object
         Destroy(gameObject);

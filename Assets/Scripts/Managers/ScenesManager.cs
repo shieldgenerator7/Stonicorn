@@ -138,18 +138,18 @@ public class ScenesManager : Manager
     public void LoadObjectsFromScene(Scene scene)
     {
         //Get list of savables
-        List<GameObject> sceneGOs = SceneSavableList.getFromScene(scene).savables.ConvertAll(soi=>soi.gameObject);
+        List<SavableObjectInfo> sceneGOs = SceneSavableList.getFromScene(scene).savables;
         //If an object from this scene is known not to be currently in this scene,
-        List<GameObject> unsceneGOs = sceneGOs.FindAll(
-            go => !isObjectInScene(go, scene)
+        List<SavableObjectInfo> unsceneGOs = sceneGOs.FindAll(
+            soi => !isObjectInScene(soi, scene)
             );
         //Remove it from being processed, and
         sceneGOs.RemoveAll(go => unsceneGOs.Contains(go));
         //Destroy it before it gets put into the game object list.
-        unsceneGOs.ForEach(go =>
+        unsceneGOs.ForEach(soi =>
         {
-            Debug.Log($"Destroying now duplicate: {go} ({go.getKey()})");
-            Destroy(go);
+            Debug.Log($"Destroying now duplicate: {soi} ({soi.Id})");
+            Destroy(soi.gameObject);
         });
         //Register object in scene
         sceneGOs.ForEach(go => registerObjectInScene(go, scene));
@@ -167,13 +167,13 @@ public class ScenesManager : Manager
             lastStateSeen = sceneLoader.lastOpenGameStateId;
         }
         //Find foreign objects that are not here
-        List<int> sceneIds = sceneGOs.ConvertAll(go => go.getKey());
+        List<int> sceneIds = sceneGOs.ConvertAll(soi => soi.Id);
         List<int> foreignIds = getObjectsIdsInScene(scene)
             .FindAll(id => !sceneIds.Contains(id));
         //Delegate
         onSceneObjectsLoaded?.Invoke(sceneGOs, foreignIds, lastStateSeen);
     }
-    public delegate void OnSceneObjectsLoaded(List<GameObject> sceneGOs, List<int> foreignGOs, int lastStateSeen);
+    public delegate void OnSceneObjectsLoaded(List<SavableObjectInfo> sceneGOs, List<int> foreignGOs, int lastStateSeen);
     public event OnSceneObjectsLoaded onSceneObjectsLoaded;
 
     private SceneLoader getSceneLoader(Scene scene)
@@ -281,12 +281,12 @@ public class ScenesManager : Manager
     /// <summary>
     /// Returns true if the given object is in the scene according to the data object
     /// </summary>
-    /// <param name="go"></param>
+    /// <param name="soi"></param>
     /// <param name="scene"></param>
     /// <returns></returns>
-    public bool isObjectInScene(GameObject go, Scene scene)
+    public bool isObjectInScene(SavableObjectInfo soi, Scene scene)
     {
-        int objectId = go.getKey();
+        int objectId = soi.Id;
         if (data.objectSceneList.ContainsKey(objectId))
         {
             return data.objectSceneList[objectId] == scene.buildIndex;
@@ -311,10 +311,16 @@ public class ScenesManager : Manager
         {
             //don't register null or destroyed objects
             Debug.LogWarning($"GameObject {go?.name} is destroyed and will not be processed.");
-            removeObject(go);
+            //removeObject(go);
             return;
         }
         SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
+        registerObjectInScene(soi);
+    }
+
+    public void registerObjectInScene(SavableObjectInfo soi)
+    {
+        
         if (!soi)
         {
             return;
@@ -322,7 +328,7 @@ public class ScenesManager : Manager
         //Don't add non-Savable or Singleton objects ever
         if (soi is SingletonObjectInfo)
         {
-            removeObject(go);
+            removeObject(soi);
             return;
         }
         //Add it to the list that contains the position
@@ -330,95 +336,91 @@ public class ScenesManager : Manager
         if (objectId < 0)
         {
             Debug.LogError(
-                $"Object {go.name} Id is less than 0! id: {objectId}",
-                go
+                $"Object {soi.TextLine} Id is less than 0! id: {objectId}",
+                soi
                 );
-            removeObject(go);
+            removeObject(soi);
             return;
         }
         //If go is already in a scene,
-        int sceneId = go.scene.buildIndex;
+        Scene scene = soi.gameObject.scene;
+        int sceneId = scene.buildIndex;
         if (sceneId < 0)
         {
-            sceneId = data.objectSceneList[go.getKey()];
+            sceneId = data.objectSceneList[soi.Id];
         }
         SceneLoader sl = getSceneLoader(sceneId);
             //And it's already in the right scene,
-            if (sl && sl.overlapsPosition(go))
+            if (sl && sl.overlapsPosition(soi.gameObject))
             {
                 //Reregister but don't move it
-                registerObjectInScene(go, go.scene);
+                registerObjectInScene(soi, scene);
                 return;
             }
         //Else find the scene it should be in
-        SceneLoader loader = sceneLoaders.Find(sl => sl.overlapsPosition(go));
+        SceneLoader loader = sceneLoaders.Find(sl => sl.overlapsPosition(soi.gameObject));
         if (!loader)
         {
-            loader = sceneLoaders.Find(sl => sl.overlapsCollider(go));
+            loader = sceneLoaders.Find(sl => sl.overlapsCollider(soi.gameObject));
         }
         //If it can't find the scene it's in,
         if (!loader)
         {
             //just don't process it
             Debug.LogWarning(
-                $"Can't find a scene for object {go.name} ({objectId}) at position {go.transform.position} ({((Vector2)go.transform.position-Vector2.zero).magnitude} from center)",
-                go
+                $"Can't find a scene for object {soi.TextLine} ({objectId}) at position {soi.transform.position} ({((Vector2)soi.transform.position-Vector2.zero).magnitude} from center)",
+                soi
                 );
             return;
         }
         try
         {
-            Scene scene = loader.Scene;
-            int sceneId2 = scene.buildIndex;
+            Scene scene2 = loader.Scene;
+            int sceneId2 = scene2.buildIndex;
             if (sceneId2 < 0)
             {
                 Debug.LogWarning(
-                    $"SceneLoader {loader.gameObject.name} has bad scene ({scene})! sceneId: {sceneId2}",
+                    $"SceneLoader {loader.gameObject.name} has bad scene ({scene2})! sceneId: {sceneId2}",
                     loader.gameObject
                     );
                 //Don't process it
                 return;
             }
-            registerObjectInScene(go, scene);
-            moveToScene(go, scene);
+            registerObjectInScene(soi, scene2);
+            moveToScene(soi, scene2);
         }
         catch (NullReferenceException nre)
         {
             throw new NullReferenceException(
-                $"No SL found when trying to register object {go.name} at position {go.transform.position}",
+                $"No SL found when trying to register object {soi.TextLine} at position {soi.transform.position}",
                 nre
                 );
         }
         catch (ArgumentException ae)
         {
             Debug.LogError(
-                $"No scene found when trying to register object {go.name} at position {go.transform.position}" +
+                $"No scene found when trying to register object {soi.TextLine} at position {soi.transform.position}" +
                 $"\nArgumentException: {ae}",
-                go
+                soi
                 );
         }
     }
 
-    private void registerObjectInScene(GameObject go, Scene scene)
+    private void registerObjectInScene(SavableObjectInfo soi, Scene scene)
     {
-        if (!go)
-        {
-            Debug.LogError($"registerObjectInScene: go is null! go: {go}!");
-            return;
-        }
-        int objectId = go.getKey();
+        int objectId = soi.Id;
         if (objectId == 0)
         {
             Debug.LogError(
                 $"Trying to add object Id {objectId} to the objectScenesList!",
-                go
+                soi
                 );
             return;
         }
         int sceneId = scene.buildIndex;
         Debug.Log(
-            $"Registering object in scene {scene.name} ({sceneId}): {go.name} ({objectId})",
-            go
+            $"Registering object in scene {scene.name} ({sceneId}): {soi.TextLine} ({objectId})",
+            soi
             );
         if (!data.objectSceneList.ContainsKey(objectId))
         {
@@ -430,64 +432,85 @@ public class ScenesManager : Manager
         }
     }
 
+    public void moveToScene(GameObject go, Scene scene)
+    {
+        SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
+        if (soi)
+        {
+            moveToScene(soi, scene);
+        }
+        else
+        {
+            try
+            {
+                if (go.scene != scene)
+                {
+                    if (scene.isLoaded)
+                    {
+                        Debug.Log($"Moving {go.Name()} into scene {scene.Name()}", go);
+                        SceneManager.MoveGameObjectToScene(go, scene);
+                        Debug.Log($"Moved {go.Name()} is now in scene {go.scene.Name()}", go);
+                    }
+                    else
+                    {
+                        Debug.Log($"Moving {go.Name()} into scene {scene.Name()}, BUT scene is unloaded, destroying instead", go);
+                        Destroy(go);
+                    }
+                }
+            }
+            catch (ArgumentException ae)
+            {
+                Debug.LogError(
+                    $"Trying to move {go.Name()} into scene {scene.Name()} at position: {go.transform.position}" +
+                    $"\nArgumentException: {ae}"
+                    );
+            }
+        }
+    }
+
     /// <summary>
     /// Moves the given game object into the given scene,
     /// BUT if the scene is unloaded, it will destroy the object instead
     /// </summary>
     /// <param name="go"></param>
     /// <param name="scene"></param>
-    public void moveToScene(GameObject go, Scene scene)
+    public void moveToScene(SavableObjectInfo soi, Scene scene)
     {
+        GameObject go = soi.gameObject;
         try
         {
             if (go.transform.parent != null)
             {
-                Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
-                if (!rb2d)
-                {
-                    rb2d = go.GetComponentInParent<Rigidbody2D>();
-                }
-                if (rb2d)
-                {
-                    go = rb2d.gameObject;
-                }
-                if (go.transform.parent != null)
-                {
                     go.transform.SetParent(null);
-                }
             }
             if (go.scene != scene)
             {
                 if (scene.isLoaded)
                 {
-                Debug.Log($"Moving {go.Name()} into scene {scene.Name()}", go);
+                Debug.Log($"Moving {soi.TextLine} into scene {scene.Name()}", go);
                 SceneManager.MoveGameObjectToScene(go, scene);
-                Debug.Log($"Moved {go.Name()} is now in scene {go.scene.Name()}", go);
+                Debug.Log($"Moved {soi.TextLine} is now in scene {go.scene.Name()}", go);
                 }
                 else
                 {
-                    Debug.Log($"Moving {go.Name()} into scene {scene.Name()}, BUT scene is unloaded, destroying instead", go);
+                    Debug.Log($"Moving {soi.TextLine} into scene {scene.Name()}, BUT scene is unloaded, destroying instead", go);
                     Destroy(go);
                 }
             }
         }
-        catch (System.ArgumentException ae)
+        catch (ArgumentException ae)
         {
             Debug.LogError(
-                $"Trying to move {go.Name()} into scene {scene.Name()} at position: {go.transform.position}" +
+                $"Trying to move {soi.TextLine} into scene {scene.Name()} at position: {go.transform.position}" +
                 $"\nArgumentException: {ae}"
                 );
         }
     }
 
-    private void removeObject(GameObject go)
+    private void removeObject(SavableObjectInfo soi)
     {
-        if (go == null) {
-            Debug.LogError($"Cant remove null object! {go}");
-            return; 
-        }
-        Debug.Log($"Removing object {go.Name()} from list", go);
-        data.objectSceneList.Remove(go.getKey());
+        Debug.Log($"Removing object {soi.TextLine} from list", soi);
+        data.objectSceneList.Remove(soi.Id);
     }
 
     public void printObjectSceneList()
