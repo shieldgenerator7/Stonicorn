@@ -374,11 +374,13 @@ public static class Utility
 
     public static string Name(this GameObject go)
     {
-        if (!go || ReferenceEquals(go, null))
-        {
-            return $"--{go?.name} ({go?.getKey()})--";
-        }
+        try { 
         return $"{go.name} ({go.getKey()})";
+        }
+        catch (Exception)
+        {
+            return go?.name ?? "[unknown gameobject]";
+        }
     }
     public static string Name(this Scene scene)
     {
@@ -563,6 +565,7 @@ public static class Utility
             soi.spawnStateId = Managers.Rewind.GameStateId;
             Managers.Object.addNewObject(soi);
             Managers.Scene.registerObjectInScene(newObj);
+            Debug.Log($"Spawned object {newObj.Name()}", newObj);
         }
         //Container children
         if (isContainer)
@@ -578,8 +581,8 @@ public static class Utility
                 Managers.Object.addNewObject(savable);
                 Managers.Scene.registerObjectInScene(savable);
             });
+            Debug.Log($"Spawned container {newObj.name}", newObj);
         }
-        Debug.Log($"Spawned object {newObj.Name()}", newObj);
         //Return spawned object
         return newObj;
     }

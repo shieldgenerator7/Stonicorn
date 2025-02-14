@@ -447,13 +447,13 @@ public class ScenesManager : Manager
                 {
                     if (scene.isLoaded)
                     {
-                        Debug.Log($"Moving {go.Name()} into scene {scene.Name()}", go);
+                        Debug.Log($"Moving {go.name} into scene {scene.Name()}", go);
                         SceneManager.MoveGameObjectToScene(go, scene);
-                        Debug.Log($"Moved {go.Name()} is now in scene {go.scene.Name()}", go);
+                        Debug.Log($"Moved {go.name} is now in scene {go.scene.Name()}", go);
                     }
                     else
                     {
-                        Debug.Log($"Moving {go.Name()} into scene {scene.Name()}, BUT scene is unloaded, destroying instead", go);
+                        Debug.Log($"Moving {go.name} into scene {scene.Name()}, BUT scene is unloaded, destroying instead", go);
                         Destroy(go);
                     }
                 }
@@ -461,7 +461,7 @@ public class ScenesManager : Manager
             catch (ArgumentException ae)
             {
                 Debug.LogError(
-                    $"Trying to move {go.Name()} into scene {scene.Name()} at position: {go.transform.position}" +
+                    $"Trying to move {go.name} into scene {scene.Name()} at position: {go.transform.position}" +
                     $"\nArgumentException: {ae}"
                     );
             }
