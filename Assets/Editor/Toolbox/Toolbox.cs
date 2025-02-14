@@ -32,7 +32,15 @@ public class Toolbox : EditorWindow
 
     public void OnEnable()
     {
+        try
+        {
         findPlayerController();
+        }
+        catch(Exception)
+        {
+            enabled = false;
+            return;
+        }
         Debug.Log("found player: " + pc.name);
 
         EditorApplication.playModeStateChanged -= reactToPlayMode;
