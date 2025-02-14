@@ -614,7 +614,6 @@ public class CustomMenu
                 checkAutoInitializeTags,
                 checkISetupables,
                 ensureUniqueObjectIDs,
-                ensureHiddenAreasAreProperlySetup,
                 checkTiledHitBoxes,
                 checkGravityScale,
                 checkForIllegalPrefabOverrides,
@@ -829,119 +828,6 @@ public class CustomMenu
             Debug.LogError($"Checked Prefabs ISetupables: {errorCount} errors");
         }
         return changeCount > 0 || errorCount > 0;
-    }
-
-    [MenuItem("SG7/Build/Pre-Build/Ensure Hidden Areas are Properly Setup")]
-    public static bool ensureHiddenAreasAreProperlySetup()
-    {
-        int changedCount = 0;
-        string TAG = "NonTeleportableArea";
-        string UNTAG = "Untagged";
-        GameObject.FindObjectsByType<HiddenArea>(FindObjectsSortMode.None).ToList()
-            .ForEach(ha =>
-            {
-                Utility.doForGameObjectAndChildren(
-                    ha.gameObject,
-                    (go) =>
-                    {
-                        //If it doesn't have the correct tag,
-                        if (!go.CompareTag(TAG))
-                        {
-                            //And it has a renderer,
-                            if (go.GetComponent<Renderer>())
-                            {
-                                //Then it should have the correct tag
-                                go.tag = TAG;
-                                EditorUtility.SetDirty(go);
-                                Debug.LogWarning(
-                                    $"Changed {go.name} tag to {TAG}.",
-                                    go
-                                    );
-                                changedCount++;
-                            }
-                        }
-                        //If it does have the tag,
-                        else
-                        {
-                            //But does not have a renderer,
-                            if (!go.GetComponent<Renderer>())
-                            {
-                                //Then it should not have the tag
-                                go.tag = UNTAG;
-                                EditorUtility.SetDirty(go);
-                                Debug.LogWarning(
-                                    $"Changed {go.name} tag to {UNTAG}.",
-                                    go
-                                    );
-                                changedCount++;
-                            }
-                        }
-                        //Position
-                        if (go.transform.position.z != 0)
-                        {
-                            go.transform.position = (Vector2)go.transform.position;
-                            EditorUtility.SetDirty(go);
-                            Debug.LogWarning(
-                                $"Changed {go.name} pos to {go.transform.position}.",
-                                go
-                                );
-                            changedCount++;
-                        }
-                        //
-                        //Renderer && Collider
-                        //
-                        Renderer renderer = go.GetComponent<Renderer>();
-                        Collider2D coll2d = go.GetComponent<Collider2D>();
-                        string layerName = "Foreground";
-                        if (renderer)
-                        {
-                            if (renderer.sortingLayerName != layerName)
-                            {
-                                renderer.sortingLayerName = layerName;
-                                EditorUtility.SetDirty(go);
-                                Debug.LogWarning(
-                                    $"Changed {go.name} layer name to {layerName}.",
-                                    go
-                                    );
-                                changedCount++;
-                            }
-                            if (!coll2d)
-                            {
-                                Debug.LogError(
-                                    $"{go.name} has renderer without a collider!",
-                                    go
-                                    );
-                                //Fake a change
-                                if (changedCount == 0)
-                                {
-                                    changedCount++;
-                                }
-                            }
-                        }
-                        if (coll2d)
-                        {
-                            if (!coll2d.isTrigger)
-                            {
-                                coll2d.isTrigger = true;
-                                EditorUtility.SetDirty(go);
-                                Debug.LogWarning(
-                                    $"Changed {go.name} collider isTrigger to {coll2d.isTrigger}.",
-                                    go
-                                    );
-                                changedCount++;
-                            }
-                        }
-                    }
-                    );
-            });
-
-        if (changedCount > 0)
-        {
-            Debug.LogWarning(
-                $"HiddenArea changes: Made {changedCount} changes."
-                );
-        }
-        return changedCount > 0;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Check Tiled HitBoxes")]
