@@ -19,7 +19,7 @@ public struct GameState
         states = new ObjectState[0];
         merky = null;
     }
-    public GameState(List<GameObject> list)
+    public GameState(List<SavableObjectInfo> list)
     {
         //id
         id = nextid;
@@ -27,23 +27,23 @@ public struct GameState
 
         //Object States
         states = list
-            .Where(go => !(!go || ReferenceEquals(go, null))).ToList()
-            .ConvertAll(go =>
+            .Where(soi => !(!soi || ReferenceEquals(soi, null))).ToList()
+            .ConvertAll(soi =>
             {
                 try
                 {
-                    ObjectState os = new ObjectState(go);
+                    ObjectState os = new ObjectState(soi);
                     if (os.objectId < 0)
                     {
-                        throw new UnityException($"Object state object id is ({os.objectId}) for object: {go.name}");
+                        throw new UnityException($"Object state object id is ({os.objectId}) for object: {soi.name}");
                     }
                     return os;
                 }
                 catch (NullReferenceException nre)
                 {
                     Debug.LogError(
-                        $"Object {go.name} does not have an ObjectInfo. NRE: {nre}",
-                        go
+                        $"Object {soi.name} does not have an ObjectInfo. NRE: {nre}",
+                        soi
                         );
                     return null;
                 }
@@ -85,11 +85,11 @@ public struct GameState
             }
         };
     }
-    public void loadObject(GameObject go)
+    public void loadObject(SavableObjectInfo soi)
     {
-        int key = go.getKey();
+        int key = soi.Id;
         ObjectState state = states.First(os => os.objectId == key);
-        state.loadState(go);
+        state.loadState(soi);
     }
 
     /// <summary>
@@ -130,7 +130,7 @@ public struct GameState
     /// Work around a bug that causes merky to not be found in a gamestate
     /// </summary>
     /// <param name="merky"></param>
-    internal void setMerky(GameObject merky)
+    internal void setMerky(SingletonObjectInfo merky)
     {
         if (Merky != null)
         {

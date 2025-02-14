@@ -19,11 +19,10 @@ public class ObjectState
     public int sceneId = -1;
 
     public ObjectState() { }
-    public ObjectState(GameObject go)
+    public ObjectState(SavableObjectInfo info)
     {
-        SavableObjectInfo info = go.GetComponent<SavableObjectInfo>();
         objectId = info.Id;
-        sceneId = go.scene.buildIndex;
+        sceneId = info.gameObject.scene.buildIndex;
         saveState(info);
     }
 
@@ -43,12 +42,12 @@ public class ObjectState
         //SavableMonoBehaviours
         soList = info.savables.ConvertAll<SavableObject>(smb => smb.CurrentState).ToArray();
     }
-    public void loadState(GameObject go)
+    public void loadState(SavableObjectInfo soi)
     {
-        go.transform.position = position;
-        go.transform.localScale = localScale;
-        go.transform.rotation = rotation;
-        Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
+        soi.transform.position = position;
+        soi.transform.localScale = localScale;
+        soi.transform.rotation = rotation;
+        Rigidbody2D rb2d = soi.Rigidbody2D;
         if (rb2d != null)
         {
             rb2d.linearVelocity = velocity;
@@ -56,16 +55,15 @@ public class ObjectState
         }
         foreach (SavableObject so in this.soList)
         {
-            SavableMonoBehaviour smb =
-                (SavableMonoBehaviour)go.GetComponent(so.ScriptType);
+            SavableMonoBehaviour smb = soi.getSavableMonoBehaviour(so.ScriptType);
             if (smb == null)
             {
                 if (!so.isSpawnedScript)
                 {
-                    throw new UnityException($"Object {go} ({go.getKey()}) is missing non-spawnable script {so.scriptType}");
+                    throw new UnityException($"Object {soi} ({soi.Id}) is missing non-spawnable script {so.scriptType}");
                 }
                 //Add the spawnable script
-                    smb = (SavableMonoBehaviour)so.addScript(go);
+                    smb = so.addScript(soi);
             }
             //load state of the savable script
             try
@@ -74,7 +72,7 @@ public class ObjectState
             }
             catch (InvalidCastException ice)
             {
-                Debug.Log($"InvalidCastException on go {go.name} ({go.getKey()}): {smb.GetType()}: {ice}");
+                Debug.Log($"InvalidCastException on go {soi.name} ({soi.Id}): {smb.GetType()}: {ice}");
             }
         }
     }
