@@ -43,7 +43,7 @@ public class TeleportPortal : SavableMonoBehaviour
         Managers.Player.Teleport.findTeleportablePositionOverride -= checkPortal;
     }
 
-    public void connectTo(GameObject other)
+    public void connectTo(SavableObjectInfo other)
     {
         TeleportPortal tp = other.GetComponent<TeleportPortal>();
         connectTo(tp);
