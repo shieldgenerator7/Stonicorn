@@ -234,6 +234,6 @@ public class Managers : MonoBehaviour
 
     [Initializer(1)]
     private SingletonObjectInfo init_playerSingletonObjectInfo
-        => playerController.gameObject.GetComponent<SingletonObjectInfo>();
+        => playerController?.gameObject.GetComponent<SingletonObjectInfo>() ?? null;
 #endif
 }
