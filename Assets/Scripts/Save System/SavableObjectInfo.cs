@@ -36,6 +36,11 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         }
     }
 
+    public SavableMonoBehaviour getSavableMonoBehaviour(Type type)
+    {
+        return savables.Where(smb=>smb.GetType() == type).FirstOrDefault();
+    }
+
 #if UNITY_EDITOR
     public virtual void autoset()
     {
