@@ -233,6 +233,7 @@ public class PowerManager : MonoBehaviour, ISetupable
         return conduits;
     }
 
+#if UNITY_EDITOR
     public int checkForErrors()
     {
         int errorCount = 0;
@@ -254,4 +255,5 @@ public class PowerManager : MonoBehaviour, ISetupable
         int changeCount = 0;
         return changeCount;
     }
+#endif
 }
