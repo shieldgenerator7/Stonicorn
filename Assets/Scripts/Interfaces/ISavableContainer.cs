@@ -8,5 +8,5 @@ using UnityEngine;
 /// </summary>
 public interface ISavableContainer
 {
-    List<GameObject> Savables { get; }
+    List<SavableObjectInfo> Savables { get; }
 }

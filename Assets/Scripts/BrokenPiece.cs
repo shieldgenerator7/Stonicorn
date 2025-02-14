@@ -9,31 +9,18 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class BrokenPiece : MonoBehaviour, ISavableContainer
 {
-    private List<GameObject> savables;
-    public List<GameObject> Savables
-    {
-        get
-        {
-            if (savables == null)
-            {
-                savables = new List<GameObject>();
-                foreach (Transform t in transform)
-                {
-                    savables.Add(t.gameObject);
-                }
-            }
-            return savables;
-        }
-    }
+    [AutoInitialize(SearchChildren = true),SerializeField,HideInInspector]
+    private List<SavableObjectInfo> savables;
+    public List<SavableObjectInfo> Savables=>savables;
 
     public void unpack(GameObject original)
     {
         //Reparent child objects to this object
-        foreach (GameObject go in Savables)
+        foreach (SavableObjectInfo soi in Savables)
         {
             //(apparently something else is unparenting it before this)
             //TODO: find out how it gets unparent and figure out if it should be doing that
-            go.transform.SetParent(transform);
+            soi.transform.SetParent(transform);
         }
 
         //Initialize this object
@@ -43,10 +30,10 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
         Managers.Scene.moveToScene(gameObject, scene);
 
         //Initialize child objects
-        foreach (GameObject go in Savables)
+        foreach (SavableObjectInfo soi in Savables)
         {
             //Unparent it
-            go.transform.SetParent(null);
+            soi.transform.SetParent(null);
             //Put it in the scene
             Managers.Scene.moveToScene(soi, scene);
         }
