@@ -27,28 +27,16 @@ public struct GameState
 
         //Object States
         states = list
-            .Where(soi => !(!soi || ReferenceEquals(soi, null))).ToList()
+            //.Where(soi => soi && !ReferenceEquals(soi, null)).ToList()
             .ConvertAll(soi =>
             {
-                try
-                {
                     ObjectState os = new ObjectState(soi);
                     if (os.objectId < 0)
                     {
                         throw new UnityException($"Object state object id is ({os.objectId}) for object: {soi.name}");
                     }
                     return os;
-                }
-                catch (NullReferenceException nre)
-                {
-                    Debug.LogError(
-                        $"Object {soi.name} does not have an ObjectInfo. NRE: {nre}",
-                        soi
-                        );
-                    return null;
-                }
             })
-            .Where(os => os != null)
             .OrderBy(os => os.objectId)
             .ToArray();
 
