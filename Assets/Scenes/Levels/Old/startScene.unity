@@ -1140,6 +1140,7 @@ MonoBehaviour:
   gravityAccepter: {fileID: 0}
   groundChecker: {fileID: 0}
   teleportAbility: {fileID: 0}
+  playerAbilities: []
 --- !u!60 &502139758
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -4688,6 +4689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentObj: {fileID: 502139756}
+  controller: {fileID: 0}
   sr: {fileID: 0}
 --- !u!212 &1156560958
 SpriteRenderer:
