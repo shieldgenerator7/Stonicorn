@@ -41,7 +41,6 @@ public class SnakeController : MonoBehaviour
         set
         {
             targetIndex = Utility.loopValue(value,0, movePath.Count-1);
-            Debug.Log($"Snake: targetIndex: {targetIndex}");
             //TODO: account for if the transform moves after setting the targetPos?
             targetPos = movePath[targetIndex].position;
         }
@@ -51,7 +50,6 @@ public class SnakeController : MonoBehaviour
     void Start()
     {
         TargetIndex = 0;
-        //points.Add(transform.position);
         turn();
     }
 
@@ -104,6 +102,7 @@ public class SnakeController : MonoBehaviour
 
     void updateBody()
     {
+        //body
         Spline spline = ssc.spline;
         spline.Clear();
         List<Vector2> ec2dpoints = new List<Vector2>();
@@ -117,8 +116,12 @@ public class SnakeController : MonoBehaviour
         spline.InsertPointAt(0, p);
         ec2dpoints.Insert(0, p);
         ec2d.points = ec2dpoints.ToArray();
+
+        //head
         head.position = transform.position;
         head.right = rb2d.linearVelocity;
+
+        //tail
         tail.position = (points.Count >= 1)?points.First():transform.position;
         if (points.Count >= 2)
         {
