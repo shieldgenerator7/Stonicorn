@@ -416,8 +416,29 @@ public static class Utility
     /// <param name="min"></param>
     /// <param name="max"></param>
     /// <returns></returns>
+    public static int loopValue(int value, int min, int max)
+    {
+        int diff = max - min + 1;
+        while (value < min)
+        {
+            value += diff;
+        }
+        while (value > max)
+        {
+            value -= diff;
+        }
+        return value;
+    }
+    /// <summary>
+    /// Loops the value around until it falls in the range of [min, max]
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
     public static float loopValue(float value, float min, float max)
     {
+        //TODO: check for off by one error here
         float diff = max - min;
         while (value < min)
         {

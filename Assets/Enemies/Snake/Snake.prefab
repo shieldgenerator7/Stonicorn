@@ -279,6 +279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1562502823137699301}
   - component: {fileID: 5071347982395089595}
+  - component: {fileID: 5575954634462495535}
   - component: {fileID: 238233522221426785}
   m_Layer: 0
   m_Name: Snake
@@ -332,6 +333,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &5575954634462495535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5422643117064794890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf68d04f26946a4ab7b77f90038f6e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1
+  arriveThreshold: 0.1
+  movePath: []
+  rb2d: {fileID: 5071347982395089595}
+  ssc: {fileID: 7808980012574895600}
 --- !u!114 &238233522221426785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,16 +362,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
+  id: 7000
   prefabAddress:
-    m_AssetGUID: 
+    m_AssetGUID: 24659e349142da0469fb7df2c6b580a2
     m_SubObjectName: 
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   spawnStateId: -1
   destroyStateId: 2147483647
-  rb2d: {fileID: 0}
+  rb2d: {fileID: 5071347982395089595}
   savables: []
 --- !u!1 &6600384360019936145
 GameObject:
