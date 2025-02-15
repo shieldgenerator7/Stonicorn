@@ -103,8 +103,16 @@ public class SnakeController : MonoBehaviour
             spline.InsertPointAt(0, transform.InverseTransformPoint(p));
         });
         spline.InsertPointAt(0, transform.InverseTransformPoint(transform.position));
-        tail.position = points.First();
         head.position = transform.position;
         head.right = rb2d.linearVelocity;
+        tail.position = (points.Count >= 1)?points.First():transform.position;
+        if (points.Count >= 2)
+        {
+            tail.right = points[1] - points[0];
+        }
+        else
+        {
+            tail.right = rb2d.linearVelocity;
+        }
     }
 }
