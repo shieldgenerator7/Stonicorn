@@ -9,6 +9,7 @@ public class SnakeController : MonoBehaviour
 {
     public float moveSpeed = 1;
     public float arriveThreshold = 0.1f;
+    public int maxPointCount = 4;
 
     [Header("Components")]
     public List<Transform> movePath;
@@ -91,7 +92,11 @@ public class SnakeController : MonoBehaviour
 
     void turn()
     {
-        points.Add( transform.position);
+        if (points.Count >= maxPointCount)
+        {
+            points.RemoveAt(0);
+        }
+        points.Add(transform.position);
     }
 
     void updateBody()
