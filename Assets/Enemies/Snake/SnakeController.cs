@@ -40,7 +40,7 @@ public class SnakeController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        TargetIndex = 0;
     }
 
     // Update is called once per frame
@@ -61,11 +61,11 @@ public class SnakeController : MonoBehaviour
         }
         if (transform.position.x != targetPos.x)
         {
-            rb2d.linearVelocity = Vector2.right * Mathf.Sign(targetPos.x - transform.position.x) * moveSpeed * Time.fixedDeltaTime;            
+            rb2d.linearVelocity = Vector2.right * Mathf.Sign(targetPos.x - transform.position.x) * moveSpeed;           
         }
         else
         {
-            rb2d.linearVelocity = Vector2.up * Mathf.Sign(targetPos.y - transform.position.y) * moveSpeed * Time.fixedDeltaTime;
+            rb2d.linearVelocity = Vector2.up * Mathf.Sign(targetPos.y - transform.position.y) * moveSpeed;
         }
     }
 }
