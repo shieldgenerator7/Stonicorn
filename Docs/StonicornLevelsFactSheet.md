@@ -64,13 +64,18 @@ Skins
 
 Physics Toys
 
+-   trampoline carrots
 
 Enemies
 
+-   Deer
+-   Snake
+-   Squirrel
 
 Obstacles
 
 -   vines
+-   flowers
 
 ## Yellow’s Tree
 
@@ -96,7 +101,12 @@ Skins
 
 Physics Toys
 
+-   bubbles
+
 Enemies
+
+-   Puffer Fish
+-   Jellyfish
 
 Obstacles
 
@@ -144,9 +154,19 @@ NPCs
 
 # Clouds
 
+Physics Toys
+
+-   hovercraft
+
+Enemies
+
+-   Goose
+
 Obstacles
 
 -   clouds
+-   bridges
+-   wind
 
 ## Nimbus’ Studio
 
