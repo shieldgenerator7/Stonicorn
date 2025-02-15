@@ -61,7 +61,7 @@ public class Character : MonoBehaviour, ISetupable
         int changedCount = 0;
         Character chr = this;
         DialogueTrigger dt = chr.GetComponent<DialogueTrigger>() ?? chr.GetComponentInChildren<DialogueTrigger>();
-        if (!dt.characters.Contains(chr.characterName))
+        if (!string.IsNullOrEmpty(chr.characterName) && !dt.characters.Contains(chr.characterName))
         {
             dt.characters.Add(chr.characterName);
             Debug.LogWarning($"Character {chr.gameObject.Name()} now has dialogue trigger set up!", chr);
