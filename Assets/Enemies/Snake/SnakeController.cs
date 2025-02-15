@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.U2D;
 using static UnityEngine.GraphicsBuffer;
@@ -11,6 +12,8 @@ public class SnakeController : MonoBehaviour
 
     [Header("Components")]
     public List<Transform> movePath;
+
+    public Transform tail;
 
 
 
@@ -24,7 +27,8 @@ public class SnakeController : MonoBehaviour
 
     private int targetIndex = 0;
     private Vector2 targetPos;
-    private List<Vector2> points;
+    private List<Vector2> points = new List<Vector2>();
+    private bool atXPos = false;
 
     public int TargetIndex
     {
@@ -32,6 +36,7 @@ public class SnakeController : MonoBehaviour
         set
         {
             targetIndex = Utility.loopValue(value,0, movePath.Count-1);
+            Debug.Log($"Snake: targetIndex: {targetIndex}");
             //TODO: account for if the transform moves after setting the targetPos?
             targetPos = movePath[targetIndex].position;
         }
@@ -41,6 +46,8 @@ public class SnakeController : MonoBehaviour
     void Start()
     {
         TargetIndex = 0;
+        //points.Add(transform.position);
+        turn();
     }
 
     // Update is called once per frame
@@ -53,20 +60,51 @@ public class SnakeController : MonoBehaviour
             Vector2 pos = transform.position;
             pos.x = targetPos.x;
             transform.position = pos;
+            if (!atXPos)
+            {
+                atXPos = true;
+                turn();
+            }
         }
         if (Mathf.Abs(targetPos.y - transform.position.y) <= arriveThreshold)
         {
             transform.position = targetPos;
             TargetIndex++;
+            if (atXPos)
+            {
+                atXPos = false;
+                turn();
+            }
         }
         if (Mathf.Abs(targetPos.x - transform.position.x) > arriveThreshold)
         {
-            rb2d.linearVelocity = Vector2.right * Mathf.Sign(targetPos.x - transform.position.x) * moveSpeed;           
+            rb2d.linearVelocity = Vector2.right * Mathf.Sign(targetPos.x - transform.position.x) * moveSpeed;
+            atXPos = false;
         }
         else
         {
             rb2d.linearVelocity = Vector2.up * Mathf.Sign(targetPos.y - transform.position.y) * moveSpeed;
         }
         transform.right = rb2d.linearVelocity;
+        updateBody();
+    }
+
+    void turn()
+    {
+        points.Add( transform.position);
+    }
+
+    void updateBody()
+    {
+        Spline spline = ssc.spline;
+        spline.Clear();
+        spline.InsertPointAt(0, transform.InverseTransformPoint(transform.position));
+        int i = 1;
+        points.ForEach(p =>
+        {
+            spline.InsertPointAt(i, transform.InverseTransformPoint(p));
+            i++;
+        });
+        tail.position = points.Last();
     }
 }
