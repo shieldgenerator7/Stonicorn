@@ -67,5 +67,6 @@ public class SnakeController : MonoBehaviour
         {
             rb2d.linearVelocity = Vector2.up * Mathf.Sign(targetPos.y - transform.position.y) * moveSpeed;
         }
+        transform.right = rb2d.linearVelocity;
     }
 }
