@@ -614,7 +614,7 @@ public class PlayerController : MonoBehaviour
 
     //Estimate the halfWidth
     [Initializer("_halfWidth")]
-    private float init__halfWidth => gameObject.getSize().magnitude / 2;
+    private float init__halfWidth => ((gameObject.getSize().x + gameObject.getSize().y) / 2)/2;
 
 #endif
 }
