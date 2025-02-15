@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ContinuallyCheckForDialogue : MonoBehaviour
 {
+    [AutoInitialize]
     public List<EventTrigger> triggers;
     public List<string> variablesToListenFor;
 

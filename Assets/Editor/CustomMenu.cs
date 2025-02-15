@@ -620,7 +620,6 @@ public class CustomMenu
                 checkForGroundLayerObjects,
                 checkTriggersAreNotSolid,
                 ensureNPCsHaveDialogueTriggers,
-                checkDialogueEvents,
             }
             .ConvertAll(func =>
             {
@@ -1166,24 +1165,6 @@ public class CustomMenu
             Debug.LogError($"There are {problemCount} characters with some setup problems!");
         }
         return changedCount > 0 || problemCount > 0;
-    }
-
-    [MenuItem("SG7/Build/Pre-Build/Check dialogue events")]
-    public static bool checkDialogueEvents()
-    {
-        int changeCount = 0;
-        GameObject.FindObjectsByType<ContinuallyCheckForDialogue>(FindObjectsSortMode.None).ToList()
-            .ForEach(ccfd =>
-            {
-                var triggers = ccfd.GetComponents<EventTrigger>().ToList();
-                if (ccfd.triggers.Count != triggers.Count)
-                {
-                    ccfd.triggers = triggers;
-                    changeCount++;
-                    Debug.LogWarning($"Populated triggers of ccfd {ccfd.name}. count: {ccfd.triggers.Count}", ccfd);
-                }
-            });
-        return changeCount > 0;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Check ISetupables")]
