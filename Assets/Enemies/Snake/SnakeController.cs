@@ -98,13 +98,11 @@ public class SnakeController : MonoBehaviour
     {
         Spline spline = ssc.spline;
         spline.Clear();
-        spline.InsertPointAt(0, transform.InverseTransformPoint(transform.position));
-        int i = 1;
         points.ForEach(p =>
         {
-            spline.InsertPointAt(i, transform.InverseTransformPoint(p));
-            i++;
+            spline.InsertPointAt(0, transform.InverseTransformPoint(p));
         });
-        tail.position = points.Last();
+        spline.InsertPointAt(0, transform.InverseTransformPoint(transform.position));
+        tail.position = points.First();
     }
 }

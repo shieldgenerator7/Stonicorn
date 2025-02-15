@@ -493,7 +493,7 @@ Transform:
   m_GameObject: {fileID: 7893607560265609401}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.97, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -550,7 +550,7 @@ SpriteShapeRenderer:
   m_Sprites:
   - {fileID: -3399037153431705778, guid: a8cbbed5413b6234cb9eef2a740c59b8, type: 3}
   m_LocalAABB:
-    m_Center: {x: 0, y: 0, z: 0}
+    m_Center: {x: -2, y: 0, z: 0}
     m_Extent: {x: 2, y: 0.1575, z: 0}
   m_SpriteSortPoint: 0
 --- !u!114 &7808980012574895600
@@ -568,21 +568,21 @@ MonoBehaviour:
   m_Spline:
     m_IsOpenEnded: 1
     m_ControlPoints:
-    - position: {x: -2, y: 0, z: 0}
+    - position: {x: -4, y: 0, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
       spriteIndex: 0
-      corner: 0
+      corner: 1
       m_CornerMode: 1
-    - position: {x: 2, y: 0, z: 0}
+    - position: {x: 0, y: 0, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
       spriteIndex: 0
-      corner: 0
+      corner: 1
       m_CornerMode: 1
   m_SpriteShape: {fileID: 11400000, guid: 60e12c7728f03e349800dcdc22ffecc3, type: 2}
   m_FillPixelPerUnit: 100
@@ -605,8 +605,8 @@ MonoBehaviour:
   m_Creator: {fileID: 0}
   m_Modifiers: []
   m_ColliderSegment:
-  - {x: -2, y: -0.00031499783}
-  - {x: 2, y: -0.00031499783}
+  - {x: -4, y: -0.00031499783}
+  - {x: 0, y: -0.00031499783}
   m_ShadowSegment: []
 --- !u!68 &1390464775761206807
 EdgeCollider2D:
@@ -645,8 +645,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -2, y: -0.00031499783}
-  - {x: 2, y: -0.00031499783}
+  - {x: -4, y: -0.00031499783}
+  - {x: 0, y: -0.00031499783}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
