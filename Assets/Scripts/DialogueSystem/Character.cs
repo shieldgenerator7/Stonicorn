@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, ISetupable
 {
     public string characterName;
 
@@ -42,4 +43,30 @@ public class Character : MonoBehaviour
             chr.transform.position,
             Managers.Player.transform.position
             ) <= 10);//dirty: hard coded range
+
+    public int checkForErrors()
+    {
+        int problemCount = 0;
+        DialogueTrigger dt = GetComponent<DialogueTrigger>() ?? GetComponentInChildren<DialogueTrigger>();
+        if (!dt)
+        {
+            Debug.LogError($"Character {gameObject.Name()} needs a DialogueTrigger!", this);
+            problemCount++;
+        }
+        return problemCount;
+    }
+
+    public int setup()
+    {
+        int changedCount = 0;
+        Character chr = this;
+        DialogueTrigger dt = chr.GetComponent<DialogueTrigger>() ?? chr.GetComponentInChildren<DialogueTrigger>();
+        if (!dt.characters.Contains(chr.characterName))
+        {
+            dt.characters.Add(chr.characterName);
+            Debug.LogWarning($"Character {chr.gameObject.Name()} now has dialogue trigger set up!", chr);
+            changedCount++;
+        }
+        return changedCount;
+    }
 }

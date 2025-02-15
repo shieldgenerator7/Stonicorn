@@ -619,7 +619,6 @@ public class CustomMenu
                 checkForIllegalPrefabOverrides,
                 checkForGroundLayerObjects,
                 checkTriggersAreNotSolid,
-                ensureNPCsHaveDialogueTriggers,
             }
             .ConvertAll(func =>
             {
@@ -1107,6 +1106,7 @@ public class CustomMenu
             typeof(GravityZone),
             typeof(EventTrigger),
             typeof(BoundsChecker),
+            typeof(DialogueTrigger),
         };
         typesList.ForEach(type =>
         {
@@ -1133,40 +1133,6 @@ public class CustomMenu
         }
 
         return problemCount > 0;
-    }
-
-
-    [MenuItem("SG7/Build/Pre-Build/Ensure NPCs have dialogue set up")]
-    public static bool ensureNPCsHaveDialogueTriggers()
-    {
-        int changedCount = 0;
-        int problemCount = 0;
-        GameObject.FindObjectsByType<Character>(FindObjectsSortMode.None).ToList()
-            .ForEach(chr =>
-            {
-                if (chr)
-                {
-                    DialogueTrigger dt = chr.GetComponent<DialogueTrigger>() ?? chr.GetComponentInChildren<DialogueTrigger>();
-                    if (!dt)
-                    {
-                        Debug.LogError($"Character {chr.gameObject.Name()} needs a DialogueTrigger!", chr);
-                        problemCount++;
-                        return;
-                    }
-                    if (!dt.characters.Contains(chr.characterName))
-                    {
-                        dt.characters.Add(chr.characterName);
-                        Debug.LogWarning($"Character {chr.gameObject.Name()} now has dialogue trigger set up!", chr);
-                        EditorUtility.SetDirty(dt);
-                        changedCount++;
-                    }
-                }
-            });
-        if (problemCount > 0)
-        {
-            Debug.LogError($"There are {problemCount} characters with some setup problems!");
-        }
-        return changedCount > 0 || problemCount > 0;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Check ISetupables")]
