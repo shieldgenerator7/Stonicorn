@@ -962,7 +962,10 @@ public class CustomMenu
             "spawnStateId",
             //Known Memory Objects
             "secretHiders",
+            //SnakeController
+            "movePath",
             //TEMP allowances
+            "m_Creator",
             "m_ConnectedRigidBody",
             "m_ConnectedAnchor",
             "m_Points",
