@@ -1098,7 +1098,7 @@ public class CustomMenu
         int problemCount = 0;
 
         //game objects in this list should NOT have any solid colliders
-        List<GameObject> goToCheck = new List<GameObject>();
+        List<MonoBehaviour> goToCheck = new List<MonoBehaviour>();
         List<Type> typesList = new List<Type>()
         {
             typeof(SceneLoader),
@@ -1110,16 +1110,18 @@ public class CustomMenu
         };
         typesList.ForEach(type =>
         {
-            goToCheck.AddRange(GameObject.FindObjectsByType(type, FindObjectsSortMode.None).ToList().ConvertAll(mb => ((MonoBehaviour)mb).gameObject));
+            goToCheck.AddRange(
+                GameObject.FindObjectsByType(type, FindObjectsInactive.Include, FindObjectsSortMode.None).Cast<MonoBehaviour>()
+                );
         });
 
-        goToCheck.ForEach(go =>
+        goToCheck.ForEach(mb =>
         {
-            bool anySolid = go.GetComponents<Collider2D>().Any(coll2d => !coll2d.isTrigger)
-                || go.GetComponentsInChildren<Collider2D>().Any(coll2d => !coll2d.isTrigger);
+            bool anySolid = mb.GetComponents<Collider2D>().Any(coll2d => !coll2d.isTrigger)
+                || mb.GetComponentsInChildren<Collider2D>().Any(coll2d => !coll2d.isTrigger);
             if (anySolid)
             {
-                Debug.LogError($"GameObject {go.Name()} has  solid colliders!", go);
+                Debug.LogError($"GameObject {mb.gameObject.Name()} ({mb.GetType().Name}) has solid colliders!", mb);
                 problemCount++;
             }
 
