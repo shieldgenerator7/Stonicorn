@@ -48,18 +48,18 @@ public class SnakeController : MonoBehaviour
     {
         //move head
         //TODO: make this work in a round world
-        if (Mathf.Sign(targetPos.x - transform.position.x) < arriveThreshold)
+        if (Mathf.Abs(targetPos.x - transform.position.x) <= arriveThreshold)
         {
             Vector2 pos = transform.position;
             pos.x = targetPos.x;
             transform.position = pos;
         }
-        if (Mathf.Sign(targetPos.y - transform.position.y) < arriveThreshold)
+        if (Mathf.Abs(targetPos.y - transform.position.y) <= arriveThreshold)
         {
             transform.position = targetPos;
             TargetIndex++;
         }
-        if (transform.position.x != targetPos.x)
+        if (Mathf.Abs(targetPos.x - transform.position.x) > arriveThreshold)
         {
             rb2d.linearVelocity = Vector2.right * Mathf.Sign(targetPos.x - transform.position.x) * moveSpeed;           
         }
