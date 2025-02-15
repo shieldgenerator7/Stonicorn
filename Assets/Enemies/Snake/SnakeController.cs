@@ -24,6 +24,9 @@ public class SnakeController : MonoBehaviour
 
     [AutoInitialize(SearchChildren =true), SerializeField, HideInInspector]
     private SpriteShapeController ssc;
+    [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
+    private EdgeCollider2D ec2d;
+
 
 
 
@@ -103,11 +106,17 @@ public class SnakeController : MonoBehaviour
     {
         Spline spline = ssc.spline;
         spline.Clear();
+        List<Vector2> ec2dpoints = new List<Vector2>();
         points.ForEach(p =>
         {
-            spline.InsertPointAt(0, transform.InverseTransformPoint(p));
+            Vector2 p1 = transform.InverseTransformPoint(p);
+            spline.InsertPointAt(0, p1);
+            ec2dpoints.Insert(0, p1);
         });
-        spline.InsertPointAt(0, transform.InverseTransformPoint(transform.position));
+        Vector2 p = transform.InverseTransformPoint(transform.position);
+        spline.InsertPointAt(0, p);
+        ec2dpoints.Insert(0, p);
+        ec2d.points = ec2dpoints.ToArray();
         head.position = transform.position;
         head.right = rb2d.linearVelocity;
         tail.position = (points.Count >= 1)?points.First():transform.position;
