@@ -13,6 +13,7 @@ public class SnakeController : MonoBehaviour
     [Header("Components")]
     public List<Transform> movePath;
 
+    public Transform head;
     public Transform tail;
 
 
@@ -85,7 +86,6 @@ public class SnakeController : MonoBehaviour
         {
             rb2d.linearVelocity = Vector2.up * Mathf.Sign(targetPos.y - transform.position.y) * moveSpeed;
         }
-        transform.right = rb2d.linearVelocity;
         updateBody();
     }
 
@@ -104,5 +104,7 @@ public class SnakeController : MonoBehaviour
         });
         spline.InsertPointAt(0, transform.InverseTransformPoint(transform.position));
         tail.position = points.First();
+        head.position = transform.position;
+        head.right = rb2d.linearVelocity;
     }
 }
