@@ -294,7 +294,7 @@ public class ElectricBeamAbility : PlayerAbility
             base.CurrentState = value;
             Activated = value.Bool("activated");
             TargetId = value.Int("targetId");
-            Charge = value.Int("charge");
+            Charge = value.Float("charge");
         }
     }
 }
