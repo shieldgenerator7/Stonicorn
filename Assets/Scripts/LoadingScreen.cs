@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -8,6 +10,7 @@ public class LoadingScreen : MonoBehaviour, ISetupable
 {
     public string sceneName;
     public float growSpeed = 0.5f;
+    public AssetReference testAssetRef;
 
     [AutoInitialize]
     public Camera initialCamera;
@@ -16,6 +19,7 @@ public class LoadingScreen : MonoBehaviour, ISetupable
 
     //Runtime vars
     private List<AsyncOperation> operations = new List<AsyncOperation>();
+    private AsyncOperationHandle addressableLoadOperation;
     private float targetFillAmount = 0;//the fill amount that Image.fillAmount should get to
     private bool finishedLoading = false;
     private bool finishedSplashScreen = false;
@@ -48,6 +52,18 @@ public class LoadingScreen : MonoBehaviour, ISetupable
 
     private void Update()
     {
+        //calculate targetFillAmount
+        float sum = 0;
+        int count = Mathf.Max(2, instance.operations.Count);
+        sum = operations.Sum(op => op.progress);
+        if (addressableLoadOperation.IsValid())
+        {
+            sum += addressableLoadOperation.PercentComplete;
+            count += 1;
+        }
+        targetFillAmount = sum / (float)count;
+
+        //update loading bars
         foreach (Image image in images)
         {
             if (image.fillAmount != targetFillAmount)
@@ -123,7 +139,22 @@ public class LoadingScreen : MonoBehaviour, ISetupable
             finishedSplashScreen = true;
             checkUnload();
             //Load start scenes
-            StartCoroutine(LoadSceneAsynchronously(sceneName));
+            LoadMainSceneAsynchronously(mainSceneName);
+
+            //Load addressable
+            addressableLoadOperation = Addressables.InitializeAsync();
+            addressableLoadOperation.Completed += (ao) =>
+            {
+                //Create new test object just to make sure it's working
+                var op = Addressables.InstantiateAsync(testAssetRef);
+                op.Completed += (operation) =>
+                {
+                    GameObject newGO = operation.Result;
+                    Destroy(newGO);
+                };
+            };
+
+            //enable
             this.enabled = true;
         }
     }
