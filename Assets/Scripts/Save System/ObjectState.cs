@@ -50,8 +50,17 @@ public class ObjectState
         Rigidbody2D rb2d = soi.Rigidbody2D;
         if (rb2d != null)
         {
-            rb2d.linearVelocity = velocity;
-            rb2d.angularVelocity = angularVelocity;
+            if (rb2d.bodyType != RigidbodyType2D.Static)
+            {
+                rb2d.linearVelocity = velocity;
+                rb2d.angularVelocity = angularVelocity;
+            }
+#if UNITY_EDITOR
+            else
+            {
+                Debug.LogWarning($"rb2d is not dynamic: {soi.TextLine}: bodyType: {rb2d.bodyType}", soi);
+            }
+#endif
         }
         foreach (SavableObject so in this.soList)
         {
