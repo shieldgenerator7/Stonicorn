@@ -174,7 +174,8 @@ public class SnakeController : SavableMonoBehaviour
         spline.Clear();
         List<Vector2> ec2dpoints = new List<Vector2>();
         int i = 0;
-        Points.ForEach(p =>
+        List<Vector2> plist = Points;
+        plist.ForEach(p =>
         {
             Vector2 p1 = transform.InverseTransformPoint(p);
             spline.InsertPointAt(i, p1);
@@ -189,9 +190,9 @@ public class SnakeController : SavableMonoBehaviour
 
         //tail
         tail.position = TailPos;
-        if (points.Count >= 2)
+        if (plist.Count >= 2)
         {
-            tail.right = points[1] - points[0];
+            tail.right = plist[1] - plist[0];
         }
         else
         {
