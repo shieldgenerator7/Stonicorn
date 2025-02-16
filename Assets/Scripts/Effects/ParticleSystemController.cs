@@ -8,7 +8,6 @@ public class ParticleSystemController : MonoBehaviour
 
     [AutoInitialize, SerializeField, HideInInspector]
     private ParticleSystem teleportParticles;
-    public bool dependsOnTeleportRange = false;//true if it changes size when the teleport range changes
 
     private bool activated = false;
 
@@ -16,15 +15,6 @@ public class ParticleSystemController : MonoBehaviour
     void Awake()
     {
         activateTeleportParticleSystem(false);
-    }
-    private void Start()
-    {
-        if (dependsOnTeleportRange)
-        {
-            PlayerController pc = Managers.Player;
-            pc.Teleport.onRangeChanged += setOuterRange;
-            setOuterRange(pc.Teleport.Range);
-        }
     }
 
     private void OnEnable()
@@ -80,24 +70,6 @@ public class ParticleSystemController : MonoBehaviour
             psmm.startLifetime = psmmc;
         }
     }
-    /// <summary>
-    /// For activating a radial system that emits outward (for the teleport range indicator)
-    /// </summary>
-    /// <param name="activate"></param>
-    /// <param name="radius">The radius to set to, 0 to do no change</param>
-    public void activateTeleportParticleSystem(bool activate, float radius)
-    {
-        this.activate(activate);
-        if (activate)
-        {
-            //Range
-            if (radius > 0)
-            {
-                setRange(radius, true);
-            }
-        }
-
-    }
     public void setRange(float newRange, bool andRate)
     {
         ParticleSystem.ShapeModule pssm = teleportParticles.shape;
@@ -117,14 +89,5 @@ public class ParticleSystemController : MonoBehaviour
                 }
             }
         }
-    }
-    /// <summary>
-    /// Sets the range so that the particles die when they reach the given newRange
-    /// </summary>
-    /// <param name="newRange">The range at which the particles will die</param>
-    public void setOuterRange(float newRange)
-    {
-        float distanceCoverable = teleportParticles.main.startLifetime.constant * teleportParticles.main.startSpeed.constant;
-        setRange(newRange - distanceCoverable, true);
     }
 }
