@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PowerManager : MonoBehaviour, ISetupable
 {
+    //TODO: make the usual running of this manager more efficient with Burst (parallel processing)
     private Dictionary<IPowerConduit, HashSet<IPowerConduit>> connectionMap
         = new Dictionary<IPowerConduit, HashSet<IPowerConduit>>();
     private List<IPowerConduit> powerConduits = new List<IPowerConduit>();

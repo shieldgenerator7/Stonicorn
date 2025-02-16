@@ -34,4 +34,6 @@ public interface IPowerConduit
     {
         get;
     }
+
+    //TODO: Vector2 Position property?
 }

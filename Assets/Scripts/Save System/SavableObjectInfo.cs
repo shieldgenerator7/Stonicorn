@@ -91,6 +91,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         //error: no prefabGUID
         string[] exceptionList = new string[]
         {
+            //TODO: solve this so this exception isnt needed
             "_NPC",
         };
         if (string.IsNullOrEmpty(PrefabGUID) && !exceptionList.Any(ex=>gameObject.name.Contains(ex)))

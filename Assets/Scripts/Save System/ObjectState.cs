@@ -6,9 +6,9 @@ using System;
 public class ObjectState
 {
     //Transform
-    public Vector3 position;//2017-10-10: actually stores the localPosition
+    public Vector3 position;///2017-10-10: actually stores the localPosition
     public Vector3 localScale;
-    public Quaternion rotation;//2017-10-10: actually stores the localRotation
+    public Quaternion rotation;///2017-10-10: actually stores the localRotation
     //RigidBody2D
     public Vector2 velocity;
     public float angularVelocity;

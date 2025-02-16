@@ -17,6 +17,7 @@ public class GroundChecker : SavableMonoBehaviour
     [AutoInitialize]
     public GravityAccepter Gravity;
 
+    //TODO: maybe rework this to not need a list, for efficiency reasons, if it doesnt actually use it in a way that needs a list
     private List<PlayerAbility> groundedAbilities = new List<PlayerAbility>();
     private List<PlayerAbility> groundedAbilitiesPrev = new List<PlayerAbility>();
 

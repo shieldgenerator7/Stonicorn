@@ -181,6 +181,7 @@ public class RewindManager : Manager
     public void LoadObjectAndChildren(SavableObjectInfo soi, int lastStateSeen)
     {
         LoadObject(soi, lastStateSeen);
+        //TODO: SOI childrenSOI list
         foreach (Transform t in soi.gameObject.transform)
         {
             if (t.gameObject.isSavable())

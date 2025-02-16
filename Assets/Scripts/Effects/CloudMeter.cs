@@ -16,6 +16,7 @@ public class CloudMeter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //TODO: refactor this so it doesnt have to be the player specifically
         Managers.Player.onAbilityActivated += abilityEnableChanged;
         airSliceAbility = Managers.Player.GetComponent<AirSliceAbility>();
         abilityEnableChanged(airSliceAbility, airSliceAbility.enabled);

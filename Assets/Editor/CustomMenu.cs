@@ -620,6 +620,8 @@ public class CustomMenu
                 checkForIllegalPrefabOverrides,
                 checkForGroundLayerObjects,
                 checkTriggersAreNotSolid,
+                //TODO: check to make sure all objects start in their given scene, and arent outside their scene's scene loader border
+                //TODO: make sure SavableMonoBehaviours all have [DisallowMultipleComponent] on them (ex: the time rewind system doesnt support two Hazards on a component)
             }
             .ConvertAll(func =>
             {
@@ -674,6 +676,7 @@ public class CustomMenu
     [MenuItem("SG7/Build/Pre-Build/Ensure unique object IDs among open scenes")]
     public static bool ensureUniqueObjectIDs()
     {
+        //TODO: order by parent-child SOIs, making sure that a parent always gets its Id before any of its children, accounting for parenting chains
         int nextID = 0;
         int changedIdCount = 0;
         const int SECTION_SIZE = 1000;
@@ -963,6 +966,7 @@ public class CustomMenu
             "spawnStateId",
             //Known Memory Objects
             "secretHiders",
+            //TODO: make a tag that allows a field to be OK to override
             //SnakeController
             "movePath",
             //TEMP allowances
@@ -1170,6 +1174,7 @@ public class CustomMenu
         return (changeCount, errorCount);
     }
 
+    //TODO: add a command to do this, but for a single game object / prefab
     [MenuItem("SG7/Build/Pre-Build/Check AutoInitialize Tags")]
     public static bool checkAutoInitializeTags()
     {
