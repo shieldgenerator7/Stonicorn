@@ -1100,32 +1100,16 @@ public class CustomMenu
     {
         int problemCount = 0;
 
-        //game objects in this list should NOT have any solid colliders
-        List<MonoBehaviour> goToCheck = new List<MonoBehaviour>();
-        List<Type> typesList = new List<Type>()
-        {
-            typeof(SceneLoader),
-            typeof(MusicZone),
-            typeof(HiddenArea),
-            typeof(GravityZone),
-            typeof(EventTrigger),
-            typeof(BoundsChecker),
-            typeof(DialogueTrigger),
-        };
-        typesList.ForEach(type =>
-        {
-            goToCheck.AddRange(
-                GameObject.FindObjectsByType(type, FindObjectsInactive.Include, FindObjectsSortMode.None).Cast<MonoBehaviour>()
-                );
-        });
-
-        goToCheck.ForEach(mb =>
+                GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(mb=>mb.GetType().GetCustomAttribute<NonSolid>() != null)
+            .ToList()
+                 .ForEach(mb =>
         {
             bool anySolid = mb.GetComponents<Collider2D>().Any(coll2d => !coll2d.isTrigger)
                 || mb.GetComponentsInChildren<Collider2D>().Any(coll2d => !coll2d.isTrigger);
             if (anySolid)
             {
-                Debug.LogError($"GameObject {mb.gameObject.Name()} ({mb.GetType().Name}) has solid colliders!", mb);
+                Debug.LogError($"GameObject {mb.gameObject.name} ({mb.GetType().Name}) has solid colliders!", mb);
                 problemCount++;
             }
 
