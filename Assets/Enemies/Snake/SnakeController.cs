@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 using static UnityEngine.GraphicsBuffer;
 
-public class SnakeController : MonoBehaviour
+public class SnakeController : SavableMonoBehaviour
 {
     public float moveSpeed = 1;
     public float arriveThreshold = 0.1f;
@@ -33,6 +33,7 @@ public class SnakeController : MonoBehaviour
     private int targetIndex = 0;
     private Vector2 targetPos;
     private List<Vector2> points = new List<Vector2>();
+
     private bool atXPos = false;
 
     public int TargetIndex
@@ -48,6 +49,11 @@ public class SnakeController : MonoBehaviour
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+        init();
+    }
+
+    public override void init()
     {
         TargetIndex = 0;
         turn();
@@ -130,6 +136,22 @@ public class SnakeController : MonoBehaviour
         else
         {
             tail.right = rb2d.linearVelocity;
+        }
+    }
+
+    public override SavableObject CurrentState { 
+        get => new SavableObject(this,
+            "targetPos", targetPos
+            )
+            .addList<Vector2>("points",points);
+        set {
+            targetPos = value.Vector2("targetPos");
+            targetIndex = movePath.IndexOf(movePath.FirstOrDefault(t=>(Vector2)t.position==targetPos));
+            if (targetIndex < 0)
+            {
+                targetIndex = 0;
+            }
+            points = value.List<Vector2>("points");
         }
     }
 }
