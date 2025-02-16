@@ -72,7 +72,7 @@ public class ObjectState
             }
             catch (InvalidCastException ice)
             {
-                Debug.Log($"InvalidCastException on go {soi.name} ({soi.Id}): {smb.GetType()}: {ice}");
+                Debug.LogError($"InvalidCastException on load! {soi.TextLine} - {smb.GetType()}: {ice}", smb);
             }
         }
     }
