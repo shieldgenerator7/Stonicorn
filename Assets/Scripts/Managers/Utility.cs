@@ -547,66 +547,6 @@ public static class Utility
         return str;
     }
 
-    /// <summary>
-    /// Instantiates a GameObject so that it can be rewound.
-    /// Only works on game objects that are "registered" to be rewound
-    /// </summary>
-    /// <param name="prefab"></param>
-    /// <returns></returns>
-    public static GameObject Instantiate(GameObject prefab)
-    {
-        return Instantiate(prefab, Vector2.zero);
-    }
-    public static GameObject Instantiate(GameObject prefab, Vector2 position)
-    {
-        //Checks to make sure it's rewindable
-        bool isContainer = prefab.containsSavables();
-        bool isSavable = prefab.isSavable();
-        if (!isContainer)
-        {
-            if (!isSavable)
-            {
-                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
-            }
-            bool hasInfo = prefab.GetComponent<ObjectInfo>();
-            if (!hasInfo)
-            {
-                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
-            }
-        }
-        //Instantiate
-        GameObject newObj = GameObject.Instantiate(prefab, position, Quaternion.identity);
-        int baseId = (int)System.DateTime.Now.Ticks;
-        string spawnTag = $"---{baseId}";
-        newObj.name += spawnTag;
-        if (isSavable)
-        {
-            SavableObjectInfo soi = newObj.GetComponent<SavableObjectInfo>();
-            soi.Id = getUniqueId(baseId, 0);
-            soi.spawnStateId = Managers.Rewind.GameStateId;
-            Managers.Object.addNewObject(soi);
-            Managers.Scene.registerObjectInScene(newObj);
-            Debug.Log($"Spawned object {newObj.Name()}", newObj);
-        }
-        //Container children
-        if (isContainer)
-        {
-            ISavableContainer container = newObj.GetComponent<ISavableContainer>();
-            int nextId = 1;
-            container.Savables.ForEach(savable =>
-            {
-                savable.name += spawnTag;
-                    savable.Id = getUniqueId(baseId, nextId);
-                    savable.spawnStateId = Managers.Rewind.GameStateId;
-                nextId++;
-                Managers.Object.addNewObject(savable);
-                Managers.Scene.registerObjectInScene(savable);
-            });
-            Debug.Log($"Spawned container {newObj.name}", newObj);
-        }
-        //Return spawned object
-        return newObj;
-    }
     static int getUniqueId(int baseId, int index)
         => Mathf.Abs(Mathf.Abs(baseId * 10) + index);
 
