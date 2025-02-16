@@ -254,7 +254,7 @@ public class WallClimbAbility : PlayerAbility
         }
         if (!tooClose)
         {
-            GameObject stickyPad = Utility.Instantiate(stickyPadPrefab);
+            GameObject stickyPad = Managers.Object.Instantiate(stickyPadPrefab);
             stickyPad.GetComponent<StickyPadChecker>().init(normal);
             stickyPad.transform.position = stickyPos;
             //Update Stats

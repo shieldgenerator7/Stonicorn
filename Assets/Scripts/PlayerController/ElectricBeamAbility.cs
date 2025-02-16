@@ -181,7 +181,7 @@ public class ElectricBeamAbility : PlayerAbility
         Vector2 startPos = transform.position;
         Vector2 endPos = Target.GameObject.transform.position;
         Vector2 dir = endPos - startPos;
-        GameObject newWire = Utility.Instantiate(wirePrefab);
+        GameObject newWire = Managers.Object.Instantiate(wirePrefab);
         newWire.transform.right = dir;
         newWire.transform.position = (startPos + endPos) / 2;
         SpriteRenderer sr = newWire.GetComponent<SpriteRenderer>();

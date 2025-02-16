@@ -149,7 +149,7 @@ public class AirSliceAbility : PlayerAbility
 
     void makeCloud(Vector2 oldPos)
     {
-        GameObject cloud = Utility.Instantiate(cloudPrefab);
+        GameObject cloud = Managers.Object.Instantiate(cloudPrefab);
         cloud.transform.position = oldPos;
         cloud.transform.up = -playerController.GravityAccepter.Gravity;
     }
