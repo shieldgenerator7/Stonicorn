@@ -391,6 +391,7 @@ public class CustomMenu
             {
                 Selection.activeGameObject = GameObject.FindAnyObjectByType<RulerDisplayer>().gameObject;
             }
+            callMerky();
         }
     }
 
