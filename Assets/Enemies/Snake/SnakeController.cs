@@ -32,7 +32,7 @@ public class SnakeController : SavableMonoBehaviour
 
     private int targetIndex = 0;
     private Vector2 targetPos;
-    private List<Vector2> points = new List<Vector2>();
+    private List<Vector2> points = new List<Vector2>();//world space coordinates of bending places of snake
 
     private bool atXPos = false;
 
@@ -47,16 +47,15 @@ public class SnakeController : SavableMonoBehaviour
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        init();
-    }
-
     public override void init()
     {
         TargetIndex = 0;
-        turn();
+        points.Clear();
+        for (int i = 0; i < ssc.spline.GetPointCount(); i++)
+        {
+            points.Add(transform.TransformPoint(ssc.spline.GetPosition(i)));
+        }
+        updateBody();
     }
 
     // Update is called once per frame
