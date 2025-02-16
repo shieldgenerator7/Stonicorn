@@ -144,11 +144,11 @@ public class ObjectManager : Manager, ISetting
     /// </summary>
     /// <param name="prefab"></param>
     /// <returns></returns>
-    public static GameObject Instantiate(GameObject prefab)
+    public GameObject Instantiate(GameObject prefab)
     {
         return Instantiate(prefab, Vector2.zero);
     }
-    public static GameObject Instantiate(GameObject prefab, Vector2 position)
+    public GameObject Instantiate(GameObject prefab, Vector2 position)
     {
         //Checks to make sure it's rewindable
         bool isContainer = prefab.containsSavables();
@@ -170,27 +170,32 @@ public class ObjectManager : Manager, ISetting
         int baseId = (int)System.DateTime.Now.Ticks;
         string spawnTag = $"---{baseId}";
         newObj.name += spawnTag;
+        int id = -1;
+        if (isSavable || isContainer)
+        {
+            id = data.claimNextId();
+        }
         if (isSavable)
         {
             SavableObjectInfo soi = newObj.GetComponent<SavableObjectInfo>();
-            soi.Id = getUniqueId(baseId, 0);
+            soi.Id = data.claimNextId();
             soi.spawnStateId = Managers.Rewind.GameStateId;
-            Managers.Object.addNewObject(soi);
+            addNewObject(soi);
             Managers.Scene.registerObjectInScene(newObj);
-            Debug.Log($"Spawned object {newObj.Name()}", newObj);
+            Debug.Log($"Spawned object {soi.TextLine}", newObj);
         }
         //Container children
         if (isContainer)
         {
             ISavableContainer container = newObj.GetComponent<ISavableContainer>();
-            int nextId = 1;
+            int nextId = id;
             container.Savables.ForEach(savable =>
             {
                 savable.name += spawnTag;
-                savable.Id = getUniqueId(baseId, nextId);
+                savable.Id = nextId;
                 savable.spawnStateId = Managers.Rewind.GameStateId;
                 nextId++;
-                Managers.Object.addNewObject(savable);
+                addNewObject(savable);
                 Managers.Scene.registerObjectInScene(savable);
             });
             Debug.Log($"Spawned container {newObj.name}", newObj);

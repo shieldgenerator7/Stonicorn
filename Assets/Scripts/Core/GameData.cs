@@ -28,6 +28,12 @@ public class GameData : ICloneable
     public Dictionary<int, int> objectSceneList = new Dictionary<int, int>();
 
 
+    public int claimNextId()
+    {
+        return savables.Keys.OrderBy(x => x).Last() + 1;
+    }
+
+
     public object Clone()
     {
         GameData gameData = new GameData();
