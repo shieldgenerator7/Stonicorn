@@ -967,6 +967,7 @@ public class CustomMenu
             "movePath",
             //TEMP allowances
             "m_Creator",
+            "length",
             "m_ConnectedRigidBody",
             "m_ConnectedAnchor",
             "m_Points",
