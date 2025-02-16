@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -8,12 +9,12 @@ using UnityEngine.UI;
 
 public class LoadingScreen : MonoBehaviour, ISetupable
 {
-    public string sceneName;
+    public string mainSceneName;
     public float growSpeed = 0.5f;
 
-    [AutoInitialize]
+    [AutoInitialize(SearchScene =true)]
     public Camera initialCamera;
-    [AutoInitialize]
+    [AutoInitialize(SearchScene = true)]
     public SplashScreenUpdater splashScreenUpdater;
 
     //Runtime vars
@@ -84,25 +85,11 @@ public class LoadingScreen : MonoBehaviour, ISetupable
     }
 
     //2019-01-09: copied from https://www.youtube.com/watch?v=YMj2qPq9CP8
-    static IEnumerator LoadSceneAsynchronously(string sceneName)
+    void LoadMainSceneAsynchronously(string mainSceneName)
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        operation.completed += instance.passActiveScene;
-        instance.operations.Add(operation);
-
-        float percentDone = 0;
-        while (percentDone < 1)
-        {
-            float sum = 0;
-            int count = Mathf.Max(2, instance.operations.Count);
-            foreach (AsyncOperation ao in instance.operations)
-            {
-                sum += ao.progress;
-            }
-            percentDone = sum / count;
-            instance.targetFillAmount = percentDone;
-            yield return null;
-        }
+        AsyncOperation operation = SceneManager.LoadSceneAsync(mainSceneName, LoadSceneMode.Additive);
+        operation.completed += (ao) => passActiveScene();
+        operations.Add(operation);        
     }
     public static void LoadScene(int sceneId)
     {
@@ -113,9 +100,9 @@ public class LoadingScreen : MonoBehaviour, ISetupable
             instance.operations.Add(operation);
         }
     }
-    void passActiveScene(AsyncOperation ao)
+    void passActiveScene()
     {
-        Scene mainScene = SceneManager.GetSceneByName(sceneName);
+        Scene mainScene = SceneManager.GetSceneByName(mainSceneName);
         if (mainScene.isLoaded)
         {
             SceneManager.SetActiveScene(mainScene);
@@ -137,6 +124,7 @@ public class LoadingScreen : MonoBehaviour, ISetupable
         {
             finishedSplashScreen = true;
             checkUnload();
+
             //Load start scenes
             LoadMainSceneAsynchronously(mainSceneName);
 
