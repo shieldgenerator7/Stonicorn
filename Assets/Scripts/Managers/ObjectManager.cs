@@ -97,7 +97,7 @@ public class ObjectManager : Manager, ISetting
                     SavableObjectInfo soi = newGO.GetComponent<SavableObjectInfo>();
                     SavableObjectInfoData soid = data.knownObjects.Find(soid => soid.id == goId);
                     soi.Data = soid;
-                    addObject(newGO);
+                    addObject(soi);
                     foreach (Transform t in newGO.transform)
                     {
                         if (t.gameObject.isSavable())
@@ -137,6 +137,74 @@ public class ObjectManager : Manager, ISetting
 
     public bool RecreatingObjects => recreateQueue.Count > 0;
 
+
+    /// <summary>
+    /// Instantiates a GameObject so that it can be rewound.
+    /// Only works on game objects that are "registered" to be rewound
+    /// </summary>
+    /// <param name="prefab"></param>
+    /// <returns></returns>
+    public GameObject Instantiate(GameObject prefab)
+    {
+        return Instantiate(prefab, Vector2.zero);
+    }
+    public GameObject Instantiate(GameObject prefab, Vector2 position)
+    {
+        //Checks to make sure it's rewindable
+        bool isContainer = prefab.containsSavables();
+        bool isSavable = prefab.isSavable();
+        if (!isContainer)
+        {
+            if (!isSavable)
+            {
+                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
+            }
+            bool hasInfo = prefab.GetComponent<ObjectInfo>();
+            if (!hasInfo)
+            {
+                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
+            }
+        }
+        //Instantiate
+        GameObject newObj = GameObject.Instantiate(prefab, position, Quaternion.identity);
+        int baseId = (int)System.DateTime.Now.Ticks;
+        string spawnTag = $"---{baseId}";
+        newObj.name += spawnTag;
+        int id = -1;
+        if (isSavable || isContainer)
+        {
+            id = data.claimNextId();
+        }
+        if (isSavable)
+        {
+            SavableObjectInfo soi = newObj.GetComponent<SavableObjectInfo>();
+            soi.Id = data.claimNextId();
+            soi.spawnStateId = Managers.Rewind.GameStateId;
+            addNewObject(soi);
+            Managers.Scene.registerObjectInScene(newObj);
+            Debug.Log($"Spawned object {soi.TextLine}", newObj);
+        }
+        //Container children
+        if (isContainer)
+        {
+            ISavableContainer container = newObj.GetComponent<ISavableContainer>();
+            int nextId = id;
+            container.Savables.ForEach(savable =>
+            {
+                savable.name += spawnTag;
+                savable.Id = nextId;
+                savable.spawnStateId = Managers.Rewind.GameStateId;
+                nextId++;
+                addNewObject(savable);
+                Managers.Scene.registerObjectInScene(savable);
+            });
+            Debug.Log($"Spawned container {newObj.name}", newObj);
+        }
+        //Return spawned object
+        return newObj;
+    }
+
+
     public override SettingObject Setting
     {
         get => new SettingObject(ID).addList(
@@ -152,53 +220,40 @@ public class ObjectManager : Manager, ISetting
     /// <summary>
     /// Adds a newly created object to the list
     /// </summary>
-    /// <param name="go"></param>
-    public void addNewObject(GameObject go)
+    /// <param name="soi"></param>
+    public void addNewObject(SavableObjectInfo soi)
     {
-        SavableObjectInfoData soid = go.GetComponent<SavableObjectInfo>().Data;
+        SavableObjectInfoData soid = soi.Data;
         if (!data.knownObjects.Contains(soid))
         {
             data.knownObjects.Add(soid);
         }
-        addObject(go);
+        addObject(soi);
     }
 
     /// <summary>
     /// Adds an object to list of objects that have state to save
     /// </summary>
     /// <param name="go">The GameObject to add to the list</param>
-    public void addObject(GameObject go)
+    public void addObject(SavableObjectInfo soi)
     {
         //
         //Error checking
         //
 
-        //If go is null
-        if (go == null)
-        {
-            throw new System.ArgumentNullException($"GameObject {go} cannot be null!");
-        }
 
-        int key = go.getKey();
+        int key = soi.Id;
 
         //If the key is invalid,
         if (key < 0)
         {
             Debug.LogError(
-                $"GameObject {go.Name()} has an invalid key: {key}!",
-                go
+                $"GameObject {soi.TextLine} has an invalid key: {key}!",
+                soi
                 );
             return;
         }
 
-        //If the game object doesn't have any state to save...
-        if (!go.isSavable())
-        {
-            throw new System.ArgumentException(
-                $"GameObject {go.Name()} doesn't have any state to save! "
-                + "Check to make sure it has a Rigidbody2D or a SavableMonoBehaviour."
-                );
-        }
         //If the game object's name is already in the dictionary,
         if (data.gameObjects.ContainsKey(key))
         {
@@ -335,7 +390,7 @@ public class ObjectManager : Manager, ISetting
     /// <param name="go">The GameObject to remove from the list</param>
     private void removeObject(GameObject go)
     {
-        data.gameObjects.Remove(go.getKey());
+        data.savables.Remove(soi.Id);
         //If go is not null and has children,
         if (go && go.transform.childCount > 0)
         {

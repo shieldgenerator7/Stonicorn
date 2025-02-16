@@ -180,8 +180,8 @@ public class RewindManager : Manager
 
     public void LoadObjectAndChildren(GameObject go, int lastStateSeen)
     {
-        LoadObject(go, lastStateSeen);
-        foreach (Transform t in go.transform)
+        LoadObject(soi, lastStateSeen);
+        foreach (Transform t in soi.gameObject.transform)
         {
             if (t.gameObject.isSavable())
             {

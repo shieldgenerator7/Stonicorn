@@ -619,8 +619,6 @@ public class CustomMenu
                 checkForIllegalPrefabOverrides,
                 checkForGroundLayerObjects,
                 checkTriggersAreNotSolid,
-                ensureNPCsHaveDialogueTriggers,
-                checkDialogueEvents,
             }
             .ConvertAll(func =>
             {
@@ -964,7 +962,10 @@ public class CustomMenu
             "spawnStateId",
             //Known Memory Objects
             "secretHiders",
+            "movePath",
             //TEMP allowances
+            "m_Creator",
+            "length",
             "m_ConnectedRigidBody",
             "m_ConnectedAnchor",
             "m_Points",
@@ -1098,26 +1099,13 @@ public class CustomMenu
     {
         int problemCount = 0;
 
-        //game objects in this list should NOT have any solid colliders
-        List<GameObject> goToCheck = new List<GameObject>();
-        List<Type> typesList = new List<Type>()
+                GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(mb=>mb.GetType().GetCustomAttribute<NonSolid>() != null)
+            .ToList()
+                 .ForEach(mb =>
         {
-            typeof(SceneLoader),
-            typeof(MusicZone),
-            typeof(HiddenArea),
-            typeof(GravityZone),
-            typeof(EventTrigger),
-            typeof(BoundsChecker),
-        };
-        typesList.ForEach(type =>
-        {
-            goToCheck.AddRange(GameObject.FindObjectsByType(type, FindObjectsSortMode.None).ToList().ConvertAll(mb => ((MonoBehaviour)mb).gameObject));
-        });
-
-        goToCheck.ForEach(go =>
-        {
-            bool anySolid = go.GetComponents<Collider2D>().Any(coll2d => !coll2d.isTrigger)
-                || go.GetComponentsInChildren<Collider2D>().Any(coll2d => !coll2d.isTrigger);
+            bool anySolid = mb.GetComponents<Collider2D>().Any(coll2d => !coll2d.isTrigger)
+                || mb.GetComponentsInChildren<Collider2D>().Any(coll2d => !coll2d.isTrigger);
             if (anySolid)
             {
                 Debug.LogError($"GameObject {go.Name()} has  solid colliders!", go);
@@ -1132,58 +1120,6 @@ public class CustomMenu
         }
 
         return problemCount > 0;
-    }
-
-
-    [MenuItem("SG7/Build/Pre-Build/Ensure NPCs have dialogue set up")]
-    public static bool ensureNPCsHaveDialogueTriggers()
-    {
-        int changedCount = 0;
-        int problemCount = 0;
-        GameObject.FindObjectsByType<Character>(FindObjectsSortMode.None).ToList()
-            .ForEach(chr =>
-            {
-                if (chr)
-                {
-                    DialogueTrigger dt = chr.GetComponent<DialogueTrigger>() ?? chr.GetComponentInChildren<DialogueTrigger>();
-                    if (!dt)
-                    {
-                        Debug.LogError($"Character {chr.gameObject.Name()} needs a DialogueTrigger!", chr);
-                        problemCount++;
-                        return;
-                    }
-                    if (!dt.characters.Contains(chr.characterName))
-                    {
-                        dt.characters.Add(chr.characterName);
-                        Debug.LogWarning($"Character {chr.gameObject.Name()} now has dialogue trigger set up!", chr);
-                        EditorUtility.SetDirty(dt);
-                        changedCount++;
-                    }
-                }
-            });
-        if (problemCount > 0)
-        {
-            Debug.LogError($"There are {problemCount} characters with some setup problems!");
-        }
-        return changedCount > 0 || problemCount > 0;
-    }
-
-    [MenuItem("SG7/Build/Pre-Build/Check dialogue events")]
-    public static bool checkDialogueEvents()
-    {
-        int changeCount = 0;
-        GameObject.FindObjectsByType<ContinuallyCheckForDialogue>(FindObjectsSortMode.None).ToList()
-            .ForEach(ccfd =>
-            {
-                var triggers = ccfd.GetComponents<EventTrigger>().ToList();
-                if (ccfd.triggers.Count != triggers.Count)
-                {
-                    ccfd.triggers = triggers;
-                    changeCount++;
-                    Debug.LogWarning($"Populated triggers of ccfd {ccfd.name}. count: {ccfd.triggers.Count}", ccfd);
-                }
-            });
-        return changeCount > 0;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Check ISetupables")]

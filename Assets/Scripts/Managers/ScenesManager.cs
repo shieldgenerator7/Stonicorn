@@ -442,17 +442,6 @@ public class ScenesManager : Manager
         {
             if (go.transform.parent != null)
             {
-                Rigidbody2D rb2d = go.GetComponent<Rigidbody2D>();
-                if (!rb2d)
-                {
-                    rb2d = go.GetComponentInParent<Rigidbody2D>();
-                }
-                if (rb2d)
-                {
-                    go = rb2d.gameObject;
-                }
-                if (go.transform.parent != null)
-                {
                     go.transform.SetParent(null);
                 }
             }
