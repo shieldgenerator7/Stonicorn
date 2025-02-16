@@ -10,6 +10,7 @@ public class SnakeController : SavableMonoBehaviour
     public float moveSpeed = 1;
     public float arriveThreshold = 0.1f;
     public int maxPointCount = 4;
+    public float length = 10;
 
     [Header("Components")]
     public List<Transform> movePath;
@@ -44,6 +45,67 @@ public class SnakeController : SavableMonoBehaviour
             targetIndex = Utility.loopValue(value,0, movePath.Count-1);
             //TODO: account for if the transform moves after setting the targetPos?
             targetPos = movePath[targetIndex].position;
+        }
+    }
+
+    public Vector2 HeadPos => transform.position;
+    public Vector2 TailPos
+    {
+        get
+        {
+            float lenSoFar = 0;
+            lenSoFar += Vector2.Distance(HeadPos, points.Last());
+            //if long enough with only first point
+            if (lenSoFar >= length)
+            {
+                return (points.Last() - HeadPos).normalized * length + HeadPos;
+            }
+            //if long enough with several points
+            for (int i = points.Count - 1; i >= 1; i--)
+            {
+                float prev = lenSoFar;
+                lenSoFar += Vector2.Distance(points[i - 1], points[i]);
+                if (lenSoFar >= length)
+                {
+                    return (points[i - 1] - points[i]).normalized * (length - prev) + points[i];
+                }
+            }
+            //not long enough even with all points
+            return points[0];
+        }
+    }
+    public List<Vector2> Points
+    {
+        get
+        {
+            float lenSoFar = 0;
+            List<Vector2> plist = new List<Vector2>();
+            plist.Insert(0, HeadPos);
+            lenSoFar += Vector2.Distance(HeadPos, points.Last());
+            plist.Insert(0, points.Last());
+            //if long enough with only first point
+            if (lenSoFar >= length)
+            {
+                plist.Insert(0,(points.Last() - HeadPos).normalized * length + HeadPos);
+                return plist;
+            }
+            //if long enough with several points
+            for (int i = points.Count - 1; i >= 1; i--)
+            {
+                float prev = lenSoFar;
+                lenSoFar += Vector2.Distance(points[i - 1], points[i]);
+                if (lenSoFar >= length)
+                {
+                    plist.Insert(0,(points[i - 1] - points[i]).normalized * (length - prev) + points[i]);
+                    return plist;
+                }
+                else
+                {
+                    plist.Insert(0,points[i - 1]);
+                }
+            }
+            //not long enough even with all points
+            return plist;
         }
     }
 
@@ -112,24 +174,21 @@ public class SnakeController : SavableMonoBehaviour
         spline.Clear();
         List<Vector2> ec2dpoints = new List<Vector2>();
         int i = 0;
-        points.ForEach(p =>
+        Points.ForEach(p =>
         {
             Vector2 p1 = transform.InverseTransformPoint(p);
             spline.InsertPointAt(i, p1);
             ec2dpoints.Insert(i, p1);
             i++;
         });
-        Vector2 p = transform.InverseTransformPoint(transform.position);
-        spline.InsertPointAt(i, p);
-        ec2dpoints.Insert(i, p);
         ec2d.points = ec2dpoints.ToArray();
 
         //head
-        head.position = transform.position;
+        head.position = HeadPos;
         head.right = rb2d.linearVelocity;
 
         //tail
-        tail.position = (points.Count >= 1)?points.First():transform.position;
+        tail.position = TailPos;
         if (points.Count >= 2)
         {
             tail.right = points[1] - points[0];
