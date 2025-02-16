@@ -38,7 +38,7 @@ public class Fader : MonoBehaviour, ISetupable
 
     [SerializeField, HideInInspector]
     private List<Component> srs = new List<Component>();
-    [AutoInitialize(SearchChildren = true, AllowUnfound =true), SerializeField, HideInInspector]
+    [AutoInitialize(SearchChildren = true, AllowUnfound = true), SerializeField, HideInInspector]
     private List<Collider2D> coll2DList = new List<Collider2D>();
     private float startTime;
     [SerializeField, HideInInspector]
@@ -67,7 +67,7 @@ public class Fader : MonoBehaviour, ISetupable
         if (!presetup)
         {
             setup();
-            isEffectOnly= initIsEffectOnly();
+            isEffectOnly = initIsEffectOnly();
         }
     }
 
@@ -128,7 +128,7 @@ public class Fader : MonoBehaviour, ISetupable
                         SavableObjectInfo soi = gameObject.GetComponent<SavableObjectInfo>();
                         if (soi)
                         {
-                        Managers.Object.destroyObject(soi);
+                            Managers.Object.destroyObject(soi);
                         }
                         else
                         {

@@ -55,7 +55,7 @@ public class SnailController : Hazard
 
     [Header("Components")]
     public Collider2D bottomDetector;//used to make sure the snail is at the right orientation before coming out
-    [AutoInitialize(SearchChildren = true), SerializeField,HideInInspector]
+    [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
     private Animator animator;
     [AutoInitialize, SerializeField, HideInInspector]
     private GroundChecker ground;

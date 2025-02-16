@@ -8,7 +8,7 @@ public class DistanceYTimer : Timer
     public Transform timerObject;
     public Transform targetObject;
 
-    [AutoInitialize(Container ="timerObject"),SerializeField,HideInInspector]
+    [AutoInitialize(Container = "timerObject"), SerializeField, HideInInspector]
     private Rigidbody2D rb2dTimer;
 
     [SerializeField, HideInInspector]

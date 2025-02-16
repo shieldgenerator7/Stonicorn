@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
     [AutoInitialize, SerializeField, HideInInspector]
     private List<PlayerAbility> playerAbilities;
-    public List<PlayerAbility > Abilities => playerAbilities;
+    public List<PlayerAbility> Abilities => playerAbilities;
 
     /// <summary>
     /// Returns a list of active abilities
@@ -614,7 +614,7 @@ public class PlayerController : MonoBehaviour
 
     //Estimate the halfWidth
     [Initializer("_halfWidth")]
-    private float init__halfWidth => ((gameObject.getSize().x + gameObject.getSize().y) / 2)/2;
+    private float init__halfWidth => ((gameObject.getSize().x + gameObject.getSize().y) / 2) / 2;
 
 #endif
 }

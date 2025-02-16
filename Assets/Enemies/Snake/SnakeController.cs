@@ -25,7 +25,7 @@ public class SnakeController : SavableMonoBehaviour
     [AutoInitialize, SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
 
-    [AutoInitialize(SearchChildren =true), SerializeField, HideInInspector]
+    [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
     private SpriteShapeController ssc;
     [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
     private EdgeCollider2D ec2d;
@@ -44,7 +44,7 @@ public class SnakeController : SavableMonoBehaviour
         get => targetIndex;
         set
         {
-            targetIndex = Utility.loopValue(value,0, movePath.Count-1);
+            targetIndex = Utility.loopValue(value, 0, movePath.Count - 1);
             //TODO: account for if the transform moves after setting the targetPos?
             targetPos = movePath[targetIndex].position;
         }
@@ -89,7 +89,7 @@ public class SnakeController : SavableMonoBehaviour
             //if long enough with only first point
             if (lenSoFar >= length)
             {
-                plist.Insert(0,(points.Last() - HeadPos).normalized * length + HeadPos);
+                plist.Insert(0, (points.Last() - HeadPos).normalized * length + HeadPos);
                 return plist;
             }
             //if long enough with several points
@@ -104,7 +104,7 @@ public class SnakeController : SavableMonoBehaviour
                 }
                 else
                 {
-                    plist.Insert(0,points[i - 1]);
+                    plist.Insert(0, points[i - 1]);
                 }
             }
             //not long enough even with all points
@@ -203,14 +203,16 @@ public class SnakeController : SavableMonoBehaviour
         }
     }
 
-    public override SavableObject CurrentState { 
+    public override SavableObject CurrentState
+    {
         get => new SavableObject(this,
             "targetPos", targetPos
             )
-            .addList<Vector2>("points",points);
-        set {
+            .addList<Vector2>("points", points);
+        set
+        {
             targetPos = value.Vector2("targetPos");
-            targetIndex = movePath.IndexOf(movePath.FirstOrDefault(t=>(Vector2)t.position==targetPos));
+            targetIndex = movePath.IndexOf(movePath.FirstOrDefault(t => (Vector2)t.position == targetPos));
             if (targetIndex < 0)
             {
                 targetIndex = 0;

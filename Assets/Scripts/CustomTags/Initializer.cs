@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
-public class Initializer:Attribute
+public class Initializer : Attribute
 {
     //the name of the variable that will be initialized by the return value of this method
     public string name;

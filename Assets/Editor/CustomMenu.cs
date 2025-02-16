@@ -1105,20 +1105,20 @@ public class CustomMenu
     {
         int problemCount = 0;
 
-                GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-            .Where(mb=>mb.GetType().GetCustomAttribute<NonSolid>() != null)
-            .ToList()
-                 .ForEach(mb =>
-        {
-            bool anySolid = mb.GetComponents<Collider2D>().Any(coll2d => !coll2d.isTrigger)
-                || mb.GetComponentsInChildren<Collider2D>().Any(coll2d => !coll2d.isTrigger);
-            if (anySolid)
-            {
-                Debug.LogError($"GameObject {mb.gameObject.name} ({mb.GetType().Name}) has solid colliders!", mb);
-                problemCount++;
-            }
+        GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+    .Where(mb => mb.GetType().GetCustomAttribute<NonSolid>() != null)
+    .ToList()
+         .ForEach(mb =>
+{
+    bool anySolid = mb.GetComponents<Collider2D>().Any(coll2d => !coll2d.isTrigger)
+        || mb.GetComponentsInChildren<Collider2D>().Any(coll2d => !coll2d.isTrigger);
+    if (anySolid)
+    {
+        Debug.LogError($"GameObject {mb.gameObject.name} ({mb.GetType().Name}) has solid colliders!", mb);
+        problemCount++;
+    }
 
-        });
+});
 
         if (problemCount > 0)
         {
@@ -1430,7 +1430,7 @@ public class CustomMenu
 
         //Initializer Methods
         methods
-            .Where(method => method.GetCustomAttribute<Initializer>()!= null
+            .Where(method => method.GetCustomAttribute<Initializer>() != null
     )
             .OrderBy(property => property.GetCustomAttribute<Initializer>().order)
             .ToList()
@@ -1447,17 +1447,17 @@ public class CustomMenu
                 if (field == null)
                 {
                     Type type = mb.GetType();
-                    while(type != TYPE_MONOBEHAVIOUR && field == null)
+                    while (type != TYPE_MONOBEHAVIOUR && field == null)
                     {
                         field = type.GetField(fieldName, bindingFlags);
-                        type=type.BaseType;
+                        type = type.BaseType;
                     }
                 }
 
                 //error checking
                 if (field == null)
                 {
-                    Debug.LogError($"Can't find field of name {init.name}! class: {className}",mb);
+                    Debug.LogError($"Can't find field of name {init.name}! class: {className}", mb);
                     errors++;
                     return;
                 }
@@ -1478,7 +1478,7 @@ public class CustomMenu
 
                 //processing
                 object value = field.GetValue(mb);
-                object result = method.Invoke(mb,null);
+                object result = method.Invoke(mb, null);
                 //Check to make sure it's in the same scene, if applicable
                 if (result != null && result.GetType().IsSubclassOf(typeof(Component)))
                 {
@@ -1492,9 +1492,9 @@ public class CustomMenu
                     }
                 }
                 //
-                if (!object.Equals(value,result))
+                if (!object.Equals(value, result))
                 {
-                    field.SetValue (mb, result);
+                    field.SetValue(mb, result);
                     Debug.LogWarning($"Initialized variable using {className}.{method.Name}: {field.Name}:{fieldType} = {value} -> {result}. go: {mb.gameObject.name}", mb);
                     changes++;
                 }
@@ -1503,7 +1503,7 @@ public class CustomMenu
         //Initializer Properties
         properties
             .Where(property => property.GetCustomAttribute<Initializer>() != null)
-            .OrderBy(property=> property.GetCustomAttribute<Initializer>().order)
+            .OrderBy(property => property.GetCustomAttribute<Initializer>().order)
             .ToList()
             .ForEach(property =>
             {

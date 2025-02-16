@@ -285,8 +285,8 @@ public static class Utility
         {
             Collider2D coll2d =
                 go.GetComponents<Collider2D>()
-                    .Where(coll2d=>!coll2d.isTrigger)
-                    .FirstOrDefault() 
+                    .Where(coll2d => !coll2d.isTrigger)
+                    .FirstOrDefault()
                 ?? go.GetComponent<Collider2D>();
             if (coll2d)
             {
@@ -374,8 +374,9 @@ public static class Utility
 
     public static string Name(this GameObject go)
     {
-        try { 
-        return $"{go.name} ({go.getKey()})";
+        try
+        {
+            return $"{go.name} ({go.getKey()})";
         }
         catch (Exception)
         {

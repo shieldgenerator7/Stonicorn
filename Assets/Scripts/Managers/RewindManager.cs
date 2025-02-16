@@ -19,7 +19,7 @@ public class RewindManager : Manager
     private float rewindSpeedFactor = 1;
     public float RewindSpeedFactor
     {
-        get=> rewindSpeedFactor;
+        get => rewindSpeedFactor;
         set
         {
             rewindSpeedFactor = value;

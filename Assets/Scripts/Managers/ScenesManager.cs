@@ -320,7 +320,7 @@ public class ScenesManager : Manager
 
     public void registerObjectInScene(SavableObjectInfo soi)
     {
-        
+
         if (!soi)
         {
             return;
@@ -350,13 +350,13 @@ public class ScenesManager : Manager
             sceneId = data.objectSceneList[soi.Id];
         }
         SceneLoader sl = getSceneLoader(sceneId);
-            //And it's already in the right scene,
-            if (sl && sl.overlapsPosition(soi.gameObject))
-            {
-                //Reregister but don't move it
-                registerObjectInScene(soi, scene);
-                return;
-            }
+        //And it's already in the right scene,
+        if (sl && sl.overlapsPosition(soi.gameObject))
+        {
+            //Reregister but don't move it
+            registerObjectInScene(soi, scene);
+            return;
+        }
         //Else find the scene it should be in
         SceneLoader loader = sceneLoaders.Find(sl => sl.overlapsPosition(soi.gameObject));
         if (!loader)
@@ -368,7 +368,7 @@ public class ScenesManager : Manager
         {
             //just don't process it
             Debug.LogWarning(
-                $"Can't find a scene for object {soi.TextLine} ({objectId}) at position {soi.transform.position} ({((Vector2)soi.transform.position-Vector2.zero).magnitude} from center)",
+                $"Can't find a scene for object {soi.TextLine} ({objectId}) at position {soi.transform.position} ({((Vector2)soi.transform.position - Vector2.zero).magnitude} from center)",
                 soi
                 );
             return;
@@ -482,15 +482,15 @@ public class ScenesManager : Manager
             if (go.transform.parent != null)
             {
                 //TODO: look out for SOI with a parent SOI
-                    go.transform.SetParent(null);
+                go.transform.SetParent(null);
             }
             if (go.scene != scene)
             {
                 if (scene.isLoaded)
                 {
-                Debug.Log($"Moving {soi.TextLine} into scene {scene.Name()}", go);
-                SceneManager.MoveGameObjectToScene(go, scene);
-                Debug.Log($"Moved {soi.TextLine} is now in scene {go.scene.Name()}", go);
+                    Debug.Log($"Moving {soi.TextLine} into scene {scene.Name()}", go);
+                    SceneManager.MoveGameObjectToScene(go, scene);
+                    Debug.Log($"Moved {soi.TextLine} is now in scene {go.scene.Name()}", go);
                 }
                 else
                 {

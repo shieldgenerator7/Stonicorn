@@ -102,7 +102,7 @@ public class CloudMoverManager : MonoBehaviour
                 .ConvertAll(cm => new float2(cm.transform.position.x, cm.transform.position.y))
                 .ToNativeArray(Allocator.Persistent);
         }
-        catch(MissingReferenceException)
+        catch (MissingReferenceException)
         {
             Debug.Log("Cant access missing reference for a cloud mover, updating list...");
             populateCloudMovers();
