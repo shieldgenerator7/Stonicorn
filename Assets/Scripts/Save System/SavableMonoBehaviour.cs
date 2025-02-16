@@ -4,6 +4,10 @@ using UnityEngine;
 
 public abstract class SavableMonoBehaviour : MonoBehaviour
 {
+    [AutoInitialize, SerializeField, HideInInspector]
+    private SavableObjectInfo soi;
+    protected SavableObjectInfo SavableObjectInfo => soi;
+
     public abstract void init();
 
     /// <summary>

@@ -5515,6 +5515,7 @@ MonoBehaviour:
   gravityScale: 9.81
   mainGravityZone: 1
   radialGravity: 1
+  gravityVector: {x: 0, y: 0}
   coll2d: {fileID: 0}
 --- !u!58 &709419340
 CircleCollider2D:
@@ -26441,6 +26442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea33f5a643cb66049881ac8184bb1226, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 0}
   time: 0
   endGameTimer: {fileID: 1786363954}
   slowTimeSpeed: 0.2
@@ -26456,6 +26458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d2a4ac25e10c74297cf34a0a03f4bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 0}
   events: []
 --- !u!114 &1786363957
 MonoBehaviour:
@@ -26539,6 +26542,7 @@ MonoBehaviour:
   demoModeManager: {fileID: 0}
   powerManager: {fileID: 0}
   playerController: {fileID: 0}
+  playerSingletonObjectInfo: {fileID: 0}
   playerRewindController: {fileID: 0}
   playerPilotController: {fileID: 0}
   cameraController: {fileID: 0}

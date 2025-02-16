@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[NonSolid]
 public class BoundsChecker : MonoBehaviour
 {
 

@@ -89,6 +89,7 @@ MonoBehaviour:
   demoModeManager: {fileID: 5270741036896818801}
   powerManager: {fileID: 8527496253138998994}
   playerController: {fileID: 0}
+  playerSingletonObjectInfo: {fileID: 0}
   playerRewindController: {fileID: 0}
   playerPilotController: {fileID: 0}
   cameraController: {fileID: 0}
@@ -180,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea33f5a643cb66049881ac8184bb1226, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 4795780357477204615}
   time: 0
   endGameTimer: {fileID: 6020679409768259350}
   slowTimeSpeed: 0.2
@@ -329,6 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4104680f2a35e8f48a03dcbdc51d3686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  electricBeamAbility: {fileID: 0}
 --- !u!114 &4795780357477204615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,3 +424,5 @@ MonoBehaviour:
   startFromZeroOnStart: 0
   timerObject: {fileID: 0}
   targetObject: {fileID: 0}
+  rb2dTimer: {fileID: 0}
+  origPos: {x: 0, y: 0}

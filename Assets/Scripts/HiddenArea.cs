@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[NonSolid]
 public class HiddenArea : MemoryMonoBehaviour, ISetupable
 {
 
@@ -23,6 +24,39 @@ public class HiddenArea : MemoryMonoBehaviour, ISetupable
         Destroy(gameObject);
     }
 
+
+    public int checkForError()
+    {
+        int errorCount = 0;
+
+        Utility.doForGameObjectAndChildren(
+            gameObject,
+            (go) =>
+            {
+                //
+                //Renderer && Collider
+                //
+                Renderer renderer = go.GetComponent<Renderer>();
+                Collider2D coll2d = go.GetComponent<Collider2D>();
+                if (renderer)
+                {
+                    if (!coll2d)
+                    {
+                        Debug.LogError(
+                            $"{go.name} has renderer without a collider!",
+                            go
+                            );
+                        //Fake a change
+                        if (errorCount == 0)
+                        {
+                            errorCount++;
+                        }
+                    }
+                }
+            });
+
+        return errorCount;
+    }
 
     public int setup()
     {
@@ -95,18 +129,6 @@ public class HiddenArea : MemoryMonoBehaviour, ISetupable
                             go
                             );
                         changedCount++;
-                    }
-                    if (!coll2d)
-                    {
-                        Debug.LogError(
-                            $"{go.name} has renderer without a collider!",
-                            go
-                            );
-                        //Fake a change
-                        if (changedCount == 0)
-                        {
-                            changedCount++;
-                        }
                     }
                 }
                 if (coll2d)

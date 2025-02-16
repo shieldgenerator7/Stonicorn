@@ -32,6 +32,7 @@ public class FireBallEffect : MonoBehaviour, ISetupable
         transform.up = -rb2d.linearVelocity;
     }
 
+#if UNITY_EDITOR
     public int checkForErrors()
     {
         int errors = 0;
@@ -60,4 +61,5 @@ public class FireBallEffect : MonoBehaviour, ISetupable
         }
         return changeCount;
     }
+#endif
 }

@@ -24,6 +24,8 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
     [AutoInitialize(AllowUnfound =true), SerializeField, HideInInspector]
     public List<SavableMonoBehaviour> savables;
 
+    public string TextLine => $"--{this.name} ({this.Id})--";
+
     public SavableObjectInfoData Data
     {
         get => new SavableObjectInfoData(this);
@@ -34,6 +36,11 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
             this.spawnStateId = soid.spawnStateId;
             this.destroyStateId = soid.destroyStateId;
         }
+    }
+
+    public SavableMonoBehaviour getSavableMonoBehaviour(Type type)
+    {
+        return savables.Where(smb=>smb.GetType() == type).FirstOrDefault();
     }
 
 #if UNITY_EDITOR
@@ -84,6 +91,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         //error: no prefabGUID
         string[] exceptionList = new string[]
         {
+            //TODO: solve this so this exception isnt needed
             "_NPC",
         };
         if (string.IsNullOrEmpty(PrefabGUID) && !exceptionList.Any(ex=>gameObject.name.Contains(ex)))
@@ -110,10 +118,13 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         SerializedObject so = new SerializedObject(this);
         List<string> revertList = new List<string>()
         {
-            //"id",
             "spawnStateId",
             "destroyStateId",
         };
+        if (gameObject.isPrefab())
+        {
+            revertList.Add("id");
+        }
         revertList.ForEach(revert =>
         {
             SerializedProperty property = so.FindProperty(revert);
@@ -153,8 +164,8 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         }
         //TODO: investigate why unity auto-setting this isnt working anymore
         AssetReference assetRef = new AssetReference(guid);
-        if (assetRef != null && assetRef.IsValid()){//!string.IsNullOrEmpty(assetRef.AssetGUID)) {
-        if (prefabAddress != assetRef)
+        if (assetRef != null && !string.IsNullOrEmpty(assetRef.AssetGUID)) {
+        if (prefabAddress.AssetGUID != assetRef.AssetGUID)
         {
             prefabAddress = assetRef;
                 Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: prefabAddress updated: {assetRef}", this);

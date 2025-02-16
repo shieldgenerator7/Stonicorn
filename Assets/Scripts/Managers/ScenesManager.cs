@@ -481,6 +481,7 @@ public class ScenesManager : Manager
         {
             if (go.transform.parent != null)
             {
+                //TODO: look out for SOI with a parent SOI
                     go.transform.SetParent(null);
             }
             if (go.scene != scene)

@@ -105,7 +105,7 @@ public class PlayerRewindController : Manager
         if (gs.id == 0)
         {
             //make its representation slightly bigger
-            rep.transform.localScale *= 2f;
+            rep.transform.localScale = Vector2.one * 2f;
         }
     }
 
@@ -148,18 +148,13 @@ public class PlayerRewindController : Manager
             //Make sure it's always on screen
             try
             {
-                if (!Managers.Camera.inView(rep.transform.position))
-                {
-                    rep.transform.position =
+                rep.transform.position = (Managers.Camera.inView(gs.Merky.position))
+                    ? gs.Merky.position
+                    :
                         Managers.Camera.getInViewPosition(
                             gs.Merky.position,
                             0.9f
                         );
-                }
-                else
-                {
-                    rep.transform.position = gs.Merky.position;
-                }
             }
             catch (System.NullReferenceException)
             {

@@ -13,6 +13,8 @@ public class SnakeController : SavableMonoBehaviour
     public float length = 10;
 
     [Header("Components")]
+    //TODO: make tag to say this is OK to override
+    //TODO: move this to scriptable object?
     public List<Transform> movePath;
 
     public Transform head;
@@ -49,6 +51,7 @@ public class SnakeController : SavableMonoBehaviour
     }
 
     public Vector2 HeadPos => transform.position;
+    //TODO: consolidate calls to TailPos (max once per frame)
     public Vector2 TailPos
     {
         get
@@ -124,6 +127,7 @@ public class SnakeController : SavableMonoBehaviour
     void FixedUpdate()
     {
         //move head
+        //TODO: make this work in a round world
         if (Mathf.Abs(targetPos.x - transform.position.x) <= arriveThreshold)
         {
             Vector2 pos = transform.position;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[NonSolid]
 public class GravityZone : MonoBehaviour
 {
     public float gravityScale = 9.81f;

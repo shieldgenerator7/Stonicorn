@@ -64,11 +64,6 @@ public class SnailController : Hazard
     [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        init();
-    }
     public override void init()
     {
         //2025-02-11: this needs to be here in init(), NOT in setup()

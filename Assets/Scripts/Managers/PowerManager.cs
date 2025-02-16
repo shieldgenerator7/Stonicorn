@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PowerManager : MonoBehaviour, ISetupable
 {
+    //TODO: make the usual running of this manager more efficient with Burst (parallel processing)
     private Dictionary<IPowerConduit, HashSet<IPowerConduit>> connectionMap
         = new Dictionary<IPowerConduit, HashSet<IPowerConduit>>();
     private List<IPowerConduit> powerConduits = new List<IPowerConduit>();
@@ -34,12 +35,13 @@ public class PowerManager : MonoBehaviour, ISetupable
     {
         //Reset all power wires
         powerConduits
-              .FindAll(ipc => ipc is PowerWire)
-              .ConvertAll(ipc => (PowerWire)ipc)
+              .Where(ipc => ipc is PowerWire)
+              .Cast<PowerWire>().ToList()
               .ForEach(pw => pw.reset());
         //Process powerables with no power
-        noPowerPowerables.ForEach(pwr => {
-            if (pwr.GameObject == electricBeamAbility.Target) { return; }
+        noPowerPowerables
+            .Where(pwr => pwr != electricBeamAbility.Target).ToList()
+            .ForEach(pwr => {
             pwr.acceptPower(0);
         });
         //Have powerers dish out their power
@@ -232,6 +234,7 @@ public class PowerManager : MonoBehaviour, ISetupable
         return conduits;
     }
 
+#if UNITY_EDITOR
     public int checkForErrors()
     {
         int errorCount = 0;
@@ -253,4 +256,5 @@ public class PowerManager : MonoBehaviour, ISetupable
         int changeCount = 0;
         return changeCount;
     }
+#endif
 }

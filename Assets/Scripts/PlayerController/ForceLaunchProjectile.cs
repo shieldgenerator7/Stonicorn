@@ -17,7 +17,7 @@ public class ForceLaunchProjectile : MonoBehaviour
     {
         if (collision.collider.isSolid())
         {
-            Managers.Object.destroyObject(gameObject);
+            Managers.Object.destroyObject(GetComponent<SavableObjectInfo>());
         }
     }
 }

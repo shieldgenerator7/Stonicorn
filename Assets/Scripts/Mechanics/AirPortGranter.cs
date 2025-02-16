@@ -13,7 +13,7 @@ public class AirPortGranter : SavableMonoBehaviour
             used = value;
             if (used)
             {
-                Managers.Object.destroyObject(gameObject);
+                Managers.Object.destroyObject(SavableObjectInfo);
             }
             else
             {

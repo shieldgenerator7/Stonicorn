@@ -257,7 +257,7 @@ public class ForceLaunchAbility : PlayerAbility
         if (!playerController.isOccupied(startPos))
         {
             //Spawn it
-            GameObject projectile = Utility.Instantiate(projectilePrefab);
+            GameObject projectile = Managers.Object.Instantiate(projectilePrefab);
             projectile.transform.position = startPos;
             projectile.transform.up = transform.up;
             projectile.transform.localScale = transform.localScale;

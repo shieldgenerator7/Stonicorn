@@ -17,6 +17,7 @@ public class WaterArea : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //TODO: refactor this: dont do a giant raycast every frame!
         Utility.RaycastAnswer rca = coll2d.CastAnswer(Vector2.zero, 0, true);
         for (int i = 0; i < rca.count; i++)
         {

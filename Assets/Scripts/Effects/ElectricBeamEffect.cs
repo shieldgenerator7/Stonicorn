@@ -22,7 +22,7 @@ public class ElectricBeamEffect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (electricBeamAbility.Target)
+        if (electricBeamAbility.Target != null)
         {
             sr.enabled = true;
             follow();
@@ -36,7 +36,7 @@ public class ElectricBeamEffect : MonoBehaviour
     void follow()
     {
         Vector2 startPos = transform.position;
-        Vector2 endPos = electricBeamAbility.Target.transform.position;
+        Vector2 endPos = electricBeamAbility.Target.GameObject.transform.position;
         Vector2 dir = endPos - startPos;
         transform.up = dir;
         sr.size = new Vector2(sr.size.x, dir.magnitude);
@@ -49,15 +49,15 @@ public class ElectricBeamEffect : MonoBehaviour
         Managers.Effect.showLightningStatic(electricBeamAbility.gameObject, active);
     }
 
-    void updateStaticEffect(GameObject oldGO, GameObject newGO)
+    void updateStaticEffect(IPowerable oldPowerable, IPowerable newPowerable)
     {
-        if (oldGO)
+        if (oldPowerable != null)
         {
-            Managers.Effect.showLightningStatic(oldGO, false);
+            Managers.Effect.showLightningStatic(oldPowerable.GameObject, false);
         }
-        if (newGO)
+        if (newPowerable != null)
         {
-            Managers.Effect.showLightningStatic(newGO);
+            Managers.Effect.showLightningStatic(newPowerable.GameObject);
             sr.enabled = true;
         }
         else

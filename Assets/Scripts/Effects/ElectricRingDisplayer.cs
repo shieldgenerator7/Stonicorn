@@ -76,6 +76,7 @@ public class ElectricRingDisplayer : MonoBehaviour, ISetupable
         }
     }
 
+#if UNITY_EDITOR
     public int checkForErrors()
     {
         int errors = 0;
@@ -94,4 +95,5 @@ public class ElectricRingDisplayer : MonoBehaviour, ISetupable
     {
         return 0;
     }
+#endif
 }

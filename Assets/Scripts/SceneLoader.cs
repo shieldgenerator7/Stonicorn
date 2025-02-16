@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[NonSolid]
 public class SceneLoader : MonoBehaviour, ISetting
 {
     public string sceneName;//the name of the scene to load, not actually used in code

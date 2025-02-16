@@ -36,7 +36,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ISetupable
                 //Break into pieces
                 if (crackedPrefab)
                 {
-                    GameObject pieces = Utility.Instantiate(crackedPrefab, transform.position);
+                    GameObject pieces = Managers.Object.Instantiate(crackedPrefab, transform.position);
                     BrokenPiece brokenPiece = pieces.GetComponent<BrokenPiece>();
                     brokenPiece.unpack(gameObject);
                     //process broken pieces
@@ -51,7 +51,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ISetupable
                     .ForEach(ha => ha.Discovered = true);
 
                 //Destroy object
-                Managers.Object.destroyObject(gameObject);
+                Managers.Object.destroyObject(SavableObjectInfo);
             }
         }
     }

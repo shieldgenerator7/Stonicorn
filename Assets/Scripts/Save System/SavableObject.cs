@@ -93,7 +93,7 @@ public class SavableObject
         data.Add(key + "_count", list.Count);
         list.ForEach(item =>
         {
-            data.Add(key + index, item);
+            data.Add($"{key}_{index}", item);
             index++;
         });
         return this;
@@ -105,7 +105,7 @@ public class SavableObject
         for (int i = 0; i < count; i++)
         {
             list.Add(
-                (T)data[key + i]
+                (T)data[$"{key}_{i}"]
                 );
         }
         return list;
@@ -150,8 +150,8 @@ public class SavableObject
     ///Adds this SavableObject's SavableMonobehaviour to the given GameObject
     ///</summary>
     ///<param name="go">The GameObject to add the script to</param>
-    public virtual Component addScript(GameObject go)
+    public virtual SavableMonoBehaviour addScript(SavableObjectInfo soi)
     {
-        return go.AddComponent(ScriptType);
+        return (SavableMonoBehaviour)soi.gameObject.AddComponent(ScriptType);
     }
 }

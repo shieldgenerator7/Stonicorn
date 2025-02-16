@@ -37,35 +37,59 @@ public class ElectricBeamAbility : PlayerAbility
     private bool tapOnPlayer;
     private bool wiredThisInput = false;//true if it has wired since the last user input
 
-    GameObject target;
+    GameObject targetGO;
     IPowerable targetPowerable;
     Rigidbody2D targetRB2D;
-    public GameObject Target
+    public IPowerable Target
     {
-        get => target;
+        get => targetPowerable;
         private set
         {
-            GameObject oldTarget = target;
-            target = value;
-            if (target)
+            IPowerable oldTarget = targetPowerable;
+            targetPowerable = value;
+            if (targetPowerable != null)
             {
-                targetPowerable = target.GetComponent<IPowerable>();
-                targetRB2D = target.GetComponent<Rigidbody2D>();
+                targetGO = targetPowerable.GameObject;
+                targetRB2D = targetGO.GetComponent<Rigidbody2D>();
+                targetId = targetGO.getKey();
             }
             else
             {
-                targetPowerable = null;
+                targetGO = null;
                 targetRB2D = null;
+                targetId = -1;
                 if (enabled)
                 {
                     applyStatic(false);
                 }
             }
-            onTargetChanged?.Invoke(oldTarget, target);
+            onTargetChanged?.Invoke(oldTarget, targetPowerable);
         }
     }
-    public delegate void OnTargetChanged(GameObject oldGO, GameObject newGO);
+    public delegate void OnTargetChanged(IPowerable oldPowerable, IPowerable newPowerable);
     public event OnTargetChanged onTargetChanged;
+
+    int targetId = -1;
+    public int TargetId
+    {
+        get => targetId;
+        set
+        {
+            if (value < 0)
+            {
+                Target = null;
+            }
+            else
+            {
+                SavableObjectInfo soi = Managers.Object.getObject(value);
+                if (soi != null)
+                {
+                    IPowerable powerable = soi.GetComponent<IPowerable>();
+                    Target = powerable;
+                }
+            }
+        }
+    }
 
     private float charge = 0;
     public float Charge
@@ -99,7 +123,7 @@ public class ElectricBeamAbility : PlayerAbility
     {
         if (Activated)
         {
-            if (target)
+            if (targetPowerable != null)
             {
                 //Power
                 float power = energyPerSecond * Time.fixedDeltaTime;
@@ -155,9 +179,9 @@ public class ElectricBeamAbility : PlayerAbility
     void applyWire()
     {
         Vector2 startPos = transform.position;
-        Vector2 endPos = Target.transform.position;
+        Vector2 endPos = Target.GameObject.transform.position;
         Vector2 dir = endPos - startPos;
-        GameObject newWire = Utility.Instantiate(wirePrefab);
+        GameObject newWire = Managers.Object.Instantiate(wirePrefab);
         newWire.transform.right = dir;
         newWire.transform.position = (startPos + endPos) / 2;
         SpriteRenderer sr = newWire.GetComponent<SpriteRenderer>();
@@ -168,13 +192,13 @@ public class ElectricBeamAbility : PlayerAbility
 
     void selectTarget(Vector2 targetPos)
     {
-        List<GameObject> powerables = Physics2D.OverlapCircleAll(transform.position, range)
+        List<IPowerable> powerables = Physics2D.OverlapCircleAll(transform.position, range)
             .Where(coll =>
                 coll.GetComponent<IPowerable>() != null
                 && inRange(coll.gameObject)
             )
             .OrderBy(coll => ((Vector2)coll.transform.position - targetPos).sqrMagnitude).ToList()
-            .ConvertAll(coll => coll.gameObject);
+            .ConvertAll(coll => coll.GetComponent<IPowerable>());
         if (powerables.Count > 0)
         {
             Target = powerables.First();
@@ -194,7 +218,7 @@ public class ElectricBeamAbility : PlayerAbility
     void checkTarget()
     {
         //If it's in range
-        if (inRange(Target, range + rangeBuffer))
+        if (inRange(Target.GameObject, range + rangeBuffer))
         {
             //all good
         }
@@ -262,22 +286,14 @@ public class ElectricBeamAbility : PlayerAbility
     {
         get => base.CurrentState.more(
             "activated", activated,
-            "target", target.getKey(),
+            "targetId", targetId,
             "charge", charge
             );
         set
         {
             base.CurrentState = value;
             Activated = value.Bool("activated");
-            int targetId = value.Int("target");
-            if (targetId >= 0)
-            {
-                Target = Managers.Object.getObject(targetId);
-            }
-            else
-            {
-                Target = null;
-            }
+            TargetId = value.Int("targetId");
             Charge = value.Int("charge");
         }
     }

@@ -146,7 +146,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
         contents.ForEach(go => go.transform.parent = null);
 
         //Destroy object
-        Managers.Object.destroyObject(gameObject);
+        Managers.Object.destroyObject(SavableObjectInfo);
     }
 
 

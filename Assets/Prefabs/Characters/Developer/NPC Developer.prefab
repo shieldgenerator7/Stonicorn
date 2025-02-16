@@ -9698,6 +9698,7 @@ GameObject:
   - component: {fileID: 615056338777581960}
   - component: {fileID: 7330088459871940690}
   - component: {fileID: 1304571810}
+  - component: {fileID: 3001622491859054863}
   m_Layer: 0
   m_Name: NPC Developer
   m_TagString: Untagged
@@ -9993,11 +9994,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 3001622491859054863}
   usesSideVector: 0
   saveValues: 1
   gravityScale: 1
   acceptsGravity: 0
   rb2d: {fileID: 1258252873437440712}
+--- !u!114 &3001622491859054863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320095655018302412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  prefabAddress:
+    m_AssetGUID: dc35f93fb55f92843aa2ae24f74fcddc
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  spawnStateId: -1
+  destroyStateId: 2147483647
+  rb2d: {fileID: 1258252873437440712}
+  savables:
+  - {fileID: 1304571810}
 --- !u!1 &5472147939610955027
 GameObject:
   m_ObjectHideFlags: 0
@@ -19628,7 +19654,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

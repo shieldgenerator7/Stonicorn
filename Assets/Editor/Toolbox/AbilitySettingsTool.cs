@@ -36,6 +36,8 @@ public class AbilitySettingsTool : ToolboxTool
 
     public override void display()
     {
+        try
+        {
         makeAbilityRow(
             "ALL",
             (int)abilityLevelMap.Values.Average(v => v),
@@ -53,6 +55,10 @@ public class AbilitySettingsTool : ToolboxTool
                 (newVal, newOn, changeLevel) => updateFunc(abilityName, newVal, newOn, true)
                 )
         );
+        }
+        catch (Exception)
+        {
+        }
     }
 
 
@@ -153,11 +159,18 @@ public class AbilitySettingsTool : ToolboxTool
 
     protected override void save()
     {
+        try
+        {
         abilityNames.ForEach(abilityName =>
         {
             EditorPrefs.SetInt($"{abilityName}_level", abilityLevelMap[abilityName]);
             EditorPrefs.SetBool($"{abilityName}_on", abilityToggleMap[abilityName]);
         });
+        }
+        catch(Exception)
+        {
+
+        }
     }
 
     protected override void load()

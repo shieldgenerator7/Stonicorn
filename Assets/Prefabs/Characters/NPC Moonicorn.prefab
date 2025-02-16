@@ -1,92 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &127010420678968479
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1246340014193942390}
-  - component: {fileID: 3414787918178392523}
-  - component: {fileID: 2326436144800303881}
-  m_Layer: 0
-  m_Name: Dialogue
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1246340014193942390
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127010420678968479}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7283862985771523437}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &3414787918178392523
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127010420678968479}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 2.5
---- !u!114 &2326436144800303881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127010420678968479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157980bc11266644cb1bfab4867dfe74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  title: 
-  coll2d: {fileID: 3414787918178392523}
-  characters:
-  - Moonicorn
-  - NPC Moonicorn
-  variableSetAction: {fileID: 0}
 --- !u!1001 &8318612378048504311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -179,6 +92,14 @@ PrefabInstance:
       propertyPath: interruptDistance
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3854234255578490815, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
+      propertyPath: characters.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3854234255578490815, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
+      propertyPath: 'characters.Array.data[0]'
+      value: Moonicorn
+      objectReference: {fileID: 0}
     - target: {fileID: 4256706514380923316, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
       propertyPath: characterName
       value: Moonicorn
@@ -193,17 +114,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1613659933863623834, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1246340014193942390}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
---- !u!4 &7283862985771523437 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1613659933863623834, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}
-  m_PrefabInstance: {fileID: 8318612378048504311}
-  m_PrefabAsset: {fileID: 0}
 --- !u!50 &7323261462213580761 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 1644049836694304302, guid: 9ac200c931ea58e4b8ca67bf28e4df5e, type: 3}

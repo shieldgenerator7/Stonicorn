@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Triggers a dialogue cutscene
 /// </summary>
+[NonSolid]
 public class DialogueTrigger : EventTrigger
 {
     public List<string> characters;

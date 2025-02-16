@@ -39,6 +39,7 @@ public class SwapAbility : PlayerAbility
 
     private void Update()
     {
+        //TODO: change this to be more efficient using triggers perhaps
         List<GameObject> swappables = Physics2D.OverlapCircleAll(
             transform.position,
             playerController.Teleport.Range

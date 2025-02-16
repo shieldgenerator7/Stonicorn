@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5fe5429f351f1549881cdd11b222cb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 7575686436807130067}
   joints:
   - {fileID: 3071023791334698004}
   jointed: 1
@@ -217,9 +218,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beaad298723faa5448af3d1020e2afdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 7575686436807130067}
   rb2d: {fileID: 9138107498160020751}
   rooted: 1
   reverse: 0
+--- !u!114 &7575686436807130067 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -9010510098259966113, guid: b43be6a820810fd43b41824280158da1, type: 3}
+  m_PrefabInstance: {fileID: 7770400831828343948}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622846373301206174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &9138107498160020751 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 1515204236062646659, guid: b43be6a820810fd43b41824280158da1, type: 3}

@@ -98,6 +98,7 @@ public class ObjectManager : Manager, ISetting
                     SavableObjectInfoData soid = data.knownObjects.Find(soid => soid.id == goId);
                     soi.Data = soid;
                     addObject(soi);
+                    //TODO: use SOI childrenSOI list
                     foreach (Transform t in newGO.transform)
                     {
                         if (t.gameObject.isSavable())
@@ -388,6 +389,7 @@ public class ObjectManager : Manager, ISetting
     private void removeObject(SavableObjectInfo soi)
     {
         data.savables.Remove(soi.Id);
+        //TODO: use SOI childrenSOI list
         //If go is not null and has children,
         if (soi && soi.transform.childCount > 0)
         {

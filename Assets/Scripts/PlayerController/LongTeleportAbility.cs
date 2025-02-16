@@ -153,7 +153,7 @@ public class LongTeleportAbility : PlayerAbility
 
     TeleportPortal makePortal(Vector2 pos)
     {
-        GameObject portal = Utility.Instantiate(portalPrefab);
+        GameObject portal = Managers.Object.Instantiate(portalPrefab);
         portal.transform.position = pos;
         SpriteRenderer sr = portal.GetComponent<SpriteRenderer>();
         sr.color = EffectColor.adjustAlpha(sr.color.a);

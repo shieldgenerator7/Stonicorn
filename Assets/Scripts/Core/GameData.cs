@@ -19,13 +19,19 @@ public class GameData : ICloneable
     // Runtime Vars
     //
     [ES3NonSerializable]
-    public Dictionary<int, GameObject> gameObjects = new Dictionary<int, GameObject>();//list of current objects that have state to save
+    public Dictionary<int, SavableObjectInfo> savables = new Dictionary<int, SavableObjectInfo>();//list of current objects that have state to save
 
     /// <summary>
     /// Stores the object's id and the scene id of the scene that it's in
     /// </summary>
     [ES3NonSerializable]
     public Dictionary<int, int> objectSceneList = new Dictionary<int, int>();
+
+
+    public int claimNextId()
+    {
+        return savables.Keys.OrderBy(x => x).Last() + 1;
+    }
 
 
     public object Clone()
@@ -36,7 +42,7 @@ public class GameData : ICloneable
         gameData.knownObjects = this.knownObjects.ToList();
         gameData.gameStates = this.gameStates.ToList();
 
-        gameData.gameObjects = this.gameObjects.ToDictionary(entry => entry.Key, entry => entry.Value);
+        gameData.savables = this.savables.ToDictionary(entry => entry.Key, entry => entry.Value);
         gameData.objectSceneList = this.objectSceneList.ToDictionary(entry => entry.Key, entry => entry.Value);
 
 

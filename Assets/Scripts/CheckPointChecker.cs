@@ -306,6 +306,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         checkpointCamera.gameObject.SetActive(false);
         string filename = gameObject.transform.parent.name + ".png";
+        //TODO: save image without using ES3
         ES3.SaveImage(screenShot, filename);
 
         //hide camera

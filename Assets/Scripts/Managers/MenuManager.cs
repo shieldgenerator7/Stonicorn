@@ -120,6 +120,16 @@ public class MenuManager : MonoBehaviour, ISetupable
     public delegate void OnOpenedChanged(bool open);
     public static event OnOpenedChanged onOpenedChanged;
 
+
+    //[Initializer(0)]
+    //private List<MenuFrame> init_frames
+    //    => FindObjectsByType<MenuFrame>(FindObjectsSortMode.InstanceID)
+    //        .Where(mf => mf.canDelegateTaps()).ToList();
+
+    //[Initializer(1)]
+    //private MenuFrame init_startFrame => frames.First();
+
+
     public int setup()
     {
         int changeCount = 0;
