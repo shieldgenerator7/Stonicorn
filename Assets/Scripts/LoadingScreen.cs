@@ -10,7 +10,6 @@ public class LoadingScreen : MonoBehaviour, ISetupable
 {
     public string sceneName;
     public float growSpeed = 0.5f;
-    public AssetReference testAssetRef;
 
     [AutoInitialize]
     public Camera initialCamera;
@@ -143,16 +142,6 @@ public class LoadingScreen : MonoBehaviour, ISetupable
 
             //Load addressable
             addressableLoadOperation = Addressables.InitializeAsync();
-            addressableLoadOperation.Completed += (ao) =>
-            {
-                //Create new test object just to make sure it's working
-                var op = Addressables.InstantiateAsync(testAssetRef);
-                op.Completed += (operation) =>
-                {
-                    GameObject newGO = operation.Result;
-                    Destroy(newGO);
-                };
-            };
 
             //enable
             this.enabled = true;
