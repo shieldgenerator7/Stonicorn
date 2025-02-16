@@ -135,31 +135,30 @@ public class GameManager : MonoBehaviour
         Managers.Object.onObjectRecreated +=
             (go, lastStateSeen) => Managers.Scene.registerObjectInScene(go);
         Managers.Object.onObjectRecreated +=
-            (go, lastStateSeen) =>
+            (soi, lastStateSeen) =>
             {
                 //Don't load if it should actually not exist anymore
-                SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
                 int gameStateId = Managers.Rewind.GameStateId;
                 if (soi.spawnStateId > gameStateId)
                 {
                     Debug.Log(
-                        $"Recreation of object {go.Name()} is too late! " +
+                        $"Recreation of object {soi.TextLine} is too late! " +
                         $"Destroying permanently. Created at {soi.spawnStateId} after {gameStateId}",
-                        go
+                        soi
                         );
                     //(it's possible for an object recreation to be finished
                     //after it should have been rewound out of existence)
-                    Managers.Object.destroyAndForgetObject(go);
+                    Managers.Object.destroyAndForgetObject(soi);
                 }
                 else if (soi.destroyStateId < gameStateId)
                 {
                     Debug.Log(
-                        $"Recreation of object {go.Name()} is too early! " +
+                        $"Recreation of object {soi.TextLine} is too early! " +
                         $"Destroying. Destroyed at {soi.destroyStateId} before {gameStateId}",
-                        go
+                        soi
                         );
                     //Destroy this object because it's still after it was originally destroyed
-                    Managers.Object.destroyObject(go);
+                    Managers.Object.destroyObject(soi);
                 }
                 else if (soi.destroyStateId > gameStateId)
                 {
@@ -170,9 +169,9 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     Debug.Log(
-                        $"Recreation of object {go.Name()} is ok. " +
+                        $"Recreation of object {soi.TextLine} is ok. " +
                         $"GameState Id: {Managers.Rewind.GameStateId}",
-                        go
+                        soi
                         );
                 }
             };

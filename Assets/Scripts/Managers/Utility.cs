@@ -374,14 +374,13 @@ public static class Utility
 
     public static string Name(this GameObject go)
     {
-#if UNITY_EDITOR
-        return $"{go.name}";
-#endif
-        if (!go || ReferenceEquals(go, null))
-        {
-            return $"--{go?.name} ({go?.getKey()})--";
-        }
+        try { 
         return $"{go.name} ({go.getKey()})";
+        }
+        catch (Exception)
+        {
+            return go?.name ?? "[unknown gameobject]";
+        }
     }
     public static string Name(this Scene scene)
     {
@@ -417,8 +416,29 @@ public static class Utility
     /// <param name="min"></param>
     /// <param name="max"></param>
     /// <returns></returns>
+    public static int loopValue(int value, int min, int max)
+    {
+        int diff = max - min + 1;
+        while (value < min)
+        {
+            value += diff;
+        }
+        while (value > max)
+        {
+            value -= diff;
+        }
+        return value;
+    }
+    /// <summary>
+    /// Loops the value around until it falls in the range of [min, max]
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
     public static float loopValue(float value, float min, float max)
     {
+        //TODO: check for off by one error here
         float diff = max - min;
         while (value < min)
         {
@@ -527,79 +547,11 @@ public static class Utility
         return str;
     }
 
-    /// <summary>
-    /// Instantiates a GameObject so that it can be rewound.
-    /// Only works on game objects that are "registered" to be rewound
-    /// </summary>
-    /// <param name="prefab"></param>
-    /// <returns></returns>
-    public static GameObject Instantiate(GameObject prefab)
-    {
-        return Instantiate(prefab, Vector2.zero);
-    }
-    public static GameObject Instantiate(GameObject prefab, Vector2 position)
-    {
-        //Checks to make sure it's rewindable
-        bool isContainer = prefab.containsSavables();
-        bool isSavable = prefab.isSavable();
-        if (!isContainer)
-        {
-            if (!isSavable)
-            {
-                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
-            }
-            bool hasInfo = prefab.GetComponent<ObjectInfo>();
-            if (!hasInfo)
-            {
-                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
-            }
-        }
-        //Instantiate
-        GameObject newObj = GameObject.Instantiate(prefab, position, Quaternion.identity);
-        int baseId = (int)System.DateTime.Now.Ticks;
-        string spawnTag = $"---{baseId}";
-        newObj.name += spawnTag;
-        if (isSavable)
-        {
-            SavableObjectInfo soi = newObj.GetComponent<SavableObjectInfo>();
-            soi.Id = getUniqueId(baseId, 0);
-            soi.spawnStateId = Managers.Rewind.GameStateId;
-            Managers.Object.addNewObject(newObj);
-            Managers.Scene.registerObjectInScene(newObj);
-        }
-        //Container children
-        if (isContainer)
-        {
-            ISavableContainer container = newObj.GetComponent<ISavableContainer>();
-            int nextId = 1;
-            container.Savables.ForEach(savable =>
-            {
-                savable.name += spawnTag;
-                try
-                {
-                    SavableObjectInfo soi = savable.GetComponent<SavableObjectInfo>();
-                    soi.Id = getUniqueId(baseId, nextId);
-                    soi.spawnStateId = Managers.Rewind.GameStateId;
-                }
-                catch (NullReferenceException)
-                {
-                    Debug.LogError($"Saveable {savable.name} (child of {newObj.name}) does not have a {typeof(SavableObjectInfo)}!");
-                }
-                nextId++;
-                Managers.Object.addNewObject(savable);
-                Managers.Scene.registerObjectInScene(savable);
-            });
-        }
-        Debug.Log($"Spawned object {newObj.Name()}", newObj);
-        //Return spawned object
-        return newObj;
-    }
-    static int getUniqueId(int baseId, int index)
-        => Mathf.Abs(Mathf.Abs(baseId * 10) + index);
 
+#if UNITY_EDITOR
     public static bool isPrefab(this GameObject go)
         => go.scene.buildIndex < 0;
-
+#endif
 
 
 
