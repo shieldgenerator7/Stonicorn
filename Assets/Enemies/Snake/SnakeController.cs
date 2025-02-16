@@ -96,7 +96,7 @@ public class SnakeController : SavableMonoBehaviour
                 lenSoFar += Vector2.Distance(points[i - 1], points[i]);
                 if (lenSoFar >= length)
                 {
-                    plist.Insert(0,(points[i - 1] - points[i]).normalized * (length - prev) + points[i]);
+                    plist.Insert(0, TailPos);
                     return plist;
                 }
                 else
