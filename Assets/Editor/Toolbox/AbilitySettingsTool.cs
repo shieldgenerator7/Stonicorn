@@ -128,12 +128,19 @@ public class AbilitySettingsTool : ToolboxTool
 
     void checkAllAbilities()
     {
-        abilityNames.ForEach(abilityName =>
+        try
         {
-            PlayerAbility ability = (PlayerAbility)pc.GetComponent(abilityName);
-            ability.enabled = abilityToggleMap[abilityName];
-            ability.setUpgradeLevel(abilityLevelMap[abilityName]);
-        });
+            abilityNames.ForEach(abilityName =>
+            {
+                PlayerAbility ability = (PlayerAbility)pc.GetComponent(abilityName);
+                ability.enabled = abilityToggleMap[abilityName];
+                ability.setUpgradeLevel(abilityLevelMap[abilityName]);
+            });
+        }
+        catch (Exception)
+        {
+
+        }
     }
 
     void checkAbility(int level, string abilityName)
