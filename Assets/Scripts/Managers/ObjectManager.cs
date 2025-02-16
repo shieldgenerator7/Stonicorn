@@ -322,7 +322,7 @@ public class ObjectManager : Manager, ISetting
         }
         Debug.Log($"Destroying object permanently: {soi.TextLine}", soi);
         destroyObject(soi);
-        data.knownObjects.RemoveAll(soid => soid.id == soi.Id);
+        forgetObject(soi.Id);
     }
 
     /// <summary>
@@ -348,7 +348,14 @@ public class ObjectManager : Manager, ISetting
         {
             Debug.Log($"Destroying object permanently: [unknown name] ({id})");
         }
+        forgetObject(id);
+    }
+
+    private void forgetObject(int id)
+    {
         data.knownObjects.RemoveAll(soid => soid.id == id);
+        data.savables.Remove(id);
+        data.objectSceneList.Remove(id);
     }
 
     public void destroyObject(int goKey)
