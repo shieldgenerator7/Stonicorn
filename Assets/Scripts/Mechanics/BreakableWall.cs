@@ -141,7 +141,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ISetupable
         get => new SavableObject(this, "integrity", integrity);
         set
         {
-            Integrity = value.Int("integrity");
+            Integrity = value.Float("integrity");
         }
     }
 }
