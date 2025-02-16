@@ -75,7 +75,7 @@ public class AfterWind : SavableMonoBehaviour, ICuttable
 
     public void cut(Vector2 start, Vector2 end)
     {
-        Managers.Object.destroyObject(gameObject);
+        Managers.Object.destroyObject(SavableObjectInfo);
     }
 
 #if UNITY_EDITOR

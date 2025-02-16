@@ -144,6 +144,9 @@ public class Managers : MonoBehaviour
     [SerializeField]
     private PlayerController playerController;
     public static PlayerController Player => instance.playerController;
+    [SerializeField, HideInInspector]
+    private SingletonObjectInfo playerSingletonObjectInfo;
+    public static SingletonObjectInfo PlayerSingletonObjectInfo => instance.playerSingletonObjectInfo;
 
     //Player Rewind Controller
     [AutoInitialize(SearchScene = true), SerializeField]
@@ -225,8 +228,12 @@ public class Managers : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    [Initializer]
+    [Initializer(0)]
     private PlayerController init_playerController
         => FindObjectsByType<PlayerController>(FindObjectsSortMode.None).FirstOrDefault(pc => pc.gameObject.CompareTag("Player"));
+
+    [Initializer(1)]
+    private SingletonObjectInfo init_playerSingletonObjectInfo
+        => playerController?.gameObject.GetComponent<SingletonObjectInfo>() ?? null;
 #endif
 }

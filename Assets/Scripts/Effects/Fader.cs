@@ -125,7 +125,15 @@ public class Fader : MonoBehaviour, ISetupable
                     }
                     else
                     {
-                        Managers.Object.destroyObject(gameObject);
+                        SavableObjectInfo soi = gameObject.GetComponent<SavableObjectInfo>();
+                        if (soi)
+                        {
+                        Managers.Object.destroyObject(soi);
+                        }
+                        else
+                        {
+                            Destroy(gameObject);
+                        }
                     }
                     break;
                 case FinishAction.DESTROY_SCRIPT:
