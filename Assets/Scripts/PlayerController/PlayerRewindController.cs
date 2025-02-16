@@ -105,7 +105,7 @@ public class PlayerRewindController : Manager
         if (gs.id == 0)
         {
             //make its representation slightly bigger
-            rep.transform.localScale *= 2f;
+            rep.transform.localScale = Vector2.one * 2f;
         }
     }
 
