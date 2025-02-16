@@ -152,6 +152,7 @@ public class SnakeController : SavableMonoBehaviour
                 targetIndex = 0;
             }
             points = value.List<Vector2>("points");
+            updateBody();
         }
     }
 }

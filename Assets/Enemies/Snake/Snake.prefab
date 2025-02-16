@@ -345,6 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf68d04f26946a4ab7b77f90038f6e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soi: {fileID: 238233522221426785}
   moveSpeed: 5
   arriveThreshold: 0.1
   maxPointCount: 4
@@ -380,7 +381,8 @@ MonoBehaviour:
   spawnStateId: -1
   destroyStateId: 2147483647
   rb2d: {fileID: 5071347982395089595}
-  savables: []
+  savables:
+  - {fileID: 5575954634462495535}
 --- !u!1 &6600384360019936145
 GameObject:
   m_ObjectHideFlags: 0
