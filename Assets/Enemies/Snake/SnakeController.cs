@@ -111,15 +111,17 @@ public class SnakeController : SavableMonoBehaviour
         Spline spline = ssc.spline;
         spline.Clear();
         List<Vector2> ec2dpoints = new List<Vector2>();
+        int i = 0;
         points.ForEach(p =>
         {
             Vector2 p1 = transform.InverseTransformPoint(p);
-            spline.InsertPointAt(0, p1);
-            ec2dpoints.Insert(0, p1);
+            spline.InsertPointAt(i, p1);
+            ec2dpoints.Insert(i, p1);
+            i++;
         });
         Vector2 p = transform.InverseTransformPoint(transform.position);
-        spline.InsertPointAt(0, p);
-        ec2dpoints.Insert(0, p);
+        spline.InsertPointAt(i, p);
+        ec2dpoints.Insert(i, p);
         ec2d.points = ec2dpoints.ToArray();
 
         //head
