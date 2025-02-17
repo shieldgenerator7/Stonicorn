@@ -161,9 +161,24 @@ public class GameManager : MonoBehaviour
                         );
                 }
             };
-        //File delegates
-        Managers.File.onFileSave += Managers.Settings.saveSettings;
-        Managers.File.onFileLoad += Managers.Settings.loadSettings;
+    }
+
+    private void unregisterDelegates()
+    {
+
+        Managers.Scene.onSceneLoaded -= sceneLoaded;
+        Managers.Scene.onSceneUnloaded -= sceneUnloaded;
+
+        Managers.Scene.onSceneObjectsLoaded -= Managers.Rewind.LoadSceneObjects;
+        Managers.Scene.onSceneObjectsLoaded -= Managers.Object.LoadSceneObjects;
+
+        Managers.Time.endGameTimer.onTimeFinished -= Managers.Rewind.RewindToStart;
+        //Rewind delegates
+        Managers.Rewind.onGameStateSaved -= Managers.Scene.updateSceneLoadersForward;
+        Managers.Rewind.onRewindStarted -= processRewindStart;
+        Managers.Rewind.onRewindFinished -= processRewindEnd;
+        //Object delegates
+        Managers.Object.onObjectRecreated -= Managers.Rewind.LoadObjectAndChildren;
     }
 
     // Update is called once per frame
@@ -316,6 +331,7 @@ public class GameManager : MonoBehaviour
     void OnApplicationQuit()
     {
         Debug.Log("OnApplicationQuit() called");
+        unregisterDelegates();
         saveGame();
     }
     private void OnApplicationPause(bool pause)
