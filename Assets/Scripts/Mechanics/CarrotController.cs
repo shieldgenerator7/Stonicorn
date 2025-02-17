@@ -8,12 +8,15 @@ public class CarrotController : MonoBehaviour
     public float moveForce = 3;
 
     public bool glowing = false;
-    public Color costumeColor = Color.white;
+
+    public Skin skin;
+    public float skinUpDistance = 5;
 
     public GameObject glowEffect;
 
     public AudioClip boingOn;
     public AudioClip boingOff;
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -31,6 +34,11 @@ public class CarrotController : MonoBehaviour
 
     private void toggleEffect()
     {
+        if (!skin || skin.gameObject.activeSelf)
+        {
+            AudioSource.PlayClipAtPoint(boingOn, transform.position);
+            return;
+        }
         glowing = !glowing;
         glowEffect.SetActive(glowing);
         if (glowing)
@@ -42,15 +50,27 @@ public class CarrotController : MonoBehaviour
             AudioSource.PlayClipAtPoint(boingOff, transform.position);
         }
         //If all carrots are glowing, change Merky's color
-        if (FindObjectsByType<CarrotController>(FindObjectsSortMode.None).ToList()
-            .All(cc => cc.glowing))
+        List<CarrotController> carrots = FindObjectsByType<CarrotController>(FindObjectsSortMode.None).ToList();
+        if (carrots.All(cc => cc.glowing))
         {
-            Managers.Player.GetComponent<SpriteRenderer>().color = costumeColor;
+            skin.transform.position = transform.position + transform.up * skinUpDistance;
+            skin.transform.up = transform.up;
+            skin.gameObject.SetActive(true);
+
+            carrots.ForEach(cc =>
+            {
+                cc.Glowing = false;
+            });
         }
-        else if (FindObjectsByType<CarrotController>(FindObjectsSortMode.None).ToList()
-            .All(cc => !cc.glowing))
+    }
+
+    private bool Glowing
+    {
+        get => glowing;
+        set
         {
-            Managers.Player.GetComponent<SpriteRenderer>().color = Color.white;
+            glowing = value;
+            glowEffect?.SetActive(glowing);
         }
     }
 }
