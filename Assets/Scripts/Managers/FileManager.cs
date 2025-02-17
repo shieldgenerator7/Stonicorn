@@ -41,6 +41,13 @@ public class FileManager : Manager
     #region File Management
     public delegate void OnFileAccess(string filename);
 
+    public void saveToFileAsync()
+    {
+        Task.Run(() =>
+        {
+            saveToFile();
+        });
+    }
     /// <summary>
     /// Saves the memories, game states, and scene cache to a save file
     /// </summary>

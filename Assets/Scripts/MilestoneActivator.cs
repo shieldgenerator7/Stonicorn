@@ -13,7 +13,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour
         }
         Destroy(this);//makes sure it can only be used once
         //Save game
-        Managers.File.saveToFile();
+        Managers.File.saveToFileAsync();
     }
 
     public abstract void activateEffect();

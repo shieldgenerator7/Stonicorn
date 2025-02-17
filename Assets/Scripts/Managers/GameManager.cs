@@ -305,7 +305,7 @@ public class GameManager : MonoBehaviour
         //Auto-Save file if rewound to beginning
         if (rewindStateId == 0)
         {
-            Managers.File.saveToFile();
+            Managers.File.saveToFileAsync();
         }
     }
     #endregion

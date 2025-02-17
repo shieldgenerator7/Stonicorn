@@ -360,7 +360,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         activate();
         //Save game
-        Managers.File.saveToFile();
+        Managers.File.saveToFileAsync();
     }
     protected override void previouslyDiscovered()
     {
