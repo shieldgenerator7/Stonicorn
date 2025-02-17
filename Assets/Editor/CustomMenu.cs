@@ -621,6 +621,7 @@ public class CustomMenu
                 checkForGroundLayerObjects,
                 checkTriggersAreNotSolid,
                 checkObjectsInStatedScene,
+                checkSavablesSaveLoad,
                 //TODO: make sure SavableMonoBehaviours all have [DisallowMultipleComponent] on them (ex: the time rewind system doesnt support two Hazards on a component)
             }
             .ConvertAll(func =>
@@ -1617,6 +1618,40 @@ public class CustomMenu
         if (problemCount > 0)
         {
             Debug.LogError($"Found {problemCount} game objects outside their scene");
+        }
+        return problemCount > 0;
+    }
+
+    [MenuItem("SG7/Build/Pre-Build/Check savables saving and loading")]
+    public static bool checkSavablesSaveLoad()
+    {
+        //2025-02-16: copied from checkObjectsInStatedScene()
+        int problemCount = 0;
+
+        //check all savables
+        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList()
+            .ForEach(ssl =>
+            {
+                ssl.savables.ForEach(soi =>
+                {
+                    soi.savables.ForEach(smb =>
+                    {
+                        try
+                        {
+                            smb.CurrentState = smb.CurrentState;
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError($"SavableMonoBehaviour {smb.GetType().Name} has save/load error!", soi);
+                            Debug.LogException(e, soi);
+                            problemCount++;
+                        }
+                    });
+                });
+            });
+        if (problemCount > 0)
+        {
+            Debug.LogError($"Found {problemCount} savables with save/load errors");
         }
         return problemCount > 0;
     }
