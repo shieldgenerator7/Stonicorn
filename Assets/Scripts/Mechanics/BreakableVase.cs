@@ -51,7 +51,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
     [Header("Cracked Components")]
     public GameObject crackedPrefab;
     //[SerializeField]
-    private List<GameObject> contents;
+    //private List<GameObject> contents;
     private List<Sprite> crackStages = new List<Sprite>();
     public AudioClip soundDamageNone;
     public AudioClip soundDamageOne;
@@ -60,7 +60,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
 
     //TODO: make it work for multiple contents
     //[SerializeField]
-    private int contentId;
+    //private int contentId;
 
     //Components
     [AutoInitialize,SerializeField,HideInInspector]
@@ -147,7 +147,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
             .ForEach(ha => ha.Discovered = true);
 
         //Deploy contents
-        contents.ForEach(go => go.transform.parent = null);
+        //contents.ForEach(go => go.transform.parent = null);
 
         //Destroy object
         Managers.Object.destroyObject(SavableObjectInfo);
@@ -185,13 +185,13 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
     public override SavableObject CurrentState
     {
         get => new SavableObject(this, 
-            "integrity", integrity,
-            "contentid", contentId
+            "integrity", integrity
+            //"contentid", contentId
             );
         set
         {
             Integrity = value.Float("integrity");
-            contentId = value.Int("contentid");
+            //contentId = value.Int("contentid");
         }
     }
 }
