@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SettingsManager : MonoBehaviour, ISetting
 {
-    [SerializeField]
-    private string fileName = "merky_settings.txt";
     //Music Manager
     [Range(0.0f, 1.0f)]
     public float musicVolume = 1;//[0,1] the music volume the user sets
@@ -20,24 +18,6 @@ public class SettingsManager : MonoBehaviour, ISetting
     [Range(0, 100)]
     public int videoResolution = 100;
     public bool videoFullScreen = true;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    public void saveSettings(string filename)
-    {
-        ES3.Save<SettingObject>("settings", Setting, this.fileName);
-    }
-
-    public void loadSettings(string filename)
-    {
-        if (ES3.FileExists(this.fileName))
-        {
-            Setting = ES3.Load<SettingObject>("settings", this.fileName);
-        }
-    }
 
     public SettingScope Scope
     {
