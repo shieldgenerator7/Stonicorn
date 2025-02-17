@@ -50,12 +50,33 @@ public class SnakeController : SavableMonoBehaviour
         }
     }
 
+    public Vector2 TargetPosition
+    {
+        get=> targetPos;
+        set
+        {
+            targetPos = value;
+            targetIndex = 0;
+            if (movePath.Count > 0)
+            {
+                targetIndex = Mathf.Max(
+                    movePath.IndexOf(movePath.FirstOrDefault(t => (Vector2)t.position == targetPos)),
+                    0
+                    );
+            }
+        }
+    }
+
     public Vector2 HeadPos => transform.position;
     //TODO: consolidate calls to TailPos (max once per frame)
     public Vector2 TailPos
     {
         get
         {
+            if (points.Count <= 0)
+            {
+                return HeadPos;
+            }
             float lenSoFar = 0;
             lenSoFar += Vector2.Distance(HeadPos, points.Last());
             //if long enough with only first point
@@ -173,11 +194,14 @@ public class SnakeController : SavableMonoBehaviour
     void updateBody()
     {
         //body
+        List<Vector2> plist = new List<Vector2>();
+        if (points.Count > 0)
+        {
         Spline spline = ssc.spline;
         spline.Clear();
         List<Vector2> ec2dpoints = new List<Vector2>();
         int i = 0;
-        List<Vector2> plist = Points;
+        plist = Points;
         plist.ForEach(p =>
         {
             Vector2 p1 = transform.InverseTransformPoint(p);
@@ -186,6 +210,7 @@ public class SnakeController : SavableMonoBehaviour
             i++;
         });
         ec2d.points = ec2dpoints.ToArray();
+        }
 
         //head
         head.position = HeadPos;
@@ -211,12 +236,7 @@ public class SnakeController : SavableMonoBehaviour
             .addList<Vector2>("points", points);
         set
         {
-            targetPos = value.Vector2("targetPos");
-            targetIndex = movePath.IndexOf(movePath.FirstOrDefault(t => (Vector2)t.position == targetPos));
-            if (targetIndex < 0)
-            {
-                targetIndex = 0;
-            }
+            TargetPosition = value.Vector2("targetPos");
             points = value.List<Vector2>("points");
             updateBody();
         }
