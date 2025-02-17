@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using UnityEngine.SceneManagement;
 
 [NonSolid]
@@ -156,9 +157,18 @@ public class SceneLoader : MonoBehaviour, ISetting
 
     public bool overlapsPosition(GameObject go)
         => Collider.OverlapPoint(go.transform.position);
+    public bool overlapsPosition(Vector2 pos)
+        => Collider.OverlapPoint(pos);
 
     public bool overlapsCollider(GameObject go)
         => Collider.OverlapsCollider(go.GetComponent<Collider2D>());
+
+    public static SceneLoader GetForScene(int buildIndex)
+    {
+        return FindObjectsByType<SceneLoader>(FindObjectsInactive.Include,FindObjectsSortMode.None)
+            .Where(sl=>sl.sceneId == buildIndex)
+            .FirstOrDefault();
+    }
 
     public SettingObject Setting
     {

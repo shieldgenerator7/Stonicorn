@@ -620,7 +620,7 @@ public class CustomMenu
                 checkForIllegalPrefabOverrides,
                 checkForGroundLayerObjects,
                 checkTriggersAreNotSolid,
-                //TODO: check to make sure all objects start in their given scene, and arent outside their scene's scene loader border
+                checkObjectsInStatedScene,
                 //TODO: make sure SavableMonoBehaviours all have [DisallowMultipleComponent] on them (ex: the time rewind system doesnt support two Hazards on a component)
             }
             .ConvertAll(func =>
@@ -1584,6 +1584,41 @@ public class CustomMenu
             }
         }
         return (changes, errors);
+    }
+
+    [MenuItem("SG7/Build/Pre-Build/Check to make sure objects start in the correct scene")]
+    public static bool checkObjectsInStatedScene()
+    {
+        //check to make sure all objects start in their given scene, and arent outside their scene's scene loader border
+        int problemCount = 0;
+
+        //check all savables
+        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsInactive.Include,FindObjectsSortMode.None).ToList()
+            .ForEach(ssl =>
+            {
+                //get sceneloader
+                int buildIndex = ssl.gameObject.scene.buildIndex;
+                SceneLoader sl = SceneLoader.GetForScene(buildIndex);
+                if (!sl)
+                {
+                    return;
+                }
+                //check savables
+                ssl.savables.ForEach(soi =>
+                {
+                    bool contains = sl.overlapsPosition(soi.transform.position);
+                    if (!contains)
+                    {
+                        Debug.LogError($"GameObject {soi.TextLine} is outside its scene! scene: {sl.sceneName}", soi);
+                        problemCount++;
+                    }
+                });
+            });
+        if (problemCount > 0)
+        {
+            Debug.LogError($"Found {problemCount} game objects outside their scene");
+        }
+        return problemCount > 0;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Populate ObjectManager known objects list")]
