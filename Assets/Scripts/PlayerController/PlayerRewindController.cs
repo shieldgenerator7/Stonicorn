@@ -274,7 +274,7 @@ public class PlayerRewindController : Manager
             return;
         }
         GameState gs = getGameStateAtPosition(pos);
-        if (gs.valid)
+        if (gs.Valid)
         {
             if (gs.Merky == null)
             {
@@ -300,7 +300,7 @@ public class PlayerRewindController : Manager
     public void processTapGesture(Vector3 curMPWorld)
     {
         GameState final = getGameStateAtPosition(curMPWorld);
-        if (final.valid)
+        if (final.Valid)
         {
             //Rewind back to the selected game state
             Managers.Rewind.RewindTo(final.id);

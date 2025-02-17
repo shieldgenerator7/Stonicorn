@@ -43,7 +43,7 @@ public class RewindManager : Manager
     {
         //remove invalid gamestates
         int prevcount = data.gameStates.Count;
-        data.gameStates.RemoveAll(gs => !gs.isValid());
+        data.gameStates.RemoveAll(gs => !gs.Valid);
         if (prevcount != data.gameStates.Count)
         {
             Debug.LogWarning($"RewindManager: invalid gamestates removed ({prevcount - data.gameStates.Count}). current count: {data.gameStates.Count}");
