@@ -41,6 +41,14 @@ public class RewindManager : Manager
 
     public void init()
     {
+        //remove invalid gamestates
+        int prevcount = data.gameStates.Count;
+        data.gameStates.RemoveAll(gs => !gs.isValid());
+        if (prevcount != data.gameStates.Count)
+        {
+            Debug.LogWarning($"RewindManager: invalid gamestates removed ({prevcount - data.gameStates.Count}). current count: {data.gameStates.Count}");
+        }
+        //create first gamestate if there are none
         if (data.gameStates.Count == 0)
         {
             //Create the initial save state

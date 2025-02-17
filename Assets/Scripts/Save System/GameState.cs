@@ -43,6 +43,11 @@ public struct GameState
         //Merky
         merky = states.First(os => os.objectId == 0);
     }
+    //Validation
+    public bool isValid()
+    {
+        return states != null && states.Length > 0 && merky != null;
+    }
     //Loading
     public void load()
     {
