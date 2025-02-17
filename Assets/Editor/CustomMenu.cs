@@ -1628,6 +1628,8 @@ public class CustomMenu
         //2025-02-16: copied from checkObjectsInStatedScene()
         int problemCount = 0;
 
+        List<Type> checkedTypes = new List<Type>();
+
         //check all savables
         GameObject.FindObjectsByType<SceneSavableList>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList()
             .ForEach(ssl =>
@@ -1636,6 +1638,12 @@ public class CustomMenu
                 {
                     soi.savables.ForEach(smb =>
                     {
+                        if (checkedTypes.Contains(smb.GetType()))
+                        {
+                            return;
+                        }
+                        checkedTypes.Add(smb.GetType());
+
                         try
                         {
                             smb.CurrentState = smb.CurrentState;
