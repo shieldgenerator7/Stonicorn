@@ -172,6 +172,8 @@ public class GameManager : MonoBehaviour
         Managers.Scene.onSceneObjectsLoaded -= Managers.Rewind.LoadSceneObjects;
         Managers.Scene.onSceneObjectsLoaded -= Managers.Object.LoadSceneObjects;
 
+        Managers.Scene.registerDelegates(false);
+
         Managers.Time.endGameTimer.onTimeFinished -= Managers.Rewind.RewindToStart;
         //Rewind delegates
         Managers.Rewind.onGameStateSaved -= Managers.Scene.updateSceneLoadersForward;

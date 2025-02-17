@@ -48,22 +48,12 @@ public class ScenesManager : Manager
         }
 #endif
 
-        //Register scene loading delegates
-        SceneManager.sceneLoaded -= sceneLoaded;
-        SceneManager.sceneLoaded += sceneLoaded;
-        SceneManager.sceneUnloaded -= sceneUnloaded;
-        SceneManager.sceneUnloaded += sceneUnloaded;
-
-        //Register SceneLoaderSavableList delegates
+        //Prepare to register delegates
         SceneLoader.ExplorerObject = Managers.Player.gameObject;
         sceneLoaders.RemoveAll(sl => !sl.enabled || !sl.gameObject.activeSelf);
-        sceneLoaders.ForEach(sl =>
-        {
-            sl.onObjectEntered -= registerObjectInScene;
-            sl.onObjectEntered += registerObjectInScene;
-            sl.onObjectExited -= registerObjectInScene;
-            sl.onObjectExited += registerObjectInScene;
-        });
+
+        //Register delegates
+        registerDelegates(true);
 
         //init scene object list
         data.gameStates
@@ -512,6 +502,32 @@ public class ScenesManager : Manager
     {
         Debug.Log($"Removing object {soi.TextLine} from list", soi);
         data.objectSceneList.Remove(soi.Id);
+    }
+
+    public void registerDelegates(bool register = true)
+    {
+        //ONLY for registering with things ScenesManager controls, NOT for registering delegates with other managers!
+
+        //Register scene loading delegates
+        SceneManager.sceneLoaded -= sceneLoaded;
+        SceneManager.sceneUnloaded -= sceneUnloaded;
+        if (register)
+        {
+            SceneManager.sceneLoaded += sceneLoaded;
+            SceneManager.sceneUnloaded += sceneUnloaded;
+        }
+
+        //Register SceneLoaderSavableList delegates
+        sceneLoaders.ForEach(sl =>
+        {
+            sl.onObjectEntered -= registerObjectInScene;
+            sl.onObjectExited -= registerObjectInScene;
+            if (register)
+            {
+                sl.onObjectEntered += registerObjectInScene;
+                sl.onObjectExited += registerObjectInScene;
+            }
+        });
     }
 
     public void printObjectSceneList()
