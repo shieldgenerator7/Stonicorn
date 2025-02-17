@@ -50,12 +50,16 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
 
     [Header("Cracked Components")]
     public GameObject crackedPrefab;
-    public List<GameObject> contents;
+    //[SerializeField]
+    private List<GameObject> contents;
     private List<Sprite> crackStages = new List<Sprite>();
     public AudioClip soundDamageNone;
     public AudioClip soundDamageOne;
     public AudioClip soundDamageTwoOrMore;
     public List<MemoryMonoBehaviour> dicoverables;
+
+    //TODO: make it work for multiple contents
+    //[SerializeField]
     private int contentId;
 
     //Components
@@ -180,7 +184,10 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
 
     public override SavableObject CurrentState
     {
-        get => new SavableObject(this, "integrity", integrity, "contentid", contentId);//TODO: make it work for multiple contents
+        get => new SavableObject(this, 
+            "integrity", integrity,
+            "contentid", contentId
+            );
         set
         {
             Integrity = value.Float("integrity");
