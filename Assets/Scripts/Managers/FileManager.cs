@@ -50,9 +50,11 @@ public class FileManager : Manager
         {
 
             string filename = getFileName(saveWithTimeStamp);
+            Debug.Log($"Saving to file {filename}", this);
 
             //Save progress variables
             ES3.Save<ProgressManager>("progress", Managers.Progress, filename);
+            Debug.Log($"Saved ProgressManager", this);
 
             //Save file settings
             List<SettingObject> settings = settingList
@@ -60,9 +62,14 @@ public class FileManager : Manager
                     .Where(so => so)
                     .ToList();
             ES3.Save<List<SettingObject>>("settings", settings, filename);
+            Debug.Log($"Saved ISettings", this);
 
             //Save Game Data
             ES3.Save<GameData>("data", data, filename);
+            Debug.Log($"Saved GameData", this);
+
+
+            Debug.Log($"Saved! file: {filename}", this);
 
             //Delegate
             onFileSave?.Invoke(filename);
