@@ -62,6 +62,7 @@ public class FileManager : Manager
 
             //Save file settings
             List<SettingObject> settings = settingList
+                    .Where(setting=>setting.Scope == SettingScope.SAVE_FILE).ToList()
                     .ConvertAll(setting => setting.Setting)
                     .Where(so => so)
                     .ToList();
