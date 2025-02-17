@@ -46,9 +46,6 @@ public class FileManager : Manager
     /// </summary>
     public void saveToFile()
     {
-        Task.Run(() =>
-        {
-
             string filename = getFileName(saveWithTimeStamp);
             Debug.Log($"Saving to file {filename}", this);
 
@@ -73,7 +70,6 @@ public class FileManager : Manager
 
             //Delegate
             onFileSave?.Invoke(filename);
-        });
     }
     public event OnFileAccess onFileSave;
     /// <summary>
