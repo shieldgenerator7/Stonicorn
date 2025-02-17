@@ -183,7 +183,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
         get => new SavableObject(this, "integrity", integrity, "contentid", contentId);//TODO: make it work for multiple contents
         set
         {
-            Integrity = value.Int("integrity");
+            Integrity = value.Float("integrity");
             contentId = value.Int("contentid");
         }
     }
