@@ -46,11 +46,6 @@ public struct GameState
     //Loading
     public void load()
     {
-        if (!Managers.Object)
-        {
-            Debug.LogError($"Managers.Object is {Managers.Object}!");
-            return;
-        }
         for (int i = 0; i < states.Length; i++)
         {
             ObjectState os = states[i];
