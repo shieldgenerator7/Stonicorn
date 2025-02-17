@@ -95,6 +95,7 @@ public class RewindManager : Manager
             );
         if (gameState.Merky == null)
         {
+            Debug.LogError($"GameState {gameState.id} doesnt have a merky! Fixing...");
             gameState.setMerky(Managers.PlayerSingletonObjectInfo);
         }
         data.gameStates.Add(gameState);
