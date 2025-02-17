@@ -56,7 +56,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
     public AudioClip soundDamageNone;
     public AudioClip soundDamageOne;
     public AudioClip soundDamageTwoOrMore;
-    public List<MemoryMonoBehaviour> dicoverables;
+    public List<MemoryMonoBehaviour> discoverables;
 
     //TODO: make it work for multiple contents
     //[SerializeField]
@@ -142,7 +142,7 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
         }
 
         //Reveal discoverables
-        dicoverables
+        discoverables
             .FindAll(ha => ha != null && !ReferenceEquals(ha, null))
             .ForEach(ha => ha.Discovered = true);
 
