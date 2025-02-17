@@ -154,4 +154,35 @@ public class SavableObject
     {
         return (SavableMonoBehaviour)soi.gameObject.AddComponent(ScriptType);
     }
+
+    public override bool Equals(object obj)
+    {
+        if (!obj.GetType().Equals(typeof(SavableObject))) { return false; }
+
+        SavableObject so = (SavableObject)obj;
+        if (so.scriptType != scriptType) { return false; }
+        if (so.isSpawnedScript != isSpawnedScript)
+        {
+            //TODO: check to see if this is actually legal, it could be isSpawnedScript is actually variable
+            throw new UnityException($"Two savable objects with same script type but different values! scriptType: {scriptType}, value: isSpawnedScript");
+        }
+        if (so.data.Keys.Count != data.Keys.Count)
+        {
+            throw new UnityException(
+                $"Two savable objects with same script type but different values! scriptType: {scriptType}, value: data.Keys.Count ({data.Keys.Count},{so.data.Keys.Count})"
+                );
+        }
+
+        //2025-02-16: copied from https://stackoverflow.com/a/141098/2336212
+        foreach (KeyValuePair<string, object> kvp in data)
+        {
+            if (so.data[kvp.Key] != kvp.Value)
+            {
+                return false;
+            }
+        }
+
+        //no differences found
+        return true;
+    }
 }
