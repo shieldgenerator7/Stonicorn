@@ -295,19 +295,6 @@ public class ScenesManager : Manager
         return false;
     }
 
-    public void registerObjectInScene(GameObject go)
-    {
-        if (go == null || ReferenceEquals(go, null))
-        {
-            //don't register null or destroyed objects
-            Debug.LogWarning($"GameObject {go?.name} is destroyed and will not be processed.");
-            //removeObject(go);
-            return;
-        }
-        SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
-        registerObjectInScene(soi);
-    }
-
     public void registerObjectInScene(SavableObjectInfo soi)
     {
 

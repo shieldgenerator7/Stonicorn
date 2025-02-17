@@ -182,7 +182,7 @@ public class ObjectManager : Manager, ISetting
             soi.Id = data.claimNextId();
             soi.spawnStateId = Managers.Rewind.GameStateId;
             addNewObject(soi);
-            Managers.Scene.registerObjectInScene(newObj);
+            Managers.Scene.registerObjectInScene(soi);
             Debug.Log($"Spawned object {soi.TextLine}", newObj);
         }
         //Container children

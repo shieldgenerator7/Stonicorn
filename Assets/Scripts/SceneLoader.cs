@@ -133,7 +133,7 @@ public class SceneLoader : MonoBehaviour, ISetting
         }
     }
 
-    public delegate void OnObjectMoved(GameObject go);
+    public delegate void OnObjectMoved(SavableObjectInfo soi);
 
     private void OnTriggerEnter2D(Collider2D coll2D)
     {
@@ -141,7 +141,7 @@ public class SceneLoader : MonoBehaviour, ISetting
         if (!IsLoaded) { return; }
         //
         GameObject go = coll2D.gameObject;
-        onObjectEntered?.Invoke(go);
+        onObjectEntered?.Invoke(go.GetComponent<SavableObjectInfo>());
     }
     public event OnObjectMoved onObjectEntered;
     private void OnTriggerExit2D(Collider2D coll2D)
@@ -150,7 +150,7 @@ public class SceneLoader : MonoBehaviour, ISetting
         if (!IsLoaded) { return; }
         //
         GameObject go = coll2D.gameObject;
-        onObjectExited?.Invoke(go);
+        onObjectExited?.Invoke(go.GetComponent<SavableObjectInfo>());
     }
     public event OnObjectMoved onObjectExited;
 
