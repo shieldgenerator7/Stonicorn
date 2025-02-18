@@ -973,6 +973,7 @@ public class CustomMenu
             //TODO: make a tag that allows a field to be OK to override
             //SnakeController
             "movePath",
+            "moveSpeed",
             //TEMP allowances
             "m_Creator",
             "length",
