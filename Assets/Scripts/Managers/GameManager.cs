@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
             {
                 //Don't load if it should actually not exist anymore
                 int gameStateId = Managers.Rewind.GameStateId;
-                if (soi.spawnStateId > gameStateId)
+                if (!soi.spawnedBeforeTime(gameStateId))
                 {
                     Debug.Log(
                         $"Recreation of object {soi.TextLine} is too late! " +

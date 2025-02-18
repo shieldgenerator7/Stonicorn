@@ -26,6 +26,13 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
 
     public string TextLine => $"\"{this.name}\" ({this.Id})";
 
+    public bool spawnedBeforeTime(int gameStateId)
+        => spawnStateId == 0 || spawnStateId < gameStateId;
+    public bool destroyedAfterTime(int gameStateId)
+        => destroyStateId >= gameStateId;
+    public bool existsInState(int gameStateId)
+        => spawnedBeforeTime(gameStateId) && destroyedAfterTime(gameStateId);
+
     public SavableObjectInfoData Data
     {
         get => new SavableObjectInfoData(this);

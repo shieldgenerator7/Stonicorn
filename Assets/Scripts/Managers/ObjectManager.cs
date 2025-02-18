@@ -25,7 +25,7 @@ public class ObjectManager : Manager, ISetting
         cleanObjects();
         //Destroy objects not spawned yet in the new selected state
         data.knownObjects
-            .Where(soid => soid.spawnStateId > gameStateId).ToList()
+            .Where(soid => soid.spawnStateId != 0 && soid.spawnStateId >= gameStateId).ToList()
             .ForEach(soid => destroyAndForgetObject(soid.id));
     }
 
