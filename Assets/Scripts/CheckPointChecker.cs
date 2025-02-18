@@ -306,7 +306,19 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
         checkpointCamera.gameObject.SetActive(false);
         string filename = gameObject.transform.parent.name + ".png";
-        //TODO: save image without using ES3
+        //2025-02-17: in case this part fails, heres what you do:
+        //find file: ES3Internal.ES3IO
+        //paste in this code (over existing code)
+//#if UNITY_SWITCH
+//        internal static readonly string persistentDataPath = "";
+//        internal static readonly string dataPath = "";
+//#elif UNITY_EDITOR
+//        internal static readonly string persistentDataPath = "C:/Users/Shield/AppData/LocalLow/Fawn Dawn Studios/Stonicorn";//this part might be different for you
+//    internal static readonly string dataPath = Application.dataPath;
+//#else
+//        internal static readonly string persistentDataPath = Application.persistentDataPath;
+//        internal static readonly string dataPath = Application.dataPath;
+//#endif
         ES3.SaveImage(screenShot, filename);
 
         //hide camera
