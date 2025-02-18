@@ -37,8 +37,6 @@ public class SnakeController : SavableMonoBehaviour
     private Vector2 targetPos;
     private List<Vector2> points = new List<Vector2>();//world space coordinates of bending places of snake
 
-    private bool atXPos = false;
-
     public int TargetIndex
     {
         get => targetIndex;
@@ -148,36 +146,15 @@ public class SnakeController : SavableMonoBehaviour
     void FixedUpdate()
     {
         //move head
-        //TODO: make this work in a round world
-        if (Mathf.Abs(targetPos.x - transform.position.x) <= arriveThreshold)
-        {
-            Vector2 pos = transform.position;
-            pos.x = targetPos.x;
-            transform.position = pos;
-            if (!atXPos)
-            {
-                atXPos = true;
-                turn();
-            }
-        }
-        if (Mathf.Abs(targetPos.y - transform.position.y) <= arriveThreshold)
+        if (Vector2.Distance(targetPos, transform.position) <= arriveThreshold)
         {
             transform.position = targetPos;
             TargetIndex++;
-            if (atXPos)
-            {
-                atXPos = false;
                 turn();
-            }
-        }
-        if (Mathf.Abs(targetPos.x - transform.position.x) > arriveThreshold)
-        {
-            rb2d.linearVelocity = Vector2.right * Mathf.Sign(targetPos.x - transform.position.x) * moveSpeed;
-            atXPos = false;
         }
         else
         {
-            rb2d.linearVelocity = Vector2.up * Mathf.Sign(targetPos.y - transform.position.y) * moveSpeed;
+            rb2d.linearVelocity = (targetPos - (Vector2)transform.position).normalized * moveSpeed;
         }
         updateBody();
     }
