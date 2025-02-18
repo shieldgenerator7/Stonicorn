@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7886790731840447885}
   - component: {fileID: 6679717599614556735}
-  - component: {fileID: 6188698304721827437}
+  - component: {fileID: 7218759296262881059}
   m_Layer: 0
   m_Name: snake_head
   m_TagString: Untagged
@@ -89,8 +89,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &6188698304721827437
-BoxCollider2D:
+--- !u!70 &7218759296262881059
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -123,18 +123,9 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.34441376, y: -0.0013275146}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.15011151, y: 0.52}
-    oldSize: {x: 0.855, y: 0.38}
-    newSize: {x: 0.855, y: 0.38}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.72895813, y: 0.30770874}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.34420294, y: -0.0021295573}
+  m_Size: {x: 0.7327913, y: 0.3053829}
+  m_Direction: 1
 --- !u!1 &2572920544996456817
 GameObject:
   m_ObjectHideFlags: 0
