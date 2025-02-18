@@ -52,9 +52,9 @@ public class TeleportPortal : SavableMonoBehaviour
     public void connectTo(TeleportPortal other)
     {
         otherEnd = other;
-        otherEndId = other.GetComponent<SavableObjectInfo>().Id;
+        otherEndId = other.SavableObjectInfo.Id;
         other.otherEnd = this;
-        other.otherEndId = this.GetComponent<SavableObjectInfo>().Id;
+        other.otherEndId = this.SavableObjectInfo.Id;
     }
 
     public bool containsPoint(Vector2 point)

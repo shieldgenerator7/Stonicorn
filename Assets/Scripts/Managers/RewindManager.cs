@@ -193,9 +193,10 @@ public class RewindManager : Manager
         //TODO: SOI childrenSOI list
         foreach (Transform t in soi.gameObject.transform)
         {
-            if (t.gameObject.isSavable())
+            SavableObjectInfo soiT = t.gameObject.GetComponent<SavableObjectInfo>();
+            if (soiT)
             {
-                LoadObject(t.gameObject.GetComponent<SavableObjectInfo>(), lastStateSeen);
+                LoadObject(soiT, lastStateSeen);
             }
         }
     }

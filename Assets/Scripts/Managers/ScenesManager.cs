@@ -128,25 +128,27 @@ public class ScenesManager : Manager
     public void LoadObjectsFromScene(Scene scene)
     {
         //Get list of savables
-        List<SavableObjectInfo> sceneGOs = SceneSavableList.getFromScene(scene).savables;
+        List<SavableObjectInfo> sceneSOIs = SceneSavableList.getFromScene(scene).savables;
         //If an object from this scene is known not to be currently in this scene,
-        List<SavableObjectInfo> unsceneGOs = sceneGOs.FindAll(
+        List<SavableObjectInfo> unsceneSOIs = sceneSOIs.FindAll(
             soi => !isObjectInScene(soi, scene)
             );
+        if (unsceneSOIs.Count > 0)
+        {
         //Remove it from being processed, and
-        sceneGOs.RemoveAll(go => unsceneGOs.Contains(go));
+        sceneSOIs.RemoveAll(soi => unsceneSOIs.Contains(soi));
         //Destroy it before it gets put into the game object list.
-        unsceneGOs.ForEach(soi =>
+        unsceneSOIs.ForEach(soi =>
         {
             Debug.Log($"Destroying now duplicate: {soi} ({soi.Id})");
             Destroy(soi.gameObject);
         });
+        }
         //Register object in scene
-        sceneGOs.ForEach(go => registerObjectInScene(go, scene));
+        sceneSOIs.ForEach(soi => registerObjectInScene(soi, scene));
         //Init the savables
-        sceneGOs.ForEach(
-            go => go.GetComponent<SavableObjectInfo>()
-                .savables
+        sceneSOIs.ForEach(
+            soi => soi.savables
                 .ForEach(smb => smb.init())
             );
         //Find the last state that this scene was saved in
@@ -157,11 +159,11 @@ public class ScenesManager : Manager
             lastStateSeen = sceneLoader.lastOpenGameStateId;
         }
         //Find foreign objects that are not here
-        List<int> sceneIds = sceneGOs.ConvertAll(soi => soi.Id);
+        List<int> sceneIds = sceneSOIs.ConvertAll(soi => soi.Id);
         List<int> foreignIds = getObjectsIdsInScene(scene)
             .FindAll(id => !sceneIds.Contains(id));
         //Delegate
-        onSceneObjectsLoaded?.Invoke(sceneGOs, foreignIds, lastStateSeen);
+        onSceneObjectsLoaded?.Invoke(sceneSOIs, foreignIds, lastStateSeen);
     }
     public delegate void OnSceneObjectsLoaded(List<SavableObjectInfo> sceneGOs, List<int> foreignGOs, int lastStateSeen);
     public event OnSceneObjectsLoaded onSceneObjectsLoaded;

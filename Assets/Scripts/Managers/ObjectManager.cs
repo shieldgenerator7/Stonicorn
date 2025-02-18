@@ -101,9 +101,9 @@ public class ObjectManager : Manager, ISetting
                     //TODO: use SOI childrenSOI list
                     foreach (Transform t in newGO.transform)
                     {
-                        if (t.gameObject.isSavable())
+                        SavableObjectInfo soiT = t.gameObject.GetComponent<SavableObjectInfo>();
+                        if (soiT)
                         {
-                            SavableObjectInfo soiT = t.gameObject.GetComponent<SavableObjectInfo>();
                             SavableObjectInfoData soidT = data.knownObjects.Find(soid => soid.id == soiT.Id);
                             soiT.Data = soidT;
                             addObject(soiT);
@@ -160,10 +160,10 @@ public class ObjectManager : Manager, ISetting
             {
                 throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have a RigidBody2D or a SavableMonoBehaviour.");
             }
-            bool hasInfo = prefab.GetComponent<ObjectInfo>();
+            bool hasInfo = prefab.GetComponent<SavableObjectInfo>();
             if (!hasInfo)
             {
-                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have an ObjectInfo.");
+                throw new UnityException($"Prefab {prefab.name} cannot be instantiated as a rewindable object because it does not have an SavableObjectInfo.");
             }
         }
         //Instantiate
@@ -465,7 +465,7 @@ public class ObjectManager : Manager, ISetting
         //Add objects that have other variables that can get rewound
         foreach (SavableMonoBehaviour smb in FindObjectsByType<SavableMonoBehaviour>(FindObjectsSortMode.None))
         {
-            addObject(smb.GetComponent<SavableObjectInfo>());
+            addObject(smb.SavableObjectInfo);
         }
         //Memories
         refreshMemoryObjects();

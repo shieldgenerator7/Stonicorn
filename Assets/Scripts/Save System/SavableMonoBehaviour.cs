@@ -6,7 +6,7 @@ public abstract class SavableMonoBehaviour : MonoBehaviour
 {
     [AutoInitialize, SerializeField, HideInInspector]
     private SavableObjectInfo soi;
-    protected SavableObjectInfo SavableObjectInfo => soi;
+    public SavableObjectInfo SavableObjectInfo => soi;
 
     public abstract void init();
 
@@ -28,7 +28,9 @@ public abstract class SavableMonoBehaviour : MonoBehaviour
     /// <param name="register"></param>
     protected void register(bool register = true)
     {
-        SavableObjectInfo soi = GetComponent<SavableObjectInfo>();
+        //have to call GetComponent() here bc the added script might not have it set
+        soi ??= GetComponent<SavableObjectInfo>();
+        //
         if (register)
         {
             if (!soi.savables.Contains(this))
