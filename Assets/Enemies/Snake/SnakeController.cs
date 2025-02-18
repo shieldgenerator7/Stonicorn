@@ -142,9 +142,26 @@ public class SnakeController : SavableMonoBehaviour
     {
         TargetIndex = 0;
         points.Clear();
+        int count = movePath.Count;
+        if (count > 0)
+        {
+            int i = (targetIndex - 1 + count) % count;
+            while (true)
+            {
+                points.Insert(0,movePath[i].position);
+                i = (i - 1 + count) % count;
+                if (i == targetIndex)
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
         for (int i = 0; i < ssc.spline.GetPointCount(); i++)
         {
             points.Add(transform.TransformPoint(ssc.spline.GetPosition(i)));
+        }
         }
         updateBody();
     }
