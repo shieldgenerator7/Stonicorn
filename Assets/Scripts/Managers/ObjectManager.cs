@@ -472,6 +472,7 @@ public class ObjectManager : Manager, ISetting
     }
     public void refreshMemoryObjects()
     {
+        //TODO: search for MemoryObjectInfo instead
         foreach (MemoryMonoBehaviour mmb in FindObjectsByType<MemoryMonoBehaviour>(FindObjectsSortMode.None))
         {
             int key = mmb.gameObject.getKey();

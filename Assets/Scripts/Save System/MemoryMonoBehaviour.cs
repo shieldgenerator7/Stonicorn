@@ -1,6 +1,8 @@
 ﻿
 using UnityEngine;
 
+//TODO: maybe refactor MemoryObjectInfo to allow saving multiple MemoryMonoBehaviours
+[DisallowMultipleComponent]
 public abstract class MemoryMonoBehaviour : MonoBehaviour
 {
     private bool discovered;
