@@ -321,13 +321,16 @@ public class CustomMenu
             {
                 playerSpawnObject.transform.position = (Vector2)SceneView.GetAllSceneCameras()[0].transform.position;
             }
+            if (!Selection.activeGameObject)
+            {
             Selection.activeGameObject = playerSpawnObject;
+            }
             Debug.Log($"PTSP enabled: {playerTSP.enabled}");
         }
         else
         {
             //Call the player
-            GameObject playerObject = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
             if (GameObject.FindAnyObjectByType<RulerDisplayer>())
             {
                 playerObject.transform.position = RulerDisplayer.currentMousePos;
