@@ -12,6 +12,8 @@ public struct GameState
 
     public static int nextid = 0;
 
+    private static ObjectState INVALID_STATE = new ObjectState();
+
     //Instantiation
     public GameState(int testId)
     {
@@ -27,9 +29,15 @@ public struct GameState
 
         //Object States
         states = list
-            //.Where(soi => soi && !ReferenceEquals(soi, null)).ToList()
+            //.Where(soi => soi && !ReferenceEquals(soi, null)).ToList()//apparently sometimes things can get destroyed before the savable list can be updated
             .ConvertAll(soi =>
             {
+                //2025-02-17: apparently sometimes things can get destroyed before the savable list can be updated
+                //checking here to avoid recreating a list
+                if (!soi || ReferenceEquals(soi, null))
+                {
+                    return INVALID_STATE;
+                }
                     ObjectState os = new ObjectState(soi);
                     if (os.objectId < 0)
                     {
@@ -37,6 +45,7 @@ public struct GameState
                     }
                     return os;
             })
+            .Where(os=>os.Valid)
             .OrderBy(os => os.objectId)
             .ToArray();
 

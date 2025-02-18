@@ -85,4 +85,6 @@ public class ObjectState
             }
         }
     }
+
+    public bool Valid => objectId >= 0;
 }
