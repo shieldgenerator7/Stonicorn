@@ -463,9 +463,9 @@ public class ObjectManager : Manager, ISetting
         //Clear the list
         data.savables.Clear();
         //Add objects that have other variables that can get rewound
-        foreach (SavableMonoBehaviour smb in FindObjectsByType<SavableMonoBehaviour>(FindObjectsSortMode.None))
+        foreach (SavableObjectInfo soi in FindObjectsByType<SavableObjectInfo>(FindObjectsSortMode.None))
         {
-            addObject(smb.SavableObjectInfo);
+            addObject(soi);
         }
         //Memories
         refreshMemoryObjects();
