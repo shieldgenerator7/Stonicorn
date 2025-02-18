@@ -67,6 +67,7 @@ public class SnakeController : SavableMonoBehaviour
 
     public Vector2 HeadPos => transform.position;
     //TODO: consolidate calls to TailPos (max once per frame)
+    private Vector2 _tailPos;
     public Vector2 TailPos
     {
         get
@@ -96,7 +97,7 @@ public class SnakeController : SavableMonoBehaviour
             return points[0];
         }
     }
-    public List<Vector2> Points
+    private List<Vector2> Points
     {
         get
         {
@@ -104,6 +105,11 @@ public class SnakeController : SavableMonoBehaviour
             List<Vector2> plist = new List<Vector2>();
             plist.Insert(0, HeadPos);
             lenSoFar += Vector2.Distance(HeadPos, points.Last());
+            if (lenSoFar >= length)
+            {
+                plist.Insert(0,_tailPos);
+                return plist;
+            }
             plist.Insert(0, points.Last());
             //if long enough with only first point
             if (lenSoFar >= length)
@@ -118,7 +124,8 @@ public class SnakeController : SavableMonoBehaviour
                 lenSoFar += Vector2.Distance(points[i - 1], points[i]);
                 if (lenSoFar >= length)
                 {
-                    plist.Insert(0, TailPos);
+                    //assumes _tailPos has been set correctly this frame
+                    plist.Insert(0, _tailPos);
                     return plist;
                 }
                 else
@@ -170,6 +177,7 @@ public class SnakeController : SavableMonoBehaviour
 
     void updateBody()
     {
+        _tailPos = TailPos;
         //body
         List<Vector2> plist = new List<Vector2>();
         if (points.Count > 0)
@@ -194,7 +202,7 @@ public class SnakeController : SavableMonoBehaviour
         head.right = rb2d.linearVelocity;
 
         //tail
-        tail.position = TailPos;
+        tail.position = _tailPos;
         if (plist.Count >= 2)
         {
             tail.right = plist[1] - plist[0];
