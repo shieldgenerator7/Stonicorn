@@ -8,10 +8,9 @@ public class MovePath : MonoBehaviour
     [AutoInitialize,SerializeField,HideInInspector]
     private EdgeCollider2D ec2d;
 
-    public List<Vector2> Points 
-        => (List<Vector2>)ec2d.points.ToList()
-        .ConvertAll(p=>transform.TransformPoint(p))
-        .Cast<Vector2>();
+    public List<Vector2> Points
+        => ec2d.points.ToList()
+        .ConvertAll(p => (Vector2)transform.TransformPoint(p));
 
     public int Count => ec2d.pointCount;
 
