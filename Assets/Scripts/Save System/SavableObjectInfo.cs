@@ -24,7 +24,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
     [AutoInitialize(AllowUnfound =true), SerializeField, HideInInspector]
     public List<SavableMonoBehaviour> savables;
 
-    public string TextLine => $"--{this.name} ({this.Id})--";
+    public string TextLine => $"\"{this.name}\" ({this.Id})";
 
     public SavableObjectInfoData Data
     {
