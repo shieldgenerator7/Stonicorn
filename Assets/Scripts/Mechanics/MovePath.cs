@@ -17,7 +17,7 @@ public class MovePath : MonoBehaviour
 
     public Vector2 this[int key]
     {
-        get=>ec2d.points[key];
+        get=>transform.TransformPoint(ec2d.points[key]);
     }
     public int IndexOf(Vector2 point)=>ec2d.points.ToList().IndexOf(point);
 }
