@@ -411,42 +411,6 @@ public class ScenesManager : Manager
         }
     }
 
-    public void moveToScene(GameObject go, Scene scene)
-    {
-        SavableObjectInfo soi = go.GetComponent<SavableObjectInfo>();
-        if (soi)
-        {
-            moveToScene(soi, scene);
-        }
-        else
-        {
-            try
-            {
-                if (go.scene != scene)
-                {
-                    if (scene.isLoaded)
-                    {
-                        Debug.Log($"Moving {go.name} into scene {scene.Name()}", go);
-                        SceneManager.MoveGameObjectToScene(go, scene);
-                        Debug.Log($"Moved {go.name} is now in scene {go.scene.Name()}", go);
-                    }
-                    else
-                    {
-                        Debug.Log($"Moving {go.name} into scene {scene.Name()}, BUT scene is unloaded, destroying instead", go);
-                        Destroy(go);
-                    }
-                }
-            }
-            catch (ArgumentException ae)
-            {
-                Debug.LogError(
-                    $"Trying to move {go.name} into scene {scene.Name()} at position: {go.transform.position}" +
-                    $"\nArgumentException: {ae}"
-                    );
-            }
-        }
-    }
-
     /// <summary>
     /// Moves the given game object into the given scene,
     /// BUT if the scene is unloaded, it will destroy the object instead

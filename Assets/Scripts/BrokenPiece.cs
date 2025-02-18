@@ -27,7 +27,6 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
         Scene scene = original.scene;
         transform.position = original.transform.position;
         transform.rotation = original.transform.rotation;
-        Managers.Scene.moveToScene(gameObject, scene);
 
         //Initialize child objects
         foreach (SavableObjectInfo soi in Savables)
