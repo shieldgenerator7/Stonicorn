@@ -27,6 +27,7 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
         Scene scene = original.scene;
         transform.position = original.transform.position;
         transform.rotation = original.transform.rotation;
+        transform.localScale = original.transform.localScale;
 
         //Initialize child objects
         foreach (SavableObjectInfo soi in Savables)
@@ -36,6 +37,7 @@ public class BrokenPiece : MonoBehaviour, ISavableContainer
             //Put it in the scene
             Managers.Scene.moveToScene(soi, scene);
         }
+
         //Delete this object
         Destroy(gameObject);
     }
