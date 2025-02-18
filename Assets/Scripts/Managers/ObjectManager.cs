@@ -262,7 +262,7 @@ public class ObjectManager : Manager, ISetting
             {
                 Debug.LogWarning(
                       $"Key ({key}) is already inside the gameObjects dictionary: "
-                      + $"GameObject {soi.TextLine} replacing {data.savables[key]}",
+                      + $"GameObject {soi.TextLine} replacing {data.savables[key].TextLine}",
                       soi
                       );
             }

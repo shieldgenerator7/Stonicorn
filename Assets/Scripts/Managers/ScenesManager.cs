@@ -248,8 +248,8 @@ public class ScenesManager : Manager
     public List<int> getObjectsIdsInScene(Scene scene)
     {
         int sceneId = scene.buildIndex;
-        return data.objectSceneList.ToList()
-            .FindAll(entry => entry.Value == sceneId)
+        return data.objectSceneList
+            .Where(entry => entry.Value == sceneId).ToList()
             .ConvertAll(entry => entry.Key);
     }
 
