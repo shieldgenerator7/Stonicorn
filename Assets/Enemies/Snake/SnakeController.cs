@@ -14,8 +14,7 @@ public class SnakeController : SavableMonoBehaviour
 
     [Header("Components")]
     //TODO: make tag to say this is OK to override
-    //TODO: move this to scriptable object?
-    public List<Transform> movePath;
+    public MovePath movePath;
 
     public Transform head;
     public Transform tail;
@@ -44,7 +43,7 @@ public class SnakeController : SavableMonoBehaviour
         {
             targetIndex = Utility.loopValue(value, 0, movePath.Count - 1);
             //TODO: account for if the transform moves after setting the targetPos?
-            targetPos = movePath[targetIndex].position;
+            targetPos = movePath[targetIndex];
         }
     }
 
@@ -58,7 +57,7 @@ public class SnakeController : SavableMonoBehaviour
             if (movePath.Count > 0)
             {
                 targetIndex = Mathf.Max(
-                    movePath.IndexOf(movePath.FirstOrDefault(t => (Vector2)t.position == targetPos)),
+                    movePath.IndexOf(targetPos),
                     0
                     );
             }
@@ -148,7 +147,7 @@ public class SnakeController : SavableMonoBehaviour
             int i = (targetIndex - 1 + count) % count;
             while (true)
             {
-                points.Insert(0,movePath[i].position);
+                points.Insert(0,movePath[i]);
                 i = (i - 1 + count) % count;
                 if (i == targetIndex)
                 {
