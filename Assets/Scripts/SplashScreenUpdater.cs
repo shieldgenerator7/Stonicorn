@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SplashScreenUpdater : MonoBehaviour
+public class SplashScreenUpdater : MonoBehaviour, ISetupable
 {
 
     public List<GameObject> splashImages;//the images to be displayed in sequence
@@ -118,5 +120,44 @@ public class SplashScreenUpdater : MonoBehaviour
         {
             onSplashScreenFinished();
         }
+    }
+
+    public int checkForErrors()
+    {
+        int errorCount = 0;
+
+        //check for more than one "backdrop"
+        int backdropCount = GetComponentsInChildren<Image>()
+            .Where(img => img.gameObject.activeSelf || img.color.a > 0)
+            .Count();
+        if (backdropCount > 1)
+        {
+            Debug.LogError($"Splash screen has more than 1 backdrop! count: {backdropCount}");
+            errorCount++;
+        }
+
+        return errorCount;
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+
+        splashImages.ForEach(splash =>
+        {
+            if (splash.activeSelf)
+            {
+                splash.SetActive(false);
+                changeCount++;
+            }
+            Image image = splash.GetComponent<Image>();
+            if (image.color.a != 0)
+            {
+                image.color = image.color.adjustAlpha(0);
+                changeCount++;
+            }
+        });
+
+        return changeCount;
     }
 }
