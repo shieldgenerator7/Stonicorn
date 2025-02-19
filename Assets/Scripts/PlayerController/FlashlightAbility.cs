@@ -45,6 +45,7 @@ public class FlashlightAbility : PlayerAbility
     public override void init()
     {
         base.init();
+        playerController.onDragGesture -= processDrag;
         playerController.onDragGesture += processDrag;
 
         this.flashlightSRs = this.flashlight.GetComponentsInChildren<SpriteRenderer>().ToList();
