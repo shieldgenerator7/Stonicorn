@@ -90,7 +90,7 @@ public class FlashlightAbility : PlayerAbility
                 flashlightOn = false;
                 break;
         }
-        float percent = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
+        float percent = (flashlightDirection.magnitude) / maxPullBackDistance;
         updateFlashlightVisuals(1, percent);
         updateFlashAuraVisuals(1 - percent);
     }
@@ -118,9 +118,6 @@ public class FlashlightAbility : PlayerAbility
             flashlightSRs.ForEach(flsr =>
                 flsr.color = flsr.color.adjustAlpha(alpha)
             );
-
-            //aura
-            updateFlashAuraVisuals(1 - alpaPercent);
 
             //enable sprites
             flashlightSRs.ForEach(flsr => flsr.enabled = true);
