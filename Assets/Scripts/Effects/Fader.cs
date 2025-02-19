@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Collections.Generic;
 using Unity.Hierarchy;
+using TMPro;
 
 public class Fader : MonoBehaviour, ISetupable
 {
@@ -101,6 +102,11 @@ public class Fader : MonoBehaviour, ISetupable
                     Image img = (Image)o;
                     img.color = img.color.adjustAlpha(alpha);
                 }
+                else if (o is TMP_Text)
+                {
+                    TMP_Text txt = (TMP_Text)o;
+                    txt.color = txt.color.adjustAlpha(alpha) * txt.color.adjustAlpha(alpha);
+                }
                 else if (o is SpriteMask)
                 {
                     SpriteMask mask = (SpriteMask)o;
@@ -173,6 +179,7 @@ public class Fader : MonoBehaviour, ISetupable
         srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
         srs.AddRange(GetComponentsInChildren<SpriteShapeRenderer>());
         srs.AddRange(GetComponentsInChildren<Image>());
+        srs.AddRange(GetComponentsInChildren<TMP_Text>());
         srs.Add(GetComponent<SpriteMask>());
         srs.RemoveAll(sr => sr == null);
         if (srs.Count != prevcount)
