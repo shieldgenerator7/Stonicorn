@@ -17,9 +17,6 @@ public class FlashlightAbility : PlayerAbility
     [Range(0, 10)]
     public float maxGlowSize = 3f;
     public float glowAlpha = -1;//override alpha animation if between 0 and 1
-    public float afterglowDuration = 0.5f;
-    public bool beamDirFollowsTeleport = true;
-    private float afterglowStartSize = 1;
 
     public GameObject flashlight;
     public SpriteMask flashlightBeamMask;
@@ -28,7 +25,6 @@ public class FlashlightAbility : PlayerAbility
     private bool flashAuraOn = false;
     [AutoInitialize(Container ="flashlight", SearchChildren =true), SerializeField, HideInInspector]
     private List<SpriteRenderer> flashlightSRs;
-    private Vector2 originalFlashlightDirection;
     private Vector2 flashlightDirection;
     public Vector2 FlashlightDirection
     {
@@ -60,15 +56,6 @@ public class FlashlightAbility : PlayerAbility
     protected override bool isGrounded() => false;
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-            if (flashlightOn || flashAuraOn)
-            {
-                if (beamDirFollowsTeleport)
-                {
-                    FlashlightDirection = (newPos - oldPos).normalized * FlashlightDirection.magnitude;
-                }
-                updateFlashlightVisuals(1);
-                updateFlashAuraVisuals(1, afterglowStartSize);
-            }
     }
 
     public void processDrag(Vector2 oldPos, Vector2 newPos, GestureState state)
@@ -80,13 +67,10 @@ public class FlashlightAbility : PlayerAbility
                 //TODO: implement? //2025-01-05: i suspect this hasnt been implemented yet
                 return;
             case GestureState.ONGOING:
-                afterglowStartSize = 0;
                 flashlightOn = true;
                 flashAuraOn = true;
-                originalFlashlightDirection = flashlightDirection;
                 break;
             case GestureState.FINISH:
-                afterglowStartSize = flashlightPlayerGlowSR.transform.localScale.x;//assume x and y are same and the sprite takes a single unit
                 flashlightOn = false;
                 break;
         }
@@ -157,7 +141,6 @@ public class FlashlightAbility : PlayerAbility
         flashAuraOn = false;
         flashlight.SetActive(false);
         flashAuraOn = false;
-        afterglowStartSize = 0;
         updateFlashlightVisuals(0);
         updateFlashAuraVisuals(0);
     }
