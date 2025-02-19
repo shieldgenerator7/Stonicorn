@@ -55,12 +55,6 @@ public class FlashlightAbility : PlayerAbility
         playerController.Teleport.findTeleportablePositionOverride
             += findTeleportablePosition;
 
-        ForceLaunchAbility fla = playerController.GetComponent<ForceLaunchAbility>();
-        if (fla)
-        {
-            fla.onLaunch -= turnOff;
-            fla.onLaunch += turnOff;
-        }
     }
     public override void OnDisable()
     {
@@ -70,11 +64,6 @@ public class FlashlightAbility : PlayerAbility
         playerController.Teleport.findTeleportablePositionOverride
             -= findTeleportablePosition;
 
-        ForceLaunchAbility fla = playerController.GetComponent<ForceLaunchAbility>();
-        if (fla)
-        {
-            fla.onLaunch -= turnOff;
-        }
     }
 
     #region Input Processing
