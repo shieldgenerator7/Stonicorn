@@ -24,17 +24,19 @@ public class SwapAbility : PlayerAbility
     /// </summary>
     private RaycastHit2D[] rh2dsSwappable = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
-    public override void init()
+
+    protected override void registerDelegates(bool register = true)
     {
-        base.init();
-        playerController.Teleport.findTeleportablePositionOverride += findSwapPosition;
-        playerController.Teleport.onRangeChanged += onRangeChanged;
-    }
-    public override void OnDisable()
-    {
-        base.OnDisable();
+        if (playerController)
+        {
         playerController.Teleport.findTeleportablePositionOverride -= findSwapPosition;
         playerController.Teleport.onRangeChanged -= onRangeChanged;
+            if (register)
+            {
+        playerController.Teleport.findTeleportablePositionOverride += findSwapPosition;
+        playerController.Teleport.onRangeChanged += onRangeChanged;
+            }
+        }
     }
 
     private void Update()

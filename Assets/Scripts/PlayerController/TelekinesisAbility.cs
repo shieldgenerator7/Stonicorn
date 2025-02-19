@@ -42,15 +42,16 @@ public class TelekinesisAbility : PlayerAbility
     }
     private List<HoldContext> holdTargets = new List<HoldContext>();
 
-    public override void init()
+    protected override void registerDelegates(bool register = true)
     {
-        base.init();
-        playerController.teleportOverride += checkOverrideTeleport;
-    }
-    public override void OnDisable()
-    {
-        base.OnDisable();
+        if (playerController)
+        {
         playerController.teleportOverride -= checkOverrideTeleport;
+            if (register)
+            {
+        playerController.teleportOverride += checkOverrideTeleport;
+            }
+        }
     }
 
     private void FixedUpdate()

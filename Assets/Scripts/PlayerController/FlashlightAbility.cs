@@ -39,16 +39,16 @@ public class FlashlightAbility : PlayerAbility
         }
     }
 
-    public override void init()
+    protected override void registerDelegates(bool register = true)
     {
-        base.init();
+        if (playerController)
+        {
         playerController.onDragGesture -= processDrag;
+            if (register)
+            {
         playerController.onDragGesture += processDrag;
-    }
-    public override void OnDisable()
-    {
-        base.OnDisable();
-        playerController.onDragGesture -= processDrag;
+            }
+        }
     }
 
     #region Input Processing

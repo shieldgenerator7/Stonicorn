@@ -88,19 +88,30 @@ public class TeleportAbility : PlayerAbility
     public override void init()
     {
         base.init();
-        playerController.onGroundedStateUpdated += onGroundedChanged;
-        Managers.Rewind.onRewindFinished += onRewindFinished;
         //TeleportAbility doesn't need an onTeleport delegate
         onTeleport -= processTeleport;
         //Initialize the range
         Range = baseRange;
     }
 
-    public override void OnDisable()
+    protected override void registerDelegates(bool register = true)
     {
-        base.OnDisable();
+        //player controller
+        if (playerController)
+        {
         playerController.onGroundedStateUpdated -= onGroundedChanged;
+            if (register)
+            {
+        playerController.onGroundedStateUpdated += onGroundedChanged;
+            }
+        }
+
+        //rewind manager
         Managers.Rewind.onRewindFinished -= onRewindFinished;
+        if (register)
+        {
+        Managers.Rewind.onRewindFinished += onRewindFinished;
+        }
     }
 
     private void onRewindFinished(int gameStateId)

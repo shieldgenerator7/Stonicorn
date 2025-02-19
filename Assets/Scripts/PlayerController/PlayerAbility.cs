@@ -65,6 +65,14 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
         //Upgrade Levels
         acceptUpgradeLevel(upgradeLevel);
 
+        //register delegates
+        registerDelegatesStart(true);
+
+        //ability activated
+        playerController?.abilityActivated(this, true);
+    }
+    private void registerDelegatesStart(bool register = true)
+    {
         if (playerController)
         {
             //Sound Effects
@@ -72,28 +80,27 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
             {
                 if (addsOnTeleportSoundEffect)
                 {
+                    playerController.onPlayTeleportSound -= playTeleportSound;
+                    if (register)
+                    {
                     playerController.onPlayTeleportSound += playTeleportSound;
+                    }
                 }
             }
-            playerController.abilityActivated(this, true);
-            //Delegates
-            playerController.Teleport.onTeleport += processTeleport;
-            playerController.Ground.isGroundedCheck += isGrounded;
-        }
-    }
-    public virtual void OnDisable()
-    {
-        if (playerController)
-        {
-            if (addsOnTeleportSoundEffect)
-            {
-                playerController.onPlayTeleportSound -= playTeleportSound;
-            }
-            playerController.abilityActivated(this, false);
             //Delegates
             playerController.Teleport.onTeleport -= processTeleport;
             playerController.Ground.isGroundedCheck -= isGrounded;
+            if (register)
+            {
+            playerController.Teleport.onTeleport += processTeleport;
+            playerController.Ground.isGroundedCheck += isGrounded;
+            }
         }
+    }
+    protected abstract void registerDelegates(bool register = true);
+    public void OnDisable()
+    {
+        registerDelegates(false);
     }
     public void OnEnable()
     {

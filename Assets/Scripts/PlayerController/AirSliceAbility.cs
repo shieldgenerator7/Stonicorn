@@ -29,18 +29,27 @@ public class AirSliceAbility : PlayerAbility
     [AutoInitialize, SerializeField, HideInInspector]
     private ForceLaunchAbility forceLaunchAbility;
 
-    // Use this for initialization
-    public override void init()
+    protected override void registerDelegates(bool register = true)
     {
-        base.init();
-        playerController.onGroundedStateUpdated += resetAirPorts;
-        forceLaunchAbility.onLaunch += useAirPort;
-    }
-    public override void OnDisable()
-    {
-        base.OnDisable();
+        //player controller
+        if (playerController)
+        {
         playerController.onGroundedStateUpdated -= resetAirPorts;
+            if (register)
+            {
+        playerController.onGroundedStateUpdated += resetAirPorts;
+            }
+        }
+
+        //force launch ability
+        if (forceLaunchAbility)
+        {
         forceLaunchAbility.onLaunch -= useAirPort;
+            if (register)
+            {
+        forceLaunchAbility.onLaunch += useAirPort;
+            }
+        }
     }
 
     protected override bool isGrounded()

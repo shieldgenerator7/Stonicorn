@@ -45,15 +45,14 @@ public class WallClimbAbility : PlayerAbility
     public delegate void OnMagnetChanged(bool on);
     public event OnMagnetChanged onMagnetChanged;
 
-    public override void init()
+
+    protected override void registerDelegates(bool register = true)
     {
-        base.init();
         onMagnetChanged -= updateClimbSpikeEffect;
+        if (register)
+        {
         onMagnetChanged += updateClimbSpikeEffect;
-    }
-    public override void OnDisable()
-    {
-        base.OnDisable();
+        }
     }
 
     protected override bool isGrounded()

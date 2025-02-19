@@ -106,17 +106,23 @@ public class ElectricBeamAbility : PlayerAbility
     public override void init()
     {
         base.init();
-        playerController.Teleport.findTeleportablePositionOverride
-            += findTeleportablePosition;
-        playerController.Teleport.onRangeChanged += rangeChanged;
         rangeChanged(playerController.Teleport.Range);
     }
-    public override void OnDisable()
+
+    protected override void registerDelegates(bool register = true)
     {
-        base.OnDisable();
+        if (playerController)
+        {
         playerController.Teleport.findTeleportablePositionOverride
             -= findTeleportablePosition;
         playerController.Teleport.onRangeChanged -= rangeChanged;
+            if (register)
+            {
+        playerController.Teleport.findTeleportablePositionOverride
+            += findTeleportablePosition;
+        playerController.Teleport.onRangeChanged += rangeChanged;
+            }
+        }
     }
 
     void FixedUpdate()

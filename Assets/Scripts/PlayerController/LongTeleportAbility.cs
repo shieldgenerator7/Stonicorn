@@ -60,16 +60,13 @@ public class LongTeleportAbility : PlayerAbility
         }
     }
 
-
-    public override void init()
+    protected override void registerDelegates(bool register = true)
     {
-        base.init();
-        Managers.Camera.onOffsetChange += adjustRange;
-    }
-    public override void OnDisable()
-    {
-        base.OnDisable();
         Managers.Camera.onOffsetChange -= adjustRange;
+        if (register)
+        {
+        Managers.Camera.onOffsetChange += adjustRange;
+        }
     }
 
     private void FixedUpdate()
