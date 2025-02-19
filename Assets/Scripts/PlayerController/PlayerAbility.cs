@@ -11,7 +11,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
     public AudioClip soundEffect;
     public bool addsOnTeleportSoundEffect = true;
 
-    [Header("Savable Variables")]
+    [Header("Persisting Variables")]
     [SerializeField]
     private bool unlocked = false;//whether the player has it available to use
     public bool Unlocked
@@ -37,7 +37,6 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
 
     public bool CanUseUltimate => playerController.Teleport.Range > playerController.Teleport.baseRange;
 
-    [Header("Persisting Variables")]
     [SerializeField]
     [Range(0, 6)]
     private int upgradeLevel = 0;
@@ -136,10 +135,8 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
 
     public override SavableObject CurrentState
     {
-        get => new SavableObject(this,
-            "upgradeLevel", upgradeLevel
-            );
-        set => UpgradeLevel = value.Int("upgradeLevel");
+        get => new SavableObject(this);
+        set {}
     }
 
     public SettingScope Scope => SettingScope.SAVE_FILE;
