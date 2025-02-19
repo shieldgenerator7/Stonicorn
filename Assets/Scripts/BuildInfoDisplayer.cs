@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BuildInfoDisplayer : MonoBehaviour
 {
+    public string buildName = "";
+    public bool useVersion = true;
     public TMP_Text txtBuildVersion;
     public List<string> buildMessages;
 
@@ -15,7 +17,15 @@ public class BuildInfoDisplayer : MonoBehaviour
 
     public void updateBuildInfoTexts()
     {
-        string text = Application.productName.ToUpper() + " " + Application.version;
+        string text = Application.productName.ToUpper();
+        if (!string.IsNullOrWhiteSpace(buildName))
+        {
+            text += $" {buildName}";
+        }
+        if (useVersion)
+        {
+            text += $" {Application.version}";
+        }
         buildMessages.ForEach(m => text += "\n[" + m + "]");
         txtBuildVersion.text = text;
     }
