@@ -26,6 +26,7 @@ public class FlashlightAbility : PlayerAbility
     public SpriteRenderer flashlightPlayerGlowSR;
     private bool flashlightOn = false;
     private bool flashAuraOn = false;
+    [AutoInitialize(Container ="flashlight", SearchChildren =true), SerializeField, HideInInspector]
     private List<SpriteRenderer> flashlightSRs;
     private Vector2 originalFlashlightDirection;
     private Vector2 flashlightDirection;
@@ -47,8 +48,6 @@ public class FlashlightAbility : PlayerAbility
         base.init();
         playerController.onDragGesture -= processDrag;
         playerController.onDragGesture += processDrag;
-
-        this.flashlightSRs = this.flashlight.GetComponentsInChildren<SpriteRenderer>().ToList();
     }
     public override void OnDisable()
     {

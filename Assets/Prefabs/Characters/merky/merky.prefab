@@ -336,6 +336,9 @@ MonoBehaviour:
   flashlight: {fileID: 8011020201040473474}
   flashlightBeamMask: {fileID: 4860461149259244950}
   flashlightPlayerGlowSR: {fileID: 2689111574658393306}
+  flashlightSRs:
+  - {fileID: 6551934849255886581}
+  - {fileID: 2689111574658393306}
 --- !u!114 &4077093240442266713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1340,6 +1343,11 @@ SpriteRenderer:
 --- !u!331 &4860461149259244950 stripped
 SpriteMask:
   m_CorrespondingSourceObject: {fileID: 8786832657992790305, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
+  m_PrefabInstance: {fileID: 4216154399801152695}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &6551934849255886581 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6949032365918214722, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
   m_PrefabInstance: {fileID: 4216154399801152695}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6796843511857682016 stripped
