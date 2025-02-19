@@ -88,10 +88,10 @@ public class ForceLaunchAbility : PlayerAbility
     {
         if (playerController)
         {
-        playerController.onDragGesture -= processDrag;
+            playerController.onDragGesture -= processDrag;
             if (register)
             {
-        playerController.onDragGesture += processDrag;
+                playerController.onDragGesture += processDrag;
             }
         }
     }

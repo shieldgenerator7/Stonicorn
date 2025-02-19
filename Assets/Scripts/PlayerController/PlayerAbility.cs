@@ -83,7 +83,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
                     playerController.onPlayTeleportSound -= playTeleportSound;
                     if (register)
                     {
-                    playerController.onPlayTeleportSound += playTeleportSound;
+                        playerController.onPlayTeleportSound += playTeleportSound;
                     }
                 }
             }
@@ -92,8 +92,8 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
             playerController.Ground.isGroundedCheck -= isGrounded;
             if (register)
             {
-            playerController.Teleport.onTeleport += processTeleport;
-            playerController.Ground.isGroundedCheck += isGrounded;
+                playerController.Teleport.onTeleport += processTeleport;
+                playerController.Ground.isGroundedCheck += isGrounded;
             }
         }
     }
@@ -143,7 +143,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
     public override SavableObject CurrentState
     {
         get => new SavableObject(this);
-        set {}
+        set { }
     }
 
     public SettingScope Scope => SettingScope.SAVE_FILE;

@@ -82,7 +82,7 @@ public class TeleportAbility : PlayerAbility
 
     private bool hasFreeTeleport = true;//allow teleporting once in the air
 
-    [AutoInitialize,SerializeField,HideInInspector]
+    [AutoInitialize, SerializeField, HideInInspector]
     private PolygonCollider2D pc2d;
 
     public override void init()
@@ -99,10 +99,10 @@ public class TeleportAbility : PlayerAbility
         //player controller
         if (playerController)
         {
-        playerController.onGroundedStateUpdated -= onGroundedChanged;
+            playerController.onGroundedStateUpdated -= onGroundedChanged;
             if (register)
             {
-        playerController.onGroundedStateUpdated += onGroundedChanged;
+                playerController.onGroundedStateUpdated += onGroundedChanged;
             }
         }
 
@@ -110,7 +110,7 @@ public class TeleportAbility : PlayerAbility
         Managers.Rewind.onRewindFinished -= onRewindFinished;
         if (register)
         {
-        Managers.Rewind.onRewindFinished += onRewindFinished;
+            Managers.Rewind.onRewindFinished += onRewindFinished;
         }
     }
 

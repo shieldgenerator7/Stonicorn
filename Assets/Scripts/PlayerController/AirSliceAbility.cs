@@ -34,20 +34,20 @@ public class AirSliceAbility : PlayerAbility
         //player controller
         if (playerController)
         {
-        playerController.onGroundedStateUpdated -= resetAirPorts;
+            playerController.onGroundedStateUpdated -= resetAirPorts;
             if (register)
             {
-        playerController.onGroundedStateUpdated += resetAirPorts;
+                playerController.onGroundedStateUpdated += resetAirPorts;
             }
         }
 
         //force launch ability
         if (forceLaunchAbility)
         {
-        forceLaunchAbility.onLaunch -= useAirPort;
+            forceLaunchAbility.onLaunch -= useAirPort;
             if (register)
             {
-        forceLaunchAbility.onLaunch += useAirPort;
+                forceLaunchAbility.onLaunch += useAirPort;
             }
         }
     }

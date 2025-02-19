@@ -23,7 +23,7 @@ public class FlashlightAbility : PlayerAbility
     public SpriteRenderer flashlightPlayerGlowSR;
     private bool flashlightOn = false;
     private bool flashAuraOn = false;
-    [AutoInitialize(Container ="flashlight", SearchChildren =true), SerializeField, HideInInspector]
+    [AutoInitialize(Container = "flashlight", SearchChildren = true), SerializeField, HideInInspector]
     private List<SpriteRenderer> flashlightSRs;
     private Vector2 flashlightDirection;
     public Vector2 FlashlightDirection
@@ -43,10 +43,10 @@ public class FlashlightAbility : PlayerAbility
     {
         if (playerController)
         {
-        playerController.onDragGesture -= processDrag;
+            playerController.onDragGesture -= processDrag;
             if (register)
             {
-        playerController.onDragGesture += processDrag;
+                playerController.onDragGesture += processDrag;
             }
         }
     }

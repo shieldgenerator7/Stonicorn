@@ -29,12 +29,12 @@ public class SwapAbility : PlayerAbility
     {
         if (playerController)
         {
-        playerController.Teleport.findTeleportablePositionOverride -= findSwapPosition;
-        playerController.Teleport.onRangeChanged -= onRangeChanged;
+            playerController.Teleport.findTeleportablePositionOverride -= findSwapPosition;
+            playerController.Teleport.onRangeChanged -= onRangeChanged;
             if (register)
             {
-        playerController.Teleport.findTeleportablePositionOverride += findSwapPosition;
-        playerController.Teleport.onRangeChanged += onRangeChanged;
+                playerController.Teleport.findTeleportablePositionOverride += findSwapPosition;
+                playerController.Teleport.onRangeChanged += onRangeChanged;
             }
         }
     }

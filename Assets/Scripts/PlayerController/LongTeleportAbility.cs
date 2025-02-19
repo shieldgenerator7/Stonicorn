@@ -65,7 +65,7 @@ public class LongTeleportAbility : PlayerAbility
         Managers.Camera.onOffsetChange -= adjustRange;
         if (register)
         {
-        Managers.Camera.onOffsetChange += adjustRange;
+            Managers.Camera.onOffsetChange += adjustRange;
         }
     }
 

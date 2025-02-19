@@ -51,7 +51,7 @@ public class WallClimbAbility : PlayerAbility
         onMagnetChanged -= updateClimbSpikeEffect;
         if (register)
         {
-        onMagnetChanged += updateClimbSpikeEffect;
+            onMagnetChanged += updateClimbSpikeEffect;
         }
     }
 
@@ -108,7 +108,7 @@ public class WallClimbAbility : PlayerAbility
             //Plant Sticky
             if (CanSticky)
             {
-                plantSticky(oldPos, playerController.Ground.GroundedAbilityPrev,  prevGroundedLeft, prevGroundedRight, prevGroundedCeiling);
+                plantSticky(oldPos, playerController.Ground.GroundedAbilityPrev, prevGroundedLeft, prevGroundedRight, prevGroundedCeiling);
             }
         }
         if (groundedLeft || groundedRight || groundedCeiling)

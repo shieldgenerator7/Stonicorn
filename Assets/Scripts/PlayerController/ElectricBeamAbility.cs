@@ -113,14 +113,14 @@ public class ElectricBeamAbility : PlayerAbility
     {
         if (playerController)
         {
-        playerController.Teleport.findTeleportablePositionOverride
-            -= findTeleportablePosition;
-        playerController.Teleport.onRangeChanged -= rangeChanged;
+            playerController.Teleport.findTeleportablePositionOverride
+                -= findTeleportablePosition;
+            playerController.Teleport.onRangeChanged -= rangeChanged;
             if (register)
             {
-        playerController.Teleport.findTeleportablePositionOverride
-            += findTeleportablePosition;
-        playerController.Teleport.onRangeChanged += rangeChanged;
+                playerController.Teleport.findTeleportablePositionOverride
+                    += findTeleportablePosition;
+                playerController.Teleport.onRangeChanged += rangeChanged;
             }
         }
     }

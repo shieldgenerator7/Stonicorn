@@ -46,10 +46,10 @@ public class TelekinesisAbility : PlayerAbility
     {
         if (playerController)
         {
-        playerController.teleportOverride -= checkOverrideTeleport;
+            playerController.teleportOverride -= checkOverrideTeleport;
             if (register)
             {
-        playerController.teleportOverride += checkOverrideTeleport;
+                playerController.teleportOverride += checkOverrideTeleport;
             }
         }
     }
