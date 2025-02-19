@@ -323,7 +323,7 @@ public class CustomMenu
             }
             if (!Selection.activeGameObject)
             {
-            Selection.activeGameObject = playerSpawnObject;
+                Selection.activeGameObject = playerSpawnObject;
             }
             Debug.Log($"PTSP enabled: {playerTSP.enabled}");
         }
@@ -1598,7 +1598,7 @@ public class CustomMenu
         int problemCount = 0;
 
         //check all savables
-        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsInactive.Include,FindObjectsSortMode.None).ToList()
+        GameObject.FindObjectsByType<SceneSavableList>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList()
             .ForEach(ssl =>
             {
                 //get sceneloader

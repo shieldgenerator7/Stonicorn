@@ -24,5 +24,5 @@ public class CameraZoomActivatorTrigger : ActivatorTrigger
     {
         zoomInRange = zoomRange.scalePointInRange(newZoomLevel);
         triggeredChanged();
-    }    
+    }
 }

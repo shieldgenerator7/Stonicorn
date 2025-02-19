@@ -91,17 +91,18 @@ public class FlashlightAbility : PlayerAbility
         {
             turnOff();
         }
-        else { 
-        if (flashlightOn || flashAuraOn)
+        else
         {
-            if (beamDirFollowsTeleport)
+            if (flashlightOn || flashAuraOn)
             {
-                FlashlightDirection = (newPos - oldPos).normalized * FlashlightDirection.magnitude;
+                if (beamDirFollowsTeleport)
+                {
+                    FlashlightDirection = (newPos - oldPos).normalized * FlashlightDirection.magnitude;
+                }
+                updateFlashlightVisuals(1);
+                updateFlashAuraVisuals(1, afterglowStartSize);
+                startFade();
             }
-            updateFlashlightVisuals(1);
-            updateFlashAuraVisuals(1, afterglowStartSize);
-            startFade();
-        }
         }
     }
 
@@ -130,7 +131,7 @@ public class FlashlightAbility : PlayerAbility
         }
         float percent = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
         updateFlashlightVisuals(1, percent);
-        updateFlashAuraVisuals(1-percent);
+        updateFlashAuraVisuals(1 - percent);
     }
     #endregion
 
@@ -144,10 +145,11 @@ public class FlashlightAbility : PlayerAbility
             flashlight.SetActive(true);
             flashlight.transform.up = flashlightDirection;
 
-            if (pullpercent >= 0) { 
-            Vector2 size = flashlightBeamMask.transform.localScale;
-            size.y = maxBeamDistance * pullpercent;
-            flashlightBeamMask.transform.localScale = size;
+            if (pullpercent >= 0)
+            {
+                Vector2 size = flashlightBeamMask.transform.localScale;
+                size.y = maxBeamDistance * pullpercent;
+                flashlightBeamMask.transform.localScale = size;
             }
 
             //adjust alpha
@@ -157,7 +159,7 @@ public class FlashlightAbility : PlayerAbility
             );
 
             //aura
-            updateFlashAuraVisuals(1-alpaPercent);
+            updateFlashAuraVisuals(1 - alpaPercent);
 
             //enable sprites
             flashlightSRs.ForEach(flsr => flsr.enabled = true);
@@ -211,9 +213,9 @@ public class FlashlightAbility : PlayerAbility
         timer = Timer.startTimer(afterglowDuration, turnOff);
         timer.onTimeLeftChanged += (timeLeft, duration) =>
         {
-                float percent = Mathf.Clamp(timeLeft / duration, 0, 1);
+            float percent = Mathf.Clamp(timeLeft / duration, 0, 1);
             updateFlashlightVisuals(percent);
-                updateFlashAuraVisuals(percent, afterglowStartSize);
+            updateFlashAuraVisuals(percent, afterglowStartSize);
 
         };
     }
