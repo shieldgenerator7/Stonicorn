@@ -96,6 +96,7 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
                 playerController.Ground.isGroundedCheck += isGrounded;
             }
         }
+        registerDelegates(register);
     }
     protected abstract void registerDelegates(bool register = true);
     public void OnDisable()
