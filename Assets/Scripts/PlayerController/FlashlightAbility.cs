@@ -99,7 +99,7 @@ public class FlashlightAbility : PlayerAbility
     #region Visuals
     void updateFlashlightVisuals(float alpaPercent, float pullpercent = -1)
     {
-        flashlightBeamMask.enabled = flashlightDirection.magnitude > 0.3f;
+        flashlightBeamMask.enabled = flashlightOn;
 
         if (flashlightOn)
         {
