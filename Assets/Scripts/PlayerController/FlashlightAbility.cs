@@ -42,8 +42,6 @@ public class FlashlightAbility : PlayerAbility
         }
     }
 
-    Timer timer;
-
     public override void init()
     {
         base.init();
@@ -70,7 +68,6 @@ public class FlashlightAbility : PlayerAbility
                 }
                 updateFlashlightVisuals(1);
                 updateFlashAuraVisuals(1, afterglowStartSize);
-                startFade();
             }
     }
 
@@ -83,10 +80,6 @@ public class FlashlightAbility : PlayerAbility
                 //TODO: implement? //2025-01-05: i suspect this hasnt been implemented yet
                 return;
             case GestureState.ONGOING:
-                if (timer)
-                {
-                    Destroy(timer);
-                }
                 afterglowStartSize = 0;
                 flashlightOn = true;
                 flashAuraOn = true;
@@ -94,7 +87,7 @@ public class FlashlightAbility : PlayerAbility
                 break;
             case GestureState.FINISH:
                 afterglowStartSize = flashlightPlayerGlowSR.transform.localScale.x;//assume x and y are same and the sprite takes a single unit
-                startFade();
+                flashlightOn = false;
                 break;
         }
         float percent = (flashlightDirection.magnitude - 0.5f) / maxPullBackDistance;
@@ -171,22 +164,6 @@ public class FlashlightAbility : PlayerAbility
         updateFlashlightVisuals(0);
         updateFlashAuraVisuals(0);
     }
-
-    void startFade()
-    {
-        if (timer)
-        {
-            Destroy(timer);
-        }
-        timer = Timer.startTimer(afterglowDuration, turnOff);
-        timer.onTimeLeftChanged += (timeLeft, duration) =>
-        {
-            float percent = Mathf.Clamp(timeLeft / duration, 0, 1);
-            updateFlashlightVisuals(percent);
-            updateFlashAuraVisuals(percent, afterglowStartSize);
-
-        };
-    }
     #endregion
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
@@ -212,7 +189,6 @@ public class FlashlightAbility : PlayerAbility
             {
                 FlashlightDirection = flashlightDirection;
                 updateFlashlightVisuals(1);
-                startFade();
             }
         }
     }
