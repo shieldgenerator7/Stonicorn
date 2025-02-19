@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[NonSolid]
 public class TriggerActivatorTrigger : ActivatorTrigger
 {
     public bool forPlayerOnly = true;
