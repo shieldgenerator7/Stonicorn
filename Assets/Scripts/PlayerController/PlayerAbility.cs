@@ -55,12 +55,9 @@ public abstract class PlayerAbility : SavableMonoBehaviour, ISetting
         }
     }
 
-    [Header("Components")]
-    [SerializeField]
-    [AutoInitialize]
+    [AutoInitialize, SerializeField, HideInInspector]
     protected PlayerController playerController;
-    [SerializeField]
-    [AutoInitialize]
+    [AutoInitialize, SerializeField, HideInInspector]
     protected Rigidbody2D rb2d;
 
     // Use this for initialization
