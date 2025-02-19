@@ -86,7 +86,11 @@ public class MouseGestureInput : GestureInput
                     //Check Hold
                     else if (time - origTime >= holdThreshold)
                     {
+                        //only accept hold if its for the player, dont right click hold for camera
+                        if (dragType == DragType.DRAG_PLAYER)
+                        {
                         mouseEvent = MouseEvent.HOLD;
+                        }
                     }
                 }
             }

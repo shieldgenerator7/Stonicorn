@@ -147,11 +147,12 @@ public class TouchGestureInput : GestureInput
                         break;
                     //HOLD
                     case TouchEvent.HOLD:
-                        profile.processHoldGesture(
-                            Utility.ScreenToWorldPoint(touch.position),
-                            time - data.origTime,
-                            GestureState.FINISH
-                            );
+                        //dont accept hold for camera
+                        //profile.processHoldGesture(
+                        //    Utility.ScreenToWorldPoint(touch.position),
+                        //    time - data.origTime,
+                        //    GestureState.FINISH
+                        //    );
                         break;
                 }
                 //Convert to camera gesture
