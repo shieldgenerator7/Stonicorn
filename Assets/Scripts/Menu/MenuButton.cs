@@ -8,6 +8,7 @@ public class MenuButton : MonoBehaviour, ISetupable
     public Color hoverColor = Color.white;
 
     public MenuFrame frame;
+    [AutoInitialize(AllowUnfound =true)]
     public MenuActionButton mab;
 
     [AutoInitialize, SerializeField, HideInInspector]
@@ -71,8 +72,22 @@ public class MenuButton : MonoBehaviour, ISetupable
         return list;
     }
 
+    public int checkForErrors()
+    {
+        int errorCount = 0;
+
+        if (!frame && !mab)
+        {
+            Debug.LogError($"MenuButton has nothing to do! {frame}, {mab}", this);
+            errorCount++;
+        }
+
+        return errorCount;
+    }
+
     public virtual int setup()
     {
         return 0;
     }
+
 }
