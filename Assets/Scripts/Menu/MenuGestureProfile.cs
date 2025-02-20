@@ -16,7 +16,7 @@ public class MenuGestureProfile : GestureProfile
     }
     public override void processHoverGesture(Vector2 curMPWorld)
     {
-        if (MenuManager.Open)
+        if (MenuManager.Open && Managers.Menu)
         {
             Managers.Menu.processHoverGesture(curMPWorld);
         }
