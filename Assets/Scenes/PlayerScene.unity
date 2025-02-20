@@ -8782,6 +8782,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5198d432967348747aa340f9936843d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildName: 
+  useVersion: 1
   txtBuildVersion: {fileID: 1165416141}
   buildMessages: []
 --- !u!114 &1787016385
@@ -9967,10 +9969,6 @@ PrefabInstance:
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11477714, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
-      propertyPath: _halfWidth
-      value: 0.49864078
       objectReference: {fileID: 0}
     - target: {fileID: 1792176476, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
       propertyPath: teleportPreviewPointer
