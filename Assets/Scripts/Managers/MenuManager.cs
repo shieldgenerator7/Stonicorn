@@ -15,6 +15,8 @@ public class MenuManager : MonoBehaviour, ISetupable
     private List<MenuFrame> frames;
 
     private MenuButton currentButton;
+    private MenuButton hoverButton;
+    private Vector2 prevMousePos;
 
     [AutoInitialize, SerializeField, HideInInspector]
     private Follow follow;
@@ -47,6 +49,25 @@ public class MenuManager : MonoBehaviour, ISetupable
     private void OnDestroy()
     {
         Managers.Time.setPause(this, false);
+    }
+
+    public void processHoverGesture(Vector2 pos)
+    {
+        if (prevMousePos != pos)
+        {
+            MenuButton newhoverbutton = frames.FirstOrDefault(mf => mf.tapInArea(pos))?
+                .findButton(pos);
+            if (newhoverbutton != hoverButton)
+            {
+                //stop hovering old button
+                hoverButton?.highlight(false);
+                //change button
+                hoverButton = newhoverbutton;
+                //start hovering new button
+                hoverButton?.highlight(true);
+            }
+            prevMousePos = pos;
+        }
     }
 
     public void processTapGesture(Vector3 pos) =>

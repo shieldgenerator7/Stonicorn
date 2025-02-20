@@ -1,15 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MenuButton : MonoBehaviour, ISetupable
 {
+    public Color hoverColor = Color.white;
 
     public MenuFrame frame;
     public MenuActionButton mab;
 
     [AutoInitialize, SerializeField, HideInInspector]
     private BoxCollider2D bc2d;
+
+    [SerializeField]
+    private List<Component> srs;
 
     public virtual void init()
     {
@@ -43,6 +48,27 @@ public class MenuButton : MonoBehaviour, ISetupable
     {
         frame?.frameCamera();
         mab?.activate();
+    }
+
+    internal void highlight(bool v)
+    {
+        Color color = (v) ? hoverColor : Color.white;
+        srs.ForEach(sr =>
+        {
+            if (sr is SpriteRenderer)
+            {
+                SpriteRenderer sr1 = (SpriteRenderer)sr;
+                sr1.color = color;
+            }
+        });
+    }
+
+    [Initializer]
+    private List<Component> init_srs()
+    {
+        List<Component> list = new List<Component>();
+        list.AddRange(GetComponentsInChildren<SpriteRenderer>());
+        return list;
     }
 
     public virtual int setup()
