@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.U2D;
+using UnityEngine.UI;
 
 public class MenuButton : MonoBehaviour, ISetupable
 {
@@ -14,8 +17,8 @@ public class MenuButton : MonoBehaviour, ISetupable
     [AutoInitialize, SerializeField, HideInInspector]
     private BoxCollider2D bc2d;
 
-    [SerializeField]
-    private List<Component> srs;
+    [SerializeField,HideInInspector]
+    private List<Component> srs = new List<Component>();
 
     public virtual void init()
     {
@@ -61,18 +64,13 @@ public class MenuButton : MonoBehaviour, ISetupable
                 SpriteRenderer sr1 = (SpriteRenderer)sr;
                 sr1.color = color;
             }
+            else
+            {
+                Debug.LogError($"Unsupported type: {sr.GetType().Name}! Perhaps update this script to support it?", this);
+            }
         });
     }
 
-    [Initializer]
-    private List<Component> init_srs()
-    {
-        List<Component> list = new List<Component>();
-        list.AddRange(GetComponentsInChildren<SpriteRenderer>());
-        return list;
-    }
-
-    public int checkForErrors()
     {
         int errorCount = 0;
 
@@ -87,7 +85,26 @@ public class MenuButton : MonoBehaviour, ISetupable
 
     public virtual int setup()
     {
-        return 0;
+        int changeCount = 0;
+
+        //TODO: allow saying what search types to include
+        int prevcount = srs?.Count ?? 0;
+        srs = new List<Component>();
+        srs.Add(GetComponent<SpriteRenderer>());
+        srs.Add(GetComponent<SpriteShapeRenderer>());
+        srs.Add(GetComponent<CanvasRenderer>());
+        srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
+        srs.AddRange(GetComponentsInChildren<SpriteShapeRenderer>());
+        srs.AddRange(GetComponentsInChildren<Image>());
+        srs.AddRange(GetComponentsInChildren<TMP_Text>());
+        srs.Add(GetComponent<SpriteMask>());
+        srs.RemoveAll(sr => sr == null);
+        if (srs.Count != prevcount)
+        {
+            changeCount++;
+        }
+
+        return changeCount;
     }
 
 }
