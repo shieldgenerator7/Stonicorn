@@ -1175,6 +1175,15 @@ public class CustomMenu
                  Debug.LogWarning($"ISetupable: {mb.name} ({mb.GetType().Name}) changes: {changes}", mb);
                  changeCount += changes;
              }
+
+             //Check for Errors Post-Setup
+             errors += setup.checkForErrorsPostSetup();
+             if (errors > 0)
+             {
+                 Debug.LogError($"ISetupable: {mb.name} ({mb.GetType().Name}) errors: {errors}", mb);
+                 errorCount += errors;
+                 return;
+             }
          });
         return (changeCount, errorCount);
     }

@@ -18,5 +18,10 @@ public interface ISetupable
     /// <returns></returns>
     public int setup();
 
+    /// <summary>
+    /// Checks for errors after setup is complete, and reports how many there were
+    /// </summary>
+    public int checkForErrorsPostSetup() { return 0; }
+
 #endif
 }
