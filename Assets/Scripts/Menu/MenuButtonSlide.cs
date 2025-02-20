@@ -127,6 +127,12 @@ public class MenuButtonSlide : MenuButton, ISetupable
         sliderFill.transform.localScale = size;
     }
 
+    internal override void highlight(bool v)
+    {
+        //do nothing bc bugs
+        //TODO: fix bugs
+    }
+
 #if UNITY_EDITOR
     public int checkForErrors()
     {

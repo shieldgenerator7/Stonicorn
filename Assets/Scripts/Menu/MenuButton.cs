@@ -56,7 +56,7 @@ public class MenuButton : MonoBehaviour, ISetupable
         mab?.activate();
     }
 
-    internal void highlight(bool v)
+    internal virtual void highlight(bool v)
     {
         for (int i = 0; i < srs.Count; i++)
         {
