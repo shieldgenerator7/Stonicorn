@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuButtonSwitch : MenuButton
+public class MenuButtonSwitch : MenuButton, ISetupable
 {
 
     public Sprite activatedSprite;
@@ -59,6 +59,20 @@ public class MenuButtonSwitch : MenuButton
         }
     }
 
+#if UNITY_EDITOR
+    public int checkForErrors()
+    {
+        int errorCount = 0;
+
+        if (mab)
+        {
+            Debug.LogError($"MenuButtonSwitch cant have a mab, did you mean to use a MenuButton? {mab}", this);
+            errorCount++;
+        }
+
+        return errorCount;
+    }
+
     public override int setup()
     {
         int changeCount = base.setup();
@@ -97,4 +111,18 @@ public class MenuButtonSwitch : MenuButton
 
         return changeCount;
     }
+
+    public override int checkForErrorsPostSetup()
+    {
+        int errorCount = 0;
+
+        if (!mas)
+        {
+            Debug.LogError($"MenuButtonSwitch has nothing to do! {mas}", this);
+            errorCount++;
+        }
+
+        return errorCount;
+    }
+#endif
 }

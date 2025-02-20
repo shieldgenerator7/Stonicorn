@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuButtonSlide : MenuButton
+public class MenuButtonSlide : MenuButton, ISetupable
 {
     [SerializeField]
     private Vector2 valueBounds = new Vector2(0, 100);//x is min, y is max
@@ -127,6 +127,20 @@ public class MenuButtonSlide : MenuButton
         sliderFill.transform.localScale = size;
     }
 
+#if UNITY_EDITOR
+    public int checkForErrors()
+    {
+        int errorCount = 0;
+
+        if (frame || mab)
+        {
+            Debug.LogError($"MenuButtonSlide cant have a frame or mab, did you mean to use a MenuButton? {frame}, {mab}", this);
+            errorCount++;
+        }
+
+        return errorCount;
+    }
+
     public override int setup()
     {
         int changeCount = base.setup();
@@ -149,4 +163,18 @@ public class MenuButtonSlide : MenuButton
 
         return changeCount;
     }
+
+    public override int checkForErrorsPostSetup()
+    {
+        int errorCount = 0;
+
+        if (!mas)
+        {
+            Debug.LogError($"MenuButtonSlide has nothing to do! {mas}", this);
+            errorCount++;
+        }
+
+        return errorCount;
+    }
+#endif
 }

@@ -71,12 +71,14 @@ public class MenuButton : MonoBehaviour, ISetupable
         });
     }
 
+#if UNITY_EDITOR
+    public virtual int checkForErrorsPostSetup()
     {
         int errorCount = 0;
 
         if (!frame && !mab)
         {
-            Debug.LogError($"MenuButton has nothing to do! {frame}, {mab}", this);
+            Debug.LogError($"MenuButton {gameObject.name} has nothing to do! {frame}, {mab}", this);
             errorCount++;
         }
 
@@ -106,5 +108,6 @@ public class MenuButton : MonoBehaviour, ISetupable
 
         return changeCount;
     }
+#endif
 
 }
