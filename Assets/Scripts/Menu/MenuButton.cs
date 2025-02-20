@@ -62,7 +62,15 @@ public class MenuButton : MonoBehaviour, ISetupable
         {
             Component comp = srs[i];
             Color color;
+            if (srs.Count != srOrigColors.Count)
+            {
+                Debug.LogError($"MenuButton {gameObject.name} has wrong number of original colors! srs count: {srs.Count}, colors count: {srOrigColors.Count}", this);
+                color = (v) ? hoverColor : Color.white;
+            }
+            else
+            {
                 color = (v) ? hoverColor : srOrigColors[i];
+            }
             if (comp is SpriteRenderer)
             {
                 SpriteRenderer sr1 = (SpriteRenderer)comp;
