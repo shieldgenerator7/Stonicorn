@@ -172,7 +172,7 @@ public class MenuButtonSlide : MenuButton, ISetupable
 
     public override int checkForErrorsPostSetup()
     {
-        int errorCount = 0;
+        int errorCount = checkForColors();
 
         if (!mas)
         {
