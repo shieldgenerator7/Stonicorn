@@ -71,6 +71,7 @@ public class MenuFrame : MonoBehaviour, ISetupable
         return false;
     }
 
+#if UNITY_EDITOR
     public int setup()
     {
         int changeCount = 0;
@@ -81,4 +82,5 @@ public class MenuFrame : MonoBehaviour, ISetupable
 
         return changeCount;
     }
+#endif
 }

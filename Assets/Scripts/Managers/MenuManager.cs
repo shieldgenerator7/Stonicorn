@@ -150,7 +150,7 @@ public class MenuManager : MonoBehaviour, ISetupable
     //[Initializer(1)]
     //private MenuFrame init_startFrame => frames.First();
 
-
+#if UNITY_EDITOR
     public int setup()
     {
         int changeCount = 0;
@@ -180,4 +180,5 @@ public class MenuManager : MonoBehaviour, ISetupable
 
         return changeCount;
     }
+#endif
 }
