@@ -19,6 +19,8 @@ public class MenuButton : MonoBehaviour, ISetupable
 
     [SerializeField,HideInInspector]
     private List<Component> srs = new List<Component>();
+    [SerializeField,HideInInspector]
+    private List<Color> srOrigColors = new List<Color>();
 
     public virtual void init()
     {
@@ -56,22 +58,33 @@ public class MenuButton : MonoBehaviour, ISetupable
 
     internal void highlight(bool v)
     {
-        Color color = (v) ? hoverColor : Color.white;
-        srs.ForEach(sr =>
+        for (int i = 0; i < srs.Count; i++)
         {
-            if (sr is SpriteRenderer)
+            Component comp = srs[i];
+            Color color;
+                color = (v) ? hoverColor : srOrigColors[i];
+            if (comp is SpriteRenderer)
             {
-                SpriteRenderer sr1 = (SpriteRenderer)sr;
+                SpriteRenderer sr1 = (SpriteRenderer)comp;
                 sr1.color = color;
             }
             else
             {
-                Debug.LogError($"Unsupported type: {sr.GetType().Name}! Perhaps update this script to support it?", this);
+                Debug.LogError($"Unsupported type: {comp.GetType().Name}! Perhaps update this script to support it?", this);
             }
-        });
+        }
     }
 
 #if UNITY_EDITOR
+    protected int checkForColors()
+    {
+        if (srs.Count != srOrigColors.Count)
+        {
+            Debug.LogError($"MenuButton {gameObject.name} has wrong number of original colors! srs count: {srs.Count}, colors count: {srOrigColors.Count}", this);
+            return 1;
+        }
+        return 0;
+    }
     public virtual int checkForErrorsPostSetup()
     {
         int errorCount = 0;
@@ -105,7 +118,22 @@ public class MenuButton : MonoBehaviour, ISetupable
         {
             changeCount++;
         }
+        //update colors
+        srOrigColors = new List<Color>();
+        srs.ForEach(sr =>
+        {
+            if (sr is SpriteRenderer)
+            {
+                SpriteRenderer sr1 = (SpriteRenderer)sr;
+                srOrigColors.Add(sr1.color);
+            }
+            else
+            {
+                Debug.LogError($"Unsupported type: {sr.GetType().Name}! Perhaps update this script to support it?", this);
+            }
+        });
 
+        //
         return changeCount;
     }
 #endif
