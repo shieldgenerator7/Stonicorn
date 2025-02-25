@@ -182,8 +182,8 @@ public class ObjectManager : Manager, ISetting
             soi.Id = data.claimNextId();
             soi.spawnStateId = Managers.Rewind.GameStateId;
             addNewObject(soi);
-            Managers.Scene.registerObjectInScene(soi);
             Debug.Log($"Spawned object {soi.TextLine}", newObj);
+            onObjectInstantiated?.Invoke(soi);
         }
         //Container children
         if (isContainer)
@@ -197,13 +197,14 @@ public class ObjectManager : Manager, ISetting
                 savable.spawnStateId = Managers.Rewind.GameStateId;
                 nextId++;
                 addNewObject(savable);
-                Managers.Scene.registerObjectInScene(savable);
+                onObjectInstantiated?.Invoke(savable);
             });
             Debug.Log($"Spawned container {newObj.name}", newObj);
         }
         //Return spawned object
         return newObj;
     }
+    public event Action<SavableObjectInfo> onObjectInstantiated;
 
 
     public override SettingObject Setting

@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.onRewindStarted += processRewindStart;
         Managers.Rewind.onRewindFinished += processRewindEnd;
         //Object delegates
+        Managers.Object.onObjectInstantiated += Managers.Scene.registerObjectInScene;
         Managers.Object.onObjectRecreated += Managers.Rewind.LoadObjectAndChildren;
         Managers.Object.onObjectRecreated +=
             (go, lastStateSeen) => Managers.Scene.registerObjectInScene(go);
@@ -180,6 +181,7 @@ public class GameManager : MonoBehaviour
         Managers.Rewind.onRewindStarted -= processRewindStart;
         Managers.Rewind.onRewindFinished -= processRewindEnd;
         //Object delegates
+        Managers.Object.onObjectInstantiated -= Managers.Scene.registerObjectInScene;
         Managers.Object.onObjectRecreated -= Managers.Rewind.LoadObjectAndChildren;
     }
 
