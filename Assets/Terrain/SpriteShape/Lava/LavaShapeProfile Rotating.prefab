@@ -9,12 +9,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 78801215876192918, guid: 8e47bc4434b26784cab33cf7d26684c7, type: 3}
-      propertyPath: id
-      value: 10005
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: 6945205689019206653}
+    - target: {fileID: 78801215876192918, guid: 8e47bc4434b26784cab33cf7d26684c7, type: 3}
+      propertyPath: savables.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 78801215876192918, guid: 8e47bc4434b26784cab33cf7d26684c7, type: 3}
-      propertyPath: spawnStateId
-      value: 0
+      propertyPath: 'savables.Array.data[1]'
+      value: 
+      objectReference: {fileID: 7242551620646680246}
+    - target: {fileID: 78801215876192918, guid: 8e47bc4434b26784cab33cf7d26684c7, type: 3}
+      propertyPath: prefabAddress.m_AssetGUID
+      value: 4d137f9c8a7d2c144a0dbf60d6aa405b
       objectReference: {fileID: 0}
     - target: {fileID: 1851265064766431218, guid: 8e47bc4434b26784cab33cf7d26684c7, type: 3}
       propertyPath: m_Enabled
@@ -7082,6 +7090,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7242551620646680246}
   m_SourcePrefab: {fileID: 100100000, guid: 8e47bc4434b26784cab33cf7d26684c7, type: 3}
+--- !u!114 &4013152835489276865 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 78801215876192918, guid: 8e47bc4434b26784cab33cf7d26684c7, type: 3}
+  m_PrefabInstance: {fileID: 3937940975860316503}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8471645605780746820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8471645605780746820 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4843397919859313427, guid: 8e47bc4434b26784cab33cf7d26684c7, type: 3}
@@ -7141,9 +7160,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e46ae2324aa2a942a6703fc9ceaccea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soi: {fileID: 0}
+  soi: {fileID: 4013152835489276865}
   usesSideVector: 0
   saveValues: 0
   gravityScale: 0
   acceptsGravity: 0
-  rb2d: {fileID: 0}
+  rb2d: {fileID: 6945205689019206653}
