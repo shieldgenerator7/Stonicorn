@@ -101,21 +101,25 @@ Shader "SG7/LavaShader"
 				return float3( sin(radians),cos(radians), 0);
 			}
 			
-			bool inBubble(float3 v){
+			bool inBubbleInt(float3 v, float len){
 
 				//find closest point
-				float len = round(length(v)/_LayerSpacing)*_LayerSpacing;
-				float time = (_Time * _Speed) % _LayerSpacing;
-				if (time > _LayerSpacing/2){
-					time = time - _LayerSpacing;
-					}
-				len += time;
 				float pointsThisLayer = len * 2 * 3.14159 / _Spacing;
 				float angle = round(angleBetween(v, _SteadyVector)/_Spacing)*_Spacing;
 				float3 closest = angleToVector(angle) * len;
 				//if in range, return true
 				float dist = distance(v, closest);
 				return dist <= _Size && dist >= _Size - _Thickness;
+			}
+			
+			bool inBubble(float3 v){
+
+				//get expected layer
+				float len = round(length(v)/_LayerSpacing)*_LayerSpacing;
+				//get time
+				float time = (_Time * _Speed) % _LayerSpacing;
+				//determine if in bubble for either closest layers
+				return inBubbleInt(v, len + time) || inBubbleInt(v, len + time - _LayerSpacing);
 			}
 
 			sampler2D _MainTex;
