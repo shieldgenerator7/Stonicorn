@@ -61,8 +61,8 @@ public class WaterArea : MonoBehaviour, ISetupable
     {
         int changeCount = 0;
 
-        //TODO: refactor this: dont do a giant raycast every frame!
         int prevCount = tenants.Count;
+        tenants.Clear();
         Utility.RaycastAnswer rca = coll2d.CastAnswer(Vector2.zero, 0, true);
         for (int i = 0; i < rca.count; i++)
         {
@@ -72,7 +72,10 @@ public class WaterArea : MonoBehaviour, ISetupable
                 Rigidbody2D rb2d = rch2d.collider.GetComponent<Rigidbody2D>();
                 if (rb2d)
                 {
-                    tenants.Add(rb2d);
+                    if (!tenants.Contains(rb2d))
+                    {
+                        tenants.Add(rb2d);
+                    }
                 }
             }
         }
