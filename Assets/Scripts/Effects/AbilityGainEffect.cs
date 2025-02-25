@@ -14,24 +14,25 @@ public class AbilityGainEffect : MonoBehaviour
 
     [AutoInitialize, SerializeField, HideInInspector]
     private new ParticleSystem particleSystem;
+    [SerializeField, HideInInspector]
     private float originalEmission;
+    [SerializeField, HideInInspector]
     private float originalArc;
+    [SerializeField, HideInInspector]
     private float originalStartLifetime;
+    [SerializeField, HideInInspector]
     private Quaternion originalQuat;
+    [SerializeField, HideInInspector]
     private int originalSpriteOrder;
 
+    [SerializeField, HideInInspector]
     private float arcEmissionRatio;
+
     private bool isDisengaging = false;//true when the anim should wind down
 
     // Use this for initialization
     void Start()
     {
-        originalEmission = particleSystem.emission.rateOverTime.constant;
-        originalArc = particleSystem.shape.arc;
-        originalQuat = particleSystem.gameObject.transform.localRotation;
-        originalStartLifetime = particleSystem.main.startLifetime.constant;
-        originalSpriteOrder = particleSystem.GetComponent<Renderer>().sortingOrder;
-        arcEmissionRatio = originalEmission / originalArc;
         setArc(0);
         if (animSpeed == 0)
         {
@@ -94,4 +95,17 @@ public class AbilityGainEffect : MonoBehaviour
         }
         Destroy(this);
     }
+
+    [Initializer]
+    private float init_originalEmission => particleSystem.emission.rateOverTime.constant;
+    [Initializer]
+    private float init_originalArc => particleSystem.shape.arc;
+    [Initializer]
+    private Quaternion init_originalQuat => particleSystem.gameObject.transform.localRotation;
+    [Initializer]
+    private float init_originalStartLifetime => particleSystem.main.startLifetime.constant;
+    [Initializer]
+    private float init_originalSpriteOrder => particleSystem.GetComponent<Renderer>().sortingOrder;
+    [Initializer]
+    private float init_arcEmissionRatio => originalEmission / originalArc;
 }

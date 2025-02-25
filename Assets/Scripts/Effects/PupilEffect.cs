@@ -6,15 +6,11 @@ public class PupilEffect : MonoBehaviour
     public float minDistanceFromCenter = 0.1f;
     public float maxDistanceFromCenter = 1;
 
+    [SerializeField,HideInInspector]
     private Vector2 originalScale;
 
     public Transform origin;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        originalScale = origin.localScale;
-    }
 
     // Update is called once per frame
     void Update()
@@ -27,4 +23,7 @@ public class PupilEffect : MonoBehaviour
             maxDistanceFromCenter*scaleFactor
             ) + (Vector2)origin.position;
     }
+
+    [Initializer]
+    private Vector2 init_originalScale=> origin.localScale;
 }

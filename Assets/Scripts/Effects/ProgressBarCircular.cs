@@ -7,19 +7,19 @@ public class ProgressBarCircular : MonoBehaviour
 
     [AutoInitialize, SerializeField, HideInInspector]
     private new ParticleSystem particleSystem;
+    [SerializeField, HideInInspector]
     private float originalEmission;
+    [SerializeField, HideInInspector]
     private float originalArc = 0;
+    [SerializeField, HideInInspector]
     private Quaternion originalQuat;
 
+    [SerializeField, HideInInspector]
     private float arcEmissionRatio;
 
     // Use this for initialization
     void Start()
     {
-        originalEmission = particleSystem.emission.rateOverTime.constant;
-        originalArc = particleSystem.shape.arc;
-        originalQuat = particleSystem.gameObject.transform.localRotation;
-        arcEmissionRatio = originalEmission / originalArc;
         setArc(0);
     }
 
@@ -51,5 +51,14 @@ public class ProgressBarCircular : MonoBehaviour
                 originalQuat.eulerAngles + new Vector3(0, 0, originalArc - newArc)
                 );
     }
+
+    [Initializer]
+    private float init_originalEmission => particleSystem.emission.rateOverTime.constant;
+    [Initializer]
+    private float init_originalArc => particleSystem.shape.arc;
+    [Initializer]
+    private Quaternion init_originalQuat => particleSystem.gameObject.transform.localRotation;
+    [Initializer]
+    private float init_arcEmissionRatio => originalEmission / originalArc;
 }
 
