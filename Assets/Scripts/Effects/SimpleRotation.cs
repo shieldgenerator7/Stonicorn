@@ -9,8 +9,12 @@ public class SimpleRotation : MonoBehaviour
     public bool useUnscaledTime = true;
     public bool resetOnDisable = false;
 
-    [SerializeField,HideInInspector]
     private Vector2 origUp;
+
+    private void Start()
+    {
+        origUp = transform.up;
+    }
 
 
     private void OnDisable()
@@ -33,7 +37,4 @@ public class SimpleRotation : MonoBehaviour
             transform.Rotate(Vector3.forward * turnSpeed * Time.deltaTime);
         }
     }
-
-    [Initializer]
-    private Vector2 init_origUp=>transform.up;
 }
