@@ -14,6 +14,8 @@ Shader "SG7/LavaShader"
 		_BaseColor ("Base Color", Color) = (1,0,0,1)
 		_BubbleColor1 ("Bubble Color 1", Color) = (1,1,0,1)
 		_RendererColor ("Tint", Color) = (0,0,0,1)
+		_Size ("Size", float) = 1
+		_Thickness("Thickness", float) = 0.1
 	}
 	SubShader
 	{
@@ -59,6 +61,8 @@ Shader "SG7/LavaShader"
 			float3 _CenterPos;
 			fixed4 _BaseColor;
 			fixed4 _BubbleColor1;
+			float _Size;
+			float _Thickness;
 
 
 			v2f vert (appdata IN)
@@ -73,6 +77,10 @@ Shader "SG7/LavaShader"
                 return OUT;
 			}
 
+			bool inBubble(float3 v){
+				return abs(abs(v.x % _Size) - abs(v.y % _Size)) < _Thickness;
+			}
+
 			sampler2D _MainTex;
 
 			fixed4 frag (v2f i) : SV_Target
@@ -81,7 +89,10 @@ Shader "SG7/LavaShader"
 				fixed4 col = curColor * i.color;
 
 				fixed4 color = _BaseColor;
-					col = curColor * i.color * color;
+				if (inBubble(i.worldPos)){
+					color = _BubbleColor1;
+				}
+					col = i.color * color;
 
 				col *= _RendererColor;
 				col.rgb *= col.a;
