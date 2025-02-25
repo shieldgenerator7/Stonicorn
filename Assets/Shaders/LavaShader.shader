@@ -78,7 +78,11 @@ Shader "SG7/LavaShader"
 			}
 
 			bool inBubble(float3 v){
-				return abs(abs(v.x % _Size) - abs(v.y % _Size)) < _Thickness;
+				//find closest point
+				float3 closest = float3(round(v.x), round(v.y), v.z);
+				//if in range, return true
+				float dist = distance(v, closest);
+				return dist <= _Size && dist >= _Size - _Thickness;
 			}
 
 			sampler2D _MainTex;
