@@ -17,6 +17,9 @@ Shader "SG7/LavaShader"
 		_Size ("Size", float) = 1
 		_Thickness("Thickness", float) = 0.1
 		_Spacing("Spacing", float) = 1
+		_LayerSpacing("Layer Spacing", float) = 1
+		_PointsPerLayer ("Points Per Layer", float) = 16
+		_SteadyVector ("Steady Vector (Up)", Vector) = (0, 1, 0)
 	}
 	SubShader
 	{
@@ -65,6 +68,9 @@ Shader "SG7/LavaShader"
 			float _Size;
 			float _Thickness;
 			float _Spacing;
+			float _LayerSpacing;
+			float3 _SteadyVector;
+			float _PointsPerLayer;
 
 
 			v2f vert (appdata IN)
@@ -78,10 +84,51 @@ Shader "SG7/LavaShader"
 
                 return OUT;
 			}
+			//2025-02-24: copied from Google AI Overview
+			float radToDeg(float radians)
+			{
+				return radians * (180.0 / 3.14159);
+			}
+			//2025-02-24: copied from Google AI Overview
+			float3 GetVectorFromAngle(float angle)//, float3 referenceVector) 
+			{
+				float radians = angle * (3.14159 / 180.0); // Convert angle to radians
+				float cosAngle = cos(radians);
+				float sinAngle = sin(radians);
 
+				// Create a new vector with the desired direction
+				float3 newVector = float3(cosAngle, sinAngle, 0.0); 
+				return newVector;
+
+				// Scale the new vector to match the magnitude of the reference vector
+				// return newVector * length(referenceVector);
+			}
+			//2025-02-24: made with help from https://stackoverflow.com/a/43494689/2336212
+			float angleBetween(float3 v1, float3 v2){
+				float theta = acos(dot(v1,v2) / length(v1) * length (v2));
+				theta = theta * 360 / (2*3.14159);
+				if (v1.x < 0){
+					theta = 360-abs(theta);
+				}
+				return theta;
+			}
+			
 			bool inBubble(float3 v){
+
 				//find closest point
-				float3 closest = float3(round(v.x/_Spacing)*_Spacing, round(v.y/_Spacing)*_Spacing, v.z);
+				float len = round(length(v)/_LayerSpacing)*_LayerSpacing;
+				float3 steady = _SteadyVector * len;
+				// float angle = round(angleBetween(v, _SteadyVector)/_Spacing)*_Spacing;
+				float pointsThisLayer = len * 2 * 3.14159 / _Spacing;
+				float angle = round(angleBetween(v, _SteadyVector)/_Spacing)*_Spacing;
+				// float part = 360/pointsThisLayer;
+				// float d = abs(angle%part);
+				// return d <= _Size && d >= _Size - _Thickness;
+				// float angle = angleBetween(v, _SteadyVector);
+				// return angle <= 180;
+				// float angle = angleBetween(v, steady)%_Spacing;
+				// return angle <= _Size;
+				float3 closest = GetVectorFromAngle(angle) * len;
 				//if in range, return true
 				float dist = distance(v, closest);
 				return dist <= _Size && dist >= _Size - _Thickness;
@@ -98,7 +145,8 @@ Shader "SG7/LavaShader"
 				if (inBubble(i.worldPos)){
 					color = _BubbleColor1;
 				}
-					col = i.color * color;
+				// color.z = angleBetween(i.worldPos, _SteadyVector)/360;
+					col =  i.color * color;
 
 				col *= _RendererColor;
 				col.rgb *= col.a;

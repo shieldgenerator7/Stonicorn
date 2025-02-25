@@ -81,6 +81,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LayerHeight: 5
+    - _LayerSpacing: 0.8
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -88,12 +89,13 @@ Material:
     - _Outline: 0
     - _OutlineSize: 1
     - _Parallax: 0.02
-    - _Size: 0.11
+    - _PointsPerLayer: 25.43
+    - _Size: 0.15
     - _SmoothnessTextureChannel: 0
-    - _Spacing: 0.45
+    - _Spacing: 11.29
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Thickness: 0.03
+    - _Thickness: 0.05
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
@@ -112,5 +114,6 @@ Material:
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _Position: {r: 0, g: 0, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SteadyVector: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
