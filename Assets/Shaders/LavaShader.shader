@@ -69,6 +69,7 @@ Shader "SG7/LavaShader"
 			float _Thickness;
 			float _Spacing;
 			float _LayerSpacing;
+			float _Speed;
 			float3 _SteadyVector;
 
 
@@ -104,7 +105,7 @@ Shader "SG7/LavaShader"
 
 				//find closest point
 				float len = round(length(v)/_LayerSpacing)*_LayerSpacing;
-				float time = (_Time) % _LayerSpacing;
+				float time = (_Time * _Speed) % _LayerSpacing;
 				if (time > _LayerSpacing/2){
 					time = time - _LayerSpacing;
 					}
