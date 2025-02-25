@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaterArea : MonoBehaviour
+public class WaterArea : MonoBehaviour, ISetupable
 {
     public float minSpeed;//the minimum speed in order to apply dampen
     public float maxSpeed;//the maximum speed allowed underwater
@@ -11,21 +11,12 @@ public class WaterArea : MonoBehaviour
     [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
-    private void Start()
-    {
-    }
+    [SerializeField, HideInInspector]
+    private List<Rigidbody2D> tenants = new List<Rigidbody2D>();
 
     private void FixedUpdate()
     {
-        //TODO: refactor this: dont do a giant raycast every frame!
-        Utility.RaycastAnswer rca = coll2d.CastAnswer(Vector2.zero, 0, true);
-        for (int i = 0; i < rca.count; i++)
-        {
-            RaycastHit2D rch2d = rca.rch2ds[i];
-            if (!rch2d.collider.isTrigger)
-            {
-                Rigidbody2D rb2d = rch2d.collider.GetComponent<Rigidbody2D>();
-                if (rb2d)
+                tenants.ForEach(rb2d =>
                 {
                     float speed = rb2d.linearVelocity.magnitude;
                     if (speed >= minSpeed)
@@ -43,8 +34,53 @@ public class WaterArea : MonoBehaviour
                             Time.deltaTime / durationLeft
                             );
                     }
+                });
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Rigidbody2D rb2d = collision.GetComponent<Rigidbody2D>();
+        if (rb2d)
+        {
+            if (!tenants.Contains(rb2d))
+            {
+                tenants.Add(rb2d);
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Rigidbody2D rb2d = collision.GetComponent<Rigidbody2D>();
+        if (rb2d)
+        {
+            tenants.Remove(rb2d);
+        }
+    }
+
+    public int setup()
+    {
+        int changeCount = 0;
+
+        //TODO: refactor this: dont do a giant raycast every frame!
+        int prevCount = tenants.Count;
+        Utility.RaycastAnswer rca = coll2d.CastAnswer(Vector2.zero, 0, true);
+        for (int i = 0; i < rca.count; i++)
+        {
+            RaycastHit2D rch2d = rca.rch2ds[i];
+            if (!rch2d.collider.isTrigger)
+            {
+                Rigidbody2D rb2d = rch2d.collider.GetComponent<Rigidbody2D>();
+                if (rb2d)
+                {
+                    tenants.Add(rb2d);
                 }
             }
         }
+        if (tenants.Count != prevCount)
+        {
+            changeCount++;
+        }
+
+        return changeCount;
     }
 }
