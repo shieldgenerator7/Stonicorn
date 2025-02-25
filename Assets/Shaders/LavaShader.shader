@@ -16,6 +16,7 @@ Shader "SG7/LavaShader"
 		_RendererColor ("Tint", Color) = (0,0,0,1)
 		_Size ("Size", float) = 1
 		_Thickness("Thickness", float) = 0.1
+		_Spacing("Spacing", float) = 1
 	}
 	SubShader
 	{
@@ -63,6 +64,7 @@ Shader "SG7/LavaShader"
 			fixed4 _BubbleColor1;
 			float _Size;
 			float _Thickness;
+			float _Spacing;
 
 
 			v2f vert (appdata IN)
@@ -79,7 +81,7 @@ Shader "SG7/LavaShader"
 
 			bool inBubble(float3 v){
 				//find closest point
-				float3 closest = float3(round(v.x), round(v.y), v.z);
+				float3 closest = float3(round(v.x/_Spacing)*_Spacing, round(v.y/_Spacing)*_Spacing, v.z);
 				//if in range, return true
 				float dist = distance(v, closest);
 				return dist <= _Size && dist >= _Size - _Thickness;
