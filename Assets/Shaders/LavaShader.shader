@@ -112,6 +112,13 @@ Shader "SG7/LavaShader"
 				}
 				return theta;
 			}
+			//2025-02-24: made with help from https://stackoverflow.com/a/18852077/2336212
+			float3 angleToVector(float angle){
+			//2025-02-24: copied from Google AI Overview
+				float radians = angle * (3.14159 / 180.0); // Convert angle to radians
+				//
+				return float3( sin(radians),cos(radians), 0);
+			}
 			
 			bool inBubble(float3 v){
 
@@ -128,7 +135,7 @@ Shader "SG7/LavaShader"
 				// return angle <= 180;
 				// float angle = angleBetween(v, steady)%_Spacing;
 				// return angle <= _Size;
-				float3 closest = GetVectorFromAngle(angle) * len;
+				float3 closest = angleToVector(angle) * len;
 				//if in range, return true
 				float dist = distance(v, closest);
 				return dist <= _Size && dist >= _Size - _Thickness;
@@ -146,6 +153,7 @@ Shader "SG7/LavaShader"
 					color = _BubbleColor1;
 				}
 				// color.z = angleBetween(i.worldPos, _SteadyVector)/360;
+				// color.z = angleBetween(angleToVector(angleBetween(i.worldPos, _SteadyVector)),_SteadyVector)/360;
 					col =  i.color * color;
 
 				col *= _RendererColor;
