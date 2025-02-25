@@ -18,7 +18,6 @@ Shader "SG7/LavaShader"
 		_Thickness("Thickness", float) = 0.1
 		_Spacing("Spacing", float) = 1
 		_LayerSpacing("Layer Spacing", float) = 1
-		_PointsPerLayer ("Points Per Layer", float) = 16
 		_SteadyVector ("Steady Vector (Up)", Vector) = (0, 1, 0)
 	}
 	SubShader
@@ -70,7 +69,6 @@ Shader "SG7/LavaShader"
 			float _Spacing;
 			float _LayerSpacing;
 			float3 _SteadyVector;
-			float _PointsPerLayer;
 
 
 			v2f vert (appdata IN)
@@ -84,25 +82,6 @@ Shader "SG7/LavaShader"
 
                 return OUT;
 			}
-			//2025-02-24: copied from Google AI Overview
-			float radToDeg(float radians)
-			{
-				return radians * (180.0 / 3.14159);
-			}
-			//2025-02-24: copied from Google AI Overview
-			float3 GetVectorFromAngle(float angle)//, float3 referenceVector) 
-			{
-				float radians = angle * (3.14159 / 180.0); // Convert angle to radians
-				float cosAngle = cos(radians);
-				float sinAngle = sin(radians);
-
-				// Create a new vector with the desired direction
-				float3 newVector = float3(cosAngle, sinAngle, 0.0); 
-				return newVector;
-
-				// Scale the new vector to match the magnitude of the reference vector
-				// return newVector * length(referenceVector);
-			}
 			//2025-02-24: made with help from https://stackoverflow.com/a/43494689/2336212
 			float angleBetween(float3 v1, float3 v2){
 				float theta = acos(dot(v1,v2) / length(v1) * length (v2));
@@ -114,7 +93,7 @@ Shader "SG7/LavaShader"
 			}
 			//2025-02-24: made with help from https://stackoverflow.com/a/18852077/2336212
 			float3 angleToVector(float angle){
-			//2025-02-24: copied from Google AI Overview
+				//2025-02-24: copied from Google AI Overview
 				float radians = angle * (3.14159 / 180.0); // Convert angle to radians
 				//
 				return float3( sin(radians),cos(radians), 0);
@@ -125,16 +104,8 @@ Shader "SG7/LavaShader"
 				//find closest point
 				float len = round(length(v)/_LayerSpacing)*_LayerSpacing;
 				float3 steady = _SteadyVector * len;
-				// float angle = round(angleBetween(v, _SteadyVector)/_Spacing)*_Spacing;
 				float pointsThisLayer = len * 2 * 3.14159 / _Spacing;
 				float angle = round(angleBetween(v, _SteadyVector)/_Spacing)*_Spacing;
-				// float part = 360/pointsThisLayer;
-				// float d = abs(angle%part);
-				// return d <= _Size && d >= _Size - _Thickness;
-				// float angle = angleBetween(v, _SteadyVector);
-				// return angle <= 180;
-				// float angle = angleBetween(v, steady)%_Spacing;
-				// return angle <= _Size;
 				float3 closest = angleToVector(angle) * len;
 				//if in range, return true
 				float dist = distance(v, closest);
