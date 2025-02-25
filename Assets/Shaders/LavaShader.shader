@@ -18,6 +18,7 @@ Shader "SG7/LavaShader"
 		_Thickness("Thickness", float) = 0.1
 		_Spacing("Spacing", float) = 1
 		_LayerSpacing("Layer Spacing", float) = 1
+		_Speed("Speed", float) = 1
 		_SteadyVector ("Steady Vector (Up)", Vector) = (0, 1, 0)
 	}
 	SubShader
@@ -103,7 +104,11 @@ Shader "SG7/LavaShader"
 
 				//find closest point
 				float len = round(length(v)/_LayerSpacing)*_LayerSpacing;
-				float3 steady = _SteadyVector * len;
+				float time = (_Time) % _LayerSpacing;
+				if (time > _LayerSpacing/2){
+					time = time - _LayerSpacing;
+					}
+				len += time;
 				float pointsThisLayer = len * 2 * 3.14159 / _Spacing;
 				float angle = round(angleBetween(v, _SteadyVector)/_Spacing)*_Spacing;
 				float3 closest = angleToVector(angle) * len;
