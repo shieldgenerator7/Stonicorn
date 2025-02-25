@@ -33,10 +33,6 @@ public class DialogueBoxUpdater : MonoBehaviour
 
     private Transform source;
 
-    // Start is called before the first frame update
-    public void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()
@@ -58,9 +54,6 @@ public class DialogueBoxUpdater : MonoBehaviour
 
     public void setText(string value)
     {
-#if UNITY_EDITOR
-        Start();
-#endif
         text = value;
         txtDialogue.text = text + Utility.repeatCharacter(' ', goalText.Length - text.Length);
         txtDialogue.ForceMeshUpdate();

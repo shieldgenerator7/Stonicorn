@@ -12,9 +12,6 @@ public class CheckPointActivator : MonoBehaviour, ISetupable
     [AutoInitialize(SearchParent =true), SerializeField, HideInInspector]
     private CheckPointChecker checker;
 
-    private void Start()
-    {
-    }
 
     void OnTriggerEnter2D(Collider2D coll)
     {

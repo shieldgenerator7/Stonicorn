@@ -53,17 +53,6 @@ public class EventManager : Manager
 
     public Action<bool> OnDialoguePlayingChanged;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void processEventTrigger(EventTrigger trigger)
     {
@@ -150,7 +139,6 @@ public class EventManager : Manager
         }
         //Setup dbu
         DialogueBoxUpdater dbu = Instantiate(dialogueBoxPrefab).GetComponent<DialogueBoxUpdater>();
-        dbu.Start();
         this.dialogueBox = dbu;
         Quote q = path.quotes[0];
         Character ch = Character.getCharacterByName(q.characterName);

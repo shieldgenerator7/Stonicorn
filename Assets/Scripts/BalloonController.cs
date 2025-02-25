@@ -17,11 +17,6 @@ public class BalloonController : SavableMonoBehaviour
     [AutoInitialize]
     private GravityAccepter ga;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        init();
-    }
     public override void init()
     {
     }

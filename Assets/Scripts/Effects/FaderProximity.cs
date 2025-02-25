@@ -12,10 +12,6 @@ public class FaderProximity : MonoBehaviour
     [AutoInitialize, SerializeField, HideInInspector]
     private SpriteRenderer sr;
 
-    // Use this for initialization
-    void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()

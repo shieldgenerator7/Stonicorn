@@ -23,10 +23,6 @@ public class ExplosionEffectUpdater : MonoBehaviour
     private float timeShown = 0;
     private bool turnedOn = false;
 
-    // Use this for initialization
-    void Start()
-    {
-    }
     public void init()
     {
         Vector3 bsize = sr.bounds.size;

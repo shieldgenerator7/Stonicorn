@@ -19,10 +19,6 @@ public abstract class EventTrigger : MonoBehaviour, ISetupable
     [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
-    // Start is called before the first frame update
-    protected virtual void Start()
-    {
-    }
 
     private void OnTriggerEnter2D(Collider2D coll)
     {

@@ -12,9 +12,6 @@ public class BoulderFriendChecker : MonoBehaviour {
     [AutoInitialize, SerializeField, HideInInspector]
     private CircleCollider2D circleCollider;
 
-	// Use this for initialization
-	void Start () {
-	}
 
     void FixedUpdate()
     {
