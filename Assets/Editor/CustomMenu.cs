@@ -1222,6 +1222,11 @@ public class CustomMenu
     }
     private static (int, int) _autoInitializeTags(MonoBehaviour mb)
     {
+        if (!mb)
+        {
+            Debug.LogError($"mb is null! mb: {mb}", mb);
+            return (0,1);
+        }
         Type TYPE_MONOBEHAVIOUR = typeof(MonoBehaviour);
         const string NULL_STRING = "null";
         BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
