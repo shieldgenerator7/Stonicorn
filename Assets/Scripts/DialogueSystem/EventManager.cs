@@ -68,14 +68,8 @@ public class EventManager : Manager
                 if (trigger is DialogueTrigger)
                 {
                     DialogueTrigger dialogueTrigger = ((DialogueTrigger)trigger);
-                    string charStr = "";
-                    dialogueTrigger.characters.ForEach(chr => charStr += $"{chr}, ");
-                    Debug.Log($"Event: playing trigger with characters: {charStr}");
-                    DialoguePath path = Managers.Dialogue.getDialogue(
-                        dialogueTrigger.characters
-                        );
-                    Debug.Log($"Event: path: {path?.title ?? "[none]"}");
-                    playDialogue(path);
+                    Debug.Log($"Event: playing trigger with characters: {string.Join(", ", dialogueTrigger.characters)}");
+                    playDialogue(dialogueTrigger.characters);
                 }
             }
         }
@@ -130,6 +124,17 @@ public class EventManager : Manager
     //    }
     //    playDialogue(path);
     //}
+
+    public void playDialogue(string characterName)
+    {
+        playDialogue(new List<string>() { characterName });
+    }
+    public void playDialogue(List<string> characterNameList)
+    {
+        DialoguePath path = Managers.Dialogue.getDialogue(characterNameList);
+        Debug.Log($"Event: path: {path?.title ?? "[none]"}");
+        playDialogue(path);
+    }
 
     public void playDialogue(DialoguePath path)
     {
