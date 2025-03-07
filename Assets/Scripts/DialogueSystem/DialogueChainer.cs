@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [NonSolid]
-public class DialogueChainer:MonoBehaviour, ISetupable
+public class DialogueChainer:MonoBehaviour
 {
     [Tooltip("When the current dialogue stops, auto-increment this variable and trigger next dialogue")]
     public string variableName;
@@ -46,25 +46,12 @@ public class DialogueChainer:MonoBehaviour, ISetupable
     {
         if (!playing && Active)
         {
+            if (!string.IsNullOrWhiteSpace(variableName))
+            {
             Managers.Progress.add(variableName);
+            }
             Managers.Event.playDialogue(character.characterName);
         }
     }
 
-    public int checkForErrors()
-    {
-        int errorCount = 0;
-
-        if (string.IsNullOrWhiteSpace(variableName))
-        {
-            errorCount++;
-        }
-
-        return errorCount;
-    }
-
-    public int setup()
-    {
-        return 0;
-    }
 }
