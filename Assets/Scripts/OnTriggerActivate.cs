@@ -12,10 +12,12 @@ public class OnTriggerActivate : MonoBehaviour
     [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
+    private bool playerInTrigger = false;
+
     private void Start()
     {
-        bool playerInTrigger = coll2d
-            .OverlapsCollider(Managers.Player.Collider2D);//dirty: assumes player is using PolygonCollider2D
+        playerInTrigger = coll2d
+            .OverlapsCollider(Managers.Player.Collider2D);
         //activate objects
         activateObjects((playerInTrigger) ? activeOnPlayerIn : activeOnPlayerOut);
     }
@@ -24,6 +26,7 @@ public class OnTriggerActivate : MonoBehaviour
     {
         if (collision.isPlayerSolid())
         {
+            playerInTrigger = true;
             if (waitForDialogueFinish)
             {
                 Managers.Event.OnDialoguePlayingChanged -= _waitForDialogue;
@@ -37,6 +40,7 @@ public class OnTriggerActivate : MonoBehaviour
     {
         if (collision.isPlayerSolid())
         {
+            playerInTrigger = false;
             if (waitForDialogueFinish && Managers.Event.DialoguePlaying)
             {
                 Managers.Event.OnDialoguePlayingChanged -= _waitForDialogue;
@@ -51,10 +55,16 @@ public class OnTriggerActivate : MonoBehaviour
 
     void _waitForDialogue(bool playing)
     {
-        if (!playing)
+        if (playing)
         {
+            activateObjects(activeOnPlayerIn);
+        }
+        else { 
             activateObjects(activeOnPlayerOut);
-            Managers.Event.OnDialoguePlayingChanged -= _waitForDialogue;
+            if (!playerInTrigger)
+            {
+                Managers.Event.OnDialoguePlayingChanged -= _waitForDialogue;
+            }
         }
     }
 
