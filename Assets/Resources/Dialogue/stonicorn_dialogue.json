@@ -553,6 +553,54 @@
       "actions": []
     },
     {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "kakiintro",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "moonCommentKaki",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Yeah I know Kaki's still here too.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "I tried to convince her to leave, but she blew up at me.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Some ponies are just too unreasonable to deal with.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Let her be.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "moonCommentKaki",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
       "title": "Quickly!",
       "conditions": [
         {
