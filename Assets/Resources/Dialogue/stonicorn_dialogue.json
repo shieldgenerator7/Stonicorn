@@ -601,6 +601,54 @@
       ]
     },
     {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "yellowintro",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "moonCommentYellow",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Yellow is still here? I thought he left already. Huh.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "He probably decided to stay with the tree.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "It's a real shame we couldn't save it. It's a real nice tree.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Let him enjoy it while it lasts.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "moonCommentYellow",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
       "title": "Quickly!",
       "conditions": [
         {
