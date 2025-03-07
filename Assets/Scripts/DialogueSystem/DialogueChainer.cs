@@ -10,8 +10,6 @@ public class DialogueChainer:MonoBehaviour, ISetupable
 
     [AutoInitialize(SearchParent = true), SerializeField, HideInInspector]
     private Character character;
-    [SerializeField, HideInInspector]
-    private Action incrementAction;
 
     private bool _active = false;
     public bool Active
@@ -52,10 +50,6 @@ public class DialogueChainer:MonoBehaviour, ISetupable
             Managers.Event.playDialogue(character.characterName);
         }
     }
-
-    [Initializer]
-    private Action init_incrementAction
-        => new Action(variableName);
 
     public int checkForErrors()
     {
