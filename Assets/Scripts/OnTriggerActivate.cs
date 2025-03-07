@@ -55,6 +55,9 @@ public class OnTriggerActivate : MonoBehaviour
 
     void _waitForDialogue(bool playing)
     {
+        //cant trust the passed in "playing" variable bc race condition with DialogueChainer
+        playing = Managers.Event.DialoguePlaying;
+        //
         if (playing)
         {
             activateObjects(activeOnPlayerIn);
