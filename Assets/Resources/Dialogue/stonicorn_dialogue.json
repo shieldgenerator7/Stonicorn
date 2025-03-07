@@ -133,6 +133,11 @@
           "variableName": "onmoon",
           "testType": 0,
           "testValue": 0
+        },
+        {
+          "variableName": "commPodsFound",
+          "testType": 3,
+          "testValue": 2
         }
       ],
       "quotes": [
@@ -222,6 +227,12 @@
         },
         {
           "characterName": "Moonicorn",
+          "text": "Oh, it's so good to see your face!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
           "text": "Quick! There's no time to lose. You need to come to the moon ASAP!",
           "imageFileName": "",
           "voiceLineFileName": ""
@@ -300,6 +311,11 @@
           "variableName": "commPodsFound",
           "testType": 3,
           "testValue": 2
+        },
+        {
+          "variableName": "pilotpodfound",
+          "testType": 0,
+          "testValue": 0
         }
       ],
       "quotes": [
@@ -324,6 +340,146 @@
         {
           "characterName": "Moonicorn",
           "text": "Or if you can somehow fly, it doesn't matter. Just get here quick.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "moonquest",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "commPodsFound",
+          "testType": 3,
+          "testValue": 2
+        },
+        {
+          "variableName": "pilotpodfound",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "inpod",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Oh hay! I forgot to tell you how to get to the moon.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "There's a shuttle pod in the desert that should still be operational.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Oh you already found it!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Yeah I can see it from the moon, it left a pretty big crater.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "But I did a diagnostics check, and it should still work.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Just needs to be powered.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "moonquest",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "commPodsFound",
+          "testType": 3,
+          "testValue": 2
+        },
+        {
+          "variableName": "pilotpodfound",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "inpod",
+          "testType": 0,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Oh hay! I forgot to tell you how to get to the moon.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "There's a shuttle pod in the desert that should still be operational.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Oh you're already there!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },        
+        {
+          "characterName": "Moonicorn",
+          "text": "Great!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Hey I know you never got your pilot's license, but it's ok. You're just taking it to the moon. You're not going to get in trouble.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "You just have to power it first.",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
