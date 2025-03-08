@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class ProgressManager
 {
+    [ES3Serializable]
     private readonly Dictionary<string, int> data = new Dictionary<string, int>();
+    [ES3Serializable]
     private readonly List<string> activatedTriggers = new List<string>();
 
     public void set(string varName, int value = 0)
