@@ -125,6 +125,13 @@ public class EventManager : Manager
     //    playDialogue(path);
     //}
 
+    public void playDialogueWithCondition(string characterName, string condition)
+    {
+        DialoguePath path = Managers.Dialogue.getDialogueWithCondition(new List<string>() { characterName }, condition);
+        Debug.Log($"Event: path: {path?.title ?? "[none]"}");
+        playDialogue(path);
+    }
+
     public void playDialogue(string characterName)
     {
         playDialogue(new List<string>() { characterName });

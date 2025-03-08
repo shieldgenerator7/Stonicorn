@@ -48,9 +48,12 @@ public class DialogueChainer:MonoBehaviour
         {
             if (!string.IsNullOrWhiteSpace(variableName))
             {
-            Managers.Progress.add(variableName);
+            Managers.Event.playDialogueWithCondition(character.characterName, variableName);
             }
+            else
+            {
             Managers.Event.playDialogue(character.characterName);
+            }
         }
     }
 

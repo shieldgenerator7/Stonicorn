@@ -60,6 +60,12 @@ public class DialogueManager : MonoBehaviour
 
     public DialoguePath getDialogue(List<string> characters)
         => getDialogues(characters).FirstOrDefault(dp => conditionsMet(dp));
+    public DialoguePath getDialogueWithCondition(List<string> characters, string condition)
+        => getDialogues(characters)
+        .Where(dp => dp.conditions
+            .Any(cond => cond.variableName == condition)
+        )
+        .FirstOrDefault(dp => conditionsMet(dp));
 
     private bool conditionsMet(DialoguePath path)
     {
