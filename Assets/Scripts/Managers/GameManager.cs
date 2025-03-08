@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour
         FindAnyObjectByType<SunController>().init();
         //Update the game state id trackers
         Managers.Rewind.init();
+        //Make sure the camera is the right way up
+        Managers.Camera.Up = Managers.Player.transform.up;
         //Check to see which levels need loaded
         Managers.Scene.checkScenes();
         //Load the memories
