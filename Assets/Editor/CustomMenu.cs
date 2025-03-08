@@ -1225,7 +1225,7 @@ public class CustomMenu
         if (!mb)
         {
             Debug.LogError($"mb is null! mb: {mb}", mb);
-            return (0,1);
+            return (0, 1);
         }
         Type TYPE_MONOBEHAVIOUR = typeof(MonoBehaviour);
         const string NULL_STRING = "null";

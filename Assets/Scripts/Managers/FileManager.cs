@@ -53,31 +53,32 @@ public class FileManager : Manager
     /// </summary>
     public void saveToFile()
     {
-            string filename = getFileName(saveWithTimeStamp);
-            Debug.Log($"Saving to file {filename}", this);
+        string filename = getFileName(saveWithTimeStamp);
+        Debug.Log($"Saving to file {filename}", this);
 
-            //Save progress variables
-            ES3.Save<ProgressManager>("progress", Managers.Progress, filename);
-            Debug.Log($"Saved ProgressManager", this);
+        //Save progress variables
+        ES3.Save<ProgressManager>("progress", Managers.Progress, filename);
+        Debug.Log($"Saved ProgressManager", this);
 
-            //Save file settings
-            List<SettingObject> settings = settingList
-                    .Where(setting=>setting.Scope == SettingScope.SAVE_FILE).ToList()
-                    .ConvertAll(setting => setting.Setting)
-                    .Where(so => so)
-                    .ToList();
-            ES3.Save<List<SettingObject>>("settings", settings, filename);
-            Debug.Log($"Saved ISettings", this);
+        //Save file settings
+        List<SettingObject> settings = settingList
+            //TODO: save settings with global scope
+            .Where(setting => setting.Scope == SettingScope.SAVE_FILE).ToList()
+            .ConvertAll(setting => setting.Setting)
+            .Where(so => so)
+            .ToList();
+        ES3.Save<List<SettingObject>>("settings", settings, filename);
+        Debug.Log($"Saved ISettings", this);
 
-            //Save Game Data
-            ES3.Save<GameData>("data", data, filename);
-            Debug.Log($"Saved GameData", this);
+        //Save Game Data
+        ES3.Save<GameData>("data", data, filename);
+        Debug.Log($"Saved GameData", this);
 
 
-            Debug.Log($"Saved! file: {filename}", this);
+        Debug.Log($"Saved! file: {filename}", this);
 
-            //Delegate
-            onFileSave?.Invoke(filename);
+        //Delegate
+        onFileSave?.Invoke(filename);
     }
     public event OnFileAccess onFileSave;
     /// <summary>
@@ -96,15 +97,15 @@ public class FileManager : Manager
             //Load file settings
             List<SettingObject> settings = ES3.Load<List<SettingObject>>("settings", filename);
             settingList
-                    .ForEach(setting =>
+                .ForEach(setting =>
+                {
+                    string id = setting.ID;
+                    SettingObject setObj = settings.Find(setObj => setObj.id == id);
+                    if (setObj)
                     {
-                        string id = setting.ID;
-                        SettingObject setObj = settings.Find(setObj => setObj.id == id);
-                        if (setObj)
-                        {
-                            setting.Setting = setObj;
-                        }
-                    });
+                        setting.Setting = setObj;
+                    }
+                });
 
             //Load Game Data
             GameData data = ES3.Load<GameData>("data", filename);
