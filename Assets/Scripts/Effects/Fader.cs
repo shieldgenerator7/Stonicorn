@@ -48,6 +48,15 @@ public class Fader : MonoBehaviour, ISetupable
     // Use this for initialization
     void OnEnable()
     {
+        //setup if added
+        if (!presetup)
+        {
+            setup();
+            isEffectOnly = initIsEffectOnly();
+            coll2DList.AddRange(GetComponents<Collider2D>());
+            coll2DList.AddRange(GetComponentsInChildren<Collider2D>());
+        }
+
         //Start time
         startTime = CurrentTime + delayTime;
         if (duration <= 0)
@@ -62,13 +71,6 @@ public class Fader : MonoBehaviour, ISetupable
             {
                 Destroy(bc);
             }
-        }
-
-        //setup if added
-        if (!presetup)
-        {
-            setup();
-            isEffectOnly = initIsEffectOnly();
         }
     }
 
