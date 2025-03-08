@@ -48,8 +48,6 @@ public class GameManager : MonoBehaviour
         }
         //Init the ScenesManager
         Managers.Scene.init();
-        //Check to see which levels need loaded
-        Managers.Scene.checkScenes();
         //If it's not in demo mode, and its save file exists,
         if (!Managers.DemoMode.DemoMode && ES3.FileExists("merky.txt"))
         {
@@ -62,6 +60,8 @@ public class GameManager : MonoBehaviour
         FindAnyObjectByType<SunController>().init();
         //Update the game state id trackers
         Managers.Rewind.init();
+        //Check to see which levels need loaded
+        Managers.Scene.checkScenes();
         //Load the memories
         Managers.Object.LoadMemories();
         //Load Tutorials scene
