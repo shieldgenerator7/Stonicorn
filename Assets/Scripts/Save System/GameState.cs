@@ -5,11 +5,15 @@ using System;
 
 public struct GameState
 {
+    [ES3Serializable]
     public int id;
+    [ES3Serializable]
     private ObjectState[] states;
+    [ES3Serializable]
     private ObjectState merky;//the object state in the list specifically for Merky
     public ObjectState Merky => merky;
 
+    [ES3NonSerializable]
     public static int nextid = 0;
 
     private static ObjectState INVALID_STATE = new ObjectState();
