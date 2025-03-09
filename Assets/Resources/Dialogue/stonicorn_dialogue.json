@@ -340,6 +340,174 @@
         {
           "variableName": "commPodsFound",
           "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "launcherfound",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "atlauncher",
+          "testType": 0,
+          "testValue": 0
+        },
+        {
+          "variableName": "launcherinfo",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Oh hay! I forgot to tell you how to get to the moon.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "There's a shuttle pod in the desert that should still be operational.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "There's also the railgun transport system...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Oh I see you found it already!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Yeah I don't know if it still works, but it's worth a try.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "moonquest",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Launcher Info",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "commPodsFound",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "launcherfound",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "atlauncher",
+          "testType": 0,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Oh hay! I forgot to tell you how to get to the moon.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "But I see you're already at the railgun transport system! Excellent!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "I'm running a diagnostic now...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Just a moment...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "It appears to be functional. It doesn't have any power tho.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Well, I hate to bother them, but you're going to need to go see Transistor.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Their workshop is in the Northwest Pole, but it's probably been snowed in.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Nimbus has been \"hard at work\" doing what he calls \"disproving the apocalypse\"...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "So, good luck finding Transistor. They could be anywhere inside their workshop, and they don't usually answer the door.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "But if you do find them, say hi to them for me? Thanks Merky.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "moonquest",
+          "actionType": 1,
+          "actionValue": 1
+        },
+        {
+          "variableName": "launcherinfo",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "commPodsFound",
+          "testType": 3,
           "testValue": 2
         },
         {
@@ -517,6 +685,99 @@
       "actions": [
         {
           "variableName": "moonquest",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "commPodsFound",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "launcherfound",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "atlauncher",
+          "testType": 0,
+          "testValue": 1
+        },
+        {
+          "variableName": "launcherinfo",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "You found the railgun transport system! Excellent!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "I'm running a diagnostic now...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Just a moment...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "It appears to be functional. It doesn't have any power tho.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Well, I hate to bother them, but you're going to need to go see Transistor.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Their workshop is in the Northwest Pole, but it's probably been snowed in.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "Nimbus has been \"hard at work\" doing what he calls \"disproving the apocalypse\"...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "So, good luck finding Transistor. They could be anywhere inside their workshop, and they don't usually answer the door.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Moonicorn",
+          "text": "But if you do find them, say hi to them for me? Thanks Merky.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "launcherinfo",
           "actionType": 1,
           "actionValue": 1
         }
