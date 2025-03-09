@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,7 +22,7 @@ public class DialoguePlayer : MonoBehaviour
 
     public delegate void DialoguePathDelegate(DialoguePath path);
     public DialoguePathDelegate onDialogueStarted;
-    public DialoguePathDelegate onDialogueEnded;
+    public Action<DialoguePath,bool> onDialogueEnded;
 
     public delegate void DialogueDelegate(string dialogue);
     public event DialogueDelegate onDialogueChanged;
@@ -87,12 +88,12 @@ public class DialoguePlayer : MonoBehaviour
         advanceDialogue();
     }
 
-    public void stopDialogue()
+    public void stopDialogue(bool endedNormally)
     {
         //UI
         this.enabled = false;
         //OnStop delegate
-        onDialogueEnded?.Invoke(path);
+        onDialogueEnded?.Invoke(path, endedNormally);
         //Unset path
         //this.path = null;
     }
@@ -120,14 +121,14 @@ public class DialoguePlayer : MonoBehaviour
     {
         if (Playing)
         {
-            stopDialogue();
+            stopDialogue(false);
         }
     }
     private void OnDisable()
     {
         if (Playing)
         {
-            stopDialogue();
+            stopDialogue(false);
         }
     }
 
@@ -146,7 +147,7 @@ public class DialoguePlayer : MonoBehaviour
         index++;
         if (index >= path.quotes.Count)
         {
-            stopDialogue();
+            stopDialogue(true);
             return;
         }
         //Reset timer

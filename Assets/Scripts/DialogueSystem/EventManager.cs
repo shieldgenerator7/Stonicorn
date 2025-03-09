@@ -167,11 +167,14 @@ public class EventManager : Manager
         dp.onDialogueAdvanced += dbu.setGoalText;
         //dp.onDialogueAdvanced += (quote) => dbu.setSource(Character.getCharacterByName(quote.characterName));
         dp.playDialogue(path);
-        dp.onDialogueEnded += (path) =>
+        dp.onDialogueEnded += (path, endedNormally) =>
         {
             dbu.setText("");
             Destroy(dbu.gameObject);
-            Managers.Dialogue.takeActions(path);
+            if (endedNormally)
+            {
+                Managers.Dialogue.takeActions(path);
+            }
             dialoguePlayingList.Remove(dp);
             OnDialoguePlayingChanged?.Invoke(DialoguePlaying);
         };
@@ -180,7 +183,7 @@ public class EventManager : Manager
         {
             if (destroyed)
             {
-                dp.stopDialogue();
+                dp.stopDialogue(false);
             }
         };
         //
