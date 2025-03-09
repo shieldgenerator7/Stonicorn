@@ -62,7 +62,8 @@ public class OnTriggerActivate : MonoBehaviour
         {
             activateObjects(activeOnPlayerIn);
         }
-        else { 
+        else
+        {
             activateObjects(activeOnPlayerOut);
             if (!playerInTrigger)
             {

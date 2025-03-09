@@ -135,14 +135,14 @@ public class ScenesManager : Manager
             );
         if (unsceneSOIs.Count > 0)
         {
-        //Remove it from being processed, and
-        sceneSOIs.RemoveAll(soi => unsceneSOIs.Contains(soi));
-        //Destroy it before it gets put into the game object list.
-        unsceneSOIs.ForEach(soi =>
-        {
-            Debug.Log($"Destroying now duplicate: {soi} ({soi.Id})");
-            Destroy(soi.gameObject);
-        });
+            //Remove it from being processed, and
+            sceneSOIs.RemoveAll(soi => unsceneSOIs.Contains(soi));
+            //Destroy it before it gets put into the game object list.
+            unsceneSOIs.ForEach(soi =>
+            {
+                Debug.Log($"Destroying now duplicate: {soi} ({soi.Id})");
+                Destroy(soi.gameObject);
+            });
         }
         //Register object in scene
         sceneSOIs.ForEach(soi => registerObjectInScene(soi, scene));

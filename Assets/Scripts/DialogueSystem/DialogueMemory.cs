@@ -1,10 +1,10 @@
 using UnityEngine;
 
 [NonSolid]
-[RequireComponent (typeof(MemoryObjectInfo), typeof(VariableSetAction))]
+[RequireComponent(typeof(MemoryObjectInfo), typeof(VariableSetAction))]
 public class DialogueMemory : MemoryMonoBehaviour
 {
-    [AutoInitialize,SerializeField,HideInInspector]
+    [AutoInitialize, SerializeField, HideInInspector]
     private VariableSetAction variableSetAction;
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -42,14 +42,14 @@ public struct GameState
                 {
                     return INVALID_STATE;
                 }
-                    ObjectState os = new ObjectState(soi);
-                    if (os.objectId < 0)
-                    {
-                        throw new UnityException($"Object state object id is ({os.objectId}) for object: {soi.name}");
-                    }
-                    return os;
+                ObjectState os = new ObjectState(soi);
+                if (os.objectId < 0)
+                {
+                    throw new UnityException($"Object state object id is ({os.objectId}) for object: {soi.name}");
+                }
+                return os;
             })
-            .Where(os=>os.Valid)
+            .Where(os => os.Valid)
             .OrderBy(os => os.objectId)
             .ToArray();
 
@@ -125,7 +125,7 @@ public struct GameState
     }
 
     public bool Valid
-        => id >= 0 
-        && states != null && states.Length > 0 
+        => id >= 0
+        && states != null && states.Length > 0
         && merky != null;
 }

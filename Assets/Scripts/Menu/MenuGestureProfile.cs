@@ -42,8 +42,8 @@ public class MenuGestureProfile : GestureProfile
             switch (dragType)
             {
                 case GestureInput.DragType.DRAG_CAMERA:
-            //Drag the camera
-            Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
+                    //Drag the camera
+                    Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
                     break;
                 case GestureInput.DragType.DRAG_PLAYER:
                     Managers.Menu.processDragGesture(origMPWorld, newMPWorld, state);

@@ -42,7 +42,7 @@ public abstract class GestureProfile
             {
                 if (!Managers.Rewind.Rewinding || Managers.Rewind.rewindInterruptableByPlayer)
                 {
-                Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
+                    Managers.Gesture.switchGestureProfile(GestureManager.GestureProfileType.REWIND);
                 }
                 else
                 {

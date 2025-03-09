@@ -18,10 +18,10 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
     public int destroyStateId = int.MaxValue;//the game state id in which this object was destroyed (max value for not destroyed)
 
     [Header("Components to save")]
-    [AutoInitialize(AllowUnfound =true), SerializeField, HideInInspector]
+    [AutoInitialize(AllowUnfound = true), SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
     public Rigidbody2D Rigidbody2D => rb2d;
-    [AutoInitialize(AllowUnfound =true), SerializeField, HideInInspector]
+    [AutoInitialize(AllowUnfound = true), SerializeField, HideInInspector]
     public List<SavableMonoBehaviour> savables;
 
     public string TextLine => $"\"{this.name}\" ({this.Id})";
@@ -47,13 +47,13 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
 
     public SavableMonoBehaviour getSavableMonoBehaviour(Type type)
     {
-        return savables.Where(smb=>smb.GetType() == type).FirstOrDefault();
+        return savables.Where(smb => smb.GetType() == type).FirstOrDefault();
     }
 
 #if UNITY_EDITOR
     public virtual void autoset()
     {
-        int changeCount = 0; 
+        int changeCount = 0;
 
         //Populate savable components
         if (!rb2d)
@@ -80,7 +80,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         //Set dirty
         if (changeCount > 0)
         {
-        EditorUtility.SetDirty(this);
+            EditorUtility.SetDirty(this);
         }
     }
 
@@ -101,7 +101,7 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
             //TODO: solve this so this exception isnt needed
             "_NPC",
         };
-        if (string.IsNullOrEmpty(PrefabGUID) && !exceptionList.Any(ex=>gameObject.name.Contains(ex)))
+        if (string.IsNullOrEmpty(PrefabGUID) && !exceptionList.Any(ex => gameObject.name.Contains(ex)))
         {
             Debug.LogError($"SavableObjectInfo has invalid PrefabGUID! prefabAddress: {prefabAddress}, PrefabGUID: {PrefabGUID}, go: {gameObject.name}", this);
             errorCount++;
@@ -139,13 +139,13 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
             {
                 if (property.prefabOverride)
                 {
-            PrefabUtility.RevertPropertyOverride(property, InteractionMode.UserAction);
+                    PrefabUtility.RevertPropertyOverride(property, InteractionMode.UserAction);
 
                     Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: {revert} override reverted", this);
                     changeCount++;
                 }
             }
-            catch(ArgumentException ae)
+            catch (ArgumentException ae)
             {
                 Debug.LogError($"Trying to revert override on {property.name}, but failed. Moving on. error:  {ae.Message}", this);
             }
@@ -171,13 +171,14 @@ public class SavableObjectInfo : ObjectInfo, ISetupable
         }
         //TODO: investigate why unity auto-setting this isnt working anymore
         AssetReference assetRef = new AssetReference(guid);
-        if (assetRef != null && !string.IsNullOrEmpty(assetRef.AssetGUID)) {
-        if (prefabAddress.AssetGUID != assetRef.AssetGUID)
+        if (assetRef != null && !string.IsNullOrEmpty(assetRef.AssetGUID))
         {
-            prefabAddress = assetRef;
+            if (prefabAddress.AssetGUID != assetRef.AssetGUID)
+            {
+                prefabAddress = assetRef;
                 Debug.LogWarning($"SavableObjectInfo setup: {gameObject.name}: prefabAddress updated: {assetRef}", this);
-            changeCount++;
-        }
+                changeCount++;
+            }
         }
         else
         {

@@ -72,7 +72,7 @@ public class ObjectState
                     throw new UnityException($"Object {soi} ({soi.Id}) is missing non-spawnable script {so.scriptType}");
                 }
                 //Add the spawnable script
-                    smb = so.addScript(soi);
+                smb = so.addScript(soi);
             }
             //load state of the savable script
             try
