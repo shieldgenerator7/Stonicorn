@@ -17,6 +17,9 @@ public class DialogueBoxUpdater : MonoBehaviour
     [Tooltip("The scale point at which the NPC quote box should be full screen")]
     public CameraController.CameraScalePoints baseCameraScalePoint;
 
+    [Tooltip("When the player is this far or greater from the current speaking character, the dialogue is canceled without updating variables")]
+    private float dialogueCancelDistance = 7;
+
     [Header("Components")]
     public ParticleSystem talkEffect;//the particle system for the visual part of NPC talking
     public TMP_Text txtDialogue;
@@ -49,6 +52,13 @@ public class DialogueBoxUpdater : MonoBehaviour
         //resizeToCamera();
         //update position
         updatePosition();
+
+        //Check player distance
+        if (Vector2.Distance(Managers.Player.transform.position, source.transform.position) >= dialogueCancelDistance)
+        {
+            Destroy(gameObject);
+            OnSourceDestroyed?.Invoke(true);
+        }
     }
     public event Action<bool> OnSourceDestroyed;//only have bool here because it wont compile without at least 1
 
