@@ -6600,7 +6600,6 @@ MonoBehaviour:
   - {fileID: 664890910}
   - {fileID: 779602609}
   - {fileID: 979312362}
-  - {fileID: 1029387877}
   - {fileID: 1224411030}
   - {fileID: 1306197363}
   - {fileID: 1499449381}
@@ -7287,119 +7286,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8037714000082126908, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
   m_PrefabInstance: {fileID: 641817963}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1029387875
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1029387876}
-  - component: {fileID: 1029387880}
-  - component: {fileID: 1029387879}
-  - component: {fileID: 1029387878}
-  - component: {fileID: 1029387877}
-  m_Layer: 0
-  m_Name: pilot pod found
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1029387876
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029387875}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.75, y: -1.3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1222400622}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1029387877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029387875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7d8de977453a5e44809362e2d1792a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 1021
---- !u!114 &1029387878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029387875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ebb35b6a5a15c546afafa19ae12e2f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  variableSetAction: {fileID: 1029387879}
---- !u!114 &1029387879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029387875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c136d1bb557f17048bf3bac4a9a0845b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionList:
-  - variableName: pilotpodfound
-    actionType: 1
-    actionValue: 1
---- !u!58 &1029387880
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029387875}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 2.3
 --- !u!1 &1048347773
 GameObject:
   m_ObjectHideFlags: 0
@@ -8029,11 +7915,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 362776816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1222400622 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6757589411320486728, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
-  m_PrefabInstance: {fileID: 8392682662392136999}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1224411030 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6682947679793279818, guid: 09d73ca31ad729a43bd0de4d964f7551, type: 3}
@@ -10559,12 +10440,25 @@ PrefabInstance:
       propertyPath: teleportPreviewPointer
       value: 
       objectReference: {fileID: 1385001677}
+    - target: {fileID: 9014197635094591598, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
+      propertyPath: actionList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014197635094591598, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
+      propertyPath: actionList.Array.data[1].actionType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014197635094591598, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
+      propertyPath: actionList.Array.data[1].actionValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014197635094591598, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
+      propertyPath: actionList.Array.data[1].variableName
+      value: pilotpodfound
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6757589411320486728, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1029387876}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
 --- !u!114 &8392682662392137000 stripped
