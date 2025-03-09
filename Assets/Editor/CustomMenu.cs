@@ -975,6 +975,8 @@ public class CustomMenu
             "movePath",
             "moveSpeed",
             //TEMP allowances
+            "direction",//SimpleMovement for lava mines
+            "direction.y",//SimpleMovement for lava mines
             "m_Creator",
             "length",
             "m_ConnectedRigidBody",
