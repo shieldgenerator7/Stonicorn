@@ -1134,6 +1134,31 @@
       ]
     },
     {
+      "title": "Power Launcher",
+      "conditions": [
+        {
+          "variableName": "transistorintro",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "atlauncher",
+          "testType": 0,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Moonicorn",
+          "text": "Power the launcher Merky.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+      ]
+    },
+    {
       "title": "Quickly!",
       "conditions": [
         {
