@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[NonSolid]
 public class WaterArea : MonoBehaviour
 {
     public float minSpeed;//the minimum speed in order to apply dampen
