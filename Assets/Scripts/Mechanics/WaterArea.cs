@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaterArea : MonoBehaviour, ISetupable
+public class WaterArea : MonoBehaviour
 {
     public float minSpeed;//the minimum speed in order to apply dampen
     public float maxSpeed;//the maximum speed allowed underwater
@@ -64,12 +64,10 @@ public class WaterArea : MonoBehaviour, ISetupable
     [Initializer]
     private float init_minSquared => minSpeed * minSpeed;
 
-    public int setup()
+    [Initializer]
+    private List<Rigidbody2D> init_tenants()
     {
-        int changeCount = 0;
-
-        int prevCount = tenants.Count;
-        tenants.Clear();
+        List<Rigidbody2D> list = new List<Rigidbody2D>();
         Utility.RaycastAnswer rca = coll2d.CastAnswer(Vector2.zero, 0, true);
         for (int i = 0; i < rca.count; i++)
         {
@@ -79,18 +77,13 @@ public class WaterArea : MonoBehaviour, ISetupable
                 Rigidbody2D rb2d = rch2d.collider.GetComponent<Rigidbody2D>();
                 if (rb2d)
                 {
-                    if (!tenants.Contains(rb2d))
+                    if (!list.Contains(rb2d))
                     {
-                        tenants.Add(rb2d);
+                        list.Add(rb2d);
                     }
                 }
             }
         }
-        if (tenants.Count != prevCount)
-        {
-            changeCount++;
-        }
-
-        return changeCount;
+        return list;
     }
 }
