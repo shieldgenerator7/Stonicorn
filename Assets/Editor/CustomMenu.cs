@@ -1513,7 +1513,12 @@ public class CustomMenu
                     }
                 }
                 //
-                if (!object.Equals(value, result))
+                bool equals = object.Equals(value, result);
+                if (result is IList)
+                {
+                    equals = listEquals((IList)value, (IList)result);
+                }
+                if (!equals)
                 {
                     field.SetValue(mb, result);
                     Debug.LogWarning($"Initialized variable using {className}.{method.Name}: {field.Name}:{fieldType} = {value} -> {result}. go: {mb.gameObject.name}", mb);
@@ -1605,6 +1610,12 @@ public class CustomMenu
             }
         }
         return (changes, errors);
+    }
+    private static bool listEquals(IList list1, IList list2)
+    {
+        //TODO: make this more robust
+        //2025-03-10: copied from https://stackoverflow.com/a/22173821/2336212
+        return list1.Count == list2.Count;// && list1.All(list2.Contains);
     }
 
     [MenuItem("SG7/Build/Pre-Build/Check to make sure objects start in the correct scene")]
