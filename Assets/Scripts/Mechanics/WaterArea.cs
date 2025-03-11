@@ -14,14 +14,18 @@ public class WaterArea : MonoBehaviour, ISetupable
     [SerializeField, HideInInspector]
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();
 
+    [SerializeField, HideInInspector]
+    private float minSquared;
+
     private void FixedUpdate()
     {
                 tenants.ForEach(rb2d =>
                 {
-                    float speed = rb2d.linearVelocity.magnitude;
-                    if (speed >= minSpeed)
+                    float speedSquared = rb2d.linearVelocity.sqrMagnitude;
+                    if (speedSquared >= minSquared)
                     {
                         Vector2 dir = rb2d.linearVelocity.normalized;
+                        float speed = Mathf.Sqrt(speedSquared);
                         if (speed > maxSpeed)
                         {
                             rb2d.linearVelocity = dir * maxSpeed;
@@ -56,6 +60,9 @@ public class WaterArea : MonoBehaviour, ISetupable
             tenants.Remove(rb2d);
         }
     }
+
+    [Initializer]
+    private float init_minSquared => minSpeed * minSpeed;
 
     public int setup()
     {
