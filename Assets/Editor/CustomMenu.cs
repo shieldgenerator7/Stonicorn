@@ -1514,9 +1514,9 @@ public class CustomMenu
                 }
                 //
                 bool equals = object.Equals(value, result);
-                if (result is IList)
+                if (isList(result))
                 {
-                    equals = listEquals((IList)value, (IList)result);
+                    equals = listEquals((List<object>)value, (List<object>)result);
                 }
                 if (!equals)
                 {
@@ -1611,11 +1611,16 @@ public class CustomMenu
         }
         return (changes, errors);
     }
-    private static bool listEquals(IList list1, IList list2)
+    private static bool isList(object o)
     {
-        //TODO: make this more robust
+        //2025-03-11: copied from https://stackoverflow.com/a/40421865/2336212
+        return o.GetType().IsGenericType
+            && o.GetType().GetGenericTypeDefinition() == typeof(List<>);
+    }
+    private static bool listEquals(List<object> list1, List<object> list2)
+    {
         //2025-03-10: copied from https://stackoverflow.com/a/22173821/2336212
-        return list1.Count == list2.Count;// && list1.All(list2.Contains);
+        return list1.Count == list2.Count && list1.All(list2.Contains) && list2.All(list1.Contains);
     }
 
     [MenuItem("SG7/Build/Pre-Build/Check to make sure objects start in the correct scene")]
