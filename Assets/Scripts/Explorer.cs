@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// Used to get data useful for loading and unloading scenes
 /// </summary>
-public class Explorer : MonoBehaviour
+public class Explorer : MonoBehaviour, ISetupable
 {
     public float sightRadius = 30;
     public float hindSightRadius = 50;
@@ -37,4 +37,27 @@ public class Explorer : MonoBehaviour
 
     public bool canSeeBehind(Collider2D c2d)
         => c2d.OverlapPoint(transform.position) || behindColl2d.OverlapsCollider(c2d);
+
+    public int setup()
+    {
+        int changes = 0;
+
+        if (coll2d && coll2d.radius != sightRadius)
+        {
+            coll2d.radius = sightRadius;
+            changes++;
+        }
+        if (behindColl2d && behindColl2d.radius != hindSightRadius)
+        {
+            behindColl2d.radius = hindSightRadius;
+            changes++;
+        }
+
+        if (changes > 0)
+        {
+            Debug.LogWarning("Set explorer radius", this);
+        }
+
+        return changes;
+    }
 }
