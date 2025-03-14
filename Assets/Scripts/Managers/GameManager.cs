@@ -94,14 +94,7 @@ public class GameManager : MonoBehaviour
         Managers.Scene.onSceneLoaded += (s) => Managers.Power.generateConnectionMap();
         Managers.Scene.onSceneUnloaded += (s) => Managers.Power.generateConnectionMap();
         //Menu delegates
-        MenuManager.onOpenedChanged +=
-            (open) => Managers.Time.setPause(this, open);
-        MenuManager.onOpenedChanged +=
-            (open) =>
-            {
-                Managers.Camera.cameraMoveFactor = (open) ? 5 : 1.5f;
-                Managers.Camera.cameraZoomSpeed = (open) ? 5 : 1.5f;
-            };
+        MenuManager.onOpenedChanged += onMenuOpenChanged;
         //Time delegates
         Managers.Time.onPauseChanged += (paused) =>
         {
@@ -177,6 +170,9 @@ public class GameManager : MonoBehaviour
 
         Managers.Scene.registerDelegates(false);
 
+        //Menu delegates
+        MenuManager.onOpenedChanged -= onMenuOpenChanged;
+        //Time delegates
         Managers.Time.endGameTimer.onTimeFinished -= Managers.Rewind.RewindToStart;
         //Rewind delegates
         Managers.Rewind.onGameStateSaved -= Managers.Scene.updateSceneLoadersForward;
@@ -277,6 +273,15 @@ public class GameManager : MonoBehaviour
         //Update the list of game objects to save
         Managers.Object.refreshGameObjects();
         FindAnyObjectByType<CloudMoverManager>().updateClouds();//TODO: set this up correctly
+    }
+    #endregion
+
+    #region Menu Delegates
+    private void onMenuOpenChanged(bool open)
+    {
+        Managers.Time.setPause(this, open);
+        Managers.Camera.cameraMoveFactor = (open) ? 5 : 1.5f;
+        Managers.Camera.cameraZoomSpeed = (open) ? 5 : 1.5f;
     }
     #endregion
 
