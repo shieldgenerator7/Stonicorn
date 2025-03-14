@@ -8,6 +8,12 @@ public class ScenesManager : Manager
 {
     [SerializeField]
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
+    [SerializeField]
+    [Tooltip("If no scene is found for an object, default to this scene loader's scene")]
+    private SceneLoader defaultSceneLoader;
+    [SerializeField]
+    [Tooltip("The max range for the default scene loader to take effect. Assumes the origin is (0,0).")]
+    private float defaultRange = 100;
 
     private int pauseForLoadingSceneId = -1;//the id of the scene that is currently loading
     public int PauseForLoadingSceneId
@@ -341,6 +347,14 @@ public class ScenesManager : Manager
         if (!loader)
         {
             loader = sceneLoaders.Find(sl => sl.overlapsCollider(soi.gameObject));
+        }
+        //check default scene
+        if (!loader)
+        {
+            if (soi.gameObject.transform.position.magnitude < defaultRange)
+            {
+                loader = defaultSceneLoader;
+            }
         }
         //If it can't find the scene it's in,
         if (!loader)
