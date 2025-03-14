@@ -7,10 +7,12 @@ using UnityEngine;
 public class FileManager : Manager
 {
     public string fileName = "merky";
+    public string settingsFileName = "merky_settings";
     public string fileExtension = ".txt";
     public bool saveWithTimeStamp = false;//true to save with date/timestamp in filename, even when not in demo build
 
     private List<ISetting> settingList;
+    private List<ISetting> settingListGlobal;
 
 
     protected override void init()
@@ -20,6 +22,10 @@ public class FileManager : Manager
         settingList = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
             .OfType<ISetting>()
             .Where(setting => setting.Scope == SettingScope.SAVE_FILE)
+            .ToList();
+        settingListGlobal = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+            .OfType<ISetting>()
+            .Where(setting => setting.Scope == SettingScope.GAME_WHOLE)
             .ToList();
     }
 
@@ -62,8 +68,6 @@ public class FileManager : Manager
 
         //Save file settings
         List<SettingObject> settings = settingList
-            //TODO: save settings with global scope
-            .Where(setting => setting.Scope == SettingScope.SAVE_FILE).ToList()
             .ConvertAll(setting => setting.Setting)
             .Where(so => so)
             .ToList();
@@ -127,5 +131,51 @@ public class FileManager : Manager
         }
     }
     public event OnFileAccess onFileLoad;
+
+    public void saveGlobalSettings()
+    {
+        //2025-03-13: copied from saveToFile()
+        string filename = settingsFileName + fileExtension;
+        Debug.Log($"Saving to file {filename}", this);
+
+        //Save global settings
+        List<SettingObject> settings = settingListGlobal
+            .ConvertAll(setting => setting.Setting)
+            .Where(so => so)
+            .ToList();
+        ES3.Save<List<SettingObject>>("settingsGlobal", settings, filename);
+        Debug.Log($"Saved ISettings", this);
+
+        Debug.Log($"Saved! file: {filename}", this);
+    }
+    public void loadGlobalSettings()
+    {
+        //2025-03-13: copied from loadFromFile()
+        string filename = settingsFileName + fileExtension;
+        try
+        {
+
+            //Load file settings
+            List<SettingObject> settings = ES3.Load<List<SettingObject>>("settingsGlobal", filename);
+            settingListGlobal
+                .ForEach(setting =>
+                {
+                    string id = setting.ID;
+                    SettingObject setObj = settings.Find(setObj => setObj.id == id);
+                    if (setObj)
+                    {
+                        setting.Setting = setObj;
+                    }
+                });
+        }
+        catch (System.Exception e)
+        {
+            if (ES3.FileExists(filename))
+            {
+                ES3.DeleteFile(filename);
+            }
+            Debug.LogError("Error loading file: " + filename + "; error: " + e);
+        }
+    }
     #endregion
 }

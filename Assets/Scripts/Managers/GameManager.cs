@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
         }
         //Init the ScenesManager
         Managers.Scene.init();
+        //Load global settings
+        Managers.File.loadGlobalSettings();
         //If it's not in demo mode, and its save file exists,
         if (!Managers.DemoMode.DemoMode && ES3.FileExists("merky.txt"))
         {
@@ -279,6 +281,7 @@ public class GameManager : MonoBehaviour
     #region Menu Delegates
     private void onMenuOpenChanged(bool open)
     {
+        Managers.File.saveGlobalSettings();
         Managers.Time.setPause(this, open);
         Managers.Camera.cameraMoveFactor = (open) ? 5 : 1.5f;
         Managers.Camera.cameraZoomSpeed = (open) ? 5 : 1.5f;
@@ -344,6 +347,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("OnApplicationQuit() called");
         unregisterDelegates();
         saveGame();
+        Managers.File.saveGlobalSettings();
     }
     private void OnApplicationPause(bool pause)
     {
