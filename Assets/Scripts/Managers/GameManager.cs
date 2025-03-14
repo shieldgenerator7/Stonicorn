@@ -11,6 +11,7 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public float CAM_ROTATE_MIN = 5;
+    public GameObject goErrorWarning;
 
     private void Awake()
     {
@@ -326,6 +327,7 @@ public class GameManager : MonoBehaviour
         catch(Exception e) {
             Debug.LogError("Something failed while loading objects post-rewind! Attempting to continue playing anyway...", this);
             Debug.LogException(e,this);
+            FatalErrorHappened = true;
         }
         //Put the music back to normal
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
@@ -392,6 +394,20 @@ public class GameManager : MonoBehaviour
         //Unload all scenes and load LoadingScreen
         SceneManager.LoadScene(0);
     }
+    private bool fatalErrorHappened = false;
+    private bool FatalErrorHappened
+    {
+        get => fatalErrorHappened;
+        set
+        {
+            fatalErrorHappened = value;
+            if (goErrorWarning)
+            {
+                goErrorWarning.SetActive(fatalErrorHappened);
+            }
+        }
+    }
+
 
 }
 
