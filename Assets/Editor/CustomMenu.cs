@@ -1516,7 +1516,16 @@ public class CustomMenu
                 bool equals = object.Equals(value, result);
                 if (isList(result))
                 {
+                    try { 
                     equals = listEquals((List<object>)value, (List<object>)result);
+                    }
+                    catch(InvalidCastException ice)
+                    {
+                        //TODO: find other comparison method, seems to have to do with List<Rigidbody2D> not working correctly for some reason
+                        errors++;
+                        Debug.LogError($"Cant cast either value or result: {value.GetType()}, {result.GetType()}, ice: {ice}", mb);
+                        return;
+                    }
                 }
                 if (!equals)
                 {
