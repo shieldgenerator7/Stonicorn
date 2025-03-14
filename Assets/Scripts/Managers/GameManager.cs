@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.AddressableAssets;
+using System;
 
 /// <summary>
 /// GameManager in charge of running the other managers
@@ -310,6 +311,7 @@ public class GameManager : MonoBehaviour
     void processRewindEnd(int rewindStateId)
     {
         //Refresh the game object list
+        try { 
         Managers.Object.LoadObjectsPostRewind(rewindStateId);
         if (Managers.Object.RecreatingObjects)
         {
@@ -319,6 +321,11 @@ public class GameManager : MonoBehaviour
         else
         {
             Managers.Object.refreshGameObjects();
+        }
+        }
+        catch(Exception e) {
+            Debug.LogError("Something failed while loading objects post-rewind! Attempting to continue playing anyway...", this);
+            Debug.LogException(e,this);
         }
         //Put the music back to normal
         Managers.Music.SongSpeed = Managers.Music.normalSongSpeed;
