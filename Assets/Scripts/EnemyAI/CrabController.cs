@@ -63,13 +63,13 @@ public class CrabController : Hazard
     private void moveObject(Rigidbody2D rb2d)
     {
         float speed = moveSpeed;
-        if (rb2d.linearVelocity.magnitude < 0.1f)
+        if (rb2d.linearVelocity.sqrMagnitude < 0.1f)
         {
             speed *= 2;
         }
         Vector3 forceVector = speed * transform.right * Mathf.Sign(transform.localScale.x);
         rb2d.AddForce(forceVector * rb2d.mass);
-        if (rb2d.linearVelocity.magnitude > speed)
+        if (rb2d.linearVelocity.sqrMagnitude > speed * speed)
         {
             rb2d.linearVelocity = rb2d.linearVelocity.normalized * speed;
         }
