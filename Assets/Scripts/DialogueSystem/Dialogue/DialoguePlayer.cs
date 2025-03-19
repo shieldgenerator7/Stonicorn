@@ -56,6 +56,8 @@ public class DialoguePlayer : MonoBehaviour
         }
     }
 
+    public int QuoteIndex => index;
+
     public int RevealedCharacterCount
         => (int)((Time.time - revealStartTime) * charsPerSecond);
 
@@ -129,6 +131,16 @@ public class DialoguePlayer : MonoBehaviour
         if (Playing)
         {
             stopDialogue(false);
+        }
+    }
+
+    public void setDuration(float duration)
+    {
+        Quote quote = CurrentQuote;
+        if (quote != null)
+        {
+            float charCount = quote.text.Length;
+            charsPerSecond = charCount / duration;
         }
     }
 

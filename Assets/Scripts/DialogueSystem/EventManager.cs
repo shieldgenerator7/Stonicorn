@@ -178,6 +178,18 @@ public class EventManager : Manager
             dialoguePlayingList.Remove(dp);
             OnDialoguePlayingChanged?.Invoke(DialoguePlaying);
         };
+        //Setup voice line player
+        DialogueVoiceLinePlayer dvlp = dbu.GetComponent<DialogueVoiceLinePlayer>();
+        dvlp.init(path, ch.AudioSource);
+        dp.onDialogueAdvanced += (txt) =>
+        {
+            dvlp.playVoiceLine(dp.QuoteIndex);
+            float duration = dvlp.Duration;
+            if (duration > 0)
+            {
+                dp.setDuration(duration);
+            }
+        };
         //
         dbu.OnSourceDestroyed += (destroyed) =>
         {
