@@ -89,6 +89,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 79649297268718892}
     - target: {fileID: 6505215053507214006, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 3809890853919695937}
+    - target: {fileID: 6505215053507214006, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
       propertyPath: characterName
       value: Silt
       objectReference: {fileID: 0}
@@ -214,6 +218,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &3809890853919695937 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8508871312348638768, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}
+  m_PrefabInstance: {fileID: 4812913051624393329}
+  m_PrefabAsset: {fileID: 0}
 --- !u!50 &3841507619140020061 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 8612325288248208684, guid: 3434c1a4c861d6a46898ad8385eaf32d, type: 3}

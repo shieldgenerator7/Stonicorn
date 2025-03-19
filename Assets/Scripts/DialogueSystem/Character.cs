@@ -8,6 +8,10 @@ public class Character : MonoBehaviour, ISetupable
 {
     public string characterName;
 
+    [AutoInitialize(SearchChildren = true),SerializeField,HideInInspector]
+    private AudioSource audioSource;
+    public AudioSource AudioSource => audioSource;
+
     //TODO: find better way to store and retrieve this map
     private static Dictionary<string, List<Character>> charMap = new System.Collections.Generic.Dictionary<string, List<Character>>();
 
