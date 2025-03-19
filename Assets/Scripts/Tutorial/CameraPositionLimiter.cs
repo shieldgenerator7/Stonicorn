@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CameraPositionLimiter : MonoBehaviour
 {
+    [Tooltip("True to snap only when in range, false to force camera to be at the position")]
+    public bool snapCameraPosition = true;
+    public float snapRange = 2;
+
     private Vector3 newCamPos;
 
     private void OnEnable()
@@ -22,7 +26,10 @@ public class CameraPositionLimiter : MonoBehaviour
     {
         if (Managers.Camera.transform.position != newCamPos)
         {
+            if (!snapCameraPosition || Vector2.Distance(Managers.Camera.transform.position, newCamPos) <= snapRange)
+            {
             limitPosition();
+            }
         }
     }
 
