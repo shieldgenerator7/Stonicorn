@@ -142,6 +142,7 @@ public class MenuManager : MonoBehaviour, ISetupable
     public static event OnOpenedChanged onOpenedChanged;
 
 
+#if UNITY_EDITOR
     //[Initializer(0)]
     //private List<MenuFrame> init_frames
     //    => FindObjectsByType<MenuFrame>(FindObjectsSortMode.InstanceID)
@@ -150,7 +151,6 @@ public class MenuManager : MonoBehaviour, ISetupable
     //[Initializer(1)]
     //private MenuFrame init_startFrame => frames.First();
 
-#if UNITY_EDITOR
     public int setup()
     {
         int changeCount = 0;
