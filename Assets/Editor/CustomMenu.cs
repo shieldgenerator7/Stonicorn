@@ -1521,10 +1521,11 @@ public class CustomMenu
                     }
                     catch(InvalidCastException ice)
                     {
+                        equals = ((IList)value).Count == ((IList)result).Count;
                         //TODO: find other comparison method, seems to have to do with List<Rigidbody2D> not working correctly for some reason
                         errors++;
-                        Debug.LogError($"Cant cast either value or result: {value.GetType()}, {result.GetType()}, ice: {ice}", mb);
-                        return;
+                        Debug.LogError($"Cant cast either value or result on {mb.GetType()}: {value.GetType()}, {result.GetType()}, ice: {ice}", mb);
+                        //return;
                     }
                 }
                 if (!equals)
