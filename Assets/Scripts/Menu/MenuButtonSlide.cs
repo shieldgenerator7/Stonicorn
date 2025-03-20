@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class MenuButtonSlide : MenuButton, ISetupable
 {
-    [SerializeField]
     private Vector2 valueBounds = new Vector2(0, 100);//x is min, y is max
     public float MinValue
     {
@@ -65,8 +64,17 @@ public class MenuButtonSlide : MenuButton, ISetupable
     public override void init()
     {
         base.init();
+
+        //Get max value
+        float omv = mas.getOverriddenMaxValue(MaxValue);
+        if (omv != MaxValue)
+        {
+            MaxValue = omv;
+        }
+
         //Update the value
         Value = Mathf.Clamp(mas.getCurrentValue(), MinValue, MaxValue);
+
     }
 
     public override bool acceptsDragGesture()
@@ -150,14 +158,6 @@ public class MenuButtonSlide : MenuButton, ISetupable
     public override int setup()
     {
         int changeCount = base.setup();
-
-        //Get max value
-        float omv = mas.getOverriddenMaxValue(MaxValue);
-        if (omv != MaxValue)
-        {
-            MaxValue = omv;
-            changeCount++;
-        }
 
         //Slider bar width
         float sbw = (transform.TransformPoint(sliderBarEC2D.points[1]) - transform.TransformPoint(sliderBarEC2D.points[0])).magnitude;
