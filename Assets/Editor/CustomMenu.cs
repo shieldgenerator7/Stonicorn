@@ -1517,7 +1517,7 @@ public class CustomMenu
                 if (isList(result))
                 {
                     try { 
-                    equals = listEquals((List<object>)value, (List<object>)result);
+                    equals = listEquals((IList)value, (IList)result);
                     }
                     catch(InvalidCastException ice)
                     {
@@ -1600,7 +1600,7 @@ public class CustomMenu
                 }
                 //
                 try { 
-                if (!object.Equals(value, result) && (!isList(result) || listEquals((List<object>)value, (List<object>)result)))
+                if (!object.Equals(value, result) && (!isList(result) || listEquals((IList)value, (IList)result)))
                 {
                     field.SetValue(mb, result);
                     Debug.LogWarning($"Initialized variable using {className}.{property.Name}: {field.Name}:{fieldType} = {value} -> {result}. go: {mb.gameObject.name}", mb);
@@ -1638,6 +1638,28 @@ public class CustomMenu
     {
         //2025-03-10: copied from https://stackoverflow.com/a/22173821/2336212
         return list1.Count == list2.Count && list1.All(list2.Contains) && list2.All(list1.Contains);
+    }
+    private static bool listEquals(IList list1, IList list2)
+    {
+        if (list1.Count != list2.Count)
+        {
+            return false;
+        }
+        for (int i = 0; i < list1.Count; i++)
+        {
+            if (list1[i] is UnityObjectType)
+            {
+                if (((UnityObjectType)list1[i]).GetInstanceID() != ((UnityObjectType)list2[i]).GetInstanceID())
+                {
+                    return false;
+                }
+            }
+            else if (!object.Equals(list1[i], list2[i]))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     [MenuItem("SG7/Build/Pre-Build/Check to make sure objects start in the correct scene")]
