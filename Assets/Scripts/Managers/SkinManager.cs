@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -6,7 +7,7 @@ using UnityEngine;
 public class SkinManager : MonoBehaviour, ISetting
 {
     [SerializeField]
-    private List<Skin> foundSkinList = new List<Skin>();
+    private List<string> foundSkinList = new List<string>();
     private int _skinIndex = -1;
 
     [SerializeField]
@@ -14,38 +15,46 @@ public class SkinManager : MonoBehaviour, ISetting
 
     public Skin Skin
     {
-        get => (_skinIndex >= 0) ? foundSkinList[_skinIndex] : null;
+        get => (_skinIndex >= 0) ? getSkin(foundSkinList[_skinIndex]) : null;
         set
         {
-            if (!foundSkinList.Contains(value))
-            {
-                foundSkinList.Add(value);
-            }
-            int index = foundSkinList.IndexOf(value);
+            addSkin(value);
+            int index = foundSkinList.IndexOf(value.name);
             if (index != -1)
             {
-                _skinIndex = index;
+                SkinIndex = index;
             }
         }
     }
     public int SkinIndex
     {
         get => _skinIndex;
-        set => _skinIndex = Mathf.Clamp(value, 0, foundSkinList.Count - 1);
+        set
+        {
+            _skinIndex = Mathf.Clamp(value, 0, foundSkinList.Count - 1);
+            onSkinChanged?.Invoke(getSkin(value));
+        }
     }
+    public event Action<Skin> onSkinChanged;
 
     public int FoundSkinCount => foundSkinList.Count;
 
     public void addSkin(Skin skin)
     {
-        if (foundSkinList.Contains(skin)) { return; }
+        if (foundSkinList.Contains(skin.name)) { return; }
 
-        foundSkinList.Add(skin);
+        foundSkinList.Add(skin.name);
     }
 
     public Skin getSkin(int index)
     {
-        return foundSkinList[index];
+        return getSkin(foundSkinList[index]);
+    }
+    public Skin getSkin(string name)
+    {
+        return skinLibrary
+            .ConvertAll(go=>go.GetComponent<Skin>())
+            .Find(skin=>skin.name == name);
     }
 
     public SettingScope Scope => SettingScope.SAVE_FILE;
@@ -56,7 +65,7 @@ public class SkinManager : MonoBehaviour, ISetting
         get => new SettingObject(ID)
             .addList("foundSkinList", foundSkinList);
         set {
-            foundSkinList = value.List<Skin>("foundSkinList");
+            foundSkinList = value.List<string>("foundSkinList");
         }
     }
 

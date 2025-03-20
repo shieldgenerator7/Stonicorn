@@ -36,7 +36,7 @@ public class Skin : MonoBehaviour
         }
     }
 
-    void attach(bool attach = true)
+    public void attach(bool attach = true)
     {
         if (attach)
         {

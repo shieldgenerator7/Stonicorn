@@ -161,6 +161,22 @@ public class GameManager : MonoBehaviour
                         );
                 }
             };
+        //SKin delegates
+        Managers.Skin.onSkinChanged += (skin) =>
+        {
+            if (Skin.attachedSkin != null)
+            {
+                Skin oldSKin = Skin.attachedSkin;
+                oldSKin.attach(false);
+                Destroy(oldSKin.gameObject);
+            }
+            //if prefab
+            if (!skin.gameObject.scene.IsValid() || skin.gameObject.scene.buildIndex < 0)
+            {
+                skin = Instantiate(skin.gameObject).GetComponent<Skin>();
+            }
+            skin.attach(true);
+        };
     }
 
     private void unregisterDelegates()
