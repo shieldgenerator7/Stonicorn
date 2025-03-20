@@ -136,6 +136,11 @@ public class Managers : MonoBehaviour
     private PowerManager powerManager;
     public static PowerManager Power => instance.powerManager;
 
+    //Skin Manager
+    [AutoInitialize(SearchScene = true), SerializeField, HideInInspector]
+    private SkinManager skinManager;
+    public static SkinManager Skin => instance.skinManager;
+
     //
     // Controllers
     //

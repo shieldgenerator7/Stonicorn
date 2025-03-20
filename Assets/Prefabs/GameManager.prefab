@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 8383923072451418251}
   - component: {fileID: 2859978935190022868}
   - component: {fileID: 8527496253138998994}
+  - component: {fileID: 1953255497928322879}
   - component: {fileID: 4795780357477204615}
   - component: {fileID: 214029974951774251}
   m_Layer: 0
@@ -89,6 +90,7 @@ MonoBehaviour:
   fileManager: {fileID: 8383923072451418251}
   demoModeManager: {fileID: 5270741036896818801}
   powerManager: {fileID: 8527496253138998994}
+  skinManager: {fileID: 1953255497928322879}
   playerController: {fileID: 0}
   playerSingletonObjectInfo: {fileID: 0}
   playerRewindController: {fileID: 0}
@@ -330,6 +332,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   electricBeamAbility: {fileID: 0}
+--- !u!114 &1953255497928322879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2859978935190022699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0551df8fe23da7747ab7edb74b926222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4795780357477204615
 MonoBehaviour:
   m_ObjectHideFlags: 0
