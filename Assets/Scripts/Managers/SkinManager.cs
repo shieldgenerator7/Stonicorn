@@ -49,6 +49,10 @@ public class SkinManager : MonoBehaviour, ISetting
 
     public Skin getSkin(int index)
     {
+        if (index < 0 || index >= foundSkinList.Count)
+        {
+            return null;
+        }
         return getSkin(foundSkinList[index]);
     }
     public Skin getSkin(string name)

@@ -84,6 +84,13 @@ public class MenuButtonSlide : MenuButton, ISetupable
 
     public override void processTap(Vector2 tapPos)
     {
+        //early exit: too few options
+        if (MaxValue <= MinValue)
+        {
+            Value = MaxValue;
+            return;
+        }
+        //
         Value = Utility.convertToRange(
                 tapPos,
                 PointZero,

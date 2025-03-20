@@ -15,6 +15,7 @@ public class MenuActionSlideSkin : MenuActionSlide
     public override void valueAdjusted(float value)
     {
         Managers.Skin.SkinIndex = (int)value;
+        if (!Managers.Skin.Skin){ return; }
         if (currentSkin)
         {
             Destroy(currentSkin);
@@ -35,6 +36,6 @@ public class MenuActionSlideSkin : MenuActionSlide
 
     public override string getValueLabel(float currentValue)
     {
-        return Managers.Skin.getSkin((int)currentValue).name;
+        return Managers.Skin.getSkin((int)currentValue)?.name ?? "none";
     }
 }

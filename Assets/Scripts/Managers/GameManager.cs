@@ -164,6 +164,7 @@ public class GameManager : MonoBehaviour
         //SKin delegates
         Managers.Skin.onSkinChanged += (skin) =>
         {
+            if (!skin) { return; }
             if (Skin.attachedSkin != null)
             {
                 Skin oldSKin = Skin.attachedSkin;
