@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Skin : MonoBehaviour
 {
+    public new string name;
     public GameObject outline;
 
     public static Skin attachedSkin;
