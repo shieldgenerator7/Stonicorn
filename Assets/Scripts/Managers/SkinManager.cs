@@ -44,6 +44,7 @@ public class SkinManager : MonoBehaviour, ISetting
         if (foundSkinList.Contains(skin.name)) { return; }
 
         foundSkinList.Add(skin.name);
+        _skinIndex = foundSkinList.IndexOf(skin.name);
     }
 
     public Skin getSkin(int index)
