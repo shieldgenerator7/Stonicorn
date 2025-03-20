@@ -86,6 +86,6 @@ public class WaterArea : MonoBehaviour
                 }
             }
         }
-        return list.OrderBy(rb2d=>rb2d.gameObject.getKey()).ToList();
+        return list.OrderBy(rb2d=>rb2d.GetInstanceID()).ToList();
     }
 }

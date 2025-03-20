@@ -6804,11 +6804,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &753734717 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 5857977724654893823, guid: f8a10e508b19c9844b5baa87ae286b12, type: 3}
-  m_PrefabInstance: {fileID: 753734714}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &759549455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14582,6 +14577,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbbd1243a7011644a2fef3a67a3ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &1069986084 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 5857977724654893823, guid: f8a10e508b19c9844b5baa87ae286b12, type: 3}
+  m_PrefabInstance: {fileID: 1069986081}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1082494404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22724,6 +22724,7 @@ MonoBehaviour:
   slowDuration: 2
   coll2d: {fileID: 1919778481}
   tenants:
+  - {fileID: 1069986084}
   - {fileID: 26304808}
   - {fileID: 113012483}
   - {fileID: 232397812}
@@ -22745,7 +22746,6 @@ MonoBehaviour:
   - {fileID: 669099391}
   - {fileID: 675845176}
   - {fileID: 737980519}
-  - {fileID: 753734717}
   - {fileID: 792883607}
   - {fileID: 801995727}
   - {fileID: 807990034}
