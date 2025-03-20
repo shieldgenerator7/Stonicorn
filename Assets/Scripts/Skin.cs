@@ -44,6 +44,7 @@ public class Skin : MonoBehaviour
             transform.localRotation = Quaternion.identity;
             attachedSkin = this;
             canBePickedUp = false;
+            Managers.Skin.addSkin(this);
         }
         else
         {

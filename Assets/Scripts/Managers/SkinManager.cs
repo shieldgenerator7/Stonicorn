@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkinManager : MonoBehaviour, ISetting
 {
+    [SerializeField]
     private List<Skin> foundSkinList = new List<Skin>();
     private int _skinIndex = -1;
 
