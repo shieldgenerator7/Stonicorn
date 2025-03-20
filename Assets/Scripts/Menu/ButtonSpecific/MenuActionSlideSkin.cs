@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class MenuActionSlideSkin : MenuActionSlide
@@ -20,6 +21,11 @@ public class MenuActionSlideSkin : MenuActionSlide
         }
         currentSkin = Instantiate(Managers.Skin.Skin.gameObject);
         currentSkin.transform.SetParent(mannequin.transform, false);
+        int layerID = mannequin.GetComponent<SpriteRenderer>().sortingLayerID;
+        currentSkin.GetComponentsInChildren<SpriteRenderer>().ToList().ForEach(sr =>
+        {
+            sr.sortingLayerID = layerID;
+        });
     }
 
     public override float getOverriddenMaxValue(float currentMaxValue)
