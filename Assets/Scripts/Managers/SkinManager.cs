@@ -1,5 +1,6 @@
-using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class SkinManager : MonoBehaviour, ISetting
@@ -7,6 +8,9 @@ public class SkinManager : MonoBehaviour, ISetting
     [SerializeField]
     private List<Skin> foundSkinList = new List<Skin>();
     private int _skinIndex = -1;
+
+    [SerializeField]
+    private List<GameObject> skinLibrary = new List<GameObject>();
 
     public Skin Skin
     {
@@ -44,7 +48,6 @@ public class SkinManager : MonoBehaviour, ISetting
         return foundSkinList[index];
     }
 
-
     public SettingScope Scope => SettingScope.SAVE_FILE;
 
     public string ID => "SkinManager";
@@ -56,4 +59,14 @@ public class SkinManager : MonoBehaviour, ISetting
             foundSkinList = value.List<Skin>("foundSkinList");
         }
     }
+
+
+#if UNITY_EDITOR
+    [Initializer]
+    private List<GameObject> init_skinLibrary()
+        => FindObjectsByType<Skin>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
+            .ToList()
+            .ConvertAll(skin => PrefabUtility.GetCorrespondingObjectFromSource(skin.gameObject))
+            .Distinct().ToList();
+#endif
 }
