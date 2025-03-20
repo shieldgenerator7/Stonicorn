@@ -124,13 +124,15 @@ public class MenuButtonSlide : MenuButton, ISetupable
         valueText.text = mas.getValueLabel(value);
         //Update Slider Bar
         Vector3 pos = sliderBar.transform.position;
-        pos = Utility.convertToRange(
+        pos = (MaxValue > MinValue)
+            ? Utility.convertToRange(
             Vector2.one * value,
             Vector2.one * MinValue,
             Vector2.one * MaxValue,
             PointZero,
             PointOne
-            );
+            )
+            : PointOne;
         sliderBar.transform.position = pos;
         //Update Slider Fill
         Vector2 size = sliderFill.transform.lossyScale;
