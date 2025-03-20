@@ -19,7 +19,6 @@ public class MenuButtonSlide : MenuButton, ISetupable
     public Vector2 PointZero
     {
         get => transform.TransformPoint(validBarBounds.points[0]);
-        private set => validBarBounds.points[0] = value;
     }
     public Vector2 PointOne
     {
@@ -29,7 +28,6 @@ public class MenuButtonSlide : MenuButton, ISetupable
             Vector2 reverseDirection = (PointZero - pointOne);
             return pointOne + (reverseDirection * sliderBarWidth * 10);
         }
-        private set => validBarBounds.points[1] = value;
     }
 
     [SerializeField]
