@@ -79,8 +79,11 @@ public class SkinManager : MonoBehaviour, ISetting
     [Initializer]
     private List<GameObject> init_skinLibrary()
         => FindObjectsByType<Skin>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
+            .OrderBy(skin=>skin.name)
             .ToList()
-            .ConvertAll(skin => PrefabUtility.GetCorrespondingObjectFromSource(skin.gameObject))
-            .Distinct().ToList();
+            .ConvertAll(skin => PrefabUtility.GetCorrespondingObjectFromSource(skin.gameObject))            
+            .Distinct()
+            //.OrderBy(go=>go.GetInstanceID())
+            .ToList();
 #endif
 }

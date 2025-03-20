@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [NonSolid]
@@ -85,6 +86,6 @@ public class WaterArea : MonoBehaviour
                 }
             }
         }
-        return list;
+        return list.OrderBy(rb2d=>rb2d.gameObject.getKey()).ToList();
     }
 }

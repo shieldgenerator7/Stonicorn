@@ -76,7 +76,7 @@ public class MenuFrame : MonoBehaviour, ISetupable
     [Initializer]
     private List<MenuButton> init_buttons 
         => GetComponentsInChildren<MenuButton>()
-        .OrderBy(mb => mb.gameObject.GetInstanceID())
+        .OrderBy(mb => mb.GetInstanceID())
         .ToList();
 
     public int setup()
