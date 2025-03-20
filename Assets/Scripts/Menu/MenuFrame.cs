@@ -72,6 +72,13 @@ public class MenuFrame : MonoBehaviour, ISetupable
     }
 
 #if UNITY_EDITOR
+
+    [Initializer]
+    private List<MenuButton> init_buttons 
+        => GetComponentsInChildren<MenuButton>()
+        .OrderBy(mb => mb.gameObject.GetInstanceID())
+        .ToList();
+
     public int setup()
     {
         int changeCount = 0;
