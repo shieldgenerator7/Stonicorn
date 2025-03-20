@@ -159,7 +159,7 @@ public class MenuManager : MonoBehaviour, ISetupable
         int prevFrameCount = frames.Count;
         frames.Clear();
         frames = FindObjectsByType<MenuFrame>(FindObjectsSortMode.InstanceID)
-            .Where(mf => mf.canDelegateTaps()).ToList();
+            .Where(mf => mf.gameObject.activeSelf && mf.canDelegateTaps()).ToList();
         if (prevFrameCount != frames.Count)
         {
             changeCount++;
