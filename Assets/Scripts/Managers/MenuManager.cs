@@ -146,7 +146,8 @@ public class MenuManager : MonoBehaviour, ISetupable
     //[Initializer(0)]
     //private List<MenuFrame> init_frames
     //    => FindObjectsByType<MenuFrame>(FindObjectsSortMode.InstanceID)
-    //        .Where(mf => mf.canDelegateTaps()).ToList();
+    //        .Where(mf => mf.gameObject.activeSelf && mf.canDelegateTaps())
+    //        .ToList();
 
     //[Initializer(1)]
     //private MenuFrame init_startFrame => frames.First();
