@@ -15,7 +15,7 @@ public class SkinManager : MonoBehaviour, ISetting
 
     public Skin Skin
     {
-        get => (_skinIndex >= 0) ? getSkin(foundSkinList[_skinIndex]) : null;
+        get => (_skinIndex >= 0) ? getSkin(_skinIndex) : null;
         set
         {
             addSkin(value);
