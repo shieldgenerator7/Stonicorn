@@ -1600,7 +1600,7 @@ public class CustomMenu
                 }
                 //
                 try { 
-                if (!object.Equals(value, result) && (!isList(result) || listEquals((IList)value, (IList)result)))
+                if (!object.Equals(value, result) && !(isList(result) && listEquals((IList)value, (IList)result)))
                 {
                     field.SetValue(mb, result);
                     Debug.LogWarning($"Initialized variable using {className}.{property.Name}: {field.Name}:{fieldType} = {value} -> {result}. go: {mb.gameObject.name}", mb);
