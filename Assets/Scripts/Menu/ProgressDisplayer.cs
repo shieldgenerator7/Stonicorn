@@ -1,9 +1,10 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
 public abstract class ProgressDisplayer : MonoBehaviour
 {
-    [AutoInitialize(SearchChildren = true), SerializeField, HideInInspector]
+    [SerializeField, HideInInspector]
     private TMP_Text txtProgress;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,4 +24,7 @@ public abstract class ProgressDisplayer : MonoBehaviour
     {
         txtProgress.text = Progress;
     }
+
+    [Initializer]
+    private TMP_Text init_txtProgress => GetComponentsInChildren<TMP_Text>().First(txt => txt.gameObject.name == "value");
 }
