@@ -7,6 +7,9 @@ public class SwapAbility : PlayerAbility
 {
     public float swapSizeScaleLimit = 1;
 
+    [Tooltip("Used for finding objects that within swap range")]
+    public CircleCollider2D tenantCollider;
+
     [AutoInitialize, SerializeField, HideInInspector]
     private PolygonCollider2D pc2d;
 
@@ -24,6 +27,19 @@ public class SwapAbility : PlayerAbility
     /// </summary>
     private RaycastHit2D[] rh2dsSwappable = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
+    /// <summary>
+    /// Used for remembering which objects are in swap range
+    /// </summary>
+    private List<Rigidbody2D> tenants = new List<Rigidbody2D>();
+
+    public override void init()
+    {
+        base.init();
+        if (playerController)
+        {
+            onRangeChanged(playerController.Teleport.Range);
+        }
+    }
 
     protected override void registerDelegates(bool register = true)
     {
@@ -39,14 +55,45 @@ public class SwapAbility : PlayerAbility
         }
     }
 
-    private void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        //TODO: change this to be more efficient using triggers perhaps
-        List<GameObject> swappables = Physics2D.OverlapCircleAll(
+        Debug.Log($"Swap entered: {collision.gameObject.name}");
+        if ( isObjectSwappable(collision.gameObject))
+        {
+            Rigidbody2D rb2d = collision.gameObject.GetComponent<Rigidbody2D>();
+            if (!tenants.Contains(rb2d))
+            {
+                tenants.Add(rb2d);
+                updateSwapEffects();
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Debug.Log($"Swap exited: {collision.gameObject.name}");
+        Rigidbody2D rb2d = collision.gameObject.GetComponent<Rigidbody2D>();
+        if (rb2d)
+        {
+            tenants.Remove(rb2d);
+            updateSwapEffects();
+        }
+    }
+
+    private void refreshTenantList()
+    {
+        tenants.Clear();
+        tenants.AddRange(Physics2D.OverlapCircleAll(
             transform.position,
             playerController.Teleport.Range
             )
             .Where(coll => isObjectSwappable(coll.gameObject)).ToList()
+            .ConvertAll(coll => coll.GetComponent<Rigidbody2D>())
+            );
+        updateSwapEffects();
+    }
+    private void updateSwapEffects()
+    {
+        List<GameObject> swappables = tenants
             .ConvertAll(coll => coll.gameObject);
         //Hide current effects
         Managers.Effect.hideSwapCircleEffects(swappables);
@@ -59,6 +106,7 @@ public class SwapAbility : PlayerAbility
 
     private void onRangeChanged(float range)
     {
+        tenantCollider.radius = range;
         if (swappedSomething)
         {
             if (range < playerController.Teleport.baseRange)
