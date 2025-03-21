@@ -39,6 +39,8 @@ public class SkinManager : MonoBehaviour, ISetting
 
     public int FoundSkinCount => foundSkinList.Count;
 
+    public int KnownSkinCount => skinLibrary.Count;
+
     public void addSkin(Skin skin)
     {
         if (foundSkinList.Contains(skin.name)) { return; }
