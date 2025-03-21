@@ -65,7 +65,7 @@ public class DialogueBoxUpdater : MonoBehaviour
     public void setText(string value)
     {
         text = value;
-        txtDialogue.text = text + Utility.repeatCharacter(' ', goalText.Length - text.Length);
+        txtDialogue.text = text + $"<color=#0000>{goalText.Substring(text.Length)}</color>";
         txtDialogue.ForceMeshUpdate();
     }
 
