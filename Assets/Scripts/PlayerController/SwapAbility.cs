@@ -104,10 +104,8 @@ public class SwapAbility : PlayerAbility
     {
         List<Rigidbody2D> swappables = tenants
             .Where(rb2d => isTenantSwappable(rb2d)).ToList();
-        //Hide current effects
-        Managers.Effect.hideSwapCircleEffects(swappables);
-        //Show which game objects are swappable
-        swappables.ForEach(go => Managers.Effect.showSwapCircle(go));
+        //Update current effects
+        Managers.Effect.updateSwapCircleEffects(swappables);
     }
 
     protected override bool isGrounded()

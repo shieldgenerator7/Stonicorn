@@ -197,6 +197,15 @@ public class EffectManager : MonoBehaviour
         }
     }
 
+    public void updateSwapCircleEffects(List<Rigidbody2D> exclusiveList)
+    {
+        hideSwapCircleEffects(exclusiveList);
+        exclusiveList.ForEach(rb2d =>
+        {
+            showSwapCircle(rb2d.gameObject, true);
+        });
+    }
+
     /// <summary>
     /// Shows the swap circle effect on the given GameObject
     /// 2020-12-21: copied from showSwapStasis()
@@ -241,11 +250,11 @@ public class EffectManager : MonoBehaviour
         }
     }
 
-    public void hideSwapCircleEffects(List<GameObject> exceptions)
+    public void hideSwapCircleEffects(List<Rigidbody2D> exceptions)
     {
         swapCircleList.RemoveAll(sr => sr == null);
         swapCircleList
-            .FindAll(sr => !exceptions.Contains(sr.transform.parent.gameObject))
+            .FindAll(sr => !exceptions.Contains(sr.transform.parent.gameObject.GetComponent<Rigidbody2D>()))
             .ForEach(sr =>
             {
                 //Parent it under EffectManager
