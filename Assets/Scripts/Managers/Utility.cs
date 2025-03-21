@@ -271,13 +271,13 @@ public static class Utility
     /// </summary>
     /// <param name="go"></param>
     /// <returns></returns>
-    public static Vector2 getSize(this GameObject go)
+    public static Vector2 getSize(this GameObject go, bool checkSR = true)
     {
         Vector2 prevUp = go.transform.up;
         go.transform.up = Vector2.up;
         Bounds b = new Bounds();
         SpriteRenderer goSR = go.GetComponent<SpriteRenderer>();
-        if (goSR)
+        if (checkSR && goSR)
         {
             b = goSR.bounds;
         }
