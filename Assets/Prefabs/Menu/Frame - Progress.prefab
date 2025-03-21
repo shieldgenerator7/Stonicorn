@@ -728,13 +728,46 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3043099948895312273, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3327386603280105429}
   m_SourcePrefab: {fileID: 100100000, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
 --- !u!4 &2058715390727641406 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8814086405342986130, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
   m_PrefabInstance: {fileID: 7405019908215547564}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3061776311215612084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5529988278303082008, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+  m_PrefabInstance: {fileID: 7405019908215547564}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &5546368864637959997 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3043099948895312273, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+  m_PrefabInstance: {fileID: 7405019908215547564}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3327386603280105429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5546368864637959997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c78cd8f804eec14438a045feff8f4c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  txtProgress: {fileID: 3061776311215612084}
+  checkpoints: []
 --- !u!1001 &8718705005633892419
 PrefabInstance:
   m_ObjectHideFlags: 0
