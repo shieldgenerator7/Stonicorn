@@ -71,11 +71,15 @@ public class SwapAbility : PlayerAbility
     private void OnTriggerExit2D(Collider2D collision)
     {
         Debug.Log($"Swap exited: {collision.gameObject.name}");
+
+        if (!isObjectSwappable(collision.gameObject))
+        {
         Rigidbody2D rb2d = collision.gameObject.GetComponent<Rigidbody2D>();
         if (rb2d)
         {
             tenants.Remove(rb2d);
             updateSwapEffects();
+        }
         }
     }
 
@@ -119,6 +123,7 @@ public class SwapAbility : PlayerAbility
     bool isObjectSwappable(GameObject go)
         => go != this.gameObject
         && go.GetComponent<Rigidbody2D>()
+        && Vector2.Distance(go.transform.position, transform.position) <= playerController.Teleport.Range
         && go.getSize().magnitude <= playerController.halfWidth * 2 * swapSizeScaleLimit;
 
     bool isColliderSwappable(Collider2D coll, Vector3 tapPos)
