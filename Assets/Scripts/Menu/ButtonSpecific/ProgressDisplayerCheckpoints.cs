@@ -7,7 +7,7 @@ public class ProgressDisplayerCheckpoints : ProgressDisplayer
     public List<CheckPointChecker> checkpoints;
 
 
-    protected override void init()
+    internal override void init()
     {
         checkpoints = FindObjectsByType<CheckPointChecker>(FindObjectsSortMode.None).ToList();
         base.init();

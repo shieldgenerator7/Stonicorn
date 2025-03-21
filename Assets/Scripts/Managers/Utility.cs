@@ -410,6 +410,12 @@ public static class Utility
     }
     #endregion
 
+    public static float cut(float value, int places)
+    {
+        float ten = Mathf.Pow(10, places);
+        return Mathf.Round(value * ten)/ten;
+    }
+    
     /// <summary>
     /// Loops the value around until it falls in the range of [min, max]
     /// </summary>

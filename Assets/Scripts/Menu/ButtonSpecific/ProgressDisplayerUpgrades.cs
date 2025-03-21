@@ -8,7 +8,7 @@ public class ProgressDisplayerUpgrades : ProgressDisplayer
     public List<string> excludeNames;
     private List<PlayerAbility> abilities;
 
-    protected override void init()
+    internal override void init()
     {
         //get info
         abilities = abilityNames

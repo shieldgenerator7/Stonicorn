@@ -13,14 +13,14 @@ public abstract class ProgressDisplayer : MonoBehaviour
         init();
     }
 
-    protected virtual void init()
+    internal virtual void init()
     {
         updateLabel();
     }
 
     protected virtual string Progress => $"{CurrentCount}/{MaxCount}";
 
-    public float Percent => ((float)CurrentCount) / (float)MaxCount;
+    public virtual float Percent => ((float)CurrentCount) / (float)MaxCount;
 
     protected abstract int CurrentCount { get; }
     protected abstract int MaxCount { get; }
