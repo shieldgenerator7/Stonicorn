@@ -31,6 +31,8 @@ public class ProgressDisplayerCompletion : ProgressDisplayer
 
     protected override int MaxCount => throw new System.NotImplementedException();
 
+    protected override bool Shown => true;
+
     [Initializer]
     private List<ProgressDisplayer> init_progressDisplayers => FindObjectsByType<ProgressDisplayer>(FindObjectsSortMode.InstanceID)
         .Where(pd=>pd!=this).ToList();

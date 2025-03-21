@@ -18,4 +18,6 @@ public class ProgressDisplayerCheckpoints : ProgressDisplayer
 
     protected override int MaxCount => checkpoints.Count;
 
+    protected override bool Shown => CurrentCount > 1;
+
 }

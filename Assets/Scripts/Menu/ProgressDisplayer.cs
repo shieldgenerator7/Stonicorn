@@ -4,6 +4,10 @@ using UnityEngine;
 
 public abstract class ProgressDisplayer : MonoBehaviour
 {
+    public string label;
+
+    [SerializeField, HideInInspector]
+    private TMP_Text txtLabel;
     [SerializeField, HideInInspector]
     private TMP_Text txtProgress;
 
@@ -18,17 +22,25 @@ public abstract class ProgressDisplayer : MonoBehaviour
         updateLabel();
     }
 
-    protected virtual string Progress => $"{CurrentCount}/{MaxCount}";
+    protected virtual string Label => (Shown) ? label : "???";
 
+    protected virtual string Progress => (Shown) ? $"{CurrentCount}/{MaxCount}" : "???/???";
     public virtual float Percent => ((float)CurrentCount) / (float)MaxCount;
 
     protected abstract int CurrentCount { get; }
     protected abstract int MaxCount { get; }
 
+    protected virtual bool Shown => CurrentCount > 0;
+
     private void updateLabel()
     {
+        txtLabel.text = Label;
         txtProgress.text = Progress;
     }
+
+
+    [Initializer]
+    private TMP_Text init_txtLabel => GetComponentsInChildren<TMP_Text>().First(txt => txt.gameObject.name == "name");
 
     [Initializer]
     private TMP_Text init_txtProgress => GetComponentsInChildren<TMP_Text>().First(txt => txt.gameObject.name == "value");

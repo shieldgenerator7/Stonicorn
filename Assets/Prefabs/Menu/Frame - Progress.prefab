@@ -478,12 +478,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 808d5abb0e2d0374383ddef915cd0904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  label: Skins
+  txtLabel: {fileID: 6802583474172487098}
   txtProgress: {fileID: 7943979993714308006}
 --- !u!4 &6399954131760679468 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8814086405342986130, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
   m_PrefabInstance: {fileID: 2486225301113337278}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6802583474172487098 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9000295549752872964, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+  m_PrefabInstance: {fileID: 2486225301113337278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7943979993714308006 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5529988278303082008, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
@@ -576,6 +589,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79386d6afe4321542a7db1b72a3457ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  label: Upgrades
+  txtLabel: {fileID: 6298758234848106894}
   txtProgress: {fileID: 7435620185927110546}
   abilityNames:
   - ForceLaunchAbility
@@ -592,6 +607,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8814086405342986130, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
   m_PrefabInstance: {fileID: 3138681440007129482}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6298758234848106894 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9000295549752872964, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+  m_PrefabInstance: {fileID: 3138681440007129482}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7435620185927110546 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5529988278303082008, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
@@ -703,6 +729,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8814086405342986130, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
   m_PrefabInstance: {fileID: 6420570652803332148}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2737357206741542960 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9000295549752872964, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+  m_PrefabInstance: {fileID: 6420570652803332148}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8295966665578504613 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3043099948895312273, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
@@ -720,6 +757,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e2a00538a477848b23c720e19f7fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  label: Completion
+  txtLabel: {fileID: 2737357206741542960}
   txtProgress: {fileID: 1559377931740364332}
   progressDisplayers:
   - {fileID: 105980514757284149}
@@ -790,6 +829,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3327386603280105429}
   m_SourcePrefab: {fileID: 100100000, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+--- !u!114 &1883792458298341032 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9000295549752872964, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+  m_PrefabInstance: {fileID: 7405019908215547564}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2058715390727641406 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8814086405342986130, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
@@ -823,6 +873,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78cd8f804eec14438a045feff8f4c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  label: Checkpoints
+  txtLabel: {fileID: 1883792458298341032}
   txtProgress: {fileID: 3061776311215612084}
   checkpoints: []
 --- !u!1001 &8718705005633892419
@@ -894,6 +946,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8814086405342986130, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
   m_PrefabInstance: {fileID: 8718705005633892419}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &295101360254672967 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9000295549752872964, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+  m_PrefabInstance: {fileID: 8718705005633892419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3765404049502778971 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5529988278303082008, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
@@ -922,6 +985,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec7e1152b1a189c42a71ea2d5bec9d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  label: NPCs
+  txtLabel: {fileID: 295101360254672967}
   txtProgress: {fileID: 3765404049502778971}
   npcVariableNames:
   - moonicornintro
