@@ -1645,20 +1645,20 @@ public class CustomMenu
         {
             return false;
         }
-        for (int i = 0; i < list1.Count; i++)
-        {
-            if (list1[i] is UnityObjectType)
-            {
-                if (((UnityObjectType)list1[i]).GetInstanceID() != ((UnityObjectType)list2[i]).GetInstanceID())
-                {
-                    return false;
-                }
-            }
-            else if (!object.Equals(list1[i], list2[i]))
-            {
-                return false;
-            }
-        }
+        //for (int i = 0; i < list1.Count; i++)
+        //{
+        //    if (list1[i] is UnityObjectType)
+        //    {
+        //        if (((UnityObjectType)list1[i]).GetInstanceID() != ((UnityObjectType)list2[i]).GetInstanceID())
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    else if (!object.Equals(list1[i], list2[i]))
+        //    {
+        //        return false;
+        //    }
+        //}
         return true;
     }
 
