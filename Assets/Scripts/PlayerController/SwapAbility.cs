@@ -28,7 +28,7 @@ public class SwapAbility : PlayerAbility
     private RaycastHit2D[] rh2dsSwappable = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
     /// <summary>
-    /// Used for remembering which objects are in swap range
+    /// Used for remembering which objects are potentially in swap range
     /// </summary>
     private List<Rigidbody2D> tenants = new List<Rigidbody2D>();
 
@@ -55,6 +55,11 @@ public class SwapAbility : PlayerAbility
         }
     }
 
+    private void Update()
+    {
+        updateSwapEffects();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log($"Swap entered: {collision.gameObject.name}");
@@ -64,7 +69,7 @@ public class SwapAbility : PlayerAbility
             if (!tenants.Contains(rb2d))
             {
                 tenants.Add(rb2d);
-                updateSwapEffects();
+                //updateSwapEffects();
             }
         }
     }
@@ -72,13 +77,13 @@ public class SwapAbility : PlayerAbility
     {
         Debug.Log($"Swap exited: {collision.gameObject.name}");
 
-        if (!isObjectSwappable(collision.gameObject))
+        if (isObjectSwappable(collision.gameObject))
         {
         Rigidbody2D rb2d = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (rb2d)
+        if (rb2d && !isTenantSwappable(rb2d))
         {
             tenants.Remove(rb2d);
-            updateSwapEffects();
+            //updateSwapEffects();
         }
         }
     }
@@ -97,8 +102,8 @@ public class SwapAbility : PlayerAbility
     }
     private void updateSwapEffects()
     {
-        List<GameObject> swappables = tenants
-            .ConvertAll(coll => coll.gameObject);
+        List<Rigidbody2D> swappables = tenants
+            .Where(rb2d => isTenantSwappable(rb2d)).ToList();
         //Hide current effects
         Managers.Effect.hideSwapCircleEffects(swappables);
         //Show which game objects are swappable
@@ -120,10 +125,12 @@ public class SwapAbility : PlayerAbility
         }
     }
 
+    bool isTenantSwappable(Rigidbody2D rb2d)
+        => Vector2.Distance(rb2d.transform.position, transform.position) <= playerController.Teleport.Range;
+
     bool isObjectSwappable(GameObject go)
         => go != this.gameObject
         && go.GetComponent<Rigidbody2D>()
-        && Vector2.Distance(go.transform.position, transform.position) <= playerController.Teleport.Range
         && go.getSize().magnitude <= playerController.halfWidth * 2 * swapSizeScaleLimit;
 
     bool isColliderSwappable(Collider2D coll, Vector3 tapPos)
