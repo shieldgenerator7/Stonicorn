@@ -756,10 +756,50 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3043099948895312273, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2067788750720627459}
   m_SourcePrefab: {fileID: 100100000, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
 --- !u!4 &193369875981995985 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8814086405342986130, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
   m_PrefabInstance: {fileID: 8718705005633892419}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &295101360254672967 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9000295549752872964, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+  m_PrefabInstance: {fileID: 8718705005633892419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &5963983364641810898 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3043099948895312273, guid: 14fd259bdde75aa4db94b82e8b5d8ea7, type: 3}
+  m_PrefabInstance: {fileID: 8718705005633892419}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2067788750720627459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5963983364641810898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7e1152b1a189c42a71ea2d5bec9d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  txtProgress: {fileID: 295101360254672967}
+  npcVariableNames:
+  - moonicornintro
+  - grunhardtintro
+  - transistorintro
+  - nimbusintro
+  - yellowintro
+  - siltintro
+  - kakiintro
