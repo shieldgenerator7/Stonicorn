@@ -151,13 +151,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttons:
   - {fileID: 169835816}
-  - {fileID: 2118968477}
   - {fileID: 1779226854}
-  - {fileID: 834165616314500380}
-  - {fileID: 107986825}
   - {fileID: 1788434790}
   - {fileID: 2019234859}
   - {fileID: 2055183970}
+  - {fileID: 2118968477}
+  - {fileID: 834165616314500380}
   bc2d: {fileID: 11584383}
 --- !u!61 &11584383
 BoxCollider2D:
@@ -948,17 +947,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6584474987491641252, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
   m_PrefabInstance: {fileID: 107986823}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &107986825 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1454596516321886812, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
-  m_PrefabInstance: {fileID: 107986823}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81a60c2d08176ef4c83adee9d58f4587, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &107986826 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 6044628780895074150, guid: 0417cab2693b6444cad10e7e58a97f65, type: 3}
@@ -3165,17 +3153,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
   m_PrefabInstance: {fileID: 478914316}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &478914321 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
-  m_PrefabInstance: {fileID: 478914316}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 478914320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61499a302c3661e48a4eab2b3c8c7a33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &478914322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8674,9 +8651,8 @@ MonoBehaviour:
   buttons:
   - {fileID: 697193596}
   - {fileID: 808291612}
-  - {fileID: 478914321}
-  - {fileID: 1752968639}
   - {fileID: 955716086}
+  - {fileID: 1752968639}
   bc2d: {fileID: 1972838765}
 --- !u!61 &1972838765
 BoxCollider2D:
