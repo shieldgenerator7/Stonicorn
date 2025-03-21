@@ -14,6 +14,8 @@ public class ScenesManager : Manager
     [SerializeField]
     [Tooltip("The max range for the default scene loader to take effect. Assumes the origin is (0,0).")]
     private float defaultRange = 100;
+    [AutoInitialize(SearchScene = true)]
+    public Explorer explorer;
 
     private int pauseForLoadingSceneId = -1;//the id of the scene that is currently loading
     public int PauseForLoadingSceneId
@@ -55,7 +57,7 @@ public class ScenesManager : Manager
 #endif
 
         //Prepare to register delegates
-        SceneLoader.ExplorerObject = Managers.Player.gameObject;
+        SceneLoader.Explorer = explorer;
         sceneLoaders.RemoveAll(sl => !sl.enabled || !sl.gameObject.activeSelf);
 
         //Register delegates

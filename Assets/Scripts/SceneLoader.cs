@@ -43,6 +43,15 @@ public class SceneLoader : MonoBehaviour, ISetting
         }
     }
     private static Explorer explorer;
+    public static Explorer Explorer
+    {
+        get => explorer;
+        set
+        {
+            explorer = value;
+            explorerObj = explorer?.gameObject ?? null;
+        }
+    }
 
     private bool isLoading = false;
     public bool IsLoading => isLoading && !scene.isLoaded;
@@ -73,7 +82,7 @@ public class SceneLoader : MonoBehaviour, ISetting
     public void check()
     {
         bool isLoaded = IsLoaded;
-        bool overlaps = Collider.OverlapPoint(ExplorerObject.transform.position);
+        bool overlaps = Collider.OverlapPoint(explorer.transform.position);
         //Unload when player leaves
         if (isLoaded)
         {
