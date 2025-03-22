@@ -25,11 +25,11 @@ public class ProgressDisplayerCompletion : ProgressDisplayer
     }
 
     public override float Percent
-        => ((float)progressDisplayers.Sum(pd => pd.Percent)) / (float)progressDisplayers.Count;
+        => ((float)progressDisplayers.Sum(pd => pd.CurrentCount)) / (float)progressDisplayers.Sum(pd => pd.MaxCount);
 
-    protected override int CurrentCount => throw new System.NotImplementedException();
+    internal override int CurrentCount => throw new System.NotImplementedException();
 
-    protected override int MaxCount => throw new System.NotImplementedException();
+    internal override int MaxCount => throw new System.NotImplementedException();
 
     protected override bool Shown => true;
 

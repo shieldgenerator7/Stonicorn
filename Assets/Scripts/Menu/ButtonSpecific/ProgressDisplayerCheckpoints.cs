@@ -14,9 +14,9 @@ public class ProgressDisplayerCheckpoints : ProgressDisplayer
     }
 
 
-    protected override int CurrentCount => checkpoints.Count(cp=>cp.Discovered);
+    internal override int CurrentCount => checkpoints.Count(cp=>cp.Discovered);
 
-    protected override int MaxCount => checkpoints.Count;
+    internal override int MaxCount => checkpoints.Count;
 
     protected override bool Shown => CurrentCount > 1;
 

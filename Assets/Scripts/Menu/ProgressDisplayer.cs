@@ -27,8 +27,8 @@ public abstract class ProgressDisplayer : MonoBehaviour
     protected virtual string Progress => (Shown) ? $"{CurrentCount}/{MaxCount}" : "???/???";
     public virtual float Percent => ((float)CurrentCount) / (float)MaxCount;
 
-    protected abstract int CurrentCount { get; }
-    protected abstract int MaxCount { get; }
+    internal abstract int CurrentCount { get; }
+    internal abstract int MaxCount { get; }
 
     protected virtual bool Shown => CurrentCount > 0;
 
