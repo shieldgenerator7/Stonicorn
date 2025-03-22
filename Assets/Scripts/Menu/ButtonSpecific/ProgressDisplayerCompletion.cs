@@ -36,6 +36,7 @@ public class ProgressDisplayerCompletion : ProgressDisplayer
     protected override bool Shown => true;
 
     [Initializer]
-    private List<ProgressDisplayer> init_progressDisplayers => FindObjectsByType<ProgressDisplayer>(FindObjectsSortMode.InstanceID)
-        .Where(pd=>pd!=this).ToList();
+    private List<ProgressDisplayer> init_progressDisplayers 
+        => transform.parent.GetComponentsInChildren<ProgressDisplayer>()
+            .Where(pd=>pd!=this).ToList();
 }
