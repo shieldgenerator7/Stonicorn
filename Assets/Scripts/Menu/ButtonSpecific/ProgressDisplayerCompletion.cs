@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ProgressDisplayerCompletion : ProgressDisplayer
 {
+    [Tooltip("Number of decimal places to show. 0 is int only")]
+    public int precision = 1;
     public List<ProgressDisplayer> progressDisplayers;
 
     internal override void init()
@@ -18,7 +20,7 @@ public class ProgressDisplayerCompletion : ProgressDisplayer
         {
             float percent = Percent;
             float percentValue = (percent < 1)
-                ? Utility.cut(percent * 100, 1)
+                ? Utility.cut(percent * 100, precision)
                 : Mathf.RoundToInt(percent * 100);
             return $"{percentValue}%";
         }
