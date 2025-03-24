@@ -278,7 +278,7 @@
           "variableName": "moonquest",
           "actionType": 1,
           "actionValue": 1
-        },        
+        },
         {
           "variableName": "moonicornintro",
           "actionType": 1,
@@ -1790,7 +1790,7 @@
       ]
     },
     {
-      "title": "",
+      "title": "Grunhardt Intro",
       "conditions": [
         {
           "variableName": "grunhardtintro",
@@ -1819,43 +1819,43 @@
         },
         {
           "characterName": "Grunhardt",
-          "text": "Listen, I can explain",
+          "text": "I must deactivate the planet's core before it becomes decommissioned",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Grunhardt",
-          "text": "I was coming down here to...",
+          "text": "It's standard empire operating procedure for the death of a planet",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Grunhardt",
-          "text": "check...",
+          "text": "I'm sorry, Merky, I know how much you love this planet",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Grunhardt",
-          "text": "...the core's temperature",
+          "text": "But all good things must come to an end",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Grunhardt",
-          "text": "yeah",
+          "text": "Speaking of ends, I've seemed to have reached a dead one.",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Grunhardt",
-          "text": "However I can't seem to get past some ice here in the way",
+          "text": "I can't seem to get past some ice here in the way",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Grunhardt",
-          "text": "If I help you increase your teleport range, can you check the mantle's radiation for me?",
+          "text": "If I help you increase your teleport range, can you deactivate the planet's core for me?",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
@@ -1871,14 +1871,19 @@
           "variableName": "grunhardtintro",
           "actionType": 1,
           "actionValue": 1
+        },
+        {
+          "variableName": "mayorquest",
+          "actionType": 1,
+          "actionValue": 1
         }
       ]
     },
     {
-      "title": "",
+      "title": "Grunhardt Idle",
       "conditions": [
         {
-          "variableName": "grunhardtidle",
+          "variableName": "mayorquest",
           "testType": 0,
           "testValue": 0
         }
@@ -1886,24 +1891,18 @@
       "quotes": [
         {
           "characterName": "Grunhardt",
-          "text": "Did you find out the lava's luminance?",
+          "text": "Did you deactivate the planet's core?",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
       ],
-      "actions": [
-        {
-          "variableName": "grunhardtidle",
-          "actionType": 1,
-          "actionValue": 1
-        }
-      ]
+      "actions": []
     },
     {
       "title": "",
       "conditions": [
         {
-          "variableName": "grunhardtidle",
+          "variableName": "mayorquest",
           "testType": 0,
           "testValue": 1
         }
@@ -1911,14 +1910,68 @@
       "quotes": [
         {
           "characterName": "Grunhardt",
-          "text": "What's the magma's viscosity?",
+          "text": "Thank you, my dear boy.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Now with that complete, we can both leave.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Oh.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Oh dear.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "I appear to be stuck here, Merky. My magic's not what it used to be.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Empire law dictates that a mayor in failing health appoint a deputy as the successor.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Are there any deputies still here, Merky?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "No? Well, if you find one, give them this written of successorhood.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Grunhardt",
+          "text": "Thank you, Merky.",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
       ],
       "actions": [
         {
-          "variableName": "grunhardtidle",
+          "variableName": "mayorquest",
           "actionType": 1,
           "actionValue": 1
         }
@@ -1928,7 +1981,7 @@
       "title": "",
       "conditions": [
         {
-          "variableName": "grunhardtidle",
+          "variableName": "mayorquest",
           "testType": 0,
           "testValue": 2
         }
@@ -1936,7 +1989,7 @@
       "quotes": [
         {
           "characterName": "Grunhardt",
-          "text": "Is the core shuttle pod operational?",
+          "text": "Have you a found a deputy?",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
