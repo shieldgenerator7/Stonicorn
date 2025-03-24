@@ -1489,7 +1489,7 @@
       "actions": []
     },
     {
-      "title": "",
+      "title": "Kelpie Intro",
       "conditions": [
         {
           "variableName": "kelpieintro",
@@ -1550,7 +1550,74 @@
       ]
     },
     {
-      "title": "",
+      "title": "Shelly Found",
+      "conditions": [
+        {
+          "variableName": "shellyfound",
+          "testType": 0,
+          "testValue": 1
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Kelpie",
+          "text": "Shelly... I miss her.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kelpie",
+          "text": "She was the greatest most bestest snail in the whole world.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kelpie",
+          "text": "Whenever I found myself floating up and away, she'd always be there to keep me in place.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kelpie",
+          "text": "She and I would race around the well.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kelpie",
+          "text": "She'd always win, of course.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kelpie",
+          "text": "I raised her since she was a hatchling.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kelpie",
+          "text": "And now she's... she's...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Kelpie",
+          "text": "I miss her, Merky",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "shellyfound",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Kelpie Idle",
       "conditions": [],
       "quotes": [
         {
