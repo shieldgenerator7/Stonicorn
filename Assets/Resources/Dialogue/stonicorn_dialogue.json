@@ -1551,48 +1551,71 @@
       "actions": []
     },
     {
-      "title": "",
+      "title": "Transistor Intro",
       "conditions": [
         {
           "variableName": "transistorintro",
           "testType": 0,
           "testValue": 0
+        },
+        {
+          "variableName": "moonquest",
+          "testType": 4,
+          "testValue": 2
         }
       ],
       "quotes": [
         {
           "characterName": "Transistor",
-          "text": "Thank you for powering me.",
+          "text": "Welcome Merky",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Transistor",
-          "text": "You have obtained the Electric Beam ability.",
+          "text": "Status: task completion percent is less than 100%",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Transistor",
-          "text": "Your current task is to power the factory.",
+          "text": "ERROR: Task completion before deadline impossible",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Transistor",
-          "text": "WARNING WARNING WARNING",
+          "text": "CAUSE: Power levels are below minimum required thresholds",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Transistor",
-          "text": "Threat imminent! Threat imminent! Threat imminent!",
+          "text": "Are you willing to assist?",
           "imageFileName": "",
           "voiceLineFileName": ""
         },
         {
           "characterName": "Transistor",
-          "text": "Powering down...",
+          "text": "Thank you Merky",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "You have been granted the Electric Beam ability.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Calculating...",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Task completion before deadline is now possible.",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
@@ -1606,18 +1629,23 @@
       ]
     },
     {
-      "title": "",
-      "conditions": [],
+      "title": "Transistor Idle",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 4,
+          "testValue": 2
+        },
+        {
+          "variableName": "transistorintro",
+          "testType": 0,
+          "testValue": 2
+        }
+      ],
       "quotes": [
         {
           "characterName": "Transistor",
-          "text": "WARNING WARNING WARNING",
-          "imageFileName": "",
-          "voiceLineFileName": ""
-        },
-        {
-          "characterName": "Transistor",
-          "text": "Powering down...",
+          "text": "Task completion before deadline is now possible.",
           "imageFileName": "",
           "voiceLineFileName": ""
         }
@@ -2001,6 +2029,102 @@
           "actionValue": 0
         }
       ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 3,
+          "testValue": 2
+        },
+        {
+          "variableName": "tran",
+          "testType": 0,
+          "testValue": 0
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Transistor",
+          "text": "Welcome Merky",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Greeting received!",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Sending greeting to Io regarding \"Hi\"",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Request acknowledged.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Task received: help Merky escape moon.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "You have now been granted the Electric Beam ability.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Does that accomplish the task to your satisfaction?",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        },
+        {
+          "characterName": "Transistor",
+          "text": "Acknowledged, task accomplished.",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": [
+        {
+          "variableName": "transistorintro",
+          "actionType": 1,
+          "actionValue": 1
+        }
+      ]
+    },
+    {
+      "title": "Dialogue Title",
+      "conditions": [
+        {
+          "variableName": "moonquest",
+          "testType": 3,
+          "testValue": 1
+        },
+        {
+          "variableName": "transistorintro",
+          "testType": 0,
+          "testValue": 2
+        }
+      ],
+      "quotes": [
+        {
+          "characterName": "Transistor",
+          "text": "Good luck in accomplishing your task, Merky",
+          "imageFileName": "",
+          "voiceLineFileName": ""
+        }
+      ],
+      "actions": []
     }
   ]
 }
