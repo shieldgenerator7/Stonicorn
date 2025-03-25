@@ -28,86 +28,89 @@ public class StickyPadChecker : SavableMonoBehaviour
         transform.right = -normal;
     }
 
+    //TODO: rethink how this gets rewound
     public override SavableObject CurrentState
     {
+        //TODO: rethink how this gets rewound
         get
         {
-            Debug.Log($"StickyPad.CurrentState:get()");
+            //Debug.Log($"StickyPad.CurrentState:get()");
             SavableObject so = new SavableObject(this);
-            //connectedObjs
-            for (int i = 0; i < connectedObjs.Count; i++)
-            {
-                so.more($"conObj{i}", connectedObjs[i]);
-            }
-            so.more("conObjCount", connectedObjs.Count);
-            //connectedIds
-            for (int i = 0; i < connectedIds.Count; i++)
-            {
-                so.more($"conId{i}", connectedIds[i]);
-            }
-            so.more("conIdCount", connectedIds.Count);
-            //
+            ////connectedObjs
+            //for (int i = 0; i < connectedObjs.Count; i++)
+            //{
+            //    so.more($"conObj{i}", connectedObjs[i]);
+            //}
+            //so.more("conObjCount", connectedObjs.Count);
+            ////connectedIds
+            //for (int i = 0; i < connectedIds.Count; i++)
+            //{
+            //    so.more($"conId{i}", connectedIds[i]);
+            //}
+            //so.more("conIdCount", connectedIds.Count);
+            ////
             return so;
         }
+        //TODO: rethink how this gets rewound
         set
         {
-            Debug.Log($"StickyPad.CurrentState:set({value})");
+            //Debug.Log($"StickyPad.CurrentState:set({value})");
 
-            //connect objects
-            List<string> newConnectedObjs = new List<string>();
-            int count = value.Int("conObjCount");
-            for (int i = 0; i < count; i++)
-            {
-                newConnectedObjs.Add(value.String($"conObj{i}"));
-            }
-            //check for joints that need deleted
-            for(int i = connectedObjs.Count - 1; i >= 0; i--)
-            {
-                string goName = connectedObjs[i];
-                if (!newConnectedObjs.Contains(goName))
-                {
-                    deleteJoint(goName);
-                }
-            }
-            //check for joints that need added
-            for (int i = 0;i < newConnectedObjs.Count; i++)
-            {
-                string goName = newConnectedObjs[i];
-                if (!connectedObjs.Contains(goName))
-                {
-                    createJoint(GameObject.Find(goName));
-                }
-            }
-            connectedObjs = newConnectedObjs;
+            ////connect objects
+            //List<string> newConnectedObjs = new List<string>();
+            //int count = value.Int("conObjCount");
+            //for (int i = 0; i < count; i++)
+            //{
+            //    newConnectedObjs.Add(value.String($"conObj{i}"));
+            //}
+            ////check for joints that need deleted
+            //for(int i = connectedObjs.Count - 1; i >= 0; i--)
+            //{
+            //    string goName = connectedObjs[i];
+            //    if (!newConnectedObjs.Contains(goName))
+            //    {
+            //        deleteJoint(goName);
+            //    }
+            //}
+            ////check for joints that need added
+            //for (int i = 0;i < newConnectedObjs.Count; i++)
+            //{
+            //    string goName = newConnectedObjs[i];
+            //    if (!connectedObjs.Contains(goName))
+            //    {
+            //        createJoint(GameObject.Find(goName));
+            //    }
+            //}
+            //connectedObjs = newConnectedObjs;
 
-            //connect ids
-            List<int> newConnectedIds = new List<int>();
-            int count2 = value.Int("conIdCount");
-            for (int i = 0; i < count2; i++)
-            {
-                newConnectedIds.Add(value.Int($"conId{i}"));
-            }
-            //check for joints that need deleted
-            for (int i = connectedIds.Count - 1; i >= 0; i--)
-            {
-                int goKey = connectedIds[i];
-                if (!newConnectedIds.Contains(goKey))
-                {
-                    deleteJoint(goKey);
-                }
-            }
-            //check for joints that need added
-            for (int i = 0; i < newConnectedIds.Count; i++)
-            {
-                int goKey = newConnectedIds[i];
-                if (!connectedIds.Contains(goKey))
-                {
-                    Rigidbody2D rb2d = FindObjectsByType<Rigidbody2D>(FindObjectsSortMode.None)
-                        .First(rb2d => rb2d.gameObject.getKey() == goKey);
-                    createJoint(rb2d);
-                }
-            }
-            connectedIds = newConnectedIds;
+            ////connect ids
+            //List<int> newConnectedIds = new List<int>();
+            //int count2 = value.Int("conIdCount");
+            //for (int i = 0; i < count2; i++)
+            //{
+            //    newConnectedIds.Add(value.Int($"conId{i}"));
+            //}
+            ////check for joints that need deleted
+            //for (int i = connectedIds.Count - 1; i >= 0; i--)
+            //{
+            //    int goKey = connectedIds[i];
+            //    if (!newConnectedIds.Contains(goKey))
+            //    {
+            //        deleteJoint(goKey);
+            //    }
+            //}
+            ////check for joints that need added
+            //for (int i = 0; i < newConnectedIds.Count; i++)
+            //{
+            //    int goKey = newConnectedIds[i];
+            //    if (!connectedIds.Contains(goKey))
+            //    {
+            //        Rigidbody2D rb2d = FindObjectsByType<Rigidbody2D>(FindObjectsSortMode.None)
+            //            .First(rb2d => rb2d.gameObject.getKey() == goKey);
+            //        createJoint(rb2d);
+            //    }
+            //}
+            //connectedIds = newConnectedIds;
         }
     }
 
