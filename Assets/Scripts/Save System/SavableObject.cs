@@ -11,7 +11,7 @@ using UnityEngine;
 public class SavableObject
 {
     [ES3Serializable]
-    private Dictionary<string, System.Object> data = new Dictionary<string, System.Object>();
+    private Dictionary<short, System.Object> data = new Dictionary<short, System.Object>();
     /// <summary>
     /// True if it's an object that spawned during runtime
     /// </summary>
@@ -68,70 +68,71 @@ public class SavableObject
                     );
             }
 #endif
-            data.Add((string)pairs[i], pairs[i + 1]);
+            data.Add((short)pairs[i], pairs[i + 1]);
         }
         return this;
     }
 
-    public System.Object get(string name)
-        => data[name];
-    public bool Bool(string name)
-        => (bool)data[name];
-    public int Int(string name)
-        => (int)data[name];
-    public float Float(string name)
-        => (float)data[name];
-    public string String(string name)
-        => (string)data[name];
-    public Vector2 Vector2(string name)
-        => (Vector2)data[name];
+    public System.Object get(short id)
+        => data[id];
+    public bool Bool(short id)
+        => (bool)data[id];
+    public int Int(short id)
+        => (int)data[id];
+    public float Float(short id)
+        => (float)data[id];
+    public short String(short id)
+        => (short)data[id];
+    public Vector2 Vector2(short id)
+        => (Vector2)data[id];
 
-
-    public SavableObject addList<T>(string key, List<T> list)
+    private static short count_offset = 100;
+    private static short index_offset = 101;//meaning ~155 possible indices in an array, and only one array/dict possible per savable object
+    public SavableObject addList<T>(short key, List<T> list)
     {
         int index = 0;
-        data.Add(key + "_count", list.Count);
+        data.Add((short)(key +count_offset), list.Count);
         list.ForEach(item =>
         {
-            data.Add($"{key}_{index}", item);
+            data.Add((short)(key+index_offset), item);
             index++;
         });
         return this;
     }
-    public List<T> List<T>(string key)
+    public List<T> List<T>(short key)
     {
         List<T> list = new List<T>();
-        int count = (int)data[key + "_count"];
+        int count = (int)data[(short)(key + count_offset)];
         for (int i = 0; i < count; i++)
         {
             list.Add(
-                (T)data[$"{key}_{i}"]
+                (T)data[(short)(key + index_offset)]
                 );
         }
         return list;
     }
 
-    public SavableObject addDictionary<K, V>(string key, Dictionary<K, V> dict)
+    public SavableObject addDictionary<K, V>(short key, Dictionary<K, V> dict)
     {
         int index = 0;
-        data.Add(key + "_count", dict.Count);
+        data.Add((short)(key + count_offset), dict.Count);
         dict.ToList().ForEach(entry =>
         {
-            data.Add(key + index + "K", entry.Key);
-            data.Add(key + index + "V", entry.Value);
+            data.Add((short)(key + index_offset + index *2+0), entry.Key);
+            data.Add((short)(key + index_offset + index*2+1), entry.Value);
             index++;
         });
         return this;
     }
-    public Dictionary<K, V> Dictionary<K, V>(string key)
+    public Dictionary<K, V> Dictionary<K, V>(short key)
     {
         Dictionary<K, V> dict = new Dictionary<K, V>();
-        int count = (int)data[key + "_count"];
+        int count = (int)data[(short)(key + count_offset)];
         for (int i = 0; i < count; i++)
         {
             dict.Add(
-                (K)data[key + i + "K"],
-                (V)data[key + i + "V"]
+                (K)data[(short)(key + index_offset + i * 2 + 0)],
+                (V)data[(short)(key + index_offset + i * 2 + 1)]
                 );
         }
         return dict;
@@ -174,7 +175,7 @@ public class SavableObject
         }
 
         //2025-02-16: copied from https://stackoverflow.com/a/141098/2336212
-        foreach (KeyValuePair<string, object> kvp in data)
+        foreach (KeyValuePair<short, object> kvp in data)
         {
             if (so.data[kvp.Key] != kvp.Value)
             {
