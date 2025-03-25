@@ -315,6 +315,13 @@ public class CustomMenu
             RulerDisplayer rd = GameObject.FindAnyObjectByType<RulerDisplayer>();
             if (rd)
             {
+                //2025-03-24: copied from https://discussions.unity.com/t/toggling-gizmos-from-script/752420/12
+                SceneView sv = EditorWindow.GetWindow<SceneView>();
+                if (!sv.drawGizmos)
+                {
+                    Debug.LogWarning("Turning gizmos on");
+                    sv.drawGizmos = true;
+                }
                 rd.transform.position = RulerDisplayer.currentMousePos;
             }
             else
