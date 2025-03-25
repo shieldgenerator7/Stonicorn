@@ -41,7 +41,7 @@ public class StaticUntilSwapped : SavableMonoBehaviour, ISwappable
         Rooted = false;
     }
 
-    static short key_rooted = 0;
+    static byte key_rooted = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

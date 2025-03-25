@@ -330,8 +330,8 @@ public class ForceLaunchAbility : PlayerAbility
         }
     }
 
-    static short key_affectingVelocity = 0;
-    static short key_currentVelocity = 1;
+    static byte key_affectingVelocity = 0;
+    static byte key_currentVelocity = 1;
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(

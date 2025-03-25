@@ -31,7 +31,7 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         get => onPowerGiven;
         set => onPowerGiven = value;
     }
-    static short key_moveVector = 0;
+    static byte key_moveVector = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

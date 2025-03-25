@@ -136,7 +136,7 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ISetupable
         return changeCount;
     }
 
-    static short key_integrity = 0;
+    static byte key_integrity = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this, key_integrity, integrity);

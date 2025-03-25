@@ -191,10 +191,10 @@ public class SnailController : Hazard
         FloorDirection = newFD;
     }
 
-    static short key_flipDir = 0;
-    static short key_awake = 1;
-    static short key_rollDistance = 2;
-    static short key_prevPos = 3;
+    static byte key_flipDir = 0;
+    static byte key_awake = 1;
+    static byte key_rollDistance = 2;
+    static byte key_prevPos = 3;
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(

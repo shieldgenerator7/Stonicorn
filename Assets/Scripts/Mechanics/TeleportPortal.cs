@@ -11,7 +11,7 @@ public class TeleportPortal : SavableMonoBehaviour
     [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
-    static short key_otherEndId = 0;
+    static byte key_otherEndId = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

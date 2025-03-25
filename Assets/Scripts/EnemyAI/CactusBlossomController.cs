@@ -166,9 +166,9 @@ public class CactusBlossomController : SavableMonoBehaviour
         }
     }
 
-    static short key_state = 0;
-    static short key_openPercent = 1;
-    static short key_closedWaitStartTime = 2;
+    static byte key_state = 0;
+    static byte key_openPercent = 1;
+    static byte key_closedWaitStartTime = 2;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

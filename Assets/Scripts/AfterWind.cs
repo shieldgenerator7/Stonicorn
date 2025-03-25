@@ -26,8 +26,8 @@ public class AfterWind : SavableMonoBehaviour, ICuttable
         }
         windVector.Normalize();
     }
-    static short key_windVector = 0;
-    static short key_windForce = 1;
+    static byte key_windVector = 0;
+    static byte key_windForce = 1;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

@@ -168,12 +168,12 @@ public class GroundChecker : SavableMonoBehaviour
     public bool isGroundedPrevWithoutAbility(PlayerAbility ability)
         => GroundedNormalPrev || groundedAbilitiesPrev.Any(gpa => gpa != ability);
 
-    static short key_Grounded = 0;
-    static short key_GroundedNormal = 1;
-    static short key_GroundedAbility = 2;
-    static short key_GroundedPrev = 3;
-    static short key_GroundedNormalPrev = 4;
-    static short key_GroundedAbilityPrev = 5;
+    static byte key_Grounded = 0;
+    static byte key_GroundedNormal = 1;
+    static byte key_GroundedAbility = 2;
+    static byte key_GroundedPrev = 3;
+    static byte key_GroundedNormalPrev = 4;
+    static byte key_GroundedAbilityPrev = 5;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

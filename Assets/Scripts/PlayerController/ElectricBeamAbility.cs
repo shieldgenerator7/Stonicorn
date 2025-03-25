@@ -289,9 +289,9 @@ public class ElectricBeamAbility : PlayerAbility
         maxCharge = aul.stat4;
     }
 
-    static short key_activated = 0;
-    static short key_targetId = 1;
-    static short key_charge = 2;
+    static byte key_activated = 0;
+    static byte key_targetId = 1;
+    static byte key_charge = 2;
 
     public override SavableObject CurrentState
     {

@@ -112,8 +112,8 @@ public class GravityAccepter : SavableMonoBehaviour
     public delegate void OnGravityChanged(Vector2 newGravity);
     public event OnGravityChanged onGravityChanged;
 
-    static short key_acceptsGravity = 0;
-    static short key_gravityScale = 1;
+    static byte key_acceptsGravity = 0;
+    static byte key_gravityScale = 1;
     public override SavableObject CurrentState
     {
         get

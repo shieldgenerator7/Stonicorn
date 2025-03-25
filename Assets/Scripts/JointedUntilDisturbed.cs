@@ -39,7 +39,7 @@ public class JointedUntilDisturbed : SavableMonoBehaviour, ISwappable
         Jointed = false;
     }
 
-    static short key_jointed = 0;
+    static byte key_jointed = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

@@ -182,8 +182,8 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
         return changeCount;
     }
 
-    static short key_integrity = 0;
-    //static short key_contentid = 1;
+    static byte key_integrity = 0;
+    //static byte key_contentid = 1;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

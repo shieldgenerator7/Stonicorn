@@ -84,7 +84,7 @@ public class StaticUntilTouched : SavableMonoBehaviour, IBlastable
 
     public override bool IsSpawnedScript => true;
 
-    static short key_rooted = 0;
+    static byte key_rooted = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

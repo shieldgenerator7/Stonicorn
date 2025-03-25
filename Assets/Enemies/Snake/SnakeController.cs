@@ -229,7 +229,7 @@ public class SnakeController : SavableMonoBehaviour
         }
     }
 
-    static short key_targetPos = 0;
+    static byte key_targetPos = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

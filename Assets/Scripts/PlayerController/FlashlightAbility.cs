@@ -151,9 +151,9 @@ public class FlashlightAbility : PlayerAbility
         maxPullBackDistance = aul.stat1;
     }
 
-    static short key_flashlightDirection = 0;
-    static short key_flashlightOn = 1;
-    static short key_flashAuraOn = 2;
+    static byte key_flashlightDirection = 0;
+    static byte key_flashlightOn = 1;
+    static byte key_flashAuraOn = 2;
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(

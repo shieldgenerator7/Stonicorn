@@ -32,7 +32,7 @@ public class Launcher : SavableMonoBehaviour, IPowerable, ISetupable
         get => onPowerGiven;
         set => onPowerGiven = value;
     }
-    static short key_energyStored = 0;
+    static byte key_energyStored = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

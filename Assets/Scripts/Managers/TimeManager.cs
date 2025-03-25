@@ -129,7 +129,7 @@ public class TimeManager : SavableMonoBehaviour
             < (Time + offset - UnityEngine.Time.deltaTime) % duration;
 
 
-    static short key_time = 0;
+    static byte key_time = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

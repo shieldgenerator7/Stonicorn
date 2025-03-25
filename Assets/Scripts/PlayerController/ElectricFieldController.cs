@@ -31,10 +31,10 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
 
     public override void init(){}
 
-    static short key_energy = 0;
-    static short key_energyToRangeRatio = 1;
-    static short key_energyToSlowRatio = 2;
-    static short key_maxForceResistance = 3;
+    static byte key_energy = 0;
+    static byte key_energyToRangeRatio = 1;
+    static byte key_energyToSlowRatio = 2;
+    static byte key_maxForceResistance = 3;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,

@@ -163,7 +163,7 @@ public class AirSliceAbility : PlayerAbility
         cloud.transform.up = -playerController.GravityAccepter.Gravity;
     }
 
-    static short key_AirPortsUsed = 0;
+    static byte key_AirPortsUsed = 0;
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
