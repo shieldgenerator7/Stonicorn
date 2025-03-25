@@ -11,7 +11,7 @@ using UnityEngine;
 public class SavableObject
 {
     [ES3Serializable]
-    private Dictionary<short, System.Object> data = new Dictionary<short, System.Object>();
+    private Dictionary<byte, System.Object> data = new Dictionary<byte, System.Object>();
     /// <summary>
     /// True if it's an object that spawned during runtime
     /// </summary>
@@ -68,79 +68,79 @@ public class SavableObject
                     );
             }
             //If it's already stored in here,
-            if (data.ContainsKey((short)pairs[i]))
+            if (data.ContainsKey((byte)pairs[i]))
             {
                 throw new ArgumentException(
                     $"Script {scriptType} is trying to store a two values at the same index! index: {pairs[i]}"
                     );
             }
 #endif
-            data.Add((short)pairs[i], pairs[i + 1]);
+            data.Add((byte)pairs[i], pairs[i + 1]);
         }
         return this;
     }
 
-    public System.Object get(short id)
+    public System.Object get(byte id)
         => data[id];
-    public bool Bool(short id)
+    public bool Bool(byte id)
         => (bool)data[id];
-    public int Int(short id)
+    public int Int(byte id)
         => (int)data[id];
-    public float Float(short id)
+    public float Float(byte id)
         => (float)data[id];
-    public short String(short id)
-        => (short)data[id];
-    public Vector2 Vector2(short id)
+    public byte String(byte id)
+        => (byte)data[id];
+    public Vector2 Vector2(byte id)
         => (Vector2)data[id];
 
     //2025-03-24: deprecated support for storing lists and dicts
-    //private static short count_offset = 100;
-    //private static short index_offset = 101;//meaning ~155 possible indices in an array, and only one array/dict possible per savable object
-    //public SavableObject addList<T>(short key, List<T> list)
+    //private static byte count_offset = 100;
+    //private static byte index_offset = 101;//meaning ~155 possible indices in an array, and only one array/dict possible per savable object
+    //public SavableObject addList<T>(byte key, List<T> list)
     //{
     //    int index = 0;
-    //    data.Add((short)(key +count_offset), list.Count);
+    //    data.Add((byte)(key +count_offset), list.Count);
     //    list.ForEach(item =>
     //    {
-    //        data.Add((short)(key+index_offset), item);
+    //        data.Add((byte)(key+index_offset), item);
     //        index++;
     //    });
     //    return this;
     //}
-    //public List<T> List<T>(short key)
+    //public List<T> List<T>(byte key)
     //{
     //    List<T> list = new List<T>();
-    //    int count = (int)data[(short)(key + count_offset)];
+    //    int count = (int)data[(byte)(key + count_offset)];
     //    for (int i = 0; i < count; i++)
     //    {
     //        list.Add(
-    //            (T)data[(short)(key + index_offset)]
+    //            (T)data[(byte)(key + index_offset)]
     //            );
     //    }
     //    return list;
     //}
 
-    //public SavableObject addDictionary<K, V>(short key, Dictionary<K, V> dict)
+    //public SavableObject addDictionary<K, V>(byte key, Dictionary<K, V> dict)
     //{
     //    int index = 0;
-    //    data.Add((short)(key + count_offset), dict.Count);
+    //    data.Add((byte)(key + count_offset), dict.Count);
     //    dict.ToList().ForEach(entry =>
     //    {
-    //        data.Add((short)(key + index_offset + index *2+0), entry.Key);
-    //        data.Add((short)(key + index_offset + index*2+1), entry.Value);
+    //        data.Add((byte)(key + index_offset + index *2+0), entry.Key);
+    //        data.Add((byte)(key + index_offset + index*2+1), entry.Value);
     //        index++;
     //    });
     //    return this;
     //}
-    //public Dictionary<K, V> Dictionary<K, V>(short key)
+    //public Dictionary<K, V> Dictionary<K, V>(byte key)
     //{
     //    Dictionary<K, V> dict = new Dictionary<K, V>();
-    //    int count = (int)data[(short)(key + count_offset)];
+    //    int count = (int)data[(byte)(key + count_offset)];
     //    for (int i = 0; i < count; i++)
     //    {
     //        dict.Add(
-    //            (K)data[(short)(key + index_offset + i * 2 + 0)],
-    //            (V)data[(short)(key + index_offset + i * 2 + 1)]
+    //            (K)data[(byte)(key + index_offset + i * 2 + 0)],
+    //            (V)data[(byte)(key + index_offset + i * 2 + 1)]
     //            );
     //    }
     //    return dict;
@@ -183,7 +183,7 @@ public class SavableObject
         }
 
         //2025-02-16: copied from https://stackoverflow.com/a/141098/2336212
-        foreach (KeyValuePair<short, object> kvp in data)
+        foreach (KeyValuePair<byte, object> kvp in data)
         {
             if (so.data[kvp.Key] != kvp.Value)
             {
