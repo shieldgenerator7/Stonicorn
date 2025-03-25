@@ -230,18 +230,15 @@ public class SnakeController : SavableMonoBehaviour
     }
 
     static short key_targetPos = 0;
-    static short key_points = 1;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
             key_targetPos, targetPos
-            )
-            .addList<Vector2>(key_points, points);
+            );
         set
         {
             TargetPosition = value.Vector2(key_targetPos);
-            points = value.List<Vector2>(key_points);
-            updateBody();
+            init();
         }
     }
 }
