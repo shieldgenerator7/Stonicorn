@@ -45,32 +45,6 @@ public class FlashlightAbility : PlayerAbility
     {
     }
 
-    public void processDrag(Vector2 oldPos, Vector2 newPos, GestureState state)
-    {
-        FlashlightDirection = (Vector2)playerController.transform.position - newPos;
-        switch (state)
-        {
-            case GestureState.START:
-                //TODO: implement? //2025-01-05: i suspect this hasnt been implemented yet
-                return;
-            case GestureState.ONGOING:
-                flashlightOn = true;
-                break;
-            case GestureState.FINISH:
-                if (!Managers.Camera.offsetOffPlayer())
-                {
-                flashlightOn = false;
-                }
-                else
-                {
-                    FlashlightDirection = flashlightDirection.normalized * maxBeamDistance;
-                }
-                break;
-        }
-        float percent = (flashlightDirection.magnitude) / maxPullBackDistance;
-        updateVisuals();
-    }
-
     private void camOffsetChanged(Vector3 offset)
     {
         if (Managers.Camera.offsetOffPlayer())
@@ -111,13 +85,6 @@ public class FlashlightAbility : PlayerAbility
 
         //general
         flashlight.SetActive(flashlightOn);
-    }
-
-
-    void turnOff()
-    {
-        flashlightOn = false;
-        updateVisuals();
     }
     #endregion
 
