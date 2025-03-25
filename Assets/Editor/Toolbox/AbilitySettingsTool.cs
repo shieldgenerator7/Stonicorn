@@ -14,6 +14,7 @@ public class AbilitySettingsTool : ToolboxTool
         "WallClimbAbility",
         "AirSliceAbility",
         "LongTeleportAbility",
+        "FlashlightAbility",
     };
 
     private Dictionary<string, int> abilityLevelMap = new Dictionary<string, int>();
