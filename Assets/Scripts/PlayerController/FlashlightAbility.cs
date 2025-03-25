@@ -9,6 +9,8 @@ public class FlashlightAbility : PlayerAbility
     public float baseAuraRadius = 0.5f;
     [Range(0, 20)]
     public float beamLength = 6;
+    [Range(0, 10)]
+    public float beamWidth = 1;
     [Range(0, 20)]
     public float auraRadius = 1.5f;
 
@@ -70,10 +72,6 @@ public class FlashlightAbility : PlayerAbility
             //flashlight
             flashlight.transform.up = flashlightDirection;
 
-                Vector2 size = flashlightBeamTransform.localScale;
-                size.y = beamLength;
-                flashlightBeamTransform.localScale = size;
-
             //aura
             Vector2 sizeGlow = Vector2.one * (baseAuraRadius + auraRadius);
             flashlightAuraTransform.localScale = sizeGlow;
@@ -83,12 +81,22 @@ public class FlashlightAbility : PlayerAbility
         //general
         flashlight.SetActive(flashlightOn);
     }
+    void updateBeamSize()
+    {
+        Vector2 size = flashlightBeamTransform.localScale;
+        size.y = beamLength;
+        size.x = beamWidth;
+        flashlightBeamTransform.localScale = size;
+    }
     #endregion
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
         beamLength = aul.stat1;
-        auraRadius = aul.stat2;
+        beamWidth = aul.stat2;
+        auraRadius = aul.stat3;
+
+        updateBeamSize();
         updateVisuals();
     }
 
