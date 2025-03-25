@@ -19,7 +19,7 @@ public class ProgressDisplayerUpgrades : ProgressDisplayer
     }
     internal override int CurrentCount => abilities.Sum(ability => ((ability.Unlocked) ? 1 : 0) + ability.UpgradeLevel);
 
-    internal override int MaxCount => abilities.Sum(ability => 1 + ability.upgradeLevels.Count);
+    internal override int MaxCount => abilities.Sum(ability => ability.upgradeLevels.Count);
 
 
 
