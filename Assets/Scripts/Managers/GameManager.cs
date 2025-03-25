@@ -280,6 +280,8 @@ public class GameManager : MonoBehaviour
             {
                 Managers.Music.playFirstSong();
             }
+            //clouds
+            FindAnyObjectByType<CloudMoverManager>().updateClouds();//TODO: set this up correctly
         }
     }
     void sceneUnloaded(Scene scene)
@@ -293,6 +295,7 @@ public class GameManager : MonoBehaviour
         }
         //Update the list of game objects to save
         Managers.Object.refreshGameObjects();
+        //clouds
         FindAnyObjectByType<CloudMoverManager>().updateClouds();//TODO: set this up correctly
     }
     #endregion

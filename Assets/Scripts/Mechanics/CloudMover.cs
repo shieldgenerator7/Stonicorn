@@ -14,12 +14,6 @@ public class CloudMover : MonoBehaviour
     [AutoInitialize, SerializeField, HideInInspector]
     Fader fader;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        FindAnyObjectByType<CloudMoverManager>().updateClouds();//TODO: set this up correctly
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!destroyOnCollisionWithUnmovableSolid) { return; }
