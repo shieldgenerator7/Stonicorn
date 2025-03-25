@@ -93,57 +93,58 @@ public class SavableObject
     public Vector2 Vector2(short id)
         => (Vector2)data[id];
 
-    private static short count_offset = 100;
-    private static short index_offset = 101;//meaning ~155 possible indices in an array, and only one array/dict possible per savable object
-    public SavableObject addList<T>(short key, List<T> list)
-    {
-        int index = 0;
-        data.Add((short)(key +count_offset), list.Count);
-        list.ForEach(item =>
-        {
-            data.Add((short)(key+index_offset), item);
-            index++;
-        });
-        return this;
-    }
-    public List<T> List<T>(short key)
-    {
-        List<T> list = new List<T>();
-        int count = (int)data[(short)(key + count_offset)];
-        for (int i = 0; i < count; i++)
-        {
-            list.Add(
-                (T)data[(short)(key + index_offset)]
-                );
-        }
-        return list;
-    }
+    //2025-03-24: deprecated support for storing lists and dicts
+    //private static short count_offset = 100;
+    //private static short index_offset = 101;//meaning ~155 possible indices in an array, and only one array/dict possible per savable object
+    //public SavableObject addList<T>(short key, List<T> list)
+    //{
+    //    int index = 0;
+    //    data.Add((short)(key +count_offset), list.Count);
+    //    list.ForEach(item =>
+    //    {
+    //        data.Add((short)(key+index_offset), item);
+    //        index++;
+    //    });
+    //    return this;
+    //}
+    //public List<T> List<T>(short key)
+    //{
+    //    List<T> list = new List<T>();
+    //    int count = (int)data[(short)(key + count_offset)];
+    //    for (int i = 0; i < count; i++)
+    //    {
+    //        list.Add(
+    //            (T)data[(short)(key + index_offset)]
+    //            );
+    //    }
+    //    return list;
+    //}
 
-    public SavableObject addDictionary<K, V>(short key, Dictionary<K, V> dict)
-    {
-        int index = 0;
-        data.Add((short)(key + count_offset), dict.Count);
-        dict.ToList().ForEach(entry =>
-        {
-            data.Add((short)(key + index_offset + index *2+0), entry.Key);
-            data.Add((short)(key + index_offset + index*2+1), entry.Value);
-            index++;
-        });
-        return this;
-    }
-    public Dictionary<K, V> Dictionary<K, V>(short key)
-    {
-        Dictionary<K, V> dict = new Dictionary<K, V>();
-        int count = (int)data[(short)(key + count_offset)];
-        for (int i = 0; i < count; i++)
-        {
-            dict.Add(
-                (K)data[(short)(key + index_offset + i * 2 + 0)],
-                (V)data[(short)(key + index_offset + i * 2 + 1)]
-                );
-        }
-        return dict;
-    }
+    //public SavableObject addDictionary<K, V>(short key, Dictionary<K, V> dict)
+    //{
+    //    int index = 0;
+    //    data.Add((short)(key + count_offset), dict.Count);
+    //    dict.ToList().ForEach(entry =>
+    //    {
+    //        data.Add((short)(key + index_offset + index *2+0), entry.Key);
+    //        data.Add((short)(key + index_offset + index*2+1), entry.Value);
+    //        index++;
+    //    });
+    //    return this;
+    //}
+    //public Dictionary<K, V> Dictionary<K, V>(short key)
+    //{
+    //    Dictionary<K, V> dict = new Dictionary<K, V>();
+    //    int count = (int)data[(short)(key + count_offset)];
+    //    for (int i = 0; i < count; i++)
+    //    {
+    //        dict.Add(
+    //            (K)data[(short)(key + index_offset + i * 2 + 0)],
+    //            (V)data[(short)(key + index_offset + i * 2 + 1)]
+    //            );
+    //    }
+    //    return dict;
+    //}
 
     public System.Type ScriptType
     {
