@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DialogueVoiceLinePlayer : MonoBehaviour
@@ -11,6 +13,25 @@ public class DialogueVoiceLinePlayer : MonoBehaviour
 
     public void init(DialoguePath dialogue, AudioSource audioSource)
     {
+#if UNITY_EDITOR
+        string quoteFileNames = String.Join(
+            ", ",
+            dialogue.quotes
+                .ConvertAll(quote => quote.voiceLineFileName)
+                .FindAll(filename => !String.IsNullOrWhiteSpace(filename))
+                .ConvertAll(filename => $"{voiceLineFolder}/{filename}")
+            );
+        //    Dialogue/Transistor/transistor_welcomemerky.mp3
+        Debug.Log($"Loading dialogue path {dialogue.title}: voicelines: {quoteFileNames}");
+        int badEndingCount = dialogue.quotes.Count(quote => 
+            quote.voiceLineFileName.EndsWith(".mp3") ||
+            quote.voiceLineFileName.EndsWith(".wav") 
+        );
+        if (badEndingCount > 0)
+        {
+            Debug.LogError($"DIALOGUE WILL NOT WORK BECAUSE it lists filenames with their extensions. Remove the filetype extension and it should work. Dialogue: {dialogue.title}");
+        }
+#endif
         this.dialoguePath = dialogue;
         clipList = dialogue.quotes.ConvertAll(quote =>
              (!string.IsNullOrWhiteSpace(quote.voiceLineFileName))
@@ -31,7 +52,7 @@ public class DialogueVoiceLinePlayer : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"Missing voice line! {dialoguePath.title}:{currentIndex}", this);
+            Debug.LogError($"Missing voice line! {dialoguePath.title}: {currentIndex}", this);
         }
     }
 
