@@ -41,14 +41,14 @@ public class FlashlightAbility : PlayerAbility
 
     protected override void registerDelegates(bool register = true)
     {
-        if (playerController)
-        {
-            playerController.onDragGesture -= processDrag;
-            if (register)
-            {
-                playerController.onDragGesture += processDrag;
-            }
-        }
+        //if (playerController)
+        //{
+        //    playerController.onDragGesture -= processDrag;
+        //    if (register)
+        //    {
+        //        playerController.onDragGesture += processDrag;
+        //    }
+        //}
 
         Managers.Camera.onOffsetChange -= camOffsetChanged;
         if (register)
