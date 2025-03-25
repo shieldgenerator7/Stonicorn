@@ -89,6 +89,7 @@ public class FlashlightAbility : PlayerAbility
     {
         beamLength = aul.stat1;
         auraRadius = aul.stat2;
+        updateVisuals();
     }
 
     static byte key_flashlightDirection = 0;
