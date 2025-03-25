@@ -49,6 +49,12 @@ public class FlashlightAbility : PlayerAbility
                 playerController.onDragGesture += processDrag;
             }
         }
+
+        Managers.Camera.onOffsetChange -= camOffsetChanged;
+        if (register)
+        {
+            Managers.Camera.onOffsetChange += camOffsetChanged;
+        }
     }
 
     #region Input Processing
@@ -77,6 +83,31 @@ public class FlashlightAbility : PlayerAbility
         float percent = (flashlightDirection.magnitude) / maxPullBackDistance;
         updateFlashlightVisuals(1, percent);
         updateFlashAuraVisuals(1 - percent);
+    }
+
+    private void camOffsetChanged(Vector3 offset)
+    {
+        float percent;
+        if (Managers.Camera.offsetOffPlayer())
+        //if ((Vector2)offset != Vector2.zero)
+        {
+            FlashlightDirection = (Vector2)offset.normalized * maxPullBackDistance;
+
+            flashlightOn = true;
+            flashAuraOn = true;
+
+            percent = 1;
+        }
+        else
+        {
+            flashlightOn = false;
+            flashAuraOn = false;
+
+            percent = 0;
+        }
+
+        updateFlashlightVisuals(1, percent);
+        updateFlashAuraVisuals(percent);
     }
     #endregion
 
