@@ -333,11 +333,9 @@ MonoBehaviour:
   maxGlowSize: 4
   glowAlpha: 0
   flashlight: {fileID: 8011020201040473474}
-  flashlightBeamMask: {fileID: 4860461149259244950}
-  flashlightPlayerGlowSR: {fileID: 2689111574658393306}
-  flashlightSRs:
-  - {fileID: 6551934849255886581}
-  - {fileID: 2689111574658393306}
+  flashlightBeamTransform: {fileID: 3508781848434272118}
+  flashlightAuraTransform: {fileID: 5906667034550159437}
+  flashlightSRs: []
 --- !u!114 &4077093240442266713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1358,6 +1356,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6949032365918214722, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7264859524021551831, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1398,24 +1400,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6949032365918214722, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
+    - {fileID: 2293298322133135469, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
---- !u!212 &2689111574658393306 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 2293298322133135469, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
+--- !u!4 &3508781848434272118 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 735063752249603009, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
   m_PrefabInstance: {fileID: 4216154399801152695}
   m_PrefabAsset: {fileID: 0}
---- !u!331 &4860461149259244950 stripped
-SpriteMask:
-  m_CorrespondingSourceObject: {fileID: 8786832657992790305, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
-  m_PrefabInstance: {fileID: 4216154399801152695}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &6551934849255886581 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6949032365918214722, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
+--- !u!4 &5906667034550159437 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7744634764791274746, guid: 10126f00285f9c84fa2b7a15fc6210a2, type: 3}
   m_PrefabInstance: {fileID: 4216154399801152695}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6796843511857682016 stripped

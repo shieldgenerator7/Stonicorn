@@ -16,13 +16,13 @@ public class FlashlightAbility : PlayerAbility
     public float minGlowSize = 2f;
     [Range(0, 10)]
     public float maxGlowSize = 3f;
+    [Range(0, 1)]
     public float glowAlpha = -1;//override alpha animation if between 0 and 1
 
     public GameObject flashlight;
-    public SpriteMask flashlightBeamMask;
-    public SpriteRenderer flashlightPlayerGlowSR;
+    public Transform flashlightBeamTransform;
+    public Transform flashlightAuraTransform;
     private bool flashlightOn = false;
-    private bool flashAuraOn = false;
     [AutoInitialize(Container = "flashlight", SearchChildren = true), SerializeField, HideInInspector]
     private List<SpriteRenderer> flashlightSRs;
     private Vector2 flashlightDirection;
@@ -41,15 +41,6 @@ public class FlashlightAbility : PlayerAbility
 
     protected override void registerDelegates(bool register = true)
     {
-        //if (playerController)
-        //{
-        //    playerController.onDragGesture -= processDrag;
-        //    if (register)
-        //    {
-        //        playerController.onDragGesture += processDrag;
-        //    }
-        //}
-
         Managers.Camera.onOffsetChange -= camOffsetChanged;
         if (register)
         {
@@ -87,98 +78,62 @@ public class FlashlightAbility : PlayerAbility
                 break;
         }
         float percent = (flashlightDirection.magnitude) / maxPullBackDistance;
-        updateFlashlightVisuals(1, percent);
+        updateVisuals();
     }
 
     private void camOffsetChanged(Vector3 offset)
     {
-        float percent;
         if (Managers.Camera.offsetOffPlayer())
         //if ((Vector2)offset != Vector2.zero)
         {
             FlashlightDirection = (Vector2)offset.normalized * maxPullBackDistance;
 
             flashlightOn = true;
-            flashAuraOn = true;
-
-            percent = 1;
         }
         else
         {
             flashlightOn = false;
-            flashAuraOn = false;
-
-            percent = 0;
         }
 
-        updateFlashlightVisuals(1, percent);
-        updateFlashAuraVisuals(percent);
+        updateVisuals();
     }
     #endregion
 
     #region Visuals
-    void updateFlashlightVisuals(float alpaPercent, float pullpercent = -1)
+    void updateVisuals()
     {
-        flashlightBeamMask.enabled = flashlightOn;
-
+        //flashlight & aura
         if (flashlightOn)
         {
-            flashlight.SetActive(true);
+            //flashlight
             flashlight.transform.up = flashlightDirection;
 
-            if (pullpercent >= 0)
-            {
-                Vector2 size = flashlightBeamMask.transform.localScale;
-                size.y = maxBeamDistance * pullpercent;
-                flashlightBeamMask.transform.localScale = size;
-            }
+                Vector2 size = flashlightBeamTransform.localScale;
+                size.y = maxBeamDistance;
+                flashlightBeamTransform.localScale = size;
+
+            //aura
+            float aurasize = maxGlowSize;
+            Vector2 sizeGlow = Vector2.one * aurasize;
+            flashlightAuraTransform.localScale = sizeGlow;
 
             //adjust alpha
-            float alpha = (alpaPercent) * (maxAlpha - minAlpha) + minAlpha;
+            float alpha = (glowAlpha) * (maxAlpha - minAlpha) + minAlpha;
             flashlightSRs.ForEach(flsr =>
                 flsr.color = flsr.color.adjustAlpha(alpha)
             );
 
-            //enable sprites
-            flashlightSRs.ForEach(flsr => flsr.enabled = true);
+        }
 
-        }
-        else
-        {
-            flashlightSRs.ForEach(flsr =>
-                flsr.enabled = false
-            );
-        }
-    }
-    void updateFlashAuraVisuals(float percent, float maxSize = 0)
-    {
-        flashlightPlayerGlowSR.enabled = percent > 0;
-        if (maxSize == 0)
-        {
-            maxSize = maxGlowSize;
-        }
-        maxSize = Mathf.Clamp(maxSize, minGlowSize, maxGlowSize);
-        Vector2 sizeGlow = Vector2.one * ((maxSize - minGlowSize) * (percent) + minGlowSize);
-        flashlightPlayerGlowSR.transform.localScale = sizeGlow;
-        if (Utility.between(glowAlpha, 0, 1))
-        {
-            flashlightPlayerGlowSR.color = flashlightPlayerGlowSR.color.adjustAlpha(glowAlpha);
-        }
-        else
-        {
-            flashlightPlayerGlowSR.color = flashlightPlayerGlowSR.color.adjustAlpha(percent * (maxAlpha - minAlpha) + minAlpha);
-        }
+        //general
+        flashlight.SetActive(flashlightOn);
     }
 
 
     void turnOff()
     {
         flashlightOn = false;
-        flashAuraOn = false;
-        flashlight.SetActive(false);
-        flashAuraOn = false;
-        updateFlashlightVisuals(0);
-        updateFlashAuraVisuals(0);
+        updateVisuals();
     }
     #endregion
 
@@ -189,25 +144,22 @@ public class FlashlightAbility : PlayerAbility
 
     static byte key_flashlightDirection = 0;
     static byte key_flashlightOn = 1;
-    static byte key_flashAuraOn = 2;
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
             key_flashlightDirection, flashlightDirection,
-            key_flashlightOn, flashlightOn,
-            key_flashAuraOn, flashAuraOn
+            key_flashlightOn, flashlightOn
             );
         set
         {
             bool prevlight = flashlightOn;
-            bool prevaura = flashAuraOn;
+            Vector2 prevDir = flashlightDirection;
             flashlightOn = value.Bool(key_flashlightOn);
-            flashAuraOn = value.Bool(key_flashAuraOn);
             flashlightDirection = value.Vector2(key_flashlightDirection);
-            if (flashlightOn != prevlight || flashAuraOn != prevaura)
+            if (flashlightOn != prevlight || flashlightDirection != prevDir)
             {
                 FlashlightDirection = flashlightDirection;
-                updateFlashlightVisuals(1);
+                updateVisuals();
             }
         }
     }
