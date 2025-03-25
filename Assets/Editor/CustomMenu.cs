@@ -373,19 +373,14 @@ public class CustomMenu
     /// </summary>
     public static void toggleRulers()
     {
-        bool anyOn = false;
-        foreach (RulerDisplayer rd in GameObject.FindObjectsByType<RulerDisplayer>(FindObjectsSortMode.None))
+        List<RulerDisplayer> rdlist = GameObject.FindObjectsByType<RulerDisplayer>(FindObjectsSortMode.None).ToList();
+        if (rdlist.Count == 0)
         {
-            if (rd.active)
-            {
-                anyOn = true;
-                break;
-            }
+            callMerky();
+            return;
         }
-        foreach (RulerDisplayer rd in GameObject.FindObjectsByType<RulerDisplayer>(FindObjectsSortMode.None))
-        {
-            rd.active = !anyOn;
-        }
+        bool anyOn = rdlist.Any(rd => rd.active);
+        rdlist.ForEach(rd=>rd.active=!anyOn);
         anyOn = !anyOn;
         //If the rulers are activating,
         if (anyOn)
