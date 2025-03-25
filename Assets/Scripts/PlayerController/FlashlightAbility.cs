@@ -8,23 +8,13 @@ public class FlashlightAbility : PlayerAbility
     [Header("Flashlight")]
     public float maxPullBackDistance = 6;
     public float maxBeamDistance = 6;
-    [Range(0, 1)]
-    public float minAlpha = 0.1f;
-    [Range(0, 1)]
-    public float maxAlpha = 1f;
-    [Range(0, 10)]
-    public float minGlowSize = 2f;
     [Range(0, 10)]
     public float maxGlowSize = 3f;
-    [Range(0, 1)]
-    public float glowAlpha = -1;//override alpha animation if between 0 and 1
 
     public GameObject flashlight;
     public Transform flashlightBeamTransform;
     public Transform flashlightAuraTransform;
     private bool flashlightOn = false;
-    [AutoInitialize(Container = "flashlight", SearchChildren = true), SerializeField, HideInInspector]
-    private List<SpriteRenderer> flashlightSRs;
     private Vector2 flashlightDirection;
     public Vector2 FlashlightDirection
     {
@@ -116,12 +106,6 @@ public class FlashlightAbility : PlayerAbility
             float aurasize = maxGlowSize;
             Vector2 sizeGlow = Vector2.one * aurasize;
             flashlightAuraTransform.localScale = sizeGlow;
-
-            //adjust alpha
-            float alpha = (glowAlpha) * (maxAlpha - minAlpha) + minAlpha;
-            flashlightSRs.ForEach(flsr =>
-                flsr.color = flsr.color.adjustAlpha(alpha)
-            );
 
         }
 
