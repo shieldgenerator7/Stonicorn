@@ -6,9 +6,10 @@ using UnityEngine;
 public class FlashlightAbility : PlayerAbility
 {
     [Header("Flashlight")]
-    [Range(0, 10)]
+    public float baseAuraRadius = 0.5f;
+    [Range(0, 20)]
     public float beamLength = 6;
-    [Range(0, 10)]
+    [Range(0, 20)]
     public float auraRadius = 1.5f;
 
     [Header("Flashlight Components")]
@@ -74,7 +75,7 @@ public class FlashlightAbility : PlayerAbility
                 flashlightBeamTransform.localScale = size;
 
             //aura
-            Vector2 sizeGlow = Vector2.one * auraRadius / 2;
+            Vector2 sizeGlow = Vector2.one * (baseAuraRadius + auraRadius);
             flashlightAuraTransform.localScale = sizeGlow;
 
         }
