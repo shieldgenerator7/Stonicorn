@@ -67,6 +67,13 @@ public class SavableObject
                     + "This is not allowed, use addList() or addDictionary() instead."
                     );
             }
+            //If it's already stored in here,
+            if (data.ContainsKey((short)pairs[i]))
+            {
+                throw new ArgumentException(
+                    $"Script {scriptType} is trying to store a two values at the same index! index: {pairs[i]}"
+                    );
+            }
 #endif
             data.Add((short)pairs[i], pairs[i + 1]);
         }
