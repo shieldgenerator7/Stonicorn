@@ -74,15 +74,20 @@ public class FlashlightAbility : PlayerAbility
                 return;
             case GestureState.ONGOING:
                 flashlightOn = true;
-                flashAuraOn = true;
                 break;
             case GestureState.FINISH:
+                if (!Managers.Camera.offsetOffPlayer())
+                {
                 flashlightOn = false;
+                }
+                else
+                {
+                    FlashlightDirection = flashlightDirection.normalized * maxBeamDistance;
+                }
                 break;
         }
         float percent = (flashlightDirection.magnitude) / maxPullBackDistance;
         updateFlashlightVisuals(1, percent);
-        updateFlashAuraVisuals(1 - percent);
     }
 
     private void camOffsetChanged(Vector3 offset)
