@@ -11,14 +11,15 @@ public class TeleportPortal : SavableMonoBehaviour
     [AutoInitialize, SerializeField, HideInInspector]
     private Collider2D coll2d;
 
+    static short key_otherEndId = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "otherEndId", otherEndId
+            key_otherEndId, otherEndId
             );
         set
         {
-            otherEndId = value.Int("otherEndId");
+            otherEndId = value.Int(key_otherEndId);
             if (!otherEnd)
             {
                 connectTo(Managers.Object.getObject(otherEndId));

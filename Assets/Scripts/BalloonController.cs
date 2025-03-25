@@ -30,14 +30,15 @@ public class BalloonController : SavableMonoBehaviour
         ga.gravityScale = pingpong;
     }
 
+    static short key_timeElapsed = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "timeElapsed", timeElapsed
+            key_timeElapsed, timeElapsed
             );
         set
         {
-            timeElapsed = value.Float("timeElapsed");
+            timeElapsed = value.Float(key_timeElapsed);
         }
     }
 }

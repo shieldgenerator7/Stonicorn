@@ -129,14 +129,15 @@ public class TimeManager : SavableMonoBehaviour
             < (Time + offset - UnityEngine.Time.deltaTime) % duration;
 
 
+    static short key_time = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "time", Time
+            key_time, Time
             );
         set
         {
-            Time = value.Float("time");
+            Time = value.Float(key_time);
         }
     }
 }

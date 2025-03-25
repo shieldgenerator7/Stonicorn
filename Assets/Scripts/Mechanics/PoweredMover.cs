@@ -31,14 +31,15 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         get => onPowerGiven;
         set => onPowerGiven = value;
     }
+    static short key_moveVector = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "moveVector", moveVector
+            key_moveVector, moveVector
             );
         set
         {
-            moveVector = value.Vector2("moveVector");
+            moveVector = value.Vector2(key_moveVector);
         }
     }
     public override void init()

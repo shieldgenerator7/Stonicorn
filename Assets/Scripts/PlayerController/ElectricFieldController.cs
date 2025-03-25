@@ -37,20 +37,24 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
     {
     }
 
+    static short key_energy = 0;
+    static short key_energyToRangeRatio = 1;
+    static short key_energyToSlowRatio = 2;
+    static short key_maxForceResistance = 3;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "energy", energy,
-            "energyToRangeRatio", energyToRangeRatio,
-            "energyToSlowRatio", energyToSlowRatio,
-            "maxForceResistance", maxForceResistance
+            key_energy, energy,
+            key_energyToRangeRatio, energyToRangeRatio,
+            key_energyToSlowRatio, energyToSlowRatio,
+            key_maxForceResistance, maxForceResistance
             );
         set
         {
-            energy = value.Float("energy");
-            energyToRangeRatio = value.Float("energyToRangeRatio");
-            energyToSlowRatio = value.Float("energyToSlowRatio");
-            maxForceResistance = value.Float("maxForceResistance");
+            energy = value.Float(key_energy);
+            energyToRangeRatio = value.Float(key_energyToRangeRatio);
+            energyToSlowRatio = value.Float(key_energyToSlowRatio);
+            maxForceResistance = value.Float(key_maxForceResistance);
             if (!friu)
             {
                 init();

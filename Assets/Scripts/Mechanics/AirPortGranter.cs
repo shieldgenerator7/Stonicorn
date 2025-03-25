@@ -53,14 +53,15 @@ public class AirPortGranter : SavableMonoBehaviour
         Used = true;
     }
 
+    static short key_used = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "used", used
+            key_used, used
             );
         set
         {
-            Used = value.Bool("used");
+            Used = value.Bool(key_used);
         }
     }
 }

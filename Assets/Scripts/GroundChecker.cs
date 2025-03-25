@@ -168,24 +168,30 @@ public class GroundChecker : SavableMonoBehaviour
     public bool isGroundedPrevWithoutAbility(PlayerAbility ability)
         => GroundedNormalPrev || groundedAbilitiesPrev.Any(gpa => gpa != ability);
 
+    static short key_Grounded = 0;
+    static short key_GroundedNormal = 1;
+    static short key_GroundedAbility = 2;
+    static short key_GroundedPrev = 3;
+    static short key_GroundedNormalPrev = 4;
+    static short key_GroundedAbilityPrev = 5;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "Grounded", Grounded,
-            "GroundedNormal", GroundedNormal,
-            "GroundedAbility", GroundedAbility,
-            "GroundedPrev", GroundedPrev,
-            "GroundedNormalPrev", GroundedNormalPrev,
-            "GroundedAbilityPrev", GroundedAbilityPrev
+            key_Grounded, Grounded,
+            key_GroundedNormal, GroundedNormal,
+            key_GroundedAbility, GroundedAbility,
+            key_GroundedPrev, GroundedPrev,
+            key_GroundedNormalPrev, GroundedNormalPrev,
+            key_GroundedAbilityPrev, GroundedAbilityPrev
             );
         set
         {
-            Grounded = value.Bool("Grounded");
-            GroundedNormal = value.Bool("GroundedNormal");
-            GroundedAbility = value.Bool("GroundedAbility");
-            GroundedPrev = value.Bool("GroundedPrev");
-            GroundedNormalPrev = value.Bool("GroundedNormalPrev");
-            GroundedAbilityPrev = value.Bool("GroundedAbilityPrev");
+            Grounded = value.Bool(key_Grounded);
+            GroundedNormal = value.Bool(key_GroundedNormal);
+            GroundedAbility = value.Bool(key_GroundedAbility);
+            GroundedPrev = value.Bool(key_GroundedPrev);
+            GroundedNormalPrev = value.Bool(key_GroundedNormalPrev);
+            GroundedAbilityPrev = value.Bool(key_GroundedAbilityPrev);
         }
     }
 }

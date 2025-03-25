@@ -182,16 +182,18 @@ public class BreakableVase : SavableMonoBehaviour, IBlastable, ISetupable
         return changeCount;
     }
 
+    static short key_integrity = 0;
+    //static short key_contentid = 1;
     public override SavableObject CurrentState
     {
-        get => new SavableObject(this, 
-            "integrity", integrity
-            //"contentid", contentId
+        get => new SavableObject(this,
+            key_integrity, integrity
+            //contentid, key_contentid
             );
         set
         {
-            Integrity = value.Float("integrity");
-            //contentId = value.Int("contentid");
+            Integrity = value.Float(key_integrity);
+            //contentId = value.Int(key_contentid);
         }
     }
 }

@@ -41,14 +41,15 @@ public class StaticUntilSwapped : SavableMonoBehaviour, ISwappable
         Rooted = false;
     }
 
+    static short key_rooted = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "rooted", rooted
+            key_rooted, rooted
             );
         set
         {
-            Rooted = value.Bool("rooted");
+            Rooted = value.Bool(key_rooted);
         }
     }
 }

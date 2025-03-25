@@ -26,16 +26,18 @@ public class AfterWind : SavableMonoBehaviour, ICuttable
         }
         windVector.Normalize();
     }
+    static short key_windVector = 0;
+    static short key_windForce = 1;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "windVector", windVector,
-            "windForce", windForce
+            key_windVector, windVector,
+            key_windForce, windForce
             );
         set
         {
-            windVector = value.Vector2("windVector");
-            windForce = value.Float("windForce");
+            windVector = value.Vector2(key_windVector);
+            windForce = value.Float(key_windForce);
         }
     }
 

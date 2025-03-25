@@ -151,20 +151,23 @@ public class FlashlightAbility : PlayerAbility
         maxPullBackDistance = aul.stat1;
     }
 
+    static short key_flashlightDirection = 0;
+    static short key_flashlightOn = 1;
+    static short key_flashAuraOn = 2;
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
-            "flashlightDirection", flashlightDirection,
-            "flashlightOn", flashlightOn,
-            "flashAuraOn", flashAuraOn
+            key_flashlightDirection, flashlightDirection,
+            key_flashlightOn, flashlightOn,
+            key_flashAuraOn, flashAuraOn
             );
         set
         {
             bool prevlight = flashlightOn;
             bool prevaura = flashAuraOn;
-            flashlightOn = value.Bool("flashlightOn");
-            flashAuraOn = value.Bool("flashAuraOn");
-            flashlightDirection = value.Vector2("flashlightDirection");
+            flashlightOn = value.Bool(key_flashlightOn);
+            flashAuraOn = value.Bool(key_flashAuraOn);
+            flashlightDirection = value.Vector2(key_flashlightDirection);
             if (flashlightOn != prevlight || flashAuraOn != prevaura)
             {
                 FlashlightDirection = flashlightDirection;

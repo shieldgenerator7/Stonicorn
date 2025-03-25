@@ -112,6 +112,8 @@ public class GravityAccepter : SavableMonoBehaviour
     public delegate void OnGravityChanged(Vector2 newGravity);
     public event OnGravityChanged onGravityChanged;
 
+    static short key_acceptsGravity = 0;
+    static short key_gravityScale = 1;
     public override SavableObject CurrentState
     {
         get
@@ -119,8 +121,8 @@ public class GravityAccepter : SavableMonoBehaviour
             if (saveValues)
             {
                 return new SavableObject(this,
-                    "acceptsGravity", AcceptsGravity,
-                    "gravityScale", gravityScale
+                    key_acceptsGravity, AcceptsGravity,
+                    key_gravityScale, gravityScale
                     );
             }
             else
@@ -132,8 +134,8 @@ public class GravityAccepter : SavableMonoBehaviour
         {
             if (saveValues)
             {
-                AcceptsGravity = value.Bool("acceptsGravity");
-                gravityScale = value.Float("gravityScale");
+                AcceptsGravity = value.Bool(key_acceptsGravity);
+                gravityScale = value.Float(key_gravityScale);
             }
         }
     }

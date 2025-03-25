@@ -288,19 +288,24 @@ public class ElectricBeamAbility : PlayerAbility
         staticSpeed = aul.stat3;
         maxCharge = aul.stat4;
     }
+
+    static short key_activated = 0;
+    static short key_targetId = 1;
+    static short key_charge = 2;
+
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
-            "activated", activated,
-            "targetId", targetId,
-            "charge", charge
+            key_activated, activated,
+            key_targetId, targetId,
+            key_charge, charge
             );
         set
         {
             base.CurrentState = value;
-            Activated = value.Bool("activated");
-            TargetId = value.Int("targetId");
-            Charge = value.Float("charge");
+            Activated = value.Bool(key_activated);
+            TargetId = value.Int(key_targetId);
+            Charge = value.Float(key_charge);
         }
     }
 }

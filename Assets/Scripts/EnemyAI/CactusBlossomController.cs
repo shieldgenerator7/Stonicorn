@@ -166,18 +166,21 @@ public class CactusBlossomController : SavableMonoBehaviour
         }
     }
 
+    static short key_state = 0;
+    static short key_openPercent = 1;
+    static short key_closedWaitStartTime = 2;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-           "state", (int)state,
-           "openPercent", openPercent,
-            "closedWaitStartTime", closedWaitStartTime
+           key_state, (int)state,
+           key_openPercent, openPercent,
+           key_closedWaitStartTime, closedWaitStartTime
            );
         set
         {
-            state = (State)value.Int("state");
-            openPercent = value.Float("openPercent");
-            closedWaitStartTime = value.Float("closedWaitStartTime");
+            state = (State)value.Int(key_state);
+            openPercent = value.Float(key_openPercent);
+            closedWaitStartTime = value.Float(key_closedWaitStartTime);
             placePetals(openPercent);
         }
     }

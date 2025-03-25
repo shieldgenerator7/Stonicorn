@@ -191,23 +191,27 @@ public class SnailController : Hazard
         FloorDirection = newFD;
     }
 
+    static short key_flipDir = 0;
+    static short key_awake = 1;
+    static short key_rollDistance = 2;
+    static short key_prevPos = 3;
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
-            "flipDir", Mathf.Sign(animator.transform.localScale.x),
-            "awake", Awake,
-            "rollDistance", rollDistance,
-            "prevPos", prevPos
+            key_flipDir, Mathf.Sign(animator.transform.localScale.x),
+            key_awake, Awake,
+            key_rollDistance, rollDistance,
+            key_prevPos, prevPos
             );
         set
         {
             base.CurrentState = value;
             Vector3 animScale = animator.transform.localScale;
-            animScale.x = Mathf.Abs(animScale.x) * value.Float("flipDir");
+            animScale.x = Mathf.Abs(animScale.x) * value.Float(key_flipDir);
             animator.transform.localScale = animScale;
-            Awake = value.Bool("awake");
-            rollDistance = value.Float("rollDistance");
-            prevPos = value.Vector2("prevPos");
+            Awake = value.Bool(key_awake);
+            rollDistance = value.Float(key_rollDistance);
+            prevPos = value.Vector2(key_prevPos);
             FloorDirection = transform.up;
         }
     }

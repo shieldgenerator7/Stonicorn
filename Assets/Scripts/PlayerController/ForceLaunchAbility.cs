@@ -330,17 +330,19 @@ public class ForceLaunchAbility : PlayerAbility
         }
     }
 
+    static short key_affectingVelocity = 0;
+    static short key_currentVelocity = 1;
     public override SavableObject CurrentState
     {
         get => base.CurrentState.more(
-            "affectingVelocity", affectingVelocity,
-            "currentVelocity", currentVelocity
+            key_affectingVelocity, affectingVelocity,
+            key_currentVelocity, currentVelocity
             );
         set
         {
             base.CurrentState = value;
-            AffectingVelocity = value.Bool("affectingVelocity");
-            currentVelocity = value.Vector2("currentVelocity");
+            AffectingVelocity = value.Bool(key_affectingVelocity);
+            currentVelocity = value.Vector2(key_currentVelocity);
         }
     }
 

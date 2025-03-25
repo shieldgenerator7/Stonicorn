@@ -136,12 +136,13 @@ public class BreakableWall : SavableMonoBehaviour, IBlastable, ISetupable
         return changeCount;
     }
 
+    static short key_integrity = 0;
     public override SavableObject CurrentState
     {
-        get => new SavableObject(this, "integrity", integrity);
+        get => new SavableObject(this, key_integrity, integrity);
         set
         {
-            Integrity = value.Float("integrity");
+            Integrity = value.Float(key_integrity);
         }
     }
 }

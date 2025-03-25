@@ -57,11 +57,12 @@ public class PowerBattery : SavableMonoBehaviour, IPowerer, IPowerable
         return power - amount;
     }
 
+    static short key_energy = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "energy", energy
+            key_energy, energy
             );
-        set => Energy = value.Float("energy");
+        set => Energy = value.Float(key_energy);
     }
 }

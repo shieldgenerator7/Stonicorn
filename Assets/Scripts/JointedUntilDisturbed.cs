@@ -39,14 +39,15 @@ public class JointedUntilDisturbed : SavableMonoBehaviour, ISwappable
         Jointed = false;
     }
 
+    static short key_jointed = 0;
     public override SavableObject CurrentState
     {
         get => new SavableObject(this,
-            "jointed", jointed
+            key_jointed, jointed
             );
         set
         {
-            Jointed = value.Bool("jointed");
+            Jointed = value.Bool(key_jointed);
         }
     }
 }
