@@ -29,13 +29,7 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
     /// </summary>
     private RaycastHit2D[] rch2dsPowerable = new RaycastHit2D[Utility.MAX_HIT_COUNT];
 
-    private void Start()
-    {
-    }
-
-    public override void init()
-    {
-    }
+    public override void init(){}
 
     static short key_energy = 0;
     static short key_energyToRangeRatio = 1;
@@ -55,10 +49,6 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
             energyToRangeRatio = value.Float(key_energyToRangeRatio);
             energyToSlowRatio = value.Float(key_energyToSlowRatio);
             maxForceResistance = value.Float(key_maxForceResistance);
-            if (!friu)
-            {
-                init();
-            }
             addEnergy(0);
         }
     }
@@ -123,10 +113,6 @@ public class ElectricFieldController : SavableMonoBehaviour, IBlastable
             dissipate();
         }
         //Electric Field VC: change its sprite's size based on its energy
-        if (!friu)
-        {
-            init();
-        }
         range = energy * energyToRangeRatio;
         friu.setRange(range);
         //Particle effects
