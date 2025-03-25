@@ -62,7 +62,7 @@ public class SwapAbility : PlayerAbility
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"Swap entered: {collision.gameObject.name}");
+        if (!enabled) { return; }
         if ( isObjectSwappable(collision.gameObject))
         {
             Rigidbody2D rb2d = collision.gameObject.GetComponent<Rigidbody2D>();
@@ -75,7 +75,7 @@ public class SwapAbility : PlayerAbility
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log($"Swap exited: {collision.gameObject.name}");
+        if (!enabled) { return; }
 
         if (isObjectSwappable(collision.gameObject))
         {
