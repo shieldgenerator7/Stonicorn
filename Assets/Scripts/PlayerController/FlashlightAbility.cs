@@ -6,11 +6,12 @@ using UnityEngine;
 public class FlashlightAbility : PlayerAbility
 {
     [Header("Flashlight")]
-    public float maxPullBackDistance = 6;
-    public float maxBeamDistance = 6;
     [Range(0, 10)]
-    public float maxGlowSize = 3f;
+    public float beamLength = 6;
+    [Range(0, 10)]
+    public float auraRadius = 1.5f;
 
+    [Header("Flashlight Components")]
     public GameObject flashlight;
     public Transform flashlightBeamTransform;
     public Transform flashlightAuraTransform;
@@ -21,11 +22,7 @@ public class FlashlightAbility : PlayerAbility
         get => flashlightDirection;
         private set
         {
-            flashlightDirection = value;
-            if (flashlightDirection.magnitude > maxPullBackDistance)
-            {
-                flashlightDirection = flashlightDirection.normalized * maxPullBackDistance;
-            }
+            flashlightDirection = value.normalized * beamLength;
         }
     }
 
@@ -50,7 +47,7 @@ public class FlashlightAbility : PlayerAbility
         if (Managers.Camera.offsetOffPlayer())
         //if ((Vector2)offset != Vector2.zero)
         {
-            FlashlightDirection = (Vector2)offset.normalized * maxPullBackDistance;
+            FlashlightDirection = offset;
 
             flashlightOn = true;
         }
@@ -73,12 +70,11 @@ public class FlashlightAbility : PlayerAbility
             flashlight.transform.up = flashlightDirection;
 
                 Vector2 size = flashlightBeamTransform.localScale;
-                size.y = maxBeamDistance;
+                size.y = beamLength;
                 flashlightBeamTransform.localScale = size;
 
             //aura
-            float aurasize = maxGlowSize;
-            Vector2 sizeGlow = Vector2.one * aurasize;
+            Vector2 sizeGlow = Vector2.one * auraRadius / 2;
             flashlightAuraTransform.localScale = sizeGlow;
 
         }
@@ -90,7 +86,8 @@ public class FlashlightAbility : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        maxPullBackDistance = aul.stat1;
+        beamLength = aul.stat1;
+        auraRadius = aul.stat2;
     }
 
     static byte key_flashlightDirection = 0;
