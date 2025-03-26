@@ -1892,20 +1892,20 @@ public class CustomMenu
         // Build player.
         BuildPipeline.BuildPlayer(levels, buildName, buildTarget, BuildOptions.None);
 
-        // Copy a file from the project folder to the build folder, alongside the built game.
-        string resourcesPath = $"{path}/Assets/Resources";
-        string dialogPath = $"{resourcesPath}/Dialogue";
+        //// Copy a file from the project folder to the build folder, alongside the built game.
+        //string resourcesPath = $"{path}/Assets/Resources";
+        //string dialogPath = $"{resourcesPath}/Dialogue";
 
-        if (!System.IO.Directory.Exists(dialogPath))
-        {
-            System.IO.Directory.CreateDirectory(resourcesPath);
-        }
+        //if (!System.IO.Directory.Exists(dialogPath))
+        //{
+        //    System.IO.Directory.CreateDirectory(resourcesPath);
+        //}
 
-        if (true || EditorUtility.DisplayDialog("Dialog Refresh", $"Refresh the voice acting entries in {dialogPath}?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable."))
-        {
-            FileUtil.DeleteFileOrDirectory(dialogPath);
-            FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/", dialogPath);
-        }
+        //if (true || EditorUtility.DisplayDialog("Dialog Refresh", $"Refresh the voice acting entries in {dialogPath}?\n\nTHIS WILL DELETE EVERY FILE IN THAT DIRECTORY.", "Yep!", "Unacceptable."))
+        //{
+        //    FileUtil.DeleteFileOrDirectory(dialogPath);
+        //    FileUtil.CopyFileOrDirectory("Assets/Resources/Dialogue/", dialogPath);
+        //}
 
         // Run the game (Process class from System.Diagnostics).
         Process proc = new Process();
