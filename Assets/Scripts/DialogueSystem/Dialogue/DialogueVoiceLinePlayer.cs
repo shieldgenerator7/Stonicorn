@@ -56,5 +56,10 @@ public class DialogueVoiceLinePlayer : MonoBehaviour
         }
     }
 
+    internal void stop()
+    {
+        audioSource?.Stop();
+    }
+
     public float Duration => clipList[currentIndex]?.length ?? 0;
 }

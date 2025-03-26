@@ -196,6 +196,7 @@ public class EventManager : Manager
             if (destroyed)
             {
                 dp.stopDialogue(false);
+                dvlp.stop();
             }
         };
         //
