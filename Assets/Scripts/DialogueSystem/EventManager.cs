@@ -29,6 +29,10 @@ public class EventManager : Manager
         }
     }
 
+    [SerializeField]
+    [Tooltip("How much to add to the duration of a voiceline, for determining text reveal speed")]
+    private float dialogueDurationOffset = -0.5f;
+
     public GameObject dialogueBoxPrefab;
 
     private DialogueBoxUpdater dialogueBox;
@@ -188,7 +192,7 @@ public class EventManager : Manager
             float duration = dvlp.Duration;
             if (duration > 0)
             {
-                dp.setDuration(duration);
+                dp.setDuration(duration + dialogueDurationOffset);
             }
         };
         dp.onDialogueAdvanced += dvlpPlay;
