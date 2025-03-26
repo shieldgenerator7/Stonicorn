@@ -181,7 +181,8 @@ public class EventManager : Manager
         //Setup voice line player
         DialogueVoiceLinePlayer dvlp = dbu.GetComponent<DialogueVoiceLinePlayer>();
         dvlp.init(path, ch.AudioSource);
-        dp.onDialogueAdvanced += (txt) =>
+        //
+        DialoguePlayer.DialogueDelegate dvlpPlay = (txt) =>
         {
             dvlp.playVoiceLine(dp.QuoteIndex);
             float duration = dvlp.Duration;
@@ -190,6 +191,8 @@ public class EventManager : Manager
                 dp.setDuration(duration);
             }
         };
+        dp.onDialogueAdvanced += dvlpPlay;
+        dvlpPlay.Invoke("");
         //
         dbu.OnSourceDestroyed += (destroyed) =>
         {
