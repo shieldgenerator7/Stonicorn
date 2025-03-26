@@ -50,10 +50,15 @@ public class DialogueVoiceLinePlayer : MonoBehaviour
         {
             audioSource.Play();
         }
+#if UNITY_EDITOR
         else
         {
-            Debug.LogError($"Missing voice line! {dialoguePath.title}: {currentIndex}", this);
+            Debug.LogError(
+                $"Missing voice line! {dialoguePath.title}: {currentIndex} - {dialoguePath.quotes[index].characterName}",
+                this
+                );
         }
+#endif
     }
 
     internal void stop()
