@@ -726,6 +726,6 @@ public static class Utility
     public static Vector2 WorldToScreenPoint(Vector2 worldPoint)
     {
         Camera camera = Camera.main;
-        return camera.WorldToScreenPoint(new Vector3(worldPoint.x,worldPoint.y, camera.transform.position.z));
+        return camera.WorldToScreenPoint(new Vector3(worldPoint.x,worldPoint.y, -camera.transform.position.z));
     }
 }
