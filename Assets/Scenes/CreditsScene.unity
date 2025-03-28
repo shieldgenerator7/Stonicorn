@@ -575,6 +575,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1371570309}
   m_CullTransparentMesh: 0
+--- !u!1 &1468219499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1468219500}
+  m_Layer: 5
+  m_Name: Scroll Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1468219500
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468219499}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1744349633}
+  m_Father: {fileID: 1697413277}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -1410}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1529937550
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,6 +723,7 @@ GameObject:
   - component: {fileID: 1538953626}
   - component: {fileID: 1538953625}
   - component: {fileID: 1538953624}
+  - component: {fileID: 1538953627}
   m_Layer: 5
   m_Name: Backdrop
   m_TagString: Untagged
@@ -774,6 +811,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538953622}
   m_CullTransparentMesh: 0
+--- !u!114 &1538953627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538953622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f6798147e3934845b4aff3e0b69fa42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startfade: 0
+  endfade: 1
+  duration: 20
+  delayTime: 0
+  destroyColliders: 0
+  finishAction: 3
+  isEffectOnly: 1
+  ignorePause: 1
+  srs: []
+  coll2DList: []
+  presetup: 0
 --- !u!1 &1697413272
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,7 +921,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1371570310}
-  - {fileID: 1744349633}
+  - {fileID: 1468219500}
   - {fileID: 128109414}
   - {fileID: 21793647}
   - {fileID: 1529937554}
@@ -887,6 +947,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 1697413277}
+  scrollSpeed: 20
+  creditsContainer: {fileID: 1468219500}
 --- !u!1 &1744349632
 GameObject:
   m_ObjectHideFlags: 0
@@ -897,6 +959,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1744349633}
   - component: {fileID: 1744349635}
+  - component: {fileID: 1744349636}
   - component: {fileID: 1744349634}
   m_Layer: 5
   m_Name: Credits
@@ -917,12 +980,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1697413277}
+  m_Father: {fileID: 1468219500}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 1079.312, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1744349634
 MonoBehaviour:
@@ -944,13 +1007,19 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'asidufhadg
-
-
-    adsgadfhgdf
-
-
-    asdgfdgsfdg'
+  m_text: "Stonicorn\r\n\r\na game by shieldgenerator7\r\n\r\n=== Cast ===\r\n\r\nMerky:
+    shieldgenerator7 (sound effects)\r\nIo the Moonicorn: Jenna Daniels\r\nKaki the
+    Cacticorn: Rain of Fire 22\r\nKelpie the Inflaticorn: LexsRose\r\nYellow the
+    Arboricorn: shieldgenerator7\r\nTransistor the Metalcorn: Centaurus\r\nNimbus
+    the Cloudicorn: legomike5\r\nMayor Grunhardt the Goldicorn: anonymous\r\n\r\n===
+    Development ===\r\n\r\nProgramming:\r\nshieldgenerator7\r\nSaladDean\r\n\r\nArt:\r\nSiMonk0\r\nshieldgenerator7\r\nMixup\r\n\r\nMusic:\r\n4everfreebrony\r\nDARK
+    FANTASY STUDIO\r\n\r\nWebsite:\r\nSiMonk0\r\nCharlie MuffyDerp\r\n\r\n=== Support
+    ===\r\n\r\nTesting: \r\nEveryone at COGG\r\nJenna Daniels\r\nKevin Holstein\r\nCharles
+    Dickens\r\nPhanxgames\r\nMyDogHas45\r\n\r\nEmotional Support:\r\nshieldgenerator7's
+    Mom\r\nJenna Daniels\r\nPhanxgames\r\n\r\nGenerous People:\r\nshieldgenerator7's
+    Parents\r\nVindahood\r\nPhanxgames\r\n\r\nGDEX Exhibit Help:\r\nTodd Barchok\r\nMiss
+    Saylor\r\nGinpeporimeg\r\nshieldgenerator7's Mom\r\n\r\nSpecial Thanks:\r\nCOGG\r\nNew
+    Leaf\r\n\r\nThanks to everyone who watched my livestreams and tried out my game!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1029,6 +1098,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744349632}
   m_CullTransparentMesh: 1
+--- !u!114 &1744349636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744349632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe48ba19dee5ba48b3b4d478ee6e5bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textAsset: {fileID: 4900000, guid: 3eee1f03e3a804d448525f94a63e9aad, type: 3}
+  txtCredits: {fileID: 1744349634}
 --- !u!1 &2069696896
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,9 +13,9 @@ public class Fader : MonoBehaviour, ISetupable
     public float startfade = 1.0f;
     [Range(0, 1)]
     public float endfade = 0.0f;
-    [Range(0, 10)]
+    [Range(0, 20)]
     public float duration = 1;
-    [Range(0, 10)]
+    [Range(0, 20)]
     public float delayTime = 0f;
     [Tooltip("True: destroys all colliders when enabled")]
     public bool destroyColliders = true;
