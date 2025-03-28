@@ -849,24 +849,24 @@ public class CustomMenu
             .ForEach(sr =>
             {
                 bool changedSR = false;
-                //
-                // Check for reasonable sprite size
-                //
-                Vector2 oldSRSize = sr.size;
-                Vector2 newSRSize = sr.size;
-                newSRSize.x = Mathf.Round(newSRSize.x * 100) / 100;
-                newSRSize.y = Mathf.Round(newSRSize.y * 100) / 100;
-                if (newSRSize != oldSRSize)
-                {
-                    sr.size = newSRSize;
-                    Debug.LogWarning(
-                        $"Changed {sr.name} sprite size " +
-                        $"from ({oldSRSize.x}, {oldSRSize.y}) " +
-                        $"to ({newSRSize.x}, {newSRSize.y}).",
-                        sr
-                        );
-                    changedSR = true;
-                }
+                ////
+                //// Check for reasonable sprite size
+                ////
+                //Vector2 oldSRSize = sr.size;
+                //Vector2 newSRSize = sr.size;
+                //newSRSize.x = Mathf.Round(newSRSize.x * 100) / 100;
+                //newSRSize.y = Mathf.Round(newSRSize.y * 100) / 100;
+                //if (newSRSize != oldSRSize)
+                //{
+                //    sr.size = newSRSize;
+                //    Debug.LogWarning(
+                //        $"Changed {sr.name} sprite size " +
+                //        $"from ({oldSRSize.x}, {oldSRSize.y}) " +
+                //        $"to ({newSRSize.x}, {newSRSize.y}).",
+                //        sr
+                //        );
+                //    changedSR = true;
+                //}
                 //
                 // Check collider size
                 //
