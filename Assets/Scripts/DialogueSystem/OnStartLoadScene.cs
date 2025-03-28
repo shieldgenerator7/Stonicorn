@@ -10,4 +10,8 @@ public class OnStartLoadScene : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
     }
+    private void OnDestroy()
+    {
+        SceneManager.UnloadSceneAsync(sceneName);
+    }
 }
