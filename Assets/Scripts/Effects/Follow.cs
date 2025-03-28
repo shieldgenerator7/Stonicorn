@@ -16,6 +16,10 @@ public class Follow : MonoBehaviour
     public bool orientToCamera = false;
     public bool scaleToCameraZoomLevel = false;
     public bool shakeOnStop = true;
+    [SerializeField]
+    private bool inScreenSpace = false;
+    [AutoInitialize(AllowUnfound =true), SerializeField]
+    private RectTransform rectTransform;
 
     public float bounceBackSpeed = 2;
     private Vector2 prevVelocity;
@@ -117,17 +121,35 @@ public class Follow : MonoBehaviour
         Vector3 startOffsetTransformed = tf.TransformDirection(positionOffset);
         float camScale = Managers.Camera.ZoomLevel / Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
         //Position
-        transform.position = followObject.transform.position
+        Vector2 position = followObject.transform.position
             + ((useOffset) ? (Vector3)offset : Vector3.zero)
             + startOffsetTransformed * ((scaleToCameraZoomLevel)?camScale:1);
+        if (!inScreenSpace)
+        {
+            transform.position = position;
+        }
+        else
+        {
+            rectTransform.position = Utility.WorldToScreenPoint(position);
+        }
         //Rotation
+        if (!inScreenSpace)
+        {
             transform.up = tf.up;
+        }
+        else
+        {
+            Vector2 upPos = position + (Vector2)tf.up;
+            rectTransform.up = Utility.WorldToScreenPoint(upPos) - (Vector2)rectTransform.position;
+        }
         //Scale
+        if (!inScreenSpace) { 
         if (scaleToCameraZoomLevel) {
             transform.localScale = Vector3.one * scaleFactor * camScale;
         }
         else {
             transform.localScale = followObject.transform.localScale * scaleFactor;
+        }
         }
     }
 }

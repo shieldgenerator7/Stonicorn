@@ -723,4 +723,9 @@ public static class Utility
         raycastPlane.Raycast(ray, out distance);
         return ray.GetPoint(distance);
     }
+    public static Vector2 WorldToScreenPoint(Vector2 worldPoint)
+    {
+        Camera camera = Camera.main;
+        return camera.WorldToScreenPoint(new Vector3(worldPoint.x,worldPoint.y, camera.transform.position.z));
+    }
 }
