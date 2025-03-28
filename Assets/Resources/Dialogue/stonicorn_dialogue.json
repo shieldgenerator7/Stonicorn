@@ -300,23 +300,16 @@
           "text": "Now, let's get out of here!",
           "imageFileName": "",
           "voiceLineFileName": "Io/MoonWelcome002"
-        },
-        {
-          "characterName": "Io",
-          "text": "(this is the end of the game)",
-          "imageFileName": "",
-          "voiceLineFileName": ""
-        },
-        {
-          "characterName": "Io",
-          "text": "(ENDING 1: ESCAPE)",
-          "imageFileName": "",
-          "voiceLineFileName": ""
         }
       ],
       "actions": [
         {
           "variableName": "moonwelcome",
+          "actionType": 1,
+          "actionValue": 1
+        },
+        {
+          "variableName": "ending1complete",
           "actionType": 1,
           "actionValue": 1
         }
