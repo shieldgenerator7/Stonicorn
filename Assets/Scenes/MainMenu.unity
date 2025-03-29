@@ -1353,7 +1353,7 @@ Transform:
   m_GameObject: {fileID: 160591699}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.3773, y: -0.1481, z: 0}
+  m_LocalPosition: {x: -0.3773, y: -0.1743, z: 0}
   m_LocalScale: {x: 0.03, y: 0.03, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1969,6 +1969,7 @@ Transform:
   - {fileID: 33787373}
   - {fileID: 1277695055}
   - {fileID: 1826045643}
+  - {fileID: 1655783119}
   - {fileID: 1741114994}
   - {fileID: 1584642874}
   m_Father: {fileID: 1627845402}
@@ -6581,7 +6582,138 @@ MonoBehaviour:
   orientToCamera: 0
   scaleToCameraZoomLevel: 0
   shakeOnStop: 1
+  inScreenSpace: 0
+  rectTransform: {fileID: 0}
   bounceBackSpeed: 5
+--- !u!1001 &1655783118
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 298357109}
+    m_Modifications:
+    - target: {fileID: 3377550153086607534, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Text
+      value: NPCs
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: mas
+      value: 
+      objectReference: {fileID: 1655783123}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderFillSR
+      value: 
+      objectReference: {fileID: 1655783120}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarEC2D
+      value: 
+      objectReference: {fileID: 1655783121}
+    - target: {fileID: 3377550153525780687, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: sliderBarWidth
+      value: 0.0022377549
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_Name
+      value: NPC Slider Control
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153911583079, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3377550153525780686, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1655783123}
+  m_SourcePrefab: {fileID: 100100000, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+--- !u!4 &1655783119 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 1655783118}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1655783120 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3377550153422869279, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 1655783118}
+  m_PrefabAsset: {fileID: 0}
+--- !u!68 &1655783121 stripped
+EdgeCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3377550154432312776, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 1655783118}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1655783122 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+  m_PrefabInstance: {fileID: 1655783118}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1655783123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655783122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291c8a8d4c5a637449e7a211d4772207, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1703437246
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6685,6 +6817,10 @@ PrefabInstance:
     - target: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Name
       value: NPC Dialogue Speak Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3377550154208942316, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Text
@@ -8495,7 +8631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.63
+      value: -1.61
       objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780692, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_LocalPosition.z

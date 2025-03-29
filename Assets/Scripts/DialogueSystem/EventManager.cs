@@ -33,6 +33,16 @@ public class EventManager : Manager
     [Tooltip("How much to add to the duration of a voiceline, for determining text reveal speed")]
     private float dialogueDurationOffset = -0.5f;
 
+    public float Volume
+    {
+        get => Managers.Settings.npcVolume;
+        set
+        {
+            Managers.Settings.npcVolume = Mathf.Clamp(value,0,1);
+            updateExistingDIaloguesPostSettingChange();
+        }
+    }
+
     public GameObject dialogueBoxPrefab;
 
     private DialogueBoxUpdater dialogueBox;
@@ -185,6 +195,7 @@ public class EventManager : Manager
         //Setup voice line player
         DialogueVoiceLinePlayer dvlp = dbu.GetComponent<DialogueVoiceLinePlayer>();
         dvlp.init(path, ch.AudioSource);
+        dvlp.Volume = Volume;
         //
         DialoguePlayer.DialogueDelegate dvlpPlay = (txt) =>
         {
@@ -220,6 +231,7 @@ public class EventManager : Manager
         {
             dp.charsPerSecond *= talkSpeedMultiplier;
             dp.autoAdvanceDelay = talkWaitDuration;
+            dp.GetComponent<DialogueVoiceLinePlayer>().Volume = Volume;
         });
     }
 }

@@ -11,6 +11,16 @@ public class DialogueVoiceLinePlayer : MonoBehaviour
     private DialoguePath dialoguePath;
     private int currentIndex = 0;
 
+    private float volume = 1;
+    public float Volume
+    {
+        set
+        {
+            volume = Mathf.Clamp(value,0,1);
+            audioSource.volume = volume;
+        }
+    }
+
     public void init(DialoguePath dialogue, AudioSource audioSource)
     {
 #if UNITY_EDITOR

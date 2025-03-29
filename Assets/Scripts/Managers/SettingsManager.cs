@@ -12,6 +12,10 @@ public class SettingsManager : MonoBehaviour, ISetting
     [Range(0.0f, 1.0f)]
     public float soundVolume = 1;//the sound volume that the user sets
     public bool soundMute = false;
+    //NPC Voume
+    [Range(0.0f, 1.0f)]
+    public float npcVolume = 1;//the npc volume that the user sets
+    public bool npcMute = false;
     //Video Settings
     [Range(0, 5)]
     public int videoQuality = 5;
@@ -38,6 +42,8 @@ public class SettingsManager : MonoBehaviour, ISetting
                 "musicMute", musicMute,
                 "soundVolume", soundVolume,
                 "soundMute", soundMute,
+                "npcVolume", npcVolume,
+                "npcMute", npcMute,
                 "videoQuality", videoQuality,
                 "videoResolution", videoResolution,
                 "videoFullScreen", videoFullScreen
@@ -49,6 +55,8 @@ public class SettingsManager : MonoBehaviour, ISetting
             musicMute = (bool)value.data["musicMute"];
             soundVolume = (float)value.data["soundVolume"];
             soundMute = (bool)value.data["soundMute"];
+            npcVolume = (float)value.data["npcVolume"];
+            npcMute = (bool)value.data["npcMute"];
             videoQuality = (int)value.data["videoQuality"];
             videoResolution = (int)value.data["videoResolution"];
             videoFullScreen = (bool)value.data["videoFullScreen"];
