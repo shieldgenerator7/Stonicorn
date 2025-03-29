@@ -19,7 +19,7 @@ public class MenuActionSlideRewindSpeed : MenuActionSlide
 
     public override string getValueLabel(float currentValue)
     {
-        return $"x{(currentValue + minValue) / 100}";
+        return $"x{Utility.cut((currentValue + minValue) / 100,1)}";
     }
 
     public override float getOverriddenMaxValue(float currentMaxValue)
