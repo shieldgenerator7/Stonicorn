@@ -12,6 +12,10 @@ public class Managers : MonoBehaviour
     private GameData gameData;
     public GameDataContainer gameDataContainer;
 
+    //2025-03-29: TODO: reorganize this hacky solution (GameObject.Find() doesnt work on inactive objects)
+    public GameObject moonScooter;
+    public static GameObject MoonScooter => instance.moonScooter;
+
     //
     // Managers
     //

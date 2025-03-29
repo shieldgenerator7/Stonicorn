@@ -6,6 +6,7 @@ using UnityEngine;
 public class VariableListener : MonoBehaviour
 {
     public List<GameObject> objectsToEnable;
+    public List<string> objectNamesToEnable;
     public string variableToListenFor;
     public int minValue;
 
@@ -27,6 +28,20 @@ public class VariableListener : MonoBehaviour
         {
             bool enable = newValue >= minValue;
             objectsToEnable.ForEach(go => go.SetActive(enable));
+            objectNamesToEnable.ForEach(goName =>
+            {
+                GameObject go = GameObject.Find(goName);
+                if (!go && goName == "MoonScooter"){
+                    go = Managers.MoonScooter;
+                }
+                if (go) { 
+                    go.SetActive(enable);
+                }
+                else
+                {
+                    Debug.LogError($"Unable to find go {goName} when listening for var change \"{variableToListenFor}\"", this);
+                }
+            });
         }
     }
 }
