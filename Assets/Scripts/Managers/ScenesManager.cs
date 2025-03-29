@@ -412,6 +412,11 @@ public class ScenesManager : Manager
                 );
             return;
         }
+        if (soi.CompareTag("Checkpoint_Root"))
+        {
+            //dont add checkpoints to the list
+            return;
+        }
         int sceneId = scene.buildIndex;
         Debug.Log(
             $"Registering object in scene {scene.name} ({sceneId}): {soi.TextLine} ({objectId})",
