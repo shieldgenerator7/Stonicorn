@@ -118,6 +118,10 @@ public class MenuButtonSlide : MenuButton, ISetupable
         }
     }
 
+    public void updateSlider()
+    {
+        updateSlider(mas.getCurrentValue());
+    }
     private void updateSlider(float value)
     {
         //Update UI value text

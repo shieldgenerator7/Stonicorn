@@ -9,13 +9,29 @@ public class MenuActionSlideSkin : MenuActionSlide
 
     public override float getCurrentValue()
     {
+        updateMannequin();
         return Managers.Skin.SkinIndex;
     }
 
     public override void valueAdjusted(float value)
     {
         Managers.Skin.SkinIndex = (int)value;
-        if (!Managers.Skin.Skin){ return; }
+        updateMannequin();
+    }
+
+    public override float getOverriddenMaxValue(float currentMaxValue)
+    {
+        return Managers.Skin.FoundSkinCount-1;
+    }
+
+    public override string getValueLabel(float currentValue)
+    {
+        return Managers.Skin.getSkin((int)currentValue)?.name ?? "none";
+    }
+
+    void updateMannequin()
+    {
+        if (!Managers.Skin.Skin) { return; }
         if (currentSkin)
         {
             Destroy(currentSkin);
@@ -27,15 +43,5 @@ public class MenuActionSlideSkin : MenuActionSlide
         {
             sr.sortingLayerID = layerID;
         });
-    }
-
-    public override float getOverriddenMaxValue(float currentMaxValue)
-    {
-        return Managers.Skin.FoundSkinCount-1;
-    }
-
-    public override string getValueLabel(float currentValue)
-    {
-        return Managers.Skin.getSkin((int)currentValue)?.name ?? "none";
     }
 }
