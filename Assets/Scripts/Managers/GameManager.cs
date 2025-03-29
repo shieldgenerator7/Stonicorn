@@ -161,6 +161,11 @@ public class GameManager : MonoBehaviour
                         );
                 }
             };
+        //Event Delegates
+        Managers.Event.OnDialoguePlayingChanged += (playing) =>
+        {
+            Managers.Music.Quiet = playing;
+        };
         //SKin delegates
         Managers.Skin.onSkinChanged += (skin) =>
         {
