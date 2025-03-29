@@ -438,7 +438,7 @@ public class CameraController : MonoBehaviour, ISetupable
         Vector2 playerPos = Managers.Player.transform.position;
         Vector3 newPos = playerPos + originalCameraPosition + delta;
         //If the camera is not zoomed into the menu,
-        if (ZoomLevel > toZoomLevel(CameraScalePoints.MENU))
+        if (!MenuManager.Open)
         {
             //Check to make sure Merky doesn't get dragged off camera
             Vector2 newOffset = Cam.transform.position - newPos;
