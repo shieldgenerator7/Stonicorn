@@ -36,6 +36,12 @@ public class DialogueTrigger : EventTrigger
 
     protected override void triggerEvent()
     {
+        //HARD CODING bc time constrained
+        OnTriggerActivate ota = GetComponent<OnTriggerActivate>();
+        if (ota)
+        {
+            ota.triggerEvent();
+        }
         //don't start a new dialogue if one is already active
         if (Managers.Event.DialoguePlaying)
         {

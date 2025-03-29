@@ -26,14 +26,19 @@ public class OnTriggerActivate : MonoBehaviour
     {
         if (collision.isPlayerSolid())
         {
-            playerInTrigger = true;
-            if (waitForDialogueFinish)
-            {
-                Managers.Event.OnDialoguePlayingChanged -= _waitForDialogue;
-                Managers.Event.OnDialoguePlayingChanged += _waitForDialogue;
-            }
-            activateObjects(activeOnPlayerIn);
+            triggerEvent();
         }
+    }
+
+    public void triggerEvent()
+    {
+        playerInTrigger = true;
+        if (waitForDialogueFinish)
+        {
+            Managers.Event.OnDialoguePlayingChanged -= _waitForDialogue;
+            Managers.Event.OnDialoguePlayingChanged += _waitForDialogue;
+        }
+        activateObjects(activeOnPlayerIn);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
