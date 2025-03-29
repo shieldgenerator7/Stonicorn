@@ -63,6 +63,10 @@ public class SkinManager : MonoBehaviour, ISetting
             .ConvertAll(go=>go.GetComponent<Skin>())
             .Find(skin=>skin.name == name);
     }
+    internal void nextSkin(int direction)
+    {
+        SkinIndex = Utility.loopValue(_skinIndex + direction, 0, foundSkinList.Count-1);
+    }
 
     public SettingScope Scope => SettingScope.SAVE_FILE;
 

@@ -2314,6 +2314,7 @@ GameObject:
   - component: {fileID: 374000377}
   - component: {fileID: 374000376}
   - component: {fileID: 374000378}
+  - component: {fileID: 374000379}
   m_Layer: 5
   m_Name: Arrow to Graphic Options (1)
   m_TagString: Untagged
@@ -2450,8 +2451,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
-  frame: {fileID: 953867115}
-  mab: {fileID: 0}
+  frame: {fileID: 0}
+  mab: {fileID: 374000379}
   bc2d: {fileID: 374000376}
   srs:
   - {fileID: 374000377}
@@ -2459,6 +2460,19 @@ MonoBehaviour:
   srOrigColors:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &374000379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374000374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a293fb7d2f66ca4fafd880638ede52a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 1
 --- !u!1 &389973473
 GameObject:
   m_ObjectHideFlags: 0
@@ -3587,7 +3601,7 @@ GameObject:
   - component: {fileID: 697193596}
   - component: {fileID: 697193595}
   m_Layer: 5
-  m_Name: NPC Moonicorn
+  m_Name: Past Merky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4048,7 +4062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3377550153525780693, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Name
-      value: NPC Dialogue Speak Speed
+      value: Rewind Speed
       objectReference: {fileID: 0}
     - target: {fileID: 3377550154208942316, guid: 17c7a1c155dad394db2ec84eb8cd0d75, type: 3}
       propertyPath: m_Text
@@ -5436,6 +5450,7 @@ GameObject:
   - component: {fileID: 1394607134}
   - component: {fileID: 1394607135}
   - component: {fileID: 1394607133}
+  - component: {fileID: 1394607137}
   m_Layer: 5
   m_Name: Arrow to Graphic Options (2)
   m_TagString: Untagged
@@ -5456,8 +5471,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
-  frame: {fileID: 1972838764}
-  mab: {fileID: 0}
+  frame: {fileID: 0}
+  mab: {fileID: 1394607137}
   bc2d: {fileID: 1394607135}
   srs:
   - {fileID: 1394607134}
@@ -5581,6 +5596,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1281173187}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -284.108}
+--- !u!114 &1394607137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394607132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a293fb7d2f66ca4fafd880638ede52a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: -1
 --- !u!1 &1402734700
 GameObject:
   m_ObjectHideFlags: 0
