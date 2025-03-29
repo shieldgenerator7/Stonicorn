@@ -15,7 +15,7 @@ using System.IO;
 
 public class CustomMenu
 {
-    const int FIRST_LEVEL_INDEX = 4;
+    const int FIRST_LEVEL_INDEX = 5;
 
     [MenuItem("SG7/Editor/Terrain/Focus Terrain Tool %T")]
     public static void levelTerrainPoints()
