@@ -304,6 +304,7 @@ public class ObjectManager : Manager, ISetting
     {
         return data.savables
             .Values.ToList()
+            .Where(x => x != null && !ReferenceEquals(x,null)).ToList()
             .ConvertAll(value => value.GetComponent<T>())
             .FindAll(t => t != null);
     }
