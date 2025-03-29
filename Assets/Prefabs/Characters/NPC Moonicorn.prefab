@@ -997,7 +997,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1008401501854543202}
   - component: {fileID: 1395275292303458476}
-  - component: {fileID: 7024717403794891435}
   m_Layer: 0
   m_Name: powercube_lightning_container
   m_TagString: Untagged
@@ -1076,24 +1075,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7024717403794891435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4445748230499513893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaaf74a53bfd9294fa1621b079f327a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  soi: {fileID: 0}
-  energy: 0
-  maxEnergy: 100
-  maxEnergyPerSecondIn: 20
-  maxEnergyPerSecondOut: 6
-  coll2d: {fileID: 0}
 --- !u!1 &4724666706071967044
 GameObject:
   m_ObjectHideFlags: 0
@@ -2750,7 +2731,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6876393859662545484}
   - component: {fileID: 643148928647610334}
-  - component: {fileID: 3761797870572747923}
   m_Layer: 0
   m_Name: powercube_lightning_fill
   m_TagString: Untagged
@@ -2828,21 +2808,6 @@ SpriteMask:
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
   m_MaskSource: 0
---- !u!114 &3761797870572747923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7775429968598236637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e36f5204ca08cca4bb2a1b718e85ea61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHeight: 1
-  minHeight: 0
-  expandRight: 0
 --- !u!1 &8068690313797886644
 GameObject:
   m_ObjectHideFlags: 0
