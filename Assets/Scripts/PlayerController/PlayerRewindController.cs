@@ -115,7 +115,18 @@ public class PlayerRewindController : Manager
     }
 
     private GameObject getRepresentation(GameState gs)
-        => representations[gs.id];
+    {
+        if ( gs.id <0 || gs.id >= representations.Count)
+        {
+            updateRepresentation(gs);
+            if (gs.id < 0 || gs.id >= representations.Count)
+            {
+                Debug.Log($"Cant find representation at index {gs.id} (count: {representations.Count})");
+                return null;
+            }
+        }
+        return representations[gs.id];
+    }
 
     //Representation (check point ghost)
     private void showRepresentation(GameState gs, int mostRecentId)
