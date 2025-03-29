@@ -10,6 +10,8 @@ public class DialogueVoiceLinePlayer : MonoBehaviour
     private AudioSource audioSource;
     private DialoguePath dialoguePath;
     private int currentIndex = 0;
+    [TextArea]
+    public string status;
 
     private float volume = 1;
     public float Volume
@@ -53,6 +55,8 @@ public class DialogueVoiceLinePlayer : MonoBehaviour
 
     public void playVoiceLine(int index)
     {
+        status = $"{dialoguePath.title}: {index} - {dialoguePath.quotes[index].characterName} \"{dialoguePath.quotes[index].text}\"";
+        Debug.Log($"playing voice line {status}");
         currentIndex = Mathf.Clamp(index, 0, clipList.Count-1);
         audioSource.Stop();
         audioSource.clip = clipList[currentIndex];
