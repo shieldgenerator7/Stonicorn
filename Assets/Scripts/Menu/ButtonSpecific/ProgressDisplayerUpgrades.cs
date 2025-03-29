@@ -21,6 +21,8 @@ public class ProgressDisplayerUpgrades : ProgressDisplayer
 
     internal override int MaxCount => abilities.Sum(ability => ability.upgradeLevels.Count);
 
+    protected override bool Shown => CurrentCount > 1;
+
 
 
     [Initializer]
