@@ -92,6 +92,8 @@ public class Follow : MonoBehaviour
     {
         if (shakeOnStop)
         {
+            //TODO: help the moon scene loader follow moon while its available, and handle the scene loading in and out
+            //TODO: investigate to see if it's even an issue
             //Check if needs to shake
             if (rb2dParent.linearVelocity != prevVelocity
                 && !rb2dParent.isMoving())
@@ -152,4 +154,8 @@ public class Follow : MonoBehaviour
         }
         }
     }
+
+    //[Initializer]
+    //private bool init_inScreenSpace => GetComponent<RectTransform>() != null;
+
 }

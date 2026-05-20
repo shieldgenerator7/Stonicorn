@@ -177,6 +177,7 @@ public class WallClimbAbility : PlayerAbility
         }
     }
 
+    //TODO: make this a separate effect script
     private void updateClimbSpikeEffect(bool on)
     {
         if (on)

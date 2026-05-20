@@ -84,6 +84,7 @@ public class ElectricBeamAbility : PlayerAbility
                 SavableObjectInfo soi = Managers.Object.getObject(value);
                 if (soi != null)
                 {
+                    //TODO: check to make sure all IPowerables also have a SavableObjectInfo. then, we can loop thru soi's smb list instead of using GetComponent()
                     IPowerable powerable = soi.GetComponent<IPowerable>();
                     Target = powerable;
                 }

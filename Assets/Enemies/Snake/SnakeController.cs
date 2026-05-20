@@ -9,11 +9,14 @@ public class SnakeController : SavableMonoBehaviour
 {
     public float moveSpeed = 1;
     public float arriveThreshold = 0.1f;
+    //TODO: do realtime processing to avoid needing max point count
     public int maxPointCount = 4;
+    //TODO: check error: movepath distance length is shorter than snake stated length (if movepath)
     public float length = 10;
 
     [Header("Components")]
     //TODO: make tag to say this is OK to override
+    //TODO: check error: no move path
     public MovePath movePath;
 
     public Transform head;

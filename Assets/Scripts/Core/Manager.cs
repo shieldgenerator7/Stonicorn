@@ -17,6 +17,7 @@ public abstract class Manager : MonoBehaviour, ISetting
 
     public virtual string ID => "Manager";
 
+    //TODO: force all subtypes to have a non-null Setting, or make this Manager superclass not implement ISetting
     public virtual SettingObject Setting
     {
         get => null;

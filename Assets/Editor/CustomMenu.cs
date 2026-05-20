@@ -13,6 +13,10 @@ using System.Reflection;
 using UnityEditor.AddressableAssets.Settings;
 using System.IO;
 
+//TODO: make tool to auto-load the scenes i need for day-to-day development
+//TODO: make tool that ensures all prefabs are at origin
+//TODO: make tool to check RB2Ds: static vs dynamic?, continuous collision checking
+//TODO: tool: ensure all spritemasks have a custom range
 public class CustomMenu
 {
     const int FIRST_LEVEL_INDEX = 5;

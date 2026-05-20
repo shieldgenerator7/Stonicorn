@@ -12,7 +12,7 @@ public class DialogueBoxUpdater : MonoBehaviour
     public float padding = 1;
     [Tooltip("The minimum amount of width the dialogue box can have")]
     public float minWidth = 1;
-    [Tooltip("THe distance between the source position and the box position")]
+    [Tooltip("The distance between the source position and the box position")]
     public float offsetLength = 3;
     [Tooltip("The scale point at which the NPC quote box should be full screen")]
     public CameraController.CameraScalePoints baseCameraScalePoint;
@@ -65,6 +65,7 @@ public class DialogueBoxUpdater : MonoBehaviour
     public void setText(string value)
     {
         text = value;
+        //TODO: make this work with tags
         txtDialogue.text = text + $"<color=#0000>{goalText.Substring(text.Length)}</color>";
         txtDialogue.ForceMeshUpdate();
     }

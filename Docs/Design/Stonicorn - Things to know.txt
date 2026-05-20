@@ -1,0 +1,69 @@
+Stonicorn - Things to know
+
+
+# Teleport
+- teleport in any direction
+- teleport limited by range
+- limited number of teleports
+- can rotate by teleporting to same position (or pressing rotate button)
+- can't teleport into walls
+- range reduced when teleporting straight up into air
+- goes on cooldown when teleporting straight up into air
+- range refreshed upon hitting the ground
+- in certain situations, can teleport beyond shown range
+- teleport range indicator shows range, cooldown, teleports left
+- you maintain momentum when teleporting
+- teleporting in opposite direction of momentum slows you down
+
+# Merky
+- solid object
+- doesn't move
+- rotates off ledges
+- can break some things by slamming into them
+
+# Time Rewind
+- automatically prompts to go back to start when run out of teleports
+- you can zoom in/out
+- zooming out shows past merkys
+- select past merky to go there
+- zooming out pauses the game
+- selecting the background cancels the time rewind
+- auto-triggers when merky hits a hazard
+- rewinding to a past merky refreshes your teleport range
+- teleporting normally creates a save state
+- teleporting in air (with limited range) doesn't create a save state
+- select the background during a time rewind to cancel it
+
+# Flashlight
+- you can pan the camera
+- panning the camera goes into plan mode
+- plan mode shows flashlight
+- flashlight reveals things in dark areas
+- flashlight reveals fake platforms
+- flashlight (temporarily) reveals hidden areas
+- you can teleport into hidden areas that you are revealing with the flashlight
+
+# Speed-Port
+- you can hold teleport to gain momentum in the direction you teleport
+- letting go launches you in the direction youre pointing when you let go
+
+# Tree Climb
+- you're grounded in the direction your feet are pointing, if there is a solid object there
+- you're not grounded if your feet are pointing at a hazard
+
+# Air-Port
+- teleporting straight down or to the side doesn't limit your teleport range or make it go on cooldown, even when teleporting into empty space
+
+# Swap
+- teleport into an object to swap with it
+- you can only teleport with objects relatively the same size as you
+
+# Long Teleport
+- you can set your teleport range by panning the camera while in a checkpoint
+- this range set lasts until you rewind out of it, or you set it again
+
+# Checkpoints
+- teleporting into or hitting a checkpoint makes it active
+- while inside a checkpoint, and at least two checkpoints are active, select a preview to teleport to it
+- there are slots in a checkpoint, and teleporting to a different checkpoint keeps you in that same slot
+

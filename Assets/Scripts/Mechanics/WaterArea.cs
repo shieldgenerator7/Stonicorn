@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+    //TODO: burst this script so its more efficient
 [NonSolid]
 public class WaterArea : MonoBehaviour
 {
