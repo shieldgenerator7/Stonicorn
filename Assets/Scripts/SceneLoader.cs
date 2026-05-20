@@ -56,7 +56,6 @@ public class SceneLoader : MonoBehaviour, ISetting
     private bool isLoading = false;
     public bool IsLoading => isLoading && !scene.isLoaded;
 
-    [SerializeField]
     /// <summary>
     /// True if the level is currently loaded
     /// </summary>
