@@ -92,6 +92,21 @@ public class FlameDashAbility : PlayerAbility
 
     private void checkActivation()
     {
+        //get rid of early taps that break the combo
+        while (tapDirs.Count > 0)
+        {
+            bool collinear = tapDirs.All((v) => Vector3.Angle(tapDirs.First(), v) <= tapAngleVariance);
+            //if combo is good, stop checking
+            if (collinear)
+            {
+                break;
+            }
+            //if combo is bad, remove first tap
+            else {
+                tapDirs.RemoveAt(0);
+            }
+        }
+        //if combo is complete, launch
         if (tapDirs.Count >= 3)
         {
             LaunchDirection = tapDirs.Last().normalized * launchSpeed;
