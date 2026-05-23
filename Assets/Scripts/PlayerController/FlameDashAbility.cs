@@ -23,13 +23,6 @@ public class FlameDashAbility : PlayerAbility
     public float speedMinimum = 0.5f;//if this speed isn't maintained, bounciness will be lost
     public float bouncinessLossDelay = 0.5f;//after this amount of time of being under speed, bounciness will be lost
 
-    [Header("Components")]
-    //public GameObject projectilePrefab;
-    //public GameObject directionIndicatorPrefab;//prefab
-    //private GameObject directionIndicator;//instance
-    //private SpriteRenderer directionSR;
-    //private float originalAlpha;
-    //public GameObject explosionPrefab;
 
     private List<Vector2> tapDirs = new List<Vector2>();
 
@@ -64,7 +57,6 @@ public class FlameDashAbility : PlayerAbility
     public delegate void OnAffectingVelocityChanged(bool av);
     public event OnAffectingVelocityChanged onAffectingVelocityChanged;
     private float lastSpeedMetTime = 0;//the last time Merky had met the minimum bounciness speed requirement
-    private Vector2 dragPos;
     private float lastComboTapTime;
 
     protected override void registerDelegates(bool register = true)
@@ -190,15 +182,6 @@ public class FlameDashAbility : PlayerAbility
         }
     }
 
-    /// <summary>
-    /// True if the player is grounded
-    /// or hasn't teleported since not being grounded
-    /// </summary>
-    bool CanLaunch =>
-        (playerController.Ground.isGroundedWithoutAbility(this)
-        || !rb2d.isMoving())
-        && !Managers.Player.gestureOnPlayer(dragPos);
-
     void launch()
     {
         //Launch in indicated direction
@@ -211,17 +194,6 @@ public class FlameDashAbility : PlayerAbility
     }
     public delegate void OnLaunch();
     public event OnLaunch onLaunch;
-
-
-
-    /// <summary>
-    /// Set on fire without launching
-    /// Used for projectile
-    /// </summary>
-    public void setOnFire()
-    {
-        AffectingVelocity = true;
-    }
 
     /// <summary>
     /// Speed up in the direction of movement
