@@ -81,6 +81,7 @@ public class FlameDashAbility : PlayerAbility
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
+        //Cancel momentum
         if (affectingVelocity && teleportingRemovesMomentum)
         {
             //Nullify velocity
@@ -88,6 +89,8 @@ public class FlameDashAbility : PlayerAbility
             //Cancel effect on velocity
             AffectingVelocity = false;
         }
+        //Process combo for potential activation
+        Vector2 dir = newPos - oldPos;
         tapDirs.Add(newPos - oldPos);
         lastComboTapTime = Managers.Time.Time;
         checkActivation();
@@ -95,6 +98,12 @@ public class FlameDashAbility : PlayerAbility
 
     private void checkActivation()
     {
+        //if tap not far enough, cancel combo
+        if (tapDirs.Any(v=>v.magnitude< minTeleportDistancePerTap))
+        {
+            tapDirs.Clear();
+            return;
+        }
         //get rid of early taps that break the combo
         while (tapDirs.Count > 0)
         {
