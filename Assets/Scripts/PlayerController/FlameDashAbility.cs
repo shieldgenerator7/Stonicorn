@@ -155,8 +155,6 @@ public class FlameDashAbility : PlayerAbility
                 ) * bounceEnergyConservationPercent;
             rb2d.linearVelocity = reflect;
             currentVelocity = rb2d.linearVelocity;
-            //Save the game state
-            Managers.Rewind.Save();
         }
     }
 
@@ -181,8 +179,6 @@ public class FlameDashAbility : PlayerAbility
                 {
                     //End this ability's effect on velocity
                     AffectingVelocity = false;
-                    //Save game state
-                    Managers.Rewind.Save();
                 }
             }
         }
