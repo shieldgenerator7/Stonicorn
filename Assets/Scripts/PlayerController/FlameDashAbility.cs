@@ -14,6 +14,7 @@ public class FlameDashAbility : PlayerAbility
     public float minTeleportDistancePerTap = 2.5f;//how far each tap is required to go in order to count
     public bool consecutiveTapsRequired = true;//true: any tap that doesnt count interrupts the entire combo
     public float tapAngleVariance = 5;//in degrees, how varied the taps can be and still count towards being "in the same direction"
+    public float comboClearDelay = 0.5f;//if no taps in this amount of time, it clears the combo
 
     [Header("Ability Settings")]
     public float launchSpeed = 20;//how fast it launches Merky
@@ -64,6 +65,7 @@ public class FlameDashAbility : PlayerAbility
     public event OnAffectingVelocityChanged onAffectingVelocityChanged;
     private float lastSpeedMetTime = 0;//the last time Merky had met the minimum bounciness speed requirement
     private Vector2 dragPos;
+    private float lastComboTapTime;
 
     protected override void registerDelegates(bool register = true)
     {
@@ -87,6 +89,7 @@ public class FlameDashAbility : PlayerAbility
             AffectingVelocity = false;
         }
         tapDirs.Add(newPos - oldPos);
+        lastComboTapTime = Managers.Time.Time;
         checkActivation();
     }
 
@@ -173,6 +176,12 @@ public class FlameDashAbility : PlayerAbility
                     Managers.Rewind.Save();
                 }
             }
+        }
+        //If ran out of time, clear combo
+        if (lastComboTapTime > 0 && Managers.Time.Time > lastComboTapTime + comboClearDelay)
+        {
+            lastComboTapTime = 0;
+            tapDirs.Clear();
         }
     }
 
