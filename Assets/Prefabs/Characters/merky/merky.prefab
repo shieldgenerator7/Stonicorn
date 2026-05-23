@@ -467,7 +467,6 @@ MonoBehaviour:
     featureLevel: 0
   playerController: {fileID: 11477714}
   rb2d: {fileID: 5068768}
-  teleportingRemovesMomentum: 0
   tapsToActivate: 3
   minTeleportDistancePerTap: 2.5
   consecutiveTapsRequired: 1
@@ -478,6 +477,8 @@ MonoBehaviour:
   accelerationBoostPercent: 0.75
   speedMinimum: 3
   bouncinessLossDelay: 0.5
+  teleportingRemovesMomentum: 1
+  maxDeactivationTeleportDistance: 1
 --- !u!114 &1792176479
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,6 @@ using UnityEngine;
 //2026-05-22: copied from ForceLaunchAbility
 public class FlameDashAbility : PlayerAbility
 {
-    public bool teleportingRemovesMomentum = false;
 
     [Header("Activation Settings")]
     public int tapsToActivate = 3;//how many taps are required to activate this ability
@@ -22,6 +21,10 @@ public class FlameDashAbility : PlayerAbility
     public float accelerationBoostPercent = 0.5f;//how much speed to add when tapping in the direction of movement
     public float speedMinimum = 0.5f;//if this speed isn't maintained, bounciness will be lost
     public float bouncinessLossDelay = 0.5f;//after this amount of time of being under speed, bounciness will be lost
+
+    [Header("Deactivation Settings")]
+    public bool teleportingRemovesMomentum = false;
+    public float maxDeactivationTeleportDistance = 1;//teleports with this range or shorter cancel the momentum
 
 
     private List<Vector2> tapDirs = new List<Vector2>();
@@ -73,17 +76,22 @@ public class FlameDashAbility : PlayerAbility
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
+        Vector2 dir = newPos - oldPos;
+
         //Cancel momentum
         if (affectingVelocity && teleportingRemovesMomentum)
         {
+            if (dir.magnitude <= maxDeactivationTeleportDistance)
+            {
             //Nullify velocity
             rb2d.nullifyMovement();
             //Cancel effect on velocity
             AffectingVelocity = false;
+            }
         }
+
         //Process combo for potential activation
-        Vector2 dir = newPos - oldPos;
-        tapDirs.Add(newPos - oldPos);
+        tapDirs.Add(dir);
         lastComboTapTime = Managers.Time.Time;
         checkActivation();
     }
