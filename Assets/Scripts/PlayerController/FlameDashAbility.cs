@@ -110,7 +110,7 @@ public class FlameDashAbility : PlayerAbility
             }
         }
         //if combo is complete, launch
-        if (tapDirs.Count >= 3)
+        if (tapDirs.Count >= tapsToActivate)
         {
             LaunchDirection = tapDirs.Last().normalized * launchSpeed;
             tapDirs.Clear();
