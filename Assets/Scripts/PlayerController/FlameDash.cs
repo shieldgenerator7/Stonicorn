@@ -1,53 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 //2026-05-22: copied from ForceLaunchAbility
 public class FlameDash : PlayerAbility
 {
-    [Header("Settings")]
-    public float maxPullBackDistance = 3;//how far back the player can pull the sling
-    public float maxLaunchSpeed = 20;//how fast Merky can go after launching
+    [Header("Activation Settings")]
+    public int tapsToActivate = 3;//how many taps are required to activate this ability
+    public float minTeleportDistancePerTap = 2.5f;//how far each tap is required to go in order to count
+    public bool consecutiveTapsRequired = true;//true: any tap that doesnt count interrupts the entire combo
+    public float tapAngleVariance = 5;//in degrees, how varied the taps can be and still count towards being "in the same direction"
+
+    [Header("Ability Settings")]
+    public float launchSpeed = 20;//how fast it launches Merky
     public float bounceEnergyConservationPercent = 0.1f;//how much energy to conserve after bouncing
     public float accelerationBoostPercent = 0.5f;//how much speed to add when tapping in the direction of movement
     public float speedMinimum = 0.5f;//if this speed isn't maintained, bounciness will be lost
     public float bouncinessLossDelay = 0.5f;//after this amount of time of being under speed, bounciness will be lost
-    public float minimumExplodeSpeed = 5;
-    public float maxEplodeRange = 3;
-
-    public Color unavailableColor = Color.white;//the color the arrow will be when this ability's requirements are not met
 
     [Header("Components")]
-    public GameObject projectilePrefab;
-    public GameObject directionIndicatorPrefab;//prefab
-    private GameObject directionIndicator;//instance
-    private SpriteRenderer directionSR;
-    private float originalAlpha;
-    public GameObject explosionPrefab;
+    //public GameObject projectilePrefab;
+    //public GameObject directionIndicatorPrefab;//prefab
+    //private GameObject directionIndicator;//instance
+    //private SpriteRenderer directionSR;
+    //private float originalAlpha;
+    //public GameObject explosionPrefab;
 
-    private bool launching = false;//true: player is getting ready to launch
-    public bool Launching
-    {
-        get => launching;
-        set
-        {
-            //If turning launching off when it's on,
-            if (launching && !value)
-            {
-                //Stop slowing time
-                Managers.Time.SlowTime = false;
-            }
-            //If turning launching on,
-            else if (value)
-            {
-                //Start slowing time
-                Managers.Time.SlowTime = true;
-            }
-            //Set the launching variable
-            launching = value;
-        }
-    }
+    private List<Vector2> tapDirs = new List<Vector2>();
+
     private Vector2 launchDirection;
     public Vector2 LaunchDirection
     {
@@ -55,16 +37,12 @@ public class FlameDash : PlayerAbility
         private set
         {
             launchDirection = value;
-            if (launchDirection.magnitude > maxPullBackDistance)
-            {
-                launchDirection = launchDirection.normalized * maxPullBackDistance;
-            }
         }
     }
 
     public Vector2 LaunchVelocity
         => launchDirection.normalized
-            * (maxLaunchSpeed * launchDirection.magnitude / maxPullBackDistance);
+            * (launchSpeed * 1);
 
     private Vector2 currentVelocity;//used to recover the velocity when hitting a wall
     private bool affectingVelocity = false;//true if recently launched
@@ -89,10 +67,10 @@ public class FlameDash : PlayerAbility
     {
         if (playerController)
         {
-            playerController.onDragGesture -= processDrag;
+            //playerController.onDragGesture -= processDrag;
             if (register)
             {
-                playerController.onDragGesture += processDrag;
+                //playerController.onDragGesture += processDrag;
             }
         }
     }
@@ -106,25 +84,18 @@ public class FlameDash : PlayerAbility
             //Cancel effect on velocity
             AffectingVelocity = false;
         }
+        tapDirs.Add(newPos - oldPos);
+        checkActivation();
     }
 
-    void processDrag(Vector2 oldPos, Vector2 newPos, GestureState state)
+    private void checkActivation()
     {
-        Launching = state == GestureState.ONGOING;
-        dragPos = newPos;
-        LaunchDirection = (Vector2)playerController.transform.position - newPos;
-        if (state.Finished() && CanLaunch)
+        if (tapDirs.Count >= 3)
         {
-            //Save the game state
-            Managers.Rewind.Save();
-            //Actually launch
+            LaunchDirection = tapDirs.Last().normalized * launchSpeed;
+            tapDirs.Clear();
             launch();
-            if (CanShoot)
-            {
-                shootProjectile();
-            }
         }
-        updateDirectionVisuals();
     }
 
     protected override bool isGrounded()
@@ -157,12 +128,6 @@ public class FlameDash : PlayerAbility
             currentVelocity = rb2d.linearVelocity;
             //Save the game state
             Managers.Rewind.Save();
-            //Explode if able
-            if (CanExplode)
-            {
-                Vector2 contactPoint = collision.GetContact(0).point;
-                explode(contactPoint);
-            }
         }
     }
 
@@ -216,58 +181,7 @@ public class FlameDash : PlayerAbility
     public delegate void OnLaunch();
     public event OnLaunch onLaunch;
 
-    bool CanExplode =>
-        FeatureLevel >= 1 && rb2d.linearVelocity.magnitude >= minimumExplodeSpeed;
-    void explode(Vector2 pos)
-    {
-        float range = maxEplodeRange;
-        float forceAmount = rb2d.linearVelocity.magnitude;
-        //Force things away
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
-        for (int i = 0; i < hitColliders.Length; i++)
-        {
-            GameObject hgo = hitColliders[i].gameObject;
-            if (gameObject == hgo)
-            {
-                //don't explode yourself
-                continue;
-            }
-            Rigidbody2D orb2d = hgo.GetComponent<Rigidbody2D>();
-            if (orb2d != null)
-            {
-                orb2d.SetExplosionVelocity(forceAmount, pos);
-            }
-            foreach (IBlastable b in hgo.GetComponents<IBlastable>())
-            {
-                float force = forceAmount;
-                Vector2 dir = ((Vector2)hgo.transform.position - pos).normalized;
-                b.checkForce(force, dir);
-            }
-        }
-        //Visual Effects
-        GameObject explosion = Instantiate(explosionPrefab);
-        explosion.transform.position = pos;
-    }
 
-    bool CanShoot =>
-        FeatureLevel >= 2 && CanUseUltimate;
-    void shootProjectile()
-    {
-        Vector2 startPos = (Vector2)transform.position
-            + launchDirection.normalized * -1.5f;
-        //If there's space to spawn it
-        if (!playerController.isOccupied(startPos))
-        {
-            //Spawn it
-            GameObject projectile = Managers.Object.Instantiate(projectilePrefab);
-            projectile.transform.position = startPos;
-            projectile.transform.up = transform.up;
-            projectile.transform.localScale = transform.localScale;
-            projectile.GetComponent<Rigidbody2D>().linearVelocity = -LaunchVelocity;
-            //Update Stats
-            //Managers.Stats.addOne("WallClimbSticky");
-        }
-    }
 
     /// <summary>
     /// Set on fire without launching
@@ -285,51 +199,19 @@ public class FlameDash : PlayerAbility
     {
         float oldSpeed = rb2d.linearVelocity.magnitude;
         //If there's room to speed up
-        if (oldSpeed < maxLaunchSpeed)
+        if (oldSpeed < launchSpeed)
         {
             //Add velocity in the direction of movement
             rb2d.linearVelocity += (rb2d.linearVelocity.normalized * oldSpeed * accelerationBoostPercent);
             //Reduce speed if too high
             float newSpeed = rb2d.linearVelocity.magnitude;
-            if (newSpeed > maxLaunchSpeed)
+            if (newSpeed > launchSpeed)
             {
-                rb2d.linearVelocity = rb2d.linearVelocity.normalized * maxLaunchSpeed;
+                rb2d.linearVelocity = rb2d.linearVelocity.normalized * launchSpeed;
             }
         }
     }
 
-    void updateDirectionVisuals()
-    {
-        if (launching)
-        {
-            if (directionIndicator == null)
-            {
-                directionIndicator = Instantiate(directionIndicatorPrefab);
-                directionIndicator.transform.parent = transform;
-                directionIndicator.transform.localPosition = Vector2.zero;
-                directionSR = directionIndicator.GetComponent<SpriteRenderer>();
-                originalAlpha = directionSR.color.a;
-            }
-            directionIndicator.SetActive(true);
-            directionIndicator.transform.up = launchDirection;
-            directionSR.size = new Vector2(
-                1,
-                launchDirection.magnitude
-                );
-            if (CanLaunch)
-            {
-                directionSR.color = this.EffectColor.adjustAlpha(originalAlpha);
-            }
-            else
-            {
-                directionSR.color = unavailableColor;
-            }
-        }
-        else
-        {
-            directionIndicator?.SetActive(false);
-        }
-    }
 
     static byte key_affectingVelocity = 0;
     static byte key_currentVelocity = 1;
@@ -349,8 +231,7 @@ public class FlameDash : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        maxPullBackDistance = aul.stat1;
-        maxLaunchSpeed = aul.stat2;
+        launchSpeed = aul.stat2;
         bounceEnergyConservationPercent = aul.stat3;
         accelerationBoostPercent = aul.stat4;
     }
