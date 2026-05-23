@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class FireBallEffect : MonoBehaviour, ISetupable
 {
-    public ForceLaunchAbility forceLaunchAbility;
+    public FlameDashAbility flameDashAbility;
 
-    [AutoInitialize(Container = "forceLaunchAbility"),SerializeField, HideInInspector]
+    [AutoInitialize(Container = "flameDashAbility"),SerializeField, HideInInspector]
     private Rigidbody2D rb2d;
 
     // Start is called before the first frame update
     void Start()
     {
-        forceLaunchAbility.onAffectingVelocityChanged += onAbilityUsed;
-        onAbilityUsed(forceLaunchAbility.AffectingVelocity);
+        flameDashAbility.onAffectingVelocityChanged += onAbilityUsed;
+        onAbilityUsed(flameDashAbility.AffectingVelocity);
     }
 
     private void OnDestroy()
     {
-        forceLaunchAbility.onAffectingVelocityChanged -= onAbilityUsed;
+        flameDashAbility.onAffectingVelocityChanged -= onAbilityUsed;
     }
 
     private void onAbilityUsed(bool on)
@@ -38,9 +38,9 @@ public class FireBallEffect : MonoBehaviour, ISetupable
         int errors = 0;
         if (!gameObject.isPrefab())
         {
-            if (!forceLaunchAbility)
+            if (!flameDashAbility)
             {
-                Debug.LogError("FireBallEffect is missing ForceLaunchAbility!", gameObject);
+                Debug.LogError("FireBallEffect is missing FlameDashAbility!", gameObject);
                 errors++;
             }
         }
@@ -52,7 +52,7 @@ public class FireBallEffect : MonoBehaviour, ISetupable
         if (!gameObject.isPrefab())
         {
             SpriteRenderer sr = GetComponent<SpriteRenderer>();
-            Color color = forceLaunchAbility.EffectColor.adjustAlpha(sr.color.a);
+            Color color = flameDashAbility.EffectColor.adjustAlpha(sr.color.a);
             if (sr.color != color)
             {
                 sr.color = color;
