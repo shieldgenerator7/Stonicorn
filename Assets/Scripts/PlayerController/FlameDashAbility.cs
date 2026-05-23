@@ -7,6 +7,8 @@ using UnityEngine;
 //2026-05-22: copied from ForceLaunchAbility
 public class FlameDashAbility : PlayerAbility
 {
+    public bool teleportingRemovesMomentum = false;
+
     [Header("Activation Settings")]
     public int tapsToActivate = 3;//how many taps are required to activate this ability
     public float minTeleportDistancePerTap = 2.5f;//how far each tap is required to go in order to count
@@ -77,7 +79,7 @@ public class FlameDashAbility : PlayerAbility
 
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        if (affectingVelocity)
+        if (affectingVelocity && teleportingRemovesMomentum)
         {
             //Nullify velocity
             rb2d.nullifyMovement();
