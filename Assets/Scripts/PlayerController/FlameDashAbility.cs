@@ -5,7 +5,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 //2026-05-22: copied from ForceLaunchAbility
-public class FlameDash : PlayerAbility
+public class FlameDashAbility : PlayerAbility
 {
     [Header("Activation Settings")]
     public int tapsToActivate = 3;//how many taps are required to activate this ability
