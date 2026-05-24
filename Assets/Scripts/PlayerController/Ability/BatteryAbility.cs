@@ -12,11 +12,6 @@ public class BatteryAbility : PlayerAbility
     public float energyPerSecond = 100;//how much energy it generates each second
     public float staticSpeed = 2;//how fast it converges your velocity into your target's velocity
     public float rangeBuffer = 1;//how much more outside the range a target can be before being disconnected
-    public float maxCharge = 50;//how much energy he can store at once
-    public float chargePerTeleport = 10;//how much energy he generates per teleport
-
-    [Header("Components")]
-    public GameObject wirePrefab;
 
     private bool activated = false;
     public bool Activated
@@ -36,7 +31,6 @@ public class BatteryAbility : PlayerAbility
 
     private Vector2 tapPos;
     private bool tapOnPlayer;
-    private bool wiredThisInput = false;//true if it has wired since the last user input
 
     GameObject targetGO;
     IPowerable targetPowerable;
@@ -93,18 +87,6 @@ public class BatteryAbility : PlayerAbility
         }
     }
 
-    private float charge = 0;
-    public float Charge
-    {
-        get => charge;
-        set
-        {
-            charge = Mathf.Clamp(value, 0, maxCharge);
-            onChargeChanged?.Invoke(charge);
-        }
-    }
-    public event Action<float> onChargeChanged;
-
     public override void init()
     {
         base.init();
@@ -136,7 +118,6 @@ public class BatteryAbility : PlayerAbility
                 //Power
                 float power = energyPerSecond * Time.fixedDeltaTime;
                 float leftOver = targetPowerable.acceptPower(power);
-                Charge -= (power - leftOver);
 
                 //Move relative to the target
                 if (CanStatic)
@@ -144,21 +125,8 @@ public class BatteryAbility : PlayerAbility
                     applyStatic();
                 }
 
-                //Make wire
-                if (CanWire)
-                {
-                    applyWire();
-                }
-
                 //Make sure target is still in range
                 checkTarget();
-
-                //Check to see if it still has power
-                if (charge == 0)
-                {
-                    Activated = false;
-                    Target = null;
-                }
             }
             else
             {
@@ -179,23 +147,6 @@ public class BatteryAbility : PlayerAbility
             rb2d.linearVelocity = Vector2.Lerp(rb2d.linearVelocity, targetVelocity, Time.fixedDeltaTime * staticSpeed);
             playerController.GravityAccepter.AcceptsGravity = false;
         }
-    }
-
-    bool CanWire =>
-        !wiredThisInput && Target != null && FeatureLevel >= 2 && !(targetRB2D && targetRB2D.isMoving()) && CanUseUltimate;
-
-    void applyWire()
-    {
-        Vector2 startPos = transform.position;
-        Vector2 endPos = Target.GameObject.transform.position;
-        Vector2 dir = endPos - startPos;
-        GameObject newWire = Managers.Object.Instantiate(wirePrefab);
-        newWire.transform.right = dir;
-        newWire.transform.position = (startPos + endPos) / 2;
-        SpriteRenderer sr = newWire.GetComponent<SpriteRenderer>();
-        sr.size = new Vector2(dir.magnitude, sr.size.y);
-        Managers.Power.generateConnectionMap();
-        wiredThisInput = true;
     }
 
     void selectTarget(Vector2 targetPos)
@@ -263,21 +214,14 @@ public class BatteryAbility : PlayerAbility
         //deactivate
         if (tapOnPlayer)
         {
-            Charge = 0;
             Activated = false;
             Target = null;
             return;
         }
-        //charge
-        Charge += chargePerTeleport * (newPos - oldPos).magnitude / playerController.Teleport.baseRange;
-        if (charge > 0)
-        {
             Activated = true;
-        }
         //select target
         selectTarget(tapPos);
         //
-        wiredThisInput = false;
     }
     protected override bool isGrounded() => Activated && CanStatic;
 
@@ -288,7 +232,6 @@ public class BatteryAbility : PlayerAbility
         //range = aul.stat1;
         energyPerSecond = aul.stat2;
         staticSpeed = aul.stat3;
-        maxCharge = aul.stat4;
     }
 
     static byte key_activated = 0;
@@ -299,15 +242,13 @@ public class BatteryAbility : PlayerAbility
     {
         get => base.CurrentState.more(
             key_activated, activated,
-            key_targetId, targetId,
-            key_charge, charge
+            key_targetId, targetId
             );
         set
         {
             base.CurrentState = value;
             Activated = value.Bool(key_activated);
             TargetId = value.Int(key_targetId);
-            Charge = value.Float(key_charge);
         }
     }
 }
