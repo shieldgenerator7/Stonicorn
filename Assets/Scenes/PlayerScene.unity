@@ -9125,17 +9125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88db6bedd5001924db272ba11bdcf23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1792176471 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1792176473, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
-  m_PrefabInstance: {fileID: 2593150204304020503}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1792176465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3980e2864f72af245abafc8456ae413b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1792176472 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1792176479, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
@@ -10097,7 +10086,7 @@ PrefabInstance:
     - target: {fileID: 3214059311545126608, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: playerAbility
       value: 
-      objectReference: {fileID: 1792176471}
+      objectReference: {fileID: 0}
     - target: {fileID: 3915830671258936401, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: playerAbility
       value: 
@@ -10186,10 +10175,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11477714, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: 'playerAbilities.Array.data[5]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1792176476, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
       propertyPath: teleportPreviewPointer
       value: 
       objectReference: {fileID: 1385001677}
+    - target: {fileID: 3807953469792525793, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: 'savables.Array.data[5]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7835665536134532039, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
       propertyPath: ghostFolder
       value: 
