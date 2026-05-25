@@ -12,6 +12,7 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
     public float offDuration = 0.2f;
     public float stabilizationPower = 0;//how good it is at keeping itself upright
     public bool stopOnPowerLost = false;//if true, itll reset all momentum when it loses power
+    public bool flipDirectionOnPowerLost = true;//if true, itll switch movement direction when it loses power
 
     private Vector2 gravityCenter = Vector2.zero;//TODO: make this rely on a gravity zone to find
 
@@ -54,7 +55,10 @@ public class PoweredMover : SavableMonoBehaviour, IPowerable
         if (prevPoweredTime > 0 && Managers.Time.Time >= prevPoweredTime + offDuration)
         {
             prevPoweredTime = 0;
+            if (flipDirectionOnPowerLost)
+            {
             flipDirection();
+            }
             if (stopOnPowerLost)
             {
                 rb2d.linearVelocity = Vector2.zero;
