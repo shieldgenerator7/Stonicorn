@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 5474337292787076957}
   - component: {fileID: 1792176479}
   - component: {fileID: 1792176473}
+  - component: {fileID: 53320633017969195}
   - component: {fileID: 1792176480}
   - component: {fileID: 7471783617025210370}
   - component: {fileID: 1792176481}
@@ -258,6 +259,7 @@ MonoBehaviour:
   - {fileID: 5474337292787076957}
   - {fileID: 1792176479}
   - {fileID: 1792176473}
+  - {fileID: 53320633017969195}
   - {fileID: 1792176480}
   - {fileID: 7471783617025210370}
   - {fileID: 1792176481}
@@ -599,6 +601,35 @@ MonoBehaviour:
   magnetDuration: 2
   stickyPadPrefab: {fileID: 1097801133131608, guid: 19e25460a3d23d54da8b46ccd9b9225d, type: 3}
   climbSpikesPrefab: {fileID: 3280337100055011419, guid: d5af39707f0c9564ca0d7fed5cd8f91c, type: 3}
+--- !u!114 &53320633017969195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ae12c329d1f5640ab8da550794ac2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WallClingAbility
+  soi: {fileID: 3807953469792525793}
+  teleportRangeSegment: {fileID: 11400000, guid: 763ae31039ce5d146ba7ceacf2e1420f, type: 2}
+  soundEffect: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
+  addsOnTeleportSoundEffect: 1
+  unlocked: 1
+  upgradeLevel: 0
+  upgradeLevels:
+  - stat1: 0
+    stat2: 0
+    stat3: 0
+    stat4: 0
+    featureLevel: 0
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
+  wallDetectRange: 1
+  feetDirection: {x: 0, y: -1}
+  climbSpikesPrefab: {fileID: 3280337100055011419, guid: d5af39707f0c9564ca0d7fed5cd8f91c, type: 3}
 --- !u!114 &1792176480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,6 +849,7 @@ MonoBehaviour:
   - {fileID: 5474337292787076957}
   - {fileID: 1792176479}
   - {fileID: 1792176473}
+  - {fileID: 53320633017969195}
   - {fileID: 1792176480}
   - {fileID: 7471783617025210370}
   - {fileID: 1792176481}
