@@ -153,7 +153,7 @@ public class PowerManager : MonoBehaviour, ISetupable
     {
         powerConduits.Clear();
         powerConduits.AddRange(
-            FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+            FindObjectsByType<MonoBehaviour>()
             .OfType<IPowerConduit>()
         );
     }
@@ -215,8 +215,7 @@ public class PowerManager : MonoBehaviour, ISetupable
     {
         Collider2D coll2d = ipc.Collider2D;
         Collider2D[] colls = new Collider2D[Utility.MAX_HIT_COUNT];
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.NoFilter();
+        ContactFilter2D filter = ContactFilter2D.noFilter;
         int count = coll2d.Overlap(filter, colls);
         Utility.checkMaxReturnedList("getConnectingConduits", count);
         List<IPowerConduit> conduits = new List<IPowerConduit>();
