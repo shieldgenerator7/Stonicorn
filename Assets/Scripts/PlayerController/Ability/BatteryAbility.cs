@@ -9,7 +9,7 @@ using UnityEngine;
 /// Also the wires slow him down, negate his gravity, and refresh his teleport
 /// </summary>
 //2026-05-24: copied from ElectricBeamAbility
-public class BatteryAbility : PlayerAbility
+public class BatteryAbility : PlayerAbility, IPowerer
 {
     [Header("Settings")]
     public float range = 2.5f;
@@ -65,8 +65,6 @@ public class BatteryAbility : PlayerAbility
             if (wires.Count > 0)
             {
                 //Power
-                float power = energyPerSecond * Time.fixedDeltaTime;
-                wires.ForEach(wire=>wire.ipt.transferPower(power));
 
                 //Move relative to the target
                 if (CanStatic)
@@ -78,6 +76,19 @@ public class BatteryAbility : PlayerAbility
 
     bool CanStatic =>
         FeatureLevel >= 1 && wires.Count > 0;
+
+    public float ThroughPut => energyPerSecond;
+
+    public GameObject GameObject => gameObject;
+
+    public Collider2D Collider2D => this.playerController.Collider2D;
+
+    private OnPowerFlowed onPowerFlowed;
+    public OnPowerFlowed OnPowerFlowed
+    {
+        get => onPowerFlowed;
+        set => onPowerFlowed = value;
+    }
 
     /// <summary>
     /// slow merky down and negate his gravity
@@ -143,6 +154,11 @@ public class BatteryAbility : PlayerAbility
         {
             applyStatic(false);
         }
+    }
+
+    public float givePower(float requestedPower)
+    {
+        return Math.Max(requestedPower, energyPerSecond * Time.fixedDeltaTime);
     }
 
     #region Input Handling
