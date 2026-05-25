@@ -9158,17 +9158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d918f1c25ebee8a47a7dfe60967db1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1792176474 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6141120829055656747, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
-  m_PrefabInstance: {fileID: 2593150204304020503}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1792176465}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61237c0d3a5ae404aae19ce7abaf1ca3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1818419893 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3094667505851088930, guid: 8fe05c73e0276d84c9f87c9ce9b73337, type: 3}
@@ -10123,7 +10112,7 @@ PrefabInstance:
     - target: {fileID: 3165579128037596712, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: electricBeamAbility
       value: 
-      objectReference: {fileID: 1792176474}
+      objectReference: {fileID: 0}
     - target: {fileID: 3214059311545126608, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: playerAbility
       value: 
@@ -10139,7 +10128,7 @@ PrefabInstance:
     - target: {fileID: 4086006974432365582, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: electricBeamAbility
       value: 
-      objectReference: {fileID: 1792176474}
+      objectReference: {fileID: 0}
     - target: {fileID: 5904254661299786462, guid: 8adf74377babadd43b9ca891c8f56dd4, type: 3}
       propertyPath: timer
       value: 
@@ -10232,10 +10221,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11477714, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: 'playerAbilities.Array.data[7]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1792176476, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
       propertyPath: teleportPreviewPointer
       value: 
       objectReference: {fileID: 1385001677}
+    - target: {fileID: 3807953469792525793, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
+      propertyPath: 'savables.Array.data[7]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7835665536134532039, guid: 5913bd1e88aefff4988c7dfee6595611, type: 3}
       propertyPath: ghostFolder
       value: 
@@ -10489,7 +10486,7 @@ PrefabInstance:
     - target: {fileID: 8527496253138998994, guid: 7c04ec8f6909dfe4daa1c734c2a4d25e, type: 3}
       propertyPath: electricBeamAbility
       value: 
-      objectReference: {fileID: 1792176474}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
