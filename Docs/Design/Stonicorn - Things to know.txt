@@ -7,11 +7,11 @@ Stonicorn - Things to know
 - limited number of teleports
 - can rotate by teleporting to same position (or pressing rotate button)
 - can't teleport into walls
-- range reduced when teleporting straight up into air
-- goes on cooldown when teleporting straight up into air
-- range refreshed upon hitting the ground
+- can teleport past walls
+- cant teleport when not grounded
+- teleport refreshed upon hitting the ground
 - in certain situations, can teleport beyond shown range
-- teleport range indicator shows range, cooldown, teleports left
+- teleport range indicator shows range, teleports left
 - you maintain momentum when teleporting
 - teleporting in opposite direction of momentum slows you down
 
@@ -23,47 +23,66 @@ Stonicorn - Things to know
 
 # Time Rewind
 - automatically prompts to go back to start when run out of teleports
-- you can zoom in/out
-- zooming out shows past merkys
-- select past merky to go there
-- zooming out pauses the game
-- selecting the background cancels the time rewind
+- always shows past merkys that are on the edge of the screen
+- select past merky to go back to that point in time
 - auto-triggers when merky hits a hazard
-- rewinding to a past merky refreshes your teleport range
+- manually rewinding to a past merky refreshes your teleport
+- manually rewinding to a past merky increases your teleport range for your next teleport based on how far back you teleported
 - teleporting normally creates a save state
-- teleporting in air (with limited range) doesn't create a save state
-- select the background during a time rewind to cancel it
+- manual rotate doesn't create a save state
+- tap during a manual time rewind to stop the rewind early
 
 # Flashlight
-- you can pan the camera
-- panning the camera goes into plan mode
-- plan mode shows flashlight
+- when hold/drag, show flashlight and teleport preview after a delay
+- teleport preview shows where merky will teleport
+- flashlight shows where cursor is at
+- camera pans in the direction of the flashlight area
+- camera returns to merky when flashlight turns off
 - flashlight reveals things in dark areas
 - flashlight reveals fake platforms
-- flashlight (temporarily) reveals hidden areas
-- you can teleport into hidden areas that you are revealing with the flashlight
+- hold to slow down time
+- release to teleport to the preview
+- right-click or double tap to cancel the teleport
 
-# Speed-Port
-- you can hold teleport to gain momentum in the direction you teleport
-- letting go launches you in the direction youre pointing when you let go
+# Flame Dash
+- teleport quickly 3 times in the same direction to dash in the direction you teleport
+- the 3 teleports have to be near base teleport range, cant be close up
+- dash has only initial burst of momentum that decays naturally
+- while dashing, teleport in your moving direction to refresh the dash (another burst of momentum)
+- while dashing, teleport in your moving direction to slice through cuttable objects
+- while dashing, teleport opposite your moving direction to cancel momentum
+- while dashing, you bounce of walls
+- while dashing, youre on fire
+- while dashing, hazards deal 1 less damage (minimum 0)
 
-# Tree Climb
+# Wall Cling
 - you're grounded in the direction your feet are pointing, if there is a solid object there
-- you're not grounded if your feet are pointing at a hazard
+- pointing your feet at a hazard does not ground you
+- stick to a solid non-hazard surface that your feet point at
 
 # Air-Port
-- teleporting straight down or to the side doesn't limit your teleport range or make it go on cooldown, even when teleporting into empty space
+- you can teleport in your moving direction when not grounded
 
 # Swap
 - teleport into an object to swap with it
-- you can only teleport with objects relatively the same size as you
+- you can only teleport with objects relatively the same size and dimensions as you
+- you also swap rotations
+- swapping with an object refreshes your teleport
+- swapping down into an object so the object ends up in the air above you allows you to telekinesis it
+- telekinesis objects get dragged to their relative position near you, allowing you to take them with you
+- telekinesis objects get dropped when you get too far away or they come into contact with another solid object
 
 # Long Teleport
-- you can set your teleport range by panning the camera while in a checkpoint
-- this range set lasts until you rewind out of it, or you set it again
+- manually rewinding to a past merky increases your teleport range for your next teleport based on how far back you teleported
+
+# Battery
+- standing on wires powers them
+- standing on wires refreshes your teleport
 
 # Checkpoints
 - teleporting into or hitting a checkpoint makes it active
 - while inside a checkpoint, and at least two checkpoints are active, select a preview to teleport to it
-- there are slots in a checkpoint, and teleporting to a different checkpoint keeps you in that same slot
+- each checkpoint has a set other checkpoint it can show in the slots, each slot is for a specific checkpoint
+- entering checkpoint gives you a 1 time use shield
+- manually rewinding into a checkpoint makes your increased range last until you rewind again
 
