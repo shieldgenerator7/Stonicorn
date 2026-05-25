@@ -2,43 +2,32 @@
 using System.Collections;
 using System.Linq;
 
+/// <summary>
+/// When Merky has his feet against a solid non-hazard surface, he clings to it
+/// </summary>
 public class WallClingAbility : PlayerAbility
 {//2026-05-25: copied from WallClimbAbility
 
     [Header("Settings")]
     public float wallDetectRange = 1.0f;//how far from the center of the old position it should look for a wall
     public float wallMagnetAntiGravity = 0.1f;//how fast Merky should move towards the wall if he's grounded to it
-    public float magnetDuration = 2;//how long you stick to the wall after teleporting
+    public Vector2 feetDirection = Vector2.down;
     [Header("Necessary Input")]
-    public GameObject stickyPadPrefab;
     public GameObject climbSpikesPrefab;//prefab for the visual effect while wall climbing
 
     private GameObject climbSpikesEffect;
 
-    private bool groundedLeft = false;
-    private bool groundedRight = false;
-    private bool groundedCeiling = false;
+    private bool groundedFeet = false;
+    private bool prevGroundedFeet = false;
 
-    private bool prevGroundedLeft = false;
-    private bool prevGroundedRight = false;
-    private bool prevGroundedCeiling = false;
-
-    private float magnetStartTime = -1;
+    private bool magneted = false;
     public bool Magneted
     {
-        get => magnetStartTime >= 0;
+        get => magneted;
         set
         {
-            if (value)
-            {
-                magnetStartTime = Managers.Time.Time;
-                playerController.GravityAccepter.gravityScale = 1 - wallMagnetAntiGravity;
-            }
-            else
-            {
-                magnetStartTime = -1;
-                playerController.GravityAccepter.gravityScale = 1;
-            }
+            magneted = value;
+            playerController.GravityAccepter.AcceptsGravity = !magneted;
             onMagnetChanged?.Invoke(value);
         }
     }
@@ -57,90 +46,57 @@ public class WallClingAbility : PlayerAbility
 
     protected override bool isGrounded()
     {
-        //Make sure to check all possible directions
-        bool grounded = isGroundedWall();
-        grounded = (CanCeiling && isGroundedCeiling()) || grounded;
+        bool grounded = isGroundedFeet();
         return grounded;
     }
 
-    bool isGroundedWall()
+    bool isGroundedFeet()
     {
-        prevGroundedLeft = groundedLeft;
-        groundedLeft = groundedRight = false;
-        Vector2 gravity = playerController.GravityDir;
-        //Test left side
-        groundedLeft = playerController.Ground.isGroundedInDirection(
-            -gravity.PerpendicularLeft(),
+        prevGroundedFeet = groundedFeet;
+        Vector2 feetDir = transform.InverseTransformDirection(feetDirection);
+        //Test feet side
+        groundedFeet = playerController.Ground.isGroundedInDirection(
+            feetDir,
             wallDetectRange
             );
-        //Test right side
-        prevGroundedRight = groundedRight;
-        groundedRight = playerController.Ground.isGroundedInDirection(
-            -gravity.PerpendicularRight(),
-            wallDetectRange
-            );
-        return groundedLeft || groundedRight;
-    }
-    bool isGroundedCeiling()
-    {
-        prevGroundedCeiling = groundedCeiling;
-        groundedCeiling = false;
-        groundedCeiling = playerController.Ground.isGroundedInDirection(
-            -playerController.GravityDir,
-            wallDetectRange
-            );
-        return groundedCeiling;
+        return groundedFeet;
     }
 
-    bool CanCeiling => FeatureLevel >= 1;
-
-    bool CanSticky => FeatureLevel >= 2 && CanUseUltimate;
 
     /// <summary>
-    /// Should be called after isGroundedWall() gets called
+    /// Should be called after isGroundedFeet() gets called
     /// </summary>
     /// <param name="oldPos"></param>
     /// <param name="newPos"></param>
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        if (prevGroundedLeft || prevGroundedRight || prevGroundedCeiling)
+        if (prevGroundedFeet)
         {
-            //Plant Sticky
-            if (CanSticky)
-            {
-                plantSticky(oldPos, playerController.Ground.GroundedAbilityPrev, prevGroundedLeft, prevGroundedRight, prevGroundedCeiling);
-            }
         }
-        if (groundedLeft || groundedRight || groundedCeiling)
+        if (groundedFeet)
         {
             //Update Stats
             Managers.Stats.addOne(Stat.WALL_CLIMB);
             rb2d.nullifyMovement();
             Magneted = true;
-            //Plant Sticky
-            if (CanSticky)
-            {
-                plantSticky(newPos, playerController.Ground.GroundedAbility, groundedLeft, groundedRight, groundedCeiling);
-            }
             //Effect Teleport
             effectTeleport(oldPos, newPos);
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Magneted)
         {
-            if (Managers.Time.Time <= magnetStartTime + magnetDuration
-                && !playerController.Ground.GroundedNormal)
+            if (!playerController.Ground.GroundedNormal)
             {
-                if (groundedLeft || groundedRight || groundedCeiling)
+                if (groundedFeet)
                 {
                     //Update grounding variables
                     isGrounded();
                     //If no longer grounded
                 }
-                if (!groundedLeft && !groundedRight && !groundedCeiling)
+                if (!groundedFeet)
                 {
                     //Stop magnet
                     Magneted = false;
@@ -161,7 +117,7 @@ public class WallClingAbility : PlayerAbility
             //Updated grounded variables
             isGrounded();
             //If no longer grounded
-            if (!groundedLeft && !groundedRight)
+            if (!groundedFeet)
             {
                 //Stop magnet
                 Magneted = false;
@@ -199,72 +155,8 @@ public class WallClingAbility : PlayerAbility
         }
     }
 
-    /// <summary>
-    /// Plants a sticky pad at the oldPos if it's near a wall
-    /// </summary>
-    /// <param name="teleportPos"></param>
-    public void plantSticky(Vector2 teleportPos, bool atAll, bool left, bool right, bool ceil)
-    {
-        if (atAll)
-        {
-            //Get the gravity direction
-            Vector2 gravity = playerController.GravityDir;
-            if (left)
-            {
-                //Look left
-                plantStickyInDirection(teleportPos, -gravity.PerpendicularLeft());
-            }
-            if (right)
-            {
-                //Look right
-                plantStickyInDirection(teleportPos, -gravity.PerpendicularRight());
-            }
-            if (ceil)
-            {
-                //Look up
-                plantStickyInDirection(teleportPos, -gravity);
-            }
-        }
-    }
-    void plantStickyInDirection(Vector2 pos, Vector2 dir)
-    {
-        Utility.RaycastAnswer answer = Utility.RaycastAll(pos, dir, wallDetectRange);
-        for (int i = 0; i < answer.count; i++)
-        {
-            RaycastHit2D rch2d = answer.rch2ds[i];
-            if (!rch2d.collider.isTrigger && rch2d.collider.gameObject != gameObject)
-            {
-                spawnSticky(rch2d.point, rch2d.normal);
-                break;
-            }
-        }
-    }
-    void spawnSticky(Vector2 stickyPos, Vector2 normal)
-    {
-        bool tooClose = false;
-        foreach (StickyPadChecker spc in GameObject.FindObjectsByType<StickyPadChecker>(FindObjectsSortMode.None))//TODO: store known stickypads
-        {
-            SpriteRenderer spcSR = spc.GetComponent<SpriteRenderer>();
-            float minDim = Mathf.Min(spcSR.size.x, spcSR.size.y) / 2;
-            if (stickyPos.inRange(spc.transform.position, minDim))
-            {
-                tooClose = true;
-                break;
-            }
-        }
-        if (!tooClose)
-        {
-            GameObject stickyPad = Managers.Object.Instantiate(stickyPadPrefab);
-            stickyPad.GetComponent<StickyPadChecker>().init(normal);
-            stickyPad.transform.position = stickyPos;
-            //Update Stats
-            Managers.Stats.addOne(Stat.WALL_CLIMB_STICKY);
-        }
-    }
-
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
         wallMagnetAntiGravity = aul.stat1;
-        magnetDuration = aul.stat2;
     }
 }
