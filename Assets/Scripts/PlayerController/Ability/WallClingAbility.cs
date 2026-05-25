@@ -10,7 +10,6 @@ public class WallClingAbility : PlayerAbility
 
     [Header("Settings")]
     public float wallDetectRange = 1.0f;//how far from the center of the old position it should look for a wall
-    public float wallMagnetAntiGravity = 0.1f;//how fast Merky should move towards the wall if he's grounded to it
     public Vector2 feetDirection = Vector2.down;
     [Header("Necessary Input")]
     public GameObject climbSpikesPrefab;//prefab for the visual effect while wall climbing
@@ -156,6 +155,5 @@ public class WallClingAbility : PlayerAbility
 
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
-        wallMagnetAntiGravity = aul.stat1;
     }
 }
