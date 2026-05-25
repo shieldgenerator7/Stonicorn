@@ -23,8 +23,6 @@ public class PowerManager : MonoBehaviour, ISetupable
     List<KeyValuePair<IPowerer, List<PowerPath>>> powerPaths = new List<KeyValuePair<IPowerer, List<PowerPath>>>();
     List<IPowerable> noPowerPowerables = new List<IPowerable>();
 
-    [SerializeField]
-    private ElectricBeamAbility electricBeamAbility;
 
     private void Start()
     {
@@ -40,7 +38,6 @@ public class PowerManager : MonoBehaviour, ISetupable
               .ForEach(pw => pw.reset());
         //Process powerables with no power
         noPowerPowerables
-            .Where(pwr => pwr != electricBeamAbility?.Target).ToList()
             .ForEach(pwr => {
             pwr.acceptPower(0);
         });
