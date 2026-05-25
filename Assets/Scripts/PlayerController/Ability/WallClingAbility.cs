@@ -88,24 +88,23 @@ public class WallClingAbility : PlayerAbility
     {
         if (Magneted)
         {
-            if (!playerController.Ground.GroundedNormal)
+            if (playerController.Ground.GroundedNormal)
+            {
+                //Stop magnet
+                Magneted = false;
+            }
+            else
             {
                 if (groundedFeet)
                 {
                     //Update grounding variables
                     isGrounded();
-                    //If no longer grounded
+                    if (!groundedFeet)
+                    {
+                        //Stop magnet
+                        Magneted = false;
+                    }
                 }
-                if (!groundedFeet)
-                {
-                    //Stop magnet
-                    Magneted = false;
-                }
-            }
-            else
-            {
-                //Stop magnet
-                Magneted = false;
             }
         }
     }
