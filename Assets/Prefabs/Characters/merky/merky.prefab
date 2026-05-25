@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 1792176473}
   - component: {fileID: 1792176480}
   - component: {fileID: 6141120829055656747}
+  - component: {fileID: 7471783617025210370}
   - component: {fileID: 1792176481}
   - component: {fileID: 1792176475}
   - component: {fileID: 1792176466}
@@ -260,6 +261,7 @@ MonoBehaviour:
   - {fileID: 1792176473}
   - {fileID: 1792176480}
   - {fileID: 6141120829055656747}
+  - {fileID: 7471783617025210370}
   - {fileID: 1792176481}
 --- !u!114 &7835665536134532039
 MonoBehaviour:
@@ -669,7 +671,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100086}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61237c0d3a5ae404aae19ce7abaf1ca3, type: 3}
   m_Name: 
@@ -725,6 +727,35 @@ MonoBehaviour:
   maxCharge: 50
   chargePerTeleport: 10
   wirePrefab: {fileID: 1056538010247352, guid: f126a10e6d79720439a0f1a41e2dcf93, type: 3}
+--- !u!114 &7471783617025210370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e7d0970f1134742a64d99398eb5fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BatteryAbility
+  soi: {fileID: 3807953469792525793}
+  teleportRangeSegment: {fileID: 11400000, guid: 142b6736c840b404386de08944e395e2, type: 2}
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  upgradeLevel: 0
+  upgradeLevels:
+  - stat1: 4
+    stat2: 50
+    stat3: 1
+    stat4: 110
+    featureLevel: 1
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
+  range: 0.7
+  energyPerSecond: 50
+  staticSpeed: 1
 --- !u!114 &1792176481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -852,6 +883,7 @@ MonoBehaviour:
   - {fileID: 1792176473}
   - {fileID: 1792176480}
   - {fileID: 6141120829055656747}
+  - {fileID: 7471783617025210370}
   - {fileID: 1792176481}
   - {fileID: 1792176475}
   - {fileID: 1792176466}

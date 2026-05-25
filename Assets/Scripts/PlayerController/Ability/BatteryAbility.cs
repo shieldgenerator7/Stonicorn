@@ -15,7 +15,6 @@ public class BatteryAbility : PlayerAbility
     public float range = 2.5f;
     public float energyPerSecond = 100;//how much energy it generates each second
     public float staticSpeed = 2;//how fast it converges your velocity into your target's velocity
-    public float rangeBuffer = 1;//how much more outside the range a target can be before being disconnected
 
 
     private Vector2 prevPos;
@@ -113,7 +112,7 @@ public class BatteryAbility : PlayerAbility
         {
             removeAllWires();
             wires.ForEach(wire=>addWire(wire));
-            onWiresChanged.Invoke(WireList);
+            onWiresChanged?.Invoke(WireList);
             playerController.updateGroundedState();
         }
         //no wires found
@@ -122,7 +121,7 @@ public class BatteryAbility : PlayerAbility
             if (WireList.Count > 0)
             {
                 removeAllWires();
-                onWiresChanged.Invoke(WireList);
+                onWiresChanged?.Invoke(WireList);
             }
         }
     }
