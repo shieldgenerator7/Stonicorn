@@ -40,7 +40,7 @@ public class PowerManager : MonoBehaviour, ISetupable
               .ForEach(pw => pw.reset());
         //Process powerables with no power
         noPowerPowerables
-            .Where(pwr => pwr != electricBeamAbility.Target).ToList()
+            .Where(pwr => pwr != electricBeamAbility?.Target).ToList()
             .ForEach(pwr => {
             pwr.acceptPower(0);
         });
@@ -241,11 +241,6 @@ public class PowerManager : MonoBehaviour, ISetupable
 
         if (!gameObject.isPrefab())
         {
-            if (!electricBeamAbility)
-            {
-                Debug.LogError("PowerManager needs an EelectricBeamAbility!", this);
-                errorCount++;
-            }
         }
 
         return errorCount;
