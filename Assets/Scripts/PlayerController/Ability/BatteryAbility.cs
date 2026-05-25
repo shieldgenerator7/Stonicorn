@@ -15,6 +15,8 @@ public class BatteryAbility : PlayerAbility, IPowerer
     public float range = 2.5f;
     public float energyPerSecond = 100;//how much energy it generates each second
     public float staticSpeed = 2;//how fast it converges your velocity into your target's velocity
+    public bool negateGravity = true;
+    public bool dampenMomentum = true;
 
 
     private Vector2 prevPos;
@@ -96,12 +98,15 @@ public class BatteryAbility : PlayerAbility, IPowerer
     /// <param name="apply"></param>
     void applyStatic(bool apply = true)
     {
-        playerController.GravityAccepter.AcceptsGravity = !apply;
+        playerController.GravityAccepter.AcceptsGravity = !negateGravity || !apply;
         if (apply)
         {
+            if (dampenMomentum)
+            {
             Vector2 targetVelocity = Vector2.zero;
             rb2d.linearVelocity = Vector2.Lerp(rb2d.linearVelocity, targetVelocity, Time.fixedDeltaTime * staticSpeed);
-            playerController.GravityAccepter.AcceptsGravity = false;
+            }
+            playerController.GravityAccepter.AcceptsGravity = !negateGravity || false;
         }
     }
 
