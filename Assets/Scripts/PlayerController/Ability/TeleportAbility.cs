@@ -17,7 +17,7 @@ public class TeleportAbility : PlayerAbility
     public float dampenSpeed = 1;//how much velocity to dampen when teleporting
     [Range(0, 1)]
     public float coolDownTime = 0.1f;//the minimum time between teleports
-    [Range(0, 1)]
+    [Range(0, 1000)]
     public float baseExhaustCoolDownTime = 0.5f;//the base cool down time (sec) for teleporting while exhausted
     public float exhaustCoolDownTime { get; set; }//the current cool down time (sec) for teleporting while exhausted
     private float teleportTime;//the earliest time that Merky can teleport. To be set only in TeleportReady
