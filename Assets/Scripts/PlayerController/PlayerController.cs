@@ -535,45 +535,31 @@ public class PlayerController : MonoBehaviour
     /// <param name="state">The state of the hold gesture</param>
     public void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
     {
-        //If the camera is centered on the player,
-        if (!Managers.Camera.offsetOffPlayer())
-        {
-            //Rapidly auto-teleport
-            //If enough time has passed since the last auto-teleport,
-            if (Time.unscaledTime > lastAutoTeleportTime + autoTeleportDelay)
-            {
-                //Teleport
-                lastAutoTeleportTime = Time.unscaledTime;
-                processTapGesture(holdPos);
-            }
-        }
-        //Else if the player is on the edge of the screen,
-        else
-        {
             //Show a teleport preview
 
-            //If this is the first frame of the hold gesture,
-            if (holdTime < Time.deltaTime)//TODO: add parameter for start, middle, end of hold
+            switch (state)
             {
+            //If this is the first frame of the hold gesture,
+                case GestureState.START:
                 //Erase any visual effects of the other abilities
                 dropHoldGesture();
-            }
 
-            //TODO: only register these delegates at start of hold
             //register camera delegate
             Managers.Camera.onOffsetChange -= _call_dropHoldGesture;
             Managers.Camera.onOffsetChange += _call_dropHoldGesture;
 
+                    break;
+                case GestureState.ONGOING:
             //Show the teleport preview effect
             Teleport.processHoldGesture(holdPos, holdTime, state);
+                    break;
             //If this is the last frame of the hold gesture,
-            if (state.Finished())
-            {
+            case GestureState.FINISH:
                 //Finally teleport to the location
                 processTapGesture(holdPos);
                 //Erase the teleport preview effects
                 Teleport.stopGestureEffects();
-            }
+            break;
         }
     }
     /// <summary>
