@@ -141,4 +141,10 @@ public class WallClingAbility : PlayerAbility
     protected override void acceptUpgradeLevel(AbilityUpgradeLevel aul)
     {
     }
+
+    private void OnDrawGizmos()
+    {
+        Debug.DrawLine(transform.position, (Vector2)transform.position + (feetDir * wallDetectRange), (groundedFeet) ? Color.green : Color.red);
+        //Debug.DrawLine(transform.position, (Vector2)transform.position + (feetDirection * 1), Color.blue);
+    }
 }
