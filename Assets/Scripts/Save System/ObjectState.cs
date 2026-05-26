@@ -40,7 +40,14 @@ public class ObjectState
             angularVelocity = rb2d.angularVelocity;
         }
         //SavableMonoBehaviours
+        try
+        {
         soList = info.savables.ConvertAll<SavableObject>(smb => smb.CurrentState).ToArray();
+        }
+        catch(NullReferenceException nre)
+        {
+            Debug.LogError($"Error with info: ({info.Id}) {info.name}, {info.TextLine}. " + nre.Message);
+        }
     }
     public void loadState(SavableObjectInfo soi)
     {
