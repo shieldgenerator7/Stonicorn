@@ -52,7 +52,7 @@ public class WallClingAbility : PlayerAbility
     bool isGroundedFeet()
     {
         prevGroundedFeet = groundedFeet;
-        Vector2 feetDir = transform.InverseTransformDirection(feetDirection);
+        Vector2 feetDir = transform.TransformDirection(feetDirection);
         //Test feet side
         groundedFeet = playerController.Ground.isGroundedInDirection(
             feetDir,
