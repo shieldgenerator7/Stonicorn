@@ -11,7 +11,6 @@ Stonicorn - Things to know
 - cant teleport when not grounded
 - teleport refreshed upon hitting the ground
 - in certain situations, can teleport beyond shown range
-- teleport range indicator shows range, teleports left
 - you maintain momentum when teleporting
 - teleporting in opposite direction of momentum slows you down
 
@@ -56,9 +55,12 @@ Stonicorn - Things to know
 - while dashing, hazards deal 1 less damage (minimum 0)
 
 # Wall Cling
-- you're grounded in the direction your feet are pointing, if there is a solid object there
-- pointing your feet at a hazard does not ground you
-- stick to a solid non-hazard surface that your feet point at
+- when merky has his feet against a solid non-hazard surface, he clings to it
+- while clinging, merky is grounded
+- clinging refreshes teleport
+- while clinging, merky is immune to gravity
+- while clinging, merky moves with the solid objects velocity (usually 0 for walls)
+- the initial cling cancels all momentum and rotates merky to cling to the surface the best
 
 # Air-Port
 - you can teleport in your moving direction when not grounded
