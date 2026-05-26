@@ -18,6 +18,7 @@ public class WallClingAbility : PlayerAbility
 
     private bool groundedFeet = false;
     private bool prevGroundedFeet = false;
+    private Vector2 feetDir;
 
     private bool magneted = false;
     public bool Magneted
@@ -52,7 +53,7 @@ public class WallClingAbility : PlayerAbility
     bool isGroundedFeet()
     {
         prevGroundedFeet = groundedFeet;
-        Vector2 feetDir = transform.TransformDirection(feetDirection);
+        feetDir = transform.TransformDirection(feetDirection);
         //Test feet side
         groundedFeet = playerController.Ground.isGroundedInDirection(
             feetDir,
@@ -69,8 +70,10 @@ public class WallClingAbility : PlayerAbility
     /// <param name="newPos"></param>
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
+        isGrounded();
         if (prevGroundedFeet)
         {
+            Magneted = false;
         }
         if (groundedFeet)
         {
@@ -98,11 +101,11 @@ public class WallClingAbility : PlayerAbility
                 {
                     //Update grounding variables
                     isGrounded();
-                    if (!groundedFeet)
-                    {
-                        //Stop magnet
-                        Magneted = false;
-                    }
+                }
+                if (!groundedFeet)
+                {
+                    //Stop magnet
+                    Magneted = false;
                 }
             }
         }
