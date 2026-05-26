@@ -63,6 +63,21 @@ public class WallClingAbility : PlayerAbility
     }
 
 
+    private void checkMagneted()
+    {
+        isGroundedFeet();
+        bool shouldMagnet = groundedFeet && !playerController.Ground.GroundedNormal;
+        if (Magneted != shouldMagnet)
+        {
+            Magneted = shouldMagnet;
+            if (Magneted)
+            {
+                rb2d.nullifyMovement();
+            }
+        }
+    }
+
+
     /// <summary>
     /// Should be called after isGroundedFeet() gets called
     /// </summary>
@@ -70,17 +85,11 @@ public class WallClingAbility : PlayerAbility
     /// <param name="newPos"></param>
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
-        isGrounded();
-        if (prevGroundedFeet)
-        {
-            Magneted = false;
-        }
+        checkMagneted();
         if (groundedFeet)
         {
             //Update Stats
             Managers.Stats.addOne(Stat.WALL_CLIMB);
-            rb2d.nullifyMovement();
-            Magneted = true;
             //Effect Teleport
             effectTeleport(oldPos, newPos);
         }
@@ -88,54 +97,14 @@ public class WallClingAbility : PlayerAbility
 
     private void FixedUpdate()
     {
-        if (Magneted)
-        {
-            if (playerController.Ground.GroundedNormal)
-            {
-                //Stop magnet
-                Magneted = false;
-            }
-            else
-            {
-                if (groundedFeet)
-                {
-                    //Update grounding variables
-                    isGrounded();
-                }
-                if (!groundedFeet)
-                {
-                    //Stop magnet
-                    Magneted = false;
-                }
-            }
-        }
-        else
-        {
-            //Merky rotating could effect this
-            if (rb2d.angularVelocity > 0)
-            {
-                //so update whether or not hes grounded
-                isGroundedFeet();
-                if (groundedFeet)
-                {
-                    Magneted = true;
-                }
-            }
-        }
+        checkMagneted();
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (Active)
         {
-            //Updated grounded variables
-            isGrounded();
-            //If no longer grounded
-            if (!groundedFeet)
-            {
-                //Stop magnet
-                Magneted = false;
-            }
+            checkMagneted();
         }
     }
 
