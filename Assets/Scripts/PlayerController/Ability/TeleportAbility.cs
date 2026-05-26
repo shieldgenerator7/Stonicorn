@@ -141,7 +141,7 @@ public class TeleportAbility : PlayerAbility
                 (targetPos - transform.position).normalized,
                 -playerController.GravityDir.normalized
                 );
-            exhaustCoolDownTime = baseExhaustCoolDownTime * upAmount;
+            exhaustCoolDownTime = baseExhaustCoolDownTime;// * upAmount;
         }
         //Put teleport on cooldown
         TeleportReady = false;
@@ -459,6 +459,7 @@ public class TeleportAbility : PlayerAbility
             //Refresh teleport exhaust cooldowns
             exhaustCoolDownTime = 0;
             hasFreeTeleport = true;
+            TeleportReady = true;
         }
         //Else if Merky is in the air,
         else

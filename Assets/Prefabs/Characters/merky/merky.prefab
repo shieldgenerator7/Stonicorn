@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 1792176479}
   - component: {fileID: 53320633017969195}
   - component: {fileID: 1792176480}
+  - component: {fileID: 7098945783520042782}
   - component: {fileID: 7471783617025210370}
   - component: {fileID: 1792176481}
   - component: {fileID: 1792176475}
@@ -253,9 +254,11 @@ MonoBehaviour:
   playerAbilities:
   - {fileID: 1792176476}
   - {fileID: 3415424875800634050}
+  - {fileID: 5474337292787076957}
   - {fileID: 1792176479}
   - {fileID: 53320633017969195}
   - {fileID: 1792176480}
+  - {fileID: 7098945783520042782}
   - {fileID: 7471783617025210370}
   - {fileID: 1792176481}
 --- !u!114 &7835665536134532039
@@ -512,7 +515,7 @@ MonoBehaviour:
   teleportRangeSegment: {fileID: 11400000, guid: 1402f0d20ef5d8e4b99fd7da54e88abf, type: 2}
   soundEffect: {fileID: 0}
   addsOnTeleportSoundEffect: 0
-  unlocked: 1
+  unlocked: 0
   upgradeLevel: 0
   upgradeLevels:
   - stat1: 1
@@ -557,6 +560,34 @@ MonoBehaviour:
   - {fileID: 1792176480}
   cloudPrefab: {fileID: 852310197314662580, guid: bd49ee78f2413994bbd83573bb2f5f0f, type: 3}
   swapAbility: {fileID: 1792176479}
+--- !u!114 &7098945783520042782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7264b505ec3165542be7fdfcf534bde3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FeatherFallAbility
+  soi: {fileID: 3807953469792525793}
+  teleportRangeSegment: {fileID: 11400000, guid: 1402f0d20ef5d8e4b99fd7da54e88abf, type: 2}
+  soundEffect: {fileID: 0}
+  addsOnTeleportSoundEffect: 0
+  unlocked: 0
+  upgradeLevel: 0
+  upgradeLevels:
+  - stat1: 0
+    stat2: 0
+    stat3: 0
+    stat4: 0
+    featureLevel: 0
+  playerController: {fileID: 11477714}
+  rb2d: {fileID: 5068768}
+  swaySpeed: 1
+  maxSpeed: 3
 --- !u!114 &7471783617025210370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,9 +740,11 @@ MonoBehaviour:
   savables:
   - {fileID: 1792176476}
   - {fileID: 3415424875800634050}
+  - {fileID: 5474337292787076957}
   - {fileID: 1792176479}
   - {fileID: 53320633017969195}
   - {fileID: 1792176480}
+  - {fileID: 7098945783520042782}
   - {fileID: 7471783617025210370}
   - {fileID: 1792176481}
   - {fileID: 1792176475}
