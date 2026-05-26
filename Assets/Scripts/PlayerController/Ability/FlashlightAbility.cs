@@ -31,10 +31,10 @@ public class FlashlightAbility : PlayerAbility
 
     protected override void registerDelegates(bool register = true)
     {
-        Managers.Camera.onOffsetChange -= camOffsetChanged;
+        Managers.Player.onHoldGesture -= processHoldGesture;
         if (register)
         {
-            Managers.Camera.onOffsetChange += camOffsetChanged;
+            Managers.Player.onHoldGesture += processHoldGesture;
         }
     }
 
@@ -43,6 +43,13 @@ public class FlashlightAbility : PlayerAbility
     protected override bool isGrounded() => false;
     protected override void processTeleport(Vector2 oldPos, Vector2 newPos)
     {
+    }
+
+    private void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
+    {
+        FlashlightDirection = holdPos - transform.position;
+        flashlightOn = !state.Finished();
+        updateVisuals();
     }
 
     private void camOffsetChanged(Vector3 offset)

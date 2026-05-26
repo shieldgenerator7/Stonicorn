@@ -535,8 +535,11 @@ public class PlayerController : MonoBehaviour
     /// <param name="state">The state of the hold gesture</param>
     public void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
     {
+        onHoldGesture?.Invoke(holdPos, holdTime, state);
         processShowPreview(holdPos, state);
     }
+    public delegate void OnHoldGesture(Vector3 holdPos, float holdTime, GestureState state);
+    public event OnHoldGesture onHoldGesture;
     public void processShowPreview(Vector3 pos, GestureState state)
     {
         //Show a teleport preview
