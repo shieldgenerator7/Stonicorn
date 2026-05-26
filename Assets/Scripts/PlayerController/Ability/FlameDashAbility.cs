@@ -83,10 +83,10 @@ public class FlameDashAbility : PlayerAbility
         {
             if (dir.magnitude <= maxDeactivationTeleportDistance)
             {
-            //Nullify velocity
-            rb2d.nullifyMovement();
-            //Cancel effect on velocity
-            AffectingVelocity = false;
+                //Nullify velocity
+                rb2d.nullifyMovement();
+                //Cancel effect on velocity
+                AffectingVelocity = false;
             }
         }
 
@@ -99,7 +99,7 @@ public class FlameDashAbility : PlayerAbility
     private void checkActivation()
     {
         //if tap not far enough, cancel combo
-        if (tapDirs.Any(v=>v.magnitude< minTeleportDistancePerTap))
+        if (tapDirs.Any(v => v.magnitude < minTeleportDistancePerTap))
         {
             tapDirs.Clear();
             return;
@@ -114,7 +114,8 @@ public class FlameDashAbility : PlayerAbility
                 break;
             }
             //if combo is bad, remove first tap
-            else {
+            else
+            {
                 tapDirs.RemoveAt(0);
             }
         }

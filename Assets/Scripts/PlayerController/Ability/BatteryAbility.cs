@@ -64,16 +64,16 @@ public class BatteryAbility : PlayerAbility, IPowerer
     void FixedUpdate()
     {
         refreshTargets(transform.position);
-            if (wires.Count > 0)
-            {
-                //Power
+        if (wires.Count > 0)
+        {
+            //Power
 
-                //Move relative to the target
-                if (CanStatic)
-                {
-                    applyStatic();
-                }
+            //Move relative to the target
+            if (CanStatic)
+            {
+                applyStatic();
             }
+        }
     }
 
     bool CanStatic =>
@@ -103,8 +103,8 @@ public class BatteryAbility : PlayerAbility, IPowerer
         {
             if (dampenMomentum)
             {
-            Vector2 targetVelocity = Vector2.zero;
-            rb2d.linearVelocity = Vector2.Lerp(rb2d.linearVelocity, targetVelocity, Time.fixedDeltaTime * staticSpeed);
+                Vector2 targetVelocity = Vector2.zero;
+                rb2d.linearVelocity = Vector2.Lerp(rb2d.linearVelocity, targetVelocity, Time.fixedDeltaTime * staticSpeed);
             }
             playerController.GravityAccepter.AcceptsGravity = !negateGravity || false;
         }
@@ -127,7 +127,7 @@ public class BatteryAbility : PlayerAbility, IPowerer
         if (wires.Count > 0)
         {
             removeAllWires();
-            wires.ForEach(wire=>addWire(wire));
+            wires.ForEach(wire => addWire(wire));
             onWiresChanged?.Invoke(WireList);
             playerController.updateGroundedState();
         }

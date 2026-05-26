@@ -535,31 +535,31 @@ public class PlayerController : MonoBehaviour
     /// <param name="state">The state of the hold gesture</param>
     public void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
     {
-            //Show a teleport preview
+        //Show a teleport preview
 
-            switch (state)
-            {
+        switch (state)
+        {
             //If this is the first frame of the hold gesture,
-                case GestureState.START:
+            case GestureState.START:
                 //Erase any visual effects of the other abilities
                 dropHoldGesture();
 
-            //register camera delegate
-            Managers.Camera.onOffsetChange -= _call_dropHoldGesture;
-            Managers.Camera.onOffsetChange += _call_dropHoldGesture;
+                //register camera delegate
+                Managers.Camera.onOffsetChange -= _call_dropHoldGesture;
+                Managers.Camera.onOffsetChange += _call_dropHoldGesture;
 
-                    break;
-                case GestureState.ONGOING:
-            //Show the teleport preview effect
-            Teleport.processHoldGesture(holdPos, holdTime, state);
-                    break;
+                break;
+            case GestureState.ONGOING:
+                //Show the teleport preview effect
+                Teleport.processHoldGesture(holdPos, holdTime, state);
+                break;
             //If this is the last frame of the hold gesture,
             case GestureState.FINISH:
                 //Finally teleport to the location
                 processTapGesture(holdPos);
                 //Erase the teleport preview effects
                 Teleport.stopGestureEffects();
-            break;
+                break;
         }
     }
     /// <summary>
@@ -600,7 +600,7 @@ public class PlayerController : MonoBehaviour
 
     //Estimate the halfWidth
     [Initializer("_halfWidth")]
-    private float init__halfWidth => ((gameObject.getSize(true).x+ gameObject.getSize(true).y)/2) / 2;
+    private float init__halfWidth => ((gameObject.getSize(true).x + gameObject.getSize(true).y) / 2) / 2;
 
 #endif
 }
