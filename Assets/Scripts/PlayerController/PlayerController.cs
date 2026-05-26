@@ -535,6 +535,10 @@ public class PlayerController : MonoBehaviour
     /// <param name="state">The state of the hold gesture</param>
     public void processHoldGesture(Vector3 holdPos, float holdTime, GestureState state)
     {
+        processShowPreview(holdPos, state);
+    }
+    public void processShowPreview(Vector3 pos, GestureState state)
+    {
         //Show a teleport preview
 
         switch (state)
@@ -551,12 +555,12 @@ public class PlayerController : MonoBehaviour
                 break;
             case GestureState.ONGOING:
                 //Show the teleport preview effect
-                Teleport.processHoldGesture(holdPos, holdTime, state);
+                Teleport.processHoldGesture(pos, 1, state);
                 break;
             //If this is the last frame of the hold gesture,
             case GestureState.FINISH:
                 //Finally teleport to the location
-                processTapGesture(holdPos);
+                processTapGesture(pos);
                 //Erase the teleport preview effects
                 Teleport.stopGestureEffects();
                 break;
@@ -588,6 +592,7 @@ public class PlayerController : MonoBehaviour
     public void processDragGesture(Vector3 origPos, Vector3 newPos, GestureState state)
     {
         onDragGesture?.Invoke(origPos, newPos, state);
+        processShowPreview(newPos, state);
     }
 
     void pauseMovementAfterRewind(int gameStateId)
