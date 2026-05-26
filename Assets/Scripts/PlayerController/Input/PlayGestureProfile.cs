@@ -61,7 +61,6 @@ public class PlayGestureProfile : GestureProfile
         //If the player drags on Merky,
         if (dragType == GestureInput.DragType.DRAG_PLAYER)
         {
-            //Activate the ForceLaunch ability
             Managers.Player.processDragGesture(origMPWorld, newMPWorld, state);
         }
         else if (dragType == GestureInput.DragType.DRAG_CAMERA)
