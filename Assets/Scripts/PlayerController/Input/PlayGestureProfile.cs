@@ -59,8 +59,7 @@ public class PlayGestureProfile : GestureProfile
         }
         else if (dragType == GestureInput.DragType.DRAG_CAMERA)
         {
-            //Drag the camera
-            Managers.Camera.processDragGesture(origMPWorld, newMPWorld, state);
+            //do nothing
         }
         else
         {
