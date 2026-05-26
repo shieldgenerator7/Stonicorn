@@ -49,6 +49,13 @@ public class PlayGestureProfile : GestureProfile
     {
         if (Managers.Rewind.Rewinding)
         {
+            if (state == GestureState.FINISH)
+            {
+                if (Managers.Rewind.rewindInterruptableByPlayer)
+                {
+                    Managers.Rewind.cancelRewind();
+                }
+            }
             return;
         }
         //If the player drags on Merky,
