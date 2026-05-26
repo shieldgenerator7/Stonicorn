@@ -117,14 +117,14 @@ public class MouseGestureInput : GestureInput
                         );
                     break;
                 case MouseEvent.SCROLL:
-                    if (Input.GetAxis("Mouse ScrollWheel") < 0)
-                    {
-                        Managers.Camera.ZoomLevel *= 1.2f;
-                    }
-                    else if (Input.GetAxis("Mouse ScrollWheel") > 0)
-                    {
-                        Managers.Camera.ZoomLevel /= 1.2f;
-                    }
+                    //if (Input.GetAxis("Mouse ScrollWheel") < 0)
+                    //{
+                    //    Managers.Camera.ZoomLevel *= 1.2f;
+                    //}
+                    //else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+                    //{
+                    //    Managers.Camera.ZoomLevel /= 1.2f;
+                    //}
                     break;
             }
 

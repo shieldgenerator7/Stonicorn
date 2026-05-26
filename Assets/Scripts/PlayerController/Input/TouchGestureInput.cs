@@ -224,8 +224,8 @@ public class TouchGestureInput : GestureInput
                 float adfc = AverageDistanceFromCenter;
                 if (adfc > 0)
                 {
-                    float scaleFactor = origAvgDistanceFromCenter / adfc;
-                    Managers.Camera.ZoomLevel = origCameraZoom * scaleFactor;
+                    //float scaleFactor = origAvgDistanceFromCenter / adfc;
+                    //Managers.Camera.ZoomLevel = origCameraZoom * scaleFactor;
                 }
             }
 
