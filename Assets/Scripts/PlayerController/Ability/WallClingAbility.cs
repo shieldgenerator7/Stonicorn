@@ -109,6 +109,19 @@ public class WallClingAbility : PlayerAbility
                 }
             }
         }
+        else
+        {
+            //Merky rotating could effect this
+            if (rb2d.angularVelocity > 0)
+            {
+                //so update whether or not hes grounded
+                isGroundedFeet();
+                if (groundedFeet)
+                {
+                    Magneted = true;
+                }
+            }
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
