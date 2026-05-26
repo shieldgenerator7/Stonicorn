@@ -203,7 +203,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 Managers.PlayerRewind.tapProcessed -= checkCheckPointGhostsZoomedOut;
 
                 float defaultZoomLevel = Managers.Camera.toZoomLevel(CameraController.CameraScalePoints.DEFAULT);
-                if (Managers.Camera.ZoomLevel > defaultZoomLevel)
+                if (Managers.Camera.ZoomLevel > defaultZoomLevel && !Managers.Rewind.Rewinding)
                 {
                     Managers.Camera.ZoomLevel = defaultZoomLevel;
                 }
